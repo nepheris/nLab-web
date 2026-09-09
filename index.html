@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="nLab Web — portail des outils web publics sélectionnés de nLab.">
+  <meta name="robots" content="index,follow">
+  <title>nLab Web — Outils publics</title>
+  <style>
+    :root{--blue:#0057b8;--ink:#1f2933;--muted:#65717d;--bg:#f3f5f7;--panel:#fff;--border:#d7dde3;--soft:#eef3f8;--ok:#246b39}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    header{background:#fff;border-bottom:1px solid var(--border)}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}.head{padding:22px 0;display:flex;gap:14px;align-items:center}.logo{width:48px;height:48px;border-radius:13px;background:var(--soft);display:grid;place-items:center;color:var(--blue);font-weight:800}.brand h1{font-size:22px;margin:0}.brand p{margin:4px 0 0;color:var(--muted)}
+    main{padding:42px 0 60px}.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:28px;align-items:center;margin-bottom:34px}.hero h2{font-size:clamp(30px,5vw,52px);line-height:1.05;margin:0 0 14px}.hero p{color:var(--muted);font-size:17px;line-height:1.65;margin:0}.note{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;line-height:1.5}.note b{display:block;margin-bottom:5px}.note span{color:var(--muted);font-size:14px}
+    .sectionHead{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:28px 0 14px}.sectionHead h3{font-size:22px;margin:0}.sectionHead p{margin:0;color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.tool{display:flex;flex-direction:column;min-height:235px;background:#fff;border:1px solid var(--border);border-radius:15px;padding:20px;text-decoration:none;color:inherit;transition:.15s}.tool:hover{transform:translateY(-2px);border-color:#9ab8d4;box-shadow:0 10px 30px #00000010}.toolTop{display:flex;justify-content:space-between;gap:10px}.icon{width:44px;height:44px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--blue);font-size:23px}.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#edf8ef;border:1px solid #b9ddc1;color:var(--ok);height:max-content}.tool h4{font-size:20px;margin:17px 0 8px}.tool p{margin:0;color:var(--muted);line-height:1.55}.meta{margin-top:auto;padding-top:18px;display:flex;gap:8px;flex-wrap:wrap}.chip{font-size:11px;background:#f1f4f7;border-radius:999px;padding:5px 8px}.go{margin-top:14px;color:var(--blue);font-weight:700}.empty{background:#ffffffa8;border:1px dashed #bdc7d0;border-radius:15px;padding:22px;color:var(--muted)}
+    footer{border-top:1px solid var(--border);background:#fff;padding:22px 0;color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.foot a{color:var(--blue)}
+    @media(max-width:760px){.hero{grid-template-columns:1fr}.head{align-items:flex-start}.brand p{font-size:13px}}
+  </style>
+</head>
+<body>
+<header><div class="wrap head"><div class="logo">nL</div><div class="brand"><h1>nLab Web</h1><p>Portail des outils web publics sélectionnés de nLab</p></div></div></header>
+<main class="wrap">
+  <section class="hero"><div><h2>Les outils nLab,<br>accessibles depuis le navigateur.</h2><p>Cette page regroupe uniquement les applications et modules explicitement retenus pour une publication publique. L’objectif : retrouver les mêmes outils depuis n’importe quel ordinateur, sans installer le projet nLab complet.</p></div><aside class="note"><b>🔒 Publication sélective</b><span>Le dépôt public n’expose pas les données privées, secrets, configurations personnelles ni travaux non validés. Chaque outil est publié volontairement.</span></aside></section>
+  <div class="sectionHead"><div><h3>Outils disponibles</h3><p id="count">Chargement du catalogue…</p></div></div>
+  <section class="grid" id="tools"></section>
+  <div class="sectionHead"><div><h3>À venir</h3><p>Ajout progressif après validation</p></div></div>
+  <div class="empty">D’autres Studios et outils nLab pourront être ajoutés ici. Le catalogue public reste volontairement distinct du dépôt privé de développement.</div>
+</main>
+<footer><div class="wrap foot"><span>nLab Web · espace public</span><span><a href="https://github.com/nepheris/nLab-web">Code source public sur GitHub</a></span></div></footer>
+<script>
+const esc=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+(async()=>{const box=document.getElementById('tools'),count=document.getElementById('count');try{const r=await fetch('./tools.json',{cache:'no-store'});if(!r.ok)throw 0;const tools=(await r.json()).filter(t=>t.public);count.textContent=`${tools.length} outil${tools.length>1?'s':''} publié${tools.length>1?'s':''}`;box.innerHTML=tools.map(t=>`<a class="tool" href="${esc(t.href)}"><div class="toolTop"><div class="icon">📄</div><span class="badge">Disponible</span></div><h4>${esc(t.name)}</h4><p>${esc(t.description)}</p><div class="meta"><span class="chip">${esc(t.version)}</span><span class="chip">${esc(t.category)}</span>${t.localFirst?'<span class="chip">Local-first</span>':''}</div><div class="go">Ouvrir l’outil →</div></a>`).join('')||'<div class="empty">Aucun outil public pour le moment.</div>'}catch(e){count.textContent='Catalogue indisponible';box.innerHTML='<div class="empty">Impossible de charger le catalogue. Rechargez la page.</div>'}})();
+</script>
+</body>
+</html>

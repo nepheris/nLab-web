@@ -1,0 +1,128 @@
+{
+  "schema": "nlab-pdf-config/v1",
+  "name": "nLab Standard — traitement documentaire",
+  "operator": {
+    "initials": ""
+  },
+  "placeholders": {
+    "CLIENT": "",
+    "SITE": "",
+    "SERVICE": "",
+    "REFERENCE": ""
+  },
+  "output": {
+    "mode": "archive-date",
+    "archiveGranularity": "month",
+    "preserveSourceTree": false,
+    "operationFolder": "TRAITEMENT",
+    "filenameTemplate": "{FILENAME}_traite_{DATE}.pdf",
+    "suffixes": {
+      "enabled": true,
+      "ocr": true,
+      "dpi": true,
+      "jpeg": true,
+      "gray": true,
+      "annot": true,
+      "fusion": true
+    }
+  },
+  "text": {
+    "font": "Helvetica",
+    "size": 12,
+    "color": "#0057B8",
+    "bold": false,
+    "italic": false,
+    "underline": false
+  },
+  "stamp": {
+    "defaultId": "nc",
+    "font": "Helvetica",
+    "size": 12,
+    "color": "#B42318",
+    "bold": true,
+    "italic": false,
+    "underline": false
+  },
+  "stamps": [
+    {
+      "id": "date",
+      "label": "DATE",
+      "template": "DATE - {DATE}",
+      "category": "Date & heure"
+    },
+    {
+      "id": "datetime",
+      "label": "HORODATAGE",
+      "template": "HORODATAGE - {DATE} {TIME}",
+      "category": "Date & heure"
+    },
+    {
+      "id": "vu",
+      "label": "VU",
+      "template": "VU - {INITIALS} - {DATE}",
+      "category": "Statut"
+    },
+    {
+      "id": "nc",
+      "label": "NON CONCERNÉ",
+      "template": "NC_{INITIALS}_{DATE_COMPACT}",
+      "category": "Statut"
+    },
+    {
+      "id": "affiche",
+      "label": "AFFICHÉ",
+      "template": "AFFICHE_{INITIALS}_{DATE_COMPACT}",
+      "category": "Statut"
+    },
+    {
+      "id": "traite",
+      "label": "TRAITÉ",
+      "template": "TRAITE - {INITIALS} - {DATE}",
+      "category": "Statut"
+    },
+    {
+      "id": "valide",
+      "label": "VALIDÉ",
+      "template": "VALIDE - {INITIALS} - {DATE}",
+      "category": "Validation"
+    },
+    {
+      "id": "filename",
+      "label": "FICHIER + DATE",
+      "template": "{FILENAME} - {DATE}",
+      "category": "Document"
+    }
+  ],
+  "highlight": {
+    "opacity": 38,
+    "activeIndex": 1,
+    "palette": [
+      "#8BE28B",
+      "#FFEB3B",
+      "#8CC8FF",
+      "#FF9EC4",
+      "#FFB45B",
+      "#C6A0FF",
+      "#63E2E5",
+      "#FF7C7C"
+    ]
+  },
+  "image": {
+    "width": 180,
+    "height": 120,
+    "aspectLocked": true,
+    "opacity": 100,
+    "dpi": 150,
+    "jpeg": 85
+  },
+  "optimization": {
+    "dpi": 96,
+    "jpeg": 75,
+    "grayscale": false
+  },
+  "ocr": {
+    "lang": "fra",
+    "scope": "current",
+    "scale": 2
+  }
+}

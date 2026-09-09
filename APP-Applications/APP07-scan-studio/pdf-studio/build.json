@@ -1,0 +1,17 @@
+{
+  "id": "APP07-PDF-STUDIO",
+  "product": "nLab Scan Studio",
+  "module": "nLab PDF Studio",
+  "version": "Alpha 0.9.6",
+  "source": "nLab-PDF-Studio-CURRENT.html",
+  "sourceDriveId": "1WZhSyYL7SodG4hwmeRYGKulhI-fbrTZs",
+  "sha256": "d49b761db9a706e51f71a80d092253946d54b7369196ff32813b7b5a1f29c70c",
+  "encoding": "base64",
+  "compression": "gzip",
+  "chunks": [
+    "payload.b64"
+  ],
+  "sourceBytes": 332869,
+  "compressedBytes": 89301,
+  "generated": "2026-09-09"
+}

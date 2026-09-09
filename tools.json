@@ -1,0 +1,14 @@
+[
+  {
+    "id": "APP07-PDF-STUDIO",
+    "name": "nLab PDF Studio",
+    "product": "nLab Scan Studio",
+    "category": "Documents",
+    "version": "Alpha 0.9.6",
+    "status": "alpha",
+    "public": true,
+    "localFirst": true,
+    "href": "APP-Applications/APP07-scan-studio/pdf-studio/",
+    "description": "Éditer, organiser, annoter, optimiser et traiter des PDF directement dans le navigateur."
+  }
+]

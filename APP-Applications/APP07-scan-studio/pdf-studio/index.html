@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <title>nLab PDF Studio</title>
+  <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
+  <style>
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f3f5f7;color:#1f2933}.boot{min-height:100%;display:grid;place-items:center;padding:24px;box-sizing:border-box}.card{width:min(620px,100%);background:#fff;border:1px solid #d7dde3;border-radius:16px;padding:28px;box-shadow:0 12px 40px #00000012}h1{margin:0 0 8px;font-size:24px}.muted{color:#65717d;line-height:1.5}.bar{height:8px;background:#e8edf2;border-radius:99px;overflow:hidden;margin:20px 0 10px}.bar>i{display:block;height:100%;width:20%;background:#0057b8;border-radius:99px;animation:load 1.2s ease-in-out infinite alternate}@keyframes load{to{width:95%}}.error{display:none;color:#8a1f1f;background:#fff1f1;border:1px solid #e7b5b5;border-radius:8px;padding:12px;margin-top:16px;white-space:pre-wrap}a{color:#0057b8}
+  </style>
+</head>
+<body>
+<div class="boot"><div class="card"><h1>nLab PDF Studio</h1><div class="muted">Chargement de la version publique Alpha 0.9.6…</div><div class="bar"><i></i></div><div class="muted" id="status">Initialisation.</div><div class="error" id="error"></div></div></div>
+<script>
+(async()=>{const status=document.getElementById('status'),error=document.getElementById('error');try{const r=await fetch('./build.json',{cache:'no-store'});if(!r.ok)throw new Error('Manifest introuvable ('+r.status+').');const m=await r.json(),parts=[];for(let i=0;i<m.chunks.length;i++){status.textContent=`Chargement ${i+1}/${m.chunks.length}…`;const pr=await fetch('./chunks/'+m.chunks[i],{cache:'no-store'});if(!pr.ok)throw new Error('Fragment '+m.chunks[i]+' introuvable ('+pr.status+').');parts.push((await pr.text()).trim())}const b64=parts.join(''),bin=atob(b64),gz=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)gz[i]=bin.charCodeAt(i);let raw;if('DecompressionStream'in window){const ds=new DecompressionStream('gzip');raw=new Uint8Array(await new Response(new Blob([gz]).stream().pipeThrough(ds)).arrayBuffer())}else if(window.fflate?.gunzipSync){raw=window.fflate.gunzipSync(gz)}else throw new Error('Décompression gzip non disponible dans ce navigateur.');if(crypto?.subtle&&m.sha256){const hash=await crypto.subtle.digest('SHA-256',raw),got=[...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');if(got!==m.sha256)throw new Error('Contrôle d’intégrité échoué. Rechargez la page.')}const html=new TextDecoder().decode(raw);document.open();document.write(html);document.close()}catch(e){status.textContent='Échec du chargement.';error.style.display='block';error.textContent=(e&&e.message?e.message:String(e))+'\n\nRevenez à l’accueil nLab Web puis réessayez.'}})();
+</script>
+</body>
+</html>
