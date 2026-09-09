@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="nLab PDF Studio — application PDF locale-first du portail nLab Web.">
+  <title>nLab PDF Studio · nLab Web</title>
+  <style>
+    :root{--blue:#0057b8;--ink:#1f2933;--muted:#667582;--bg:#f4f6f8;--card:#fff;--line:#d9e0e6;--soft:#eef5fb;--warn:#fff4d6;--warnInk:#805600;--green:#eaf6ee;--greenInk:#21633a}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}a{color:inherit}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}
+    header{background:#fff;border-bottom:1px solid var(--line)}.head{min-height:72px;display:flex;align-items:center;gap:12px}.back{text-decoration:none;color:#51616e}.brand{margin-left:auto;font-weight:800;color:var(--blue)}
+    main{padding:48px 0 70px}.hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(24px,5vw,48px);box-shadow:0 14px 40px #20304010}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}h1{font-size:clamp(36px,6vw,62px);line-height:1;margin:10px 0 14px}.lead{font-size:18px;line-height:1.6;color:#52616e;max-width:760px}.badges{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.badge{padding:6px 9px;border-radius:999px;background:var(--soft);font-size:11px;font-weight:800}.badge.alpha{background:var(--warn);color:var(--warnInk)}.badge.local{background:var(--green);color:var(--greenInk)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.btn{padding:12px 16px;border-radius:9px;border:1px solid #b8c6d1;background:#fff;text-decoration:none;font-weight:800}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn[aria-disabled=true]{opacity:.5;pointer-events:none}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:24px}.card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px}.card h2{font-size:18px;margin:0 0 8px}.card p,.card li{color:#596875;line-height:1.55}.card ul{padding-left:20px;margin-bottom:0}.note{margin-top:22px;padding:14px 16px;background:var(--warn);border:1px solid #ebd38e;border-radius:10px;color:#5f4b15;line-height:1.5}
+    footer{border-top:1px solid var(--line);background:#fff}.foot{padding:20px 0;font-size:12px;color:#697784;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+<header><div class="wrap head"><a class="back" href="../../">← nLab Web</a><span class="brand">nLab PDF Studio</span></div></header>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">APP07 · nLab Scan Studio · module PDF</div>
+    <h1>PDF Studio</h1>
+    <p class="lead">Un atelier PDF local-first pour manipuler, annoter, organiser, convertir et classer des documents directement dans le navigateur. L’objectif est de fournir un socle générique réutilisable par les applications nLab.</p>
+    <div class="badges"><span class="badge alpha">Alpha 0.9.6</span><span class="badge local">Traitement local-first</span><span class="badge">Application publique expérimentale</span></div>
+    <div class="actions"><a class="btn primary" href="./app.html">Lancer PDF Studio</a><a class="btn" href="https://github.com/nepheris/nLab">Voir le développement nLab</a></div>
+    <div class="note"><b>Statut :</b> cette page produit est stable. L’application publiée dans <code>app.html</code> est synchronisée depuis le fichier CURRENT validé de PDF Studio lors du déploiement GitHub Pages.</div>
+  </section>
+  <div class="grid">
+    <article class="card"><h2>Concept</h2><p>Un outil documentaire transversal, sans dépendance à un métier particulier. Les profils métier restent des surcouches séparées.</p></article>
+    <article class="card"><h2>Fonctions principales</h2><ul><li>gestion et réorganisation des pages ;</li><li>annotations, texte, images et tampons ;</li><li>enregistrement et classement ;</li><li>préparation OCR, optimisation et outils documentaires.</li></ul></article>
+    <article class="card"><h2>Confidentialité</h2><p>Le principe local-first vise à exécuter les opérations dans le navigateur autant que possible. Les capacités exactes dépendent néanmoins de la fonction utilisée et du navigateur.</p></article>
+    <article class="card"><h2>Évolution</h2><p>PDF Studio est encore en phase Alpha. Les fonctions en développement sont signalées dans l’interface et ne doivent pas être confondues avec les fonctions stabilisées.</p></article>
+  </div>
+</main>
+<footer><div class="wrap foot"><span>nLab PDF Studio · APP07</span><span>Powered by nLab · Synergies SVA SARL</span></div></footer>
+</body>
+</html>
