@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="nLab Web — portail public des applications, briques et outils nLab.">
+  <title>nLab Web</title>
+  <style>
+    :root{--blue:#0057b8;--ink:#1f2933;--muted:#667582;--bg:#f4f6f8;--card:#fff;--line:#d9e0e6;--soft:#eef5fb;--green:#21633a}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+    a{color:inherit}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+    header{background:#fff;border-bottom:1px solid var(--line)}.head{min-height:76px;display:flex;align-items:center;gap:14px}.logo{width:44px;height:44px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--blue);font-weight:900}.brand b{font-size:20px}.brand small{display:block;color:var(--muted);margin-top:2px}.head nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}.head nav a{padding:8px 11px;border-radius:8px;text-decoration:none;color:#405160}.head nav a:hover{background:var(--soft);color:var(--blue)}
+    main{padding:54px 0 70px}.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:28px;align-items:center}.eyebrow{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.hero h1{font-size:clamp(34px,5vw,60px);line-height:1.02;margin:10px 0 16px}.hero p{font-size:18px;line-height:1.55;color:#52616e;max-width:720px}.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 15px;border-radius:9px;border:1px solid #b9c6d1;background:#fff;text-decoration:none;font-weight:700}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn:hover{transform:translateY(-1px)}
+    .heroCard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 14px 40px #20304012}.heroCard .status{display:inline-block;padding:5px 8px;border-radius:999px;background:#eaf6ee;color:var(--green);font-size:11px;font-weight:800}.heroCard h2{margin:14px 0 8px}.heroCard p{font-size:14px;margin:0}.heroCard ul{padding-left:18px;color:#52616e;line-height:1.7}
+    section{margin-top:58px}.sectionHead{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:16px}.sectionHead h2{margin:0;font-size:28px}.sectionHead p{margin:0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.card{display:flex;flex-direction:column;min-height:210px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;text-decoration:none;transition:.15s}.card:hover{border-color:#8ab5d7;box-shadow:0 8px 24px #20304012;transform:translateY(-2px)}.card .tag{font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.05em}.card h3{font-size:20px;margin:12px 0 8px}.card p{margin:0;color:#5a6976;line-height:1.5}.card .open{margin-top:auto;padding-top:18px;color:var(--blue);font-weight:800}.card.disabled{opacity:.58;pointer-events:none}.card.disabled .open{color:#6d7984}
+    footer{border-top:1px solid var(--line);background:#fff;color:#687683}.foot{padding:22px 0;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12px}
+    @media(max-width:800px){.hero{grid-template-columns:1fr}.head nav{display:none}.sectionHead{align-items:start;flex-direction:column}}
+  </style>
+</head>
+<body>
+<header><div class="wrap head"><div class="logo">nL</div><div class="brand"><b>nLab Web</b><small>Portail public nLab</small></div><nav><a href="#applications">Applications</a><a href="./Info/">Info</a><a href="https://github.com/nepheris/nLab-web">GitHub</a></nav></div></header>
+<main class="wrap">
+  <div class="hero">
+    <div><div class="eyebrow">Public · web · local-first</div><h1>Les outils nLab accessibles depuis un navigateur.</h1><p>nLab Web rassemble les applications explicitement rendues publiques. Chaque outil conserve son périmètre, sa version et son statut de maturité, tout en partageant une même porte d’entrée.</p><div class="cta"><a class="btn primary" href="./APP-Applications/pdf-studio/">Ouvrir PDF Studio</a><a class="btn" href="https://github.com/nepheris/nLab-web">Voir le dépôt</a></div></div>
+    <aside class="heroCard"><span class="status">Portail initial</span><h2>Architecture simple</h2><p>Une racine publique, puis une URL stable par produit.</p><ul><li><code>/</code> — portail nLab Web</li><li><code>/APP-Applications/pdf-studio/</code> — fiche produit</li><li><code>/APP-Applications/pdf-studio/app.html</code> — application</li></ul></aside>
+  </div>
+  <section id="applications"><div class="sectionHead"><div><div class="eyebrow">Catalogue</div><h2>Applications publiques</h2></div><p>Les outils apparaissent ici lorsqu’ils sont retenus pour publication.</p></div>
+    <div class="grid">
+      <a class="card" href="./APP-Applications/pdf-studio/"><span class="tag">APP · PDF</span><h3>nLab PDF Studio</h3><p>Édition et traitement PDF local-first : pages, annotations, classement, images et fonctions documentaires.</p><span class="open">Voir le produit →</span></a>
+      <div class="card disabled"><span class="tag">À venir</span><h3>Autres outils nLab</h3><p>Le portail est prêt à accueillir les prochains Studios et applications web sélectionnés.</p><span class="open">Non publié</span></div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap foot"><span>nLab Web · dépôt public</span><span>Powered by nLab · Synergies SVA SARL</span></div></footer>
+</body>
+</html>
