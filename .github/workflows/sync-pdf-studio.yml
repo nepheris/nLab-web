@@ -1,0 +1,56 @@
+name: Sync PDF Studio public
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sync-pdf-studio.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download validated CURRENT from Google Drive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p APP-Applications/pdf-studio
+          curl --fail --location --retry 3 --retry-delay 2 \
+            'https://drive.google.com/uc?export=download&id=1WZhSyYL7SodG4hwmeRYGKulhI-fbrTZs' \
+            --output /tmp/pdf-studio-current.html
+          test -s /tmp/pdf-studio-current.html
+          grep -q 'Alpha 0.9.8' /tmp/pdf-studio-current.html
+          grep -qi '<!doctype html' /tmp/pdf-studio-current.html
+          cp /tmp/pdf-studio-current.html APP-Applications/pdf-studio/app-0.9.8.html
+
+      - name: Point stable launcher to 0.9.8
+        shell: bash
+        run: |
+          cat > APP-Applications/pdf-studio/app.html <<'EOF'
+          <!doctype html>
+          <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>nLab PDF Studio</title><meta http-equiv="refresh" content="0;url=./app-0.9.8.html"></head>
+          <body><p><a href="./app-0.9.8.html">Ouvrir nLab PDF Studio Alpha 0.9.8</a></p>
+          <script>location.replace('./app-0.9.8.html');</script></body></html>
+          EOF
+          sed -i 's/Alpha 0\.9\.6/Alpha 0.9.8/g; s/Alpha 0\.9\.7/Alpha 0.9.8/g' APP-Applications/pdf-studio/index.html
+
+      - name: Commit public snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'nLab deployment bot'
+          git config user.email 'noreply@users.noreply.github.com'
+          git add APP-Applications/pdf-studio/app.html APP-Applications/pdf-studio/app-0.9.8.html APP-Applications/pdf-studio/index.html
+          if git diff --cached --quiet; then
+            echo 'Already synchronized.'
+            exit 0
+          fi
+          git commit -m 'deploy(pdf-studio): publish Alpha 0.9.8 [skip ci]'
+          git push
