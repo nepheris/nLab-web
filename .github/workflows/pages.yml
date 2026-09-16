@@ -32,14 +32,16 @@ jobs:
         run: |
           set -euo pipefail
           test -s APP-Applications/pdf-studio/app.html
-          test -s APP-Applications/pdf-studio/app-0.9.8.html
-          grep -q 'app-0.9.8.html' APP-Applications/pdf-studio/app.html
-          grep -q 'Alpha 0.9.8' APP-Applications/pdf-studio/app-0.9.8.html
-          grep -q 'Alpha 0.9.8' APP-Applications/pdf-studio/index.html
+          test -s APP-Applications/pdf-studio/app-0.9.10.html
+          grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
+          grep -q 'Alpha 0.9.10' APP-Applications/pdf-studio/app-0.9.10.html
+          grep -q 'app098.part11.js' APP-Applications/pdf-studio/app-0.9.10.html
+          test -s APP-Applications/pdf-studio/versions.json
+          grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
           for n in $(seq -w 1 11); do
             test -s "APP-Applications/pdf-studio/runtime/app098.part${n}.js"
           done
-          echo 'PDF Studio Alpha 0.9.8 public runtime: OK'
+          echo 'PDF Studio Alpha 0.9.10 public launcher: OK'
 
       - name: Publish main to gh-pages
         shell: bash
