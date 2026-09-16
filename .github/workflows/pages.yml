@@ -1,4 +1,4 @@
-name: Deploy nLab Web
+name: Publish nLab Web to gh-pages
 
 on:
   push:
@@ -12,21 +12,20 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  actions: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: gh-pages-publish
+  cancel-in-progress: true
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Verify PDF Studio public runtime
         shell: bash
@@ -42,37 +41,10 @@ jobs:
           done
           echo 'PDF Studio Alpha 0.9.8 public runtime: OK'
 
-      - name: Prepare static site
+      - name: Publish main to gh-pages
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p _site
-          rsync -a \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='_site/' \
-            ./ _site/
-          touch _site/.nojekyll
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: ./_site
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-      actions: read
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          git config user.name 'nLab deployment bot'
+          git config user.email 'noreply@users.noreply.github.com'
+          git push --force origin HEAD:gh-pages
