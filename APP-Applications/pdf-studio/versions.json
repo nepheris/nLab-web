@@ -1,0 +1,21 @@
+{
+  "current": "0.9.10",
+  "versions": [
+    {
+      "version": "0.9.10",
+      "label": "Alpha 0.9.10",
+      "date": "2026-09-16",
+      "current": true,
+      "href": "./app-0.9.10.html",
+      "notes": "Panneau gauche pleine hauteur, navigation fichiers persistante, barres repliables, tampons sans date."
+    },
+    {
+      "version": "0.9.8",
+      "label": "Alpha 0.9.8",
+      "date": "2026-09-10",
+      "current": false,
+      "href": "./app-0.9.8.html",
+      "notes": "Version de compatibilité précédente, conservée pour comparaison."
+    }
+  ]
+}
