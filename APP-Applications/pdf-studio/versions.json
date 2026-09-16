@@ -10,6 +10,14 @@
       "notes": "Panneau gauche pleine hauteur, navigation fichiers persistante, barres repliables, tampons sans date."
     },
     {
+      "version": "0.9.9",
+      "label": "Alpha 0.9.9",
+      "date": "2026-09-16",
+      "current": false,
+      "href": "./app-0.9.9.html",
+      "notes": "Confidentialité Google Drive pour les fonctions personnelles et intégration Image Studio."
+    },
+    {
       "version": "0.9.8",
       "label": "Alpha 0.9.8",
       "date": "2026-09-10",
