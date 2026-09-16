@@ -19,21 +19,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate Alpha 0.9.8 public snapshot
+      - name: Validate Alpha 0.9.10 public snapshot
         shell: bash
         run: |
           set -euo pipefail
           test -s APP-Applications/pdf-studio/app.html
-          test -s APP-Applications/pdf-studio/app-0.9.8.html
-          grep -q 'app-0.9.8.html' APP-Applications/pdf-studio/app.html
-          grep -q 'Alpha 0.9.8' APP-Applications/pdf-studio/app-0.9.8.html
-          grep -q 'Alpha 0.9.8' APP-Applications/pdf-studio/index.html
-          grep -q 'DecompressionStream' APP-Applications/pdf-studio/app-0.9.8.html
-          if grep -q 'drive.google.com/uc?export=download' APP-Applications/pdf-studio/app-0.9.8.html; then
+          test -s APP-Applications/pdf-studio/app-0.9.10.html
+          grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
+          grep -q 'Alpha 0.9.10' APP-Applications/pdf-studio/app-0.9.10.html
+          grep -q 'app098.part11.js' APP-Applications/pdf-studio/app-0.9.10.html
+          grep -q 'DecompressionStream' APP-Applications/pdf-studio/app-0.9.10.html
+          if grep -q 'drive.google.com/uc?export=download' APP-Applications/pdf-studio/app-0.9.10.html; then
             echo 'ERROR: public launcher still depends on Google Drive.' >&2
             exit 1
           fi
           for n in $(seq -w 1 11); do
             test -s "APP-Applications/pdf-studio/runtime/app098.part${n}.js"
           done
-          echo 'nLab PDF Studio Alpha 0.9.8 public snapshot: OK'
+          echo 'nLab PDF Studio Alpha 0.9.10 public snapshot: OK'
