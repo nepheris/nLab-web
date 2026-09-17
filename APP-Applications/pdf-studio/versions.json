@@ -1,27 +1,40 @@
 {
   "current": "0.9.10",
+  "test": "0.9.11",
   "versions": [
+    {
+      "version": "0.9.11",
+      "label": "Alpha 0.9.11",
+      "date": "2026-09-17",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.11.html",
+      "notes": "Version de test / RC : ruban corrigé, interface compacte, notifications centralisées, panneau redimensionnable, tampons Date A/B/C, suffixes de classement, PDF→image et formulaires enrichis."
+    },
     {
       "version": "0.9.10",
       "label": "Alpha 0.9.10",
       "date": "2026-09-16",
       "current": true,
+      "status": "current",
       "href": "./app-0.9.10.html",
-      "notes": "Panneau gauche pleine hauteur, navigation fichiers persistante, barres repliables, tampons sans date."
+      "notes": "CURRENT stable : panneau gauche pleine hauteur, navigation fichiers persistante, barres repliables, tampons sans date."
     },
     {
       "version": "0.9.9",
       "label": "Alpha 0.9.9",
       "date": "2026-09-16",
       "current": false,
+      "status": "historical",
       "href": "./app-0.9.9.html",
-      "notes": "Confidentialité Google Drive pour les fonctions personnelles et intégration Image Studio."
+      "notes": "Version historique : confidentialité Google Drive pour les fonctions personnelles et intégration Image Studio."
     },
     {
       "version": "0.9.8",
       "label": "Alpha 0.9.8",
       "date": "2026-09-10",
       "current": false,
+      "status": "historical",
       "href": "./app-0.9.8.html",
       "notes": "Version de compatibilité précédente, conservée pour comparaison."
     }
