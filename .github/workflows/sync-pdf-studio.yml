@@ -32,10 +32,12 @@ jobs:
           test -s APP-Applications/pdf-studio/app-0.9.11.html
           grep -q 'Alpha 0.9.11' APP-Applications/pdf-studio/app-0.9.11.html
           grep -q 'VERSION DE TEST' APP-Applications/pdf-studio/app-0.9.11.html
-          for n in $(seq -w 1 6); do
+          for i in $(seq 1 6); do
+            n=$(printf '%02d' "$i")
             test -s "APP-Applications/pdf-studio/runtime/app0911.patch${n}.js"
           done
-          for n in $(seq -w 1 11); do
+          for i in $(seq 1 11); do
+            n=$(printf '%02d' "$i")
             test -s "APP-Applications/pdf-studio/runtime/app098.part${n}.js"
           done
           test -s APP-Applications/pdf-studio/versions.json
