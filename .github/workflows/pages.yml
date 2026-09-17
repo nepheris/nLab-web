@@ -31,17 +31,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Stable route stays on 0.9.10
           test -s APP-Applications/pdf-studio/app.html
           test -s APP-Applications/pdf-studio/app-0.9.10.html
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
-          grep -q 'Alpha 0.9.10' APP-Applications/pdf-studio/app-0.9.10.html
-          grep -q 'app098.part11.js' APP-Applications/pdf-studio/app-0.9.10.html
-          test -s APP-Applications/pdf-studio/versions.json
-          grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
+          # Test route 0.9.11 must also be complete
+          test -s APP-Applications/pdf-studio/app-0.9.11.html
+          grep -q 'Alpha 0.9.11' APP-Applications/pdf-studio/app-0.9.11.html
+          for n in $(seq -w 1 6); do
+            test -s "APP-Applications/pdf-studio/runtime/app0911.patch${n}.js"
+          done
           for n in $(seq -w 1 11); do
             test -s "APP-Applications/pdf-studio/runtime/app098.part${n}.js"
           done
-          echo 'PDF Studio Alpha 0.9.10 public launcher: OK'
+          test -s APP-Applications/pdf-studio/versions.json
+          grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.11"' APP-Applications/pdf-studio/versions.json
+          echo 'PDF Studio stable + test launchers: OK'
 
       - name: Publish main to gh-pages
         shell: bash
