@@ -1,0 +1,11 @@
+{
+  "schema": "nlab-google-auth/v1",
+  "clientId": "",
+  "scope": "https://www.googleapis.com/auth/drive.appdata",
+  "authorizedOrigin": "https://nepheris.github.io",
+  "notes": [
+    "Le Client ID OAuth Web peut être public.",
+    "Ne jamais ajouter de client secret dans l'application statique.",
+    "Les P12/PFX et mots de passe restent uniquement en mémoire locale."
+  ]
+}
