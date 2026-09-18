@@ -1,0 +1,23 @@
+{
+  "schema": "nlab-pdf-config/v2",
+  "name": "nLab Exemple",
+  "operator": {
+    "initials": "AB"
+  },
+  "output": {
+    "mode": "archive-date",
+    "archivePattern": "{YYYY}/{MM} - {MMMM}/S{WW}",
+    "archiveGranularity": "month",
+    "preserveSourceTree": false,
+    "operationFolder": "TRAITEMENT",
+    "filenameTemplate": "{FILENAME}_traite_{DATE}.pdf"
+  },
+  "stamp": {
+    "defaultId": "affiche-jusqua-b",
+    "dateFormats": {
+      "A": "DD/MM/YYYY",
+      "B": "D MMMM YYYY",
+      "C": "YYYY-MM-DD"
+    }
+  }
+}
