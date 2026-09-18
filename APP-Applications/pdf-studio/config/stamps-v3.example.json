@@ -1,0 +1,68 @@
+{
+  "schema": "nlab-pdf-stamps/v3",
+  "dateFormats": {
+    "A": "DD/MM/YYYY",
+    "B": "D MMMM YYYY",
+    "C": "YYYY-MM-DD"
+  },
+  "variables": [
+    "{INITIALS}",
+    "{STAMP_DATE}",
+    "{STAMP_DATE_FMT}",
+    "{DATE_A}",
+    "{DATE_B}",
+    "{DATE_C}",
+    "{DATE_A_FMT}",
+    "{DATE_B_FMT}",
+    "{DATE_C_FMT}",
+    "{DATE_A:YYYY-MM-DD}",
+    "{DATE_B|D MMMM YYYY}"
+  ],
+  "stamps": [
+    {
+      "id": "affiche-date-a",
+      "label": "AFFICHÉ - initiales - Date A",
+      "template": "AFFICHÉ - {INITIALS}\nLe {DATE_A_FMT}",
+      "prefix": "",
+      "suffix": "_AF",
+      "textPrefix": "",
+      "textSuffix": ""
+    },
+    {
+      "id": "affiche-jusqua-b",
+      "label": "AFFICHÉ jusqu'au - Date B",
+      "template": "AFFICHÉ - {INITIALS}\nÀ afficher jusqu’au {DATE_B_FMT}",
+      "prefix": "",
+      "suffix": "_AF",
+      "textPrefix": "",
+      "textSuffix": ""
+    },
+    {
+      "id": "non-concerne",
+      "label": "Non concerné",
+      "template": "NC_{INITIALS}",
+      "prefix": "",
+      "suffix": "_NC",
+      "textPrefix": "",
+      "textSuffix": ""
+    },
+    {
+      "id": "non-conforme",
+      "label": "Non conforme",
+      "template": "NON CONFORME - {INITIALS}",
+      "prefix": "",
+      "suffix": "_NCF",
+      "textPrefix": "",
+      "textSuffix": ""
+    },
+    {
+      "id": "validation-abc",
+      "label": "Validation A/B/C",
+      "template": "VALIDÉ - {INITIALS}\nA : {DATE_A_FMT}\nB : {DATE_B_FMT}\nC : {DATE_C_FMT}",
+      "prefix": "VAL_",
+      "suffix": "",
+      "textPrefix": "",
+      "textSuffix": ""
+    }
+  ]
+}
