@@ -1,15 +1,24 @@
 {
   "current": "0.9.10",
-  "test": "0.9.11",
+  "test": "0.9.12",
   "versions": [
+    {
+      "version": "0.9.12",
+      "label": "Alpha 0.9.12",
+      "date": "2026-09-18",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.12.html",
+      "notes": "TEST / RC : classement chronologique programmable, tampons multi-lignes et formats Date A/B/C, préfixes/suffixes de fichier, QR avancé + Data Matrix, comparaison d’arborescences et aides sécurité renforcées."
+    },
     {
       "version": "0.9.11",
       "label": "Alpha 0.9.11",
       "date": "2026-09-17",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.11.html",
-      "notes": "Version de test / RC : ruban corrigé, interface compacte, notifications centralisées, panneau redimensionnable, tampons Date A/B/C, suffixes de classement, PDF→image et formulaires enrichis."
+      "notes": "Ancienne RC : ruban corrigé, interface compacte, notifications centralisées, panneau redimensionnable, tampons Date A/B/C, PDF→image et formulaires enrichis."
     },
     {
       "version": "0.9.10",
