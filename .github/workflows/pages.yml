@@ -8,6 +8,7 @@ on:
       - 'index.html'
       - 'Info/**'
       - 'APP-Applications/**'
+      - 'Library/demo/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -31,17 +32,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # CURRENT reste 0.9.10
           test -s APP-Applications/pdf-studio/app.html
           test -s APP-Applications/pdf-studio/app-0.9.10.html
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
-          # TEST 0.9.12 est un standalone complet
           test -s APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'Alpha 0.9.12' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'archivePattern0912' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'DATAMATRIX' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'treeCompare0912' APP-Applications/pdf-studio/app-0.9.12.html
-          # Runtime historique requis par 0.9.10
+          grep -q 'nLabDemoCorpusV2' APP-Applications/pdf-studio/app-0.9.12.html
+          grep -q '../../Library/demo/demo-manifest.json' APP-Applications/pdf-studio/app-0.9.12.html
           for i in $(seq 1 11); do
             n=$(printf '%02d' "$i")
             test -s "APP-Applications/pdf-studio/runtime/app098.part${n}.js"
@@ -49,12 +49,27 @@ jobs:
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
           grep -q '"test": "0.9.12"' APP-Applications/pdf-studio/versions.json
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.12: OK'
 
-      - name: Publish main to gh-pages
+      - name: Build shared nLab demo corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --quiet pillow reportlab python-docx openpyxl
+          python Library/demo/generate_demo.py --output Library/demo
+          test -s Library/demo/nLab-DEMO-CORPUS-v2.zip
+          test -s Library/demo/demo-manifest.json
+          test -s Library/demo/demo-catalog-v2.json
+          python -m zipfile -t Library/demo/nLab-DEMO-CORPUS-v2.zip
+          grep -q '"privacy": "synthetic-only"' Library/demo/demo-manifest.json
+          grep -q '"fileCount": 39' Library/demo/demo-manifest.json
+          echo 'nLab DEMO CORPUS v2 generated: OK'
+
+      - name: Publish main and generated corpus to gh-pages
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'nLab deployment bot'
           git config user.email 'noreply@users.noreply.github.com'
+          git add -f Library/demo/nLab-DEMO-CORPUS-v2.zip Library/demo/demo-manifest.json Library/demo/demo-catalog-v2.json
+          git commit -m 'build: generate public nLab demo corpus v2 [skip ci]' || true
           git push --force origin HEAD:gh-pages
