@@ -208,6 +208,110 @@ def make_docs(root):
     expected={"schema":"nlab-demo-corpus/v2","version":"2.0","privacy":"100% synthetic","defaultOutputMode":"browser-downloads","tests":[{"file":"demo-input/PDF/pdf-texte-actif.pdf","expect":"native text selectable"},{"file":"demo-input/PDF/pdf-formulaire-acroform.pdf","expect":"detect/fill/flatten form fields"},{"file":"demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf","expect":"OCR challenge; no native text"},{"file":"demo-input/OCR/ocr-pseudo-manuscrit.png","expect":"handwriting-like OCR challenge"},{"file":"demo-input/Images/demo-image-color.webp","expect":"open image; rotate; convert to PDF"},{"file":"demo-input/Zip/archive-imbriquee-demo.zip","expect":"nested ZIP expansion test"}]}
     (root/"docs/expected-results.json").write_text(json.dumps(expected,ensure_ascii=False,indent=2),encoding="utf-8")
 
+
+def make_preview_card(path, title, lines, accent="#0057b8"):
+    W,H=720,900
+    im=Image.new("RGB",(W,H),"white"); d=ImageDraw.Draw(im)
+    d.rectangle((0,0,W,72),fill=accent)
+    d.text((24,18),title,font=fnt("bold",30),fill="white")
+    y=104
+    for line in lines:
+        text=str(line)
+        chunks=[text[i:i+62] for i in range(0,len(text),62)] or [""]
+        for chunk in chunks:
+            d.text((30,y),chunk,font=fnt("reg",20),fill="#1f2933"); y+=32
+        y+=8
+        if y>H-60: break
+    d.rectangle((12,12,W-13,H-13),outline="#d5dee6",width=2)
+    im.save(path,"JPEG",quality=86,optimize=True)
+
+def make_gallery_assets(output_dir, work):
+    previews=output_dir/"previews"
+    if previews.exists(): shutil.rmtree(previews)
+    previews.mkdir(parents=True,exist_ok=True)
+
+    def thumb(src,dst):
+        im=Image.open(src).convert("RGB")
+        im.thumbnail((720,900))
+        c=Image.new("RGB",(720,900),"white")
+        c.paste(im,((720-im.width)//2,(900-im.height)//2))
+        c.save(dst,"JPEG",quality=86,optimize=True)
+
+    thumb(work/"demo-input/OCR/ocr-imprime-propre.png",previews/"ocr-propre.jpg")
+    thumb(work/"demo-input/OCR/ocr-scan-incline-bruite.jpg",previews/"ocr-incline.jpg")
+    thumb(work/"demo-input/OCR/ocr-pseudo-manuscrit.png",previews/"ocr-manuscrit.jpg")
+    thumb(work/"demo-input/Images/demo-image-color.png",previews/"image-studio.jpg")
+
+    make_preview_card(previews/"pdf-texte.jpg","PDF texte actif",[
+        "Texte natif selectionnable", "3 pages", "Recherche / copie / surlignage",
+        "References DEMO synthetiques"
+    ],"#0057b8")
+    make_preview_card(previews/"pdf-formulaire.jpg","PDF formulaire",[
+        "AcroForm de demonstration", "Champ texte", "Case a cocher",
+        "Liste de choix", "Remplissage + aplatissement"
+    ],"#0f766e")
+    make_preview_card(previews/"docx.jpg","DOCX de demonstration",[
+        "Titres et paragraphes", "Styles gras / italique / souligne",
+        "Tableau synthetique", "Liste a puces", "Import / conversion"
+    ],"#2563eb")
+    make_preview_card(previews/"xlsx.jpg","XLSX de demonstration",[
+        "30 clients entierement fictifs", "Table structuree", "Validation de liste",
+        "Dates / montants", "Feuille Resume"
+    ],"#15803d")
+    make_preview_card(previews/"data.jpg","Donnees structurees",[
+        "CSV", "JSON", "NDJSON", "XML", "YAML", "TXT",
+        "Valeurs synthetiques uniquement"
+    ],"#7c3aed")
+    make_preview_card(previews/"compare.jpg","Arborescences A / B",[
+        "Fichier identique", "Fichier modifie", "Fichier seulement A",
+        "Fichier seulement B", "Comparaison chemin / taille / SHA-256"
+    ],"#b45309")
+
+    return [
+        {"id":"pdf-text","title":"PDF texte actif","kind":"PDF","preview":"previews/pdf-texte.jpg","path":"demo-input/PDF/pdf-texte-actif.pdf","description":"PDF natif multipage avec texte selectionnable."},
+        {"id":"pdf-form","title":"PDF formulaire","kind":"PDF AcroForm","preview":"previews/pdf-formulaire.jpg","path":"demo-input/PDF/pdf-formulaire-acroform.pdf","description":"Champs texte, case et liste pour tester les formulaires."},
+        {"id":"ocr-clean","title":"OCR imprime propre","kind":"OCR","preview":"previews/ocr-propre.jpg","path":"demo-input/OCR/ocr-imprime-propre.png","description":"Reference OCR propre."},
+        {"id":"ocr-skew","title":"OCR incline et bruite","kind":"OCR","preview":"previews/ocr-incline.jpg","path":"demo-input/OCR/ocr-scan-incline-bruite.jpg","description":"Cas difficile avec inclinaison et bruit."},
+        {"id":"ocr-hand","title":"Pseudo-manuscrit","kind":"OCR","preview":"previews/ocr-manuscrit.jpg","path":"demo-input/OCR/ocr-pseudo-manuscrit.png","description":"Ecriture synthetique de type manuscrit pour tester l'OCR."},
+        {"id":"image","title":"Image multi-format","kind":"Image","preview":"previews/image-studio.jpg","path":"demo-input/Images/demo-image-color.png","description":"PNG, JPEG, WebP, BMP, GIF et SVG."},
+        {"id":"docx","title":"Document Word","kind":"DOCX","preview":"previews/docx.jpg","path":"demo-input/Office/document-demo.docx","description":"Document Word synthetique avec styles, tableau et liste."},
+        {"id":"xlsx","title":"Tableur","kind":"XLSX","preview":"previews/xlsx.jpg","path":"demo-input/Data/donnees-synthetiques.xlsx","description":"Jeu de donnees structure avec validation et resume."},
+        {"id":"data","title":"Donnees structurees","kind":"Data","preview":"previews/data.jpg","path":"demo-input/Data/clients-demo.json","description":"CSV, JSON, NDJSON, XML, YAML et TXT."},
+        {"id":"compare","title":"Arborescences A / B","kind":"Compare","preview":"previews/compare.jpg","path":"demo-input/Compare/","description":"Jeu de dossiers pour tester les differences d'arborescences."}
+    ]
+
+def publish_direct_demo_files(output_dir, work):
+    direct_rel=[
+        "demo-input/PDF/pdf-texte-actif.pdf",
+        "demo-input/PDF/pdf-multipage-orientations.pdf",
+        "demo-input/PDF/pdf-formulaire-acroform.pdf",
+        "demo-input/PDF/pdf-scan-image-only-propre.pdf",
+        "demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
+        "demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
+        "demo-input/OCR/ocr-imprime-propre.png",
+        "demo-input/OCR/ocr-imprime-faible-contraste.jpg",
+        "demo-input/OCR/ocr-scan-incline-bruite.jpg",
+        "demo-input/OCR/ocr-pseudo-manuscrit.png",
+        "demo-input/Images/demo-image-color.png",
+        "demo-input/Images/demo-image-color.jpg",
+        "demo-input/Images/demo-image-color.webp",
+        "demo-input/Images/demo-image-anime.gif",
+        "demo-input/Office/document-demo.docx",
+        "demo-input/Zip/archive-imbriquee-demo.zip",
+    ]
+    dst_root=output_dir/"files"
+    if dst_root.exists(): shutil.rmtree(dst_root)
+    result=[]
+    for rel in direct_rel:
+        src=work/rel
+        if not src.exists(): continue
+        dst=dst_root/rel
+        dst.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(src,dst)
+        result.append("../../Library/demo/files/"+rel)
+    return result
+
+
 def build(output_dir):
     output_dir=Path(output_dir); output_dir.mkdir(parents=True,exist_ok=True); work=output_dir/"_build-demo-v2"
     if work.exists(): shutil.rmtree(work)
@@ -217,13 +321,15 @@ def build(output_dir):
     for p in files:
         rel=p.relative_to(work).as_posix(); cat=(rel.split('/')[1] if rel.startswith('demo-input/') else ('Output' if rel.startswith('demo-output/') else 'Documentation'))
         catalog.append({"path":rel,"category":cat,"size":p.stat().st_size,"sha256":sha256(p)})
+    gallery_cards=make_gallery_assets(output_dir,work)
+    direct_files=publish_direct_demo_files(output_dir,work)
     archive=output_dir/"nLab-DEMO-CORPUS-v2.zip"
     if archive.exists(): archive.unlink()
     with zipfile.ZipFile(archive,"w",zipfile.ZIP_DEFLATED,compresslevel=7) as z:
         for p in files: z.write(p,p.relative_to(work).as_posix())
-    manifest={"schema":"nlab-demo-manifest/v2","version":"2.0","label":"nLab DEMO CORPUS v2","privacy":"synthetic-only","archive":"../../Library/demo/nLab-DEMO-CORPUS-v2.zip","loadRoot":"demo-input/","pdfStudioExtensions":["pdf","png","jpg","jpeg","webp","gif","bmp","docx","zip"],"defaultOutputMode":"download","fileCount":len(files),"catalog":"../../Library/demo/demo-catalog-v2.json"}
+    manifest={"schema":"nlab-demo-manifest/v2","version":"2.1","label":"nLab DEMO CORPUS v2","privacy":"synthetic-only","archive":"../../Library/demo/nLab-DEMO-CORPUS-v2.zip","loadRoot":"demo-input/","files":direct_files,"pdfStudioExtensions":["pdf","png","jpg","jpeg","webp","gif","bmp","docx","zip"],"defaultOutputMode":"download","fileCount":len(files),"directFileCount":len(direct_files),"catalog":"../../Library/demo/demo-catalog-v2.json","gallery":"../../Library/demo/"}
     (output_dir/"demo-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
-    (output_dir/"demo-catalog-v2.json").write_text(json.dumps({"version":"2.0","files":catalog},ensure_ascii=False,indent=2),encoding="utf-8")
+    (output_dir/"demo-catalog-v2.json").write_text(json.dumps({"version":"2.1","privacy":"synthetic-only","files":catalog,"cards":gallery_cards},ensure_ascii=False,indent=2),encoding="utf-8")
     shutil.rmtree(work)
     print(f"Generated {archive} ({archive.stat().st_size} bytes, {len(files)} files)")
 
