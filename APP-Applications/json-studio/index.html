@@ -75,7 +75,7 @@ function renderTable(data){table.replaceChildren();const rows=getPath(data,pathI
 function renderAll(data){stats(data);tree.replaceChildren(renderTreeValue(data));renderTable(data)}
 function switchView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+id));document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.view===id));if(id!=='raw')parse()}
 pathInput.addEventListener('input',()=>{const d=parse();if(d!==null)renderTable(d)});
-raw.addEventListener('change',()=>{checkpoint();parse()});
+raw.addEventListener('focus',()=>{editBaseline=raw.value});raw.addEventListener('change',()=>{if(raw.value!==editBaseline){history.push(editBaseline);if(history.length>50)history.shift();future=[]}parse();editBaseline=raw.value});
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{switchView(b.dataset.view);closeMenus()}));
 const actions={new:newDoc,open:openDoc,export:exportDoc,format:formatDoc,validate,undo,redo,copy:copyDoc,privacy:()=>alert('Le mode privé utilisera la couche nLab Google session + RBAC + rate-limit + Drive overlay. Il n’est pas activé dans cette V0.1 publique.'),about:()=>alert('nLab JSON Studio V0.1 — dérivé du contrat JsonStudio du nLab Web Framework.')};
 document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{actions[b.dataset.action]?.();closeMenus()}));
