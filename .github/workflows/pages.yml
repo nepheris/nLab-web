@@ -40,7 +40,7 @@ jobs:
           grep -q 'archivePattern0912' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'DATAMATRIX' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'treeCompare0912' APP-Applications/pdf-studio/app-0.9.12.html
-          grep -q 'nLabDemoCorpusV2' APP-Applications/pdf-studio/app-0.9.12.html
+          grep -q 'nlabDemoCorpusV2' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q '../../Library/demo/demo-manifest.json' APP-Applications/pdf-studio/app-0.9.12.html
           for i in $(seq 1 11); do
             n=$(printf '%02d' "$i")
