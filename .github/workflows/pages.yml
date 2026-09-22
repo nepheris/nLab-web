@@ -55,6 +55,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --disable-pip-version-check --quiet pillow reportlab python-docx openpyxl
+          # renderPM is used by ReportLab to emit PNG previews for QR/Data Matrix/barcodes
           python Library/demo/generate_demo.py --output Library/demo
           python Library/demo/generate_studio_demo.py --output Library/demo
           test -s Library/demo/nLab-DEMO-CORPUS-v2.zip
