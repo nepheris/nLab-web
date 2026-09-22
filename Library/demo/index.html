@@ -1,43 +1,14 @@
-<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>nLab DEMO CORPUS v2</title>
-<style>
-:root{--blue:#0057b8;--ink:#1f2933;--muted:#61717f;--line:#d8e0e7;--bg:#f4f6f8}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
-.wrap{width:min(1040px,calc(100% - 32px));margin:auto}header,footer{background:#fff;border-bottom:1px solid var(--line)}
-header .wrap{padding:20px 0;display:flex;gap:12px;align-items:center}.brand{font-weight:900;color:var(--blue);margin-left:auto}
-main{padding:42px 0 64px}.hero,.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px}
-h1{font-size:clamp(32px,5vw,52px);margin:8px 0}.lead{color:var(--muted);font-size:17px;line-height:1.6}
-.badge{display:inline-block;padding:5px 8px;border-radius:999px;background:#eaf6ee;color:#21633a;font-size:11px;font-weight:800}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.btn{padding:11px 14px;border:1px solid #b9c6d1;border-radius:8px;background:#fff;text-decoration:none;color:inherit;font-weight:800}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:18px}.card{padding:16px}.card h2{font-size:17px;margin:0 0 7px}.card p{color:var(--muted);line-height:1.45}
-code{background:#eef3f8;padding:2px 5px;border-radius:4px}footer .wrap{padding:18px 0;color:var(--muted);font-size:12px}
-</style>
-</head>
-<body>
-<header><div class="wrap"><a href="../../">← nLab Web</a><span class="brand">nLab DEMO CORPUS</span></div></header>
-<main class="wrap">
-<section class="hero">
-<span class="badge">100 % synthétique · public</span>
-<h1>nLab DEMO CORPUS v2</h1>
-<p class="lead">Corpus commun de tests pour nLab PDF Studio et les autres applications nLab : PDF natifs et scannés, OCR, pseudo-manuscrit, images multi-formats, Office, données structurées, ZIP imbriqué et arborescences de comparaison.</p>
-<div class="actions">
-<a class="btn primary" href="./nLab-DEMO-CORPUS-v2.zip">Télécharger le ZIP complet</a>
-<a class="btn" href="./demo-manifest.json">Manifest JSON</a>
-<a class="btn" href="./demo-catalog-v2.json">Catalogue JSON</a>
-<a class="btn" href="../../APP-Applications/pdf-studio/app-0.9.12.html">Tester dans PDF Studio 0.9.12</a>
-</div>
-</section>
-<div class="grid">
-<article class="card"><h2>PDF</h2><p>Texte natif, multipage portrait/paysage, formulaire AcroForm, scans image-only.</p></article>
-<article class="card"><h2>OCR</h2><p>Imprimé propre, faible contraste, scan incliné/bruité et pseudo-manuscrit.</p></article>
-<article class="card"><h2>Images</h2><p>PNG, JPEG, WebP, BMP, GIF et SVG pour conversion et rotation.</p></article>
-<article class="card"><h2>Office & données</h2><p>DOCX, RTF, ODT, XLSX, CSV, JSON, NDJSON, XML, YAML et TXT.</p></article>
-<article class="card"><h2>Comparaison</h2><p><code>tree-A</code> et <code>tree-B</code> contiennent des fichiers identiques, modifiés et exclusifs.</p></article>
-<article class="card"><h2>Sortie</h2><p>Le dossier <code>demo-output</code> est logique. Sur le web, les résultats vont par défaut vers les téléchargements du navigateur.</p></article>
-</div>
-</main>
-<footer><div class="wrap">nLab DEMO CORPUS v2 · aucune donnée personnelle réelle.</div></footer>
-</body></html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>nLab DEMO CORPUS v3</title><style>
+:root{--blue:#0057b8;--ink:#1f2933;--muted:#61717f;--line:#d8e0e7;--bg:#f4f6f8}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}.wrap{width:min(1180px,calc(100% - 28px));margin:auto}header,footer{background:#fff;border-bottom:1px solid var(--line)}header .wrap{padding:18px 0;display:flex;gap:12px;align-items:center}.brand{margin-left:auto;font-weight:900;color:var(--blue)}main{padding:34px 0 60px}.hero,.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}.badge{display:inline-block;padding:5px 8px;border-radius:999px;background:#eaf6ee;color:#21633a;font-size:11px;font-weight:800}h1{font-size:clamp(32px,5vw,52px);margin:8px 0}.lead,.muted{color:var(--muted);line-height:1.55}.actions,.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn,button{padding:9px 12px;border:1px solid #b9c6d1;border-radius:8px;background:#fff;text-decoration:none;color:inherit;font-weight:700;cursor:pointer}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:16px}.preview{height:180px;border-radius:9px;background:#eef2f5;display:grid;place-items:center;overflow:hidden;margin-bottom:10px}.preview img{width:100%;height:100%;object-fit:contain}.preview pre{width:100%;height:100%;margin:0;padding:10px;overflow:auto;font:11px ui-monospace,monospace;white-space:pre-wrap}.meta{font-size:11px;color:var(--muted)}.card h3{margin:6px 0;font-size:15px;word-break:break-word}.packgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:14px}.pack{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px}.pack b{display:block;margin-bottom:8px}select{padding:9px;border:1px solid #b9c6d1;border-radius:8px;background:#fff}footer .wrap{padding:18px 0;color:var(--muted);font-size:12px}</style></head><body>
+<header><div class="wrap"><a href="../../">← nLab Web</a><a href="../../APP-Applications/studios/">Studios</a><span class="brand">nLab DEMO CORPUS</span></div></header>
+<main class="wrap"><section class="hero"><span class="badge">100 % synthétique · public · reproductible</span><h1>nLab DEMO CORPUS v3</h1><p class="lead">Jeux de test et démonstrations pour les Studios nLab : PDF, OCR, images, calibration, QR, Data Matrix, Code 128, code/JSON, données tabulaires riches, fichiers batch, ZIP et comparaison d'arborescences.</p><div class="actions"><a class="btn primary" href="./nLab-DEMO-CORPUS-v3.zip">Télécharger le corpus complet v3</a><a class="btn" href="./demo-manifest.json">Manifest global</a><a class="btn" href="./manifests/index.json">Manifests par Studio</a><a class="btn" href="./demo-gallery-v3.json">Galerie JSON</a></div><div id="packs" class="packgrid"></div></section>
+<section style="margin-top:28px"><h2>Preview Web des fichiers de démo</h2><p class="muted">Les images sont affichées directement ; JSON, CSV et texte sont prévisualisés depuis les fichiers réellement générés. Les PDF et formats binaires restent ouvrables/téléchargeables.</p><div class="filters"><select id="cat"><option value="">Toutes catégories</option></select><select id="kind"><option value="">Tous previews</option><option value="image">Images / codes</option><option value="json">JSON</option><option value="csv">CSV</option><option value="text">Texte / code</option><option value="pdf">PDF</option><option value="download">Autres formats</option></select><button id="reload">Recharger</button></div><div id="gallery" class="grid"></div></section>
+</main><footer><div class="wrap">nLab DEMO CORPUS v3 · aucune donnée personnelle réelle · e-mails de test en domaines réservés.</div></footer>
+<script>
+const $=id=>document.getElementById(id);let files=[];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function snippet(f){try{if(f.preview==='image')return '<img loading="lazy" src="'+f.href+'" alt="">';if(f.preview==='pdf')return '<div><b>PDF</b><br><a href="'+f.href+'" target="_blank">Ouvrir le document</a></div>';if(f.preview==='download')return '<div><b>Fichier '+esc(f.path.split('.').pop().toUpperCase())+'</b><br><a href="'+f.href+'">Télécharger</a></div>';const t=await fetch(f.href).then(r=>r.text());if(f.preview==='csv'){const lines=t.split(/\r?\n/).slice(0,7);return '<pre>'+esc(lines.join('\n'))+'</pre>'}return '<pre>'+esc(t.slice(0,1800))+'</pre>'}catch(e){return '<pre>Preview indisponible</pre>'}}
+async function render(){const cat=$('cat').value,kind=$('kind').value,g=$('gallery');g.innerHTML='';const list=files.filter(f=>(!cat||f.category===cat)&&(!kind||f.preview===kind)).slice(0,120);for(const f of list){const card=document.createElement('article');card.className='card';card.innerHTML='<div class="preview">Chargement…</div><div class="meta">'+esc(f.category)+' · '+esc(f.preview)+' · '+Math.round(f.size/1024)+' Ko</div><h3>'+esc(f.path)+'</h3><a href="'+f.href+'" target="_blank">Ouvrir / télécharger →</a>';g.appendChild(card);card.querySelector('.preview').innerHTML=await snippet(f)}}
+async function load(){const g=await fetch('./demo-gallery-v3.json').then(r=>r.json());files=g.files||[];const cats=[...new Set(files.map(f=>f.category))].sort();$('cat').innerHTML='<option value="">Toutes catégories</option>'+cats.map(c=>'<option>'+esc(c)+'</option>').join('');await render();try{const m=await fetch('./manifests/index.json').then(r=>r.json());$('packs').innerHTML=(m.studios||[]).map(s=>'<div class="pack"><b>'+esc(s.label)+'</b><span class="meta">'+s.fileCount+' fichier(s)</span><div class="actions"><a class="btn" href="'+s.manifest+'">Manifest</a><a class="btn" href="'+s.pack+'">ZIP</a></div></div>').join('')}catch{}}
+$('cat').onchange=render;$('kind').onchange=render;$('reload').onclick=load;load();
+</script></body></html>
