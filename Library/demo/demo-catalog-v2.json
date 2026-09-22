@@ -1,5 +1,6 @@
 {
-  "version": "2.0",
+  "version": "2.1",
+  "privacy": "synthetic-only",
   "files": [
     {
       "path": "README-DEMO.md",
@@ -88,8 +89,8 @@
     {
       "path": "demo-input/Data/donnees-synthetiques.xlsx",
       "category": "Data",
-      "size": 8484,
-      "sha256": "5f3a93cbcac089442578ab7bff1479554c35388cde94e7a86d6545994f11b621"
+      "size": 8485,
+      "sha256": "a48cd0dffe2f5f2c88ae429505c8e26b9213e5d5265e8322fe3bebea8cf4e6a9"
     },
     {
       "path": "demo-input/Data/notes-demo.txt",
@@ -167,13 +168,13 @@
       "path": "demo-input/Office/document-demo.docx",
       "category": "Office",
       "size": 37171,
-      "sha256": "8cda64ad84dc5a89bca67c85270362072c30d3819e9589a8f54fb7e5751761c3"
+      "sha256": "a148221256f58bdd90a678ae3a12e57faaaf9dacb7e7190d93c1663c87359fad"
     },
     {
       "path": "demo-input/Office/document-demo.odt",
       "category": "Office",
       "size": 1161,
-      "sha256": "842ddce82800404bb433db0229f32bc4594c8e21a18b6bcfc754c4300ce3cb56"
+      "sha256": "79eeb83da7a965ca4db00a8d16c364911cb9d1fd7c53ccd51a7b8b1c6675e279"
     },
     {
       "path": "demo-input/Office/document-demo.rtf",
@@ -185,43 +186,43 @@
       "path": "demo-input/PDF/pdf-formulaire-acroform.pdf",
       "category": "PDF",
       "size": 8752,
-      "sha256": "aae41120ec6bf1f7c4f501feea7b00caac2557769f5fbc748a91404aada2bf46"
+      "sha256": "edc99f7122423cbffc448de7569d3fd8d71f08c0a5f47d3d02aafdfcc748f3f9"
     },
     {
       "path": "demo-input/PDF/pdf-multipage-orientations.pdf",
       "category": "PDF",
       "size": 2439,
-      "sha256": "cd2c48544a3372f71f9a57b8cdaa03ddb9d88b197c4f5627e7f51da7813d536b"
+      "sha256": "b7409bc73e8992e01c0073d668920fcd3cf647afc1e15165f26e855b27075daa"
     },
     {
       "path": "demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
       "category": "PDF",
       "size": 149500,
-      "sha256": "e7fb8c318de21da19ee9cb21440096e14eae480f31c275aca1597b390c8f9087"
+      "sha256": "a9fbe3dbdd01a189e5dfe31fc930c7baba8ce5e17512f2642f44ab715440c7d5"
     },
     {
       "path": "demo-input/PDF/pdf-scan-image-only-propre.pdf",
       "category": "PDF",
       "size": 116805,
-      "sha256": "08cff1ef0d4e23089cbbacc837d034fb4fb38941bf81e84f057119dc883d46ac"
+      "sha256": "9a1ea85dce908da3787d1e4498f85488ef7945cb6ee8933ff4abc1b8625f45a0"
     },
     {
       "path": "demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
       "category": "PDF",
       "size": 116698,
-      "sha256": "fb6ad4fc6da1429f121d2c7ec1ad7d90930815a65c48fa881560a6facfb0e536"
+      "sha256": "729d2b200fe101690223550a5f5f51fcd5cbe211d0a2844cce74dfc4ec20891b"
     },
     {
       "path": "demo-input/PDF/pdf-texte-actif.pdf",
       "category": "PDF",
       "size": 3377,
-      "sha256": "23ff888953ba7eef6a3c41f96d690b3b195392116a072b3872a830835a4f1997"
+      "sha256": "4a1f032886efcfae7c157825722754bce9bd531213ebad37c740be86592ef804"
     },
     {
       "path": "demo-input/Zip/archive-imbriquee-demo.zip",
       "category": "Zip",
       "size": 715,
-      "sha256": "ae8940552c20800b3df2a6d799d7678828156cd51f5c29ff0433fbb0feb8f841"
+      "sha256": "6acd50d6019f0d7f48692662c27bda9d1e13681293f8c8879d8de277b89c0916"
     },
     {
       "path": "demo-output/README.txt",
@@ -234,6 +235,88 @@
       "category": "Documentation",
       "size": 868,
       "sha256": "b49430ec524ca69eeb5093448cb86637d45b0f2ef45b93b4f970c62c75c37a14"
+    }
+  ],
+  "cards": [
+    {
+      "id": "pdf-text",
+      "title": "PDF texte actif",
+      "kind": "PDF",
+      "preview": "previews/pdf-texte.jpg",
+      "path": "demo-input/PDF/pdf-texte-actif.pdf",
+      "description": "PDF natif multipage avec texte selectionnable."
+    },
+    {
+      "id": "pdf-form",
+      "title": "PDF formulaire",
+      "kind": "PDF AcroForm",
+      "preview": "previews/pdf-formulaire.jpg",
+      "path": "demo-input/PDF/pdf-formulaire-acroform.pdf",
+      "description": "Champs texte, case et liste pour tester les formulaires."
+    },
+    {
+      "id": "ocr-clean",
+      "title": "OCR imprime propre",
+      "kind": "OCR",
+      "preview": "previews/ocr-propre.jpg",
+      "path": "demo-input/OCR/ocr-imprime-propre.png",
+      "description": "Reference OCR propre."
+    },
+    {
+      "id": "ocr-skew",
+      "title": "OCR incline et bruite",
+      "kind": "OCR",
+      "preview": "previews/ocr-incline.jpg",
+      "path": "demo-input/OCR/ocr-scan-incline-bruite.jpg",
+      "description": "Cas difficile avec inclinaison et bruit."
+    },
+    {
+      "id": "ocr-hand",
+      "title": "Pseudo-manuscrit",
+      "kind": "OCR",
+      "preview": "previews/ocr-manuscrit.jpg",
+      "path": "demo-input/OCR/ocr-pseudo-manuscrit.png",
+      "description": "Ecriture synthetique de type manuscrit pour tester l'OCR."
+    },
+    {
+      "id": "image",
+      "title": "Image multi-format",
+      "kind": "Image",
+      "preview": "previews/image-studio.jpg",
+      "path": "demo-input/Images/demo-image-color.png",
+      "description": "PNG, JPEG, WebP, BMP, GIF et SVG."
+    },
+    {
+      "id": "docx",
+      "title": "Document Word",
+      "kind": "DOCX",
+      "preview": "previews/docx.jpg",
+      "path": "demo-input/Office/document-demo.docx",
+      "description": "Document Word synthetique avec styles, tableau et liste."
+    },
+    {
+      "id": "xlsx",
+      "title": "Tableur",
+      "kind": "XLSX",
+      "preview": "previews/xlsx.jpg",
+      "path": "demo-input/Data/donnees-synthetiques.xlsx",
+      "description": "Jeu de donnees structure avec validation et resume."
+    },
+    {
+      "id": "data",
+      "title": "Donnees structurees",
+      "kind": "Data",
+      "preview": "previews/data.jpg",
+      "path": "demo-input/Data/clients-demo.json",
+      "description": "CSV, JSON, NDJSON, XML, YAML et TXT."
+    },
+    {
+      "id": "compare",
+      "title": "Arborescences A / B",
+      "kind": "Compare",
+      "preview": "previews/compare.jpg",
+      "path": "demo-input/Compare/",
+      "description": "Jeu de dossiers pour tester les differences d'arborescences."
     }
   ]
 }

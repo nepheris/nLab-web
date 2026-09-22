@@ -1,10 +1,28 @@
 {
   "schema": "nlab-demo-manifest/v2",
-  "version": "2.0",
+  "version": "2.1",
   "label": "nLab DEMO CORPUS v2",
   "privacy": "synthetic-only",
   "archive": "../../Library/demo/nLab-DEMO-CORPUS-v2.zip",
   "loadRoot": "demo-input/",
+  "files": [
+    "../../Library/demo/files/demo-input/PDF/pdf-texte-actif.pdf",
+    "../../Library/demo/files/demo-input/PDF/pdf-multipage-orientations.pdf",
+    "../../Library/demo/files/demo-input/PDF/pdf-formulaire-acroform.pdf",
+    "../../Library/demo/files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
+    "../../Library/demo/files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
+    "../../Library/demo/files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
+    "../../Library/demo/files/demo-input/OCR/ocr-imprime-propre.png",
+    "../../Library/demo/files/demo-input/OCR/ocr-imprime-faible-contraste.jpg",
+    "../../Library/demo/files/demo-input/OCR/ocr-scan-incline-bruite.jpg",
+    "../../Library/demo/files/demo-input/OCR/ocr-pseudo-manuscrit.png",
+    "../../Library/demo/files/demo-input/Images/demo-image-color.png",
+    "../../Library/demo/files/demo-input/Images/demo-image-color.jpg",
+    "../../Library/demo/files/demo-input/Images/demo-image-color.webp",
+    "../../Library/demo/files/demo-input/Images/demo-image-anime.gif",
+    "../../Library/demo/files/demo-input/Office/document-demo.docx",
+    "../../Library/demo/files/demo-input/Zip/archive-imbriquee-demo.zip"
+  ],
   "pdfStudioExtensions": [
     "pdf",
     "png",
@@ -18,5 +36,7 @@
   ],
   "defaultOutputMode": "download",
   "fileCount": 39,
-  "catalog": "../../Library/demo/demo-catalog-v2.json"
+  "directFileCount": 16,
+  "catalog": "../../Library/demo/demo-catalog-v2.json",
+  "gallery": "../../Library/demo/"
 }
