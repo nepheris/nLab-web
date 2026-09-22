@@ -1,0 +1,65 @@
+{
+  "schema": "nlab-web-tools/v1",
+  "updated_at": "2026-09-22",
+  "public_repository": "nepheris/nLab-web",
+  "tools": [
+    {
+      "id": "pdf-studio",
+      "name": "nLab PDF Studio",
+      "family": "APP07-scan-studio",
+      "status": "current+test",
+      "route": "APP-Applications/pdf-studio/",
+      "privacy": "local-first",
+      "notes": "PDF Studio is a sub-module of canonical APP07 nLab Scan Studio; OCR remains in APP07."
+    },
+    {
+      "id": "json-studio",
+      "name": "nLab JSON Studio",
+      "status": "candidate-v0.1",
+      "route": "APP-Applications/json-studio/",
+      "privacy": "local-only",
+      "provenance": "nLab-Web-Framework/New JsonStudio + validated JSON Studio POC"
+    },
+    {
+      "id": "code-studio",
+      "name": "nLab Code Studio",
+      "status": "candidate-v0.1",
+      "route": "APP-Applications/code-studio/",
+      "privacy": "local-only",
+      "provenance": "nLab-Web-Framework/New CodeBlock"
+    },
+    {
+      "id": "image-studio",
+      "name": "nLab Image Studio",
+      "status": "candidate-v0.1",
+      "route": "APP-Applications/image-studio/",
+      "privacy": "local-only",
+      "provenance": "new public consolidation based on nLab MediaWiz/local-first patterns"
+    },
+    {
+      "id": "studios",
+      "name": "nLab Studios",
+      "status": "candidate-v0.1",
+      "route": "APP-Applications/studios/",
+      "privacy": "public-shell/private-overlay-planned"
+    }
+  ],
+  "next_candidates": [
+    "Data Studio",
+    "QR Studio",
+    "Document Studio",
+    "Multi-format Import/Export"
+  ],
+  "private_overlay": {
+    "status": "architecture-not-production",
+    "modules": [
+      "NLAB_AUTH_SESSION_GOOGLE",
+      "NLAB_ACCESS_CONTROL_RBAC",
+      "NLAB_APPS_SCRIPT_SECURITY_GATEWAY",
+      "NLAB_REQUEST_RATE_LIMIT",
+      "PROVIDER_GOOGLE_DRIVE",
+      "NLAB_PERSONAL_STORAGE_CONTRACT"
+    ],
+    "rule": "Private data is loaded only after server-authorized authentication and is never emitted into public static artifacts."
+  }
+}
