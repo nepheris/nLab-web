@@ -1,0 +1,63 @@
+{
+  "schema": "nlab-studios-catalog/v1",
+  "updated": "2026-09-22",
+  "publicBase": "/nLab-web/APP-Applications/",
+  "studios": [
+    {
+      "id": "pdf-studio",
+      "name": "PDF Studio",
+      "status": "current+test",
+      "path": "../pdf-studio/",
+      "demo": "../../Library/demo/manifests/pdf.json"
+    },
+    {
+      "id": "image-studio",
+      "name": "Image Studio",
+      "status": "alpha-poc",
+      "path": "../image-studio/",
+      "demo": "../../Library/demo/manifests/image.json"
+    },
+    {
+      "id": "ocr-studio",
+      "name": "OCR Studio",
+      "status": "alpha-poc",
+      "path": "../ocr-studio/",
+      "demo": "../../Library/demo/manifests/ocr.json"
+    },
+    {
+      "id": "code-studio",
+      "name": "Code Studio",
+      "status": "alpha-poc",
+      "path": "../code-studio/",
+      "demo": "../../Library/demo/manifests/code-json.json"
+    },
+    {
+      "id": "json-studio",
+      "name": "JSON Studio",
+      "status": "alpha-poc",
+      "path": "../json-studio/",
+      "demo": "../../Library/demo/manifests/code-json.json"
+    },
+    {
+      "id": "data-studio",
+      "name": "Data Studio",
+      "status": "alpha-poc",
+      "path": "../data-studio/",
+      "demo": "../../Library/demo/manifests/data.json"
+    },
+    {
+      "id": "qr-barcode-studio",
+      "name": "QR & Barcode Studio",
+      "status": "alpha-poc",
+      "path": "../qr-barcode-studio/",
+      "demo": "../../Library/demo/manifests/qr-barcode.json"
+    },
+    {
+      "id": "file-studio",
+      "name": "File Studio",
+      "status": "alpha-poc",
+      "path": "../file-studio/",
+      "demo": "../../Library/demo/manifests/file.json"
+    }
+  ]
+}
