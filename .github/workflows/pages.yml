@@ -56,13 +56,23 @@ jobs:
           set -euo pipefail
           python -m pip install --disable-pip-version-check --quiet pillow reportlab python-docx openpyxl
           python Library/demo/generate_demo.py --output Library/demo
+          python Library/demo/generate_studio_demo.py --output Library/demo
           test -s Library/demo/nLab-DEMO-CORPUS-v2.zip
+          test -s Library/demo/nLab-DEMO-CORPUS-v3.zip
           test -s Library/demo/demo-manifest.json
-          test -s Library/demo/demo-catalog-v2.json
+          test -s Library/demo/demo-catalog-v3.json
+          test -s Library/demo/demo-gallery-v3.json
+          test -s Library/demo/manifests/index.json
+          test -s Library/demo/manifests/data.json
+          test -s Library/demo/manifests/qr-barcode.json
+          test -s Library/demo/demo-input/Images/calibration-regles-300x150.png
+          test -s Library/demo/demo-input/Data/dataset-validation-complet.xlsx
+          test -s Library/demo/demo-input/QR-Barcode/datamatrix-test.svg
           python -m zipfile -t Library/demo/nLab-DEMO-CORPUS-v2.zip
+          python -m zipfile -t Library/demo/nLab-DEMO-CORPUS-v3.zip
           grep -q '"privacy": "synthetic-only"' Library/demo/demo-manifest.json
-          grep -q '"fileCount": 39' Library/demo/demo-manifest.json
-          echo 'nLab DEMO CORPUS v2 generated: OK'
+          grep -q '"version": "3.0"' Library/demo/demo-manifest.json
+          echo 'nLab DEMO CORPUS v3 + Studio packs generated: OK'
 
       - name: Publish site and generated corpus to gh-pages
         shell: bash
@@ -81,6 +91,8 @@ jobs:
           rsync -a --delete --exclude='.git' --exclude='.github/' ./ /tmp/nlab-gh-pages/
           cd /tmp/nlab-gh-pages
           git add -A
-          git add -f Library/demo/nLab-DEMO-CORPUS-v2.zip Library/demo/demo-manifest.json Library/demo/demo-catalog-v2.json
-          git commit -m 'build: publish nLab Web + demo corpus v2 [skip ci]' || true
+          git add -f Library/demo/nLab-DEMO-CORPUS-v2.zip Library/demo/nLab-DEMO-CORPUS-v3.zip
+          git add -f Library/demo/demo-manifest.json Library/demo/demo-catalog-v2.json Library/demo/demo-catalog-v3.json Library/demo/demo-gallery-v3.json
+          git add -f Library/demo/demo-input Library/demo/demo-output Library/demo/docs Library/demo/manifests Library/demo/packs
+          git commit -m 'build: publish nLab Web + demo corpus v3 [skip ci]' || true
           git push origin HEAD:gh-pages
