@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nLab Code Studio</title>
+<style>
+:root{--blue:#0057b8;--ink:#1f2933;--muted:#65717d;--bg:#f3f5f7;--panel:#fff;--border:#d7dde3;--soft:#eef3f8;--ok:#22643a;--bad:#a12622;--code:#17202a;--codeText:#e9eef3}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:#fff;border-bottom:1px solid var(--border)}.brandbar{height:62px;display:flex;align-items:center;gap:11px;padding:0 18px}.logo{width:38px;height:38px;border-radius:10px;background:var(--soft);display:grid;place-items:center;color:var(--blue);font-weight:900}.brand b{font-size:18px}.brand small{display:block;color:var(--muted)}.meta{margin-left:auto;display:flex;gap:7px;align-items:center}.pill{font-size:11px;border:1px solid var(--border);border-radius:999px;padding:5px 8px;background:#fff}.pill.ok{color:var(--ok);border-color:#bad9c3;background:#eff8f1}
+.menubar{display:flex;gap:2px;padding:0 12px 6px}.menu{position:relative}.menu>button{border:0;background:transparent;padding:6px 9px;border-radius:5px}.menu>button:hover,.menu.open>button{background:var(--soft)}.drop{display:none;position:absolute;top:34px;left:0;min-width:205px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:5px;box-shadow:0 12px 30px #0002;z-index:50}.menu.open .drop{display:block}.drop button{display:block;width:100%;text-align:left;border:0;background:#fff;padding:8px;border-radius:5px}.drop button:hover{background:var(--soft)}
+.ribbon{background:#f8fafc;border-bottom:1px solid var(--border);padding:9px 14px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}.ribbon button,.ribbon select,.ribbon input{border:1px solid #bcc6cf;background:#fff;border-radius:7px;padding:7px 9px}.ribbon button.primary{background:var(--blue);border-color:var(--blue);color:#fff}.ribbon select{min-width:135px}.spacer{flex:1}.smallControl{display:flex;align-items:center;gap:6px;font-size:12px}.smallControl input[type=range]{width:110px}
+main{padding:14px;height:calc(100vh - 137px);min-height:530px}.workspace{height:100%;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:12px}.pane{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:0}.paneHead{height:42px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 11px;background:#f8fafc;gap:8px}.paneHead b{font-size:13px}.paneHead span{margin-left:auto;font-size:11px;color:var(--muted)}.editorWrap{height:calc(100% - 42px);position:relative;background:#fff}.editor{width:100%;height:100%;resize:none;border:0;outline:0;padding:14px;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2;white-space:pre;overflow:auto}.editor.wrap{white-space:pre-wrap}
+.previewWrap{height:calc(100% - 42px);overflow:auto;background:var(--code);color:var(--codeText)}pre{margin:0;padding:14px;min-height:100%;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}.previewWrap.wrap pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.tok-key{color:#8ec8ff}.tok-string{color:#b8e994}.tok-number{color:#ffd180}.tok-comment{color:#8796a5}.tok-keyword{color:#d7aefb}.tok-tag{color:#8ec8ff}.tok-property{color:#ffd180}
+.statusbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--border);padding:6px 14px;font-size:11px;color:var(--muted);display:flex;gap:16px;align-items:center}.statusbar .right{margin-left:auto}.warn{color:#7b5b00}.okText{color:var(--ok)}.badText{color:var(--bad)}
+@media(max-width:880px){main{height:auto}.workspace{grid-template-columns:1fr}.pane{height:54vh}.meta .pill:nth-child(2){display:none}.statusbar{position:static}}
+</style>
+</head>
+<body>
+<div class="top">
+<div class="brandbar"><div class="logo">&lt;/&gt;</div><div class="brand"><b>nLab Code Studio</b><small>V0.1 · éditeur local multi-langages</small></div><div class="meta"><span class="pill ok">PUBLIC / LOCAL</span><span class="pill" id="fileLabel">sans fichier</span></div></div>
+<div class="menubar">
+<div class="menu"><button>Fichier</button><div class="drop"><button data-action="new">Nouveau</button><button data-action="open">Ouvrir…</button><button data-action="save">Télécharger</button></div></div>
+<div class="menu"><button>Édition</button><div class="drop"><button data-action="copy">Copier tout</button><button data-action="format">Formater JSON</button><button data-action="selectall">Tout sélectionner</button></div></div>
+<div class="menu"><button>Affichage</button><div class="drop"><button data-action="wrap">Retour à la ligne</button><button data-action="theme">Basculer thème aperçu</button></div></div>
+<div class="menu"><button>Outils</button><div class="drop"><button data-action="detect">Détecter le langage</button><button data-action="stats">Recalculer statistiques</button></div></div>
+<div class="menu"><button>Sécurité</button><div class="drop"><button data-action="privacy">Mode privé…</button></div></div>
+<div class="menu"><button>Aide</button><div class="drop"><button data-action="about">À propos</button></div></div>
+</div></div>
+<div class="ribbon">
+<button class="primary" data-action="open">Ouvrir</button><button data-action="new">Nouveau</button><button data-action="save">Télécharger</button><button data-action="copy">Copier</button><button data-action="format">Format JSON</button>
+<label class="smallControl">Langage <select id="language"><option value="auto">Auto</option><option value="text">Texte</option><option value="json">JSON</option><option value="javascript">JavaScript</option><option value="python">Python</option><option value="bash">Bash</option><option value="html">HTML</option><option value="css">CSS</option><option value="csv">CSV</option><option value="markdown">Markdown</option></select></label>
+<div class="spacer"></div><label class="smallControl">Police <input id="fontSize" type="range" min="10" max="24" value="13"><span id="fontValue">13</span>px</label>
+</div>
+
+<main><div class="workspace">
+<section class="pane"><div class="paneHead"><b>Éditeur</b><span id="editorInfo">local</span></div><div class="editorWrap"><textarea id="editor" class="editor" spellcheck="false"></textarea></div></section>
+<section class="pane"><div class="paneHead"><b>Aperçu sécurisé</b><span id="previewInfo">texte échappé</span></div><div id="previewWrap" class="previewWrap"><pre id="preview"></pre></div></section>
+</div></main>
+<div class="statusbar"><span id="status">Prêt.</span><span id="lineCount">1 ligne</span><span id="charCount">0 caractère</span><span id="langStatus">langage : text</span><span class="right"><a href="../studios/">nLab Studios</a> · aucune exécution de code</span></div>
+<input type="file" id="file" hidden accept=".txt,.json,.js,.mjs,.cjs,.py,.sh,.bash,.html,.htm,.css,.csv,.md,.markdown,text/*,application/json">
+
+<script>
+const editor=document.getElementById('editor'),preview=document.getElementById('preview'),previewWrap=document.getElementById('previewWrap'),languageSel=document.getElementById('language'),fileInput=document.getElementById('file'),fileLabel=document.getElementById('fileLabel'),statusEl=document.getElementById('status');
+let currentName='snippet.txt', dark=true, wrap=false;
+const presets={
+ text:{ext:'txt',mime:'text/plain'},json:{ext:'json',mime:'application/json'},javascript:{ext:'js',mime:'text/javascript'},python:{ext:'py',mime:'text/x-python'},bash:{ext:'sh',mime:'text/x-shellscript'},html:{ext:'html',mime:'text/html'},css:{ext:'css',mime:'text/css'},csv:{ext:'csv',mime:'text/csv'},markdown:{ext:'md',mime:'text/markdown'}
+};
+const extMap={txt:'text',json:'json',js:'javascript',mjs:'javascript',cjs:'javascript',py:'python',sh:'bash',bash:'bash',html:'html',htm:'html',css:'css',csv:'csv',md:'markdown',markdown:'markdown'};
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fromFilename(name){const m=String(name||'').toLowerCase().match(/\.([a-z0-9]+)$/);return m?extMap[m[1]]||null:null}
+function detect(source,name=''){
+ const byName=fromFilename(name);if(byName)return byName;
+ const t=String(source||'').trim();if(!t)return'text';
+ if(/^[\[{]/.test(t)){try{JSON.parse(t);return'json'}catch{}}
+ if(/^#!.*\bpython\b/im.test(t)||/^(?:from\s+\S+\s+import\s+|import\s+\S+|def\s+\w+\s*\(|class\s+\w+)/m.test(t))return'python';
+ if(/^#!.*(?:ba|z|k)?sh\b/im.test(t)||/^(?:export\s+[A-Za-z_]\w*=|echo\s+|\w+\(\)\s*\{)/m.test(t))return'bash';
+ if(/<!doctype\s+html/i.test(t)||/<(?:html|body|div|main|section|article|form|table)\b/i.test(t))return'html';
+ if(/(?:^|})\s*(?::root|[.#]?[A-Za-z][\w-]*)\s*\{[^{}]*(?:color|background|display|margin|padding|font|border|width|height)\s*:/ms.test(t))return'css';
+ if(/\b(?:const|let|var)\s+[A-Za-z_$][\w$]*\s*=|\bfunction\s+\w+\s*\(|=>/m.test(t))return'javascript';
+ if(/^(?:#{1,6}\s+\S+|\x60\x60\x60[\w-]*)/m.test(t))return'markdown';
+ const lines=t.split(/\r?\n/).filter(Boolean).slice(0,5);for(const sep of [',',';','\t']){const n=lines[0]?.split(sep).length||0;if(lines.length>1&&n>1&&lines.every(l=>l.split(sep).length===n))return'csv'}
+ return'text'
+}
+function actualLanguage(){return languageSel.value==='auto'?detect(editor.value,currentName):languageSel.value}
+function colorize(src,lang){
+ let s=escapeHTML(src);
+ if(lang==='json')return s.replace(/(&quot;(?:\\.|[^&])*?&quot;)(\s*:)/g,'<span class="tok-key">$1</span>$2').replace(/(&quot;(?:\\.|[^&])*?&quot;)/g,'<span class="tok-string">$1</span>').replace(/\b(-?\d+(?:\.\d+)?)\b/g,'<span class="tok-number">$1</span>').replace(/\b(true|false|null)\b/g,'<span class="tok-keyword">$1</span>');
+ if(['javascript','python','bash'].includes(lang)){
+   const comments=lang==='javascript'?/(\/\/[^\n]*|\/\*[\s\S]*?\*\/)/g:/(#[^\n]*)/g;
+   s=s.replace(comments,'<span class="tok-comment">$1</span>');
+   const kw=lang==='javascript'?/\b(const|let|var|function|return|if|else|for|while|class|new|import|from|export|async|await|true|false|null)\b/g:lang==='python'?/\b(def|return|if|elif|else|for|while|class|import|from|as|True|False|None|with|lambda|in|not|and|or)\b/g:/\b(if|then|else|fi|for|do|done|case|esac|function|echo|export|local|readonly|in)\b/g;
+   return s.replace(kw,'<span class="tok-keyword">$1</span>');
+ }
+ if(lang==='html')return s.replace(/(&lt;\/?[A-Za-z][\s\S]*?&gt;)/g,'<span class="tok-tag">$1</span>');
+ if(lang==='css')return s.replace(/(^|[;}\s])([A-Za-z-]+)(\s*:)/gm,'$1<span class="tok-property">$2</span>$3');
+ return s
+}
+function update(){
+ const lang=actualLanguage();preview.innerHTML=colorize(editor.value,lang);const lines=editor.value.split(/\r?\n/).length;lineCount.textContent=lines+' ligne'+(lines>1?'s':'');charCount.textContent=editor.value.length+' caractère'+(editor.value.length>1?'s':'');langStatus.textContent='langage : '+lang;previewInfo.textContent=lang==='text'?'texte échappé':lang+' · rendu échappé';statusEl.textContent='Prêt · traitement local';statusEl.className='okText'
+}
+function newDoc(){editor.value='';currentName='snippet.txt';fileLabel.textContent='nouveau';languageSel.value='auto';update();editor.focus()}
+function openDoc(){fileInput.click()}
+fileInput.addEventListener('change',async()=>{const f=fileInput.files?.[0];if(!f)return;editor.value=await f.text();currentName=f.name||'snippet.txt';fileLabel.textContent=currentName;languageSel.value='auto';update();fileInput.value=''});
+function download(){
+ const lang=actualLanguage(),p=presets[lang]||presets.text;let name=currentName;if(!name||name==='snippet.txt'&&lang!=='text')name='snippet.'+p.ext;const blob=new Blob([editor.value],{type:p.mime+';charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),0)
+}
+async function copyAll(){try{await navigator.clipboard.writeText(editor.value);statusEl.textContent='Copié.';statusEl.className='okText'}catch{statusEl.textContent='Presse-papiers indisponible.';statusEl.className='badText'}}
+function formatJson(){try{const v=JSON.parse(editor.value);editor.value=JSON.stringify(v,null,2);languageSel.value='json';update();statusEl.textContent='JSON formaté.'}catch(e){statusEl.textContent='JSON invalide : '+e.message;statusEl.className='badText'}}
+function selectAll(){editor.focus();editor.select()}
+function toggleWrap(){wrap=!wrap;editor.classList.toggle('wrap',wrap);previewWrap.classList.toggle('wrap',wrap)}
+function toggleTheme(){dark=!dark;previewWrap.style.background=dark?'#17202a':'#f8fafc';previewWrap.style.color=dark?'#e9eef3':'#1f2933'}
+function detectNow(){languageSel.value=detect(editor.value,currentName);update();statusEl.textContent='Langage détecté : '+languageSel.value}
+function privateInfo(){alert('Mode privé prévu : session Google opaque + RBAC serveur + rate-limit + overlay Google Drive. Aucun accès Drive n’est activé dans cette V0.1 publique.')}
+const actions={new:newDoc,open:openDoc,save:download,copy:copyAll,format:formatJson,selectall:selectAll,wrap:toggleWrap,theme:toggleTheme,detect:detectNow,stats:update,privacy:privateInfo,about:()=>alert('nLab Code Studio V0.1 — reprise publique du composant CodeBlock du nLab Web Framework. Le code est affiché/édité mais jamais exécuté.')};
+editor.addEventListener('input',update);languageSel.addEventListener('change',update);fontSize.addEventListener('input',()=>{const px=fontSize.value;fontValue.textContent=px;editor.style.fontSize=px+'px';preview.style.fontSize=px+'px'});
+document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{actions[b.dataset.action]?.();closeMenus()}));
+function closeMenus(){document.querySelectorAll('.menu').forEach(m=>m.classList.remove('open'))}document.querySelectorAll('.menu>button').forEach(b=>b.addEventListener('click',e=>{const m=e.currentTarget.parentElement,was=m.classList.contains('open');closeMenus();if(!was)m.classList.add('open');e.stopPropagation()}));document.addEventListener('click',closeMenus);
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();download()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='o'){e.preventDefault();openDoc()}});
+editor.value='// nLab Code Studio V0.1\nconst localFirst = true;\nconst languages = ["JSON","JavaScript","Python","Bash","HTML","CSS","CSV","Markdown"];\n';currentName='example.js';fileLabel.textContent=currentName;update();
+</script>
+</body></html>
