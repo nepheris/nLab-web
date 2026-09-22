@@ -4,7 +4,8 @@ All records are intentionally synthetic. No real personal data is used.
 """
 from pathlib import Path
 import argparse, csv, hashlib, io, json, random, shutil, zipfile
-from datetime import datetime\nfrom decimal import Decimal, ROUND_HALF_UP
+from datetime import datetime
+from decimal import Decimal, ROUND_HALF_UP
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, landscape
