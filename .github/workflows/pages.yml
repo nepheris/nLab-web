@@ -64,12 +64,23 @@ jobs:
           grep -q '"fileCount": 39' Library/demo/demo-manifest.json
           echo 'nLab DEMO CORPUS v2 generated: OK'
 
-      - name: Publish main and generated corpus to gh-pages
+      - name: Publish site and generated corpus to gh-pages
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'nLab deployment bot'
           git config user.email 'noreply@users.noreply.github.com'
+
+          # Work on the existing gh-pages branch so workflow files are never modified
+          # by the GitHub App token (which intentionally has no workflows permission).
+          git fetch origin gh-pages
+          rm -rf /tmp/nlab-gh-pages
+          git worktree add /tmp/nlab-gh-pages origin/gh-pages
+
+          # Sync the public site while preserving the existing .github directory.
+          rsync -a --delete --exclude='.git/' --exclude='.github/' ./ /tmp/nlab-gh-pages/
+          cd /tmp/nlab-gh-pages
+          git add -A
           git add -f Library/demo/nLab-DEMO-CORPUS-v2.zip Library/demo/demo-manifest.json Library/demo/demo-catalog-v2.json
-          git commit -m 'build: generate public nLab demo corpus v2 [skip ci]' || true
-          git push --force origin HEAD:gh-pages
+          git commit -m 'build: publish nLab Web + demo corpus v2 [skip ci]' || true
+          git push origin HEAD:gh-pages
