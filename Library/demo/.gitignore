@@ -1,5 +1,10 @@
 # Generated only during GitHub Pages deployment
 nLab-DEMO-CORPUS-v2.zip
+nLab-DEMO-CORPUS-v3.zip
 demo-manifest.json
 demo-catalog-v2.json
+demo-catalog-v3.json
+demo-gallery-v3.json
+manifests/
+packs/
 _build-demo-v2/
