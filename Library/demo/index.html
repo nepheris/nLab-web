@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nLab DEMO CORPUS v2</title>
+<style>
+:root{--blue:#0057b8;--ink:#1f2933;--muted:#61717f;--line:#d8e0e7;--bg:#f4f6f8}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{width:min(1040px,calc(100% - 32px));margin:auto}header,footer{background:#fff;border-bottom:1px solid var(--line)}
+header .wrap{padding:20px 0;display:flex;gap:12px;align-items:center}.brand{font-weight:900;color:var(--blue);margin-left:auto}
+main{padding:42px 0 64px}.hero,.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px}
+h1{font-size:clamp(32px,5vw,52px);margin:8px 0}.lead{color:var(--muted);font-size:17px;line-height:1.6}
+.badge{display:inline-block;padding:5px 8px;border-radius:999px;background:#eaf6ee;color:#21633a;font-size:11px;font-weight:800}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.btn{padding:11px 14px;border:1px solid #b9c6d1;border-radius:8px;background:#fff;text-decoration:none;color:inherit;font-weight:800}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:18px}.card{padding:16px}.card h2{font-size:17px;margin:0 0 7px}.card p{color:var(--muted);line-height:1.45}
+code{background:#eef3f8;padding:2px 5px;border-radius:4px}footer .wrap{padding:18px 0;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a href="../../">← nLab Web</a><span class="brand">nLab DEMO CORPUS</span></div></header>
+<main class="wrap">
+<section class="hero">
+<span class="badge">100 % synthétique · public</span>
+<h1>nLab DEMO CORPUS v2</h1>
+<p class="lead">Corpus commun de tests pour nLab PDF Studio et les autres applications nLab : PDF natifs et scannés, OCR, pseudo-manuscrit, images multi-formats, Office, données structurées, ZIP imbriqué et arborescences de comparaison.</p>
+<div class="actions">
+<a class="btn primary" href="./nLab-DEMO-CORPUS-v2.zip">Télécharger le ZIP complet</a>
+<a class="btn" href="./demo-manifest.json">Manifest JSON</a>
+<a class="btn" href="./demo-catalog-v2.json">Catalogue JSON</a>
+<a class="btn" href="../../APP-Applications/pdf-studio/app-0.9.12.html">Tester dans PDF Studio 0.9.12</a>
+</div>
+</section>
+<div class="grid">
+<article class="card"><h2>PDF</h2><p>Texte natif, multipage portrait/paysage, formulaire AcroForm, scans image-only.</p></article>
+<article class="card"><h2>OCR</h2><p>Imprimé propre, faible contraste, scan incliné/bruité et pseudo-manuscrit.</p></article>
+<article class="card"><h2>Images</h2><p>PNG, JPEG, WebP, BMP, GIF et SVG pour conversion et rotation.</p></article>
+<article class="card"><h2>Office & données</h2><p>DOCX, RTF, ODT, XLSX, CSV, JSON, NDJSON, XML, YAML et TXT.</p></article>
+<article class="card"><h2>Comparaison</h2><p><code>tree-A</code> et <code>tree-B</code> contiennent des fichiers identiques, modifiés et exclusifs.</p></article>
+<article class="card"><h2>Sortie</h2><p>Le dossier <code>demo-output</code> est logique. Sur le web, les résultats vont par défaut vers les téléchargements du navigateur.</p></article>
+</div>
+</main>
+<footer><div class="wrap">nLab DEMO CORPUS v2 · aucune donnée personnelle réelle.</div></footer>
+</body></html>
