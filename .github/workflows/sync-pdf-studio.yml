@@ -45,6 +45,15 @@ jobs:
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
           grep -q '"test": "0.9.12"' APP-Applications/pdf-studio/versions.json
 
+          test -s Library/demo/generate_demo.py
+          test -s Library/demo/index.html
+          python -m pip install --disable-pip-version-check --quiet pillow reportlab python-docx openpyxl
+          python Library/demo/generate_demo.py --output /tmp/nlab-demo
+          test -s /tmp/nlab-demo/nLab-DEMO-CORPUS-v2.zip
+          python -m zipfile -t /tmp/nlab-demo/nLab-DEMO-CORPUS-v2.zip
+          grep -q '"privacy": "synthetic-only"' /tmp/nlab-demo/demo-manifest.json
+          grep -q '"fileCount": 39' /tmp/nlab-demo/demo-manifest.json
+
           if grep -q 'drive.google.com/uc?export=download' APP-Applications/pdf-studio/app-0.9.12.html; then
             echo 'ERROR: test snapshot depends on Google Drive at runtime.' >&2
             exit 1
