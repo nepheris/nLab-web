@@ -1045,4 +1045,118 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 // =================== /Alpha 0.9.12 =====================
 
 })();
-</script></body></html>
+</script>
+<script id="nlabDemoCorpusV2">
+(()=>{
+  const MANIFEST_URL='../../Library/demo/demo-manifest.json';
+  const DEMO_PAGE_URL='../../Library/demo/';
+  const COMPAT_RE=/\.(pdf|png|jpe?g|webp|gif|bmp|docx|zip)$/i;
+
+  function demoMime(name){
+    const n=String(name||'').toLowerCase();
+    if(n.endsWith('.pdf')) return 'application/pdf';
+    if(n.endsWith('.png')) return 'image/png';
+    if(n.endsWith('.jpg')||n.endsWith('.jpeg')) return 'image/jpeg';
+    if(n.endsWith('.webp')) return 'image/webp';
+    if(n.endsWith('.gif')) return 'image/gif';
+    if(n.endsWith('.bmp')) return 'image/bmp';
+    if(n.endsWith('.docx')) return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    if(n.endsWith('.zip')) return 'application/zip';
+    return 'application/octet-stream';
+  }
+
+  async function loadDemoCorpusV2(){
+    if(typeof JSZip==='undefined') throw new Error('JSZip n’est pas chargé.');
+    st('Téléchargement du corpus nLab DEMO v2…');
+    const mr=await fetch(MANIFEST_URL,{cache:'no-store'});
+    if(!mr.ok) throw new Error('Manifest démo v2 inaccessible ('+mr.status+').');
+    const manifest=await mr.json();
+    const zr=await fetch(manifest.archive,{cache:'no-store'});
+    if(!zr.ok) throw new Error('ZIP démo v2 inaccessible ('+zr.status+').');
+    const zip=await JSZip.loadAsync(await zr.arrayBuffer());
+    const root=String(manifest.loadRoot||'demo-input/').replace(/^\/+|\/+$/g,'')+'/';
+    const items=[];
+    for(const entry of Object.values(zip.files)){
+      if(entry.dir) continue;
+      const p=String(entry.name||'').replace(/\\/g,'/').replace(/^\/+/,'');
+      if(!p.startsWith(root)||!COMPAT_RE.test(p)) continue;
+      const data=await entry.async('uint8array');
+      const name=p.split('/').pop();
+      const file=new File([data],name,{type:demoMime(name),lastModified:Date.now()});
+      items.push({file,name,relativePath:p.slice(root.length)});
+    }
+    if(!items.length) throw new Error('Le corpus démo ne contient aucun fichier compatible.');
+
+    const priority=p=>{
+      if(/^PDF\/pdf-texte-actif\.pdf$/i.test(p)) return -30;
+      if(/^PDF\//i.test(p)) return -20;
+      if(/^OCR\//i.test(p)) return -10;
+      return 0;
+    };
+    items.sort((a,b)=>priority(a.relativePath)-priority(b.relativePath)||
+      a.relativePath.localeCompare(b.relativePath,'fr',{numeric:true}));
+
+    S.source=null;
+    S.fallbackAll=[];
+    S.files=items;
+    if(typeof sourceInfo==='function') sourceInfo('nLab DEMO CORPUS v2','Site public · ZIP décompressé en mémoire');
+
+    const output=$('outputMode');
+    if(output){
+      output.value='download';
+      output.dispatchEvent(new Event('change',{bubbles:true}));
+    }
+    S.dest=null;
+    if(typeof destInfo==='function') destInfo('Téléchargements navigateur','Sortie web par téléchargement');
+    if(E?.dstStatus) E.dstStatus.textContent='Démo web : sortie par défaut vers les téléchargements du navigateur.';
+
+    await afterFiles();
+    if(E?.srcStatus) E.srcStatus.textContent=
+      'Démo v2 : '+S.files.length+' fichier(s) compatible(s) chargé(s) sur '+manifest.fileCount+
+      ' fichiers du corpus complet.';
+    st('nLab DEMO CORPUS v2 prêt.');
+    if(typeof toast==='function') toast('Démo v2 chargée · '+S.files.length+' fichiers compatibles');
+  }
+
+  function bindDemoV2(){
+    const b=$('loadDemoPreset');
+    if(b){
+      b.textContent='Charger la démo v2';
+      b.title='Télécharge le corpus public nLab, le décompresse en mémoire et charge les fichiers compatibles.';
+      b.onclick=e=>run(loadDemoCorpusV2,e.currentTarget);
+      if(!document.getElementById('downloadDemoCorpusV2')){
+        const a=document.createElement('a');
+        a.id='downloadDemoCorpusV2';
+        a.href='../../Library/demo/nLab-DEMO-CORPUS-v2.zip';
+        a.textContent='Télécharger le ZIP démo';
+        a.title='Télécharger le corpus complet, utilisable par les autres applications nLab.';
+        a.style.cssText='display:inline-flex;align-items:center;justify-content:center;padding:8px 10px;border:1px solid #b7c0c8;border-radius:6px;background:#fff;color:#1f2933;text-decoration:none;font-size:12px;margin-top:5px;width:100%';
+        b.after(a);
+        const info=document.createElement('div');
+        info.className='hint';
+        info.style.marginTop='5px';
+        info.innerHTML='<b>Corpus public synthétique.</b> PDF, scans/OCR, pseudo-manuscrit, images, DOCX, données structurées, ZIP et arborescences. <a href="'+DEMO_PAGE_URL+'" target="_blank" rel="noopener">Voir le corpus</a>.';
+        a.after(info);
+      }
+    }
+    const select=$('sourcePreset');
+    if(select){
+      const opt=[...select.options].find(o=>o.value==='demo');
+      if(opt) opt.textContent='nLab DEMO CORPUS v2 · public';
+      select.onchange=e=>{
+        if(e.target.value==='demo') run(loadDemoCorpusV2);
+        else if(e.target.value==='default' && typeof reuseSource==='function') run(reuseSource);
+      };
+    }
+  }
+
+  window.nLabLoadDemoCorpusV2=loadDemoCorpusV2;
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',()=>setTimeout(bindDemoV2,80),{once:true});
+  }else{
+    setTimeout(bindDemoV2,80);
+  }
+})();
+</script>
+
+</body></html>
