@@ -224,6 +224,11 @@ def build(output_dir):
     manifest={"schema":"nlab-demo-manifest/v2","version":"2.0","label":"nLab DEMO CORPUS v2","privacy":"synthetic-only","archive":"../../Library/demo/nLab-DEMO-CORPUS-v2.zip","loadRoot":"demo-input/","pdfStudioExtensions":["pdf","png","jpg","jpeg","webp","gif","bmp","docx","zip"],"defaultOutputMode":"download","fileCount":len(files),"catalog":"../../Library/demo/demo-catalog-v2.json"}
     (output_dir/"demo-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
     (output_dir/"demo-catalog-v2.json").write_text(json.dumps({"version":"2.0","files":catalog},ensure_ascii=False,indent=2),encoding="utf-8")
+    # Expose generated synthetic files for the web preview and Studio-specific demo packs.
+    for name in ["demo-input","demo-output","docs"]:
+        target=output_dir/name
+        if target.exists(): shutil.rmtree(target)
+        shutil.copytree(work/name,target)
     shutil.rmtree(work)
     print(f"Generated {archive} ({archive.stat().st_size} bytes, {len(files)} files)")
 
