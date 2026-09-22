@@ -245,7 +245,7 @@ def rebuild_outputs(root):
         preview="image" if ext in [".png",".jpg",".jpeg",".webp",".gif",".svg"] else "json" if ext==".json" else "csv" if ext==".csv" else "pdf" if ext==".pdf" else "text" if ext in [".txt",".md",".yaml",".yml",".xml",".js",".css",".html",".py",".sql"] else "download"
         gallery.append({**item,"href":"./"+item["path"],"preview":preview})
     (root/"demo-gallery-v3.json").write_text(json.dumps({"schema":"nlab-demo-gallery/v1","version":"3.0","files":gallery},ensure_ascii=False,indent=2),encoding="utf-8")
-    manifest={"schema":"nlab-demo-manifest/v3","version":"3.0","label":"nLab DEMO CORPUS v3","privacy":"synthetic-only","archive":"../../Library/demo/nLab-DEMO-CORPUS-v3.zip","loadRoot":"demo-input/","defaultOutputMode":"download","fileCount":len(files),"catalog":"../../Library/demo/demo-catalog-v3.json","gallery":"../../Library/demo/demo-gallery-v3.json","studioManifests":"../../Library/demo/manifests/index.json"}
+    manifest={"schema":"nlab-demo-manifest/v3","version":"3.0","label":"nLab DEMO CORPUS v3","privacy":"synthetic-only","archive":"../../Library/demo/nLab-DEMO-CORPUS-v3.zip","legacyArchive":"../../Library/demo/nLab-DEMO-CORPUS-v2.zip","loadRoot":"demo-input/","pdfStudioExtensions":["pdf","png","jpg","jpeg","webp","gif","bmp","docx","zip"],"defaultOutputMode":"download","fileCount":len(files),"catalog":"../../Library/demo/demo-catalog-v3.json","gallery":"../../Library/demo/demo-gallery-v3.json","studioManifests":"../../Library/demo/manifests/index.json"}
     (root/"demo-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
     (root/"demo-catalog-v3.json").write_text(json.dumps({"version":"3.0","files":catalog},ensure_ascii=False,indent=2),encoding="utf-8")
 
