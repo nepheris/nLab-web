@@ -3,7 +3,7 @@
 All records are intentionally synthetic. No real personal data is used.
 """
 from pathlib import Path
-import argparse, base64, csv, hashlib, io, json, random, shutil, zipfile
+import argparse, csv, hashlib, io, json, random, shutil, zipfile\nfrom datetime import datetime
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, landscape
@@ -132,7 +132,7 @@ def make_office(root):
         z.writestr("content.xml",content); z.writestr("META-INF/manifest.xml",manifest)
 
 def make_data(root):
-    out=root/"demo-input/Data"; (out/"donnees-synthetiques.xlsx").write_bytes(base64.b64decode(XLSX_B64))
+    out=root/"demo-input/Data"; make_xlsx(out/"donnees-synthetiques.xlsx")
     rec=[]
     for i in range(1,16): rec.append({"client_id":f"DEMO-C{i:03d}","nom":f"NomDemo{i:03d}","prenom":f"PrenomDemo{i:03d}","email":f"client{i:03d}@example.test","telephone":f"060000{i:04d}","adresse":f"{i} rue de la Demo","code_postal":"00000","ville":f"Ville-Test-{(i%5)+1}","montant":round(i*17.35,2),"statut":["Nouveau","Actif","Archive"][i%3]})
     with open(out/"clients-demo.csv","w",encoding="utf-8",newline="") as f: w=csv.DictWriter(f,fieldnames=list(rec[0])); w.writeheader(); w.writerows(rec)
