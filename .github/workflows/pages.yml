@@ -78,7 +78,7 @@ jobs:
           git worktree add /tmp/nlab-gh-pages origin/gh-pages
 
           # Sync the public site while preserving the existing .github directory.
-          rsync -a --delete --exclude='.git/' --exclude='.github/' ./ /tmp/nlab-gh-pages/
+          rsync -a --delete --exclude='.git' --exclude='.github/' ./ /tmp/nlab-gh-pages/
           cd /tmp/nlab-gh-pages
           git add -A
           git add -f Library/demo/nLab-DEMO-CORPUS-v2.zip Library/demo/demo-manifest.json Library/demo/demo-catalog-v2.json
