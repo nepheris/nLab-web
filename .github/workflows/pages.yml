@@ -37,18 +37,18 @@ jobs:
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
           test -s APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'Alpha 0.9.12' APP-Applications/pdf-studio/app-0.9.12.html
-          grep -q 'archivePattern0912' APP-Applications/pdf-studio/app-0.9.12.html
-          grep -q 'DATAMATRIX' APP-Applications/pdf-studio/app-0.9.12.html
-          grep -q 'treeCompare0912' APP-Applications/pdf-studio/app-0.9.12.html
-          grep -q 'nlabDemoCorpusV2' APP-Applications/pdf-studio/app-0.9.12.html
-          grep -q '../../Library/demo/demo-manifest.json' APP-Applications/pdf-studio/app-0.9.12.html
+          test -s APP-Applications/pdf-studio/app-0.9.13.html
+          test -s APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
+          grep -q 'app-0.9.12.html' APP-Applications/pdf-studio/app-0.9.13.html
+          grep -q 'nLabCopyDebug' APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
+          grep -q 'nLabLoadDemoDirect0913' APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
           for i in $(seq 1 11); do
             n=$(printf '%02d' "$i")
             test -s "APP-Applications/pdf-studio/runtime/app098.part${n}.js"
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.12"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.13"' APP-Applications/pdf-studio/versions.json
 
       - name: Build shared nLab demo corpus
         shell: bash
@@ -59,9 +59,13 @@ jobs:
           test -s Library/demo/nLab-DEMO-CORPUS-v2.zip
           test -s Library/demo/demo-manifest.json
           test -s Library/demo/demo-catalog-v2.json
+          test -s Library/demo/previews/pdf-texte.jpg
+          test -s Library/demo/files/demo-input/PDF/pdf-texte-actif.pdf
           python -m zipfile -t Library/demo/nLab-DEMO-CORPUS-v2.zip
           grep -q '"privacy": "synthetic-only"' Library/demo/demo-manifest.json
           grep -q '"fileCount": 39' Library/demo/demo-manifest.json
+          grep -q '"files":' Library/demo/demo-manifest.json
+          grep -q '"cards":' Library/demo/demo-catalog-v2.json
           echo 'nLab DEMO CORPUS v2 generated: OK'
 
       - name: Publish site and generated corpus to gh-pages
