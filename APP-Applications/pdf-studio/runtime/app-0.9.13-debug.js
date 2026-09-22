@@ -171,7 +171,30 @@ async function loadDemoDirect0913(){
       ok++;
     }catch(e){log("demo.file.error",url,e.message)}
   }
-  if(!items.length)throw new Error("Aucun fichier de démo n’a pu être chargé.");
+  if(!items.length){
+    log("demo.fallback","direct downloads all failed; trying ZIP archive");
+    try{
+      if(typeof JSZip==="undefined")throw new Error("JSZip indisponible");
+      const archiveUrl=new URL(String(m.archive||"../../Library/demo/nLab-DEMO-CORPUS-v2.zip"),location.href).href;
+      const zr=await fetch(archiveUrl,{cache:"no-store"});
+      if(!zr.ok)throw new Error("ZIP HTTP "+zr.status);
+      const zip=await JSZip.loadAsync(await zr.arrayBuffer());
+      const root=String(m.loadRoot||"demo-input/").replace(/^\\/+|\\/+$/g,"")+"/";
+      const compat=/\\.(pdf|png|jpe?g|webp|gif|bmp|docx|zip)$/i;
+      for(const entry of Object.values(zip.files)){
+        if(entry.dir)continue;
+        const p=String(entry.name||"").replace(/\\\\/g,"/").replace(/^\\/+/, "");
+        if(!p.startsWith(root)||!compat.test(p))continue;
+        const data=await entry.async("uint8array");
+        const name=p.split("/").pop();
+        items.push({file:new File([data],name,{type:mimeFor(name),lastModified:Date.now()}),name,relativePath:p.slice(root.length)});
+      }
+      log("demo.fallback.ok","ZIP loaded",items.length,"files");
+    }catch(e){
+      log("demo.fallback.error",e);
+      throw new Error("Démo inaccessible : fichiers directs et ZIP ont échoué. Cliquez sur Debug pour copier le diagnostic.");
+    }
+  }
   if(typeof S==="undefined"||typeof afterFiles!=="function")throw new Error("Moteur PDF Studio non initialisé.");
   S.source=null;S.fallbackAll=[];S.files=items;
   if(typeof sourceInfo==="function")sourceInfo("nLab DEMO CORPUS v2","GitHub Pages · chargement direct");
@@ -202,9 +225,24 @@ function install(){
   if(demo){
     demo.textContent="Charger la démo v2";
     demo.title="Charge directement les fichiers publics du corpus; le ZIP sert de secours.";
-    demo.onclick=e=>{e.preventDefault();if(typeof run==="function")return run(loadDemoDirect0913,e.currentTarget);loadDemoDirect0913().catch(err=>{log("demo.error",err);if(typeof st==="function")st("Erreur démo : "+err.message)})};
+    demo.onclick=async e=>{
+      e.preventDefault();
+      const btn=e.currentTarget;btn.disabled=true;
+      try{await loadDemoDirect0913()}
+      catch(err){
+        log("demo.error",err);
+        if(typeof st==="function")st("Erreur démo : "+err.message+" · utilisez Debug");
+        if(typeof toast==="function")toast("Échec démo · cliquez sur Debug");
+      }finally{btn.disabled=false}
+    };
   }
   const box=demo?.parentElement?.parentElement;
+  if(box&&!document.getElementById("nlabDemoDebugCopy")){
+    const db=document.createElement("button");db.id="nlabDemoDebugCopy";db.type="button";db.textContent="🐞 Copier le debug";
+    db.title="Copie le diagnostic technique sanitizé : version, navigateur, erreurs et requêtes réseau, sans contenu du document.";
+    db.style.cssText="display:flex;justify-content:center;width:100%;margin-top:6px;padding:7px;border:1px solid #d39a35;border-radius:7px;background:#fff8dd;color:#6f5200;font-size:12px;font-weight:800";
+    db.onclick=copyReport;box.appendChild(db);
+  }
   if(box&&!document.getElementById("nlabDemoGalleryLink")){
     const a=document.createElement("a");a.id="nlabDemoGalleryLink";a.href="../../Library/demo/";a.target="_blank";a.rel="noopener";a.textContent="🖼 Voir la galerie de démo";a.style.cssText="display:flex;justify-content:center;margin-top:6px;padding:7px;border:1px solid #b8c6d1;border-radius:7px;text-decoration:none;font-size:12px;font-weight:700;background:#fff";box.appendChild(a);
   }
