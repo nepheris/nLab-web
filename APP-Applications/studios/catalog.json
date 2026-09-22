@@ -59,5 +59,17 @@
       "path": "../file-studio/",
       "demo": "../../Library/demo/manifests/file.json"
     }
+  ],
+  "future": [
+    {
+      "id": "demo-dataset-generator-studio",
+      "name": "Demo / Dataset Generator Studio",
+      "status": "candidate",
+      "source": [
+        "Library/demo/generate_demo.py",
+        "Library/demo/generate_studio_demo.py"
+      ],
+      "purpose": "Generate reproducible synthetic datasets, images, QR/Data Matrix and multi-format demo packs."
+    }
   ]
 }
