@@ -4,7 +4,7 @@ All records are intentionally synthetic. No real personal data is used.
 """
 from pathlib import Path
 import argparse, csv, hashlib, io, json, random, shutil, zipfile
-from datetime import datetime
+from datetime import datetime\nfrom decimal import Decimal, ROUND_HALF_UP
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, landscape
@@ -32,9 +32,9 @@ def fnt(which, size):
 def ensure_dirs(root):
     for d in [
         "demo-input/PDF", "demo-input/OCR", "demo-input/Images", "demo-input/Office",
-        "demo-input/Data", "demo-input/Zip", "demo-input/Compare/tree-A/docs",
+        "demo-input/Data", "demo-input/Code", "demo-input/QR-Barcode", "demo-input/File-Rename", "demo-input/Zip", "demo-input/Compare/tree-A/docs",
         "demo-input/Compare/tree-A/data", "demo-input/Compare/tree-B/docs",
-        "demo-input/Compare/tree-B/data", "demo-output", "docs"]:
+        "demo-input/Compare/tree-B/data", "demo-output", "docs", "manifests"]:
         (root/d).mkdir(parents=True, exist_ok=True)
 
 def save_svg(path):
@@ -86,7 +86,69 @@ def make_images(root):
     d.rectangle((140,250,420,520),outline="#0057b8",width=10); d.ellipse((585,245,855,515),outline="#15803d",width=10); d.line((80,590,920,590),fill="#b91c1c",width=8)
     img.save(out/"demo-image-color.png",optimize=True); img.save(out/"demo-image-color.jpg",quality=82,optimize=True); img.save(out/"demo-image-color.webp",quality=82); img.save(out/"demo-image-color.bmp")
     f2=img.copy(); ImageDraw.Draw(f2).text((70,195),"FRAME 2",font=fnt("bold",34),fill="#7c3aed"); img.save(out/"demo-image-anime.gif",save_all=True,append_images=[f2],duration=650,loop=0)
-    save_svg(out/"demo-vector.svg")
+    save_svg(out/"demo-vector.svg"); make_calibration_image(root)
+
+
+def make_calibration_image(root):
+    out=root/"demo-input/Images"
+    W,H=1800,1300
+    img=Image.new("RGB",(W,H),"white"); d=ImageDraw.Draw(img)
+    d.text((80,55),"nLab DEMO - CALIBRATION SCANNER 300 x 150 mm",font=fnt("bold",38),fill="#111827")
+    d.text((80,105),"Repères synthétiques destinés au module Mesure & Calibration",font=fnt("reg",24),fill="#475569")
+    ox,oy=180,260; pxmm_x=4.6; pxmm_y=4.52
+    # rulers
+    d.line((ox,oy,ox+int(300*pxmm_x),oy),fill="#111",width=4)
+    for mm in range(0,301,10):
+        x=ox+int(mm*pxmm_x); h=42 if mm%50==0 else 24
+        d.line((x,oy-h,x,oy+h),fill="#111",width=3 if mm%50==0 else 1)
+        if mm%50==0: d.text((x-18,oy-82),str(mm),font=fnt("reg",20),fill="#111")
+    d.text((ox+560,oy-120),"RÈGLE X : 0–300 mm",font=fnt("bold",24),fill="#0057b8")
+    d.line((ox,oy,ox,oy+int(150*pxmm_y)),fill="#111",width=4)
+    for mm in range(0,151,10):
+        y=oy+int(mm*pxmm_y); w=42 if mm%50==0 else 24
+        d.line((ox-w,y,ox+w,y),fill="#111",width=3 if mm%50==0 else 1)
+        if mm%50==0: d.text((ox-105,y-12),str(mm),font=fnt("reg",20),fill="#111")
+    d.text((40,oy+320),"RÈGLE Y : 0–150 mm",font=fnt("bold",24),fill="#15803d")
+    # measurable shapes
+    d.rectangle((520,470,1120,870),outline="#0057b8",width=8)
+    d.ellipse((1240,500,1540,800),outline="#15803d",width=8)
+    d.line((560,1010,1450,930),fill="#b91c1c",width=8)
+    d.text((540,890),"Objet synthétique 600 x 400 px",font=fnt("reg",22),fill="#334155")
+    img.save(out/"calibration-regles-300x150.png",optimize=True)
+
+def make_code_samples(root):
+    out=root/"demo-input/Code"
+    (out/"demo-script.js").write_text("""// nLab DATASET DE TEST\\nconst rows=[{id:'TEST-001',label:'Alpha',active:true},{id:'TEST-002',label:'Beta',active:false}];\\nconsole.table(rows);\\n""",encoding="utf-8")
+    (out/"demo-script.py").write_text("""# nLab DATASET DE TEST\\nrows=[{'id':'TEST-001','value':12.345},{'id':'TEST-002','value':98.765}]\\nprint(sum(x['value'] for x in rows))\\n""",encoding="utf-8")
+    (out/"demo-structure.json").write_text(json.dumps({"dataset":"nLab TEST DATASET","records":[{"id":"TEST-001","nom":"Alpha","tags":["demo","json"],"active":True},{"id":"TEST-002","nom":"Beta","tags":["test"],"active":False}]},ensure_ascii=False,indent=2),encoding="utf-8")
+
+def make_qr_barcode(root):
+    out=root/"demo-input/QR-Barcode"
+    from reportlab.graphics.barcode import createBarcodeDrawing
+    from reportlab.graphics import renderPM, renderSVG
+    samples=[
+      ("qr-url-public","QR","https://example.com/nlab-demo"),
+      ("qr-email-demo","QR","mailto:demo.contact@example.test?subject=nLab%20TEST"),
+      ("datamatrix-demo","ECC200DataMatrix","NLAB-DEMO-DATAMATRIX-001"),
+      ("code128-demo","Code128","NLAB-TEST-001"),
+      ("ean13-demo","EAN13","123456789012")
+    ]
+    for stem,kind,value in samples:
+        dr=createBarcodeDrawing(kind,value=value,humanReadable=True)
+        renderPM.drawToFile(dr,str(out/f"{stem}.png"),fmt="PNG")
+        renderSVG.drawToFile(dr,str(out/f"{stem}.svg"))
+    (out/"payloads.json").write_text(json.dumps([
+      {"id":"QR-URL","type":"QR","value":"https://example.com/nlab-demo","note":"URL example réservée"},
+      {"id":"QR-MAIL","type":"QR","value":"mailto:demo.contact@example.test","note":"adresse .test fictive"},
+      {"id":"DM-001","type":"DataMatrix","value":"NLAB-DEMO-DATAMATRIX-001"},
+      {"id":"C128-001","type":"Code128","value":"NLAB-TEST-001"}
+    ],ensure_ascii=False,indent=2),encoding="utf-8")
+
+def make_file_samples(root):
+    out=root/"demo-input/File-Rename"
+    names=["IMG_0001.JPG","IMG_0002.JPG","scan final 01.pdf","facture-test(1).pdf","DATA export.csv","photo meuble bleu.png"]
+    for i,n in enumerate(names,1):
+        (out/n).write_text(f"nLab TEST FILE {i}\\nNom volontairement varié pour les tests de renommage.\\n",encoding="utf-8")
 
 def make_ocr(root):
     out=root/"demo-input/OCR"
@@ -208,10 +270,35 @@ def make_docs(root):
     expected={"schema":"nlab-demo-corpus/v2","version":"2.0","privacy":"100% synthetic","defaultOutputMode":"browser-downloads","tests":[{"file":"demo-input/PDF/pdf-texte-actif.pdf","expect":"native text selectable"},{"file":"demo-input/PDF/pdf-formulaire-acroform.pdf","expect":"detect/fill/flatten form fields"},{"file":"demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf","expect":"OCR challenge; no native text"},{"file":"demo-input/OCR/ocr-pseudo-manuscrit.png","expect":"handwriting-like OCR challenge"},{"file":"demo-input/Images/demo-image-color.webp","expect":"open image; rotate; convert to PDF"},{"file":"demo-input/Zip/archive-imbriquee-demo.zip","expect":"nested ZIP expansion test"}]}
     (root/"docs/expected-results.json").write_text(json.dumps(expected,ensure_ascii=False,indent=2),encoding="utf-8")
 
+
+def make_studio_manifests(output_dir, work, catalog):
+    groups={
+      "pdf":{"label":"PDF Studio","include":["demo-input/PDF/","demo-input/OCR/","demo-input/Images/","demo-input/Office/","demo-input/Zip/"]},
+      "image":{"label":"Image Studio","include":["demo-input/Images/"],"scenarios":["rotation","mirror","resize","format-conversion","calibration-x-y","measurement"]},
+      "ocr":{"label":"OCR Studio","include":["demo-input/OCR/","demo-input/PDF/pdf-scan-"],"scenarios":["clean-print","low-contrast","deskew","noisy-scan","pseudo-handwriting"]},
+      "code-json":{"label":"Code + JSON Studios","include":["demo-input/Code/","demo-input/Data/dataset-mixte-test.json","demo-input/Data/dataset-mixte-test.ndjson"]},
+      "data":{"label":"Data Studio","include":["demo-input/Data/"],"scenarios":["types","unique-vs-nonunique","nulls","currency-rounding","percentages","urls","emails","phones","synthetic-siret","images-in-table"]},
+      "qr-barcode":{"label":"QR & Barcode Studio","include":["demo-input/QR-Barcode/"]},
+      "file":{"label":"File Studio","include":["demo-input/File-Rename/","demo-input/Compare/","demo-input/Zip/"],"demoNames":["IMG_0001.JPG","IMG_0002.JPG","scan final 01.pdf","facture-test(1).pdf","DATA export.csv","photo meuble bleu.png"]}
+    }
+    idx={"schema":"nlab-demo-manifest-index/v1","version":"3.0","manifests":[]}
+    for key,g in groups.items():
+        selected=[x for x in catalog if any(x["path"].startswith(p) for p in g["include"])]
+        zipname=f"nLab-DEMO-{key}-v3.zip"
+        with zipfile.ZipFile(output_dir/zipname,"w",zipfile.ZIP_DEFLATED,compresslevel=7) as z:
+            for rec in selected:
+                p=work/rec["path"]
+                if p.exists(): z.write(p,rec["path"])
+        m={"schema":"nlab-studio-demo/v1","version":"3.0","studio":key,"label":g["label"],"privacy":"synthetic-only","archive":f"../{zipname}","files":[x["path"] for x in selected],"catalogCount":len(selected),"scenarios":g.get("scenarios",[])}
+        if "demoNames" in g:m["demoNames"]=g["demoNames"]
+        (output_dir/"manifests"/f"{key}.json").write_text(json.dumps(m,ensure_ascii=False,indent=2),encoding="utf-8")
+        idx["manifests"].append({"studio":key,"label":g["label"],"href":f"{key}.json","archive":f"../{zipname}"})
+    (output_dir/"manifests"/"index.json").write_text(json.dumps(idx,ensure_ascii=False,indent=2),encoding="utf-8")
+
 def build(output_dir):
     output_dir=Path(output_dir); output_dir.mkdir(parents=True,exist_ok=True); work=output_dir/"_build-demo-v2"
     if work.exists(): shutil.rmtree(work)
-    ensure_dirs(work); make_images(work); make_ocr(work); make_pdfs(work); make_office(work); make_data(work); make_compare(work); make_nested_zip(work); make_docs(work)
+    ensure_dirs(work); make_images(work); make_ocr(work); make_pdfs(work); make_office(work); make_data(work); make_code_samples(work); make_qr_barcode(work); make_file_samples(work); make_compare(work); make_nested_zip(work); make_docs(work)
     files=[p for p in sorted(work.rglob("*")) if p.is_file()]
     catalog=[]
     for p in files:
@@ -221,7 +308,7 @@ def build(output_dir):
     if archive.exists(): archive.unlink()
     with zipfile.ZipFile(archive,"w",zipfile.ZIP_DEFLATED,compresslevel=7) as z:
         for p in files: z.write(p,p.relative_to(work).as_posix())
-    manifest={"schema":"nlab-demo-manifest/v2","version":"2.0","label":"nLab DEMO CORPUS v2","privacy":"synthetic-only","archive":"../../Library/demo/nLab-DEMO-CORPUS-v2.zip","loadRoot":"demo-input/","pdfStudioExtensions":["pdf","png","jpg","jpeg","webp","gif","bmp","docx","zip"],"defaultOutputMode":"download","fileCount":len(files),"catalog":"../../Library/demo/demo-catalog-v2.json"}
+    manifest={"schema":"nlab-demo-manifest/v3","version":"3.0","label":"nLab DEMO CORPUS v3","privacy":"synthetic-only","archive":"../../Library/demo/nLab-DEMO-CORPUS-v2.zip","loadRoot":"demo-input/","pdfStudioExtensions":["pdf","png","jpg","jpeg","webp","gif","bmp","docx","zip"],"defaultOutputMode":"download","fileCount":len(files),"catalog":"../../Library/demo/demo-catalog-v2.json"}
     (output_dir/"demo-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
     (output_dir/"demo-catalog-v2.json").write_text(json.dumps({"version":"2.0","files":catalog},ensure_ascii=False,indent=2),encoding="utf-8")
     # Expose generated synthetic files for the web preview and Studio-specific demo packs.
