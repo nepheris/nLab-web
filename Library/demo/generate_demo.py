@@ -236,16 +236,74 @@ def make_xlsx(path):
     wb.save(path)
 
 def make_data(root):
-    out=root/"demo-input/Data"; make_xlsx(out/"donnees-synthetiques.xlsx")
-    rec=[]
-    for i in range(1,16): rec.append({"client_id":f"DEMO-C{i:03d}","nom":f"NomDemo{i:03d}","prenom":f"PrenomDemo{i:03d}","email":f"client{i:03d}@example.test","telephone":f"060000{i:04d}","adresse":f"{i} rue de la Demo","code_postal":"00000","ville":f"Ville-Test-{(i%5)+1}","montant":round(i*17.35,2),"statut":["Nouveau","Actif","Archive"][i%3]})
-    with open(out/"clients-demo.csv","w",encoding="utf-8",newline="") as f: w=csv.DictWriter(f,fieldnames=list(rec[0])); w.writeheader(); w.writerows(rec)
-    (out/"clients-demo.json").write_text(json.dumps(rec,ensure_ascii=False,indent=2),encoding="utf-8"); (out/"clients-demo.ndjson").write_text("\n".join(json.dumps(x,ensure_ascii=False) for x in rec)+"\n",encoding="utf-8")
-    (out/"clients-demo.yaml").write_text("dataset: nLab-demo-v2\nrecords:\n"+"".join(f"  - client_id: {r['client_id']}\n    nom: {r['nom']}\n    statut: {r['statut']}\n" for r in rec[:6]),encoding="utf-8")
-    xml=['<?xml version="1.0" encoding="UTF-8"?>','<clients dataset="nLab-demo-v2">']
-    for r in rec[:8]: xml += [f'  <client id="{r["client_id"]}">',f'    <nom>{r["nom"]}</nom>',f'    <statut>{r["statut"]}</statut>','  </client>']
-    xml.append('</clients>'); (out/"clients-demo.xml").write_text("\n".join(xml),encoding="utf-8"); (out/"notes-demo.txt").write_text("nLab DEMO v2\nAucune donnee personnelle reelle.\nReferences : DEMO-TXT-001, DEMO-TXT-002.\n",encoding="utf-8")
-
+    out=root/"demo-input/Data"
+    colors=[("Rouge","#E53935"),("Bleu","#1E88E5"),("Vert","#43A047"),("Orange","#FB8C00"),("Violet","#8E24AA")]
+    public_urls=["https://www.google.com/","https://www.youtube.com/","https://www.lemonde.fr/","https://www.wikipedia.org/","https://www.python.org/"]
+    rows=[]
+    for i in range(1,41):
+        cname,hexv=colors[(i-1)%len(colors)]
+        base=Decimal("10.005") + Decimal(i)/Decimal("7")
+        rows.append({
+          "id_unique":f"TEST-{i:04d}",
+          "cle_non_unique":f"GROUPE-{(i%5)+1}",
+          "nom":f"NomTest{i:03d}",
+          "prenom":f"PrenomTest{i:03d}",
+          "couleur_nom":cname,
+          "couleur_hex":hexv,
+          "categorie":["A","B","C"][i%3],
+          "liste_tags":"demo|test|"+(["alpha","beta","gamma"][i%3]),
+          "variable_discrete":i%7,
+          "variable_continue":round(3.14159*i/7,5),
+          "pourcentage":round(((i*7)%101)/100,4),
+          "montant_ht":float(base.quantize(Decimal("0.001"))),
+          "tva":0.20,
+          "montant_ttc":float((base*Decimal("1.20")).quantize(Decimal("0.001"))),
+          "arrondi_2_dec":float((base*Decimal("1.20")).quantize(Decimal("0.01"),rounding=ROUND_HALF_UP)),
+          "telephone":f"+33 6 00 00 {i:02d} {((i*3)%100):02d}",
+          "siret_test_invalide":f"9999999999{i:04d}"[-14:],
+          "email_standard":f"utilisateur{i:03d}@example.test",
+          "email_plus":f"prenom.nom+tag{i:03d}@example.test",
+          "email_sous_domaine":f"contact{i:03d}@demo.example.com",
+          "url_publique":public_urls[(i-1)%len(public_urls)],
+          "image_url":"../../Library/demo/demo-input/Images/demo-image-color.png",
+          "adresse":f"{i} rue du Dataset de Test",
+          "code_postal":"00000",
+          "ville":f"Ville-Test-{(i%5)+1}",
+          "booleen":bool(i%2),
+          "date":f"2026-09-{((i-1)%22)+1:02d}",
+          "datetime":f"2026-09-{((i-1)%22)+1:02d}T{(8+i)%24:02d}:15:00+02:00",
+          "texte_court":"Lorem ipsum dolor sit amet.",
+          "texte_long":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dataset synthétique nLab destiné aux tests de tri, filtre, recherche, affichage et export.",
+          "nullable":None if i%6==0 else f"VAL-{i:02d}"
+        })
+    headers=list(rows[0].keys())
+    with open(out/"dataset-mixte-test.csv","w",encoding="utf-8",newline="") as f:
+        w=csv.DictWriter(f,fieldnames=headers); w.writeheader(); w.writerows(rows)
+    (out/"dataset-mixte-test.json").write_text(json.dumps(rows,ensure_ascii=False,indent=2),encoding="utf-8")
+    (out/"dataset-mixte-test.ndjson").write_text("\n".join(json.dumps(x,ensure_ascii=False) for x in rows)+"\n",encoding="utf-8")
+    with open(out/"clients-demo.csv","w",encoding="utf-8",newline="") as f:
+        w=csv.DictWriter(f,fieldnames=headers); w.writeheader(); w.writerows(rows[:15])
+    (out/"clients-demo.json").write_text(json.dumps(rows[:15],ensure_ascii=False,indent=2),encoding="utf-8")
+    (out/"clients-demo.ndjson").write_text("\n".join(json.dumps(x,ensure_ascii=False) for x in rows[:15])+"\n",encoding="utf-8")
+    (out/"clients-demo.yaml").write_text("dataset: nLab-TEST-DATASET\nrecords:\n"+"".join(f"  - id_unique: {r['id_unique']}\n    nom: {r['nom']}\n    categorie: {r['categorie']}\n" for r in rows[:6]),encoding="utf-8")
+    xml=['<?xml version="1.0" encoding="UTF-8"?>','<records dataset="nLab-TEST-DATASET">']
+    for r in rows[:8]: xml += [f'  <record id="{r["id_unique"]}">',f'    <nom>{r["nom"]}</nom>',f'    <categorie>{r["categorie"]}</categorie>','  </record>']
+    xml.append('</records>'); (out/"clients-demo.xml").write_text("\n".join(xml),encoding="utf-8")
+    (out/"notes-demo.txt").write_text("nLab TEST DATASET\n100 % synthétique.\nLorem ipsum dolor sit amet.\n",encoding="utf-8")
+    wb=Workbook(); ws=wb.active; ws.title="Dataset mixte"
+    ws.append(headers)
+    for r in rows: ws.append([r[h] for h in headers])
+    for cell in ws[1]:
+        cell.font=Font(bold=True,color="FFFFFF"); cell.fill=PatternFill("solid",fgColor="1F2933")
+    ws.freeze_panes="A2"; ws.auto_filter.ref=ws.dimensions
+    col={h:i+1 for i,h in enumerate(headers)}
+    for rr in range(2,2+len(rows)):
+        ws.cell(rr,col["pourcentage"]).number_format="0.00%"
+        for h in ["montant_ht","montant_ttc","arrondi_2_dec"]:
+            ws.cell(rr,col[h]).number_format='#,##0.00 "EUR"'
+        ws.cell(rr,col["url_publique"]).hyperlink=ws.cell(rr,col["url_publique"]).value; ws.cell(rr,col["url_publique"]).style="Hyperlink"
+        ws.cell(rr,col["image_url"]).hyperlink=ws.cell(rr,col["image_url"]).value; ws.cell(rr,col["image_url"]).style="Hyperlink"
+    wb.save(out/"dataset-mixte-test.xlsx")
 def make_compare(root):
     a=root/"demo-input/Compare/tree-A"; b=root/"demo-input/Compare/tree-B"
     (a/"docs/commun.txt").write_text("Meme contenu dans A et B.\n",encoding="utf-8"); (b/"docs/commun.txt").write_text("Meme contenu dans A et B.\n",encoding="utf-8")
