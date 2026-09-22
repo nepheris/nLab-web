@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'APP-Applications/pdf-studio/**'
+      - 'Library/demo/**'
       - '.github/workflows/sync-pdf-studio.yml'
   workflow_dispatch:
 
@@ -19,32 +20,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate stable and test snapshots
+      - name: Validate stable, test snapshot and demo corpus
         shell: bash
         run: |
           set -euo pipefail
+
           # CURRENT reste 0.9.10
           test -s APP-Applications/pdf-studio/app.html
           test -s APP-Applications/pdf-studio/app-0.9.10.html
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
           grep -q 'Alpha 0.9.10' APP-Applications/pdf-studio/app-0.9.10.html
 
-          # TEST 0.9.12 est publié séparément
+          # TEST 0.9.12 reste séparé
           test -s APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'Alpha 0.9.12' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'archivePattern0912' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'DATAMATRIX' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'treeCompare0912' APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'stampFormatB0912' APP-Applications/pdf-studio/app-0.9.12.html
+          grep -q 'nLabDemoCorpusV2' APP-Applications/pdf-studio/app-0.9.12.html
+          grep -q '../../Library/demo/demo-manifest.json' APP-Applications/pdf-studio/app-0.9.12.html
 
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
-
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
           grep -q '"test": "0.9.12"' APP-Applications/pdf-studio/versions.json
 
+          # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
           test -s Library/demo/index.html
           python -m pip install --disable-pip-version-check --quiet pillow reportlab python-docx openpyxl
@@ -58,4 +62,5 @@ jobs:
             echo 'ERROR: test snapshot depends on Google Drive at runtime.' >&2
             exit 1
           fi
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.12: OK'
+
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.12 + DEMO v2: OK'
