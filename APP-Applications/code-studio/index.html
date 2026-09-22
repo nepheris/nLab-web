@@ -40,7 +40,7 @@ main{padding:14px;height:calc(100vh - 137px);min-height:530px}.workspace{height:
 <input type="file" id="file" hidden accept=".txt,.json,.js,.mjs,.cjs,.py,.sh,.bash,.html,.htm,.css,.csv,.md,.markdown,text/*,application/json">
 
 <script>
-const editor=document.getElementById('editor'),preview=document.getElementById('preview'),previewWrap=document.getElementById('previewWrap'),languageSel=document.getElementById('language'),fileInput=document.getElementById('file'),fileLabel=document.getElementById('fileLabel'),statusEl=document.getElementById('status');
+const editor=document.getElementById('editor'),preview=document.getElementById('preview'),previewWrap=document.getElementById('previewWrap'),languageSel=document.getElementById('language'),fileInput=document.getElementById('file'),fileLabel=document.getElementById('fileLabel'),statusEl=document.getElementById('status'),lineCount=document.getElementById('lineCount'),charCount=document.getElementById('charCount'),langStatus=document.getElementById('langStatus'),previewInfo=document.getElementById('previewInfo'),fontSize=document.getElementById('fontSize'),fontValue=document.getElementById('fontValue');
 let currentName='snippet.txt', dark=true, wrap=false;
 const presets={
  text:{ext:'txt',mime:'text/plain'},json:{ext:'json',mime:'application/json'},javascript:{ext:'js',mime:'text/javascript'},python:{ext:'py',mime:'text/x-python'},bash:{ext:'sh',mime:'text/x-shellscript'},html:{ext:'html',mime:'text/html'},css:{ext:'css',mime:'text/css'},csv:{ext:'csv',mime:'text/csv'},markdown:{ext:'md',mime:'text/markdown'}
