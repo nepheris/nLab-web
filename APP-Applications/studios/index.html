@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="nLab Studios — suite publique d'outils locaux pour PDF, JSON, code, image et données.">
+<title>nLab Studios</title>
+<style>
+:root{--blue:#0057b8;--ink:#1f2933;--muted:#65717d;--bg:#f3f5f7;--panel:#fff;--border:#d7dde3;--soft:#eef3f8;--ok:#1f6a38;--warn:#7b5b00}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}a{color:inherit}
+header{background:#fff;border-bottom:1px solid var(--border)}.bar{width:min(1200px,calc(100% - 32px));margin:auto;min-height:72px;display:flex;align-items:center;gap:14px}.logo{width:44px;height:44px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--blue);font-weight:900}.brand b{font-size:20px}.brand small{display:block;color:var(--muted);margin-top:2px}.nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}.nav a{padding:8px 10px;text-decoration:none;border-radius:7px}.nav a:hover{background:var(--soft)}
+.menu{background:#fff;border-bottom:1px solid var(--border)}.menu .inner{width:min(1200px,calc(100% - 32px));margin:auto;display:flex;gap:4px;padding:6px 0}.menu button{border:0;background:transparent;padding:7px 10px;border-radius:6px;cursor:pointer}.menu button:hover{background:var(--soft)}
+.ribbon{background:#f8fafc;border-bottom:1px solid var(--border)}.ribbon .inner{width:min(1200px,calc(100% - 32px));margin:auto;padding:10px 0;display:flex;gap:8px;flex-wrap:wrap}.chip{font-size:12px;border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 9px}.chip.ok{color:var(--ok);border-color:#b9d8c2;background:#eff8f1}.chip.warn{color:var(--warn);border-color:#e8d28a;background:#fff8df}
+main{width:min(1200px,calc(100% - 32px));margin:auto;padding:42px 0 70px}.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:22px}.heroCard,.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}h1{font-size:clamp(34px,5vw,58px);line-height:1.03;margin:9px 0 15px}.lead{font-size:18px;line-height:1.55;color:#53616e}.cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.btn{display:inline-flex;text-decoration:none;font-weight:700;padding:10px 13px;border:1px solid #b9c4cd;border-radius:8px;background:#fff}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.grid{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.card{display:flex;flex-direction:column;min-height:210px;text-decoration:none}.card h3{margin:10px 0 6px;font-size:20px}.card p{color:#596875;line-height:1.5}.card .open{margin-top:auto;color:var(--blue);font-weight:800}.status{font-size:11px;font-weight:800}.public{color:var(--ok)}.module{color:#6a4b00}.planned{color:#6a6170}
+.section{margin-top:48px}.section h2{margin-bottom:8px}.note{background:#fff8df;border:1px solid #e8d28a;border-radius:10px;padding:12px 14px;line-height:1.5}.private{display:grid;grid-template-columns:1fr 1fr;gap:14px}.private .heroCard ul{line-height:1.7;color:#53616e}
+footer{border-top:1px solid var(--border);background:#fff}.foot{width:min(1200px,calc(100% - 32px));margin:auto;padding:18px 0;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+@media(max-width:780px){.hero,.private{grid-template-columns:1fr}.nav{display:none}}
+</style>
+</head>
+<body>
+<header><div class="bar"><div class="logo">nL</div><div class="brand"><b>nLab Studios</b><small>Outils web publics · local-first</small></div><nav class="nav"><a href="../../">nLab Web</a><a href="../pdf-studio/">PDF</a><a href="../json-studio/">JSON</a><a href="../code-studio/">Code</a><a href="../image-studio/">Image</a></nav></div></header>
+<div class="menu"><div class="inner"><button>Fichier</button><button>Édition</button><button>Affichage</button><button>Outils</button><button>Données</button><button>Sécurité</button><button>Aide</button></div></div>
+<div class="ribbon"><div class="inner"><span class="chip ok">Mode public : local uniquement</span><span class="chip">Aucun upload automatique</span><span class="chip">GitHub Pages</span><span class="chip warn">Mode privé : couche en préparation</span></div></div>
+<main>
+<section class="hero">
+<div><div class="eyebrow">Suite nLab</div><h1>Un même esprit d’interface pour les outils nLab.</h1><p class="lead">PDF, JSON, code et image partagent une logique commune : menus simples, ruban contextuel, traitement local par défaut, export explicite et séparation stricte entre code public et données privées.</p><div class="cta"><a class="btn primary" href="../pdf-studio/">Ouvrir PDF Studio</a><a class="btn" href="./ARCHITECTURE.md">Architecture publique/privée</a></div></div>
+<aside class="heroCard"><div class="eyebrow">Principe</div><h2>Public d’abord, privé en surcouche</h2><p>Les applications restent utilisables sans compte. Une future connexion privée pourra charger des données autorisées depuis Google Drive sans les incorporer au build public.</p><div class="note">Les modules d’authentification/RBAC/rate-limit existent dans le framework mais ne sont pas encore tous promus comme stables.</div></aside>
+</section>
+
+<section class="section"><div class="eyebrow">Vague publique 1</div><h2>Applications disponibles</h2>
+<div class="grid">
+<a class="card" href="../pdf-studio/"><span class="status public">PUBLIC · EXISTANT</span><h3>nLab PDF Studio</h3><p>Édition et traitement PDF local-first : pages, annotations, images, signatures, classement et fonctions documentaires.</p><span class="open">Ouvrir →</span></a>
+<a class="card" href="../json-studio/"><span class="status public">PUBLIC · V0.1</span><h3>nLab JSON Studio</h3><p>Ouvrir, éditer, valider, formater et exporter du JSON avec vues brute, arbre et tableau.</p><span class="open">Ouvrir →</span></a>
+<a class="card" href="../code-studio/"><span class="status public">PUBLIC · V0.1</span><h3>nLab Code Studio</h3><p>Éditeur local multi-langages : JSON, JavaScript, Python, Bash, HTML, CSS, CSV, Markdown et texte.</p><span class="open">Ouvrir →</span></a>
+<a class="card" href="../image-studio/"><span class="status public">PUBLIC · V0.1</span><h3>nLab Image Studio</h3><p>Traitement local d’images : rotation, miroir, niveaux simples, redimensionnement et export.</p><span class="open">Ouvrir →</span></a>
+<a class="card" href="../pdf-studio/"><span class="status module">MODULE APP07</span><h3>Scan & OCR</h3><p>OCR, prétraitement de scan et PDF recherchable restent dans le produit canonique APP07 Scan Studio / PDF Studio.</p><span class="open">Accéder via PDF Studio →</span></a>
+</div></section>
+
+<section class="section"><div class="eyebrow">Vague suivante</div><h2>Outils éligibles déjà identifiés</h2>
+<div class="grid">
+<div class="card"><span class="status planned">CANDIDAT</span><h3>Data Studio</h3><p>TableWiz + DataWiz + DataResolver : tableaux, recherche, filtres, statistiques et visualisations.</p></div>
+<div class="card"><span class="status planned">CANDIDAT</span><h3>QR Studio</h3><p>Composants QR Studio, presets, sessions et génération par lot déjà présents dans le Web Framework.</p></div>
+<div class="card"><span class="status planned">CANDIDAT</span><h3>Document Studio</h3><p>DocumentWiz + templates : fiches HTML/print, QR et exports documentaires.</p></div>
+<div class="card"><span class="status planned">CANDIDAT</span><h3>Import / Export Studio</h3><p>Réutilisation d’APP01 Multi-format Importer et APP02 Multi-format Exporter.</p></div>
+</div></section>
+
+<section class="section private"><div class="heroCard"><div class="eyebrow">Mode privé cible</div><h2>Connexion Google / Drive</h2><ul><li>session applicative opaque et courte ;</li><li>RBAC côté serveur, deny-by-default ;</li><li>quota/rate-limit avant les appels Drive ;</li><li>données privées chargées seulement après autorisation ;</li><li>aucun secret dans GitHub Pages.</li></ul></div><div class="heroCard"><div class="eyebrow">Règle de sécurité</div><h2>Pas de faux “privé” côté client</h2><p>Masquer un bouton ou un panneau dans le navigateur n’est pas une autorisation. La future couche privée doit être servie par le gateway nLab et contrôlée côté serveur avant toute lecture ou écriture Drive.</p></div></section>
+</main>
+<footer><div class="foot"><span>nLab Studios · branche de préparation publique</span><span>Powered by nLab · Synergies SVA SARL</span></div></footer>
+</body></html>
