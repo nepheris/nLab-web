@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>nLab DEMO CORPUS v2 · Galerie</title>
+<title>nLab DEMO CORPUS · Galerie</title>
 <style>
 :root{--blue:#0057b8;--ink:#1f2933;--muted:#607181;--line:#d8e0e7;--bg:#f3f5f7;--green:#21633a}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}a{color:inherit}.wrap{width:min(1220px,calc(100% - 28px));margin:auto}
@@ -13,20 +13,45 @@ main{padding:34px 0 60px}.hero{background:#fff;border:1px solid var(--line);bord
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-height:390px}
 .preview{height:235px;background:#e9edf1;display:grid;place-items:center;overflow:hidden}.preview img{width:100%;height:100%;object-fit:contain}.body{padding:14px;display:flex;flex-direction:column;gap:7px;flex:1}
 .kind{font-size:10px;font-weight:900;color:#0f5c94;letter-spacing:.06em;text-transform:uppercase}.body h2{font-size:17px;margin:0}.body p{font-size:13px;color:var(--muted);line-height:1.45;margin:0}
-.path{font:10px ui-monospace,monospace;background:#f5f7f8;border-radius:6px;padding:6px;word-break:break-all;margin-top:auto}.empty{padding:28px;background:#fff;border:1px dashed #b8c4ce;border-radius:12px;color:var(--muted)}
+.path{font:10px ui-monospace,monospace;background:#f5f7f8;border-radius:6px;padding:6px;word-break:break-all;margin-top:auto}.empty{padding:28px;background:#fff;border:1px dashed #b8c4ce;border-radius:12px;color:var(--muted)}.packgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:18px 0 28px}.pack{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px}.techpreview{height:180px;background:#eef2f5;border-radius:9px;display:grid;place-items:center;overflow:hidden;margin-bottom:9px}.techpreview img{width:100%;height:100%;object-fit:contain}.techpreview pre{margin:0;padding:10px;width:100%;height:100%;overflow:auto;white-space:pre-wrap;font:10px ui-monospace,monospace}
 footer{padding:18px 0;color:var(--muted);font-size:12px}
 </style></head><body>
 <header><div class="wrap"><a href="../../">← nLab Web</a><a href="../../APP-Applications/pdf-studio/">PDF Studio</a><span class="brand">nLab DEMO CORPUS</span></div></header>
 <main class="wrap">
 <section class="hero"><span class="badge">100 % synthétique · aucune donnée personnelle réelle</span><h1>Galerie de démonstration nLab</h1>
 <p>Prévisualisation du corpus commun utilisé pour PDF Studio, OCR, Image Studio, BrickMiner et les futurs convertisseurs. Le corpus est versionné séparément des applications.</p>
-<div class="actions"><a class="btn primary" href="./nLab-DEMO-CORPUS-v2.zip">Télécharger le ZIP complet</a><a class="btn" href="./demo-manifest.json">Manifest PDF Studio</a><a class="btn" href="./demo-catalog-v2.json">Catalogue JSON</a><a class="btn" href="../../APP-Applications/pdf-studio/app-0.9.13.html">Tester PDF Studio 0.9.13</a></div></section>
+<div class="actions"><a class="btn primary" href="./nLab-DEMO-CORPUS-v2.zip">ZIP compatible PDF v2</a><a class="btn primary" href="./nLab-DEMO-CORPUS-v3.zip">ZIP Studios v3</a><a class="btn" href="./demo-manifest.json">Manifest global</a><a class="btn" href="./manifests/index.json">Manifests par Studio</a><a class="btn" href="./demo-catalog-v2.json">Catalogue v2.1</a><a class="btn" href="../../APP-Applications/pdf-studio/app-0.9.13.html">Tester PDF Studio 0.9.13</a></div></section>
+<section><h2>Packs de démonstration par Studio</h2><p style="color:var(--muted)">Chaque pack ne contient que les fichiers utiles au Studio concerné.</p><div id="packs" class="packgrid"></div></section>
 <div class="toolbar"><input id="q" placeholder="Rechercher : OCR, PDF, DOCX, formulaire…"><div id="filters" class="filters"></div></div><div id="grid" class="grid"></div>
-</main><footer><div class="wrap">nLab DEMO CORPUS v2.1 · corpus de test public partagé.</div></footer>
+<section style="margin-top:34px"><h2>Galerie technique v3</h2><p style="color:var(--muted)">Aperçu des fichiers réellement générés : images/codes, JSON, CSV, texte/code et liens PDF.</p><div id="techgrid" class="grid"></div></section>
+</main><footer><div class="wrap">nLab DEMO CORPUS v2.1 + extensions Studios v3 · corpus public synthétique.</div></footer>
 <script>
-let DATA=null,active='Tous';const grid=document.getElementById('grid'),q=document.getElementById('q'),filters=document.getElementById('filters');
+let DATA=null,active='Tous';const grid=document.getElementById('grid'),q=document.getElementById('q'),filters=document.getElementById('filters'),techgrid=document.getElementById('techgrid'),packs=document.getElementById('packs');
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function render(){const needle=q.value.trim().toLowerCase();const cards=(DATA?.cards||[]).filter(c=>(active==='Tous'||c.kind===active)&&(!needle||[c.title,c.kind,c.description,c.path].join(' ').toLowerCase().includes(needle)));
 grid.innerHTML=cards.length?cards.map(c=>`<article class="card"><div class="preview"><img src="${esc(c.preview)}" alt="Aperçu ${esc(c.title)}" loading="lazy"></div><div class="body"><span class="kind">${esc(c.kind)}</span><h2>${esc(c.title)}</h2><p>${esc(c.description)}</p><div class="path">${esc(c.path)}</div></div></article>`).join(''):'<div class="empty">Aucun fichier ne correspond au filtre.</div>'}
 fetch('./demo-catalog-v2.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('catalogue '+r.status);return r.json()}).then(d=>{DATA=d;const ks=['Tous',...new Set((d.cards||[]).map(c=>c.kind))];filters.innerHTML=ks.map(k=>`<button data-k="${esc(k)}" class="${k==='Tous'?'active':''}">${esc(k)}</button>`).join('');filters.onclick=e=>{const b=e.target.closest('button');if(!b)return;active=b.dataset.k;filters.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));render()};q.oninput=render;render()}).catch(e=>grid.innerHTML='<div class="empty">Erreur galerie : '+esc(e.message)+'</div>');
+
+async function techPreview(f){
+  try{
+    if(f.preview==='image') return '<img loading="lazy" src="'+f.href+'" alt="">';
+    if(f.preview==='pdf') return '<div><b>PDF</b><br><a href="'+f.href+'" target="_blank">Ouvrir</a></div>';
+    if(f.preview==='download') return '<div><b>Fichier '+esc(f.path.split('.').pop().toUpperCase())+'</b><br><a href="'+f.href+'">Télécharger</a></div>';
+    const t=await fetch(f.href,{cache:'no-store'}).then(r=>r.text());
+    return '<pre>'+esc((f.preview==='csv'?t.split(/\r?\n/).slice(0,7).join('\n'):t.slice(0,1600)))+'</pre>';
+  }catch{return '<pre>Preview indisponible</pre>'}
+}
+fetch('./demo-gallery-v3.json',{cache:'no-store'}).then(r=>r.json()).then(async d=>{
+  const subset=(d.files||[]).filter(f=>['Images','QR-Barcode','Code','Data','OCR'].includes(f.category)).slice(0,36);
+  techgrid.innerHTML='';
+  for(const f of subset){
+    const c=document.createElement('article');c.className='card';
+    c.innerHTML='<div class="techpreview">Chargement…</div><div class="body"><span class="kind">'+esc(f.category)+' · '+esc(f.preview)+'</span><h2>'+esc(f.path.split('/').pop())+'</h2><div class="path">'+esc(f.path)+'</div><a href="'+f.href+'" target="_blank">Ouvrir / télécharger →</a></div>';
+    techgrid.appendChild(c);c.querySelector('.techpreview').innerHTML=await techPreview(f);
+  }
+}).catch(e=>techgrid.innerHTML='<div class="empty">Galerie technique indisponible : '+esc(e.message)+'</div>');
+
+fetch('./manifests/index.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
+  packs.innerHTML=(d.studios||[]).map(x=>'<div class="pack"><b>'+esc(x.label)+'</b><div class="path">'+x.fileCount+' fichier(s)</div><div class="actions"><a class="btn" href="'+x.manifest+'">Manifest</a><a class="btn" href="'+x.pack+'">ZIP</a></div></div>').join('');
+}).catch(e=>packs.innerHTML='<div class="empty">Packs indisponibles : '+esc(e.message)+'</div>');
 </script></body></html>
