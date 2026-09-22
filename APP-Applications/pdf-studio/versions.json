@@ -1,15 +1,24 @@
 {
   "current": "0.9.10",
-  "test": "0.9.12",
+  "test": "0.9.13",
   "versions": [
+    {
+      "version": "0.9.13",
+      "label": "Alpha 0.9.13",
+      "date": "2026-09-22",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.13.html",
+      "notes": "TEST / RC : bouton Debug en un clic avec rapport sanitise, journal des fetch/erreurs, chargement direct du corpus démo avec secours ZIP et lien vers la galerie."
+    },
     {
       "version": "0.9.12",
       "label": "Alpha 0.9.12",
       "date": "2026-09-18",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.12.html",
-      "notes": "TEST / RC : classement chronologique programmable, tampons multi-lignes et formats Date A/B/C, préfixes/suffixes de fichier, QR avancé + Data Matrix, comparaison d’arborescences et aides sécurité renforcées."
+      "notes": "Ancienne RC : classement programmable, tampons Date A/B/C, QR avancé/Data Matrix, comparaison d’arborescences et corpus démo ZIP."
     },
     {
       "version": "0.9.11",
