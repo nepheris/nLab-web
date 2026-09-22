@@ -202,7 +202,7 @@ function install(){
   if(demo){
     demo.textContent="Charger la démo v2";
     demo.title="Charge directement les fichiers publics du corpus; le ZIP sert de secours.";
-    demo.onclick=e=>{e.preventDefault();const p=loadDemoDirect0913();if(typeof run==="function")return run(()=>p,e.currentTarget);p.catch(err=>{log("demo.error",err);if(typeof st==="function")st("Erreur démo : "+err.message)})};
+    demo.onclick=e=>{e.preventDefault();if(typeof run==="function")return run(loadDemoDirect0913,e.currentTarget);loadDemoDirect0913().catch(err=>{log("demo.error",err);if(typeof st==="function")st("Erreur démo : "+err.message)})};
   }
   const box=demo?.parentElement?.parentElement;
   if(box&&!document.getElementById("nlabDemoGalleryLink")){
