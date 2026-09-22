@@ -1,0 +1,45 @@
+{
+  "schema": "nlab-studio-demo-manifest/v1",
+  "version": "3.0",
+  "studio": "qr-barcode",
+  "label": "QR & Barcode Studio",
+  "privacy": "synthetic-only",
+  "pack": "../packs/nLab-DEMO-qr-barcode-v3.zip",
+  "files": [
+    {
+      "path": "../files/demo-input/QR-Barcode/code128-test.svg",
+      "size": 15426,
+      "sha256": "f40be191d329629aa27efc462d6986f0214b73ad9437bb96af651efb08202ca8"
+    },
+    {
+      "path": "../files/demo-input/QR-Barcode/datamatrix-test.svg",
+      "size": 159004,
+      "sha256": "b6606660092ac6c49f4e5c872e9e9193aadd799f8d41a07f3342ba8db2b566d4"
+    },
+    {
+      "path": "../files/demo-input/QR-Barcode/payloads.json",
+      "size": 1190,
+      "sha256": "fca4063614591185bdde70b5c28c9c2faa2c334458e003a8e3eda3a280367afd"
+    },
+    {
+      "path": "../files/demo-input/QR-Barcode/qr-google.svg",
+      "size": 36892,
+      "sha256": "31eba026adeb74416f87d1d0265619cf7def920bba41a7930a18367102f0e84a"
+    },
+    {
+      "path": "../files/demo-input/QR-Barcode/qr-lemonde.svg",
+      "size": 36684,
+      "sha256": "a2114ca79177d7a40558ee9c53052aee6433fc16b9338ec10475163d265b57d8"
+    },
+    {
+      "path": "../files/demo-input/QR-Barcode/qr-nlab.svg",
+      "size": 48432,
+      "sha256": "1200f4c7fb334be98aace94985edb7bd56738e0672511e3f96cd508572d6db42"
+    },
+    {
+      "path": "../files/demo-input/QR-Barcode/qr-youtube.svg",
+      "size": 35400,
+      "sha256": "74c20f323da1305b269a988e4808e37bb65fab029abd1aa176840f569e575c38"
+    }
+  ]
+}

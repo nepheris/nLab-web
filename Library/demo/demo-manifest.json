@@ -38,5 +38,15 @@
   "fileCount": 39,
   "directFileCount": 16,
   "catalog": "../../Library/demo/demo-catalog-v2.json",
-  "gallery": "../../Library/demo/"
+  "gallery": "../../Library/demo/",
+  "studioDemo": {
+    "version": "3.0",
+    "archive": "../../Library/demo/nLab-DEMO-CORPUS-v3.zip",
+    "catalog": "../../Library/demo/demo-catalog-v3.json",
+    "gallery": "../../Library/demo/demo-gallery-v3.json",
+    "manifests": "../../Library/demo/manifests/index.json",
+    "privacy": "synthetic-only"
+  },
+  "studioManifests": "../../Library/demo/manifests/index.json",
+  "galleryV3": "../../Library/demo/demo-gallery-v3.json"
 }

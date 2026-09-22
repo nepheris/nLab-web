@@ -1,0 +1,40 @@
+{
+  "schema": "nlab-studio-demo-manifest/v1",
+  "version": "3.0",
+  "studio": "image",
+  "label": "Image Studio",
+  "privacy": "synthetic-only",
+  "pack": "../packs/nLab-DEMO-image-v3.zip",
+  "files": [
+    {
+      "path": "../files/demo-input/Images/calibration-regles-300x150.json",
+      "size": 305,
+      "sha256": "36d550a05df77fe7000952f1904c400f20a48602bd26d4fe933cc8b9887442d4"
+    },
+    {
+      "path": "../files/demo-input/Images/calibration-regles-300x150.png",
+      "size": 31165,
+      "sha256": "e90e3955a80d633da2279a2e674ee2132a4aa60ac243be844fcf3118927cf454"
+    },
+    {
+      "path": "../files/demo-input/Images/demo-image-anime.gif",
+      "size": 23773,
+      "sha256": "46fd0c38eb883bf25abb1910c4eca28e67838a839000bcdda8b9058ea02e8a79"
+    },
+    {
+      "path": "../files/demo-input/Images/demo-image-color.jpg",
+      "size": 44949,
+      "sha256": "a8a08c37491cd2df4828796c5ddce52f13eaf43aa89269f1c8569c477401bd20"
+    },
+    {
+      "path": "../files/demo-input/Images/demo-image-color.png",
+      "size": 18341,
+      "sha256": "76c2b138e267e740c5909b4733dcf1a1a2212d96206405aceb18e896793855fe"
+    },
+    {
+      "path": "../files/demo-input/Images/demo-image-color.webp",
+      "size": 16224,
+      "sha256": "1e382e65305775985d93c1e86332ed75676f241ff4ab5340ff39fda36dab5ef4"
+    }
+  ]
+}

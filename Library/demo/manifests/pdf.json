@@ -1,0 +1,65 @@
+{
+  "schema": "nlab-studio-demo-manifest/v1",
+  "version": "3.0",
+  "studio": "pdf",
+  "label": "PDF Studio",
+  "privacy": "synthetic-only",
+  "pack": "../packs/nLab-DEMO-pdf-v3.zip",
+  "files": [
+    {
+      "path": "../files/demo-input/OCR/ocr-imprime-faible-contraste.jpg",
+      "size": 80713,
+      "sha256": "7dd30de08d15a74137a008adf3efbf338ed27328d91dd71363b20cb1788a0688"
+    },
+    {
+      "path": "../files/demo-input/OCR/ocr-imprime-propre.png",
+      "size": 41650,
+      "sha256": "742b132282335d6a57b087a5bb6239e71b40226da0ffb65931e38f85b6042f96"
+    },
+    {
+      "path": "../files/demo-input/OCR/ocr-pseudo-manuscrit.png",
+      "size": 51896,
+      "sha256": "4a0d651ed72d286f111898f6401cf9687bc6edd299df8fe0dbb5f28b2c53d253"
+    },
+    {
+      "path": "../files/demo-input/OCR/ocr-scan-incline-bruite.jpg",
+      "size": 129595,
+      "sha256": "3d549ee3c5554804ff3218e88fdd3b2632d6de30354f2fb8cfc10f1c0a7302f4"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-formulaire-acroform.pdf",
+      "size": 8752,
+      "sha256": "86c29e65f460ff97146ec3afb6517551d2a9ea5a56e41cba298244b7343dfcbb"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-multipage-orientations.pdf",
+      "size": 2439,
+      "sha256": "70d589140500de2c76fda7567112003806d73cac47d8367328d63f64db389f4b"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
+      "size": 149500,
+      "sha256": "1c7ae8f36ee28c39f636d3dd8719b5ab45360f9aed127252d87e9430913a0df1"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
+      "size": 116805,
+      "sha256": "537d5dbc8709cfc204cbbebee503317800f0f87fe9ca31ec7c8882a32c2af8b9"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
+      "size": 116698,
+      "sha256": "1b2cb81df1ba95caf0444b2d99092fac764b311a7da71bd41c86b4b76faad9ea"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-texte-actif.pdf",
+      "size": 3377,
+      "sha256": "5ae4551f5d2d5a231dcdd24e1c82263411a77d81ba4170b9ded832454cd5b435"
+    },
+    {
+      "path": "../files/demo-input/Zip/archive-imbriquee-demo.zip",
+      "size": 715,
+      "sha256": "7d0f0d199e919e02a3d02e9c347b0c7670ffbe9cf08564a66c5b97ab36e75b52"
+    }
+  ]
+}

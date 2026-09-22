@@ -1,0 +1,65 @@
+{
+  "schema": "nlab-studio-demo-manifest/v1",
+  "version": "3.0",
+  "studio": "data",
+  "label": "Data Studio",
+  "privacy": "synthetic-only",
+  "pack": "../packs/nLab-DEMO-data-v3.zip",
+  "files": [
+    {
+      "path": "../files/demo-input/Data/dataset-validation-complet.csv",
+      "size": 24539,
+      "sha256": "6aa2511d5440fab8dfe26762063ae6cb2d1f62fd12baf3e82defb8c82de494a3"
+    },
+    {
+      "path": "../files/demo-input/Data/dataset-validation-complet.json",
+      "size": 53818,
+      "sha256": "0ee93744fc5d6a67a3a1f6cab740f234a55fb1a750870580d00a20a3f360b258"
+    },
+    {
+      "path": "../files/demo-input/Data/dataset-validation-complet.xlsx",
+      "size": 83546,
+      "sha256": "199fb2f96618f98ef963fd32aea50b0a3cb463cee0aea862e637b234e181124a"
+    },
+    {
+      "path": "../files/demo-input/Data/images/bleu-test.png",
+      "size": 1434,
+      "sha256": "7d318161caa63a020f27c53fbf0d7bb66ec98d82503a43f35eacb4a74d524a65"
+    },
+    {
+      "path": "../files/demo-input/Data/images/gris-test.png",
+      "size": 1407,
+      "sha256": "83f917b2e64a81851be636545841c259d6d2f0c02d84f3e62cb76616e8f2d463"
+    },
+    {
+      "path": "../files/demo-input/Data/images/jaune-test.png",
+      "size": 1590,
+      "sha256": "dd881d4685634492e0c5831df46985b11b32c97b4f07cf12f5b90a62cb0f4fce"
+    },
+    {
+      "path": "../files/demo-input/Data/images/orange-test.png",
+      "size": 1988,
+      "sha256": "a18e977f8da7c4946db705fd38776745822a95dc5888b51804c7e9de99ccd0f5"
+    },
+    {
+      "path": "../files/demo-input/Data/images/rouge-test.png",
+      "size": 1888,
+      "sha256": "6aaa2651ebe02c48a27ce97110d5202a94b7d02e4be005f97435a2a02d79d40b"
+    },
+    {
+      "path": "../files/demo-input/Data/images/turquoise-test.png",
+      "size": 1831,
+      "sha256": "87fdbf3a5aacf738ea69c2eb1724704745f8e0aee0d0cf02ba3ba0a99a38d745"
+    },
+    {
+      "path": "../files/demo-input/Data/images/vert-test.png",
+      "size": 1476,
+      "sha256": "fe70cfbe0bfd92189b284bd62884a3fbed2a3e002f99c7178053c039aeeef696"
+    },
+    {
+      "path": "../files/demo-input/Data/images/violet-test.png",
+      "size": 1659,
+      "sha256": "2f238607ceec2e339aa3a23b7be90a3e351b55b7078823e7d8486ff4de984678"
+    }
+  ]
+}

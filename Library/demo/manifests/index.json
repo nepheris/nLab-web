@@ -1,0 +1,56 @@
+{
+  "schema": "nlab-studio-demo-index/v1",
+  "version": "3.0",
+  "privacy": "synthetic-only",
+  "studios": [
+    {
+      "id": "pdf",
+      "label": "PDF Studio",
+      "manifest": "./pdf.json",
+      "pack": "../packs/nLab-DEMO-pdf-v3.zip",
+      "fileCount": 11
+    },
+    {
+      "id": "image",
+      "label": "Image Studio",
+      "manifest": "./image.json",
+      "pack": "../packs/nLab-DEMO-image-v3.zip",
+      "fileCount": 6
+    },
+    {
+      "id": "ocr",
+      "label": "OCR Studio",
+      "manifest": "./ocr.json",
+      "pack": "../packs/nLab-DEMO-ocr-v3.zip",
+      "fileCount": 6
+    },
+    {
+      "id": "code-json",
+      "label": "Code + JSON Studio",
+      "manifest": "./code-json.json",
+      "pack": "../packs/nLab-DEMO-code-json-v3.zip",
+      "fileCount": 6
+    },
+    {
+      "id": "data",
+      "label": "Data Studio",
+      "manifest": "./data.json",
+      "pack": "../packs/nLab-DEMO-data-v3.zip",
+      "fileCount": 11
+    },
+    {
+      "id": "qr-barcode",
+      "label": "QR & Barcode Studio",
+      "manifest": "./qr-barcode.json",
+      "pack": "../packs/nLab-DEMO-qr-barcode-v3.zip",
+      "fileCount": 7
+    },
+    {
+      "id": "file",
+      "label": "File Studio",
+      "manifest": "./file.json",
+      "pack": "../packs/nLab-DEMO-file-v3.zip",
+      "fileCount": 13
+    }
+  ]
+}

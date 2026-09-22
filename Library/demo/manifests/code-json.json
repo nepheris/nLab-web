@@ -1,0 +1,40 @@
+{
+  "schema": "nlab-studio-demo-manifest/v1",
+  "version": "3.0",
+  "studio": "code-json",
+  "label": "Code + JSON Studio",
+  "privacy": "synthetic-only",
+  "pack": "../packs/nLab-DEMO-code-json-v3.zip",
+  "files": [
+    {
+      "path": "../files/demo-input/Code/demo-config.yaml",
+      "size": 68,
+      "sha256": "016006d7922afec64200e5273ad7e1d6255a220ee9141874611c15ae7fe248ed"
+    },
+    {
+      "path": "../files/demo-input/Code/demo-markdown.md",
+      "size": 78,
+      "sha256": "e72bfb20afa3f7678cec862ca15dd05608e9dffabd23f95a21089c9b8d9ad90e"
+    },
+    {
+      "path": "../files/demo-input/Code/demo-record.xml",
+      "size": 111,
+      "sha256": "caea5aae3961bba5590b462f619a9c208f4dde187c961c28982e6dddbd3973ee"
+    },
+    {
+      "path": "../files/demo-input/Code/demo-script.js",
+      "size": 141,
+      "sha256": "9d0b8720817fe3aec9f47c63d1b6d160e7c68631c46d45399013eb8d7a1e8eeb"
+    },
+    {
+      "path": "../files/demo-input/Code/demo-structure.json",
+      "size": 304,
+      "sha256": "daf67b86a36b4edd01dde66c4e32414296dd8ede56bc8ad41a8f090d51e14da8"
+    },
+    {
+      "path": "../files/demo-input/Data/dataset-validation-complet.json",
+      "size": 53818,
+      "sha256": "0ee93744fc5d6a67a3a1f6cab740f234a55fb1a750870580d00a20a3f360b258"
+    }
+  ]
+}

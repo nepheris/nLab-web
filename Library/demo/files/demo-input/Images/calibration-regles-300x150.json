@@ -1,0 +1,13 @@
+{
+  "schema": "nlab-image-calibration-demo/v1",
+  "label": "NLAB DEMO TEST — règles 300 × 150 mm",
+  "pixels_per_mm_expected": 4.0,
+  "dpi_expected": 101.6,
+  "x_reference_mm": 300,
+  "y_reference_mm": 150,
+  "known_object_mm": {
+    "width": 120,
+    "height": 80
+  },
+  "privacy": "synthetic-only"
+}

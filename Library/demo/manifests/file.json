@@ -1,0 +1,82 @@
+{
+  "schema": "nlab-studio-demo-manifest/v1",
+  "version": "3.0",
+  "studio": "file",
+  "label": "File Studio",
+  "privacy": "synthetic-only",
+  "pack": "../packs/nLab-DEMO-file-v3.zip",
+  "files": [
+    {
+      "path": "../files/demo-input/Compare/tree-A/docs/commun.txt",
+      "size": 20,
+      "sha256": "8e5106367e2eaa263b12088efd79cfab534056e26ad025e5a1a57f0957b92e51"
+    },
+    {
+      "path": "../files/demo-input/Compare/tree-A/docs/modifie.txt",
+      "size": 25,
+      "sha256": "e4e0faf5e183c00f3a67459c952c7e02560d29285d9367f8596437f59afebd1c"
+    },
+    {
+      "path": "../files/demo-input/Compare/tree-B/docs/commun.txt",
+      "size": 20,
+      "sha256": "8e5106367e2eaa263b12088efd79cfab534056e26ad025e5a1a57f0957b92e51"
+    },
+    {
+      "path": "../files/demo-input/Compare/tree-B/docs/modifie.txt",
+      "size": 35,
+      "sha256": "12cb05412a2d119efd91e7a420dadb5972214b8ab39bc53d4b27e05efdf6011f"
+    },
+    {
+      "path": "../files/demo-input/File/lot-A/IMG_0001 photo ROUGE.txt",
+      "size": 20,
+      "sha256": "3720d0a2e0ae514a4cf26f632ba2e657272c5342e1c87ba4f9ce9b432deb1ce5"
+    },
+    {
+      "path": "../files/demo-input/File/lot-A/IMG_0002 photo BLEUE.txt",
+      "size": 20,
+      "sha256": "b0727099416b92e8b37cd1a361915dfa8a8155db8b2b2fe4b51b1fc532e6f654"
+    },
+    {
+      "path": "../files/demo-input/File/lot-A/facture test 0003.txt",
+      "size": 26,
+      "sha256": "22e3e666a20bb67a4967790e021da021b3d9f5dc6fbd42e4b133d071c6386015"
+    },
+    {
+      "path": "../files/demo-input/File/lot-A/rapport.v1.final.TEST.txt",
+      "size": 26,
+      "sha256": "3408cb1b036edbfd9612d33d22498369a81a413953fbde6e3bf31976e2c4af6f"
+    },
+    {
+      "path": "../files/demo-input/File/lot-B/sous-dossier/2026_09_22-client_demo-A.txt",
+      "size": 21,
+      "sha256": "b97c23826247d466a87a50860cf42484e7005756bfd509c9320eabb63fac0d90"
+    },
+    {
+      "path": "../files/demo-input/File/lot-B/sous-dossier/Nom Avec Espaces et accents É.txt",
+      "size": 18,
+      "sha256": "677880f273fe8f27b6278be82e5462c9d11ad678099d1dddbb94e4a41b5af9a3"
+    },
+    {
+      "path": "../files/demo-input/File/lot-B/sous-dossier/data_TEST_001.json",
+      "size": 38,
+      "sha256": "8c038c9d4926f29285b4fb4ed87db131f28113d053d85d88e4638cddf2a132fd"
+    },
+    {
+      "path": "../files/demo-input/File/lot-B/sous-dossier/liste_TEST.csv",
+      "size": 24,
+      "sha256": "469b6f91a4270043ad46e5c4b51c19af5d881fe12f1071b7dfadde3c8685b856"
+    },
+    {
+      "path": "../files/demo-input/Zip/archive-imbriquee-demo.zip",
+      "size": 715,
+      "sha256": "7d0f0d199e919e02a3d02e9c347b0c7670ffbe9cf08564a66c5b97ab36e75b52"
+    }
+  ],
+  "demoNames": [
+    "IMG_0001 photo ROUGE.txt",
+    "IMG_0002 photo BLEUE.txt",
+    "facture test 0003.txt",
+    "rapport.v1.final.TEST.txt",
+    "Nom Avec Espaces et accents É.txt"
+  ]
+}

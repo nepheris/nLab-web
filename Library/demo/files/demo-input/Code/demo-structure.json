@@ -1,0 +1,22 @@
+{
+  "dataset": "NLAB_DEMO_TEST",
+  "synthetic": true,
+  "records": [
+    {
+      "id": "TEST-001",
+      "nom": "Alpha",
+      "tags": [
+        "demo",
+        "json"
+      ]
+    },
+    {
+      "id": "TEST-002",
+      "nom": "Bêta",
+      "tags": [
+        "unicode",
+        "test"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "nlab-code-demo/v1",
+  "privacy": "synthetic-or-public-url-only",
+  "items": [
+    {
+      "id": "qr-nlab",
+      "symbology": "QR",
+      "value": "https://nepheris.github.io/nLab-web/",
+      "label": "nLab Web",
+      "file": "qr-nlab.svg"
+    },
+    {
+      "id": "qr-youtube",
+      "symbology": "QR",
+      "value": "https://www.youtube.com/",
+      "label": "YouTube — URL publique",
+      "file": "qr-youtube.svg"
+    },
+    {
+      "id": "qr-lemonde",
+      "symbology": "QR",
+      "value": "https://www.lemonde.fr/",
+      "label": "Le Monde — URL publique",
+      "file": "qr-lemonde.svg"
+    },
+    {
+      "id": "qr-google",
+      "symbology": "QR",
+      "value": "https://www.google.com/",
+      "label": "Google — URL publique",
+      "file": "qr-google.svg"
+    },
+    {
+      "id": "datamatrix-test",
+      "symbology": "DATAMATRIX",
+      "value": "NLAB-DEMO-DATAMATRIX-001",
+      "label": "Data Matrix synthétique",
+      "file": "datamatrix-test.svg"
+    },
+    {
+      "id": "code128-test",
+      "symbology": "Code128",
+      "value": "NLAB-DEMO-CODE128-001",
+      "label": "Code 128 synthétique",
+      "file": "code128-test.svg"
+    }
+  ]
+}
