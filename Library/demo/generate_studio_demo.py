@@ -31,8 +31,8 @@ def sha256(path):
     return h.hexdigest()
 
 def mkdirs(root):
-    for d in ["Images","Data/images","Code","QR-Barcode","File/lot-A","File/lot-B/sous-dossier"]:
-        (root/"demo-input"/d).mkdir(parents=True,exist_ok=True)
+    for d in ["Images","Data/images","Code","QR-Barcode","File/lot-A","File/lot-B/sous-dossier","Compare/tree-A/docs","Compare/tree-B/docs"]:
+        (root/"files/demo-input"/d).mkdir(parents=True,exist_ok=True)
     (root/"manifests").mkdir(parents=True,exist_ok=True)
     (root/"packs").mkdir(parents=True,exist_ok=True)
 
@@ -109,6 +109,11 @@ def make_file_samples(root):
         b/"liste_TEST.csv":"id,label\n1,Alpha\n2,Beta\n"
     }
     for path,content in samples.items(): path.write_text(content,encoding="utf-8")
+    ca=root/"files/demo-input/Compare/tree-A/docs"; cb=root/"files/demo-input/Compare/tree-B/docs"
+    (ca/"commun.txt").write_text("Même contenu TEST.\n",encoding="utf-8")
+    (cb/"commun.txt").write_text("Même contenu TEST.\n",encoding="utf-8")
+    (ca/"modifie.txt").write_text("Version A — DEMO TEST.\n",encoding="utf-8")
+    (cb/"modifie.txt").write_text("Version B — DEMO TEST modifiée.\n",encoding="utf-8")
 
 def luhn_ok(num):
     total=0
@@ -214,7 +219,7 @@ def rebuild_outputs(root):
     catalog=[]
     for p in files:
         rel=p.relative_to(root).as_posix()
-        cat=rel.split("/")[1] if rel.startswith("demo-input/") and "/" in rel else ("Output" if rel.startswith("demo-output/") else "Documentation")
+        cat=rel.split("/")[2] if rel.startswith("files/demo-input/") and len(rel.split("/"))>2 else ("Output" if rel.startswith("files/demo-output/") else "Documentation")
         catalog.append({"path":rel,"category":cat,"size":p.stat().st_size,"sha256":sha256(p)})
     archive=root/"nLab-DEMO-CORPUS-v3.zip"
     with zipfile.ZipFile(archive,"w",zipfile.ZIP_DEFLATED,compresslevel=7) as z:
@@ -245,8 +250,21 @@ def rebuild_outputs(root):
         preview="image" if ext in [".png",".jpg",".jpeg",".webp",".gif",".svg"] else "json" if ext==".json" else "csv" if ext==".csv" else "pdf" if ext==".pdf" else "text" if ext in [".txt",".md",".yaml",".yml",".xml",".js",".css",".html",".py",".sql"] else "download"
         gallery.append({**item,"href":"./"+item["path"],"preview":preview})
     (root/"demo-gallery-v3.json").write_text(json.dumps({"schema":"nlab-demo-gallery/v1","version":"3.0","files":gallery},ensure_ascii=False,indent=2),encoding="utf-8")
-    manifest={"schema":"nlab-demo-manifest/v3","version":"3.0","label":"nLab DEMO CORPUS v3","privacy":"synthetic-only","archive":"../../Library/demo/nLab-DEMO-CORPUS-v3.zip","legacyArchive":"../../Library/demo/nLab-DEMO-CORPUS-v2.zip","loadRoot":"files/demo-input/","pdfStudioExtensions":["pdf","png","jpg","jpeg","webp","gif","bmp","docx","zip"],"defaultOutputMode":"download","fileCount":len(files),"catalog":"../../Library/demo/demo-catalog-v3.json","gallery":"../../Library/demo/demo-gallery-v3.json","studioManifests":"../../Library/demo/manifests/index.json"}
-    (root/"demo-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
+    base_manifest={}
+    base_path=root/"demo-manifest.json"
+    if base_path.exists():
+        base_manifest=json.loads(base_path.read_text(encoding="utf-8"))
+    base_manifest["studioDemo"]={
+        "version":"3.0",
+        "archive":"../../Library/demo/nLab-DEMO-CORPUS-v3.zip",
+        "catalog":"../../Library/demo/demo-catalog-v3.json",
+        "gallery":"../../Library/demo/demo-gallery-v3.json",
+        "manifests":"../../Library/demo/manifests/index.json",
+        "privacy":"synthetic-only"
+    }
+    base_manifest["studioManifests"]="../../Library/demo/manifests/index.json"
+    base_manifest["galleryV3"]="../../Library/demo/demo-gallery-v3.json"
+    (root/"demo-manifest.json").write_text(json.dumps(base_manifest,ensure_ascii=False,indent=2),encoding="utf-8")
     (root/"demo-catalog-v3.json").write_text(json.dumps({"version":"3.0","files":catalog},ensure_ascii=False,indent=2),encoding="utf-8")
 
 def build(output):
