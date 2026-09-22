@@ -3,15 +3,18 @@
 All records are intentionally synthetic. No real personal data is used.
 """
 from pathlib import Path
-import argparse, csv, hashlib, io, json, random, shutil, zipfile\nfrom datetime import datetime
+import argparse, csv, hashlib, io, json, random, shutil, zipfile
+from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, landscape
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-BASE_DIR = Path(__file__).resolve().parent
-XLSX_B64 = (BASE_DIR / "fixtures" / "donnees-synthetiques.xlsx.b64").read_text(encoding="ascii").strip()
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl.worksheet.table import Table, TableStyleInfo
+from openpyxl.worksheet.datavalidation import DataValidation
 
 REG = ["/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf"]
 ITALIC = ["/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf", "/usr/share/fonts/truetype/liberation2/LiberationSans-Italic.ttf"]
@@ -130,6 +133,45 @@ def make_office(root):
     with zipfile.ZipFile(odt,"w") as z:
         zi=zipfile.ZipInfo("mimetype"); zi.compress_type=zipfile.ZIP_STORED; z.writestr(zi,"application/vnd.oasis.opendocument.text")
         z.writestr("content.xml",content); z.writestr("META-INF/manifest.xml",manifest)
+
+def make_xlsx(path):
+    wb=Workbook(); ws=wb.active; ws.title="Clients"
+    ws.append(["Client_ID","Nom","Prenom","Email","Telephone","Ville","Statut","Montant","Date"])
+    for i in range(1,31):
+        ws.append([
+            f"DEMO-C{i:03d}", f"NomDemo{i:03d}", f"PrenomDemo{i:03d}",
+            f"client{i:03d}@example.test", f"060000{i:04d}", f"Ville-Test-{(i%5)+1}",
+            ["Nouveau","Actif","Archive"][i%3], round(i*17.35,2),
+            datetime(2026,9,1+((i-1)%20))
+        ])
+    for cell in ws[1]:
+        cell.font=Font(bold=True,color="FFFFFF")
+        cell.fill=PatternFill("solid",fgColor="1F2933")
+        cell.alignment=Alignment(horizontal="center")
+    for row in ws.iter_rows(min_row=2,max_row=31,min_col=8,max_col=8):
+        row[0].number_format='#,##0.00 "EUR"'
+    for row in ws.iter_rows(min_row=2,max_row=31,min_col=9,max_col=9):
+        row[0].number_format="yyyy-mm-dd"
+    widths=[16,16,18,28,16,18,14,14,14]
+    for idx,w in enumerate(widths,1):
+        ws.column_dimensions[chr(64+idx)].width=w
+    ws.freeze_panes="A2"
+    tab=Table(displayName="ClientsDemo",ref="A1:I31")
+    tab.tableStyleInfo=TableStyleInfo(name="TableStyleMedium2",showRowStripes=True,showFirstColumn=False,showLastColumn=False,showColumnStripes=False)
+    ws.add_table(tab)
+    dv=DataValidation(type="list",formula1='"Nouveau,Actif,Archive"',allow_blank=True)
+    ws.add_data_validation(dv); dv.add("G2:G31")
+    rs=wb.create_sheet("Resume")
+    rs.append(["Indicateur","Valeur"]); rs.append(["Nombre de clients",30])
+    rs.append(["Somme montants",sum(round(i*17.35,2) for i in range(1,31))])
+    rs.append(["Date min",datetime(2026,9,1)]); rs.append(["Date max",datetime(2026,9,20)])
+    for cell in rs[1]:
+        cell.font=Font(bold=True,color="FFFFFF")
+        cell.fill=PatternFill("solid",fgColor="0057B8")
+    rs["B3"].number_format='#,##0.00 "EUR"'
+    rs["B4"].number_format="yyyy-mm-dd"; rs["B5"].number_format="yyyy-mm-dd"
+    rs.column_dimensions["A"].width=24; rs.column_dimensions["B"].width=18
+    wb.save(path)
 
 def make_data(root):
     out=root/"demo-input/Data"; make_xlsx(out/"donnees-synthetiques.xlsx")

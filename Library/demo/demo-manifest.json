@@ -1,0 +1,22 @@
+{
+  "schema": "nlab-demo-manifest/v2",
+  "version": "2.0",
+  "label": "nLab DEMO CORPUS v2",
+  "privacy": "synthetic-only",
+  "archive": "../../Library/demo/nLab-DEMO-CORPUS-v2.zip",
+  "loadRoot": "demo-input/",
+  "pdfStudioExtensions": [
+    "pdf",
+    "png",
+    "jpg",
+    "jpeg",
+    "webp",
+    "gif",
+    "bmp",
+    "docx",
+    "zip"
+  ],
+  "defaultOutputMode": "download",
+  "fileCount": 39,
+  "catalog": "../../Library/demo/demo-catalog-v2.json"
+}
