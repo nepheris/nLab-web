@@ -9,7 +9,13 @@ nLab est actuellement en phase de conception, de structuration et de stabilisati
 ## Site public
 
 - Portail : **https://nepheris.github.io/nLab-web/**
-- PDF Studio : **https://nepheris.github.io/nLab-web/APP-Applications/APP07-scan-studio/pdf-studio/**
+- nLab Studios : `/APP-Applications/studios/`
+- PDF Studio : `/APP-Applications/pdf-studio/`
+- JSON Studio : `/APP-Applications/json-studio/`
+- Code Studio : `/APP-Applications/code-studio/`
+- Image Studio : `/APP-Applications/image-studio/`
+
+> Les nouveaux Studios sont préparés sur une branche de revue avant promotion vers la branche publiée GitHub Pages.
 
 ## Architecture GitHub Pages
 
@@ -19,11 +25,13 @@ nLab est actuellement en phase de conception, de structuration et de stabilisati
 
 Le portail public utilise un `index.html` à la racine et un catalogue `tools.json`. Chaque outil public dispose ensuite d’une URL stable dans sa famille nLab.
 
-### PDF Studio
+### PDF / Scan Studio
 
-Chemin public canonique :
+Chemin actuellement publié dans ce dépôt :
 
-`APP-Applications/APP07-scan-studio/pdf-studio/`
+`APP-Applications/pdf-studio/`
+
+Dans le dépôt privé nLab, le produit canonique reste `APP07-scan-studio` : PDF Studio et OCR sont des capacités/sous-modules de Scan Studio.
 
 La publication actuelle utilise un petit chargeur HTML, un manifeste `build.json` et un payload compressé/chunké. Cela permet de publier le standalone PDF Studio tout en gardant une URL stable et un contrôle d’intégrité du build.
 
