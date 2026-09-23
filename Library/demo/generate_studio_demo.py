@@ -250,7 +250,8 @@ def rebuild_outputs(root):
         "pdf":{"label":"PDF Studio","prefixes":["files/demo-input/PDF/","files/demo-input/OCR/","files/demo-input/Zip/"]},
         "image":{"label":"Image Studio","prefixes":["files/demo-input/Images/"]},
         "ocr":{"label":"OCR Studio","prefixes":["files/demo-input/OCR/"],"also":["files/demo-input/PDF/pdf-scan-image-only-propre.pdf","files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf"]},
-        "code-json":{"label":"Code Studio","prefixes":["files/demo-input/Code/"]},\n        "json":{"label":"JSON Studio","prefixes":["files/demo-input/JSON/"],"also":["files/demo-input/Data/dataset-validation-complet.json"]},
+        "code-json":{"label":"Code Studio","prefixes":["files/demo-input/Code/"]},
+        "json":{"label":"JSON Studio","prefixes":["files/demo-input/JSON/"],"also":["files/demo-input/Data/dataset-validation-complet.json"]},
         "data":{"label":"Data Studio","prefixes":["files/demo-input/Data/"]},
         "qr-barcode":{"label":"QR & Barcode Studio","prefixes":["files/demo-input/QR-Barcode/"]},
         "file":{"label":"File Studio","prefixes":["files/demo-input/File/","files/demo-input/Compare/","files/demo-input/Zip/"]}
@@ -284,7 +285,11 @@ def rebuild_outputs(root):
         "manifests":"../../Library/demo/manifests/index.json",
         "privacy":"synthetic-only"
     }
-    base_manifest["studioManifests"]="../../Library/demo/manifests/index.json"\n    source_meta=root/"source-drive/drive-source.json"\n    if source_meta.exists():\n        source=json.loads(source_meta.read_text(encoding="utf-8"))\n        base_manifest["canonicalDemoDrive"]={"folderId":source.get("canonicalFolderId"),"folderUrl":source.get("canonicalFolderUrl"),"syncMode":source.get("syncMode"),"policy":source.get("policy")}
+    base_manifest["studioManifests"]="../../Library/demo/manifests/index.json"
+    source_meta=root/"source-drive/drive-source.json"
+    if source_meta.exists():
+        source=json.loads(source_meta.read_text(encoding="utf-8"))
+        base_manifest["canonicalDemoDrive"]={"folderId":source.get("canonicalFolderId"),"folderUrl":source.get("canonicalFolderUrl"),"syncMode":source.get("syncMode"),"policy":source.get("policy")}
     base_manifest["galleryV3"]="../../Library/demo/demo-gallery-v3.json"
     (root/"demo-manifest.json").write_text(json.dumps(base_manifest,ensure_ascii=False,indent=2),encoding="utf-8")
     (root/"demo-catalog-v3.json").write_text(json.dumps({"version":"3.0","files":catalog},ensure_ascii=False,indent=2),encoding="utf-8")
