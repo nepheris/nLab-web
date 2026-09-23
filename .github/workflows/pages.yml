@@ -37,18 +37,28 @@ jobs:
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
           test -s APP-Applications/pdf-studio/app-0.9.12.html
           grep -q 'Alpha 0.9.12' APP-Applications/pdf-studio/app-0.9.12.html
-          test -s APP-Applications/pdf-studio/app-0.9.13.html
+          test -s APP-Applications/pdf-studio/app-0.9.14.html
           test -s APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
-          grep -q 'app-0.9.12.html' APP-Applications/pdf-studio/app-0.9.13.html
+          test -s APP-Applications/pdf-studio/runtime0914/loader.js
+          grep -q 'app-0.9.12.html' APP-Applications/pdf-studio/app-0.9.14.html
+          grep -q 'app-0.9.13-debug.js' APP-Applications/pdf-studio/app-0.9.14.html
+          grep -q 'runtime0914/loader.js' APP-Applications/pdf-studio/app-0.9.14.html
           grep -q 'nLabCopyDebug' APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
           grep -q 'nLabLoadDemoDirect0913' APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
+          for i in $(seq 1 6); do
+            n=$(printf '%02d' "$i")
+            test -s "APP-Applications/pdf-studio/runtime0914/app0914.part${n}.txt"
+          done
+          cat APP-Applications/pdf-studio/runtime0914/app0914.part*.txt > /tmp/app0914.js
+          node --check /tmp/app0914.js
+          grep -q 'Alpha 0.9.14' /tmp/app0914.js
           for i in $(seq 1 11); do
             n=$(printf '%02d' "$i")
             test -s "APP-Applications/pdf-studio/runtime/app098.part${n}.js"
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.13"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.14"' APP-Applications/pdf-studio/versions.json
 
       - name: Build shared nLab demo corpus
         shell: bash
