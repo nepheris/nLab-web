@@ -86,6 +86,8 @@ jobs:
           test -s Library/demo/manifests/data.json
           test -s Library/demo/manifests/qr-barcode.json
           test -s Library/demo/files/demo-input/Images/calibration-regles-300x150.png
+          test -s Library/demo/files/demo-input/Images/calibration-scan-reel-01-public.webp
+          test -s Library/demo/files/demo-input/Images/calibration-scan-reel-02-public.webp
           test -s Library/demo/files/demo-input/Data/dataset-validation-complet.xlsx
           test -s Library/demo/files/demo-input/QR-Barcode/datamatrix-test.svg
           test -s Library/demo/files/demo-input/JSON/rdc-recettes-complexes-demo.json
