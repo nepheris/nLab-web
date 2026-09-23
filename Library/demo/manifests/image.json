@@ -17,6 +17,16 @@
       "sha256": "e90e3955a80d633da2279a2e674ee2132a4aa60ac243be844fcf3118927cf454"
     },
     {
+      "path": "../files/demo-input/Images/calibration-scan-reel-01-public.webp",
+      "size": 6718,
+      "sha256": "188733c179d5f39f8823ecc825413d99f48e250c8827cf4e468bbc46a8aa4979"
+    },
+    {
+      "path": "../files/demo-input/Images/calibration-scan-reel-02-public.webp",
+      "size": 6134,
+      "sha256": "d0f2094026274b2cc74aeabbe3ebfa21de3e0bbb361f47deee52f526ecd6d2aa"
+    },
+    {
       "path": "../files/demo-input/Images/demo-image-anime.gif",
       "size": 23773,
       "sha256": "46fd0c38eb883bf25abb1910c4eca28e67838a839000bcdda8b9058ea02e8a79"

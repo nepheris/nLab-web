@@ -1,0 +1,40 @@
+{
+  "schema": "nlab-studio-demo-manifest/v1",
+  "version": "3.0",
+  "studio": "json",
+  "label": "JSON Studio",
+  "privacy": "synthetic-only",
+  "pack": "../packs/nLab-DEMO-json-v3.zip",
+  "files": [
+    {
+      "path": "../files/demo-input/Data/dataset-validation-complet.json",
+      "size": 53818,
+      "sha256": "0ee93744fc5d6a67a3a1f6cab740f234a55fb1a750870580d00a20a3f360b258"
+    },
+    {
+      "path": "../files/demo-input/JSON/rdc-allergenes-demo.json",
+      "size": 44568,
+      "sha256": "fd82573405d031a9d26dbf454c5cd5165611cfcaee565116ec89e66163addc8e"
+    },
+    {
+      "path": "../files/demo-input/JSON/rdc-categories-recettes-demo.json",
+      "size": 18128,
+      "sha256": "7aea32e387cdb2f66d64ffad48b211b4f78d5b64daa5293ec9bbabaea63c6345"
+    },
+    {
+      "path": "../files/demo-input/JSON/rdc-recettes-complexes-demo.json",
+      "size": 37340,
+      "sha256": "386bd6e9d3e5a3f1da6f5aa20888e4f9101ccd3eceeae70e5c455a04dcdcb016"
+    },
+    {
+      "path": "../files/demo-input/JSON/rdc-relations-contenus-demo.json",
+      "size": 10950,
+      "sha256": "accf6fe28557fc19f63350c8cf25757c30ab12e18a28023d78e99a0cac7ee487"
+    },
+    {
+      "path": "../files/demo-input/JSON/rdc-saisonnalite-demo.json",
+      "size": 60237,
+      "sha256": "d0f08dcf42a3bcb89e457756f5b3d4560319d8d1d6b0a044c0da1ac11ffabe15"
+    }
+  ]
+}

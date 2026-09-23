@@ -15,7 +15,7 @@
       "label": "Image Studio",
       "manifest": "./image.json",
       "pack": "../packs/nLab-DEMO-image-v3.zip",
-      "fileCount": 6
+      "fileCount": 8
     },
     {
       "id": "ocr",
@@ -26,9 +26,16 @@
     },
     {
       "id": "code-json",
-      "label": "Code + JSON Studio",
+      "label": "Code Studio",
       "manifest": "./code-json.json",
       "pack": "../packs/nLab-DEMO-code-json-v3.zip",
+      "fileCount": 5
+    },
+    {
+      "id": "json",
+      "label": "JSON Studio",
+      "manifest": "./json.json",
+      "pack": "../packs/nLab-DEMO-json-v3.zip",
       "fileCount": 6
     },
     {

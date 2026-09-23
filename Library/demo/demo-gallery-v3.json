@@ -94,7 +94,7 @@
       "path": "files/demo-input/Data/dataset-validation-complet.xlsx",
       "category": "Data",
       "size": 83546,
-      "sha256": "d7f32042a4bda8631374e46376056987a62d9ca3f82a9a8f4d224ea42f9961d9",
+      "sha256": "c6ff905086a75fd685080e29ca73483719a65e66599064c640a0dd850010f5d2",
       "href": "./files/demo-input/Data/dataset-validation-complet.xlsx",
       "preview": "download"
     },
@@ -243,6 +243,22 @@
       "preview": "image"
     },
     {
+      "path": "files/demo-input/Images/calibration-scan-reel-01-public.webp",
+      "category": "Images",
+      "size": 6718,
+      "sha256": "188733c179d5f39f8823ecc825413d99f48e250c8827cf4e468bbc46a8aa4979",
+      "href": "./files/demo-input/Images/calibration-scan-reel-01-public.webp",
+      "preview": "image"
+    },
+    {
+      "path": "files/demo-input/Images/calibration-scan-reel-02-public.webp",
+      "category": "Images",
+      "size": 6134,
+      "sha256": "d0f2094026274b2cc74aeabbe3ebfa21de3e0bbb361f47deee52f526ecd6d2aa",
+      "href": "./files/demo-input/Images/calibration-scan-reel-02-public.webp",
+      "preview": "image"
+    },
+    {
       "path": "files/demo-input/Images/demo-image-anime.gif",
       "category": "Images",
       "size": 23773,
@@ -273,6 +289,46 @@
       "sha256": "1e382e65305775985d93c1e86332ed75676f241ff4ab5340ff39fda36dab5ef4",
       "href": "./files/demo-input/Images/demo-image-color.webp",
       "preview": "image"
+    },
+    {
+      "path": "files/demo-input/JSON/rdc-allergenes-demo.json",
+      "category": "JSON",
+      "size": 44568,
+      "sha256": "fd82573405d031a9d26dbf454c5cd5165611cfcaee565116ec89e66163addc8e",
+      "href": "./files/demo-input/JSON/rdc-allergenes-demo.json",
+      "preview": "json"
+    },
+    {
+      "path": "files/demo-input/JSON/rdc-categories-recettes-demo.json",
+      "category": "JSON",
+      "size": 18128,
+      "sha256": "7aea32e387cdb2f66d64ffad48b211b4f78d5b64daa5293ec9bbabaea63c6345",
+      "href": "./files/demo-input/JSON/rdc-categories-recettes-demo.json",
+      "preview": "json"
+    },
+    {
+      "path": "files/demo-input/JSON/rdc-recettes-complexes-demo.json",
+      "category": "JSON",
+      "size": 37340,
+      "sha256": "386bd6e9d3e5a3f1da6f5aa20888e4f9101ccd3eceeae70e5c455a04dcdcb016",
+      "href": "./files/demo-input/JSON/rdc-recettes-complexes-demo.json",
+      "preview": "json"
+    },
+    {
+      "path": "files/demo-input/JSON/rdc-relations-contenus-demo.json",
+      "category": "JSON",
+      "size": 10950,
+      "sha256": "accf6fe28557fc19f63350c8cf25757c30ab12e18a28023d78e99a0cac7ee487",
+      "href": "./files/demo-input/JSON/rdc-relations-contenus-demo.json",
+      "preview": "json"
+    },
+    {
+      "path": "files/demo-input/JSON/rdc-saisonnalite-demo.json",
+      "category": "JSON",
+      "size": 60237,
+      "sha256": "d0f08dcf42a3bcb89e457756f5b3d4560319d8d1d6b0a044c0da1ac11ffabe15",
+      "href": "./files/demo-input/JSON/rdc-saisonnalite-demo.json",
+      "preview": "json"
     },
     {
       "path": "files/demo-input/OCR/ocr-imprime-faible-contraste.jpg",
@@ -310,7 +366,7 @@
       "path": "files/demo-input/Office/document-demo.docx",
       "category": "Office",
       "size": 37171,
-      "sha256": "7e3e182f3a5a4ee29eedb7781249bc04d7f7577a8746d781b5281975cc6b82e8",
+      "sha256": "ba00199e25fd1b3da973c248fac782e1101b6fbf87adbbca2345dbe306cef555",
       "href": "./files/demo-input/Office/document-demo.docx",
       "preview": "download"
     },
@@ -318,7 +374,7 @@
       "path": "files/demo-input/PDF/pdf-formulaire-acroform.pdf",
       "category": "PDF",
       "size": 8752,
-      "sha256": "17c9943793a92373240ce464f7e84e59aed3176f839b6bdc9ddf3934ceca676f",
+      "sha256": "8bb26cad33c31cae2008c6faf545e7c04698aa3216431214afcf3656c74eaa8d",
       "href": "./files/demo-input/PDF/pdf-formulaire-acroform.pdf",
       "preview": "pdf"
     },
@@ -326,7 +382,7 @@
       "path": "files/demo-input/PDF/pdf-multipage-orientations.pdf",
       "category": "PDF",
       "size": 2439,
-      "sha256": "dd60af9ef867a087cca3002910689f146263e683f018435c2c2377d01e567798",
+      "sha256": "c9fb5b44517ad6743513456a78ee8d2a2ffb38221a9f46b0d424ab239055e6f7",
       "href": "./files/demo-input/PDF/pdf-multipage-orientations.pdf",
       "preview": "pdf"
     },
@@ -334,7 +390,7 @@
       "path": "files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
       "category": "PDF",
       "size": 149500,
-      "sha256": "0a3781708c70de24454111a645c052a6fb61e634046d26dba73e7cd624976d22",
+      "sha256": "4323a0789aca078626094d29f9b5fd5f57f930e48d95d5eddaf1d5ca5cce16c9",
       "href": "./files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
       "preview": "pdf"
     },
@@ -342,7 +398,7 @@
       "path": "files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
       "category": "PDF",
       "size": 116805,
-      "sha256": "6577273e2eadcd8915ae377231e76327cc669d9501afa9827fd2f89273fb672f",
+      "sha256": "b888d3c08d87c4981b3bd8cd339e735c81693308b4ba8f05298e72d3a3f2b043",
       "href": "./files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
       "preview": "pdf"
     },
@@ -350,7 +406,7 @@
       "path": "files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
       "category": "PDF",
       "size": 116698,
-      "sha256": "15ea16af517c848b15f7bf4fbb96d3bed721e62978b9c4533c04dd491cd8ef89",
+      "sha256": "f2af13ea4c2a6d83620702b2e66367622a91f93e7b73daab9631c2683a56d8bd",
       "href": "./files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
       "preview": "pdf"
     },
@@ -358,7 +414,7 @@
       "path": "files/demo-input/PDF/pdf-texte-actif.pdf",
       "category": "PDF",
       "size": 3377,
-      "sha256": "7ba0074b95ad76a0f710a6348aca70b806d1fe4398ecd94aa07aa1088807d74a",
+      "sha256": "30f2298d46fa8509b5e5e51d8dcd58391a8498352dfb190cabec97fc3cb7908d",
       "href": "./files/demo-input/PDF/pdf-texte-actif.pdf",
       "preview": "pdf"
     },
@@ -422,7 +478,7 @@
       "path": "files/demo-input/Zip/archive-imbriquee-demo.zip",
       "category": "Zip",
       "size": 715,
-      "sha256": "af00cdd02e72c1b6c7b120957b36024956c4fbee8ec2139056a9c89604ae28b3",
+      "sha256": "b4aede51483a82afb6fb0b340e75ca86751691145b82138bd9b2d028a0dd13bb",
       "href": "./files/demo-input/Zip/archive-imbriquee-demo.zip",
       "preview": "download"
     }

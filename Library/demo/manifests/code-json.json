@@ -2,7 +2,7 @@
   "schema": "nlab-studio-demo-manifest/v1",
   "version": "3.0",
   "studio": "code-json",
-  "label": "Code + JSON Studio",
+  "label": "Code Studio",
   "privacy": "synthetic-only",
   "pack": "../packs/nLab-DEMO-code-json-v3.zip",
   "files": [
@@ -30,11 +30,6 @@
       "path": "../files/demo-input/Code/demo-structure.json",
       "size": 304,
       "sha256": "daf67b86a36b4edd01dde66c4e32414296dd8ede56bc8ad41a8f090d51e14da8"
-    },
-    {
-      "path": "../files/demo-input/Data/dataset-validation-complet.json",
-      "size": 53818,
-      "sha256": "0ee93744fc5d6a67a3a1f6cab740f234a55fb1a750870580d00a20a3f360b258"
     }
   ]
 }

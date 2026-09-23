@@ -1,0 +1,1051 @@
+{
+  "referentiel": {
+    "identite": {
+      "referentiel_id": "REF_RECETTES",
+      "code_normalise": "recettes",
+      "libelle_humain": "Recettes",
+      "version_schema": "3.0"
+    },
+    "configuration": {
+      "type_structure": "metier_principal",
+      "sections_vides_conservees": true,
+      "collection_source": "recettes",
+      "racine_source": "referentiel_recettes",
+      "source_originale": "DEMO_PUBLIC_SANITISEE"
+    },
+    "listes_controlees": {
+      "locales": {},
+      "partagees": []
+    },
+    "metadonnees_source": {
+      "metadonnees": {
+        "numero_version": "V70.15",
+        "nombre_entrees": 13,
+        "source_migration": "recettes/data/json/*.json",
+        "date_mise_a_jour_version": "2026-08-03"
+      },
+      "regles": {
+        "portions": "Une seule portion de référence est stockée. Les quantités sont redimensionnées proportionnellement.",
+        "nutrition": "Valeurs estimées par portion et pour 100 g à partir de la somme des grammages, sans correction de cuisson, évaporation, égouttage ou absorption."
+      }
+    },
+    "donnees": [
+      {
+        "identite": {
+          "recette_id": "REC0001",
+          "code_normalise": "gratin-de-pates-au-thon",
+          "libelle_humain": "Gratin de pâtes au thon",
+          "slug": "gratin-de-pates-au-thon"
+        },
+        "nomenclature": {
+          "codes_historiques": [
+            "20000101-001"
+          ],
+          "slug": "gratin-de-pates-au-thon"
+        },
+        "classification": {
+          "categorie_recette_id": "RECCAT0007",
+          "sous_categorie_recette_id": "RECCAT0008",
+          "caracteristique_codes": [
+            "anti-gaspi",
+            "economique",
+            "familial",
+            "simple"
+          ],
+          "temperature_service_codes": [
+            "chaud"
+          ],
+          "classification_historique": {
+            "categorie": {
+              "id": "plat-principal",
+              "label": "Plat principal"
+            },
+            "sous_categorie": {
+              "id": "gratin",
+              "label": "Gratin"
+            },
+            "caracteristiques": [
+              {
+                "id": "simple",
+                "label": "simple"
+              },
+              {
+                "id": "economique",
+                "label": "economique"
+              },
+              {
+                "id": "anti-gaspi",
+                "label": "anti-gaspi"
+              },
+              {
+                "id": "familial",
+                "label": "familial"
+              }
+            ],
+            "temperature_service": [
+              {
+                "id": "chaud",
+                "label": "chaud"
+              }
+            ]
+          }
+        },
+        "contenu": {
+          "seo": {
+            "titre": "Gratin de pâtes au thon",
+            "description": "Un gratin familial de pâtes au thon, crémeux et légèrement gratiné, pensé pour utiliser une boîte de thon, un reste de pâtes ou un fond de sauce tomate.",
+            "mots_cles": [
+              "gratin-de-pates-au-thon",
+              "simple",
+              "economique",
+              "anti-gaspi",
+              "familial",
+              "conserve",
+              "pates",
+              "thon",
+              "lait",
+              "fromage-rape",
+              "chapelure",
+              "nouilles",
+              "spaghetti",
+              "thon-en-boite"
+            ]
+          },
+          "contenu": {
+            "titre": "Gratin de pâtes au thon",
+            "accroche": "Un gratin familial de pâtes au thon, crémeux et légèrement gratiné, pensé pour utiliser une boîte de thon, un reste de pâtes ou un fond de sauce tomate.",
+            "introduction": "Cette version mise sur des pâtes cuites al dente, une base tomate ou crème bien assaisonnée et un passage au four juste assez long pour gratiner sans dessécher. C’est une recette économique, pratique et très adaptable."
+          },
+          "preparation": {
+            "etapes": [
+              "Préchauffer le four à 200 °C. Cuire les pâtes dans une grande casserole d’eau salée en les gardant al dente, puis les égoutter.",
+              "Pendant la cuisson des pâtes, faire revenir l’oignon émincé dans un peu d’huile. Ajouter la sauce tomate ou la crème, le thon égoutté et émietté, puis poivrer et ajouter des herbes si disponibles.",
+              "Mélanger les pâtes avec la sauce au thon. Ajouter un peu d’eau de cuisson, de lait ou de crème si le mélange paraît trop sec.",
+              "Verser dans un plat à gratin. Répartir le fromage râpé sur le dessus.",
+              "Enfourner 15 à 20 minutes, jusqu’à ce que le dessus soit doré. Laisser reposer 5 minutes avant de servir."
+            ],
+            "cuisson_indicative": {
+              "texte": "Four : 200 °C pendant 15 à 20 min, après précuisson des pâtes à la casserole."
+            }
+          },
+          "conseils": {
+            "astuce_anti_gaspi": "Très bon avec un reste de pâtes déjà cuites : raccourcir le passage au four et ajouter un peu de lait ou de sauce pour éviter que le gratin soit sec.",
+            "variantes": "Ajouter tomates en dés, maïs, petits pois, olives, restes de courgettes ou champignons. Remplacer la tomate par de la crème pour une version plus douce. Ajouter chapelure ou pain rassis mixé sur le dessus pour un gratin plus croustillant."
+          },
+          "conservation": {
+            "texte": "À conserver 24 h au réfrigérateur dans une boîte fermée.",
+            "rechauffage": "À réchauffer doucement si nécessaire.",
+            "congelation": "À vérifier selon la recette."
+          }
+        },
+        "attributs_metier": {
+          "portions": {
+            "reference": 4
+          },
+          "temps": {
+            "preparation_minutes": 10,
+            "cuisson_minutes": 20,
+            "repos_minutes": 0,
+            "total_minutes": 30,
+            "tranche": "15-30"
+          },
+          "budget": {
+            "id": "economique",
+            "label": "Économique"
+          },
+          "difficulte": {
+            "id": "facile",
+            "label": "Facile"
+          },
+          "repères_manuels": {
+            "regimes_forces": [],
+            "regimes_exclus": [],
+            "compatibilites_forcees": [],
+            "compatibilites_exclues": [],
+            "allergenes_forces": [],
+            "allergenes_exclus": [],
+            "vigilances": []
+          },
+          "calculs_nutritionnels": {
+            "masse_totale_ingredients_g": 1967.5,
+            "masse_estimee_par_portion_g": 491.875,
+            "base_calcul_100g": "somme_des_masses_reference_g",
+            "rendements_cuisson_pris_en_compte": false,
+            "statut": "partiel_a_valider",
+            "avertissement": "Estimation basée sur les grammages déclarés et les valeurs moyennes des ingrédients. L’évaporation, l’égouttage, l’absorption et les rendements de cuisson ne sont pas pris en compte."
+          },
+          "compatibilites_calculees": {
+            "vegetarien": {
+              "statut": "non",
+              "ingredient_bloquant_ids": [
+                "ING0060"
+              ]
+            },
+            "vegan": {
+              "statut": "non",
+              "ingredient_bloquant_ids": [
+                "ING0013",
+                "ING0026",
+                "ING0060"
+              ]
+            },
+            "sans_porc": {
+              "statut": "inconnu",
+              "ingredient_bloquant_ids": []
+            },
+            "sans_alcool": {
+              "statut": "inconnu",
+              "ingredient_bloquant_ids": []
+            },
+            "allergenes": {
+              "statut": "calcule",
+              "contient_ids": [
+                "ALG001",
+                "ALG004",
+                "ALG007"
+              ],
+              "peut_contenir_ids": [],
+              "inconnus": false
+            }
+          }
+        },
+        "relations": {
+          "ingredients": {
+            "principaux": [
+              {
+                "ingredient_id": "ING0045",
+                "libelle_humain": "pâtes sèches",
+                "quantite": 320,
+                "quantite_affichee": "320 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 320,
+                "obligatoire": true,
+                "precision": null,
+                "ordre": 1,
+                "calculs": {
+                  "masse_reference_g": 320,
+                  "masse_par_portion_g": 80,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "pates-seches",
+                  "9821"
+                ]
+              },
+              {
+                "ingredient_id": "ING0060",
+                "libelle_humain": "thon égoutté",
+                "quantite": 280,
+                "quantite_affichee": "280 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 280,
+                "obligatoire": true,
+                "precision": "thon égoutté",
+                "ordre": 2,
+                "calculs": {
+                  "masse_reference_g": 280,
+                  "masse_par_portion_g": 70,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "thon",
+                  "26039"
+                ]
+              },
+              {
+                "ingredient_id": "ING0062",
+                "libelle_humain": "tomates concassées",
+                "quantite": 300,
+                "quantite_affichee": "300 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 300,
+                "obligatoire": true,
+                "precision": null,
+                "ordre": 3,
+                "calculs": {
+                  "masse_reference_g": 300,
+                  "masse_par_portion_g": 75,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "tomates-concassees",
+                  "20276"
+                ]
+              }
+            ],
+            "secondaires": [
+              {
+                "ingredient_id": "ING0026",
+                "libelle_humain": "lait",
+                "quantite": 250,
+                "quantite_affichee": "250 ml",
+                "unite_id": "UNIT0010",
+                "masse_reference_g": 257.5,
+                "obligatoire": true,
+                "precision": null,
+                "ordre": 1,
+                "calculs": {
+                  "masse_reference_g": 257.5,
+                  "masse_par_portion_g": 64.375,
+                  "methode_conversion": "volume_x_densite",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "lait",
+                  "19033"
+                ]
+              },
+              {
+                "ingredient_id": "ING0022",
+                "libelle_humain": "fromage râpé",
+                "quantite": 100,
+                "quantite_affichee": "100 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 100,
+                "obligatoire": true,
+                "precision": "fromage râpé",
+                "ordre": 2,
+                "calculs": {
+                  "masse_reference_g": 100,
+                  "masse_par_portion_g": 25,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "fromage",
+                  "12118"
+                ]
+              },
+              {
+                "ingredient_id": "ING0038",
+                "libelle_humain": "oignon",
+                "quantite": 1,
+                "quantite_affichee": "1 piece",
+                "unite_id": "UNIT0200",
+                "masse_reference_g": 100,
+                "obligatoire": true,
+                "precision": null,
+                "ordre": 3,
+                "calculs": {
+                  "masse_reference_g": 100,
+                  "masse_par_portion_g": 25,
+                  "methode_conversion": "quantite_x_masse_moyenne",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "oignon",
+                  "20239"
+                ]
+              }
+            ],
+            "optionnels": [
+              {
+                "ingredient_id": "ING0020",
+                "libelle_humain": "herbes de Provence",
+                "quantite": 1,
+                "quantite_affichee": "1 c-a-cafe",
+                "unite_id": "UNIT0100",
+                "masse_reference_g": null,
+                "obligatoire": false,
+                "precision": "herbes de Provence",
+                "ordre": 1,
+                "calculs": {
+                  "masse_reference_g": null,
+                  "masse_par_portion_g": null,
+                  "methode_conversion": "non_resolue",
+                  "statut": "a_valider"
+                },
+                "codes_historiques": [
+                  "herbes",
+                  "herbes"
+                ]
+              },
+              {
+                "ingredient_id": "ING0082",
+                "libelle_humain": "poivre",
+                "quantite": 1,
+                "quantite_affichee": "1 pincee",
+                "unite_id": "UNIT0400",
+                "masse_reference_g": null,
+                "obligatoire": false,
+                "precision": null,
+                "ordre": 2,
+                "calculs": {
+                  "masse_reference_g": null,
+                  "masse_par_portion_g": null,
+                  "methode_conversion": "non_resolue",
+                  "statut": "a_valider"
+                },
+                "codes_historiques": [
+                  "poivre",
+                  "11015"
+                ]
+              },
+              {
+                "ingredient_id": "ING0057",
+                "libelle_humain": "sauce tomate",
+                "quantite": 300,
+                "quantite_affichee": "300 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 300,
+                "obligatoire": false,
+                "precision": null,
+                "ordre": 3,
+                "calculs": {
+                  "masse_reference_g": 300,
+                  "masse_par_portion_g": 75,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "sauce-tomate",
+                  "20170"
+                ]
+              },
+              {
+                "ingredient_id": "ING0013",
+                "libelle_humain": "crème",
+                "quantite": 250,
+                "quantite_affichee": "250 ml",
+                "unite_id": "UNIT0010",
+                "masse_reference_g": 250,
+                "obligatoire": false,
+                "precision": null,
+                "ordre": 4,
+                "calculs": {
+                  "masse_reference_g": 250,
+                  "masse_par_portion_g": 62.5,
+                  "methode_conversion": "volume_x_densite",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "creme",
+                  "19417"
+                ]
+              },
+              {
+                "ingredient_id": "ING0007",
+                "libelle_humain": "chapelure",
+                "quantite": 30,
+                "quantite_affichee": "30 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 30,
+                "obligatoire": false,
+                "precision": null,
+                "ordre": 5,
+                "calculs": {
+                  "masse_reference_g": 30,
+                  "masse_par_portion_g": 7.5,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "chapelure",
+                  "7500"
+                ]
+              },
+              {
+                "ingredient_id": "ING0041",
+                "libelle_humain": "pain rassis mixé",
+                "quantite": 30,
+                "quantite_affichee": "30 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 30,
+                "obligatoire": false,
+                "precision": "pain rassis mixé",
+                "ordre": 6,
+                "calculs": {
+                  "masse_reference_g": 30,
+                  "masse_par_portion_g": 7.5,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "pain-rassis",
+                  "pain-rassis"
+                ]
+              }
+            ]
+          },
+          "equipement_ids": [
+            "EQP0018",
+            "EQP0023",
+            "EQP0041"
+          ]
+        },
+        "sources_et_tracabilite": {
+          "sources": [
+            {
+              "titre": "Marmiton - Gratin de pâtes au thon, sauce tomates",
+              "url": "https://www.marmiton.org/recettes/recette_gratin-de-pates-au-thon-sauce-tomates_35898.aspx"
+            },
+            {
+              "titre": "Marmiton - Gratin de pâtes au thon, mozzarella",
+              "url": "https://www.marmiton.org/recettes/recette_gratin-de-pates-au-thon-mozzarella_63025.aspx"
+            }
+          ]
+        },
+        "illustrations": {
+          "image": {
+            "fichier": "20000101-001.webp",
+            "alt": "Photo maison : Gratin de pâtes au thon",
+            "statut": "validated"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "REC_DEFAULT.webp",
+            "chemin_relatif": "assets/images/recettes/REC_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des recettes",
+            "disponible": true
+          },
+          "priorite_affichage_image": [
+            "image_principale",
+            "image_categorie",
+            "emoji",
+            "image_par_defaut"
+          ],
+          "image_principale": {
+            "nom_fichier": "REC0001.webp",
+            "chemin_relatif": "assets/images/recettes/REC0001.webp",
+            "texte_alternatif": "Photographie de la recette : Gratin de pâtes au thon",
+            "disponible": true,
+            "statut_illustration_id": "STATILL0002"
+          },
+          "image_retenue_calculee": {
+            "type": "image_principale",
+            "chemin_relatif": "assets/images/recettes/REC0001.webp",
+            "calcule": true
+          }
+        },
+        "validation": {
+          "erreurs": [],
+          "avertissements": [],
+          "completude_calculee": {
+            "score_pourcentage": 100,
+            "criteres": {
+              "identite": true,
+              "categorie": true,
+              "sous_categorie": true,
+              "portions": true,
+              "ingredients": true,
+              "etapes": true,
+              "equipements": true,
+              "nutrition": true,
+              "illustration": true,
+              "publication": true
+            },
+            "champs_manquants": [],
+            "calcule": true
+          },
+          "statut_validation_id": "STV0002"
+        },
+        "publication": {
+          "statut": "publie",
+          "statut_publication_id": "STP0001",
+          "ordre_affichage": null,
+          "selection_editoriale": null,
+          "publier": false,
+          "date_creation": null,
+          "date_publication": null,
+          "date_modification": null,
+          "actif": true
+        },
+        "informations_internes": {
+          "schema_version": 2,
+          "recette_version": 1,
+          "date_creation": "2026-07-12",
+          "date_modification": "2026-07-13",
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 23,
+            "ancien_recette_id": "20000101-001"
+          }
+        }
+      },
+      {
+        "identite": {
+          "recette_id": "REC0002",
+          "code_normalise": "riz-au-lait-a-la-banane",
+          "libelle_humain": "Riz au lait à la banane",
+          "slug": "riz-au-lait-a-la-banane"
+        },
+        "nomenclature": {
+          "codes_historiques": [
+            "20000101-002"
+          ],
+          "slug": "riz-au-lait-a-la-banane"
+        },
+        "classification": {
+          "categorie_recette_id": "RECCAT0027",
+          "sous_categorie_recette_id": "RECCAT0033",
+          "caracteristique_codes": [
+            "anti-gaspi",
+            "economique",
+            "enfants"
+          ],
+          "temperature_service_codes": [
+            "froid",
+            "tiede"
+          ],
+          "classification_historique": {
+            "categorie": {
+              "id": "dessert",
+              "label": "Dessert"
+            },
+            "sous_categorie": {
+              "id": "dessert-lacte",
+              "label": "Dessert lacté"
+            },
+            "caracteristiques": [
+              {
+                "id": "economique",
+                "label": "economique"
+              },
+              {
+                "id": "anti-gaspi",
+                "label": "anti-gaspi"
+              },
+              {
+                "id": "enfants",
+                "label": "enfants"
+              }
+            ],
+            "temperature_service": [
+              {
+                "id": "froid",
+                "label": "froid"
+              },
+              {
+                "id": "tiede",
+                "label": "tiede"
+              }
+            ]
+          }
+        },
+        "contenu": {
+          "seo": {
+            "titre": "Riz au lait à la banane",
+            "description": "Un riz au lait doux et anti-gaspi, enrichi avec de la banane bien mûre pour sucrer naturellement et obtenir une texture plus onctueuse.",
+            "mots_cles": [
+              "riz-au-lait-a-la-banane",
+              "dessert",
+              "economique",
+              "anti-gaspi",
+              "enfants",
+              "riz",
+              "lait",
+              "banane",
+              "sucre",
+              "cannelle"
+            ]
+          },
+          "contenu": {
+            "titre": "Riz au lait à la banane",
+            "accroche": "Un riz au lait doux et anti-gaspi, enrichi avec de la banane bien mûre pour sucrer naturellement et obtenir une texture plus onctueuse.",
+            "introduction": "La banane mûre apporte du parfum, de la douceur et permet de réduire le sucre ajouté. La cuisson lente du riz dans le lait donne un dessert simple, nourrissant et facile à préparer à l’avance."
+          },
+          "preparation": {
+            "etapes": [
+              "Rincer rapidement le riz rond. Porter le lait à frémissement dans une casserole avec le sucre, la vanille et une pincée de sel si disponible.",
+              "Ajouter le riz et cuire à feu doux 25 à 30 minutes en remuant régulièrement pour éviter que le fond accroche.",
+              "Écraser une banane bien mûre à la fourchette. L’ajouter en fin de cuisson, puis mélanger encore 2 à 3 minutes.",
+              "Couper la seconde banane en rondelles ou l’écraser selon la texture souhaitée.",
+              "Servir tiède ou froid. Ajouter cannelle, cacao ou miel si disponible."
+            ],
+            "cuisson_indicative": {
+              "texte": "Casserole : feu doux pendant 25 à 30 min, en remuant régulièrement."
+            }
+          },
+          "conseils": {
+            "astuce_anti_gaspi": "Utiliser des bananes très mûres, même tachées : elles remplacent une partie du sucre et donnent plus de goût.",
+            "variantes": "Ajouter chocolat râpé, cannelle, vanille, raisins secs, zeste de citron ou un filet de miel. Pour une texture très crémeuse, utiliser du lait entier ou ajouter une petite cuillère de crème en fin de cuisson."
+          },
+          "conservation": {
+            "texte": "À conserver 24 h au réfrigérateur dans une boîte fermée.",
+            "rechauffage": "À réchauffer doucement si nécessaire.",
+            "congelation": "À vérifier selon la recette."
+          }
+        },
+        "attributs_metier": {
+          "portions": {
+            "reference": 4
+          },
+          "temps": {
+            "preparation_minutes": 5,
+            "cuisson_minutes": 25,
+            "repos_minutes": 0,
+            "total_minutes": 30,
+            "tranche": "15-30"
+          },
+          "budget": {
+            "id": "economique",
+            "label": "Économique"
+          },
+          "difficulte": {
+            "id": "facile",
+            "label": "Facile"
+          },
+          "repères_manuels": {
+            "regimes_forces": [],
+            "regimes_exclus": [],
+            "compatibilites_forcees": [],
+            "compatibilites_exclues": [],
+            "allergenes_forces": [],
+            "allergenes_exclus": [],
+            "vigilances": []
+          },
+          "calculs_nutritionnels": {
+            "masse_totale_ingredients_g": 1374.5,
+            "masse_estimee_par_portion_g": 343.625,
+            "base_calcul_100g": "somme_des_masses_reference_g",
+            "rendements_cuisson_pris_en_compte": false,
+            "statut": "partiel_a_valider",
+            "avertissement": "Estimation basée sur les grammages déclarés et les valeurs moyennes des ingrédients. L’évaporation, l’égouttage, l’absorption et les rendements de cuisson ne sont pas pris en compte."
+          },
+          "compatibilites_calculees": {
+            "vegetarien": {
+              "statut": "inconnu",
+              "ingredient_bloquant_ids": []
+            },
+            "vegan": {
+              "statut": "non",
+              "ingredient_bloquant_ids": [
+                "ING0026"
+              ]
+            },
+            "sans_porc": {
+              "statut": "inconnu",
+              "ingredient_bloquant_ids": []
+            },
+            "sans_alcool": {
+              "statut": "inconnu",
+              "ingredient_bloquant_ids": []
+            },
+            "allergenes": {
+              "statut": "calcule",
+              "contient_ids": [
+                "ALG007"
+              ],
+              "peut_contenir_ids": [],
+              "inconnus": false
+            }
+          }
+        },
+        "relations": {
+          "ingredients": {
+            "principaux": [
+              {
+                "ingredient_id": "ING0056",
+                "libelle_humain": "riz rond",
+                "quantite": 120,
+                "quantite_affichee": "120 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 120,
+                "obligatoire": true,
+                "precision": null,
+                "ordre": 1,
+                "calculs": {
+                  "masse_reference_g": 120,
+                  "masse_par_portion_g": 30,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "riz-rond",
+                  "9104"
+                ]
+              },
+              {
+                "ingredient_id": "ING0026",
+                "libelle_humain": "lait",
+                "quantite": 800,
+                "quantite_affichee": "800 ml",
+                "unite_id": "UNIT0010",
+                "masse_reference_g": 824,
+                "obligatoire": true,
+                "precision": null,
+                "ordre": 2,
+                "calculs": {
+                  "masse_reference_g": 824,
+                  "masse_par_portion_g": 206,
+                  "methode_conversion": "volume_x_densite",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "lait",
+                  "19033"
+                ]
+              },
+              {
+                "ingredient_id": "ING0002",
+                "libelle_humain": "bananes très mûres",
+                "quantite": 2,
+                "quantite_affichee": "2 pieces",
+                "unite_id": null,
+                "masse_reference_g": 240,
+                "obligatoire": true,
+                "precision": "bananes très mûres",
+                "ordre": 3,
+                "calculs": {
+                  "masse_reference_g": 240,
+                  "masse_par_portion_g": 60,
+                  "methode_conversion": "quantite_x_masse_moyenne",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "banane",
+                  "13005"
+                ]
+              }
+            ],
+            "secondaires": [
+              {
+                "ingredient_id": "ING0059",
+                "libelle_humain": "sucre",
+                "quantite": 40,
+                "quantite_affichee": "40 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 40,
+                "obligatoire": true,
+                "precision": null,
+                "ordre": 1,
+                "calculs": {
+                  "masse_reference_g": 40,
+                  "masse_par_portion_g": 10,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "sucre",
+                  "31016"
+                ]
+              }
+            ],
+            "optionnels": [
+              {
+                "ingredient_id": "ING0084",
+                "libelle_humain": "cannelle",
+                "quantite": 1,
+                "quantite_affichee": "1 pincee",
+                "unite_id": "UNIT0400",
+                "masse_reference_g": null,
+                "obligatoire": false,
+                "precision": null,
+                "ordre": 1,
+                "calculs": {
+                  "masse_reference_g": null,
+                  "masse_par_portion_g": null,
+                  "methode_conversion": "non_resolue",
+                  "statut": "a_valider"
+                },
+                "codes_historiques": [
+                  "cannelle",
+                  "11025"
+                ]
+              },
+              {
+                "ingredient_id": "ING0063",
+                "libelle_humain": "vanille",
+                "quantite": 1,
+                "quantite_affichee": "1 c-a-cafe",
+                "unite_id": "UNIT0100",
+                "masse_reference_g": null,
+                "obligatoire": false,
+                "precision": null,
+                "ordre": 2,
+                "calculs": {
+                  "masse_reference_g": null,
+                  "masse_par_portion_g": null,
+                  "methode_conversion": "non_resolue",
+                  "statut": "a_valider"
+                },
+                "codes_historiques": [
+                  "vanille",
+                  "11057"
+                ]
+              },
+              {
+                "ingredient_id": "ING0008",
+                "libelle_humain": "chocolat râpé",
+                "quantite": 30,
+                "quantite_affichee": "30 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 30,
+                "obligatoire": false,
+                "precision": "chocolat râpé",
+                "ordre": 3,
+                "calculs": {
+                  "masse_reference_g": 30,
+                  "masse_par_portion_g": 7.5,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "chocolat",
+                  "31085"
+                ]
+              },
+              {
+                "ingredient_id": "ING0056",
+                "libelle_humain": "riz blanc classique",
+                "quantite": 120,
+                "quantite_affichee": "120 g",
+                "unite_id": "UNIT0002",
+                "masse_reference_g": 120,
+                "obligatoire": false,
+                "precision": "riz blanc classique",
+                "ordre": 4,
+                "calculs": {
+                  "masse_reference_g": 120,
+                  "masse_par_portion_g": 30,
+                  "methode_conversion": "masse_directe",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "riz-blanc",
+                  "9104"
+                ]
+              },
+              {
+                "ingredient_id": "ING0058",
+                "libelle_humain": "sel",
+                "quantite": 1,
+                "quantite_affichee": "1 pincee",
+                "unite_id": "UNIT0400",
+                "masse_reference_g": 0.5,
+                "obligatoire": false,
+                "precision": null,
+                "ordre": 5,
+                "calculs": {
+                  "masse_reference_g": 0.5,
+                  "masse_par_portion_g": 0.125,
+                  "methode_conversion": "quantite_x_masse_moyenne",
+                  "statut": "calcule"
+                },
+                "codes_historiques": [
+                  "sel",
+                  "11058"
+                ]
+              }
+            ]
+          },
+          "equipement_ids": [
+            "EQP0018",
+            "EQP0041"
+          ]
+        },
+        "sources_et_tracabilite": {
+          "sources": [
+            {
+              "titre": "CuisineAZ - Riz au lait crémeux : la recette inratable",
+              "url": "https://www.cuisineaz.com/articles/riz-au-lait-cremeux-la-recette-inratable-16101.aspx"
+            },
+            {
+              "titre": "CuisineAZ - Compote pomme banane, base fruits mûrs",
+              "url": "https://www.cuisineaz.com/recettes/compote-pomme-banane-121739.aspx"
+            }
+          ]
+        },
+        "illustrations": {
+          "image": {
+            "fichier": "20000101-002.webp",
+            "alt": "Photo maison : Riz au lait à la banane",
+            "statut": "validated"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "REC_DEFAULT.webp",
+            "chemin_relatif": "assets/images/recettes/REC_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des recettes",
+            "disponible": true
+          },
+          "priorite_affichage_image": [
+            "image_principale",
+            "image_categorie",
+            "emoji",
+            "image_par_defaut"
+          ],
+          "image_principale": {
+            "nom_fichier": "REC0002.webp",
+            "chemin_relatif": "assets/images/recettes/REC0002.webp",
+            "texte_alternatif": "Photographie de la recette : Riz au lait à la banane",
+            "disponible": true,
+            "statut_illustration_id": "STATILL0002"
+          },
+          "image_retenue_calculee": {
+            "type": "image_principale",
+            "chemin_relatif": "assets/images/recettes/REC0002.webp",
+            "calcule": true
+          }
+        },
+        "validation": {
+          "erreurs": [],
+          "avertissements": [],
+          "completude_calculee": {
+            "score_pourcentage": 100,
+            "criteres": {
+              "identite": true,
+              "categorie": true,
+              "sous_categorie": true,
+              "portions": true,
+              "ingredients": true,
+              "etapes": true,
+              "equipements": true,
+              "nutrition": true,
+              "illustration": true,
+              "publication": true
+            },
+            "champs_manquants": [],
+            "calcule": true
+          },
+          "statut_validation_id": "STV0002"
+        },
+        "publication": {
+          "statut": "publie",
+          "statut_publication_id": "STP0001",
+          "ordre_affichage": null,
+          "selection_editoriale": null,
+          "publier": false,
+          "date_creation": null,
+          "date_publication": null,
+          "date_modification": null,
+          "actif": true
+        },
+        "informations_internes": {
+          "schema_version": 2,
+          "recette_version": 1,
+          "date_creation": "2026-07-12",
+          "date_modification": "2026-07-13",
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 23,
+            "ancien_recette_id": "20000101-002"
+          }
+        }
+      }
+    ],
+    "historique_versions": [
+      {
+        "version": "72.0",
+        "date": "2026-08-04",
+        "evolution": "Migration initiale vers la structure canonique V72."
+      }
+    ]
+  },
+  "dictionnaire_donnees": {
+    "fichier": "data/dictionnaires_v72/recettes_dictionnaire.json",
+    "version": "2.0"
+  },
+  "_demo": {
+    "label": "Recettes du Cœur — recettes complexes",
+    "source": "Recettes du Cœur / nLab",
+    "driveFileId": "1AtPJ-_70ouNIF0CzQ3Z57fIuw_ucyWFA",
+    "sourceRecords": 13,
+    "recordsIncluded": 2,
+    "publicSafe": true,
+    "note": "Sous-ensemble public de démonstration conservant la structure imbriquée du référentiel."
+  }
+}

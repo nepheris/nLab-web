@@ -1,0 +1,1922 @@
+{
+  "referentiel": {
+    "identite": {
+      "referentiel_id": "REF_SAISONNALITE",
+      "code_normalise": "saisonnalite",
+      "libelle_humain": "Saisonnalite",
+      "version_schema": "3.0"
+    },
+    "configuration": {
+      "type_structure": "metier_principal",
+      "sections_vides_conservees": true,
+      "collection_source": "saisonnalites",
+      "racine_source": "referentiel_saisonnalite",
+      "source_originale": "DEMO_PUBLIC_SANITISEE"
+    },
+    "listes_controlees": {
+      "locales": {},
+      "partagees": []
+    },
+    "metadonnees_source": {
+      "metadonnees": {
+        "nom": "Référentiel de saisonnalité",
+        "numero_version": "V2.0",
+        "statut": "en_validation",
+        "prefixe_id": "SAI",
+        "largeur_numerique": 4,
+        "source_de_verite": {
+          "format": "JSON",
+          "fichier": "referentiel_saisonnalite.json"
+        },
+        "perimetre": "Profils mensuels indicatifs de saisonnalité des fruits et légumes pour la France, complétés par six profils standards.",
+        "zone_geographique_defaut": "France",
+        "date_creation_version": "2026-07-17",
+        "date_mise_a_jour_version": "2026-07-30",
+        "nombre_entrees": 83,
+        "nombre_produits_saisonniers": 77,
+        "nombre_profils_standards": 6,
+        "nombre_par_statut_validation": {
+          "sources_officielles_concordantes": 56,
+          "divergence_sources_a_verifier": 10,
+          "source_structuree_unique_a_verifier": 11,
+          "regle_metier_validee": 6
+        },
+        "migration_depuis": "V1.3"
+      },
+      "regles": {
+        "maille": "La saisonnalité est décrite par douze mois, numérotés de 01 à 12.",
+        "codes": "SA = de saison ; HS = hors saison ; TA = toute l’année ; NC = non connu ; NA = non applicable.",
+        "portee": "Le calendrier est indicatif à l’échelle nationale. Il peut varier selon la région, la variété, la météo, le mode de production, l’origine et les conditions de conservation.",
+        "relation_ingredient": "L’ingrédient porte le saisonnalite_id faisant autorité. Le référentiel SAI ne stocke pas de liste inverse d’ingredient_ids.",
+        "profil_origine": "Le lien éventuel entre un produit transformé et son produit frais d’origine appartient à la fiche ingrédient, pas au profil standard générique.",
+        "sources": "Le jeu structuré ADEME est la base d’import historique. L’infographie ADEME et les calendriers officiels actuels servent au contrôle.",
+        "divergences": "Une divergence entre sources n’est jamais corrigée silencieusement ; elle est signalée par divergence_sources_a_verifier.",
+        "recherche": "synonymes_recherche est manuel ; index_recherche est produit par OpenFW.",
+        "donnees_exclues": "Les indicateurs PEF et CO2 ne font pas partie de ce référentiel.",
+        "usage": "TA décrit une disponibilité saisonnière ou commerciale annuelle dans la source ; il ne garantit ni une production locale ni un faible impact environnemental.",
+        "unicite": "Les saisonnalite_id et saisonnalite_id_text sont uniques et ne sont jamais réutilisés."
+      },
+      "parametres": {
+        "images": {
+          "racine_relative": "assets/images/saisonnalite/",
+          "image_par_defaut": "saisonnalite-inconnue.svg"
+        },
+        "codes_saisonnalite": {
+          "SA": {
+            "libelle": "De saison",
+            "description": "Le produit est dans sa période de saison.",
+            "emoji": "✅",
+            "nom_fichier_image": "de-saison.svg"
+          },
+          "HS": {
+            "libelle": "Hors saison",
+            "description": "Le produit est en dehors de sa période de saison.",
+            "emoji": "⛔",
+            "nom_fichier_image": "hors-saison.svg"
+          },
+          "TA": {
+            "libelle": "Toute l’année",
+            "description": "Le produit ou le profil est disponible toute l’année selon la source ou la règle métier.",
+            "emoji": "📅",
+            "nom_fichier_image": "toute-annee.svg"
+          },
+          "NC": {
+            "libelle": "Non connu",
+            "description": "La saisonnalité devrait être définissable, mais la donnée n’est pas connue.",
+            "emoji": "❓",
+            "nom_fichier_image": "non-connu.svg"
+          },
+          "NA": {
+            "libelle": "Non applicable",
+            "description": "La notion de saisonnalité ne s’applique pas.",
+            "emoji": "➖",
+            "nom_fichier_image": "non-applicable.svg"
+          }
+        }
+      },
+      "sources": [
+        {
+          "source_id": "SRC_SAI_001",
+          "nom": "Mes Fruits et Légumes de Saison — jeu de données structuré archivé",
+          "organisme": "Incubateur ADEME",
+          "type_source": "depot_code_et_jeu_de_donnees",
+          "description": "Snapshot structuré de 77 produits utilisé comme base d’import. Les mois sont indexés de 0 à 11 dans le fichier source.",
+          "url_site": "https://mesfruitsetlegumesdesaison.fr",
+          "url_depot": "https://github.com/incubateur-ademe/mesfruitsetlegumesdesaison",
+          "url_donnees": "https://raw.githubusercontent.com/incubateur-ademe/mesfruitsetlegumesdesaison/master/public/data/products.json",
+          "fichier_local": "mesfruitsetlegumesdesaison-master.zip::public/data/products.json",
+          "empreinte_sha256_donnees": "9acbfd9a490c574be5f15b672eff9c53857640e0a06c82476145ed8e145c15f8",
+          "empreinte_sha256_archive": "f4b330baeec66332612d663e0764f7033a3dbad5db3c6818240a7e40fa927965",
+          "date_snapshot": "2023-09-22",
+          "date_consultation": "2026-07-30",
+          "autorite": "source_structuree_historique_ademe",
+          "licence": "MIT pour le dépôt logiciel ; licence spécifique des données non explicitée dans le snapshot",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_SAI_002",
+          "nom": "À chaque mois ses fruits et légumes",
+          "organisme": "ADEME",
+          "type_source": "infographie_officielle",
+          "description": "Calendrier national mensuel utilisé pour contrôler les profils issus du jeu structuré.",
+          "reference_document": "011910",
+          "url": "https://agirpourlatransition.ademe.fr/acteurs-education/enseigner/catalogue/calendrier-fruits-legumes-saison",
+          "fichier_local": "calendrier-fruits-legumes-de-saison.pdf",
+          "empreinte_sha256": "51e79a1c88a14f042afec5b433d2caef49fbeb9dcc400881e556e68d4b49e2ce",
+          "date_edition": "2022-09",
+          "date_consultation": "2026-07-30",
+          "autorite": "source_officielle_ademe",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_SAI_003",
+          "nom": "Calendrier interactif des fruits et légumes de saison",
+          "organisme": "ADEME",
+          "type_source": "outil_officiel_de_verification",
+          "description": "Page officielle actuelle de l’ADEME servant à la vérification humaine du calendrier.",
+          "url": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison",
+          "date_consultation": "2026-07-30",
+          "autorite": "source_officielle_ademe",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_SAI_004",
+          "nom": "Calendrier de saison",
+          "organisme": "Manger Bouger — Programme national nutrition santé",
+          "type_source": "calendrier_officiel_de_controle",
+          "description": "Calendrier mensuel officiel plus large, comprenant fruits, légumes, poissons et fruits de mer. Utilisé comme source de contrôle complémentaire.",
+          "url": "https://www.mangerbouger.fr/manger-mieux/bien-manger-sans-se-ruiner/calendrier-de-saison",
+          "date_consultation": "2026-07-30",
+          "autorite": "source_officielle_pnns",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_SAI_005",
+          "nom": "Consommer des produits de saison",
+          "organisme": "Ministère de l’Agriculture, de l’Agro-alimentaire et de la Souveraineté alimentaire",
+          "type_source": "doctrine_et_orientation",
+          "description": "Source officielle rappelant que la maille mensuelle est pertinente et recommandant le calendrier Manger Bouger pour les fruits, légumes et produits de la mer.",
+          "url": "https://agriculture.gouv.fr/consommer-des-produits-de-saison",
+          "date_consultation": "2026-07-30",
+          "autorite": "source_officielle_ministerielle",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_SAI_006",
+          "nom": "Règles métier OpenFW sur les profils standards",
+          "organisme": "Projet Les Recettes du Cœur / OpenFW",
+          "type_source": "norme_interne",
+          "description": "Décisions métier pour les profils toute l’année, conserve, surgelé, sec ou déshydraté, transformé et non applicable.",
+          "fichier_source": "NORME_DES_REFERENTIELS_V1.md et décisions projet",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "norme_interne",
+          "actif": true
+        }
+      ],
+      "historique_versions": [
+        {
+          "numero_version": "V1.0",
+          "date": "2026-07-17",
+          "description": "Première génération complète."
+        },
+        {
+          "numero_version": "V1.1",
+          "date": "2026-07-17",
+          "description": "Suppression des champs PEF et CO2."
+        },
+        {
+          "numero_version": "V1.2",
+          "date": "2026-07-17",
+          "description": "Création des IDs SAI0001 à SAI0083 et conservation des IDs textuels."
+        },
+        {
+          "numero_version": "V1.3",
+          "date": "2026-07-17",
+          "description": "Normalisation des énumérations en minuscules."
+        },
+        {
+          "numero_version": "V2.0",
+          "date": "2026-07-30",
+          "description": "Alignement sur la norme OpenFW, traçabilité des sources, statuts de validation, liens de vérification et suppression des relations inverses ingrédients."
+        }
+      ]
+    },
+    "donnees": [
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0001",
+          "code_normalise": "fraise",
+          "libelle_humain": "Fraise"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_FRAISE"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "fruit"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Fraise » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "fraise",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "11": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "12": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "01": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "02": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "03": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "06": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "07": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "08": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "09": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 2,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "automne": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Fraise",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🍓",
+          "image_saisonnalite": {
+            "nom_fichier": "fraise.svg",
+            "texte_alternatif": "Image : fraise"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "sources_officielles_concordantes"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0002",
+          "code_normalise": "pomme",
+          "libelle_humain": "Pomme"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_POMME"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "fruit"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Pomme » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "pomme",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "11": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "12": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "01": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "02": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "03": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "04": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "05": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "06": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "07": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "08": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "09": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 2,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "automne": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Pomme",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🍎",
+          "image_saisonnalite": {
+            "nom_fichier": "pomme.svg",
+            "texte_alternatif": "Image : pomme"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "sources_officielles_concordantes"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0003",
+          "code_normalise": "orange",
+          "libelle_humain": "Orange"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_ORANGE"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "fruit"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Orange » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "orange",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "11": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "12": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "01": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "02": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "03": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "06": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "07": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "08": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "09": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 2,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "automne": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Orange",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🍊",
+          "image_saisonnalite": {
+            "nom_fichier": "orange.svg",
+            "texte_alternatif": "Image : orange"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "divergence_sources_a_verifier"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0004",
+          "code_normalise": "citron",
+          "libelle_humain": "Citron"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_CITRON"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "fruit"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Citron » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "citron",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "11": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "12": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "01": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "02": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "03": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "06": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "07": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "08": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "09": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 2,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "ete": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "automne": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Citron",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🍋",
+          "image_saisonnalite": {
+            "nom_fichier": "citron.svg",
+            "texte_alternatif": "Image : citron"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "divergence_sources_a_verifier"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0005",
+          "code_normalise": "ail",
+          "libelle_humain": "Ail"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_AIL"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "legume"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Ail » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "ail",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "11": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "12": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "01": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "02": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "03": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "06": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "07": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "08": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "09": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "ete": {
+              "mois_en_saison": 2,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "automne": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Ail",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🧄",
+          "image_saisonnalite": {
+            "nom_fichier": "ail.svg",
+            "texte_alternatif": "Image : ail"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "sources_officielles_concordantes"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0006",
+          "code_normalise": "artichaut",
+          "libelle_humain": "Artichaut"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_ARTICHAUT"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "legume"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Artichaut » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "artichaut",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "11": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "12": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "01": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "02": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "03": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "06": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "07": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "08": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "09": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "automne": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Artichaut",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🌿",
+          "image_saisonnalite": {
+            "nom_fichier": "artichaut.svg",
+            "texte_alternatif": "Image : artichaut"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "sources_officielles_concordantes"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0007",
+          "code_normalise": "asperge",
+          "libelle_humain": "Asperge"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_ASPERGE"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "legume"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Asperge » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "asperge",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "11": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "12": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "01": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "02": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "03": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "04": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "05": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "06": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "07": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "08": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "09": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 2,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "automne": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Asperge",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🌱",
+          "image_saisonnalite": {
+            "nom_fichier": "asperge.svg",
+            "texte_alternatif": "Image : asperge"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "sources_officielles_concordantes"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0008",
+          "code_normalise": "betterave",
+          "libelle_humain": "Betterave"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_BETTERAVE"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "legume"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Betterave » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "betterave",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "11": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "12": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "01": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "02": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "03": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "06": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "07": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "08": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "09": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "automne": {
+              "mois_en_saison": 2,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Betterave",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🫜",
+          "image_saisonnalite": {
+            "nom_fichier": "betterave.svg",
+            "texte_alternatif": "Image : betterave"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "divergence_sources_a_verifier"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0009",
+          "code_normalise": "blette",
+          "libelle_humain": "Blette"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_BLETTE"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "legume"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Blette » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "blette",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "11": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "12": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "01": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "02": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "03": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "06": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "07": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "08": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "09": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "ete": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "automne": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Blette",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🥬",
+          "image_saisonnalite": {
+            "nom_fichier": "blette.svg",
+            "texte_alternatif": "Image : blette"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "divergence_sources_a_verifier"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0010",
+          "code_normalise": "carotte",
+          "libelle_humain": "Carotte"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_CAROTTE"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "legume"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Carotte » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "carotte",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "11": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "12": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "01": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "02": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "03": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "06": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "07": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "08": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "09": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "automne": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Carotte",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🥕",
+          "image_saisonnalite": {
+            "nom_fichier": "carotte.svg",
+            "texte_alternatif": "Image : carotte"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "sources_officielles_concordantes"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0011",
+          "code_normalise": "céleri",
+          "libelle_humain": "Céleri"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "SAI_CELERI"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "legume"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Céleri » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "céleri",
+          "mode_disponibilite": "frais",
+          "mois": {
+            "10": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "11": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "12": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "01": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "02": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "03": {
+              "saison": true,
+              "code_saisonnalite": "SA"
+            },
+            "04": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "05": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "06": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "07": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "08": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            },
+            "09": {
+              "saison": false,
+              "code_saisonnalite": "HS"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 1,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 0,
+              "mois_total": 3,
+              "etat": "hors_saison"
+            },
+            "automne": {
+              "mois_en_saison": 2,
+              "mois_total": 3,
+              "etat": "partiellement_en_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Céleri",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🌿",
+          "image_saisonnalite": {
+            "nom_fichier": "celeri.svg",
+            "texte_alternatif": "Image : céleri"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "sources_officielles_concordantes"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      },
+      {
+        "identite": {
+          "saisonnalite_id": "SAI0012",
+          "code_normalise": "champignon de paris",
+          "libelle_humain": "Champignon de paris"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "champignons de Paris"
+          ],
+          "codes_historiques": [
+            "SAI_CHAMPIGNON_DE_PARIS"
+          ]
+        },
+        "classification": {
+          "categorie_produit": "legume"
+        },
+        "contenu": {
+          "description": "Profil mensuel indicatif de saisonnalité pour « Champignon de Paris » en France."
+        },
+        "attributs_metier": {
+          "type_profil": "produit_saisonnier",
+          "nom_normalise": "champignon de paris",
+          "mode_disponibilite": "toute_annee",
+          "mois": {
+            "10": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "11": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "12": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "01": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "02": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "03": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "04": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "05": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "06": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "07": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "08": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            },
+            "09": {
+              "saison": true,
+              "code_saisonnalite": "TA"
+            }
+          },
+          "date_derniere_verification": "2026-07-30",
+          "saisons_calculees": {
+            "hiver": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "printemps": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "ete": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            },
+            "automne": {
+              "mois_en_saison": 3,
+              "mois_total": 3,
+              "etat": "en_saison"
+            }
+          }
+        },
+        "relations": {
+          "zone_id": "ZONE0001"
+        },
+        "sources_et_tracabilite": {
+          "nom_source": "Champignon de Paris",
+          "source_ids": [
+            "SRC_SAI_001",
+            "SRC_SAI_002"
+          ],
+          "url_verification": "https://agirpourlatransition.ademe.fr/particuliers/mieux-consommer/alimentation/calendrier-fruits-legumes-saison"
+        },
+        "illustrations": {
+          "emoji": "🍄",
+          "image_saisonnalite": {
+            "nom_fichier": "champignon_de_paris.svg",
+            "texte_alternatif": "Image : champignon de paris"
+          },
+          "image_par_defaut": {
+            "nom_fichier": "SAI_DEFAULT.webp",
+            "chemin_relatif": "assets/images/saisonnalite/SAI_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique de saisonnalité"
+          },
+          "priorite_affichage_image": [
+            "image_saisonnalite",
+            "emoji",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "sources_officielles_concordantes"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 20
+          }
+        }
+      }
+    ],
+    "historique_versions": [
+      {
+        "version": "72.0",
+        "date": "2026-08-04",
+        "evolution": "Migration initiale vers la structure canonique V72."
+      }
+    ]
+  },
+  "dictionnaire_donnees": {
+    "fichier": "data/dictionnaires_v72/saisonnalite_dictionnaire.json",
+    "version": "2.0"
+  },
+  "_demo": {
+    "label": "Recettes du Cœur — saisonnalité",
+    "source": "Recettes du Cœur / nLab",
+    "driveFileId": "1aBWxu4qc-a5RlACVTQAsF9dwLiZvSnMt",
+    "sourceRecords": 83,
+    "recordsIncluded": 12,
+    "publicSafe": true,
+    "note": "Sous-ensemble public de démonstration conservant la structure imbriquée du référentiel."
+  }
+}

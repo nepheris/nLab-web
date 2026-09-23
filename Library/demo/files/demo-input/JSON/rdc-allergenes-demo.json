@@ -1,0 +1,1316 @@
+{
+  "referentiel": {
+    "identite": {
+      "referentiel_id": "REF_ALLERGENES",
+      "code_normalise": "allergenes",
+      "libelle_humain": "Allergenes",
+      "version_schema": "3.0"
+    },
+    "configuration": {
+      "type_structure": "metier_principal",
+      "sections_vides_conservees": true,
+      "collection_source": "allergenes",
+      "racine_source": "referentiel_allergenes",
+      "source_originale": "DEMO_PUBLIC_SANITISEE"
+    },
+    "listes_controlees": {
+      "locales": {},
+      "partagees": []
+    },
+    "metadonnees_source": {
+      "metadonnees": {
+        "nom": "Référentiel des substances ou produits provoquant des allergies ou intolérances",
+        "nom_court": "Référentiel des allergènes",
+        "numero_version": "V2.0",
+        "statut": "en_validation",
+        "prefixe_id": "ALG",
+        "largeur_numerique_historique": 3,
+        "source_de_verite": {
+          "format": "JSON",
+          "fichier": "referentiel_allergenes.json"
+        },
+        "perimetre": "Les 14 catégories à déclaration obligatoire de l’annexe II du règlement (UE) n° 1169/2011.",
+        "date_creation_version": "2026-07-17",
+        "date_mise_a_jour_version": "2026-07-30",
+        "version_source_reglementaire_verifiee": "01/04/2025",
+        "date_verification_source": "2026-07-30",
+        "nombre_entrees": 14,
+        "migration_depuis": "V1.2"
+      },
+      "regles": {
+        "liste_fermee": "Le référentiel contient les 14 catégories de l’annexe II. Toute évolution nécessite une vérification réglementaire officielle.",
+        "ids": "Les IDs ALG001 à ALG014 sont conservés car ils étaient déjà utilisés comme identifiants stables avant la normalisation V2.0.",
+        "absence_alg000": "Aucune entrée ALG000 n’est créée. Une donnée allergène non évaluée est portée par un statut de validation de l’ingrédient ou de la recette, pas par un faux allergène.",
+        "relations": "Les ingrédients et recettes référencent uniquement des allergene_id. Les anciens libellés ou slugs servent seulement à la migration et à la recherche.",
+        "calcul_recette": "Les allergènes d’une recette sont calculés depuis les ingrédients réellement utilisés, puis contrôlés pour les produits composés, options et substitutions.",
+        "traces": "La présence volontaire et les traces possibles sont deux informations distinctes. Une mention « peut contenir » ne doit pas être transformée en présence certaine.",
+        "sans_allergene": "L’absence d’un ID dans une recette ne garantit pas l’absence de traces. Un affichage « sans X » exige la vérification des produits utilisés et des conditions de préparation.",
+        "pictogrammes": "Les pictogrammes sont uniquement complémentaires. Le libellé textuel réglementaire ou court reste affiché.",
+        "exemptions": "Les exclusions réglementaires doivent être appliquées au niveau du produit ou dérivé concerné, jamais à toute la catégorie.",
+        "sulfites": "ALG012 est soumis à un seuil spécifique de plus de 10 mg/kg ou 10 mg/l en SO₂ total dans le produit prêt à consommer.",
+        "surveillance": "OpenFW doit signaler toute modification de la version consolidée du règlement ou de son annexe II avant publication."
+      },
+      "modele_relation_objet": {
+        "champs": [
+          "allergene_id",
+          "statut_presence",
+          "source_information",
+          "date_verification",
+          "commentaire"
+        ],
+        "statuts_presence_autorises": {
+          "contient": "Présence certaine dans l’ingrédient ou la recette.",
+          "peut_contenir": "Trace ou contamination croisée signalée par le fabricant ou la source.",
+          "selon_produit": "Dépend de la marque, de la formulation ou de l’option choisie.",
+          "non_evalue": "Information insuffisante ; ne permet aucune allégation d’absence."
+        }
+      },
+      "sources": [
+        {
+          "source_id": "SRC_ALG_001",
+          "nom": "Règlement (UE) n° 1169/2011 concernant l’information des consommateurs sur les denrées alimentaires",
+          "organisme": "Union européenne",
+          "type": "texte_reglementaire_primaire",
+          "reference": "Article 9, article 21 et annexe II",
+          "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169",
+          "url_version_consolidee_verifiee": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:02011R1169-20250401",
+          "date_version_consolidee": "2025-04-01",
+          "date_verification": "2026-07-30",
+          "priorite": 1,
+          "officielle": true
+        },
+        {
+          "source_id": "SRC_ALG_002",
+          "nom": "Bien comprendre les allergènes alimentaires",
+          "organisme": "DGCCRF",
+          "type": "guide_officiel_francais",
+          "reference": "Guide pratique d’information du consommateur",
+          "url": "https://www.economie.gouv.fr/files/files/directions_services/dgccrf/documentation/publications/depliants/allergenes_fr.pdf",
+          "date_verification": "2026-07-30",
+          "priorite": 2,
+          "officielle": true
+        },
+        {
+          "source_id": "SRC_ALG_003",
+          "nom": "Étiquetage alimentaire",
+          "organisme": "ANSES",
+          "type": "information_scientifique_et_sanitaire",
+          "reference": "Information sur l’étiquetage et les allergies ou intolérances",
+          "url": "https://www.anses.fr/fr/content/etiquetage-alimentaire",
+          "date_verification": "2026-07-30",
+          "priorite": 3,
+          "officielle": true
+        },
+        {
+          "source_id": "SRC_ALG_004",
+          "nom": "Allergies alimentaires et étiquetage de précaution",
+          "organisme": "ANSES",
+          "type": "expertise_scientifique",
+          "reference": "Étiquetage de précaution et traces possibles",
+          "url": "https://www.anses.fr/fr/content/allergies-alimentaires-et-etiquetage-de-precaution",
+          "date_verification": "2026-07-30",
+          "priorite": 4,
+          "officielle": true
+        }
+      ]
+    },
+    "donnees": [
+      {
+        "identite": {
+          "allergene_id": "ALG001",
+          "code_normalise": "gluten",
+          "libelle_humain": "Gluten"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "céréales à gluten",
+            "blé",
+            "seigle",
+            "orge",
+            "avoine",
+            "épeautre",
+            "kamut"
+          ],
+          "codes_historiques": [
+            "gluten"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 1
+        },
+        "contenu": {
+          "description": "Catégorie réglementaire couvrant les céréales contenant du gluten et leurs produits dérivés, hors exclusions expressément prévues."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Céréales contenant du gluten et produits à base de ces céréales",
+          "elements_inclus_reglementaires": [
+            "blé",
+            "seigle",
+            "orge",
+            "avoine",
+            "épeautre",
+            "kamut",
+            "souches hybridées de ces céréales"
+          ],
+          "exemples_indicatifs": [
+            "farine de blé",
+            "pain",
+            "pâtes alimentaires",
+            "semoule",
+            "boulgour",
+            "malt d’orge"
+          ],
+          "exclusions_reglementaires": [
+            "sirops de glucose à base de blé, y compris le dextrose, dans les conditions prévues par l’annexe II",
+            "maltodextrines à base de blé, dans les conditions prévues par l’annexe II",
+            "sirops de glucose à base d’orge",
+            "céréales utilisées pour fabriquer des distillats alcooliques, y compris l’alcool éthylique d’origine agricole"
+          ],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 1",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🌾",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG002",
+          "code_normalise": "crustaces",
+          "libelle_humain": "Crustacés"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "crustacé",
+            "crevette",
+            "crabe",
+            "homard",
+            "langoustine"
+          ],
+          "codes_historiques": [
+            "crustaces"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 2
+        },
+        "contenu": {
+          "description": "Crustacés et préparations ou ingrédients qui en sont dérivés."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Crustacés et produits à base de crustacés",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "crevette",
+            "crabe",
+            "homard",
+            "langoustine",
+            "écrevisse"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 2",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🦐",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG003",
+          "code_normalise": "oeufs",
+          "libelle_humain": "Œufs"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "oeuf",
+            "œuf",
+            "oeufs",
+            "albumine d’œuf",
+            "ovoproduit"
+          ],
+          "codes_historiques": [
+            "oeuf",
+            "œuf",
+            "oeufs"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 3
+        },
+        "contenu": {
+          "description": "Œufs de toutes espèces et produits ou préparations fabriqués à base d’œufs."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Œufs et produits à base d’œufs",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "œuf entier",
+            "blanc d’œuf",
+            "jaune d’œuf",
+            "ovoproduits",
+            "mayonnaise"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 3",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🥚",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG004",
+          "code_normalise": "poissons",
+          "libelle_humain": "Poissons"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "poisson",
+            "produits de la pêche"
+          ],
+          "codes_historiques": [
+            "poisson",
+            "poissons"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 4
+        },
+        "contenu": {
+          "description": "Poissons et préparations ou ingrédients qui en sont dérivés, sous réserve des exclusions réglementaires."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Poissons et produits à base de poissons",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "poisson frais ou transformé",
+            "sauce de poisson",
+            "surimi contenant du poisson"
+          ],
+          "exclusions_reglementaires": [
+            "gélatine de poisson utilisée comme support pour des préparations de vitamines ou de caroténoïdes",
+            "gélatine de poisson ou ichtyocolle utilisée comme agent de clarification dans la bière et le vin"
+          ],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 4",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🐟",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG005",
+          "code_normalise": "arachides",
+          "libelle_humain": "Arachides"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "arachide",
+            "cacahuète",
+            "cacahuetes",
+            "peanut"
+          ],
+          "codes_historiques": [
+            "arachides"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 5
+        },
+        "contenu": {
+          "description": "Arachides, cacahuètes et produits ou préparations qui en sont dérivés."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Arachides et produits à base d’arachides",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "cacahuète",
+            "beurre de cacahuète",
+            "huile d’arachide non exemptée",
+            "farine d’arachide"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 5",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🥜",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG006",
+          "code_normalise": "soja",
+          "libelle_humain": "Soja"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "soya",
+            "soja"
+          ],
+          "codes_historiques": [
+            "soja"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 6
+        },
+        "contenu": {
+          "description": "Soja et produits dérivés, hors dérivés expressément exemptés par le règlement."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Soja et produits à base de soja",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "graines de soja",
+            "tofu",
+            "boisson au soja",
+            "farine de soja",
+            "lécithine de soja selon son origine et son étiquetage"
+          ],
+          "exclusions_reglementaires": [
+            "huile et graisse de soja entièrement raffinées, dans les conditions prévues par l’annexe II",
+            "tocophérols mixtes naturels E306 et certains dérivés naturels de tocophérol provenant du soja",
+            "phytostérols et esters de phytostérol dérivés d’huiles végétales de soja",
+            "ester de stanol végétal produit à partir de stérols dérivés d’huiles végétales de soja"
+          ],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 6",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🫘",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG007",
+          "code_normalise": "lait",
+          "libelle_humain": "Lait"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "produits laitiers",
+            "lactose",
+            "caséine",
+            "lactoserum",
+            "petit-lait"
+          ],
+          "codes_historiques": [
+            "lait"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 7
+        },
+        "contenu": {
+          "description": "Lait de mammifères et produits dérivés, y compris le lactose, hors exemptions réglementaires."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Lait et produits à base de lait, y compris le lactose",
+          "elements_inclus_reglementaires": [
+            "lactose"
+          ],
+          "exemples_indicatifs": [
+            "lait",
+            "beurre",
+            "crème",
+            "fromage",
+            "yaourt",
+            "lactosérum non exempté",
+            "caséine"
+          ],
+          "exclusions_reglementaires": [
+            "lactosérum utilisé pour fabriquer des distillats alcooliques, y compris l’alcool éthylique d’origine agricole",
+            "lactitol"
+          ],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 7",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🥛",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG008",
+          "code_normalise": "fruits_a_coque",
+          "libelle_humain": "Fruits à coque"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "noix",
+            "amandes",
+            "noisettes",
+            "cajou",
+            "pécan",
+            "pistaches",
+            "macadamia"
+          ],
+          "codes_historiques": [
+            "fruits_a_coque"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 8
+        },
+        "contenu": {
+          "description": "Catégorie réglementaire limitée aux fruits à coque explicitement énumérés dans l’annexe II et à leurs dérivés."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Fruits à coque et produits à base de ces fruits",
+          "elements_inclus_reglementaires": [
+            "amande",
+            "noisette",
+            "noix",
+            "noix de cajou",
+            "noix de pécan",
+            "noix du Brésil",
+            "pistache",
+            "noix de Macadamia ou du Queensland"
+          ],
+          "exemples_indicatifs": [
+            "poudre d’amande",
+            "purée de noisette",
+            "pâte de pistache",
+            "noix de cajou"
+          ],
+          "exclusions_reglementaires": [
+            "fruits à coque utilisés pour fabriquer des distillats alcooliques, y compris l’alcool éthylique d’origine agricole"
+          ],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 8",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🌰",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG009",
+          "code_normalise": "celeri",
+          "libelle_humain": "Céleri"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "céleri",
+            "celeri rave",
+            "celeri branche"
+          ],
+          "codes_historiques": [
+            "celeri"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 9
+        },
+        "contenu": {
+          "description": "Céleri sous toutes ses formes et produits ou préparations qui en sont dérivés."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Céleri et produits à base de céleri",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "céleri-branche",
+            "céleri-rave",
+            "graines de céleri",
+            "sel de céleri",
+            "bouillon contenant du céleri"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 9",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🌿",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG010",
+          "code_normalise": "moutarde",
+          "libelle_humain": "Moutarde"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "graines de moutarde",
+            "mustard"
+          ],
+          "codes_historiques": [
+            "moutarde"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 10
+        },
+        "contenu": {
+          "description": "Graines de moutarde, condiments à base de moutarde et produits dérivés."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Moutarde et produits à base de moutarde",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "moutarde préparée",
+            "graines de moutarde",
+            "farine de moutarde"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 10",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🟡",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG011",
+          "code_normalise": "sesame",
+          "libelle_humain": "Sésame"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "sésame",
+            "sesame",
+            "tahini",
+            "tahin"
+          ],
+          "codes_historiques": [
+            "sesame",
+            "sésame"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 11
+        },
+        "contenu": {
+          "description": "Graines de sésame et produits ou préparations qui en sont dérivés."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Graines de sésame et produits à base de graines de sésame",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "graines de sésame",
+            "tahini",
+            "huile de sésame",
+            "gomasio"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 11",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "⚪",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG012",
+          "code_normalise": "sulfites",
+          "libelle_humain": "Sulfites"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "anhydride sulfureux",
+            "dioxyde de soufre",
+            "so2",
+            "E220",
+            "E221",
+            "E222",
+            "E223",
+            "E224",
+            "E226",
+            "E227",
+            "E228"
+          ],
+          "codes_historiques": [
+            "sulfites"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 12
+        },
+        "contenu": {
+          "description": "Anhydride sulfureux et sulfites soumis à déclaration au-delà du seuil réglementaire exprimé en SO₂ total."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Anhydride sulfureux et sulfites",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "vin ou cidre contenant des sulfites au-delà du seuil",
+            "fruits secs traités aux sulfites",
+            "préparation contenant E220 à E228 selon la concentration finale"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "seuil",
+            "seuil": 10,
+            "unite": "mg/kg ou mg/l",
+            "precision": "Plus de 10 mg/kg ou 10 mg/l en SO₂ total, dans le produit prêt à consommer ou reconstitué selon les instructions du fabricant."
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 12",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🧪",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG013",
+          "code_normalise": "lupin",
+          "libelle_humain": "Lupin"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "lupine",
+            "farine de lupin"
+          ],
+          "codes_historiques": [
+            "lupin"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 13
+        },
+        "contenu": {
+          "description": "Graines de lupin et produits ou préparations qui en sont dérivés."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Lupin et produits à base de lupin",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "farine de lupin",
+            "graines de lupin",
+            "protéines de lupin"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 13",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🌱",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "allergene_id": "ALG014",
+          "code_normalise": "mollusques",
+          "libelle_humain": "Mollusques"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "mollusque",
+            "coquillage",
+            "céphalopode",
+            "escargot"
+          ],
+          "codes_historiques": [
+            "mollusques"
+          ]
+        },
+        "classification": {
+          "categorie_reglementaire": "allergene_majeur_ue",
+          "ordre_reglementaire": 14
+        },
+        "contenu": {
+          "description": "Mollusques et préparations ou ingrédients qui en sont dérivés."
+        },
+        "attributs_metier": {
+          "libelle_reglementaire": "Mollusques et produits à base de mollusques",
+          "elements_inclus_reglementaires": [],
+          "exemples_indicatifs": [
+            "moule",
+            "huître",
+            "escargot",
+            "calmar",
+            "seiche",
+            "poulpe",
+            "coquille Saint-Jacques"
+          ],
+          "exclusions_reglementaires": [],
+          "condition_declaration": {
+            "type": "presence",
+            "seuil": null,
+            "unite": null,
+            "precision": null
+          }
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "reference_reglementaire": "Règlement (UE) n° 1169/2011, annexe II, point 14",
+          "source_ids": [
+            "SRC_ALG_001",
+            "SRC_ALG_002"
+          ],
+          "url_verification": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32011R1169"
+        },
+        "illustrations": {
+          "pictogramme": "🐚",
+          "image_par_defaut": {
+            "nom_fichier": "ALG_DEFAULT.webp",
+            "chemin_relatif": "assets/images/allergenes/ALG_DEFAULT.webp",
+            "texte_alternatif": "Illustration générique des allergènes"
+          },
+          "priorite_affichage_image": [
+            "image_allergene",
+            "pictogramme",
+            "image_par_defaut"
+          ]
+        },
+        "validation": {
+          "statut_validation": "officiel_reglementaire"
+        },
+        "publication": {
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-17",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      }
+    ],
+    "historique_versions": [
+      {
+        "version": "72.0",
+        "date": "2026-08-04",
+        "evolution": "Migration initiale vers la structure canonique V72."
+      }
+    ]
+  },
+  "dictionnaire_donnees": {
+    "fichier": "data/dictionnaires_v72/allergenes_dictionnaire.json",
+    "version": "2.0"
+  },
+  "_demo": {
+    "label": "Recettes du Cœur — allergènes",
+    "source": "Recettes du Cœur / nLab",
+    "driveFileId": "1Y0hR0JDfH1DyvklBijBG5GAkFZILEihj",
+    "sourceRecords": 14,
+    "recordsIncluded": 14,
+    "publicSafe": true,
+    "note": "Sous-ensemble public de démonstration conservant la structure imbriquée du référentiel."
+  }
+}

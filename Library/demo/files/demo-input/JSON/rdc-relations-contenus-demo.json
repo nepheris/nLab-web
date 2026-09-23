@@ -1,0 +1,374 @@
+{
+  "referentiel": {
+    "identite": {
+      "referentiel_id": "REF_RELATIONS_CONTENUS",
+      "code_normalise": "relations_contenus",
+      "libelle_humain": "Relations contenus",
+      "version_schema": "3.0"
+    },
+    "configuration": {
+      "type_structure": "metier_principal",
+      "sections_vides_conservees": true,
+      "collection_source": "relations",
+      "racine_source": null,
+      "source_originale": "DEMO_PUBLIC_SANITISEE"
+    },
+    "listes_controlees": {
+      "locales": {},
+      "partagees": []
+    },
+    "metadonnees_source": {},
+    "donnees": [
+      {
+        "identite": {
+          "relation_id": "REL0001",
+          "code_normalise": "rel0001",
+          "libelle_humain": "AST0001 → CLS2010"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "CLS2010",
+          "source_id": "AST0001"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "classification_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0002",
+          "code_normalise": "rel0002",
+          "libelle_humain": "AST0001 → OBJ0001"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "OBJ0001",
+          "source_id": "AST0001"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "objectif_principal_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0003",
+          "code_normalise": "rel0003",
+          "libelle_humain": "AST0002 → CLS2010"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "CLS2010",
+          "source_id": "AST0002"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "classification_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0004",
+          "code_normalise": "rel0004",
+          "libelle_humain": "AST0002 → OBJ0002"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "OBJ0002",
+          "source_id": "AST0002"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "objectif_principal_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0005",
+          "code_normalise": "rel0005",
+          "libelle_humain": "AST0003 → CLS2010"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "CLS2010",
+          "source_id": "AST0003"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "classification_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0006",
+          "code_normalise": "rel0006",
+          "libelle_humain": "AST0003 → OBJ0002"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "OBJ0002",
+          "source_id": "AST0003"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "objectif_principal_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0007",
+          "code_normalise": "rel0007",
+          "libelle_humain": "AST0004 → CLS2020"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "CLS2020",
+          "source_id": "AST0004"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "classification_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0008",
+          "code_normalise": "rel0008",
+          "libelle_humain": "AST0004 → OBJ0003"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "OBJ0003",
+          "source_id": "AST0004"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "objectif_principal_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0009",
+          "code_normalise": "rel0009",
+          "libelle_humain": "AST0005 → CLS2020"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "CLS2020",
+          "source_id": "AST0005"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "classification_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      },
+      {
+        "identite": {
+          "relation_id": "REL0010",
+          "code_normalise": "rel0010",
+          "libelle_humain": "AST0005 → OBJ0003"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "type_relation": "reference_explicite",
+          "commentaire": "Relation extraite d’un identifiant explicitement présent dans le contenu source."
+        },
+        "relations": {
+          "cible_id": "OBJ0003",
+          "source_id": "AST0005"
+        },
+        "sources_et_tracabilite": {
+          "champ_source": "objectif_principal_id"
+        },
+        "illustrations": {},
+        "validation": {
+          "statut_validation": "a_valider"
+        },
+        "publication": {},
+        "informations_internes": {
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 7
+          }
+        }
+      }
+    ],
+    "historique_versions": [
+      {
+        "version": "72.0",
+        "date": "2026-08-04",
+        "evolution": "Migration initiale vers la structure canonique V72."
+      }
+    ]
+  },
+  "dictionnaire_donnees": {
+    "fichier": "data/dictionnaires_v72/relations_contenus_dictionnaire.json",
+    "version": "2.0"
+  },
+  "_demo": {
+    "label": "Recettes du Cœur — relations de contenus",
+    "source": "Recettes du Cœur / nLab",
+    "driveFileId": "1kWPs94JXtwRwT28dNJkLGhvTItr8KbzB",
+    "sourceRecords": 24,
+    "recordsIncluded": 10,
+    "publicSafe": true,
+    "note": "Sous-ensemble public de démonstration conservant la structure imbriquée du référentiel."
+  }
+}

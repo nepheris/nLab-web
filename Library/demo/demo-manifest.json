@@ -48,5 +48,15 @@
     "privacy": "synthetic-only"
   },
   "studioManifests": "../../Library/demo/manifests/index.json",
+  "canonicalDemoDrive": {
+    "folderId": "1zQb7Lyep6G0rOt-xv_vUcF-U1JvjtNIJ",
+    "folderUrl": "https://drive.google.com/drive/folders/1zQb7Lyep6G0rOt-xv_vUcF-U1JvjtNIJ?usp=drive_link",
+    "syncMode": "authenticated-copy-to-public-mirror",
+    "policy": {
+      "publishOnlyApproved": true,
+      "redactPersonalData": true,
+      "licenseReviewThirdPartyDatasets": true
+    }
+  },
   "galleryV3": "../../Library/demo/demo-gallery-v3.json"
 }
