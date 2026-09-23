@@ -1,0 +1,3 @@
+aviardage préparatoire';installFileView0914();enhanceForm0914();renderHistoryMenu();if(window.__NLAB_DEBUG_LOG__)window.__NLAB_DEBUG_LOG__.push({t:new Date().toISOString(),type:'boot',msg:'Alpha 0.9.14 enhancements loaded'})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install0914,140),{once:true});else setTimeout(install0914,140);
+})();
