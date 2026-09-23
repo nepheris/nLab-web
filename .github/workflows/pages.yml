@@ -88,6 +88,13 @@ jobs:
           test -s Library/demo/files/demo-input/Images/calibration-regles-300x150.png
           test -s Library/demo/files/demo-input/Data/dataset-validation-complet.xlsx
           test -s Library/demo/files/demo-input/QR-Barcode/datamatrix-test.svg
+          test -s Library/demo/files/demo-input/JSON/rdc-recettes-complexes-demo.json
+          test -s Library/demo/files/demo-input/JSON/rdc-categories-recettes-demo.json
+          test -s Library/demo/files/demo-input/JSON/rdc-relations-contenus-demo.json
+          test -s Library/demo/files/demo-input/JSON/rdc-saisonnalite-demo.json
+          test -s Library/demo/files/demo-input/JSON/rdc-allergenes-demo.json
+          test -s Library/demo/manifests/json.json
+          grep -q '"canonicalDemoDrive"' Library/demo/demo-manifest.json
           python -m zipfile -t Library/demo/nLab-DEMO-CORPUS-v3.zip
           grep -q '"studioDemo"' Library/demo/demo-manifest.json
           echo 'nLab Studio DEMO v3 generated: OK'
