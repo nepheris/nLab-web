@@ -1,0 +1,581 @@
+{
+  "referentiel": {
+    "identite": {
+      "referentiel_id": "REF_RECETTES_CATEGORIES",
+      "code_normalise": "recettes_categories",
+      "libelle_humain": "Recettes categories",
+      "version_schema": "3.0"
+    },
+    "configuration": {
+      "type_structure": "metier_principal",
+      "sections_vides_conservees": true,
+      "collection_source": "categories",
+      "racine_source": "referentiel_recettes_categories",
+      "source_originale": "DEMO_PUBLIC_SANITISEE"
+    },
+    "listes_controlees": {
+      "locales": {},
+      "partagees": []
+    },
+    "metadonnees_source": {
+      "metadonnees": {
+        "nom": "Recettes Categories",
+        "numero_version": "V70.0",
+        "prefixe_id": "RECCAT",
+        "largeur_numerique": 4,
+        "nombre_entrees": 57
+      },
+      "regles": {
+        "hierarchie": "parent_id",
+        "migration": "Les anciens IDs CLS sont conservés dans classification_id_legacy."
+      },
+      "sources": [
+        {
+          "source_id": "SRC_CLS_001",
+          "nom": "Taxonomie historique des recettes du site V50.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "fichier_projet_historique",
+          "fichier_source": "recettes/data-recettes/taxonomie-recettes.json",
+          "description": "Source de migration des catégories et sous-catégories actuelles des recettes. Elle mélangeait auparavant plusieurs dimensions désormais séparées.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_historique",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_002",
+          "nom": "Base Ingrédients avec Ciqual V2.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "source_de_verite_metier",
+          "fichier_source": "Base_Ingredients_avec_CIQUAL_V2.1.ods",
+          "description": "Source des catégories historiques d’ingrédients et des besoins de migration vers les IDs CLS.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_interne",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_003",
+          "nom": "Référentiel et JSON des astuces V7 / V50.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "source_editoriale_historique",
+          "fichier_source": "astuces/data_astuces/Referentiel_Astuces_V7.0.ods et astuces/json_astuces/",
+          "description": "Source des quatre thèmes éditoriaux actuellement utilisés pour les astuces.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_historique",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_004",
+          "nom": "Table Ciqual 2025",
+          "organisme": "ANSES",
+          "type_source": "open_data_officiel_comparatif",
+          "fichier_source": "Table Ciqual 2025_FR_2025_11_03.xlsx",
+          "description": "Classification officielle en groupes, sous-groupes et sous-sous-groupes utilisée comme contrôle et source d’inspiration, sans devenir l’autorité de la classification métier du projet.",
+          "url": "https://ciqual.anses.fr/cms/fr/la-table-ciqual-2025",
+          "date_consultation": "2026-07-30",
+          "autorite": "source_officielle_comparative",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_005",
+          "nom": "Décisions d’architecture OpenFW",
+          "organisme": "Projet Les Recettes du Cœur / OpenFW",
+          "type_source": "norme_interne",
+          "fichier_source": "NORME_DES_REFERENTIELS_V1.md et décisions de conception du 29/07/2026",
+          "description": "Décisions validées : référentiel global avec domaine, hiérarchie principale simplifiée, séparation stricte de la taxonomie scientifique et des tags.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "norme_interne",
+          "actif": true
+        }
+      ]
+    },
+    "donnees": [
+      {
+        "identite": {
+          "classification_id": "RECCAT0000",
+          "code_normalise": "classification_inconnue",
+          "libelle_humain": "Classification inconnue ou non déterminée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "à classer",
+            "non classé",
+            "classification inconnue"
+          ],
+          "codes_historiques": [
+            "INGCAT0000"
+          ]
+        },
+        "classification": {
+          "type_entree": "valeur_speciale",
+          "domaine": "commun",
+          "categorie_classification_id": "CLSC0000",
+          "classification_parent_id": null
+        },
+        "contenu": {
+          "description": "Valeur transitoire utilisée lorsqu'aucune classification principale fiable ne peut encore être attribuée."
+        },
+        "attributs_metier": {
+          "code": "classification_inconnue",
+          "libelle": "Classification inconnue ou non déterminée",
+          "niveau": "special",
+          "assignable": true,
+          "criteres_inclusion": [
+            "élément en cours de migration ou dont la catégorie métier n'est pas encore déterminée"
+          ],
+          "criteres_exclusion": [
+            "élément classable dans une catégorie active du domaine concerné"
+          ]
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "❔"
+        },
+        "validation": {
+          "statut_validation": "proposition_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 0,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 21
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0001",
+          "code_normalise": "recettes",
+          "libelle_humain": "Recettes"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1000"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": null
+        },
+        "contenu": {
+          "description": "Racine de la classification principale des recettes et de leur navigation."
+        },
+        "attributs_metier": {
+          "code": "recettes",
+          "libelle": "Recettes",
+          "niveau": "racine",
+          "assignable": false,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🍽️"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 2,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0002",
+          "code_normalise": "entree",
+          "libelle_humain": "Entrée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1010"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation servie avant le plat principal."
+        },
+        "attributs_metier": {
+          "code": "entree",
+          "libelle": "Entrée",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🥗"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0003",
+          "code_normalise": "entree_salade",
+          "libelle_humain": "Salade"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1011"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0002"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Entrée »."
+        },
+        "attributs_metier": {
+          "code": "entree_salade",
+          "libelle": "Salade",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0004",
+          "code_normalise": "entree_soupe",
+          "libelle_humain": "Soupe"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1012"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0002"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Entrée »."
+        },
+        "attributs_metier": {
+          "code": "entree_soupe",
+          "libelle": "Soupe",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0005",
+          "code_normalise": "entree_tartine",
+          "libelle_humain": "Tartine"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1013"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0002"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Entrée »."
+        },
+        "attributs_metier": {
+          "code": "entree_tartine",
+          "libelle": "Tartine",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0006",
+          "code_normalise": "entree_terrine",
+          "libelle_humain": "Terrine"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1014"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0002"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Entrée »."
+        },
+        "attributs_metier": {
+          "code": "entree_terrine",
+          "libelle": "Terrine",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 40,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0007",
+          "code_normalise": "plat_principal",
+          "libelle_humain": "Plat principal"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1020"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation constituant le cœur du repas."
+        },
+        "attributs_metier": {
+          "code": "plat_principal",
+          "libelle": "Plat principal",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🍲"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      }
+    ],
+    "historique_versions": [
+      {
+        "version": "72.0",
+        "date": "2026-08-04",
+        "evolution": "Migration initiale vers la structure canonique V72."
+      }
+    ]
+  },
+  "dictionnaire_donnees": {
+    "fichier": "data/dictionnaires_v72/recettes_categories_dictionnaire.json",
+    "version": "2.0"
+  },
+  "_demo": {
+    "label": "Recettes du Cœur — catégories",
+    "source": "Recettes du Cœur / nLab",
+    "driveFileId": "1QgwbRAYFxS2QG4FLuYQhzldpGVzTIat8",
+    "sourceRecords": 57,
+    "recordsIncluded": 8,
+    "publicSafe": true,
+    "note": "Sous-ensemble public de démonstration conservant la structure imbriquée du référentiel."
+  }
+}

@@ -31,7 +31,7 @@ def sha256(path):
     return h.hexdigest()
 
 def mkdirs(root):
-    for d in ["Images","Data/images","Code","QR-Barcode","File/lot-A","File/lot-B/sous-dossier","Compare/tree-A/docs","Compare/tree-B/docs"]:
+    for d in ["Images","JSON","Data/images","Code","QR-Barcode","File/lot-A","File/lot-B/sous-dossier","Compare/tree-A/docs","Compare/tree-B/docs"]:
         (root/"files/demo-input"/d).mkdir(parents=True,exist_ok=True)
     (root/"manifests").mkdir(parents=True,exist_ok=True)
     (root/"packs").mkdir(parents=True,exist_ok=True)
@@ -206,6 +206,28 @@ def make_dataset(root):
     for r in dictionary: meta.append(r)
     wb.save(out/"dataset-validation-complet.xlsx")
 
+
+def copy_curated_drive_source(root):
+    """Copy versioned public-safe derivatives/subsets sourced from the canonical Drive folder."""
+    src=root/"source-drive"
+    mapping=[("json","JSON"),("images","Images")]
+    for source_dir,target_dir in mapping:
+        p=src/source_dir
+        if not p.exists(): continue
+        dst=root/"files/demo-input"/target_dir
+        dst.mkdir(parents=True,exist_ok=True)
+        for item in p.rglob("*"):
+            if not item.is_file(): continue
+            rel=item.relative_to(p)
+            out=dst/rel
+            out.parent.mkdir(parents=True,exist_ok=True)
+            if item.suffix==".b64":
+                import base64
+                out=out.with_suffix("")
+                out.write_bytes(base64.b64decode(item.read_text(encoding="ascii")))
+            else:
+                shutil.copy2(item,out)
+
 def collect(root):
     files=[]
     for base in ["files/demo-input","files/demo-output","docs"]:
@@ -228,7 +250,8 @@ def rebuild_outputs(root):
         "pdf":{"label":"PDF Studio","prefixes":["files/demo-input/PDF/","files/demo-input/OCR/","files/demo-input/Zip/"]},
         "image":{"label":"Image Studio","prefixes":["files/demo-input/Images/"]},
         "ocr":{"label":"OCR Studio","prefixes":["files/demo-input/OCR/"],"also":["files/demo-input/PDF/pdf-scan-image-only-propre.pdf","files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf"]},
-        "code-json":{"label":"Code + JSON Studio","prefixes":["files/demo-input/Code/"],"also":["files/demo-input/Data/dataset-validation-complet.json"]},
+        "code-json":{"label":"Code Studio","prefixes":["files/demo-input/Code/"]},
+        "json":{"label":"JSON Studio","prefixes":["files/demo-input/JSON/"],"also":["files/demo-input/Data/dataset-validation-complet.json"]},
         "data":{"label":"Data Studio","prefixes":["files/demo-input/Data/"]},
         "qr-barcode":{"label":"QR & Barcode Studio","prefixes":["files/demo-input/QR-Barcode/"]},
         "file":{"label":"File Studio","prefixes":["files/demo-input/File/","files/demo-input/Compare/","files/demo-input/Zip/"]}
@@ -263,12 +286,16 @@ def rebuild_outputs(root):
         "privacy":"synthetic-only"
     }
     base_manifest["studioManifests"]="../../Library/demo/manifests/index.json"
+    source_meta=root/"source-drive/drive-source.json"
+    if source_meta.exists():
+        source=json.loads(source_meta.read_text(encoding="utf-8"))
+        base_manifest["canonicalDemoDrive"]={"folderId":source.get("canonicalFolderId"),"folderUrl":source.get("canonicalFolderUrl"),"syncMode":source.get("syncMode"),"policy":source.get("policy")}
     base_manifest["galleryV3"]="../../Library/demo/demo-gallery-v3.json"
     (root/"demo-manifest.json").write_text(json.dumps(base_manifest,ensure_ascii=False,indent=2),encoding="utf-8")
     (root/"demo-catalog-v3.json").write_text(json.dumps({"version":"3.0","files":catalog},ensure_ascii=False,indent=2),encoding="utf-8")
 
 def build(output):
-    root=Path(output); mkdirs(root); make_calibration(root); make_code(root); make_codes(root); make_file_samples(root); make_dataset(root); rebuild_outputs(root)
+    root=Path(output); mkdirs(root); make_calibration(root); make_code(root); make_codes(root); make_file_samples(root); make_dataset(root); copy_curated_drive_source(root); rebuild_outputs(root)
     print("nLab DEMO CORPUS v3 enriched:",root)
 
 if __name__=="__main__":

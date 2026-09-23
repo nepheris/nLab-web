@@ -43,7 +43,7 @@ async function techPreview(f){
   }catch{return '<pre>Preview indisponible</pre>'}
 }
 fetch('./demo-gallery-v3.json',{cache:'no-store'}).then(r=>r.json()).then(async d=>{
-  const subset=(d.files||[]).filter(f=>['Images','QR-Barcode','Code','Data','OCR'].includes(f.category)).slice(0,36);
+  const subset=(d.files||[]).filter(f=>['Images','QR-Barcode','JSON','Code','Data','OCR'].includes(f.category)).slice(0,36);
   techgrid.innerHTML='';
   for(const f of subset){
     const c=document.createElement('article');c.className='card';
