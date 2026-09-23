@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.13",
+  "test": "0.9.14",
   "versions": [
+    {
+      "version": "0.9.14",
+      "label": "Alpha 0.9.14",
+      "date": "2026-09-23",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.14.html",
+      "notes": "TEST / RC : texte enrichi par sélection, historique typé/horodaté, tampon avec date du tampon + Dates A/B/C et préfixe/suffixe, surligneurs rapides + surlignage texte PDF, stylo synchronisé, rotation image, aperçus fichiers, modèles de sortie enrichis et caviardage préparatoire."
+    },
     {
       "version": "0.9.13",
       "label": "Alpha 0.9.13",
       "date": "2026-09-22",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.13.html",
       "notes": "TEST / RC : bouton Debug en un clic avec rapport sanitise, journal des fetch/erreurs, chargement direct du corpus démo avec secours ZIP et lien vers la galerie."
     },
