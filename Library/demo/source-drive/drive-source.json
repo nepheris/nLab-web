@@ -40,5 +40,39 @@
       "publicPath": "JSON/rdc-allergenes-demo.json",
       "policy": "sanitized-subset"
     }
+  ],
+  "curatedImages": [
+    {
+      "driveFileId": "1wGVczyASF845Dw_kcjeztBMOI-Rn9QTD",
+      "driveName": "testNumeregles 2.jpg",
+      "publicPath": "Images/calibration-scan-reel-01-public.webp",
+      "policy": "derive-redacted",
+      "reason": "zone avec coordonnées personnelles tierces"
+    },
+    {
+      "driveFileId": "1-18DLZxaQUCsUqNZEHLNQ8xvGNAQ7A3A",
+      "driveName": "testNumregles.jpeg",
+      "publicPath": "Images/calibration-scan-reel-02-public.webp",
+      "policy": "derive-redacted",
+      "reason": "zone avec coordonnées personnelles tierces"
+    },
+    {
+      "driveFileId": "1yPyzv4lOIZaijSWU5xASZqL18gusdSqq",
+      "driveName": "testNumeregles 2..webp",
+      "policy": "private-source-only",
+      "reason": "variante brute du scan 01"
+    }
+  ],
+  "excludedByDefault": [
+    {
+      "driveFolder": "Data",
+      "pattern": "third-party datasets",
+      "policy": "license-review-required"
+    },
+    {
+      "driveFolder": "Images",
+      "pattern": "testNum* raw",
+      "policy": "personal-data-review-required"
+    }
   ]
 }
