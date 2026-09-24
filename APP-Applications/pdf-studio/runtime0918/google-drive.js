@@ -1,6 +1,6 @@
 (()=>{'use strict';
 if(window.__NLAB_0918_GOOGLE_DRIVE__)return;
-window.__NLAB_0918_GOOGLE_DRIVE__=true;
+window.__NLAB_0918_GOOGLE_DRIVE__=true;document.documentElement.dataset.nlab0918Stage='start';
 const SCOPE0918='openid email profile https://www.googleapis.com/auth/drive.file';
 const FOLDER_MIME='application/vnd.google-apps.folder';
 const DRIVE_STATE_KEY=(PROFILE.storagePrefix||'nlab-pdf')+'-drive-state-v2';
@@ -97,5 +97,5 @@ function installConfig(){
 }
 window.__NLAB_DRIVE_0918__={ensureStructure,saveWorkspace:saveWorkspaceDrive,loadWorkspace:loadWorkspaceDrive,state:()=>state,scope:SCOPE0918,saveSignatureAssets,hydrateSignatureFiles,uploadCurrentDocument:uploadCurrentDocument0918};
 const mo=new MutationObserver(()=>setTimeout(installConfig,0));if(document.body)mo.observe(document.body,{childList:true,subtree:true});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(installConfig,550),{once:true});else setTimeout(installConfig,550);
+document.documentElement.dataset.nlab0918Stage='scheduled';if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(installConfig,550),{once:true});else setTimeout(installConfig,550);
 })();
