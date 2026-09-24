@@ -29,7 +29,8 @@
       "Documents",
       "Exports"
     ],
-    "legacyAppData": "migration-only"
+    "legacyAppData": "migration-only",
+    "personalWorkspaceSync": "debounced-auto-when-connected"
   },
   "variables": {
     "syntax": "{VARIABLE} or {VARIABLE:FORMAT}",
@@ -77,26 +78,96 @@
   },
   "stamps": {
     "dateSlots": [
-      {"key": "STAMP_DATE", "label": "Date du tampon"},
-      {"key": "DATE_A", "label": "Date A"},
-      {"key": "DATE_B", "label": "Date B"},
-      {"key": "DATE_C", "label": "Date C"},
-      {"key": "DATE_D", "label": "Date D"}
+      {
+        "key": "STAMP_DATE",
+        "label": "Date du tampon"
+      },
+      {
+        "key": "DATE_A",
+        "label": "Date A"
+      },
+      {
+        "key": "DATE_B",
+        "label": "Date B"
+      },
+      {
+        "key": "DATE_C",
+        "label": "Date C"
+      },
+      {
+        "key": "DATE_D",
+        "label": "Date D"
+      }
     ],
     "personalizable": true,
     "filenameRulesUseCanonicalVariables": true,
     "library": [
-      {"id":"date","category":"Date & heure","label":"DATE","template":"DATE - {STAMP_DATE}"},
-      {"id":"datetime","category":"Date & heure","label":"HORODATAGE","template":"HORODATAGE - {STAMP_DATE:DD/MM/YYYY} {NOW:HH:mm:ss}"},
-      {"id":"initials","category":"Initiales","label":"INITIALES","template":"{INITIALS}"},
-      {"id":"nonconforme-initials","category":"Initiales","label":"NON CONFORME · INITIALES","template":"NON CONFORME - {INITIALS}"},
-      {"id":"nc-initials","category":"Initiales","label":"NON CONCERNÉ · INITIALES","template":"NC_{INITIALS}"},
-      {"id":"vu","category":"Statut","label":"VU","template":"VU - {INITIALS} - {STAMP_DATE}"},
-      {"id":"nc","category":"Statut","label":"NON CONCERNÉ","template":"NC_{INITIALS}_{STAMP_DATE:YYYYMMDD}"},
-      {"id":"affiche","category":"Statut","label":"AFFICHÉ","template":"AFFICHE_{INITIALS}_{STAMP_DATE:YYYYMMDD}"},
-      {"id":"traite","category":"Statut","label":"TRAITÉ","template":"TRAITE - {INITIALS} - {STAMP_DATE}"},
-      {"id":"valide","category":"Validation","label":"VALIDÉ","template":"VALIDE - {INITIALS} - {STAMP_DATE}"},
-      {"id":"filename","category":"Document","label":"FICHIER + DATE","template":"{FILENAME} - {STAMP_DATE}"}
+      {
+        "id": "date",
+        "category": "Date & heure",
+        "label": "DATE",
+        "template": "DATE - {STAMP_DATE}"
+      },
+      {
+        "id": "datetime",
+        "category": "Date & heure",
+        "label": "HORODATAGE",
+        "template": "HORODATAGE - {STAMP_DATE:DD/MM/YYYY} {NOW:HH:mm:ss}"
+      },
+      {
+        "id": "initials",
+        "category": "Initiales",
+        "label": "INITIALES",
+        "template": "{INITIALS}"
+      },
+      {
+        "id": "nonconforme-initials",
+        "category": "Initiales",
+        "label": "NON CONFORME · INITIALES",
+        "template": "NON CONFORME - {INITIALS}"
+      },
+      {
+        "id": "nc-initials",
+        "category": "Initiales",
+        "label": "NON CONCERNÉ · INITIALES",
+        "template": "NC_{INITIALS}"
+      },
+      {
+        "id": "vu",
+        "category": "Statut",
+        "label": "VU",
+        "template": "VU - {INITIALS} - {STAMP_DATE}"
+      },
+      {
+        "id": "nc",
+        "category": "Statut",
+        "label": "NON CONCERNÉ",
+        "template": "NC_{INITIALS}_{STAMP_DATE:YYYYMMDD}"
+      },
+      {
+        "id": "affiche",
+        "category": "Statut",
+        "label": "AFFICHÉ",
+        "template": "AFFICHE_{INITIALS}_{STAMP_DATE:YYYYMMDD}"
+      },
+      {
+        "id": "traite",
+        "category": "Statut",
+        "label": "TRAITÉ",
+        "template": "TRAITE - {INITIALS} - {STAMP_DATE}"
+      },
+      {
+        "id": "valide",
+        "category": "Validation",
+        "label": "VALIDÉ",
+        "template": "VALIDE - {INITIALS} - {STAMP_DATE}"
+      },
+      {
+        "id": "filename",
+        "category": "Document",
+        "label": "FICHIER + DATE",
+        "template": "{FILENAME} - {STAMP_DATE}"
+      }
     ]
   },
   "workspaceDefaults": {
