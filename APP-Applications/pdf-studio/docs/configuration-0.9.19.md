@@ -4,13 +4,13 @@
 
 La 0.9.19 utilise deux niveaux seulement :
 
-1. **Configuration globale de l’application** : \`config/app-config.v1.json\`.
+1. **Configuration globale de l’application** : `config/app-config.v1.json`.
    - syntaxe et formats des variables ;
    - bibliothèque de tampons fournie par l’application ;
    - paramètres OAuth Google publics ;
    - arborescence Drive cible ;
    - valeurs par défaut du workspace.
-2. **Configuration personnelle** : \`nlab-pdf-studio-workspace.json\`.
+2. **Configuration personnelle** : `nlab-pdf-studio-workspace.json`.
    - identité/initiales ;
    - formats personnalisés ;
    - tampons personnels et surcharges ;
@@ -19,41 +19,43 @@ La 0.9.19 utilise deux niveaux seulement :
    - préférences d’édition ;
    - références des signatures/paraphes.
 
-Les anciens JSON séparés placés dans \`appDataFolder\` ne sont plus la source active de la configuration. Ils restent uniquement compatibles avec les anciennes versions pour migration/retour arrière.
+Les anciens JSON séparés placés dans `appDataFolder` ne sont plus la source active de la configuration. Ils restent uniquement compatibles avec les anciennes versions pour migration/retour arrière.
+
+Quand le compte Google est connecté, les changements du workspace sont enregistrés localement immédiatement puis synchronisés automatiquement dans Drive après une courte temporisation, afin d’éviter une écriture réseau à chaque frappe.
 
 ## Variables communes
 
 La syntaxe canonique est la même dans les tampons, préfixes, suffixes, noms de fichiers, textes rapides et en-têtes/pieds :
 
-\`\`\`text
+```text
 {VARIABLE}
 {VARIABLE:FORMAT}
-\`\`\`
+```
 
 Exemples :
 
-\`\`\`text
+```text
 {STAMP_DATE:DD/MM/YYYY}
 {DATE_B:YYYY-MM-DD}
 {NOW:YYYYMMDD_HHmmss}
 {TIMESTAMP}
 {FILENAME}
 {INITIALS}
-\`\`\`
+```
 
-Tokens de format : \`YYYY\`, \`YY\`, \`MMMM\`, \`MMM\`, \`MM\`, \`M\`, \`DD\`, \`D\`, \`HH\`, \`H\`, \`mm\`, \`m\`, \`ss\`, \`s\`, \`SSS\`, \`Z\`, \`ZZ\`, \`X\`, \`x\`.
+Tokens de format : `YYYY`, `YY`, `MMMM`, `MMM`, `MM`, `M`, `DD`, `D`, `HH`, `H`, `mm`, `m`, `ss`, `s`, `SSS`, `Z`, `ZZ`, `X`, `x`.
 
-Les anciens alias \`{STAMP_DATE_FMT}\`, \`{DATE_A_FMT}\`, \`{DATE_B_FMT}\`, \`{DATE_C_FMT}\` et \`{DATE_D_FMT}\` restent acceptés.
+Les anciens alias `{STAMP_DATE_FMT}`, `{DATE_A_FMT}`, `{DATE_B_FMT}`, `{DATE_C_FMT}` et `{DATE_D_FMT}` restent acceptés.
 
 ## Cinq dates de tampon
 
 Le générateur affiche explicitement :
 
-- \`STAMP_DATE\` — date principale du tampon ;
-- \`DATE_A\` ;
-- \`DATE_B\` ;
-- \`DATE_C\` ;
-- \`DATE_D\`.
+- `STAMP_DATE` — date principale du tampon ;
+- `DATE_A` ;
+- `DATE_B` ;
+- `DATE_C` ;
+- `DATE_D`.
 
 Chaque date possède son champ de date et son format personnel. Les cinq variables sont utilisables dans le texte du tampon et dans les règles de nommage.
 
@@ -61,7 +63,7 @@ Chaque date possède son champ de date et son format personnel. Les cinq variabl
 
 Le bouton **Se connecter** du bandeau ouvre la sélection de compte Google. Après authentification, PDF Studio crée/utilise :
 
-\`\`\`text
+```text
 Mon Drive/
 └── nLab/
     └── PDF Studio/
@@ -69,17 +71,17 @@ Mon Drive/
         ├── Signatures/
         ├── Documents/
         └── Exports/
-\`\`\`
+```
 
 Le scope utilisé est :
 
-\`\`\`text
+```text
 openid email profile https://www.googleapis.com/auth/drive.file
-\`\`\`
+```
 
 ### Client ID OAuth Web requis
 
-Le Client ID est un identifiant public et peut être placé dans \`config/app-config.v1.json\`. **Ne jamais publier de client secret.**
+Le Client ID est un identifiant public et peut être placé dans `config/app-config.v1.json`. **Ne jamais publier de client secret.**
 
 Dans Google Cloud Console :
 
@@ -87,7 +89,7 @@ Dans Google Cloud Console :
 2. configurer l’écran de consentement OAuth ;
 3. créer un identifiant **OAuth 2.0 Client ID — Web application** ;
 4. ajouter l’origine JavaScript autorisée du site nLab Web (par exemple l’origine GitHub Pages utilisée pour le déploiement) ;
-5. copier uniquement le \`client_id\` de la forme \`....apps.googleusercontent.com\` dans \`auth.google.clientId\`.
+5. copier uniquement le `client_id` de la forme `....apps.googleusercontent.com` dans `auth.google.clientId`.
 
 Tant que ce Client ID réel n’est pas renseigné, l’application conserve le mode local et affiche la configuration OAuth comme incomplète.
 
