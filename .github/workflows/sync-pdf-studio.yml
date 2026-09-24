@@ -136,3 +136,24 @@ jobs:
           fi
 
           echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.19 + DEMO v2: OK'
+
+      - name: Browser smoke test Alpha 0.9.19
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 --directory . >/tmp/nlab-http.log 2>&1 &
+          srv=$!
+          trap 'kill $srv || true' EXIT
+          sleep 1
+          chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$chrome"
+          "$chrome" --headless --no-sandbox --disable-gpu --virtual-time-budget=12000 --dump-dom             http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html             >/tmp/pdf0919-dom.html 2>/tmp/pdf0919-chrome.log || {
+              cat /tmp/nlab-http.log || true
+              cat /tmp/pdf0919-chrome.log || true
+              exit 1
+            }
+          grep -q 'id="personalSpaceRibbon0919"' /tmp/pdf0919-dom.html
+          grep -q 'id="canonicalStampDates0919"' /tmp/pdf0919-dom.html
+          grep -q 'Alpha 0.9.19 TEST' /tmp/pdf0919-dom.html
+          ! grep -q 'Échec du chargement' /tmp/pdf0919-dom.html
+          echo 'Browser smoke 0.9.19: personal ribbon + five-date panel present'
