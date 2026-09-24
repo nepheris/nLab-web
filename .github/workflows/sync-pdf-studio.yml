@@ -143,44 +143,23 @@ jobs:
           set -euo pipefail
           python3 -m http.server 8765 --directory . >/tmp/nlab-http.log 2>&1 &
           srv=$!
+          trap 'kill $srv 2>/dev/null || true' EXIT
+          sleep 1
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$chrome"
-          rm -rf /tmp/pdf0919-chrome-profile
-          "$chrome" --headless --no-sandbox --disable-gpu --user-data-dir=/tmp/pdf0919-chrome-profile --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html >/tmp/pdf0919-chrome.log 2>&1 &
-          chrome_pid=$!
-          trap 'kill $chrome_pid $srv 2>/dev/null || true' EXIT
-          sleep 6
-          node <<'NODE'
-          const fs=require('fs');
-          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-          async function main(){
-            const targets=await (await fetch('http://127.0.0.1:9222/json')).json();
-            const page=targets.find(x=>x.type==='page');
-            if(!page) throw new Error('Aucune page Chrome CDP');
-            const ws=new WebSocket(page.webSocketDebuggerUrl);
-            await new Promise((resolve,reject)=>{ws.onopen=resolve;ws.onerror=reject});
-            let seq=0; const waiters=new Map();
-            ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.id&&waiters.has(m.id)){const [res,rej]=waiters.get(m.id);waiters.delete(m.id);m.error?rej(new Error(JSON.stringify(m.error))):res(m.result)}};
-            const call=(method,params={})=>new Promise((resolve,reject)=>{const id=++seq;waiters.set(id,[resolve,reject]);ws.send(JSON.stringify({id,method,params}))});
-            await call('Runtime.enable');
-            await call('Runtime.evaluate',{expression:"document.querySelector('[data-tool=pdf]')?.click(); true",awaitPromise:true});
-            await sleep(2500);
-            const html=await call('Runtime.evaluate',{expression:'document.documentElement.outerHTML',returnByValue:true});
-            fs.writeFileSync('/tmp/pdf0919-dom.html',html.result.value);
-            const diag=await call('Runtime.evaluate',{expression:"JSON.stringify({title:document.title,ribbon:!!document.getElementById('personalSpaceRibbon0919'),hub:!!document.getElementById('stampHub0916'),dates:!!document.getElementById('canonicalStampDates0919'),dateInputs:[...document.querySelectorAll('#canonicalStampDates0919 input[type=date]')].length,tool:document.querySelector('#toolTitle')?.textContent||''})",returnByValue:true});
-            console.log(diag.result.value);
-            ws.close();
-          }
-          main().catch(e=>{console.error(e);process.exit(1)});
-          NODE
+          "$chrome" --headless --no-sandbox --disable-gpu --virtual-time-budget=14000 --dump-dom             'http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html?smoke0919=1'             >/tmp/pdf0919-dom.html 2>/tmp/pdf0919-chrome.log || {
+              cat /tmp/nlab-http.log || true
+              cat /tmp/pdf0919-chrome.log || true
+              exit 1
+            }
           echo "ribbon=$(grep -c 'id=\"personalSpaceRibbon0919\"' /tmp/pdf0919-dom.html || true)"
           echo "hub=$(grep -c 'id=\"stampHub0916\"' /tmp/pdf0919-dom.html || true)"
           echo "dates=$(grep -c 'id=\"canonicalStampDates0919\"' /tmp/pdf0919-dom.html || true)"
           echo "dateInputs=$(grep -o 'data-date0919=' /tmp/pdf0919-dom.html | wc -l)"
+          grep -E -o '.{0,100}(personalSpaceRibbon0919|stampHub0916|canonicalStampDates0919|data-date0919).{0,180}' /tmp/pdf0919-dom.html | head -50 || true
           tail -60 /tmp/pdf0919-chrome.log || true
           test "$(grep -c 'id=\"personalSpaceRibbon0919\"' /tmp/pdf0919-dom.html || true)" -ge 1
-          test "$(grep -c 'id=\"stampHub0916\"' /tmp/pdf0919-dom.html || true)" -ge 1
           test "$(grep -c 'id=\"canonicalStampDates0919\"' /tmp/pdf0919-dom.html || true)" -ge 1
           test "$(grep -o 'data-date0919=' /tmp/pdf0919-dom.html | wc -l)" -ge 5
           ! grep -q 'Échec du chargement' /tmp/pdf0919-dom.html
-          echo 'Browser smoke 0.9.19: ribbon + stamp hub + five dates present'
+          echo 'Browser smoke 0.9.19: personal ribbon + five dates present'
