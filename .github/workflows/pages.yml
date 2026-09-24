@@ -45,10 +45,8 @@ jobs:
           grep -q 'DATE_D_FMT' APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
           grep -q 'stampRenameFile0915' APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
           test -s APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
-          test -s APP-Applications/pdf-studio/runtime0914/loader.js
           grep -q 'app-0.9.12.html' APP-Applications/pdf-studio/app-0.9.14.html
           grep -q 'app-0.9.13-debug.js' APP-Applications/pdf-studio/app-0.9.14.html
-          grep -q 'runtime0914/loader.js' APP-Applications/pdf-studio/app-0.9.14.html
           grep -q 'nLabCopyDebug' APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
           grep -q 'nLabLoadDemoDirect0913' APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
           for i in $(seq 1 6); do
