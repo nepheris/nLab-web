@@ -40,6 +40,14 @@ jobs:
           test -s APP-Applications/pdf-studio/app-0.9.14.html
           test -s APP-Applications/pdf-studio/app-0.9.15.html
           test -s APP-Applications/pdf-studio/app-0.9.16.html
+          test -s APP-Applications/pdf-studio/app-0.9.17.html
+          for f in profile naming stamp-help; do test -s "APP-Applications/pdf-studio/runtime0917/${f}.js"; node --check "APP-Applications/pdf-studio/runtime0917/${f}.js"; done
+          grep -q 'runtime0917/profile.js' APP-Applications/pdf-studio/app-0.9.17.html
+          grep -q 'runtime0917/naming.js' APP-Applications/pdf-studio/app-0.9.17.html
+          grep -q 'runtime0917/stamp-help.js' APP-Applications/pdf-studio/app-0.9.17.html
+          grep -q 'PROFILE_FILE0917' APP-Applications/pdf-studio/runtime0917/profile.js
+          grep -q 'SYSTEM_RULES0917' APP-Applications/pdf-studio/runtime0917/naming.js
+          grep -q 'advancedStampHelp0917' APP-Applications/pdf-studio/runtime0917/stamp-help.js
           test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
           grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
           node --check APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
@@ -69,7 +77,7 @@ jobs:
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.16"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.17"' APP-Applications/pdf-studio/versions.json
 
       - name: Build shared nLab demo corpus
         shell: bash
