@@ -253,11 +253,13 @@ function install0919(){
  addStyle0919();installLegacyPersistHook0919();installDateRibbon0919();installRibbon0919();installCanonicalDates0919();syncCanonicalDates0919();enhanceWorkspacePanel0919();
  document.querySelectorAll('.buildBadge strong').forEach(x=>x.textContent=VERSION0919);
  const foot=document.querySelector('footer .footerInfo span');if(foot)foot.textContent=(foot.textContent||'').replace(/Alpha 0\.9\.(12|13|14|15|16|17|18)(?: TEST| RC2)?/g,VERSION0919);
+ if(new URLSearchParams(location.search).has('smoke0919')){
+  document.documentElement.dataset.nlabSmokeReady='1';
+  setTimeout(()=>{try{window.stop()}catch(e){}},50);
+ }
 }
 window.addEventListener('nlab:naming-rules-changed',scheduleCapture0919);
 E.form?.addEventListener('change',scheduleCapture0919);
 const mo=new MutationObserver(()=>setTimeout(install0919,0));if(document.body)mo.observe(document.body,{childList:true,subtree:true});
 document.documentElement.dataset.nlab0919Stage='scheduled';if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)},{once:true});else{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)}
-// Smoke-test hook: inactive in normal use. It opens the PDF editor only when explicitly requested by CI.
-if(new URLSearchParams(location.search).has('smoke0919'))setTimeout(()=>{try{openTool('pdf')}catch(e){console.error('smoke0919 openTool',e)}},1200);
 })();
