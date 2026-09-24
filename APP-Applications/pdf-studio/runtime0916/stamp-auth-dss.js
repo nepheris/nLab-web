@@ -291,13 +291,27 @@ renderEditorOptions=function(){renderEditorOptions0916Base();enhanceQuickStampDa
 
 function decorateHelp0916(){
   const hints={
+    '1. Entrée':'Charger des fichiers ou un dossier de travail. Les documents restent traités localement tant qu’une fonction privée ou distante n’est pas explicitement utilisée.',
+    '2. Fichier sélectionné':'Afficher le fichier courant, naviguer dans la file et contrôler son état avant traitement.',
+    '3. Sortie & classement':'Choisir le nom final, le dossier de destination, les suffixes et les règles de classement.',
     '4. Tampons':'Choisir, créer et modifier des tampons ; gérer Date du tampon + A/B/C/D ; utiliser les mêmes variables dans le texte et le nom du fichier ; synchroniser votre JSON personnel.',
-    '5. Texte':'Ajouter du texte libre, distinct des modèles de tampons.',
-    '14. Signature':'Signature visuelle, P12/PFX, verrouillage de révision et passerelle de validation européenne DSS.',
-    'Sortie & classement':'Choisir le nom final, le dossier de destination et les règles de classement.',
-    'Historique complet':'Consulter les actions structurelles et les modifications d’annotations.',
+    '5. Texte':'Ajouter du texte libre, distinct des modèles de tampons, puis modifier police, taille, style et alignement.',
+    '6. Surligneur':'Surligner une zone ou du texte PDF natif avec palette, opacité et couleurs personnalisées.',
+    '7. Stylo libre':'Dessiner à la souris ou au stylet avec couleur, épaisseur et opacité réglables.',
+    '8. Insérer / traiter une image':'Importer une image, la positionner, la redimensionner, la faire pivoter et régler son rendu.',
+    '9. QR / code-barres libre':'Créer et placer QR codes et codes-barres indépendamment du composeur d’en-tête/pied de page.',
+    '10. Optimisation':'Réduire le poids du PDF en ajustant résolution, JPEG et niveaux de gris.',
+    '11. OCR & scans':'Extraire du texte depuis des scans et préparer un flux OCR ; les fonctions avancées restent expérimentales.',
+    '12. En-tête / pied de page / code':'Composer un bandeau avec texte, variables, QR ou code et l’appliquer aux pages.',
+    '13. Formulaires PDF':'Créer et inspecter de vrais champs AcroForm interactifs.',
+    '14. Signature':'Signature visuelle, paraphe, certificat P12/PFX, verrouillage de révision et passerelle de validation européenne DSS.',
+    '15. Caviardage':'Préparer des zones puis appliquer un caviardage destructif afin de supprimer réellement le contenu sous-jacent.',
+    '16. Comparer deux PDF':'Comparer deux documents sur la page courante ou sur l’ensemble des pages.',
+    '17. Traitement batch':'Appliquer des opérations répétitives à plusieurs PDF et générer un résultat groupé.',
+    '18. Sécurité':'Contrôler les fonctions de sécurité documentaire disponibles et leurs limites.',
     '19. Actions':'Exécuter et exporter les actions du document.',
-    '20. Interface':'Régler l’affichage et le comportement du panneau latéral.'
+    '20. Interface':'Régler l’affichage, le comportement des barres et le panneau latéral.',
+    'Historique complet':'Consulter les actions structurelles et les modifications d’annotations.'
   };
   qa16('#sidebarPanel details.toolSection').forEach(d=>{
     const s=d.querySelector(':scope>summary');if(!s)return;const txt=(s.textContent||'').trim().replace(/\s+/g,' ');
