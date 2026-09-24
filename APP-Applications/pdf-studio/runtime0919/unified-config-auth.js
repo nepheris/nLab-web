@@ -46,6 +46,11 @@ function formats0919(){
 function formatDate0919(value,pattern){return window.NLAB_VARIABLES_0918?.formatDate?.(value,pattern)||String(value??'')}
 function context0919(extra={}){
  const c=window.NLAB_VARIABLES_0918?.context?.(extra)||{};
+ const saved=storedDates0919();
+ for(const def of DATE_DEFS0919){
+  const v=saved[def.key];
+  if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)){const [y,m,d]=v.split('-').map(Number);c[def.key]=new Date(y,m-1,d,0,0,0,0);}
+ }
  return Object.assign(c,extra||{});
 }
 function render0919(template,extra={}){
