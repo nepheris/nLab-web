@@ -1,6 +1,6 @@
 (()=>{'use strict';
 if(window.__NLAB_0919_UNIFIED_CONFIG__)return;
-window.__NLAB_0919_UNIFIED_CONFIG__=true;
+window.__NLAB_0919_UNIFIED_CONFIG__=true;document.documentElement.dataset.nlab0919Stage='start';
 const VERSION0919='Alpha 0.9.19 TEST';
 const APP_CONFIG_URL0919='./config/app-config.v1.json';
 const $19=id=>document.getElementById(id);
@@ -12,6 +12,17 @@ const DATE_DEFS0919=[
  {key:'DATE_C',label:'Date C',source:'stampHubDateC0916'},
  {key:'DATE_D',label:'Date D',source:'stampHubDateD0916'}
 ];
+const DATE_VALUES_KEY0919=(PROFILE.storagePrefix||'nlab-pdf')+'-canonical-date-values-v1';
+function storedDates0919(){try{return Object.assign({},JSON.parse(localStorage.getItem(DATE_VALUES_KEY0919)||'{}'))}catch(e){return{}}}
+function saveStoredDates0919(v){try{localStorage.setItem(DATE_VALUES_KEY0919,JSON.stringify(v||{}))}catch(e){}}
+function dateValueFor0919(def){const src=sourceDate0919(def),saved=storedDates0919();return src?.value||saved[def.key]||today()}
+function pushDateValue0919(def,value){
+ const v=value||today(),saved=storedDates0919();saved[def.key]=v;saveStoredDates0919(saved);
+ const src=sourceDate0919(def);if(src&&src.value!==v){src.value=v;src.dispatchEvent(new Event('input',{bubbles:true}))}
+ document.querySelectorAll('[data-date0919="'+def.key+'"],[data-global-date0919="'+def.key+'"]').forEach(x=>{if(document.activeElement!==x)x.value=v});
+ const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.values=ws.variables.values||{};ws.variables.values[def.key]=v;api.saveLocal();scheduleDriveWorkspaceSync0919()}
+ try{updateStampPreview()}catch(e){}try{updatePath()}catch(e){}
+}
 let appConfig0919=null;
 let saveTimer0919=null;
 let driveSyncTimer0919=null;
@@ -35,6 +46,11 @@ function formats0919(){
 function formatDate0919(value,pattern){return window.NLAB_VARIABLES_0918?.formatDate?.(value,pattern)||String(value??'')}
 function context0919(extra={}){
  const c=window.NLAB_VARIABLES_0918?.context?.(extra)||{};
+ const saved=storedDates0919();
+ for(const def of DATE_DEFS0919){
+  const v=saved[def.key];
+  if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)){const [y,m,d]=v.split('-').map(Number);c[def.key]=new Date(y,m-1,d,0,0,0,0);}
+ }
  return Object.assign(c,extra||{});
 }
 function render0919(template,extra={}){
@@ -49,7 +65,7 @@ function render0919(template,extra={}){
  });
 }
 window.NLAB_VARIABLES=Object.assign({},window.NLAB_VARIABLES_0918||{}, {render:render0919,formats:formats0919,legacyAliases:clone0919(LEGACY_DATE_ALIASES0919)});
-if(window.NLAB_VARIABLES_0918)window.NLAB_VARIABLES_0918.render=render0919;
+if(window.NLAB_VARIABLES_0918)window.NLAB_VARIABLES_0918.render=render0919;document.documentElement.dataset.nlab0919Stage='variables';
 
 resolveStampTemplate=function(tpl,stampDate){
  const extra={};
@@ -89,7 +105,16 @@ function syncWorkspaceStamps0919(){
  const api=workspaceApi0919();if(!api)return;
  const ws=api.get();ws.stamps=ws.stamps||{};ws.stamps.library=personalStampItems0919(S.stampLibrary||[]);api.saveLocal();scheduleDriveWorkspaceSync0919();
 }
-persistCustomStamps=function(){syncWorkspaceStamps0919()};
+let legacyPersistHooked0919=false;
+function installLegacyPersistHook0919(){
+ if(legacyPersistHooked0919)return;
+ try{
+  if(typeof persistCustomStamps!=='function')return;
+  const basePersist0919=persistCustomStamps;
+  persistCustomStamps=function(){const r=basePersist0919.apply(this,arguments);syncWorkspaceStamps0919();return r};
+  legacyPersistHooked0919=true;
+ }catch(e){console.warn('Hook tampons personnels 0.9.19 indisponible',e)}
+}
 function scheduleCapture0919(){clearTimeout(saveTimer0919);saveTimer0919=setTimeout(()=>{try{workspaceApi0919()?.capture?.();scheduleDriveWorkspaceSync0919()}catch(e){}},250)}
 
 function canonicalSetGoogleDriveUi0919(){
@@ -102,16 +127,9 @@ function canonicalSetGoogleDriveUi0919(){
  try{workspaceApi0919()?.render?.()}catch(e){}
  updateRibbon0919();
 }
-setGoogleDriveUi=canonicalSetGoogleDriveUi0919;
+setGoogleDriveUi=canonicalSetGoogleDriveUi0919;document.documentElement.dataset.nlab0919Stage='overrides';
 
-// APP13 trust-service authentication is deliberately independent from Google Drive OAuth.
-dssFetch0916=async function(path,options={}){
- const base=typeof dssUrl0916==='function'?dssUrl0916():'';
- if(!base)throw new Error('Configurez d’abord l’URL du service nLab DSS.');
- const r=await fetch(base+path,Object.assign({credentials:'include'},options));
- if(!r.ok)throw new Error('DSS HTTP '+r.status+' · '+await r.text());
- return r;
-};
+// APP13 trust-service authentication remains independent from Google Drive OAuth.
 
 function mergeStampLibraries0919(globalItems,personalItems){
  const map=new Map();
@@ -127,10 +145,22 @@ function applyCanonicalStampLibrary0919(){
  try{renderEditorOptions()}catch(e){}
 }
 
-function sourceDate0919(def){return $19(def.source)}
+function sourceDate0919(def){
+ const direct=$19(def.source);if(direct)return direct;
+ if(def.key==='STAMP_DATE')return E.form?.querySelector('[name=stampDate]')||null;
+ if(def.key==='DATE_A')return $19('stampDateA0914')||E.form?.querySelector('[name=stampDateAProxy]')||E.form?.querySelector('[name=stampDate]')||null;
+ if(def.key==='DATE_B')return E.form?.querySelector('[name=stampDateB]')||null;
+ if(def.key==='DATE_C')return E.form?.querySelector('[name=stampDateC]')||null;
+ if(def.key==='DATE_D')return $19('stampDateD0915')||null;
+ return null;
+}
 function installCanonicalDates0919(){
- const hub=$19('stampHub0916');if(!hub||$19('canonicalStampDates0919'))return;
- const legacy=hub.querySelector('.stampDates0916');if(legacy)legacy.style.display='none';
+ if($19('canonicalStampDates0919'))return;
+ const hub=$19('stampHub0916');
+ const section=E.form?.querySelector('[name=stampDate]')?.closest('details.toolSection')||null;
+ if(!hub&&!section)return;
+ if(section)section.open=true;
+ const legacy=hub?.querySelector('.stampDates0916');if(legacy)legacy.style.display='none';
  const d=document.createElement('details');d.id='canonicalStampDates0919';d.className='canonicalStampDates0919';d.open=true;
  d.innerHTML='<summary>📅 Dates du tampon · 5 dates + formats</summary><div class="canonicalDatesHelp0919"><b>Même syntaxe partout :</b> <code>{VARIABLE}</code> ou <code>{VARIABLE:FORMAT}</code>. Formats : <code>YYYY</code> année · <code>MM</code> mois · <code>DD</code> jour · <code>HH</code> heure · <code>mm</code> minute · <code>ss</code> seconde · <code>SSS</code> millisecondes · <code>Z</code> fuseau · <code>X</code> timestamp Unix. Exemple : <code>{STAMP_DATE:YYYYMMDD_HHmmss}</code>.</div><div class="canonicalDatesGrid0919"></div>';
  const grid=d.querySelector('.canonicalDatesGrid0919'),fm=formats0919();
@@ -138,18 +168,46 @@ function installCanonicalDates0919(){
   const src=sourceDate0919(def),row=document.createElement('div');row.className='canonicalDateRow0919';
   row.innerHTML='<b>'+def.label+'</b><input type="date" data-date0919="'+def.key+'"><input type="text" data-format0919="'+def.key+'" aria-label="Format '+def.label+'"><code>{'+def.key+'}</code>';
   const dateInput=row.querySelector('[data-date0919]'),fmtInput=row.querySelector('[data-format0919]');
-  dateInput.value=src?.value||today();fmtInput.value=fm[def.key]||'DD/MM/YYYY';
-  dateInput.addEventListener('input',()=>{const x=sourceDate0919(def);if(x){x.value=dateInput.value||today();x.dispatchEvent(new Event('input',{bubbles:true}));}scheduleCapture0919();});
+  dateInput.value=dateValueFor0919(def);fmtInput.value=fm[def.key]||'DD/MM/YYYY';
+  dateInput.addEventListener('input',()=>{pushDateValue0919(def,dateInput.value||today());scheduleCapture0919();});
   fmtInput.addEventListener('change',()=>{const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.formats=ws.variables.formats||{};ws.variables.formats[def.key]=fmtInput.value.trim()||'DD/MM/YYYY';api.saveLocal();scheduleDriveWorkspaceSync0919();}const x=sourceDate0919(def);if(x)x.dispatchEvent(new Event('input',{bubbles:true}));try{updateStampPreview()}catch(e){}try{updatePath()}catch(e){}});
   grid.appendChild(row);
  }
- const target=hub.querySelector('.stampSteps0916');if(target)target.after(d);else hub.prepend(d);
+ const target=hub?.querySelector('.stampSteps0916');
+ if(target)target.after(d);
+ else if(hub)hub.prepend(d);
+ else {
+  const body=section?.querySelector('.sectionBody');
+  if(body)body.prepend(d);else section?.appendChild(d);
+ }
 }
 function syncCanonicalDates0919(){
- const panel=$19('canonicalStampDates0919');if(!panel)return;
- for(const def of DATE_DEFS0919){const x=panel.querySelector('[data-date0919="'+def.key+'"]'),src=sourceDate0919(def);if(x&&src&&document.activeElement!==x)x.value=src.value||today();}
+ const saved=storedDates0919();
+ for(const def of DATE_DEFS0919){
+  const src=sourceDate0919(def),v=src?.value||saved[def.key]||today();
+  if(src&&saved[def.key]&&src.value!==saved[def.key])src.value=saved[def.key];
+  document.querySelectorAll('[data-date0919="'+def.key+'"],[data-global-date0919="'+def.key+'"]').forEach(x=>{if(document.activeElement!==x)x.value=saved[def.key]||v});
+ }
 }
 
+function installDateRibbon0919(){
+ const meta=document.querySelector('header .headerMeta')||document.querySelector('header');if(!meta||$19('canonicalDatesRibbon0919'))return;
+ const wrap=document.createElement('div');wrap.id='canonicalDatesRibbon0919';wrap.className='canonicalDatesRibbon0919';
+ wrap.innerHTML='<button id="canonicalDatesRibbonBtn0919" type="button">📅 5 dates</button><div id="canonicalDatesRibbonPanel0919" class="canonicalDatesRibbonPanel0919" hidden><b>Dates des tampons</b><div class="canonicalDatesRibbonGrid0919"></div><div class="canonicalDatesRibbonHelp0919">Syntaxe : <code>{STAMP_DATE:DD/MM/YYYY}</code> · <code>{DATE_A:YYYY-MM-DD}</code> · <code>{NOW:HH:mm:ss}</code></div></div>';
+ meta.appendChild(wrap);
+ const panel=wrap.querySelector('#canonicalDatesRibbonPanel0919'),grid=wrap.querySelector('.canonicalDatesRibbonGrid0919'),fm=formats0919();
+ for(const def of DATE_DEFS0919){
+  const row=document.createElement('label');row.innerHTML='<span>'+def.label+'</span><input type="date" data-global-date0919="'+def.key+'"><input type="text" data-global-format0919="'+def.key+'" aria-label="Format '+def.label+'">';
+  const di=row.querySelector('[data-global-date0919]'),fi=row.querySelector('[data-global-format0919]');
+  di.value=dateValueFor0919(def);fi.value=fm[def.key]||'DD/MM/YYYY';
+  di.addEventListener('input',()=>pushDateValue0919(def,di.value||today()));
+  fi.addEventListener('change',()=>{const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.formats=ws.variables.formats||{};ws.variables.formats[def.key]=fi.value.trim()||'DD/MM/YYYY';api.saveLocal();scheduleDriveWorkspaceSync0919()}document.querySelectorAll('[data-format0919="'+def.key+'"]').forEach(x=>x.value=fi.value);try{updateStampPreview()}catch(e){}});
+  grid.appendChild(row);
+ }
+ wrap.querySelector('#canonicalDatesRibbonBtn0919').onclick=e=>{e.stopPropagation();panel.hidden=!panel.hidden;syncCanonicalDates0919()};
+ document.addEventListener('click',e=>{if(!wrap.contains(e.target))panel.hidden=true});
+ document.documentElement.dataset.nlabUiDates=String(grid.querySelectorAll('input[type="date"]').length);
+}
 function workspacePanel0919(){return $19('workspacePanel0918')}
 function openPersonalSpace0919(){
  const p=workspacePanel0919();if(p){p.open=true;p.scrollIntoView({behavior:'smooth',block:'start'});return true}
@@ -169,6 +227,7 @@ function installRibbon0919(){
  meta.appendChild(wrap);
  $19('personalSpaceRibbon0919').onclick=()=>{if(!S.driveConnected){if(!googleDriveClientId()){openPersonalSpace0919();toast('Client ID OAuth Google non configuré.');return}connectGoogleDrive();return}openPersonalSpace0919();};
  updateRibbon0919();
+ document.documentElement.dataset.nlabUiPersonal='1';
 }
 function enhanceWorkspacePanel0919(){
  const p=workspacePanel0919();if(!p||$19('workspaceCanonicalNote0919'))return;
@@ -179,7 +238,7 @@ function enhanceWorkspacePanel0919(){
 }
 function addStyle0919(){
  if($19('nlab0919Style'))return;const st=document.createElement('style');st.id='nlab0919Style';st.textContent=
- '.personalSpaceRibbonWrap0919{display:flex;align-items:center;gap:6px;border-left:1px solid #d7dde3;padding-left:8px}.personalSpaceRibbonWrap0919 button{font-weight:800;background:#f4f8fb;border-color:#a9bfd0}.personalSpaceRibbonWrap0919 button.connected{background:#eaf6ee;border-color:#93c7a0;color:#215d2e}.personalSpaceRibbonWrap0919 span{font-size:10px;color:#65717d;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.canonicalStampDates0919{border:1px solid #9fc2db;background:#f7fbfe;border-radius:8px;margin:8px 0}.canonicalStampDates0919>summary{cursor:pointer;font-weight:800;padding:8px 9px}.canonicalDatesHelp0919{font-size:10px;line-height:1.55;padding:0 9px 8px;color:#465d6c}.canonicalDatesGrid0919{display:grid;gap:5px;padding:0 9px 9px}.canonicalDateRow0919{display:grid;grid-template-columns:105px 150px minmax(180px,1fr) 120px;gap:6px;align-items:center}.canonicalDateRow0919 b{font-size:10px}.canonicalDateRow0919 input{padding:6px;font-size:10px}.canonicalDateRow0919 code{font-size:10px;color:#174f78;white-space:nowrap}.workspaceCanonicalNote0919{border:1px solid #b9d8c3;background:#f3fbf5;border-radius:8px;padding:8px;margin-bottom:8px;font-size:10px;line-height:1.5}@media(max-width:760px){.canonicalDateRow0919{grid-template-columns:1fr}.personalSpaceRibbonWrap0919 span{display:none}}';document.head.appendChild(st);
+ '.canonicalDatesRibbon0919{position:relative}.canonicalDatesRibbon0919>button{font-weight:800;background:#fff8dd;border-color:#dcc46a}.canonicalDatesRibbonPanel0919{position:absolute;right:0;top:calc(100% + 8px);z-index:1200;width:min(560px,88vw);padding:10px;background:#fff;border:1px solid #c7d5df;border-radius:10px;box-shadow:0 12px 34px #20304035}.canonicalDatesRibbonGrid0919{display:grid;gap:6px;margin-top:8px}.canonicalDatesRibbonGrid0919 label{display:grid;grid-template-columns:105px 150px minmax(170px,1fr);gap:6px;align-items:center;font-size:10px}.canonicalDatesRibbonGrid0919 input{padding:6px;font-size:10px}.canonicalDatesRibbonHelp0919{font-size:10px;line-height:1.5;margin-top:8px;color:#51616d}.personalSpaceRibbonWrap0919{display:flex;align-items:center;gap:6px;border-left:1px solid #d7dde3;padding-left:8px}.personalSpaceRibbonWrap0919 button{font-weight:800;background:#f4f8fb;border-color:#a9bfd0}.personalSpaceRibbonWrap0919 button.connected{background:#eaf6ee;border-color:#93c7a0;color:#215d2e}.personalSpaceRibbonWrap0919 span{font-size:10px;color:#65717d;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.canonicalStampDates0919{border:1px solid #9fc2db;background:#f7fbfe;border-radius:8px;margin:8px 0}.canonicalStampDates0919>summary{cursor:pointer;font-weight:800;padding:8px 9px}.canonicalDatesHelp0919{font-size:10px;line-height:1.55;padding:0 9px 8px;color:#465d6c}.canonicalDatesGrid0919{display:grid;gap:5px;padding:0 9px 9px}.canonicalDateRow0919{display:grid;grid-template-columns:105px 150px minmax(180px,1fr) 120px;gap:6px;align-items:center}.canonicalDateRow0919 b{font-size:10px}.canonicalDateRow0919 input{padding:6px;font-size:10px}.canonicalDateRow0919 code{font-size:10px;color:#174f78;white-space:nowrap}.workspaceCanonicalNote0919{border:1px solid #b9d8c3;background:#f3fbf5;border-radius:8px;padding:8px;margin-bottom:8px;font-size:10px;line-height:1.5}@media(max-width:760px){.canonicalDateRow0919,.canonicalDatesRibbonGrid0919 label{grid-template-columns:1fr}.personalSpaceRibbonWrap0919 span{display:none}}';document.head.appendChild(st);
 }
 async function loadAppConfig0919(){
  try{
@@ -191,12 +250,16 @@ async function loadAppConfig0919(){
  updateRibbon0919();syncCanonicalDates0919();
 }
 function install0919(){
- addStyle0919();installRibbon0919();installCanonicalDates0919();syncCanonicalDates0919();enhanceWorkspacePanel0919();
+ addStyle0919();installLegacyPersistHook0919();installDateRibbon0919();installRibbon0919();installCanonicalDates0919();syncCanonicalDates0919();enhanceWorkspacePanel0919();
  document.querySelectorAll('.buildBadge strong').forEach(x=>x.textContent=VERSION0919);
  const foot=document.querySelector('footer .footerInfo span');if(foot)foot.textContent=(foot.textContent||'').replace(/Alpha 0\.9\.(12|13|14|15|16|17|18)(?: TEST| RC2)?/g,VERSION0919);
+ if(new URLSearchParams(location.search).has('smoke0919')){
+  document.documentElement.dataset.nlabSmokeReady='1';
+  setTimeout(()=>{try{window.stop()}catch(e){}},50);
+ }
 }
 window.addEventListener('nlab:naming-rules-changed',scheduleCapture0919);
 E.form?.addEventListener('change',scheduleCapture0919);
 const mo=new MutationObserver(()=>setTimeout(install0919,0));if(document.body)mo.observe(document.body,{childList:true,subtree:true});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)},{once:true});else{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)}
+document.documentElement.dataset.nlab0919Stage='scheduled';if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)},{once:true});else{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)}
 })();

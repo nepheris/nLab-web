@@ -9,27 +9,19 @@
     };
     let h=await fetchText("./app-0.9.12.html","Base 0.9.12 inaccessible");
     if(!h.includes("</body>"))throw new Error("HTML base invalide");
-    const parts=[];
-    for(let i=1;i<=6;i++){
-      const n=String(i).padStart(2,"0");
-      parts.push(await fetchText("./runtime0914/app0914.part"+n+".txt","Runtime 0.9.14 part"+n));
-    }
-    const runtime=parts.join("");
-    const rc2=await fetchText("./runtime0914/rc2-patch.js","Patch 0.9.14 RC2");
-    const patch0915=await fetchText("./runtime0915/stamp-dates-filename.js","Patch 0.9.15 tampons");
-    const patch0916=await fetchText("./runtime0916/stamp-auth-dss.js","Patch 0.9.16 tampons/auth/DSS");
-    const profile0917=await fetchText("./runtime0917/profile.js","Patch 0.9.17 profil");
-    const naming0917=await fetchText("./runtime0917/naming.js","Patch 0.9.17 nommage");
-    const stampHelp0917=await fetchText("./runtime0917/stamp-help.js","Patch 0.9.17 aide tampons");
-    const authGate0917=await fetchText("./runtime0917/auth-gate.js","Patch 0.9.17 accès signature privé");
-    const variables0918=await fetchText("./runtime0918/variables.js","Patch 0.9.18 variables communes");
-    const workspace0918=await fetchText("./runtime0918/workspace.js","Patch 0.9.18 workspace unique");
-    const drive0918=await fetchText("./runtime0918/google-drive.js","Patch 0.9.18 Google Drive visible");
-    const unified0919=await fetchText("./runtime0919/unified-config-auth.js","Patch 0.9.19 configuration/authentification unifiées");
+    const runtimeTrap='<script>(function(){function mark(kind,msg){try{var a="data-nlab-runtime-"+kind;if(!document.documentElement.hasAttribute(a))document.documentElement.setAttribute(a,String(msg||"unknown").slice(0,240))}catch(_){}}window.addEventListener("error",function(e){mark("error",e.message)});window.addEventListener("unhandledrejection",function(e){mark("rejection",e.reason&&e.reason.message||e.reason)})})()<\/script>';
+    h=h.replace("<head>","<head>"+runtimeTrap);
+    // 0.9.19 consolidated runtime: stable 0.9.12 base + independent 0.9.18 services + 0.9.19 UI.
+    // Legacy 0.9.14-0.9.17 patches remain archived but are intentionally not injected:
+    // they relied on private lexical bindings across isolated IIFEs and could abort startup.
+    const variables0918=await fetchText("./runtime0918/variables.js","Runtime 0.9.18 variables communes");
+    const workspace0918=await fetchText("./runtime0918/workspace.js","Runtime 0.9.18 workspace unique");
+    const drive0918=await fetchText("./runtime0918/google-drive.js","Runtime 0.9.18 Google Drive visible");
+    const unified0919=await fetchText("./runtime0919/unified-config-auth.js","Runtime 0.9.19 configuration/authentification unifiées");
     const closeScript="</scr"+"ipt>";
     const marker="})();\n"+closeScript+'\n<script id="alpha0910Runtime">';
     if(!h.includes(marker))throw new Error("Point d’injection interne 0.9.14 introuvable");
-    h=h.replace(marker,"\n"+runtime+"\n"+rc2+"\n"+patch0915+"\n"+patch0916+"\n"+profile0917+"\n"+naming0917+"\n"+stampHelp0917+"\n"+authGate0917+"\n"+variables0918+"\n"+workspace0918+"\n"+drive0918+"\n"+unified0919+"\n})();\n"+closeScript+'\n<script id="alpha0910Runtime">');
+    h=h.replace(marker,"\n"+variables0918+"\n"+workspace0918+"\n"+drive0918+"\n"+unified0919+"\n})();\n"+closeScript+'\n<script id="alpha0910Runtime">');
     const debugTag='<script src="./runtime/app-0.9.13-debug.js"></scr'+'ipt>';
     h=h.replace("</body>",debugTag+"</body>");
     document.open();

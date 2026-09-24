@@ -136,3 +136,35 @@ jobs:
           fi
 
           echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.19 + DEMO v2: OK'
+
+      - name: Browser smoke test Alpha 0.9.19
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 --directory . >/tmp/nlab-http.log 2>&1 &
+          srv=$!
+          trap 'kill $srv 2>/dev/null || true' EXIT
+          sleep 1
+          chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$chrome"
+          timeout 30s "$chrome" --headless --no-sandbox --disable-gpu --virtual-time-budget=12000 --dump-dom 'http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html?smoke0919=1' >/tmp/pdf0919-dom.html 2>/tmp/pdf0919-chrome.log || {
+              cat /tmp/nlab-http.log || true
+              cat /tmp/pdf0919-chrome.log || true
+              exit 1
+            }
+          echo "personalRuntime=$(grep -c 'data-nlab-ui-personal=\"1\"' /tmp/pdf0919-dom.html || true)"
+          echo "datesRuntime=$(grep -c 'data-nlab-ui-dates=\"5\"' /tmp/pdf0919-dom.html || true)"
+          echo "version0919=$(grep -c 'Alpha 0.9.19 TEST' /tmp/pdf0919-dom.html || true)"
+          echo "smokeReady=$(grep -c 'data-nlab-smoke-ready=\"1\"' /tmp/pdf0919-dom.html || true)"
+          echo "runtimeError=$(grep -o 'data-nlab-runtime-error=\"[^\"]*\"' /tmp/pdf0919-dom.html | head -1 || true)"
+          echo "runtimeRejection=$(grep -o 'data-nlab-runtime-rejection=\"[^\"]*\"' /tmp/pdf0919-dom.html | head -1 || true)"
+          echo "stage0918=$(grep -o 'data-nlab0918-stage=\"[^\"]*\"' /tmp/pdf0919-dom.html | head -1 || true)"
+          echo "stage0919=$(grep -o 'data-nlab0919-stage=\"[^\"]*\"' /tmp/pdf0919-dom.html | head -1 || true)"
+          head -5 /tmp/pdf0919-dom.html || true
+          tail -40 /tmp/pdf0919-chrome.log || true
+          test "$(grep -c 'data-nlab-smoke-ready=\"1\"' /tmp/pdf0919-dom.html || true)" -ge 1
+          test "$(grep -c 'data-nlab-ui-personal=\"1\"' /tmp/pdf0919-dom.html || true)" -ge 1
+          test "$(grep -c 'data-nlab-ui-dates=\"5\"' /tmp/pdf0919-dom.html || true)" -ge 1
+          test "$(grep -c 'Alpha 0.9.19 TEST' /tmp/pdf0919-dom.html || true)" -ge 1
+          ! grep -q 'Échec du chargement' /tmp/pdf0919-dom.html
+          echo 'Browser smoke 0.9.19: rendered personal login + 5 date controls confirmed'
