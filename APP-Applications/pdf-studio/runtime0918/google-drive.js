@@ -4,6 +4,9 @@ window.__NLAB_0918_GOOGLE_DRIVE__=true;
 const SCOPE0918='openid email profile https://www.googleapis.com/auth/drive.file';
 const FOLDER_MIME='application/vnd.google-apps.folder';
 const DRIVE_STATE_KEY=(PROFILE.storagePrefix||'nlab-pdf')+'-drive-state-v2';
+const GOOGLE_CLIENT_KEY0918=(PROFILE.storagePrefix||'nlab-pdf')+'-google-oauth-client-id';
+const googleDriveClientIdBase0918=googleDriveClientId;
+googleDriveClientId=function(){return String(window.NLAB_GOOGLE_DRIVE_CONFIG?.clientId||localStorage.getItem(GOOGLE_CLIENT_KEY0918)||googleDriveClientIdBase0918()||'').trim()};
 let state={rootId:'',studioId:'',signaturesId:'',documentsId:'',exportsId:'',workspaceFileId:'',user:null};
 try{state=Object.assign(state,JSON.parse(localStorage.getItem(DRIVE_STATE_KEY)||'{}'))}catch(e){}
 function persist(){try{localStorage.setItem(DRIVE_STATE_KEY,JSON.stringify(state))}catch(e){}}
@@ -79,7 +82,7 @@ writeFinalDirect=async function(bytes,name,dest){const r=await writeBase0918(byt
 
 function installConfig(){
  window.NLAB_GOOGLE_DRIVE_CONFIG=window.NLAB_GOOGLE_DRIVE_CONFIG||{};window.NLAB_GOOGLE_DRIVE_CONFIG.scope=SCOPE0918;
- const panel=document.getElementById('workspacePanel0918');if(panel&&!document.getElementById('drivePathHelp0918')){const d=document.createElement('div');d.id='drivePathHelp0918';d.className='userConfigHelp';d.innerHTML='<b>Dossier Google créé après connexion :</b> <code>Mon Drive / nLab / PDF Studio</code> avec <code>Signatures</code>, <code>Documents</code> et <code>Exports</code>. Le workspace JSON est visible à la racine de PDF Studio.';panel.querySelector('.userConfigBody')?.appendChild(d)}updateUi();
+ const panel=document.getElementById('workspacePanel0918');if(panel&&!document.getElementById('drivePathHelp0918')){const body=panel.querySelector('.userConfigBody'),d=document.createElement('div');d.id='drivePathHelp0918';d.className='userConfigHelp';d.innerHTML='<b>Dossier Google créé après connexion :</b> <code>Mon Drive / nLab / PDF Studio</code> avec <code>Signatures</code>, <code>Documents</code> et <code>Exports</code>. Le workspace JSON est visible à la racine de PDF Studio.';body?.appendChild(d);const cfg=document.createElement('label');cfg.className='userConfigHelp';cfg.innerHTML='Client ID OAuth Web Google nLab<input id="workspaceGoogleClient0918" type="text" value="'+String(googleDriveClientId()).replace(/"/g,'&quot;')+'" placeholder="xxxxxxxx.apps.googleusercontent.com">';body?.appendChild(cfg);const save=document.createElement('button');save.id='workspaceGoogleClientSave0918';save.type='button';save.textContent='Enregistrer le Client ID OAuth';body?.appendChild(save);save.onclick=()=>{const v=(document.getElementById('workspaceGoogleClient0918')?.value||'').trim();if(v&&!/^[A-Za-z0-9._-]+\.apps\.googleusercontent\.com$/.test(v))return toast('Client ID OAuth invalide');if(v)localStorage.setItem(GOOGLE_CLIENT_KEY0918,v);else localStorage.removeItem(GOOGLE_CLIENT_KEY0918);window.NLAB_GOOGLE_DRIVE_CONFIG=window.NLAB_GOOGLE_DRIVE_CONFIG||{};window.NLAB_GOOGLE_DRIVE_CONFIG.clientId=v;setGoogleDriveUi();toast(v?'Client ID OAuth enregistré':'Client ID OAuth effacé')}}updateUi();
 }
 window.__NLAB_DRIVE_0918__={ensureStructure,saveWorkspace:saveWorkspaceDrive,loadWorkspace:loadWorkspaceDrive,state:()=>state,scope:SCOPE0918,saveSignatureAssets,hydrateSignatureFiles};
 const mo=new MutationObserver(()=>setTimeout(installConfig,0));if(document.body)mo.observe(document.body,{childList:true,subtree:true});
