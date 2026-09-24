@@ -145,7 +145,8 @@ jobs:
           srv=$!
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$chrome"
-          "$chrome" --headless --no-sandbox --disable-gpu --remote-debugging-port=9222             http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html             >/tmp/pdf0919-chrome.log 2>&1 &
+          rm -rf /tmp/pdf0919-chrome-profile
+          "$chrome" --headless --no-sandbox --disable-gpu --user-data-dir=/tmp/pdf0919-chrome-profile --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html >/tmp/pdf0919-chrome.log 2>&1 &
           chrome_pid=$!
           trap 'kill $chrome_pid $srv 2>/dev/null || true' EXIT
           sleep 6
