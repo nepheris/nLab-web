@@ -8,6 +8,13 @@ on:
       - 'APP-Applications/pdf-studio/**'
       - 'Library/demo/**'
       - '.github/workflows/sync-pdf-studio.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'APP-Applications/pdf-studio/**'
+      - 'Library/demo/**'
+      - '.github/workflows/sync-pdf-studio.yml'
   workflow_dispatch:
 
 permissions:
@@ -31,7 +38,7 @@ jobs:
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
           grep -q 'Alpha 0.9.10' APP-Applications/pdf-studio/app-0.9.10.html
 
-          # TEST 0.9.15 reste séparé
+          # TEST 0.9.16 reste séparé
           test -s APP-Applications/pdf-studio/app-0.9.14.html
           test -s APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
           grep -q 'app-0.9.12.html' APP-Applications/pdf-studio/app-0.9.14.html
@@ -56,12 +63,21 @@ jobs:
           grep -q 'DATE_D_FMT' APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
           grep -q 'stampRenameFile0915' APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
 
+          # TEST 0.9.16 : constructeur visible + JSON privé + DSS
+          test -s APP-Applications/pdf-studio/app-0.9.16.html
+          test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+          grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
+          node --check APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+          grep -q 'stampHub0916' APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+          grep -q 'STAMP_DRIVE_FILE_0916' APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+          grep -q 'PAdES_BASELINE_LT' APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.15"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.16"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -81,4 +97,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.15 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.16 + DEMO v2: OK'
