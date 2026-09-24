@@ -1,22 +1,28 @@
 {
-  "schema": "nlab-pdf-stamps/v3",
+  "schema": "nlab-pdf-stamps/v4",
   "dateFormats": {
+    "STAMP": "DD/MM/YYYY",
     "A": "DD/MM/YYYY",
     "B": "D MMMM YYYY",
-    "C": "YYYY-MM-DD"
+    "C": "YYYY-MM-DD",
+    "D": "DD/MM/YYYY"
   },
   "variables": [
     "{INITIALS}",
+    "{FILENAME}",
     "{STAMP_DATE}",
     "{STAMP_DATE_FMT}",
     "{DATE_A}",
     "{DATE_B}",
     "{DATE_C}",
+    "{DATE_D}",
     "{DATE_A_FMT}",
     "{DATE_B_FMT}",
     "{DATE_C_FMT}",
-    "{DATE_A:YYYY-MM-DD}",
-    "{DATE_B|D MMMM YYYY}"
+    "{DATE_D_FMT}",
+    "{STAMP_DATE:YYYYMMDD}",
+    "{DATE_B|D MMMM YYYY}",
+    "{DATE_D:YYYYMMDD}"
   ],
   "stamps": [
     {
@@ -61,6 +67,17 @@
       "template": "VALIDÉ - {INITIALS}\nA : {DATE_A_FMT}\nB : {DATE_B_FMT}\nC : {DATE_C_FMT}",
       "prefix": "VAL_",
       "suffix": "",
+      "textPrefix": "",
+      "textSuffix": ""
+    },
+    {
+      "id": "validation-duree-bc-reeval-d",
+      "label": "Validation / validité B-C / réévaluation D",
+      "template": "VALIDÉ - {INITIALS}\\nLe {STAMP_DATE_FMT}\\nValable du {DATE_B_FMT} au {DATE_C_FMT}\\nÀ réévaluer le {DATE_D_FMT}",
+      "prefix": "VALIDE_{STAMP_DATE:YYYYMMDD}_",
+      "suffix": "_REV_{DATE_D:YYYYMMDD}",
+      "prefixEnabled": true,
+      "suffixEnabled": true,
       "textPrefix": "",
       "textSuffix": ""
     }
