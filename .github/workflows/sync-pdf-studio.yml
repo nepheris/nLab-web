@@ -31,13 +31,11 @@ jobs:
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
           grep -q 'Alpha 0.9.10' APP-Applications/pdf-studio/app-0.9.10.html
 
-          # TEST 0.9.14 reste séparé
+          # TEST 0.9.15 reste séparé
           test -s APP-Applications/pdf-studio/app-0.9.14.html
           test -s APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
-          test -s APP-Applications/pdf-studio/runtime0914/loader.js
           grep -q 'app-0.9.12.html' APP-Applications/pdf-studio/app-0.9.14.html
           grep -q 'app-0.9.13-debug.js' APP-Applications/pdf-studio/app-0.9.14.html
-          grep -q 'runtime0914/loader.js' APP-Applications/pdf-studio/app-0.9.14.html
           grep -q 'nLabCopyDebug' APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
           grep -q 'nLabLoadDemoDirect0913' APP-Applications/pdf-studio/runtime/app-0.9.13-debug.js
           for i in $(seq 1 6); do
@@ -50,12 +48,20 @@ jobs:
           grep -q 'richText0914' /tmp/app0914.js
           grep -q 'redactionPlan0914' /tmp/app0914.js
 
+          # Patch TEST 0.9.15 : Date D + règles de nom de fichier
+          test -s APP-Applications/pdf-studio/app-0.9.15.html
+          test -s APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
+          grep -q 'runtime0915/stamp-dates-filename.js' APP-Applications/pdf-studio/app-0.9.15.html
+          node --check APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
+          grep -q 'DATE_D_FMT' APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
+          grep -q 'stampRenameFile0915' APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
+
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.14"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.15"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -75,4 +81,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.14 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.15 + DEMO v2: OK'
