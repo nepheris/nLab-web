@@ -39,6 +39,13 @@ jobs:
           grep -q 'Alpha 0.9.12' APP-Applications/pdf-studio/app-0.9.12.html
           test -s APP-Applications/pdf-studio/app-0.9.14.html
           test -s APP-Applications/pdf-studio/app-0.9.15.html
+          test -s APP-Applications/pdf-studio/app-0.9.16.html
+          test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+          grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
+          node --check APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+          grep -q 'stampHub0916' APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+          grep -q 'STAMP_DRIVE_FILE_0916' APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
+          grep -q 'PAdES_BASELINE_LT' APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
           test -s APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
           grep -q 'runtime0915/stamp-dates-filename.js' APP-Applications/pdf-studio/app-0.9.15.html
           node --check APP-Applications/pdf-studio/runtime0915/stamp-dates-filename.js
@@ -62,7 +69,7 @@ jobs:
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.15"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.16"' APP-Applications/pdf-studio/versions.json
 
       - name: Build shared nLab demo corpus
         shell: bash
