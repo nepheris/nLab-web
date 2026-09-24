@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.18",
+  "test": "0.9.19",
   "versions": [
+    {
+      "version": "0.9.19",
+      "label": "Alpha 0.9.19 TEST",
+      "date": "2026-09-24",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.19.html",
+      "notes": "TEST : configuration globale canonique dans app-config.v1.json, bibliothèque de tampons centralisée, workspace personnel unique, syntaxe de variables commune aux tampons/préfixes/suffixes/noms/textes/en-têtes, formats date/heure/timestamp configurables, cinq dates de tampon visibles avec leur format, bouton de connexion Google dans le bandeau, sélection de compte et stockage Drive visible. APP13 reste découplé de l’authentification Google Drive."
+    },
     {
       "version": "0.9.18",
       "label": "Alpha 0.9.18 TEST",
       "date": "2026-09-24",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.18.html",
       "notes": "TEST : moteur unique de variables {VARIABLE} / {VARIABLE:FORMAT} avec formats date/heure/timestamp, workspace JSON unique et hiérarchique, migration depuis les réglages précédents, connexion Google avec sélection de compte et scope drive.file, création d’un dossier visible Mon Drive/nLab/PDF Studio avec Signatures/Documents/Exports, synchronisation du workspace et des signatures, et option de copie automatique des PDF exportés vers Drive."
     },
