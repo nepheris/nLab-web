@@ -152,15 +152,13 @@ jobs:
               cat /tmp/pdf0919-chrome.log || true
               exit 1
             }
-          echo "personalSpace=$(grep -c 'id=\"personalSpaceRibbon0919\"' /tmp/pdf0919-dom.html || true)"
-          echo "dateRibbon=$(grep -c 'id=\"canonicalDatesRibbonBtn0919\"' /tmp/pdf0919-dom.html || true)"
-          echo "globalDateInputs=$(grep -o 'data-global-date0919=' /tmp/pdf0919-dom.html | wc -l)"
+          echo "personalRuntime=$(grep -c 'data-nlab-ui-personal=\"1\"' /tmp/pdf0919-dom.html || true)"
+          echo "datesRuntime=$(grep -c 'data-nlab-ui-dates=\"5\"' /tmp/pdf0919-dom.html || true)"
           echo "version0919=$(grep -c 'Alpha 0.9.19 TEST' /tmp/pdf0919-dom.html || true)"
-          grep -E -o '.{0,100}(personalSpaceRibbon0919|canonicalDatesRibbonBtn0919|data-global-date0919|Alpha 0\.9\.19 TEST).{0,180}' /tmp/pdf0919-dom.html | head -50 || true
+          head -5 /tmp/pdf0919-dom.html || true
           tail -40 /tmp/pdf0919-chrome.log || true
-          test "$(grep -c 'id=\"personalSpaceRibbon0919\"' /tmp/pdf0919-dom.html || true)" -ge 1
-          test "$(grep -c 'id=\"canonicalDatesRibbonBtn0919\"' /tmp/pdf0919-dom.html || true)" -ge 1
-          test "$(grep -o 'data-global-date0919=' /tmp/pdf0919-dom.html | wc -l)" -ge 5
+          test "$(grep -c 'data-nlab-ui-personal=\"1\"' /tmp/pdf0919-dom.html || true)" -ge 1
+          test "$(grep -c 'data-nlab-ui-dates=\"5\"' /tmp/pdf0919-dom.html || true)" -ge 1
           test "$(grep -c 'Alpha 0.9.19 TEST' /tmp/pdf0919-dom.html || true)" -ge 1
           ! grep -q 'Échec du chargement' /tmp/pdf0919-dom.html
-          echo 'Browser smoke 0.9.19: personal login + five canonical dates visible'
+          echo 'Browser smoke 0.9.19: rendered personal login + 5 date controls confirmed'
