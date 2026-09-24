@@ -63,6 +63,20 @@ jobs:
           grep -q 'select_account' APP-Applications/pdf-studio/runtime0918/google-drive.js
           grep -q 'Authorization.*Bearer' APP-Applications/pdf-studio/runtime0918/google-drive.js
           test -s APP-Applications/pdf-studio/config/workspace-v2.example.json
+
+          # TEST 0.9.19 : configuration canonique + 5 dates visibles + espace personnel
+          test -s APP-Applications/pdf-studio/app-0.9.19.html
+          test -s APP-Applications/pdf-studio/runtime0919/unified-config-auth.js
+          node --check APP-Applications/pdf-studio/runtime0919/unified-config-auth.js
+          grep -q 'runtime0919/unified-config-auth.js' APP-Applications/pdf-studio/app-0.9.19.html
+          grep -q 'canonicalStampDates0919' APP-Applications/pdf-studio/runtime0919/unified-config-auth.js
+          grep -q 'personalSpaceRibbon0919' APP-Applications/pdf-studio/runtime0919/unified-config-auth.js
+          test -s APP-Applications/pdf-studio/config/app-config.v1.json
+          python -m json.tool APP-Applications/pdf-studio/config/app-config.v1.json >/dev/null
+          grep -q '"STAMP_DATE"' APP-Applications/pdf-studio/config/app-config.v1.json
+          grep -q '"DATE_D"' APP-Applications/pdf-studio/config/app-config.v1.json
+          test -s APP-Applications/pdf-studio/docs/configuration-0.9.19.md
+
           test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
           grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
           node --check APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
@@ -92,7 +106,7 @@ jobs:
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.18"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.19"' APP-Applications/pdf-studio/versions.json
 
       - name: Build shared nLab demo corpus
         shell: bash
