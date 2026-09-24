@@ -9,6 +9,8 @@
     };
     let h=await fetchText("./app-0.9.12.html","Base 0.9.12 inaccessible");
     if(!h.includes("</body>"))throw new Error("HTML base invalide");
+    const runtimeTrap='<script>(function(){function mark(kind,msg){try{document.documentElement.setAttribute("data-nlab-runtime-"+kind,String(msg||"unknown").slice(0,240))}catch(_){}}window.addEventListener("error",function(e){mark("error",e.message)});window.addEventListener("unhandledrejection",function(e){mark("rejection",e.reason&&e.reason.message||e.reason)})})()<\/script>';
+    h=h.replace("<head>","<head>"+runtimeTrap);
     const parts=[];
     for(let i=1;i<=6;i++){
       const n=String(i).padStart(2,"0");
