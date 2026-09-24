@@ -8,6 +8,13 @@ on:
       - 'APP-Applications/pdf-studio/**'
       - 'Library/demo/**'
       - '.github/workflows/sync-pdf-studio.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'APP-Applications/pdf-studio/**'
+      - 'Library/demo/**'
+      - '.github/workflows/sync-pdf-studio.yml'
   workflow_dispatch:
 
 permissions:
