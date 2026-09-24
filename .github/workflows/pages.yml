@@ -41,13 +41,15 @@ jobs:
           test -s APP-Applications/pdf-studio/app-0.9.15.html
           test -s APP-Applications/pdf-studio/app-0.9.16.html
           test -s APP-Applications/pdf-studio/app-0.9.17.html
-          for f in profile naming stamp-help; do test -s "APP-Applications/pdf-studio/runtime0917/${f}.js"; node --check "APP-Applications/pdf-studio/runtime0917/${f}.js"; done
+          for f in profile naming stamp-help auth-gate; do test -s "APP-Applications/pdf-studio/runtime0917/${f}.js"; node --check "APP-Applications/pdf-studio/runtime0917/${f}.js"; done
           grep -q 'runtime0917/profile.js' APP-Applications/pdf-studio/app-0.9.17.html
           grep -q 'runtime0917/naming.js' APP-Applications/pdf-studio/app-0.9.17.html
           grep -q 'runtime0917/stamp-help.js' APP-Applications/pdf-studio/app-0.9.17.html
+          grep -q 'runtime0917/auth-gate.js' APP-Applications/pdf-studio/app-0.9.17.html
           grep -q 'PROFILE_FILE0917' APP-Applications/pdf-studio/runtime0917/profile.js
           grep -q 'SYSTEM_RULES0917' APP-Applications/pdf-studio/runtime0917/naming.js
           grep -q 'advancedStampHelp0917' APP-Applications/pdf-studio/runtime0917/stamp-help.js
+          grep -q 'signatureAuthGate0917' APP-Applications/pdf-studio/runtime0917/auth-gate.js
           test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
           grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
           node --check APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
