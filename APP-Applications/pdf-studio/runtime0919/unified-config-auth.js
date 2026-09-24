@@ -14,6 +14,7 @@ const DATE_DEFS0919=[
 ];
 let appConfig0919=null;
 let saveTimer0919=null;
+let driveSyncTimer0919=null;
 function clone0919(v){return JSON.parse(JSON.stringify(v))}
 function mergeDefaults0919(defaults,current){
  if(Array.isArray(current))return clone0919(current);
@@ -79,12 +80,17 @@ function personalStampItems0919(items){
  const globals=new Map((appConfig0919?.stamps?.library||[]).map(x=>[x.id,x]));
  return (items||[]).filter(x=>{const g=globals.get(x?.id);return !g||JSON.stringify(g)!==JSON.stringify(x)}).map(clone0919);
 }
+function scheduleDriveWorkspaceSync0919(){
+ clearTimeout(driveSyncTimer0919);
+ if(!S.driveConnected)return;
+ driveSyncTimer0919=setTimeout(async()=>{try{await window.__NLAB_DRIVE_0918__?.saveWorkspace?.()}catch(e){console.warn('Synchronisation workspace Drive différée',e)}},1200);
+}
 function syncWorkspaceStamps0919(){
  const api=workspaceApi0919();if(!api)return;
- const ws=api.get();ws.stamps=ws.stamps||{};ws.stamps.library=personalStampItems0919(S.stampLibrary||[]);api.saveLocal();
+ const ws=api.get();ws.stamps=ws.stamps||{};ws.stamps.library=personalStampItems0919(S.stampLibrary||[]);api.saveLocal();scheduleDriveWorkspaceSync0919();
 }
 persistCustomStamps=function(){syncWorkspaceStamps0919()};
-function scheduleCapture0919(){clearTimeout(saveTimer0919);saveTimer0919=setTimeout(()=>{try{workspaceApi0919()?.capture?.()}catch(e){}},250)}
+function scheduleCapture0919(){clearTimeout(saveTimer0919);saveTimer0919=setTimeout(()=>{try{workspaceApi0919()?.capture?.();scheduleDriveWorkspaceSync0919()}catch(e){}},250)}
 
 function canonicalSetGoogleDriveUi0919(){
  const gate=$19('googleDriveGate'),state=$19('googleDriveState'),connect=$19('googleDriveConnect'),disconnect=$19('googleDriveDisconnect'),configured=!!googleDriveClientId();
@@ -134,7 +140,7 @@ function installCanonicalDates0919(){
   const dateInput=row.querySelector('[data-date0919]'),fmtInput=row.querySelector('[data-format0919]');
   dateInput.value=src?.value||today();fmtInput.value=fm[def.key]||'DD/MM/YYYY';
   dateInput.addEventListener('input',()=>{const x=sourceDate0919(def);if(x){x.value=dateInput.value||today();x.dispatchEvent(new Event('input',{bubbles:true}));}scheduleCapture0919();});
-  fmtInput.addEventListener('change',()=>{const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.formats=ws.variables.formats||{};ws.variables.formats[def.key]=fmtInput.value.trim()||'DD/MM/YYYY';api.saveLocal();}const x=sourceDate0919(def);if(x)x.dispatchEvent(new Event('input',{bubbles:true}));try{updateStampPreview()}catch(e){}try{updatePath()}catch(e){}});
+  fmtInput.addEventListener('change',()=>{const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.formats=ws.variables.formats||{};ws.variables.formats[def.key]=fmtInput.value.trim()||'DD/MM/YYYY';api.saveLocal();scheduleDriveWorkspaceSync0919();}const x=sourceDate0919(def);if(x)x.dispatchEvent(new Event('input',{bubbles:true}));try{updateStampPreview()}catch(e){}try{updatePath()}catch(e){}});
   grid.appendChild(row);
  }
  const target=hub.querySelector('.stampSteps0916');if(target)target.after(d);else hub.prepend(d);
