@@ -94,6 +94,7 @@ jobs:
           grep -q 'WORKSPACE_SCHEMA0918' APP-Applications/pdf-studio/runtime0918/workspace.js
           grep -q 'drive.file' APP-Applications/pdf-studio/runtime0918/google-drive.js
           grep -q 'select_account' APP-Applications/pdf-studio/runtime0918/google-drive.js
+          grep -q 'Authorization.*Bearer' APP-Applications/pdf-studio/runtime0918/google-drive.js
           test -s APP-Applications/pdf-studio/config/workspace-v2.example.json
 
           test -s APP-Applications/pdf-studio/config/user-config.example.json
