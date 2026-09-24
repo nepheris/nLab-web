@@ -84,12 +84,24 @@ jobs:
           grep -q 'advancedStampHelp0917' APP-Applications/pdf-studio/runtime0917/stamp-help.js
           grep -q 'signatureAuthGate0917' APP-Applications/pdf-studio/runtime0917/auth-gate.js
 
+          # TEST 0.9.18 : variables communes + workspace JSON + Drive visible
+          test -s APP-Applications/pdf-studio/app-0.9.18.html
+          for f in variables workspace google-drive; do test -s "APP-Applications/pdf-studio/runtime0918/${f}.js"; node --check "APP-Applications/pdf-studio/runtime0918/${f}.js"; done
+          grep -q 'runtime0918/variables.js' APP-Applications/pdf-studio/app-0.9.18.html
+          grep -q 'runtime0918/workspace.js' APP-Applications/pdf-studio/app-0.9.18.html
+          grep -q 'runtime0918/google-drive.js' APP-Applications/pdf-studio/app-0.9.18.html
+          grep -q 'NLAB_VARIABLES_0918' APP-Applications/pdf-studio/runtime0918/variables.js
+          grep -q 'WORKSPACE_SCHEMA0918' APP-Applications/pdf-studio/runtime0918/workspace.js
+          grep -q 'drive.file' APP-Applications/pdf-studio/runtime0918/google-drive.js
+          grep -q 'select_account' APP-Applications/pdf-studio/runtime0918/google-drive.js
+          test -s APP-Applications/pdf-studio/config/workspace-v2.example.json
+
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.17"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.18"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -109,4 +121,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.17 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.18 + DEMO v2: OK'
