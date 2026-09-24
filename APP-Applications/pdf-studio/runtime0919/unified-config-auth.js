@@ -12,6 +12,17 @@ const DATE_DEFS0919=[
  {key:'DATE_C',label:'Date C',source:'stampHubDateC0916'},
  {key:'DATE_D',label:'Date D',source:'stampHubDateD0916'}
 ];
+const DATE_VALUES_KEY0919=(PROFILE.storagePrefix||'nlab-pdf')+'-canonical-date-values-v1';
+function storedDates0919(){try{return Object.assign({},JSON.parse(localStorage.getItem(DATE_VALUES_KEY0919)||'{}'))}catch(e){return{}}}
+function saveStoredDates0919(v){try{localStorage.setItem(DATE_VALUES_KEY0919,JSON.stringify(v||{}))}catch(e){}}
+function dateValueFor0919(def){const src=sourceDate0919(def),saved=storedDates0919();return src?.value||saved[def.key]||today()}
+function pushDateValue0919(def,value){
+ const v=value||today(),saved=storedDates0919();saved[def.key]=v;saveStoredDates0919(saved);
+ const src=sourceDate0919(def);if(src&&src.value!==v){src.value=v;src.dispatchEvent(new Event('input',{bubbles:true}))}
+ document.querySelectorAll('[data-date0919="'+def.key+'"],[data-global-date0919="'+def.key+'"]').forEach(x=>{if(document.activeElement!==x)x.value=v});
+ const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.values=ws.variables.values||{};ws.variables.values[def.key]=v;api.saveLocal();scheduleDriveWorkspaceSync0919()}
+ try{updateStampPreview()}catch(e){}try{updatePath()}catch(e){}
+}
 let appConfig0919=null;
 let saveTimer0919=null;
 let driveSyncTimer0919=null;
@@ -143,8 +154,8 @@ function installCanonicalDates0919(){
   const src=sourceDate0919(def),row=document.createElement('div');row.className='canonicalDateRow0919';
   row.innerHTML='<b>'+def.label+'</b><input type="date" data-date0919="'+def.key+'"><input type="text" data-format0919="'+def.key+'" aria-label="Format '+def.label+'"><code>{'+def.key+'}</code>';
   const dateInput=row.querySelector('[data-date0919]'),fmtInput=row.querySelector('[data-format0919]');
-  dateInput.value=src?.value||today();fmtInput.value=fm[def.key]||'DD/MM/YYYY';
-  dateInput.addEventListener('input',()=>{const x=sourceDate0919(def);if(x){x.value=dateInput.value||today();x.dispatchEvent(new Event('input',{bubbles:true}));}scheduleCapture0919();});
+  dateInput.value=dateValueFor0919(def);fmtInput.value=fm[def.key]||'DD/MM/YYYY';
+  dateInput.addEventListener('input',()=>{pushDateValue0919(def,dateInput.value||today());scheduleCapture0919();});
   fmtInput.addEventListener('change',()=>{const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.formats=ws.variables.formats||{};ws.variables.formats[def.key]=fmtInput.value.trim()||'DD/MM/YYYY';api.saveLocal();scheduleDriveWorkspaceSync0919();}const x=sourceDate0919(def);if(x)x.dispatchEvent(new Event('input',{bubbles:true}));try{updateStampPreview()}catch(e){}try{updatePath()}catch(e){}});
   grid.appendChild(row);
  }
@@ -157,10 +168,31 @@ function installCanonicalDates0919(){
  }
 }
 function syncCanonicalDates0919(){
- const panel=$19('canonicalStampDates0919');if(!panel)return;
- for(const def of DATE_DEFS0919){const x=panel.querySelector('[data-date0919="'+def.key+'"]'),src=sourceDate0919(def);if(x&&src&&document.activeElement!==x)x.value=src.value||today();}
+ const saved=storedDates0919();
+ for(const def of DATE_DEFS0919){
+  const src=sourceDate0919(def),v=src?.value||saved[def.key]||today();
+  if(src&&saved[def.key]&&src.value!==saved[def.key])src.value=saved[def.key];
+  document.querySelectorAll('[data-date0919="'+def.key+'"],[data-global-date0919="'+def.key+'"]').forEach(x=>{if(document.activeElement!==x)x.value=saved[def.key]||v});
+ }
 }
 
+function installDateRibbon0919(){
+ const meta=document.querySelector('header .headerMeta')||document.querySelector('header');if(!meta||$19('canonicalDatesRibbon0919'))return;
+ const wrap=document.createElement('div');wrap.id='canonicalDatesRibbon0919';wrap.className='canonicalDatesRibbon0919';
+ wrap.innerHTML='<button id="canonicalDatesRibbonBtn0919" type="button">📅 5 dates</button><div id="canonicalDatesRibbonPanel0919" class="canonicalDatesRibbonPanel0919" hidden><b>Dates des tampons</b><div class="canonicalDatesRibbonGrid0919"></div><div class="canonicalDatesRibbonHelp0919">Syntaxe : <code>{STAMP_DATE:DD/MM/YYYY}</code> · <code>{DATE_A:YYYY-MM-DD}</code> · <code>{NOW:HH:mm:ss}</code></div></div>';
+ meta.appendChild(wrap);
+ const panel=wrap.querySelector('#canonicalDatesRibbonPanel0919'),grid=wrap.querySelector('.canonicalDatesRibbonGrid0919'),fm=formats0919();
+ for(const def of DATE_DEFS0919){
+  const row=document.createElement('label');row.innerHTML='<span>'+def.label+'</span><input type="date" data-global-date0919="'+def.key+'"><input type="text" data-global-format0919="'+def.key+'" aria-label="Format '+def.label+'">';
+  const di=row.querySelector('[data-global-date0919]'),fi=row.querySelector('[data-global-format0919]');
+  di.value=dateValueFor0919(def);fi.value=fm[def.key]||'DD/MM/YYYY';
+  di.addEventListener('input',()=>pushDateValue0919(def,di.value||today()));
+  fi.addEventListener('change',()=>{const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.formats=ws.variables.formats||{};ws.variables.formats[def.key]=fi.value.trim()||'DD/MM/YYYY';api.saveLocal();scheduleDriveWorkspaceSync0919()}document.querySelectorAll('[data-format0919="'+def.key+'"]').forEach(x=>x.value=fi.value);try{updateStampPreview()}catch(e){}});
+  grid.appendChild(row);
+ }
+ wrap.querySelector('#canonicalDatesRibbonBtn0919').onclick=e=>{e.stopPropagation();panel.hidden=!panel.hidden;syncCanonicalDates0919()};
+ document.addEventListener('click',e=>{if(!wrap.contains(e.target))panel.hidden=true});
+}
 function workspacePanel0919(){return $19('workspacePanel0918')}
 function openPersonalSpace0919(){
  const p=workspacePanel0919();if(p){p.open=true;p.scrollIntoView({behavior:'smooth',block:'start'});return true}
@@ -190,7 +222,7 @@ function enhanceWorkspacePanel0919(){
 }
 function addStyle0919(){
  if($19('nlab0919Style'))return;const st=document.createElement('style');st.id='nlab0919Style';st.textContent=
- '.personalSpaceRibbonWrap0919{display:flex;align-items:center;gap:6px;border-left:1px solid #d7dde3;padding-left:8px}.personalSpaceRibbonWrap0919 button{font-weight:800;background:#f4f8fb;border-color:#a9bfd0}.personalSpaceRibbonWrap0919 button.connected{background:#eaf6ee;border-color:#93c7a0;color:#215d2e}.personalSpaceRibbonWrap0919 span{font-size:10px;color:#65717d;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.canonicalStampDates0919{border:1px solid #9fc2db;background:#f7fbfe;border-radius:8px;margin:8px 0}.canonicalStampDates0919>summary{cursor:pointer;font-weight:800;padding:8px 9px}.canonicalDatesHelp0919{font-size:10px;line-height:1.55;padding:0 9px 8px;color:#465d6c}.canonicalDatesGrid0919{display:grid;gap:5px;padding:0 9px 9px}.canonicalDateRow0919{display:grid;grid-template-columns:105px 150px minmax(180px,1fr) 120px;gap:6px;align-items:center}.canonicalDateRow0919 b{font-size:10px}.canonicalDateRow0919 input{padding:6px;font-size:10px}.canonicalDateRow0919 code{font-size:10px;color:#174f78;white-space:nowrap}.workspaceCanonicalNote0919{border:1px solid #b9d8c3;background:#f3fbf5;border-radius:8px;padding:8px;margin-bottom:8px;font-size:10px;line-height:1.5}@media(max-width:760px){.canonicalDateRow0919{grid-template-columns:1fr}.personalSpaceRibbonWrap0919 span{display:none}}';document.head.appendChild(st);
+ '.canonicalDatesRibbon0919{position:relative}.canonicalDatesRibbon0919>button{font-weight:800;background:#fff8dd;border-color:#dcc46a}.canonicalDatesRibbonPanel0919{position:absolute;right:0;top:calc(100% + 8px);z-index:1200;width:min(560px,88vw);padding:10px;background:#fff;border:1px solid #c7d5df;border-radius:10px;box-shadow:0 12px 34px #20304035}.canonicalDatesRibbonGrid0919{display:grid;gap:6px;margin-top:8px}.canonicalDatesRibbonGrid0919 label{display:grid;grid-template-columns:105px 150px minmax(170px,1fr);gap:6px;align-items:center;font-size:10px}.canonicalDatesRibbonGrid0919 input{padding:6px;font-size:10px}.canonicalDatesRibbonHelp0919{font-size:10px;line-height:1.5;margin-top:8px;color:#51616d}.personalSpaceRibbonWrap0919{display:flex;align-items:center;gap:6px;border-left:1px solid #d7dde3;padding-left:8px}.personalSpaceRibbonWrap0919 button{font-weight:800;background:#f4f8fb;border-color:#a9bfd0}.personalSpaceRibbonWrap0919 button.connected{background:#eaf6ee;border-color:#93c7a0;color:#215d2e}.personalSpaceRibbonWrap0919 span{font-size:10px;color:#65717d;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.canonicalStampDates0919{border:1px solid #9fc2db;background:#f7fbfe;border-radius:8px;margin:8px 0}.canonicalStampDates0919>summary{cursor:pointer;font-weight:800;padding:8px 9px}.canonicalDatesHelp0919{font-size:10px;line-height:1.55;padding:0 9px 8px;color:#465d6c}.canonicalDatesGrid0919{display:grid;gap:5px;padding:0 9px 9px}.canonicalDateRow0919{display:grid;grid-template-columns:105px 150px minmax(180px,1fr) 120px;gap:6px;align-items:center}.canonicalDateRow0919 b{font-size:10px}.canonicalDateRow0919 input{padding:6px;font-size:10px}.canonicalDateRow0919 code{font-size:10px;color:#174f78;white-space:nowrap}.workspaceCanonicalNote0919{border:1px solid #b9d8c3;background:#f3fbf5;border-radius:8px;padding:8px;margin-bottom:8px;font-size:10px;line-height:1.5}@media(max-width:760px){.canonicalDateRow0919,.canonicalDatesRibbonGrid0919 label{grid-template-columns:1fr}.personalSpaceRibbonWrap0919 span{display:none}}';document.head.appendChild(st);
 }
 async function loadAppConfig0919(){
  try{
@@ -202,7 +234,7 @@ async function loadAppConfig0919(){
  updateRibbon0919();syncCanonicalDates0919();
 }
 function install0919(){
- addStyle0919();installRibbon0919();installCanonicalDates0919();syncCanonicalDates0919();enhanceWorkspacePanel0919();
+ addStyle0919();installDateRibbon0919();installRibbon0919();installCanonicalDates0919();syncCanonicalDates0919();enhanceWorkspacePanel0919();
  document.querySelectorAll('.buildBadge strong').forEach(x=>x.textContent=VERSION0919);
  const foot=document.querySelector('footer .footerInfo span');if(foot)foot.textContent=(foot.textContent||'').replace(/Alpha 0\.9\.(12|13|14|15|16|17|18)(?: TEST| RC2)?/g,VERSION0919);
 }
