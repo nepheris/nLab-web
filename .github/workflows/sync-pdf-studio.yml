@@ -147,19 +147,20 @@ jobs:
           sleep 1
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$chrome"
-          "$chrome" --headless --no-sandbox --disable-gpu --virtual-time-budget=14000 --dump-dom             'http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html?smoke0919=1'             >/tmp/pdf0919-dom.html 2>/tmp/pdf0919-chrome.log || {
+          "$chrome" --headless --no-sandbox --disable-gpu --virtual-time-budget=12000 --dump-dom             'http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html'             >/tmp/pdf0919-dom.html 2>/tmp/pdf0919-chrome.log || {
               cat /tmp/nlab-http.log || true
               cat /tmp/pdf0919-chrome.log || true
               exit 1
             }
-          echo "ribbon=$(grep -c 'id=\"personalSpaceRibbon0919\"' /tmp/pdf0919-dom.html || true)"
-          echo "hub=$(grep -c 'id=\"stampHub0916\"' /tmp/pdf0919-dom.html || true)"
-          echo "dates=$(grep -c 'id=\"canonicalStampDates0919\"' /tmp/pdf0919-dom.html || true)"
-          echo "dateInputs=$(grep -o 'data-date0919=' /tmp/pdf0919-dom.html | wc -l)"
-          grep -E -o '.{0,100}(personalSpaceRibbon0919|stampHub0916|canonicalStampDates0919|data-date0919).{0,180}' /tmp/pdf0919-dom.html | head -50 || true
-          tail -60 /tmp/pdf0919-chrome.log || true
+          echo "personalSpace=$(grep -c 'id=\"personalSpaceRibbon0919\"' /tmp/pdf0919-dom.html || true)"
+          echo "dateRibbon=$(grep -c 'id=\"canonicalDatesRibbonBtn0919\"' /tmp/pdf0919-dom.html || true)"
+          echo "globalDateInputs=$(grep -o 'data-global-date0919=' /tmp/pdf0919-dom.html | wc -l)"
+          echo "version0919=$(grep -c 'Alpha 0.9.19 TEST' /tmp/pdf0919-dom.html || true)"
+          grep -E -o '.{0,100}(personalSpaceRibbon0919|canonicalDatesRibbonBtn0919|data-global-date0919|Alpha 0\.9\.19 TEST).{0,180}' /tmp/pdf0919-dom.html | head -50 || true
+          tail -40 /tmp/pdf0919-chrome.log || true
           test "$(grep -c 'id=\"personalSpaceRibbon0919\"' /tmp/pdf0919-dom.html || true)" -ge 1
-          test "$(grep -c 'id=\"canonicalStampDates0919\"' /tmp/pdf0919-dom.html || true)" -ge 1
-          test "$(grep -o 'data-date0919=' /tmp/pdf0919-dom.html | wc -l)" -ge 5
+          test "$(grep -c 'id=\"canonicalDatesRibbonBtn0919\"' /tmp/pdf0919-dom.html || true)" -ge 1
+          test "$(grep -o 'data-global-date0919=' /tmp/pdf0919-dom.html | wc -l)" -ge 5
+          test "$(grep -c 'Alpha 0.9.19 TEST' /tmp/pdf0919-dom.html || true)" -ge 1
           ! grep -q 'Échec du chargement' /tmp/pdf0919-dom.html
-          echo 'Browser smoke 0.9.19: personal ribbon + five dates present'
+          echo 'Browser smoke 0.9.19: personal login + five canonical dates visible'
