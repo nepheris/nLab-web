@@ -192,6 +192,7 @@ function installDateRibbon0919(){
  }
  wrap.querySelector('#canonicalDatesRibbonBtn0919').onclick=e=>{e.stopPropagation();panel.hidden=!panel.hidden;syncCanonicalDates0919()};
  document.addEventListener('click',e=>{if(!wrap.contains(e.target))panel.hidden=true});
+ document.documentElement.dataset.nlabUiDates=String(grid.querySelectorAll('input[type="date"]').length);
 }
 function workspacePanel0919(){return $19('workspacePanel0918')}
 function openPersonalSpace0919(){
@@ -212,6 +213,7 @@ function installRibbon0919(){
  meta.appendChild(wrap);
  $19('personalSpaceRibbon0919').onclick=()=>{if(!S.driveConnected){if(!googleDriveClientId()){openPersonalSpace0919();toast('Client ID OAuth Google non configuré.');return}connectGoogleDrive();return}openPersonalSpace0919();};
  updateRibbon0919();
+ document.documentElement.dataset.nlabUiPersonal='1';
 }
 function enhanceWorkspacePanel0919(){
  const p=workspacePanel0919();if(!p||$19('workspaceCanonicalNote0919'))return;
