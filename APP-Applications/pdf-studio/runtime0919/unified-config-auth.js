@@ -105,7 +105,16 @@ function syncWorkspaceStamps0919(){
  const api=workspaceApi0919();if(!api)return;
  const ws=api.get();ws.stamps=ws.stamps||{};ws.stamps.library=personalStampItems0919(S.stampLibrary||[]);api.saveLocal();scheduleDriveWorkspaceSync0919();
 }
-persistCustomStamps=function(){syncWorkspaceStamps0919()};
+let legacyPersistHooked0919=false;
+function installLegacyPersistHook0919(){
+ if(legacyPersistHooked0919)return;
+ try{
+  if(typeof persistCustomStamps!=='function')return;
+  const basePersist0919=persistCustomStamps;
+  persistCustomStamps=function(){const r=basePersist0919.apply(this,arguments);syncWorkspaceStamps0919();return r};
+  legacyPersistHooked0919=true;
+ }catch(e){console.warn('Hook tampons personnels 0.9.19 indisponible',e)}
+}
 function scheduleCapture0919(){clearTimeout(saveTimer0919);saveTimer0919=setTimeout(()=>{try{workspaceApi0919()?.capture?.();scheduleDriveWorkspaceSync0919()}catch(e){}},250)}
 
 function canonicalSetGoogleDriveUi0919(){
@@ -241,7 +250,7 @@ async function loadAppConfig0919(){
  updateRibbon0919();syncCanonicalDates0919();
 }
 function install0919(){
- addStyle0919();installDateRibbon0919();installRibbon0919();installCanonicalDates0919();syncCanonicalDates0919();enhanceWorkspacePanel0919();
+ addStyle0919();installLegacyPersistHook0919();installDateRibbon0919();installRibbon0919();installCanonicalDates0919();syncCanonicalDates0919();enhanceWorkspacePanel0919();
  document.querySelectorAll('.buildBadge strong').forEach(x=>x.textContent=VERSION0919);
  const foot=document.querySelector('footer .footerInfo span');if(foot)foot.textContent=(foot.textContent||'').replace(/Alpha 0\.9\.(12|13|14|15|16|17|18)(?: TEST| RC2)?/g,VERSION0919);
 }
