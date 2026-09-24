@@ -147,7 +147,7 @@ jobs:
           sleep 1
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$chrome"
-          "$chrome" --headless --no-sandbox --disable-gpu --virtual-time-budget=12000 --dump-dom             'http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html'             >/tmp/pdf0919-dom.html 2>/tmp/pdf0919-chrome.log || {
+          timeout 30s "$chrome" --headless --no-sandbox --disable-gpu --virtual-time-budget=12000 --dump-dom 'http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.19.html?smoke0919=1' >/tmp/pdf0919-dom.html 2>/tmp/pdf0919-chrome.log || {
               cat /tmp/nlab-http.log || true
               cat /tmp/pdf0919-chrome.log || true
               exit 1
