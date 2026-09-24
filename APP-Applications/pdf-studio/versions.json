@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.17",
+  "test": "0.9.18",
   "versions": [
+    {
+      "version": "0.9.18",
+      "label": "Alpha 0.9.18 TEST",
+      "date": "2026-09-24",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.18.html",
+      "notes": "TEST : moteur unique de variables {VARIABLE} / {VARIABLE:FORMAT} avec formats date/heure/timestamp, workspace JSON unique et hiérarchique, migration depuis les réglages précédents, connexion Google avec sélection de compte et scope drive.file, création d’un dossier visible Mon Drive/nLab/PDF Studio avec Signatures/Documents/Exports, synchronisation du workspace et des signatures, et option de copie automatique des PDF exportés vers Drive."
+    },
     {
       "version": "0.9.17",
       "label": "Alpha 0.9.17 TEST",
       "date": "2026-09-24",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.17.html",
       "notes": "TEST : espace personnel étendu avec profil synchronisable dans Google Drive appData, initiales et signature/paraphe par défaut, tampons favoris, sources/sorties favorites avec handles locaux, extensions favorites, règles modulaires de préfixe/suffixe combinables et personnalisables, association de ces règles aux tampons et aide avancée Tampons. Conserve le générateur 5 dates A/B/C/D, JSON privé et passerelle DSS 6.5 de la 0.9.16."
     },
