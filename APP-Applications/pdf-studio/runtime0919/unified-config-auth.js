@@ -1,6 +1,6 @@
 (()=>{'use strict';
 if(window.__NLAB_0919_UNIFIED_CONFIG__)return;
-window.__NLAB_0919_UNIFIED_CONFIG__=true;
+window.__NLAB_0919_UNIFIED_CONFIG__=true;document.documentElement.dataset.nlab0919Stage='start';
 const VERSION0919='Alpha 0.9.19 TEST';
 const APP_CONFIG_URL0919='./config/app-config.v1.json';
 const $19=id=>document.getElementById(id);
@@ -60,7 +60,7 @@ function render0919(template,extra={}){
  });
 }
 window.NLAB_VARIABLES=Object.assign({},window.NLAB_VARIABLES_0918||{}, {render:render0919,formats:formats0919,legacyAliases:clone0919(LEGACY_DATE_ALIASES0919)});
-if(window.NLAB_VARIABLES_0918)window.NLAB_VARIABLES_0918.render=render0919;
+if(window.NLAB_VARIABLES_0918)window.NLAB_VARIABLES_0918.render=render0919;document.documentElement.dataset.nlab0919Stage='variables';
 
 resolveStampTemplate=function(tpl,stampDate){
  const extra={};
@@ -113,7 +113,7 @@ function canonicalSetGoogleDriveUi0919(){
  try{workspaceApi0919()?.render?.()}catch(e){}
  updateRibbon0919();
 }
-setGoogleDriveUi=canonicalSetGoogleDriveUi0919;
+setGoogleDriveUi=canonicalSetGoogleDriveUi0919;document.documentElement.dataset.nlab0919Stage='overrides';
 
 // APP13 trust-service authentication remains independent from Google Drive OAuth.
 
@@ -243,7 +243,7 @@ function install0919(){
 window.addEventListener('nlab:naming-rules-changed',scheduleCapture0919);
 E.form?.addEventListener('change',scheduleCapture0919);
 const mo=new MutationObserver(()=>setTimeout(install0919,0));if(document.body)mo.observe(document.body,{childList:true,subtree:true});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)},{once:true});else{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)}
+document.documentElement.dataset.nlab0919Stage='scheduled';if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)},{once:true});else{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)}
 // Smoke-test hook: inactive in normal use. It opens the PDF editor only when explicitly requested by CI.
 if(new URLSearchParams(location.search).has('smoke0919'))setTimeout(()=>{try{openTool('pdf')}catch(e){console.error('smoke0919 openTool',e)}},1200);
 })();
