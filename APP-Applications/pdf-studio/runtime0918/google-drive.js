@@ -77,6 +77,14 @@ async function hydrateSignatureFiles(ws){
 saveSignatureLibraryDrive=async function(items){requirePersonalWorkspace('enregistrer une signature ou un paraphe');S.signatureLibrary=items||[];return saveSignatureAssets(S.signatureLibrary)};
 loadSignatureLibraryDrive=async function(){if(!S.driveConnected)return[];const ws=await loadWorkspaceDrive();return ws?S.signatureLibrary:[]};
 
+const dssFetchBase0918=dssFetch0916;
+dssFetch0916=async function(path,options={}){
+ if(!S.driveConnected||!S.driveAccessToken)throw new Error('Connexion Google requise pour utiliser le service de signature DSS.');
+ const headers=new Headers(options.headers||{});
+ headers.set('Authorization','Bearer '+S.driveAccessToken);
+ return dssFetchBase0918(path,Object.assign({},options,{headers}));
+};
+
 const writeBase0918=writeFinalDirect;
 writeFinalDirect=async function(bytes,name,dest){const r=await writeBase0918(bytes,name,dest);try{const ws=window.__NLAB_WORKSPACE_0918__?.get?.();if(S.driveConnected&&ws?.output?.drive?.autoUploadExports){await ensureStructure();const blob=new Blob([bytes],{type:'application/pdf'});await uploadBlob(name,blob,state.exportsId,'');toast('PDF enregistré + copié dans Google Drive / nLab / PDF Studio / Exports')}}catch(e){toast('PDF local enregistré ; copie Drive impossible : '+e.message)}return r;};
 
