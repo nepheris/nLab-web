@@ -211,5 +211,5 @@ E.form?.addEventListener('change',scheduleCapture0919);
 const mo=new MutationObserver(()=>setTimeout(install0919,0));if(document.body)mo.observe(document.body,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)},{once:true});else{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)}
 // Smoke-test hook: inactive in normal use. It opens the PDF editor only when explicitly requested by CI.
-if(new URLSearchParams(location.search).has('smoke0919'))setTimeout(()=>document.querySelector('[data-tool="pdf"]')?.click(),1200);
+if(new URLSearchParams(location.search).has('smoke0919'))setTimeout(()=>{try{openTool('pdf')}catch(e){console.error('smoke0919 openTool',e)}},1200);
 })();
