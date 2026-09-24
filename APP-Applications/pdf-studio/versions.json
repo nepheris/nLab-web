@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.15",
+  "test": "0.9.16",
   "versions": [
+    {
+      "version": "0.9.16",
+      "label": "Alpha 0.9.16 TEST",
+      "date": "2026-09-24",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.16.html",
+      "notes": "TEST : générateur de tampon toujours visible avec guide, Date du tampon + Dates A/B/C/D, variables insérables dans le texte, préfixe/suffixe et aperçus ; dates également dans la barre contextuelle. Ajoute un espace personnel pour éditer/importer/exporter/synchroniser le JSON de tampons via Google Drive appData et une passerelle configurable vers un service privé DSS 6.5 pour validation/extension PAdES."
+    },
     {
       "version": "0.9.15",
       "label": "Alpha 0.9.15 TEST",
       "date": "2026-09-24",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.15.html",
       "notes": "TEST : tampons avec date principale + Dates A/B/C/D indépendantes et modifiables, variables de date réutilisables dans le texte et le nom de fichier, option explicite de préfixe/suffixe lors de l’enregistrement, prévisualisation du nom final et régénération du tampon sélectionné. Compatible avec les règles de nommage 0.9.14."
     },
