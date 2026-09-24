@@ -155,6 +155,8 @@ jobs:
           echo "personalRuntime=$(grep -c 'data-nlab-ui-personal=\"1\"' /tmp/pdf0919-dom.html || true)"
           echo "datesRuntime=$(grep -c 'data-nlab-ui-dates=\"5\"' /tmp/pdf0919-dom.html || true)"
           echo "version0919=$(grep -c 'Alpha 0.9.19 TEST' /tmp/pdf0919-dom.html || true)"
+          echo "runtimeError=$(grep -o 'data-nlab-runtime-error=\"[^\"]*\"' /tmp/pdf0919-dom.html | head -1 || true)"
+          echo "runtimeRejection=$(grep -o 'data-nlab-runtime-rejection=\"[^\"]*\"' /tmp/pdf0919-dom.html | head -1 || true)"
           head -5 /tmp/pdf0919-dom.html || true
           tail -40 /tmp/pdf0919-chrome.log || true
           test "$(grep -c 'data-nlab-ui-personal=\"1\"' /tmp/pdf0919-dom.html || true)" -ge 1
