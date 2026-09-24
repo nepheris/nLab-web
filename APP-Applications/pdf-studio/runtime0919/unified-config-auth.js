@@ -120,10 +120,22 @@ function applyCanonicalStampLibrary0919(){
  try{renderEditorOptions()}catch(e){}
 }
 
-function sourceDate0919(def){return $19(def.source)}
+function sourceDate0919(def){
+ const direct=$19(def.source);if(direct)return direct;
+ if(def.key==='STAMP_DATE')return E.form?.querySelector('[name=stampDate]')||null;
+ if(def.key==='DATE_A')return $19('stampDateA0914')||E.form?.querySelector('[name=stampDateAProxy]')||E.form?.querySelector('[name=stampDate]')||null;
+ if(def.key==='DATE_B')return E.form?.querySelector('[name=stampDateB]')||null;
+ if(def.key==='DATE_C')return E.form?.querySelector('[name=stampDateC]')||null;
+ if(def.key==='DATE_D')return $19('stampDateD0915')||null;
+ return null;
+}
 function installCanonicalDates0919(){
- const hub=$19('stampHub0916');if(!hub||$19('canonicalStampDates0919'))return;
- const legacy=hub.querySelector('.stampDates0916');if(legacy)legacy.style.display='none';
+ if($19('canonicalStampDates0919'))return;
+ const hub=$19('stampHub0916');
+ const section=E.form?.querySelector('[name=stampDate]')?.closest('details.toolSection')||null;
+ if(!hub&&!section)return;
+ if(section)section.open=true;
+ const legacy=hub?.querySelector('.stampDates0916');if(legacy)legacy.style.display='none';
  const d=document.createElement('details');d.id='canonicalStampDates0919';d.className='canonicalStampDates0919';d.open=true;
  d.innerHTML='<summary>📅 Dates du tampon · 5 dates + formats</summary><div class="canonicalDatesHelp0919"><b>Même syntaxe partout :</b> <code>{VARIABLE}</code> ou <code>{VARIABLE:FORMAT}</code>. Formats : <code>YYYY</code> année · <code>MM</code> mois · <code>DD</code> jour · <code>HH</code> heure · <code>mm</code> minute · <code>ss</code> seconde · <code>SSS</code> millisecondes · <code>Z</code> fuseau · <code>X</code> timestamp Unix. Exemple : <code>{STAMP_DATE:YYYYMMDD_HHmmss}</code>.</div><div class="canonicalDatesGrid0919"></div>';
  const grid=d.querySelector('.canonicalDatesGrid0919'),fm=formats0919();
@@ -136,7 +148,13 @@ function installCanonicalDates0919(){
   fmtInput.addEventListener('change',()=>{const api=workspaceApi0919(),ws=api?.get?.();if(ws){ws.variables=ws.variables||{};ws.variables.formats=ws.variables.formats||{};ws.variables.formats[def.key]=fmtInput.value.trim()||'DD/MM/YYYY';api.saveLocal();scheduleDriveWorkspaceSync0919();}const x=sourceDate0919(def);if(x)x.dispatchEvent(new Event('input',{bubbles:true}));try{updateStampPreview()}catch(e){}try{updatePath()}catch(e){}});
   grid.appendChild(row);
  }
- const target=hub.querySelector('.stampSteps0916');if(target)target.after(d);else hub.prepend(d);
+ const target=hub?.querySelector('.stampSteps0916');
+ if(target)target.after(d);
+ else if(hub)hub.prepend(d);
+ else {
+  const body=section?.querySelector('.sectionBody');
+  if(body)body.prepend(d);else section?.appendChild(d);
+ }
 }
 function syncCanonicalDates0919(){
  const panel=$19('canonicalStampDates0919');if(!panel)return;
@@ -192,4 +210,6 @@ window.addEventListener('nlab:naming-rules-changed',scheduleCapture0919);
 E.form?.addEventListener('change',scheduleCapture0919);
 const mo=new MutationObserver(()=>setTimeout(install0919,0));if(document.body)mo.observe(document.body,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)},{once:true});else{setTimeout(install0919,620);setTimeout(loadAppConfig0919,700)}
+// Smoke-test hook: inactive in normal use. It opens the PDF editor only when explicitly requested by CI.
+if(new URLSearchParams(location.search).has('smoke0919'))setTimeout(()=>document.querySelector('[data-tool="pdf"]')?.click(),1200);
 })();
