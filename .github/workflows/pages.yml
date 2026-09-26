@@ -77,6 +77,15 @@ jobs:
           grep -q '"DATE_D"' APP-Applications/pdf-studio/config/app-config.v1.json
           test -s APP-Applications/pdf-studio/docs/configuration-0.9.19.md
 
+          # TEST 0.9.20 : consolidation UX + identifiants d’annotations + aide OAuth
+          test -s APP-Applications/pdf-studio/app-0.9.20.html
+          test -s APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+          node --check APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+          grep -q 'runtime0920/ux-consolidation.js' APP-Applications/pdf-studio/app-0.9.20.html
+          grep -q 'annotationObjectGroup20' APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+          grep -q 'oauthHelp0920' APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+          grep -q 'penDelete0920' APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+
           test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
           grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
           node --check APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
@@ -106,7 +115,7 @@ jobs:
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.19"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.20"' APP-Applications/pdf-studio/versions.json
 
       - name: Build shared nLab demo corpus
         shell: bash
