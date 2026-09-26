@@ -110,12 +110,21 @@ jobs:
           grep -q '"DATE_D"' APP-Applications/pdf-studio/config/app-config.v1.json
           test -s APP-Applications/pdf-studio/docs/configuration-0.9.19.md
 
+          # TEST 0.9.20 : consolidation UX + identifiants d’annotations + aide OAuth
+          test -s APP-Applications/pdf-studio/app-0.9.20.html
+          test -s APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+          node --check APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+          grep -q 'runtime0920/ux-consolidation.js' APP-Applications/pdf-studio/app-0.9.20.html
+          grep -q 'annotationObjectGroup20' APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+          grep -q 'oauthHelp0920' APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+          grep -q 'penDelete0920' APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
+
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.19"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.20"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -135,4 +144,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.19 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.20 + DEMO v2: OK'
