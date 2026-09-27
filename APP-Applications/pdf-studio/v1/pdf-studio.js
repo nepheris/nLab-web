@@ -37,7 +37,7 @@ let renderGeneration=0,renderTimer=0;
 function scheduleViewerRender(){clearTimeout(renderTimer);const gen=++renderGeneration;renderTimer=setTimeout(()=>renderViewer(gen),0)}
 async function renderSelectableText(page,viewport,gen){
  const layer=qs('#textLayer');if(!layer||!engine.pdfjs||!viewport)return;
- layer.innerHTML='';layer.style.width=viewport.width+'px';layer.style.height=viewport.height+'px';
+ layer.innerHTML='';layer.style.width=viewport.width+'px';layer.style.height=viewport.height+'px';layer.style.setProperty('--scale-factor',String(viewport.scale));
  if(typeof pdfjsLib.renderTextLayer!=='function')return;
  const p=await engine.pdfjs.getPage(page),tc=await p.getTextContent();if(gen!==renderGeneration)return;
  try{const task=pdfjsLib.renderTextLayer({textContentSource:tc,container:layer,viewport,textDivs:[]});await task?.promise}catch(e){console.debug('Text layer:',e?.message||e)}
