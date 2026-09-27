@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.23",
+  "test": "0.9.24",
   "versions": [
+    {
+      "version": "0.9.24",
+      "label": "Alpha 0.9.24 TEST",
+      "date": "2026-09-27",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.24.html",
+      "notes": "TEST fonctionnelle : sélection explicite des pages par cases à cocher dans les vignettes, portée page courante / pages cochées / tout le document, chargement résilient des modules, menus Fichier/Historique/Objets/Outils/Connexion, section 0 Configuration & espace personnel, section de nommage préfixes/suffixes, visibilité Traduction BRK104 et 5 dates, suppression des contrôles Démo d’entrée, sortie même dossier source, ZIP en sortie et accès au dossier Google Drive nLab/PDF Studio/Documents. Numéro de version et date proviennent uniquement de versions.json."
+    },
     {
       "version": "0.9.23",
       "label": "Alpha 0.9.23 TEST",
       "date": "2026-09-27",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.23.html",
       "notes": "TEST corrective : conserve BRK104 traduction bilingue et les fonctions 0.9.21/0.9.22, ajoute le correctif GitHub Pages .nojekyll pour publier APP-Applications/_shared, supprime les surcharges DSS inter-runtime qui provoquaient une ReferenceError et remet en cohérence l’entrée TEST. CURRENT reste 0.9.10."
     },
@@ -25,7 +34,7 @@
       "label": "Alpha 0.9.21 TEST",
       "date": "2026-09-27",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.21.html",
       "notes": "TEST : workspace ZIP local éditable avec restitution ZIP ou extraction vers dossier, portée commune nLab basée sur BRK105 (page courante / sélection Ctrl-Cmd-Maj / tout le document), portée appliquée à rotation, tampons, optimisation, OCR, extraction et suppression, correction du routage de sortie à côté de la source, et aperçu DPI/JPEG avec profils discrets."
     },
