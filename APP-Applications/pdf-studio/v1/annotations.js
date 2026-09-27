@@ -2,8 +2,8 @@ import{uid,qs,qsa,clamp,toast}from'../../_shared/studio-v1/core.js';
 function hexRgb(hex='#316D9A'){const h=hex.replace('#','').padEnd(6,'0');return{r:parseInt(h.slice(0,2),16)/255,g:parseInt(h.slice(2,4),16)/255,b:parseInt(h.slice(4,6),16)/255}}
 function dataUrlBytes(dataUrl){const [head,b64]=dataUrl.split(','),bin=atob(b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return{bytes:u,type:head.includes('png')?'png':'jpg'}}
 export class AnnotationManager{
- constructor({engine,layer,canvasWrap,variables}){this.engine=engine;this.layer=layer;this.canvasWrap=canvasWrap;this.variables=variables;this.tool='select';this.selectedId=null;this.imageData=null;this.signatureData=null;this.penDraft=null;this.bindSurface();engine.addEventListener('annotations',()=>this.render());engine.addEventListener('page',()=>this.render());}
- setTool(t){this.tool=t;qsa('.toolBtn').forEach(b=>b.classList.toggle('active',b.dataset.tool===t));}
+ constructor({engine,layer,canvasWrap,variables}){this.engine=engine;this.layer=layer;this.canvasWrap=canvasWrap;this.variables=variables;this.tool='select';this.layer.style.pointerEvents='none';this.selectedId=null;this.imageData=null;this.signatureData=null;this.penDraft=null;this.bindSurface();engine.addEventListener('annotations',()=>this.render());engine.addEventListener('page',()=>this.render());}
+ setTool(t){this.tool=t;this.layer.style.pointerEvents=t==='select'?'none':'auto';qsa('.toolBtn').forEach(b=>b.classList.toggle('active',b.dataset.tool===t));}
  setImageData(data){this.imageData=data}setSignatureData(data){this.signatureData=data}
  currentStyle(){return{fontSize:Number(qs('#annotationSize')?.value||12),color:qs('#annotationColor')?.value||'#316D9A'}}
  pointPct(ev){const r=this.canvasWrap.getBoundingClientRect();return{x:clamp((ev.clientX-r.left)/r.width*100,0,99),y:clamp((ev.clientY-r.top)/r.height*100,0,99)}}
