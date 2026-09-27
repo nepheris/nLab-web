@@ -1008,6 +1008,7 @@ renderHistoryMenu=function(){const render=()=>{let out='<details class="historyG
 function formatStore0914(){const d=typeof dateFormats0912==='function'?dateFormats0912():{A:'DD/MM/YYYY',B:'DD/MM/YYYY',C:'DD/MM/YYYY'};return{STAMP:d.STAMP||'DD/MM/YYYY',A:d.A||'DD/MM/YYYY',B:d.B||'DD/MM/YYYY',C:d.C||'DD/MM/YYYY'}}
 function saveStampFmt0914(k,v){const d=formatStore0914();d[k]=v;try{localStorage.setItem(STAMP_FMT_KEY_0912,JSON.stringify(d))}catch{}}
 function stampDatesAll0914(){return{stamp:E.form?.querySelector('[name=stampDate]')?.value||today(),a:$14('stampDateA0914')?.value||today(),b:E.form?.querySelector('[name=stampDateB]')?.value||today(),c:E.form?.querySelector('[name=stampDateC]')?.value||today()}}
+window.formatStore0914=formatStore0914;window.saveStampFmt0914=saveStampFmt0914;window.stampDatesAll0914=stampDatesAll0914;
 stampDates0911=function(){const d=stampDatesAll0914();return{a:d.a,b:d.b,c:d.c,stamp:d.stamp}};
 stampContext=function(dateValue){const ds=stampDatesAll0914();if(dateValue)ds.stamp=dateValue;const n=split(current()?.name||'document.pdf');return{...dc(ds.stamp),...datePack(ds.a,'A'),...datePack(ds.b,'B'),...datePack(ds.c,'C'),STAMP_DATE:dc(ds.stamp).DATE,STAMP_DATE_COMPACT:dc(ds.stamp).DATE_COMPACT,FILENAME:safe(n.stem),STEM:safe(n.stem),...cf(),...operationContext()}};
 resolveStampTemplate=function(tpl,dateValue){const ds=stampDatesAll0914();if(dateValue)ds.stamp=dateValue;const fm=formatStore0914();let str=String(tpl||'');const map={STAMP:ds.stamp,A:ds.a,B:ds.b,C:ds.c};str=str.replace(/\{(STAMP_DATE|DATE_[ABC])(?:\||:)([^}]+)\}/g,(_,key,pat)=>{const k=key==='STAMP_DATE'?'STAMP':key.slice(-1);return fmtDate0912(map[k],pat)});const c=stampContext(ds.stamp),extra={STAMP_DATE_FMT:fmtDate0912(ds.stamp,fm.STAMP),DATE_A_FMT:fmtDate0912(ds.a,fm.A),DATE_B_FMT:fmtDate0912(ds.b,fm.B),DATE_C_FMT:fmtDate0912(ds.c,fm.C)};return str.replace(/\{([A-Z0-9_]+)\}/g,(_,k)=>extra[k]??c[k]??`{${k}}`)};
@@ -3494,7 +3495,7 @@ function install25(){
 let t25=0;
 const mo25=new MutationObserver(()=>{clearTimeout(t25);t25=setTimeout(install25,40)});
 if(document.body)mo25.observe(document.body,{childList:true,subtree:true});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install25,500),{once:true});else setTimeout(install25,500);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install25,500);setTimeout(releaseMeta25,1100)},{once:true});else{setTimeout(install25,500);setTimeout(releaseMeta25,1100)}
 })();
 }catch(e){console.error('[nLab 0.9.25 UI]',e);window.__NLAB_PATCH_ERRORS__=window.__NLAB_PATCH_ERRORS__||[];window.__NLAB_PATCH_ERRORS__.push({label:"0.9.25 UI",message:String(e&&e.message||e)});}
 })();
