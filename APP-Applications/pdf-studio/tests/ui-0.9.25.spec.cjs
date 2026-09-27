@@ -5,7 +5,7 @@ test('PDF Studio 0.9.25 renders the functional UI', async ({ page }) => {
   page.on('pageerror', e => { const m=String(e.message || e); pageErrors.push(m); console.log('PAGEERROR:',m); });
 
   await page.goto('http://127.0.0.1:4173/APP-Applications/pdf-studio/app-0.9.25.html', { waitUntil: 'networkidle' });
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(1800);
   console.log('BOOTDIAG:', await page.evaluate(() => ({
     title: document.title,
     ui25: !!window.__NLAB_0925_UI__,
