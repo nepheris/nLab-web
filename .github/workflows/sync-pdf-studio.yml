@@ -163,7 +163,7 @@ jobs:
           ! grep -q '^dssFetch0916=async function' APP-Applications/pdf-studio/runtime0919/unified-config-auth.js
           grep -q '"version": "0.9.23"' APP-Applications/pdf-studio/versions.json
 
-          # TEST 0.9.24 : remise à plat fonctionnelle et UI explicite
+          # TEST 0.9.25 : remise à plat fonctionnelle et UI explicite
           test -s APP-Applications/pdf-studio/app-0.9.24.html
           test -s APP-Applications/pdf-studio/runtime0924/functional-ui.js
           node --check APP-Applications/pdf-studio/runtime0924/functional-ui.js
@@ -196,7 +196,19 @@ jobs:
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.24"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.25"' APP-Applications/pdf-studio/versions.json
+
+          # TEST 0.9.25 : page autonome + UI fonctionnelle
+          test -s APP-Applications/pdf-studio/app-0.9.25.html
+          test -s APP-Applications/pdf-studio/runtime0925/ui-rebuild.js
+          node --check APP-Applications/pdf-studio/runtime0925/ui-rebuild.js
+          grep -q 'Alpha 0.9.25 TEST' APP-Applications/pdf-studio/app-0.9.25.html
+          grep -q 'configSection0925' APP-Applications/pdf-studio/app-0.9.25.html
+          grep -q 'pageCheck0925' APP-Applications/pdf-studio/app-0.9.25.html
+          grep -q 'pageScopeBar0925' APP-Applications/pdf-studio/app-0.9.25.html
+          grep -q 'quickDates0925' APP-Applications/pdf-studio/app-0.9.25.html
+          ! grep -q 'nlabDemoCorpusV2' APP-Applications/pdf-studio/app-0.9.25.html
+          grep -q 'app-0.9.25.html' APP-Applications/pdf-studio/index.html
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -216,4 +228,10 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.24 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.25 + DEMO v2: OK'
+
+      - name: Browser smoke PDF Studio 0.9.25
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash APP-Applications/pdf-studio/tests/run-ui-smoke-0.9.25.sh
