@@ -5,7 +5,7 @@ async function imageFileToPdf(file){const data=await file.arrayBuffer(),doc=awai
 async function docxFileToPdf(file){if(!window.mammoth)throw new Error('Mammoth DOCX non chargé');const r=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()}),doc=await PDFDocument.create(),font=await doc.embedFont(PDFLib.StandardFonts.Helvetica);let page=doc.addPage([595,842]),y=800;for(const para of String(r.value||'').split(/\n+/)){for(const line of wrap(para,88)){if(y<45){page=doc.addPage([595,842]);y=800}page.drawText(line,{x:42,y,size:10,font,color:PDFLib.rgb(.08,.12,.16)});y-=14}y-=5}return new Uint8Array(await doc.save())}
 function wrap(s,n){const words=String(s||'').split(/\s+/),out=[],a=[];let len=0;for(const w of words){if(len+w.length+1>n&&a.length){out.push(a.join(' '));a.length=0;len=0}a.push(w);len+=w.length+1}if(a.length)out.push(a.join(' '));return out.length?out:['']}
 export class PDFEngine extends EventTarget{
- constructor(){super();this.bytes=null;this.pdfDoc=null;this.pdfjs=null;this.fileName='document.pdf';this.currentPage=1;this.selected=new Set();this.pageAnnotations=new Map();this.sourceFile=null;this.dirty=false}
+ constructor(){super();this.bytes=null;this.pdfDoc=null;this.pdfjs=null;this.pageRenderTask=null;this.fileName='document.pdf';this.currentPage=1;this.selected=new Set();this.pageAnnotations=new Map();this.sourceFile=null;this.dirty=false}
  get pageCount(){return this.pdfDoc?.getPageCount?.()||0}
  async loadFile(file){this.sourceFile=file;this.fileName=file.name||'document.pdf';let bytes;if(/\.pdf$/i.test(file.name)||file.type==='application/pdf')bytes=new Uint8Array(await file.arrayBuffer());else if(/^image\//.test(file.type)||/\.(png|jpe?g|webp)$/i.test(file.name))bytes=await imageFileToPdf(file);else if(/\.docx$/i.test(file.name))bytes=await docxFileToPdf(file);else throw new Error('Format non pris en charge par PDF Studio : '+file.name);await this.setBytes(bytes,{resetAnnotations:true});setStatus(this.fileName+' · '+this.pageCount+' page(s)');return this}
  async setBytes(bytes,{resetAnnotations=false}={}){this.bytes=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);this.pdfDoc=await PDFDocument.load(this.bytes,{ignoreEncryption:true});this.pdfjs=await pdfjsLib.getDocument({data:this.bytes.slice()}).promise;this.currentPage=Math.min(Math.max(1,this.currentPage),this.pageCount||1);this.selected=new Set([...this.selected].filter(p=>p<=this.pageCount));if(resetAnnotations)this.pageAnnotations.clear();this.dirty=true;this.dispatchEvent(new Event('change'))}
@@ -14,7 +14,20 @@ export class PDFEngine extends EventTarget{
  toggleSelected(page,v){if(v)this.selected.add(page);else this.selected.delete(page);this.dispatchEvent(new Event('selection'))}
  selectAll(){this.selected=new Set(Array.from({length:this.pageCount},(_,i)=>i+1));this.dispatchEvent(new Event('selection'))}
  selectNone(){this.selected.clear();this.dispatchEvent(new Event('selection'))}
- async renderPage(canvas,page=this.currentPage,zoom=1){if(!this.pdfjs)return;const p=await this.pdfjs.getPage(page),vp=p.getViewport({scale:zoom});canvas.width=Math.ceil(vp.width);canvas.height=Math.ceil(vp.height);canvas.style.width=canvas.width+'px';canvas.style.height=canvas.height+'px';await p.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;return vp}
+ async renderPage(canvas,page=this.currentPage,zoom=1){
+  if(!this.pdfjs)return null;
+  if(this.pageRenderTask){
+    const prev=this.pageRenderTask;
+    try{prev.cancel()}catch{}
+    try{await prev.promise}catch(e){if(e?.name!=='RenderingCancelledException')console.debug('Previous PDF render ended:',e?.message||e)}
+    if(this.pageRenderTask===prev)this.pageRenderTask=null;
+  }
+  const p=await this.pdfjs.getPage(page),vp=p.getViewport({scale:zoom});
+  canvas.width=Math.ceil(vp.width);canvas.height=Math.ceil(vp.height);canvas.style.width=canvas.width+'px';canvas.style.height=canvas.height+'px';
+  const task=p.render({canvasContext:canvas.getContext('2d'),viewport:vp});this.pageRenderTask=task;
+  try{await task.promise}catch(e){if(e?.name==='RenderingCancelledException')return null;throw e}finally{if(this.pageRenderTask===task)this.pageRenderTask=null}
+  return vp
+}
  async renderThumb(canvas,page,zoom=.2){if(!this.pdfjs)return;const p=await this.pdfjs.getPage(page),vp=p.getViewport({scale:zoom});canvas.width=Math.ceil(vp.width);canvas.height=Math.ceil(vp.height);await p.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;return vp}
  async rotate(pages,delta){if(!pages.length)return;for(const n of pages){const p=this.pdfDoc.getPage(n-1),a=p.getRotation()?.angle||0;p.setRotation(degrees((a+delta+360)%360))}await this.setBytes(new Uint8Array(await this.pdfDoc.save()));return pages}
  async addBlank(after=this.currentPage){const ref=this.pdfDoc.getPage(Math.max(0,after-1)),{width,height}=ref.getSize();this.pdfDoc.insertPage(after,[width,height]);this.shiftAnnotations(after+1,1);this.currentPage=after+1;await this.setBytes(new Uint8Array(await this.pdfDoc.save()));return this.currentPage}
