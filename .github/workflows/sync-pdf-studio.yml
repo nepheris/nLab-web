@@ -240,3 +240,63 @@ jobs:
           fi
 
           echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.25 + DEMO v2: OK'
+
+          # PDF Studio 1.0 standalone static contract
+          test -s APP-Applications/pdf-studio/v1/index.html
+          test -s APP-Applications/pdf-studio/v1/pdf-studio.css
+          test -s APP-Applications/pdf-studio/v1/pdf-studio.js
+          test -s APP-Applications/pdf-studio/v1/pdf-engine.js
+          test -s APP-Applications/pdf-studio/v1/annotations.js
+          test -s APP-Applications/pdf-studio/v1/pdf-tools.js
+          for f in core variables file-io drive icons; do test -s "APP-Applications/_shared/studio-v1/$f.js"; done
+          test -s APP-Applications/_shared/studio-v1/tokens.css
+          test -s APP-Applications/_shared/studio-v1/studio.css
+          for f in APP-Applications/pdf-studio/v1/pdf-studio.js APP-Applications/pdf-studio/v1/pdf-engine.js APP-Applications/pdf-studio/v1/annotations.js APP-Applications/pdf-studio/v1/pdf-tools.js APP-Applications/_shared/studio-v1/core.js APP-Applications/_shared/studio-v1/variables.js APP-Applications/_shared/studio-v1/file-io.js APP-Applications/_shared/studio-v1/drive.js APP-Applications/_shared/studio-v1/icons.js; do node --input-type=module --check < "$f"; done
+          grep -q 'nlab-wordmark.svg' APP-Applications/pdf-studio/v1/index.html
+          grep -q '0. Configuration' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="connectGoogle"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="pageScope"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="thumbZoom"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="sidebarResizer"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="runDss"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'Aucun runtime 0.9.x' APP-Applications/pdf-studio/v1/pdf-studio.js
+          ! grep -q 'runtime09' APP-Applications/pdf-studio/v1/index.html
+          test -s tests/pdf-studio-v1-ui.mjs
+          node --check tests/pdf-studio-v1-ui.mjs
+
+      - name: Install Chromium for PDF Studio 1.0
+        shell: bash
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Browser acceptance PDF Studio 1.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from reportlab.pdfgen import canvas
+          from reportlab.lib.pagesizes import A4
+          def make(path,n,label):
+              c=canvas.Canvas(path,pagesize=A4)
+              for i in range(1,n+1):
+                  c.setFont('Helvetica',18)
+                  c.drawString(72,780,f'{label} — page {i}/{n}')
+                  c.setFont('Helvetica',10)
+                  c.drawString(72,752,'Synthetic nLab PDF Studio 1.0 acceptance fixture')
+                  c.showPage()
+              c.save()
+          make('/tmp/pdf-studio-v1.pdf',12,'Fixture A')
+          make('/tmp/pdf-studio-v1-b.pdf',3,'Fixture B')
+          PY
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/nlab-v1-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8765/APP-Applications/pdf-studio/v1/ >/dev/null && break
+            sleep 1
+          done
+          PDF_STUDIO_URL=http://127.0.0.1:8765/APP-Applications/pdf-studio/v1/ \
+          PDF_STUDIO_FIXTURE=/tmp/pdf-studio-v1.pdf \
+          PDF_STUDIO_FIXTURE2=/tmp/pdf-studio-v1-b.pdf \
+          node tests/pdf-studio-v1-ui.mjs
