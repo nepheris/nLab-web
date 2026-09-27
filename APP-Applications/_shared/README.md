@@ -4,7 +4,7 @@ This directory contains reusable browser-side components shared by several publi
 
 ## `selection-scope.js`
 
-Canonical source: **BRK105-selection-scope-controller** in the private nLab Build registry.
+Canonical source: **BRK106-selection-scope-controller** in the private nLab Build registry.
 
 Standardizes selection semantics independently of content type:
 
@@ -19,7 +19,7 @@ Typical consumers: PDF pages, Image Studio batches, File Studio files, Data Stud
 
 ## `archive-workspace.js`
 
-Canonical source: **BRK104-browser-zip-workspace**.
+Canonical source: **BRK105-browser-zip-workspace**.
 
 Provides local browser ZIP workspace primitives:
 
