@@ -1,33 +1,23 @@
 (()=>{'use strict';
 if(window.__NLAB_0921_ARCHIVE_WORKSPACE__)return;
 window.__NLAB_0921_ARCHIVE_WORKSPACE__=true;
-const $z=id=>document.getElementById(id);
-const ZIP_LIMITS0921={maxDepth:3,maxEntries:500,maxBytes:250*1024*1024};
+const $z=id=>document.getElementById(id),Archive0921=window.NLAB_ARCHIVE_WORKSPACE;
+if(!Archive0921)throw new Error('Brique commune NLAB_ARCHIVE_WORKSPACE non chargée');
+const ZIP_LIMITS0921={...Archive0921.DEFAULT_LIMITS,maxDepth:3};
 S.archiveWorkspaces0921=S.archiveWorkspaces0921||new Map();
 
-function zipSafe0921(path){
- const parts=String(path||'').replace(/\\/g,'/').split('/'),out=[];
- for(const p of parts){if(!p||p==='.')continue;if(p==='..')throw new Error('Chemin ZIP dangereux');out.push(p)}
- const v=out.join('/');if(!v||v.startsWith('/')||/^[A-Za-z]:/.test(v))throw new Error('Chemin ZIP dangereux');return v;
-}
 function zipId0921(){return 'zip-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
 async function expandZip0921(item,depth=0,budget={entries:0,bytes:0}){
- if(typeof JSZip==='undefined')throw new Error('JSZip non chargé');if(depth>ZIP_LIMITS0921.maxDepth)throw new Error('ZIP imbriqué trop profondément : '+item.name);
- let zip;try{zip=await JSZip.loadAsync(await item.file.arrayBuffer())}catch(e){throw new Error('ZIP illisible ou protégé par mot de passe : '+item.name)}
+ if(depth>ZIP_LIMITS0921.maxDepth)throw new Error('ZIP imbriqué trop profondément : '+item.name);
+ const core=await Archive0921.open(item.file,{limits:ZIP_LIMITS0921,budget});
  const id=zipId0921(),parentId=item._archiveParentWorkspaceId||'',rootId=item._archiveRootId||id;
- const ws={id,rootId,parentId,parentEntryPath:item._archiveParentPath||'',sourceName:item.name,sourceFile:item.file,sourceHandle:item.handle||null,zip,children:new Set(),modified:new Set(),created:new Set(),deleted:new Set()};
+ const ws={id,rootId,parentId,parentEntryPath:item._archiveParentPath||'',sourceName:item.name,sourceFile:item.file,sourceHandle:item.handle||null,core,children:new Set(),modified:new Set(),created:new Set()};
  S.archiveWorkspaces0921.set(id,ws);if(parentId)S.archiveWorkspaces0921.get(parentId)?.children.add(id);
  const out=[];
- for(const ent of Object.values(zip.files)){
-  if(ent.dir)continue;if(++budget.entries>ZIP_LIMITS0921.maxEntries)throw new Error('ZIP refusé : plus de 500 entrées');
-  const p=zipSafe0921(ent.name),declared=Number(ent?._data?.uncompressedSize||0);if(declared&&budget.bytes+declared>ZIP_LIMITS0921.maxBytes)throw new Error('ZIP refusé : plus de 250 Mo décompressés');
-  const blob=await ent.async('blob');budget.bytes+=blob.size;if(budget.bytes>ZIP_LIMITS0921.maxBytes)throw new Error('ZIP refusé : plus de 250 Mo décompressés');
-  const name=p.split('/').pop(),file=new File([blob],name,{type:mimeFromName(name)}),rel=(item.relativePath||item.name)+'/'+p;
-  if(/\.zip$/i.test(name)){
-   out.push(...await expandZip0921({file,name,relativePath:rel,_archiveParentWorkspaceId:id,_archiveParentPath:p,_archiveRootId:rootId},depth+1,budget));
-  }else{
-   out.push({file,name,relativePath:rel,fromArchive:item.name,archiveWorkspaceId0921:id,archiveRootId0921:rootId,archivePath0921:p,archiveDepth:depth+1});
-  }
+ for(const entry of core.entries.values()){
+  const p=entry.path,blob=entry.blob,name=p.split('/').pop(),file=new File([blob],name,{type:mimeFromName(name)}),rel=(item.relativePath||item.name)+'/'+p;
+  if(/\.zip$/i.test(name))out.push(...await expandZip0921({file,name,relativePath:rel,_archiveParentWorkspaceId:id,_archiveParentPath:p,_archiveRootId:rootId},depth+1,budget));
+  else out.push({file,name,relativePath:rel,fromArchive:item.name,archiveWorkspaceId0921:id,archiveRootId0921:rootId,archivePath0921:p,archiveDepth:depth+1});
  }
  return out;
 }
@@ -35,16 +25,16 @@ expandZipItem=expandZip0921;
 
 function rootWorkspace0921(ws){let x=ws;while(x?.parentId)x=S.archiveWorkspaces0921.get(x.parentId);return x}
 async function buildWorkspaceBlob0921(ws){
- for(const childId of ws.children){const child=S.archiveWorkspaces0921.get(childId);if(!child)continue;const blob=await buildWorkspaceBlob0921(child);ws.zip.file(child.parentEntryPath,blob)}
- return ws.zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+ for(const childId of ws.children){const child=S.archiveWorkspaces0921.get(childId);if(!child)continue;Archive0921.replace(ws.core,child.parentEntryPath,await buildWorkspaceBlob0921(child))}
+ return Archive0921.build(ws.core);
 }
 async function updateArchiveEntry0921(bytes,name,mime='application/pdf'){
  const cur=current();if(!cur?.archiveWorkspaceId0921)throw new Error('Le fichier courant ne provient pas d’une archive ZIP');
  const ws=S.archiveWorkspaces0921.get(cur.archiveWorkspaceId0921);if(!ws)throw new Error('Workspace ZIP introuvable');
  const old=cur.archivePath0921,parts=old.split('/'),oldName=parts.pop(),dir=parts.length?parts.join('/')+'/':'';
  const target=/\.pdf$/i.test(oldName)?(name&&/\.pdf$/i.test(name)?dir+name:old):(dir+(String(name||oldName).replace(/\.[^.]+$/,'')+'.pdf'));
- const safe=zipSafe0921(target),blob=new Blob([bytes],{type:mime});
- ws.zip.file(safe,blob);ws.modified.add(safe);if(safe!==old)ws.created.add(safe);
+ const safe=Archive0921.sanitize(target),blob=new Blob([bytes],{type:mime});
+ Archive0921.replace(ws.core,safe,blob);ws.modified.add(safe);if(safe!==old)ws.created.add(safe);
  cur.archivePath0921=safe;cur.name=safe.split('/').pop();cur.file=new File([blob],cur.name,{type:mime});cur.relativePath=(rootWorkspace0921(ws).sourceName||'archive.zip')+'/'+safe;
  queue();renderArchivePanel0921();toast('Archive virtuelle mise à jour : '+safe);return safe;
 }
@@ -52,12 +42,10 @@ async function exportArchiveZip0921(){
  const cur=current(),ws=cur?.archiveWorkspaceId0921?S.archiveWorkspaces0921.get(cur.archiveWorkspaceId0921):[...S.archiveWorkspaces0921.values()].find(x=>!x.parentId);if(!ws)throw new Error('Aucune archive chargée');
  const root=rootWorkspace0921(ws),blob=await buildWorkspaceBlob0921(root),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=split(root.sourceName||'archive.zip').stem+'_modifie.zip';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1800);toast('ZIP exporté : '+a.download);
 }
-async function ensureDir0921(root,parts){let d=root;for(const p of parts)d=await d.getDirectoryHandle(p,{create:true});return d}
 async function extractArchiveFolder0921(){
  if(typeof showDirectoryPicker!=='function')throw new Error('Extraction directe vers dossier indisponible dans ce navigateur');
  const cur=current(),ws=cur?.archiveWorkspaceId0921?S.archiveWorkspaces0921.get(cur.archiveWorkspaceId0921):[...S.archiveWorkspaces0921.values()].find(x=>!x.parentId);if(!ws)throw new Error('Aucune archive chargée');
- const rootWs=rootWorkspace0921(ws),blob=await buildWorkspaceBlob0921(rootWs),zip=await JSZip.loadAsync(await blob.arrayBuffer()),dir=await showDirectoryPicker({id:'nlab-pdf-zip-extract',mode:'readwrite'});let count=0;
- for(const ent of Object.values(zip.files)){if(ent.dir)continue;const p=zipSafe0921(ent.name),parts=p.split('/'),name=parts.pop(),d=await ensureDir0921(dir,parts),h=await d.getFileHandle(name,{create:true}),w=await h.createWritable();await w.write(await ent.async('blob'));await w.close();count++}
+ const rootWs=rootWorkspace0921(ws),blob=await buildWorkspaceBlob0921(rootWs),rebuilt=new File([blob],rootWs.sourceName||'archive.zip',{type:'application/zip'}),flat=await Archive0921.open(rebuilt),dir=await showDirectoryPicker({id:'nlab-pdf-zip-extract',mode:'readwrite'}),count=await Archive0921.extract(flat,dir);
  toast(count+' fichier(s) extraits dans '+dir.name);st('Archive extraite : '+count+' fichier(s).');
 }
 const saveClassic0921Base=saveClassic;
