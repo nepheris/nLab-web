@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.20",
+  "test": "0.9.21",
   "versions": [
+    {
+      "version": "0.9.21",
+      "label": "Alpha 0.9.21 TEST",
+      "date": "2026-09-27",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.21.html",
+      "notes": "TEST : workspace ZIP local éditable avec restitution ZIP ou extraction vers dossier, portée commune nLab basée sur BRK105 (page courante / sélection Ctrl-Cmd-Maj / tout le document), portée appliquée à rotation, tampons, optimisation, OCR, extraction et suppression, correction du routage de sortie à côté de la source, et aperçu DPI/JPEG avec profils discrets."
+    },
     {
       "version": "0.9.20",
       "label": "Alpha 0.9.20 TEST",
       "date": "2026-09-26",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.20.html",
       "notes": "TEST : consolidation UX de la lignée 0.9.19. Ajoute des identifiants stables par annotation avec type et horodatage dans l’historique, un accès direct aux objets présents, un bouton d’effacement du tracé sélectionné, des indications plus visibles pour le texte enrichi et une aide OAuth Google avec origine autorisée à copier. Conserve les 5 dates de tampon, variables communes, surligneurs rapides, rotation image, previews, caviardage préparatoire et workspace Google des versions précédentes."
     },
