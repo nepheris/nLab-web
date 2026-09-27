@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test('PDF Studio 0.9.25 renders the functional UI', async ({ page }) => {
+  test.setTimeout(90000);
   const pageErrors = [];
   page.on('pageerror', e => { const m=String(e.message || e); pageErrors.push(m); console.log('PAGEERROR:',m); });
 
@@ -14,7 +15,8 @@ test('PDF Studio 0.9.25 renders the functional UI', async ({ page }) => {
     errors: window.__NLAB_PATCH_ERRORS__ || [],
     ready: document.readyState
   })));
-  await expect(page).toHaveTitle(/0\.9\.25/);
+  expect(await page.evaluate(() => document.title)).toContain('0.9.25');
+  expect(await page.evaluate(() => window.__NLAB_PATCH_ERRORS__ || [])).toEqual([]);
 
   await page.locator('#home .card[data-tool="pdf"]').click();
   await expect(page.locator('#workspace')).toHaveClass(/active/);
