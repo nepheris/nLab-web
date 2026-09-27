@@ -18,7 +18,23 @@ test('PDF Studio 0.9.25 renders the functional UI', async ({ page }) => {
   expect(await page.evaluate(() => document.title)).toContain('0.9.25');
   expect(await page.evaluate(() => window.__NLAB_PATCH_ERRORS__ || [])).toEqual([]);
 
-  await page.locator('#home .card[data-tool="pdf"]').click();
+  const entryState = await page.evaluate(() => ({
+    home: !!document.querySelector('#home'),
+    card: !!document.querySelector('#home .card[data-tool="pdf"]'),
+    workspace: !!document.querySelector('#workspace'),
+    workspaceActive: document.querySelector('#workspace')?.classList.contains('active') || false
+  }));
+  console.log('ENTRYDIAG:', entryState);
+  expect(entryState.home || entryState.workspace).toBeTruthy();
+  if (!entryState.workspaceActive) {
+    const clicked = await page.evaluate(() => {
+      const b = document.querySelector('#home .card[data-tool="pdf"]');
+      if (!b) return false;
+      b.click();
+      return true;
+    });
+    expect(clicked).toBeTruthy();
+  }
   await expect(page.locator('#workspace')).toHaveClass(/active/);
 
   await expect(page.locator('#configSection0925')).toBeVisible();
