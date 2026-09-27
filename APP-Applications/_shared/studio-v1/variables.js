@@ -1,0 +1,13 @@
+import{today,fileStem,safeName}from'./core.js';
+export class VariableEngine{
+ constructor(){this.values={STAMP_DATE:today(),DATE_A:today(),DATE_B:today(),DATE_C:today(),DATE_D:today(),INITIALS:'',CLIENT:'',SITE:'',SERVICE:'',REFERENCE:''};this.operation={ocr:false,dpi:null,jpeg:null,gray:false,annot:false,fusion:false,stamp:false}}
+ set(k,v){this.values[k]=v??'';return this}setOperation(p={}){Object.assign(this.operation,p);return this}
+ dateParts(v){const d=new Date((v||today())+'T12:00:00');const pad=n=>String(n).padStart(2,'0');return{YYYY:d.getFullYear(),YY:String(d.getFullYear()).slice(-2),MM:pad(d.getMonth()+1),DD:pad(d.getDate())}}
+ formatDate(v,fmt='DD/MM/YYYY'){const p=this.dateParts(v);return fmt.replace(/YYYY/g,p.YYYY).replace(/YY/g,p.YY).replace(/MM/g,p.MM).replace(/DD/g,p.DD)}
+ context(fileName='document.pdf'){const now=new Date(),pad=n=>String(n).padStart(2,'0'),stem=fileStem(fileName);const c={...this.values,FILENAME:stem,STEM:stem,DATE:today(),TIME:pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds()),DATETIME:today()+'_'+pad(now.getHours())+pad(now.getMinutes())+pad(now.getSeconds()),YEAR:String(now.getFullYear()),MONTH:pad(now.getMonth()+1),OP:this.operationLabel(),DPI:this.operation.dpi??'',JPEG:this.operation.jpeg??''};return c}
+ operationLabel(){const a=[];if(this.operation.ocr)a.push('OCR');if(this.operation.dpi)a.push('DPI'+this.operation.dpi);if(this.operation.jpeg)a.push('JPEG'+this.operation.jpeg);if(this.operation.gray)a.push('GRIS');if(this.operation.annot)a.push('ANNOT');if(this.operation.fusion)a.push('FUSION');if(this.operation.stamp)a.push('STAMP');return a.join('_')}
+ resolve(tpl,fileName='document.pdf'){const c=this.context(fileName);return String(tpl??'').replace(/\{([A-Z0-9_]+)(?::([^}]+))?\}/g,(m,k,fmt)=>{if(!(k in c))return m;const v=c[k];if(fmt&&(k==='DATE'||k==='STAMP_DATE'||/^DATE_[A-D]$/.test(k)))return this.formatDate(v,fmt);return String(v??'')})}
+ buildName(fileName,{prefix='',template='{FILENAME}',suffix='',extension='.pdf',operationSuffix=true}={}){const stem=this.resolve(template,fileName),op=operationSuffix&&this.operationLabel()?'_'+this.operationLabel():'';return safeName(this.resolve(prefix,fileName)+stem+this.resolve(suffix,fileName)+op)+extension}
+ export(){return{schema:'nlab-studio-config/v1',dates:Object.fromEntries(Object.entries(this.values).filter(([k])=>k==='STAMP_DATE'||/^DATE_[A-D]$/.test(k))),values:{...this.values},operation:{...this.operation}}}
+ import(data){if(data?.values)Object.assign(this.values,data.values);if(data?.dates)Object.assign(this.values,data.dates);if(data?.operation)Object.assign(this.operation,data.operation);return this}
+}
