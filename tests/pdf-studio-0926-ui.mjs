@@ -29,7 +29,22 @@ page.on('console', msg => {
 
 try {
   await page.goto(base, {waitUntil:'domcontentloaded', timeout:60000});
-  await page.waitForSelector('#home', {timeout:60000});
+  try {
+    await page.waitForSelector('#home', {state:'attached', timeout:15000});
+  } catch (e) {
+    const diag = await page.evaluate(() => ({
+      title: document.title,
+      err: document.querySelector('#err')?.innerText || '',
+      body: (document.body?.innerText || '').slice(0,2400),
+      readyState: document.readyState,
+      scripts: [...document.scripts].map(s => s.src || s.id || 'inline').slice(-20)
+    }));
+    fail('Application non assemblée : '+JSON.stringify(diag));
+  }
+  if (!(await page.locator('#home').isVisible())) {
+    const cls = await page.locator('#home').getAttribute('class');
+    fail('Accueil présent mais invisible, class='+cls);
+  }
 
   // Open PDF editor workspace.
   await page.locator('.card[data-tool="pdf"]').click();
