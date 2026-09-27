@@ -13,6 +13,11 @@
     document.getElementById("loadingVersion").textContent=release.label||("Alpha "+TARGET+" TEST");
     let h=await fetchText("./app-0.9.12.html","Base 0.9.12 inaccessible");
     if(!h.includes("</body>"))throw new Error("HTML base invalide");
+    const rd=String(release.date||"").split("-"),displayDate=rd.length===3?(rd[2]+"/"+rd[1]+"/"+rd[0]):String(release.date||"—"),releaseLabel=release.label||("Alpha "+TARGET+" TEST");
+    h=h.replace('<strong>Alpha 0.9.12</strong>MAJ 18/09/2026 · Paris','<strong>'+releaseLabel+'</strong>MAJ '+displayDate);
+    h=h.replace('APP07 · Alpha 0.9.12 · MAJ 18/09/2026 · Paris','APP07 · '+releaseLabel+' · MAJ '+displayDate);
+    h=h.replace('Alpha 0.9.12 · ergonomie · tampons A/B/C · conversions',releaseLabel+' · sélection multi-pages · configuration · traduction');
+    h=h.replace('nLab PDF Studio · APP07 · Alpha 0.9.12 · dernière MAJ : 18/09/2026 · Paris.','nLab PDF Studio · APP07 · '+releaseLabel+' · dernière MAJ : '+displayDate+'.');
     const releaseTag='<script id="nlabPdfRelease">window.NLAB_PDF_RELEASE='+JSON.stringify(release).replace(/</g,"\\u003c")+';<\/script>';
     h=h.replace("</head>",releaseTag+"</head>");
     const parts=[];
