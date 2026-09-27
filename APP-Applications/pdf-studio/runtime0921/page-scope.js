@@ -31,7 +31,7 @@ renderPageStrip=function(){renderPageStrip0921Base();decorateThumbs0921();render
 function ensureScopeUi0921(){
  if($p('pageScopeBar0921')||!E.pageStrip)return;
  const bar=document.createElement('div');bar.id='pageScopeBar0921';bar.className='pageScopeBar0921';
- bar.innerHTML='<b>Portée commune</b><select id="pageScope0921"><option value="current">Page courante</option><option value="selected">Page(s) sélectionnée(s)</option><option value="all">Tout le document</option></select><button id="pageSelectAll0921" type="button">Tout sélectionner</button><button id="pageClear0921" type="button">Effacer sélection</button><span id="pageSelectionInfo0921">0 sélectionnée</span><small>Rotation, tampon et optimisation utilisent cette même portée. Ctrl/Cmd + clic : ajouter/retirer · Maj + clic : plage.</small>';
+ bar.innerHTML='<b>Portée commune</b><select id="pageScope0921"><option value="current">Page courante</option><option value="selected">Page(s) sélectionnée(s)</option><option value="all">Tout le document</option></select><button id="pageSelectAll0921" type="button">Tout sélectionner</button><button id="pageClear0921" type="button">Effacer sélection</button><span id="pageSelectionInfo0921">0 sélectionnée</span><small>Rotation, tampon, optimisation, OCR, extraction et suppression utilisent cette même portée. Ctrl/Cmd + clic : ajouter/retirer · Maj + clic : plage.</small>';
  E.pageStrip.before(bar);
  $p('pageScope0921').value=S.pageScope0921;
  $p('pageScope0921').onchange=e=>{S.pageScope0921=e.target.value;renderScope0921()};
@@ -85,6 +85,46 @@ optimize=async function(){
  }
  const b=await out.save();markOperation('optimize',{dpi,jpeg:q,gray,pages:targets});if($p('operationFolderName')?.value==='TRAITEMENT')$p('operationFolderName').value='OPTIMISATION';updatePath();await loadBytes(b,false);
  st('Optimisation appliquée à '+targets.length+' page(s) : '+dpi+' DPI · JPEG '+Math.round(q*100)+' %'+(gray?' · gris':'')+'.');
+};
+
+const runOcr0921Base=runOcr;
+runOcr=async function(){
+ if(!S.pdfjs)throw new Error('Aucun document affiché');
+ const lang=E.form.querySelector('[name=ocrLang]')?.value||'fra',scale=+(E.form.querySelector('[name=ocrScale]')?.value||2),pages=targetPages0921(),chunks=[];
+ for(const pg of pages)chunks.push('--- Page '+pg+' ---\\n'+await ocrPageText(pg,lang,scale));
+ E.ocr.value=chunks.join('\\n\\n');markOperation('ocr',{pages});if($p('operationFolderName')?.value==='TRAITEMENT')$p('operationFolderName').value='OCR';updatePath();st('OCR terminé : '+pages.length+' page(s)');toast('OCR terminé');
+};
+const runPdfQuickOcr0921Base=runPdfQuickOcr;
+runPdfQuickOcr=async function(){
+ if(!S.pdfjs)throw new Error('Aucun document affiché');
+ const lang=$p('quickOcrLang')?.value||'fra',scale=+($p('quickOcrScale')?.value||2),pages=targetPages0921(),chunks=[];
+ for(const pg of pages)chunks.push('--- Page '+pg+' ---\\n'+await ocrPageText(pg,lang,scale));
+ E.ocr.value=chunks.join('\\n\\n');markOperation('ocr',{pages});st('OCR terminé : '+pages.length+' page(s)');toast('OCR terminé');
+};
+
+const extractPage0921Base=extractPage;
+extractPage=async function(){
+ if(!S.pdfBytes||!S.pdfjs)throw new Error('Aucun document');
+ const targets=targetPages0921();if(targets.length===1&&S.pageScope0921==='current')return extractPage0921Base();
+ const src=await PDFLib.PDFDocument.load(S.pdfBytes.slice(0)),out=await PDFLib.PDFDocument.create(),pages=await out.copyPages(src,targets.map(p=>p-1));pages.forEach(p=>out.addPage(p));
+ const map=new Map(targets.map((oldPg,i)=>[oldPg,i+1]));
+ S.annotations=(S.annotations||[]).filter(a=>map.has(a.page)).map(a=>({...a,page:map.get(a.page)}));
+ S.pageLocks=new Set([...S.pageLocks].filter(p=>map.has(p)).map(p=>map.get(p)));
+ const b=await out.save();await loadBytes(b,false);S.page=1;Scope0921.clear(S.selectionScope0921);await render();S.workingName='pages-extraites.pdf';markOperation('page-extract',{pages:targets});recordDocumentAction('Extraction pages',targets.join(', '));commitAnnotationHistory('Extraction pages');st(targets.length+' page(s) extraite(s) : '+targets.join(', '));toast('Pages extraites');
+};
+
+const deleteCurrentPage0921Base=deleteCurrentPage;
+deleteCurrentPage=async function(page){
+ if(page!=null)return deleteCurrentPage0921Base(page);
+ assertUnsignedEditable('supprimer des pages');if(!S.pdfBytes||!S.pdfjs)throw new Error('Aucun document');
+ const targets=targetPages0921(),n=S.pdfjs.numPages;if(targets.length===1&&S.pageScope0921==='current')return deleteCurrentPage0921Base(targets[0]);
+ if(targets.length>=n)throw new Error('Impossible de supprimer toutes les pages du document');
+ for(const pg of targets)if(S.pageLocks.has(pg))throw new Error('Déverrouillez les pages sélectionnées avant suppression');
+ const remove=new Set(targets),src=await PDFLib.PDFDocument.load(S.pdfBytes.slice(0)),keep=src.getPageIndices().filter(i=>!remove.has(i+1)),out=await PDFLib.PDFDocument.create(),pages=await out.copyPages(src,keep);pages.forEach(p=>out.addPage(p));
+ const map=new Map();let next=1;for(let old=1;old<=n;old++)if(!remove.has(old))map.set(old,next++);
+ S.annotations=(S.annotations||[]).filter(a=>map.has(a.page)).map(a=>({...a,page:map.get(a.page)}));
+ S.pageLocks=new Set([...S.pageLocks].filter(p=>map.has(p)).map(p=>map.get(p)));
+ const b=await out.save();await loadBytes(b,false);S.page=Math.min(S.page,S.pdfjs.numPages);Scope0921.clear(S.selectionScope0921);await render();S.selectedAnn=null;S.workingName='pages-modifiees.pdf';markOperation('page-delete',{pages:targets});recordDocumentAction('Suppression pages',targets.join(', '));commitAnnotationHistory('Suppression pages');st(targets.length+' page(s) supprimée(s).');toast('Pages supprimées');
 };
 
 let previewUrl0921='';
