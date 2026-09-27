@@ -7,6 +7,8 @@
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@5.1.1/dist/signature_pad.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script><script src="https://apis.google.com/js/api.js" async defer></script>
 </head><body>
@@ -71,7 +73,34 @@
 <label class="field"><span>Jeton Bearer DSS (session locale)</span><input id="dssToken" type="password" autocomplete="off"></label>
 <button id="runDss" style="width:100%">Signer via DSS externe</button></div></details>
 
-<details class="sidebarSection" id="sectionDiagnostics"><summary><span class="fullLabel">10. Historique & diagnostics</span><span class="shortLabel">10<br>Diag</span></summary><div class="studioSidebarBody"><div id="documentHistory" class="historyList"></div><button id="runDiagnostics" style="width:100%">Relancer les diagnostics</button><div id="diagnosticList"></div></div></details>
+<details class="sidebarSection" id="sectionCodes"><summary><span class="fullLabel">10. QR & code-barres</span><span class="shortLabel">10<br>Code</span></summary><div class="studioSidebarBody">
+<label class="field"><span>Contenu</span><input id="codeValue" value="https://nepheris.github.io/nLab-web/"></label><div class="grid2"><button id="addQr">Ajouter QR</button><button id="addBarcode">Ajouter code-barres</button></div><div class="hint">Le code est ajouté comme objet graphique déplaçable sur la page courante.</div>
+</div></details>
+
+<details class="sidebarSection" id="sectionPageOutput"><summary><span class="fullLabel">11. En-tête · pied · recadrage · PDF→image</span><span class="shortLabel">11<br>Page</span></summary><div class="studioSidebarBody">
+<label class="field"><span>En-tête</span><input id="headerTemplate" placeholder="{FILENAME} · {DATE}"></label><label class="field"><span>Pied de page</span><input id="footerTemplate" placeholder="{INITIALS} · {STAMP_DATE:DD/MM/YYYY}"></label><button id="applyHeaderFooter" style="width:100%">Appliquer à la portée</button>
+<div class="grid2"><label class="field"><span>Marge gauche %</span><input id="cropLeft" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge droite %</span><input id="cropRight" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge haut %</span><input id="cropTop" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge bas %</span><input id="cropBottom" type="number" value="0" min="0" max="40"></label></div><button id="cropPages" style="width:100%">Recadrer la portée</button>
+<div class="grid2"><button id="pdfToPng">Page → PNG</button><button id="pdfToJpg">Page → JPG</button><button id="pdfToPngZip">Portée → PNG ZIP</button><button id="pdfToJpgZip">Portée → JPG ZIP</button></div>
+</div></details>
+
+<details class="sidebarSection" id="sectionForms"><summary><span class="fullLabel">12. Formulaires PDF</span><span class="shortLabel">12<br>Form</span></summary><div class="studioSidebarBody">
+<div class="grid2"><button id="inspectForms">Lister les champs</button><button id="addFormField">Ajouter champ texte</button></div><label class="field"><span>Nom du nouveau champ</span><input id="newFormFieldName" value="Champ_1"></label><label class="field"><span>Réponses JSON</span><textarea id="formValues" rows="5" placeholder='{"Champ_1":"Valeur"}'></textarea></label><div class="grid2"><button id="fillForms">Appliquer réponses</button><button id="flattenForms">Aplatir</button></div><div id="formStatus" class="statusBox">Aucune inspection.</div>
+</div></details>
+
+<details class="sidebarSection" id="sectionRedaction"><summary><span class="fullLabel">13. Caviardage</span><span class="shortLabel">13<br>Red</span></summary><div class="studioSidebarBody">
+<button id="redactionTool" style="width:100%">Ajouter une zone de caviardage</button><div class="hint">Cliquez ensuite dans la page pour placer une zone noire. Elle reste déplaçable avant application.</div><button id="applyRedactions" class="btnDanger" style="width:100%;margin-top:6px">Appliquer définitivement à la portée</button><div class="statusBox">L’application définitive rasterise les pages concernées pour supprimer le texte/vectoriel sous les zones.</div>
+</div></details>
+
+<details class="sidebarSection" id="sectionCompareBatch"><summary><span class="fullLabel">14. Comparaison & batch</span><span class="shortLabel">14<br>Batch</span></summary><div class="studioSidebarBody">
+<button id="pickCompare" style="width:100%">Choisir le PDF B à comparer</button><input id="compareInput" type="file" accept=".pdf,application/pdf" hidden><div id="compareStatus" class="statusBox">Aucune comparaison.</div>
+<button id="batchCleanMetadata" style="width:100%;margin-top:6px">Batch · nettoyer métadonnées des PDF cochés → ZIP</button>
+</div></details>
+
+<details class="sidebarSection" id="sectionSecurity"><summary><span class="fullLabel">15. Sécurité & métadonnées</span><span class="shortLabel">15<br>Sécu</span></summary><div class="studioSidebarBody">
+<div class="grid2"><button id="inspectSignatureStructure">Inspecter signatures</button><button id="cleanMetadata">Nettoyer métadonnées</button></div><div id="securityStatus" class="statusBox">Inspection structurelle uniquement. La validation cryptographique PAdES utilise DSS.</div>
+</div></details>
+
+<details class="sidebarSection" id="sectionDiagnostics"><summary><span class="fullLabel">16. Historique & diagnostics</span><span class="shortLabel">16<br>Diag</span></summary><div class="studioSidebarBody"><div id="documentHistory" class="historyList"></div><button id="runDiagnostics" style="width:100%">Relancer les diagnostics</button><div id="diagnosticList"></div></div></details>
 </aside>
 
 <section class="viewer"><div class="viewerCard">
@@ -79,7 +108,7 @@
 <div class="pageScope"><strong>Appliquer à</strong><select id="pageScope"><option value="current">Page en cours</option><option value="selected">Pages cochées</option><option value="all">Tout le document</option></select><button id="selectAllPages">Tout cocher</button><button id="selectNonePages">Tout décocher</button><span id="pageSelectionInfo">0 page cochée</span></div>
 <div class="thumbToolbar"><button id="thumbLeft">◀</button><button id="thumbRight">▶</button><span>Vignettes</span><button id="thumbZoomOut">−</button><input id="thumbZoom" type="range" min="0.65" max="2.2" step="0.05" value="1"><button id="thumbZoomIn">+</button><span id="thumbZoomInfo">100 %</span><span class="spacer"></span><small>Cases en haut à gauche · barre horizontale sous les pages</small></div>
 <div id="pageStrip" class="pageStrip"></div>
-<div id="canvasStage" class="canvasStage"><div id="pageCanvasWrap"><canvas id="pageCanvas"></canvas><div id="annotationLayer" class="annotationLayer"></div></div><div id="emptyViewer" style="color:#fff;margin:220px auto">Ouvrez un PDF, une image ou un ZIP pour commencer.</div></div>
+<div id="canvasStage" class="canvasStage"><div id="pageCanvasWrap"><canvas id="pageCanvas"></canvas><div id="textLayer" class="textLayer"></div><div id="annotationLayer" class="annotationLayer"></div></div><div id="emptyViewer" style="color:#fff;margin:220px auto">Ouvrez un PDF, une image ou un ZIP pour commencer.</div></div>
 </div></section></main>
 <button id="sidebarRestore" hidden style="position:fixed;left:6px;top:50%;z-index:150">▶ Panneau</button>
 <div class="studioStatus"><span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span id="docStatus">Aucun document</span><span class="grow">nLab PDF Studio 1.0.0 TEST</span></div><div id="studioToast" class="toast"></div>
