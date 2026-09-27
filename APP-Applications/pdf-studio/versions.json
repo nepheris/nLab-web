@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.25",
+  "test": "0.9.26",
   "versions": [
+    {
+      "version": "0.9.26",
+      "label": "Alpha 0.9.26 TEST",
+      "date": "2026-09-27",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.26.html",
+      "notes": "TEST structurelle : nouvelle base HTML dédiée au lieu de greffes UI sur la 0.9.12. Cases de sélection intégrées dans chaque vignette en haut à gauche, barre de portée Page en cours / Pages cochées / Tout le document, navigation horizontale et zoom des vignettes, catégorie 0 Configuration avec variables/JSON/5 dates/OAuth, connexion toujours visible, entrée/sortie manuelles + Charger, activation explicite de sortie, panneau gauche redimensionnable/repliable, navigation nLab Web/Studios/PDF Studio, accès Tampons et Traduction, auto-contrôle visible."
+    },
     {
       "version": "0.9.25",
       "label": "Alpha 0.9.25 TEST",
       "date": "2026-09-27",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.25.html",
       "notes": "TEST de remise en visibilité : contrôles persistants pour les cases à cocher sur les vignettes, portée Page en cours / Pages cochées / Tout le document, catégorie 0 Configuration regroupant variables nommées, préconfiguration JSON, espace personnel et 5 dates, presets entrée/sortie par défaut sur Choix manuel avec bouton Charger, activation explicite du mode de sortie, sortie même dossier que la source, panneau gauche redimensionnable/compact/masquable avec restauration, navigation nLab Web / Studios / PDF Studio et identité visuelle nLab Web."
     },
