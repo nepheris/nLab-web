@@ -256,7 +256,7 @@ jobs:
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.25"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.26"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
