@@ -191,12 +191,35 @@ jobs:
           Path('/tmp/pdf-studio-0924-loader.js').write_text(m.group(1))
           PY
           node --check /tmp/pdf-studio-0924-loader.js
+          # TEST 0.9.25 : contrôles visibles persistants
+          test -s APP-Applications/pdf-studio/app-0.9.25.html
+          test -s APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          node --check APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'runtime0925/visible-controls.js' APP-Applications/pdf-studio/app-0.9.25.html
+          grep -q 'pageCheck0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'pageScopeBar0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'Page en cours' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'Pages cochées' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'Tout le document' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'configZero0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'Variables nommées' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'Préconfiguration JSON' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'Dates globales des tampons' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'sourceLoad0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'destinationLoad0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'Activer ce mode' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'même dossier que la source' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'sidebarGrip0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q 'nLab Web' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q '../studios/' APP-Applications/pdf-studio/runtime0925/visible-controls.js
+          grep -q '"test": "0.9.25"' APP-Applications/pdf-studio/versions.json
+
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.24"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.25"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -216,4 +239,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.24 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.25 + DEMO v2: OK'
