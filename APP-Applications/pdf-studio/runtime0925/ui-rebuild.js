@@ -209,5 +209,5 @@ function install25(){
 let t25=0;
 const mo25=new MutationObserver(()=>{clearTimeout(t25);t25=setTimeout(install25,40)});
 if(document.body)mo25.observe(document.body,{childList:true,subtree:true});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install25,500),{once:true});else setTimeout(install25,500);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(install25,500);setTimeout(releaseMeta25,1100)},{once:true});else{setTimeout(install25,500);setTimeout(releaseMeta25,1100)}
 })();
