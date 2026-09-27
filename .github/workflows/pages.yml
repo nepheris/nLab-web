@@ -178,7 +178,23 @@ jobs:
           grep -q 'sidebarGrip0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q 'nLab Web' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q '../studios/' APP-Applications/pdf-studio/runtime0925/visible-controls.js
-          grep -q '"test": "0.9.25"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.26"' APP-Applications/pdf-studio/versions.json
+
+          # TEST 0.9.26 : base structurelle réellement visible
+          test -s APP-Applications/pdf-studio/app-base-0.9.26.html
+          test -s APP-Applications/pdf-studio/app-0.9.26.html
+          grep -q 'app-base-0.9.26.html' APP-Applications/pdf-studio/app-0.9.26.html
+          grep -q 'id="alpha0926Config"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="personalConnect0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="pageScopeBar0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="pagePreviewNav0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'pageSelectCheck0926' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="thumbZoom0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="alpha0926GoogleClientId"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="alpha0926_STAMP_DATE"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="alpha0926_DATE_D"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          ! grep -q 'id="nlabDemoCorpusV2"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q '"test": "0.9.26"' APP-Applications/pdf-studio/versions.json
 
           test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
           grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
@@ -288,7 +304,7 @@ jobs:
           }
           smoke_fetch "APP-Applications/_shared/selection-scope.js" /tmp/nlab-selection-scope.js
           smoke_fetch "APP-Applications/_shared/archive-workspace.js" /tmp/nlab-archive-workspace.js
-          smoke_fetch "APP-Applications/pdf-studio/app-0.9.25.html" /tmp/nlab-pdf-studio-0925.html
+          smoke_fetch "APP-Applications/pdf-studio/app-0.9.26.html" /tmp/nlab-pdf-studio-0926.html\n          smoke_fetch "APP-Applications/pdf-studio/app-base-0.9.26.html" /tmp/nlab-pdf-studio-base-0926.html
           grep -q 'NLAB_SELECTION_SCOPE' /tmp/nlab-selection-scope.js
           grep -q 'NLAB_ARCHIVE_WORKSPACE' /tmp/nlab-archive-workspace.js
-          grep -q 'Alpha 0.9.25 TEST' /tmp/nlab-pdf-studio-0925.html
+          grep -q 'Alpha 0.9.26 TEST' /tmp/nlab-pdf-studio-0926.html\n          grep -q 'pageSelectCheck0926' /tmp/nlab-pdf-studio-base-0926.html\n          grep -q 'pageScopeBar0926' /tmp/nlab-pdf-studio-base-0926.html\n          grep -q 'personalConnect0926' /tmp/nlab-pdf-studio-base-0926.html
