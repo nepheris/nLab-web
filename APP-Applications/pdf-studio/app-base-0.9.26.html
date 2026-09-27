@@ -792,176 +792,7 @@ function setAllSidebarSections(open){document.querySelectorAll('#sidebarPanel de
 function openSidebarHistory(){const d=$('sidebarHistorySection');if(!d)return;d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'});renderHistoryMenu()}
 document.querySelectorAll('.card[data-tool]').forEach(b=>b.onclick=()=>openTool(b.dataset.tool));$('backHome').onclick=()=>{E.workspace.classList.remove('active');E.home.classList.add('active')};E.date.value=today();E.date.oninput=updatePath;E.tpl.oninput=updatePath;$('recursiveInput').onchange=()=>run(applyRecursionChange);$('loadSourcePreset0926').onclick=e=>{const v=$('sourcePreset').value;if(v==='default')run(reuseSource,e.currentTarget);else run(chooseSource,e.currentTarget)};$('setDefaultSource').onclick=e=>run(()=>setDefaultHandle('source'),e.currentTarget);$('setDefaultDestination').onclick=e=>run(()=>setDefaultHandle('dest'),e.currentTarget);$('sourcePreset').onchange=e=>{if(e.target.value==='default'&&S.lastSource)sourceInfo(S.lastSource.name,`${S.lastSource.name}/ (dossier par défaut mémorisé)`);else if(e.target.value==='manual')sourceInfo('Choix manuel','Choisissez un dossier, plusieurs fichiers ou un ZIP.')};$('destinationPreset').onchange=e=>{if(e.target.value==='default'&&S.lastDest)destInfo(S.lastDest.name,`${S.lastDest.name}/ (dossier par défaut mémorisé)`);else if(e.target.value==='manual')destInfo('Choix manuel','Choisissez un dossier de sortie.')};$('outputMode').onchange=()=>{updatePath();document.querySelectorAll('[data-output-mode-card]').forEach(x=>x.classList.toggle('active',x.dataset.outputModeCard===$('outputMode').value))};document.querySelectorAll('[data-output-mode-card]').forEach(b=>b.onclick=()=>{const m=$('outputMode');m.value=b.dataset.outputModeCard;m.dispatchEvent(new Event('change'))});$('operationFolderName').oninput=updatePath;$('archiveGranularity')?.addEventListener('change',updatePath);$('preserveSourceTreeDate').onchange=updatePath;$('appendOperationSuffix').onchange=updatePath;['suffixDpi','suffixJpeg','suffixOcr','suffixGray','suffixAnnot','suffixFusion'].forEach(id=>$(id)?.addEventListener('change',updatePath));bindUiPrefs();$('sidebarExpandAll')?.addEventListener('click',()=>setAllSidebarSections(true));$('sidebarCollapseAll')?.addEventListener('click',()=>setAllSidebarSections(false));$('sidebarShowHistory')?.addEventListener('click',openSidebarHistory);$('historySidebarToggle')?.addEventListener('click',openSidebarHistory);$('viewColumns')?.addEventListener('change',e=>setViewColumns(e.target.value));$('quickOutputMode')?.addEventListener('change',e=>{if($('outputMode')){$('outputMode').value=e.target.value;$('outputMode').dispatchEvent(new Event('change'))}showSaveOptions('classify')});$('quickArchiveGranularity')?.addEventListener('change',e=>{if($('archiveGranularity')){$('archiveGranularity').value=e.target.value;$('archiveGranularity').dispatchEvent(new Event('change'))}showSaveOptions('classify')});$('quickPreserveTree')?.addEventListener('change',e=>{if($('preserveSourceTreeDate')){$('preserveSourceTreeDate').checked=e.target.checked;$('preserveSourceTreeDate').dispatchEvent(new Event('change'))}showSaveOptions('classify')});$('quickOperationFolder')?.addEventListener('input',e=>{if($('operationFolderName')){$('operationFolderName').value=e.target.value;$('operationFolderName').dispatchEvent(new Event('input'))}showSaveOptions('classify')});$('firstPage').onclick=()=>run(firstPage);$('lastPage').onclick=()=>run(lastPage);$('zoom100').onclick=e=>run(setZoom100,e.currentTarget);$('fitWidth').onclick=e=>run(fitWidth,e.currentTarget);$('fitPage').onclick=e=>run(fitPage,e.currentTarget);$('saveQuick')?.addEventListener('click',e=>{showSaveOptions('save');run(saveClassic,e.currentTarget)});$('saveAsQuick')?.addEventListener('click',e=>{showSaveOptions('as');run(saveAsFinal,e.currentTarget)});$('saveClassifiedQuick')?.addEventListener('click',e=>{showSaveOptions('classify');run(saveClassifiedFinal,e.currentTarget)});$('openOutputOptions')?.addEventListener('click',()=>{const d=$('outputSection');if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}});$('saveAsName')?.addEventListener('change',()=>showSaveOptions('as'));$('fileExplorerToggle')?.addEventListener('click',()=>{S.fileExplorerOpen=!S.fileExplorerOpen;queue()});$('filesSelectAll')?.addEventListener('click',()=>{S.mergeSelected=new Set(S.files.map((_,i)=>i));queue()});$('filesSelectNone')?.addEventListener('click',()=>{S.mergeSelected.clear();queue()});$('previousFile').onclick=()=>setCurrent(S.index-1);$('nextFile').onclick=()=>setCurrent(S.index+1);$('prevPage').onclick=()=>{if(S.page>1){S.page--;render()}};$('nextPage').onclick=()=>{if(S.pdfjs&&S.page<S.pdfjs.numPages){S.page++;render()}};$('zoomOut').onclick=()=>{S.zoom=Math.max(.5,S.zoom-.1);$('zoomRange').value=S.zoom;render()};$('zoomIn').onclick=()=>{S.zoom=Math.min(2.5,S.zoom+.1);$('zoomRange').value=S.zoom;render()};$('zoomRange').oninput=e=>{S.zoom=+e.target.value;render()};$('refreshPreview').onclick=()=>run(refreshPreview);$('googleDriveConnect')?.addEventListener('click',connectGoogleDrive);$('googleDriveDisconnect')?.addEventListener('click',disconnectGoogleDrive);$('imageSourceRotLeft')?.addEventListener('click',()=>run(()=>rotatePage(-90)));$('imageSourceRotRight')?.addEventListener('click',()=>run(()=>rotatePage(90)));$('imageSourceExportPdf')?.addEventListener('click',()=>run(exportCurrentImageAsPdf));setGoogleDriveUi();document.addEventListener('keydown',e=>{const typing=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)||document.activeElement?.isContentEditable;if((e.ctrlKey||e.metaKey)&&!typing){if(e.key.toLowerCase()==='z'&&!e.shiftKey){e.preventDefault();undoAnnotation();return}if((e.key.toLowerCase()==='z'&&e.shiftKey)||e.key.toLowerCase()==='y'){e.preventDefault();redoAnnotation();return}}if(!typing&&S.tool==='pdf'&&!e.ctrlKey&&!e.metaKey&&!e.altKey){const k=e.key.toLowerCase(),map={v:'select',n:'nativeText',t:'text',s:'stamp',h:'highlight',p:'pen',i:'image',q:'qrFree',r:'redactOp',f:'formOp',g:'signatureOp',e:'eraser'};if(map[k]){e.preventDefault();setEditorTool(map[k]);return}}if((e.key==='Delete'||e.key==='Backspace')&&S.selectedAnn&&!typing){e.preventDefault();deleteAnnotation()}});$('exportRegistry').onclick=()=>{const blob=new Blob([JSON.stringify(S.registry,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(TOOLS[S.tool]?.registry||`${PROFILE.storagePrefix||'nlab-pdf'}-registry`)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 
-/* ================= Alpha 0.9.26 — structural UI contract ================= */
-S.pageSelection0926=S.pageSelection0926||new Set();
-S.dateValues0926=S.dateValues0926||{};
-function selectedPagesSetBase0926(){return S.selectionScope0921?.selected||S.pageSelection0926}
-function syncPageScopeBase0926(){
- const set=selectedPagesSetBase0926(),n=S.pdfjs?.numPages||0,scope=$('pageScopeSelect0926'),info=$('pageSelectionInfo0926');
- if(scope)scope.value=S.pageScope0921||'current';
- if(info)info.textContent=set.size+' / '+n+' page(s) cochée(s)';
- document.querySelectorAll('#pageStrip .pageThumb').forEach((t,k)=>{const p=k+1,cb=t.querySelector('.pageSelectCheck0926');if(cb)cb.checked=set.has(p);t.classList.toggle('multiChecked0926',set.has(p))});
-}
-function setScopeBase0926(v){S.pageScope09126=v;S.pageScope0921=v;try{window.NLAB_PAGE_SCOPE_0921?.setScope?.(v)}catch(e){}syncPageScopeBase0926()}
-function setThumbZoomBase0926(v){
- const z=Math.max(.7,Math.min(2.2,Number(v)||1));document.documentElement.style.setProperty('--thumb-scale',z);const r=$('thumbZoom0926'),i=$('thumbZoomInfo0926');if(r)r.value=z;if(i)i.textContent=Math.round(z*100)+' %';
-}
-function activateOutputBase0926(){
- const v=$('outputMode')?.value||'same-source';
- if(v==='same-source'){if(S.source)S.dest=S.source;else{const cur=current?.();if(cur?.parent)S.dest=cur.parent}if(E.dstStatus)E.dstStatus.textContent='Sortie automatique : même dossier que le fichier source.';if(S.dest)destInfo(S.dest.name||'Dossier source','Même dossier que le fichier source');}
- updatePath();toast('Mode de sortie activé : '+v);
-}
-function syncDatesBase0926(){
- for(const k of ['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D']){
-  const ui=$('alpha0926_'+k);if(!ui)continue;const srcId={STAMP_DATE:'stampHubDateSTAMP0916',DATE_A:'stampHubDateA0916',DATE_B:'stampHubDateB0916',DATE_C:'stampHubDateC0916',DATE_D:'stampHubDateD0916'}[k],src=$(srcId);
-  const val=S.dateValues0926[k]||src?.value||today();if(document.activeElement!==ui)ui.value=val;if(src&&src.value!==val){src.value=val;src.dispatchEvent(new Event('input',{bubbles:true}))}
- }
-}
-function openPersonalBase0926(){
- const cfg=$('alpha0926Config');if(cfg){cfg.open=true;cfg.scrollIntoView({behavior:'smooth',block:'start'})}
- const cid=(typeof googleDriveClientId==='function'?googleDriveClientId():String(window.NLAB_GOOGLE_DRIVE_CONFIG?.clientId||'')).trim();
- if(cid&&typeof connectGoogleDrive==='function')connectGoogleDrive();else{$('alpha0926GoogleClientId')?.focus();toast('Renseignez le Client ID OAuth Web Google dans 0. Configuration.')}
-}
-function syncPersonalMountBase0926(){
- const mount=$('alpha0926PersonalMount'),p=$('workspacePanel0918');if(mount&&p&&p.parentElement!==mount)mount.appendChild(p);
- const cid=$('alpha0926GoogleClientId');if(cid&&!cid.value)cid.value=(typeof googleDriveClientId==='function'?googleDriveClientId():String(window.NLAB_GOOGLE_DRIVE_CONFIG?.clientId||'')).trim();
-}
-function auditInterfaceBase0926(){
- const a=$('alpha0926Audit');if(!a)return;const thumbs=[...document.querySelectorAll('#pageStrip .pageThumb')],checks=[...document.querySelectorAll('#pageStrip .pageSelectCheck0926')];
- const visible=id=>{const e=$(id);if(!e)return false;const s=getComputedStyle(e);return s.display!=='none'&&s.visibility!=='hidden'};
- const rows=[
- ['Configuration 0',visible('alpha0926Config')],
- ['Connexion / Espace personnel',visible('personalConnect0926')&&visible('alpha0926OpenPersonal')],
- ['Barre de portée',visible('pageScopeBar0926')],
- ['Page en cours / Pages cochées / Tout le document',!!$('pageScopeSelect0926')],
- ['Cases sur les vignettes',!thumbs.length||checks.length===thumbs.length],
- ['Navigation horizontale des vignettes',visible('pagePreviewNav0926')],
- ['Zoom des vignettes',visible('thumbZoom0926')],
- ['Panneau gauche redimensionnable',!!$('sidebarResizer')],
- ['5 dates',!!$('alpha0926_STAMP_DATE')&&!!$('alpha0926_DATE_D')],['Menu nLab PDF Studio',visible('alpha0926AppMenu')],['Accès Tampons',visible('alpha0926OpenStamps')],['Accès Traduction',visible('alpha0926OpenTranslation')]
- ];a.innerHTML=rows.map(([n,ok])=>(ok?'✅ ':'❌ ')+n).join('<br>');
-}
-$('pageScopeSelect0926').onchange=e=>setScopeBase0926(e.target.value);
-$('pageSelectAll0926').onclick=()=>{const s=selectedPagesSetBase0926();s.clear();for(let i=1;i<=(S.pdfjs?.numPages||0);i++)s.add(i);setScopeBase0926('selected');try{window.NLAB_PAGE_SCOPE_0921?.selectAll?.()}catch(e){}};
-$('pageClear0926').onclick=()=>{selectedPagesSetBase0926().clear();setScopeBase0926('selected');try{window.NLAB_PAGE_SCOPE_0921?.clear?.()}catch(e){}};
-$('pageStripLeft0926').onclick=()=>$('pageStrip').scrollBy({left:-Math.max(260,$('pageStrip').clientWidth*.7),behavior:'smooth'});
-$('pageStripRight0926').onclick=()=>$('pageStrip').scrollBy({left:Math.max(260,$('pageStrip').clientWidth*.7),behavior:'smooth'});
-$('thumbZoom0926').oninput=e=>setThumbZoomBase0926(e.target.value);
-$('thumbZoomOut0926').onclick=()=>setThumbZoomBase0926((+$('thumbZoom0926').value||1)-.1);
-$('thumbZoomIn0926').onclick=()=>setThumbZoomBase0926((+$('thumbZoom0926').value||1)+.1);
-$('loadDestinationPreset0926').onclick=e=>{const v=$('destinationPreset').value;if(v==='default')run(reuseDest,e.currentTarget);else run(chooseDest,e.currentTarget)};
-$('activateOutputMode0926').onclick=activateOutputBase0926;
-$('personalConnect0926').onclick=openPersonalBase0926;$('alpha0926OpenPersonal').onclick=openPersonalBase0926;
-function openStampBase0926(){try{if(S.tool!=='pdf')openTool('pdf');setTimeout(()=>{try{setEditorTool('stamp')}catch(e){};const x=$('stampHub0916')||$('alpha0926_STAMP_DATE');x?.scrollIntoView({behavior:'smooth',block:'center'})},80)}catch(e){toast('Tampons indisponibles : '+(e.message||e))}}
-function openTranslationBase0926(){try{if(S.tool!=='pdf')openTool('pdf');setTimeout(()=>{const p=$('brk104Panel');if(p){p.scrollIntoView({behavior:'smooth',block:'center'});const d=p.closest('details');if(d)d.open=true}else toast('Module Traduction non chargé')},100)}catch(e){toast('Traduction indisponible : '+(e.message||e))}}
-$('alpha0926OpenStamps').onclick=openStampBase0926;$('alpha0926OpenTranslation').onclick=openTranslationBase0926;
-$('alpha0926MenuInput').onclick=()=>{const x=[...document.querySelectorAll('#sidebarPanel>.toolSection')].find(d=>d.querySelector('summary')?.textContent.includes('1. Entrée'));if(x){x.open=true;x.scrollIntoView({behavior:'smooth',block:'start'})}};
-$('alpha0926MenuOutput').onclick=()=>{const x=$('outputSection');if(x){x.open=true;x.scrollIntoView({behavior:'smooth',block:'start'})}};
-$('alpha0926MenuStamp').onclick=openStampBase0926;$('alpha0926MenuTranslation').onclick=openTranslationBase0926;
-$('alpha0926MenuHistory').onclick=()=>{try{openSidebarHistory()}catch(e){}};$('alpha0926MenuConnection').onclick=openPersonalBase0926;
-$('alpha0926ImportJson').onclick=()=>($('workspaceImport0918')||$('loadUserConfig'))?.click();
-$('alpha0926ExportJson').onclick=()=>($('workspaceExport0918')||$('exportUserConfig'))?.click();
-$('alpha0926SaveGoogleClientId').onclick=()=>{const v=($('alpha0926GoogleClientId').value||'').trim();if(v&&!/^[A-Za-z0-9._-]+\.apps\.googleusercontent\.com$/.test(v))return toast('Client ID OAuth invalide');const key=(PROFILE.storagePrefix||'nlab-pdf')+'-google-oauth-client-id';if(v)localStorage.setItem(key,v);else localStorage.removeItem(key);window.NLAB_GOOGLE_DRIVE_CONFIG=window.NLAB_GOOGLE_DRIVE_CONFIG||{};window.NLAB_GOOGLE_DRIVE_CONFIG.clientId=v;try{setGoogleDriveUi()}catch(e){}toast(v?'Client ID OAuth enregistré':'Client ID OAuth effacé')};
-for(const k of ['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D']){$('alpha0926_'+k).value=today();$('alpha0926_'+k).oninput=e=>{S.dateValues0926[k]=e.target.value||today();syncDatesBase0926();try{updateStampPreview()}catch(_e){}try{updatePath()}catch(_e){}}}
-setThumbZoomBase0926(1);syncPageScopeBase0926();syncDatesBase0926();syncPersonalMountBase0926();auditInterfaceBase0926();
-const alpha0926Observer=new MutationObserver(()=>{syncPageScopeBase0926();syncDatesBase0926();syncPersonalMountBase0926();auditInterfaceBase0926()});alpha0926Observer.observe(document.body,{childList:true,subtree:true});
-setInterval(()=>{syncPageScopeBase0926();syncDatesBase0926();syncPersonalMountBase0926();auditInterfaceBase0926()},1000);
-/* ================= /Alpha 0.9.26 ===================== */
-})();
-</script>
-<script id="alpha0910Runtime">
-(()=>{
-  'use strict';
-  const PREF_KEY='nlab-pdf-studio-0910-toolbars-collapsed';
-  function fileNameSafe(){try{return current()?.name||'Aucun fichier'}catch(_){return 'Aucun fichier'}}
-  function syncSidebarDock(){
-    const total=(typeof S!=='undefined'&&Array.isArray(S.files))?S.files.length:0;
-    const idx=total?Math.max(0,Math.min(S.index||0,total-1)):0;
-    const name=document.getElementById('sidebarCurrentFile'),count=document.getElementById('sidebarFileCounter');
-    const prev=document.getElementById('previousFileDock'),next=document.getElementById('nextFileDock');
-    if(name){name.textContent=fileNameSafe();name.title=fileNameSafe()}
-    if(count)count.textContent=total?`${idx+1} / ${total}`:'0 / 0';
-    if(prev)prev.disabled=!total||idx<=0;if(next)next.disabled=!total||idx>=total-1;
-  }
-  function setToolbarsCollapsed(collapsed,{persist=true}={}){
-    const zone=document.querySelector('.documentZone'),b=document.getElementById('toolbarMasterToggle');
-    if(!zone||!b)return;zone.classList.toggle('toolbarsCollapsed',!!collapsed);b.setAttribute('aria-expanded',String(!collapsed));b.textContent=collapsed?'▾ Déplier les barres':'▴ Replier les barres';b.title=collapsed?'Afficher les barres d’outils':'Masquer les barres d’outils';
-    if(persist)try{localStorage.setItem(PREF_KEY,collapsed?'1':'0')}catch(_){}
-  }
-  function init0910(){
-    const prev=document.getElementById('previousFileDock'),next=document.getElementById('nextFileDock'),exp=document.getElementById('sidebarExplorerDock'),master=document.getElementById('toolbarMasterToggle');
-    prev?.addEventListener('click',()=>document.getElementById('previousFile')?.click());
-    next?.addEventListener('click',()=>document.getElementById('nextFile')?.click());
-    exp?.addEventListener('click',()=>document.getElementById('fileExplorerToggle')?.click());
-    master?.addEventListener('click',()=>setToolbarsCollapsed(!document.querySelector('.documentZone')?.classList.contains('toolbarsCollapsed')));
-    let collapsed=false;try{collapsed=localStorage.getItem(PREF_KEY)==='1'}catch(_){}
-    setToolbarsCollapsed(collapsed,{persist:false});
-    const q=document.getElementById('fileQueue');if(q)new MutationObserver(syncSidebarDock).observe(q,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});
-    document.addEventListener('click',()=>setTimeout(syncSidebarDock,0),true);
-    document.addEventListener('change',()=>setTimeout(syncSidebarDock,0),true);
-    syncSidebarDock();
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init0910,{once:true});else init0910();
-})();
-</script>
-<style id="alpha0911Styles">
-/* Alpha 0.9.12 — ergonomie compacte et états explicites */
-[hidden]{display:none!important}
-.topbar{display:none!important}
-.layout{--sidebar-width:430px;grid-template-columns:var(--sidebar-width) minmax(0,1fr)!important;align-items:start}
-.sidebarPanel{position:sticky!important;top:8px!important;height:calc(100vh - 16px)!important;max-height:calc(100vh - 16px)!important;overflow:auto!important;padding-top:10px!important}
-.sidebarResizer{right:-8px!important;width:16px!important;z-index:25!important;background:transparent!important}
-.sidebarResizer::after{content:"";position:absolute;top:12px;bottom:12px;left:7px;width:2px;border-radius:2px;background:#c7d2dc;transition:.15s}
-.sidebarResizer:hover::after,.sidebarResizer.dragging::after{background:#0057b8;width:4px;left:6px}
-#sidebarCycle,#sidebarExpand,#sidebarModeHint{display:none!important}
-.sidebarFoldControls{position:sticky;top:0;z-index:22;background:#fff;padding:5px 0 8px;display:grid!important;grid-template-columns:auto 1fr 1fr;gap:5px;border-bottom:1px solid #e5e9ed}
-.sidebarFoldControls #backHome{grid-column:1;white-space:nowrap}
-.sidebarFoldControls .sidebarTitleCompact{grid-column:2/4;align-self:center;font-weight:800;color:#263746;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sidebarFoldControls #sidebarShowHistory{grid-column:1/-1}
-.sidebarFileDock{position:sticky!important;top:82px!important;z-index:21!important;background:#f8fafc!important}
-.editorRibbon{position:sticky;top:0;z-index:35;background:#fff;border:1px solid #d9e0e6;border-radius:10px 10px 0 0;padding:5px 7px;gap:4px;min-height:42px;box-shadow:0 3px 12px #00000010}
-.ribbonTab{opacity:.62;transition:.12s;white-space:nowrap}
-.ribbonTab.active,.ribbonTab[aria-pressed="true"]{opacity:1;background:#e8f2fb!important;border-color:#7caed3!important;color:#0f5689!important;box-shadow:inset 0 -2px 0 #0057b8}
-.ribbonTab:not(.active)[aria-pressed="false"]{background:#fff!important}
-.ribbonHint{display:none!important}
-.editorToolbar{border-radius:0!important;margin-top:0!important}
-.editorToolGroup[hidden],.saveToolGroup[hidden],.navigationToolGroup[hidden],#pageToolGroup[hidden],#documentToolGroup[hidden],#historyToolGroup[hidden],#objectToolGroup[hidden]{display:none!important}
-.googleDriveGate{order:80;margin-left:auto!important;display:inline-flex!important;align-items:center!important;gap:5px!important;padding:4px 7px!important;border:1px solid #e3c65e!important;border-radius:7px!important;background:#fff4c4!important;color:#6d5200!important;max-width:320px}
-.googleDriveGate.connected{background:#eaf7ee!important;border-color:#8bc89d!important;color:#1f6636!important}
-.googleDriveGate .gateState{max-width:175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px!important;font-weight:700}
-.googleDriveGate button{padding:4px 6px!important;font-size:10px!important;white-space:nowrap}
-.toolbarMasterToggle{order:90;margin-left:0!important;white-space:nowrap}
-.notificationHub{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 8px;margin:5px 0 7px;border:1px solid #d6e0e9;border-radius:8px;background:#f8fbfd;min-height:38px}
-.notificationHub::before{content:"Notifications";font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:#657786;margin-right:3px}
-.notificationHub .docReady,.notificationHub .statusPill{font-size:11px!important;padding:5px 7px!important;margin:0!important}
-.notificationHub .editorContextBar{display:flex!important;margin:0!important;padding:4px 7px!important;border:0!important;background:transparent!important;min-height:auto!important;flex:1 1 320px}
-.notificationHub .editorContextBar[hidden]{display:none!important}
-.notificationHub .editorContextBar svg{width:16px;height:16px}
-.notificationHub .toast{position:static!important;transform:none!important;opacity:1!important;display:none!important;margin:0!important;box-shadow:none!important;padding:5px 8px!important;font-size:11px!important}
-.notificationHub .toast.show{display:inline-flex!important}
-.demoBanner.workspaceInfoBar{margin:9px 0 0!important;font-size:11px!important;padding:7px 9px!important;background:#fff8dd!important}
-.navigationToolGroup{gap:4px!important}
-.navigationToolGroup button{padding:5px 7px!important;min-width:31px}
-.navigationToolGroup .navText{font-size:10px}
-#zoomRange{width:90px!important}
-@media(max-width:1450px){.navigationToolGroup .navText{display:none!important}.navigationToolGroup button{width:32px;padding:5px!important}.navigationToolGroup #pageInfo{font-size:10px}.editorToolLabel{display:none}.ribbonTab{font-size:10px;padding:6px 7px}.googleDriveGate .gateState{max-width:110px}}
-@media(max-width:1120px){.ribbonTab svg{margin-right:0!important}.ribbonTab{font-size:0!important;width:34px}.ribbonTab svg{width:17px!important}.googleDriveGate .gateState{display:none}.toolbarMasterToggle{font-size:0!important;width:34px}.toolbarMasterToggle::before{content:"▴";font-size:14px}.toolbarsCollapsed .toolbarMasterToggle::before{content:"▾"}}
-.quickHighlighterStrip{display:inline-flex;align-items:center;gap:4px;padding:2px 5px;border-left:1px solid #d5dde4}
-.quickHighlighterStrip button{width:26px;height:26px;padding:0;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px #aab6c1}
-.quickHighlighterStrip button.active{box-shadow:0 0 0 2px #315a78}
-.stampDateGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:7px 0}
-.stampDateGrid label{font-size:10px;font-weight:700;color:#536474}.stampDateGrid input{margin-top:3px}
-.stampBuilder{margin:9px 0;padding:9px;border:1px solid #d9e2e9;border-radius:8px;background:#fbfcfd}
-.stampBuilder h4{margin:0 0 6px;font-size:12px}.stampBuilder .checkline{display:inline-flex;margin-right:7px}
-.stampVarButtons{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}.stampVarButtons button{padding:4px 6px;font-size:10px}
-.formFill0911{margin-top:9px;border-top:1px solid #e1e6ea;padding-top:8px}.formFill0911 .fillRow{display:grid;grid-template-columns:minmax(110px,.65fr) minmax(0,1fr);gap:6px;align-items:center;margin:5px 0}.formFill0911 .fillRow label{font-size:10px;font-weight:700;overflow:hidden;text-overflow:ellipsis}.formFill0911 input,.formFill0911 select{font-size:11px;padding:5px}
-.convertQuickGroup{display:inline-flex;gap:3px;align-items:center;border-left:1px solid #d4dce3;padding-left:5px}
-.convertQuickGroup button{font-size:10px;padding:5px 7px}
-.signaturePrivacyGate:not(.ok){background:#fff4c4!important;border-color:#e3c65e!important;color:#6d5200!important}
-.textAlignStrip{display:inline-flex;gap:2px}.textAlignStrip button{min-width:30px;padding:4px 6px}.textAlignStrip button.active{background:#e7f1fb;border-color:#6da4d0;color:#164f7d}
-</style><script id="alpha0912Runtime">
-(()=>{
-'use strict';
+/* ===== Alpha 0.9.12 merged into main scope ===== */
 const VERSION='Alpha 0.9.12';
 const STAMP_CUSTOM_KEY='nlab-pdf-studio-custom-stamps-v2';
 const $0911=id=>document.getElementById(id);
@@ -1183,7 +1014,173 @@ function init0912(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init0912,20),{once:true});else setTimeout(init0912,20);
 // =================== /Alpha 0.9.12 =====================
-
+/* ===== /Alpha 0.9.12 merged ===== */
+/* ================= Alpha 0.9.26 — structural UI contract ================= */
+S.pageSelection0926=S.pageSelection0926||new Set();
+S.dateValues0926=S.dateValues0926||{};
+function selectedPagesSetBase0926(){return S.selectionScope0921?.selected||S.pageSelection0926}
+function syncPageScopeBase0926(){
+ const set=selectedPagesSetBase0926(),n=S.pdfjs?.numPages||0,scope=$('pageScopeSelect0926'),info=$('pageSelectionInfo0926');
+ if(scope)scope.value=S.pageScope0921||'current';
+ if(info)info.textContent=set.size+' / '+n+' page(s) cochée(s)';
+ document.querySelectorAll('#pageStrip .pageThumb').forEach((t,k)=>{const p=k+1,cb=t.querySelector('.pageSelectCheck0926');if(cb)cb.checked=set.has(p);t.classList.toggle('multiChecked0926',set.has(p))});
+}
+function setScopeBase0926(v){S.pageScope09126=v;S.pageScope0921=v;try{window.NLAB_PAGE_SCOPE_0921?.setScope?.(v)}catch(e){}syncPageScopeBase0926()}
+function setThumbZoomBase0926(v){
+ const z=Math.max(.7,Math.min(2.2,Number(v)||1));document.documentElement.style.setProperty('--thumb-scale',z);const r=$('thumbZoom0926'),i=$('thumbZoomInfo0926');if(r)r.value=z;if(i)i.textContent=Math.round(z*100)+' %';
+}
+function activateOutputBase0926(){
+ const v=$('outputMode')?.value||'same-source';
+ if(v==='same-source'){if(S.source)S.dest=S.source;else{const cur=current?.();if(cur?.parent)S.dest=cur.parent}if(E.dstStatus)E.dstStatus.textContent='Sortie automatique : même dossier que le fichier source.';if(S.dest)destInfo(S.dest.name||'Dossier source','Même dossier que le fichier source');}
+ updatePath();toast('Mode de sortie activé : '+v);
+}
+function syncDatesBase0926(){
+ for(const k of ['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D']){
+  const ui=$('alpha0926_'+k);if(!ui)continue;const srcId={STAMP_DATE:'stampHubDateSTAMP0916',DATE_A:'stampHubDateA0916',DATE_B:'stampHubDateB0916',DATE_C:'stampHubDateC0916',DATE_D:'stampHubDateD0916'}[k],src=$(srcId);
+  const val=S.dateValues0926[k]||src?.value||today();if(document.activeElement!==ui)ui.value=val;if(src&&src.value!==val){src.value=val;src.dispatchEvent(new Event('input',{bubbles:true}))}
+ }
+}
+function openPersonalBase0926(){
+ const cfg=$('alpha0926Config');if(cfg){cfg.open=true;cfg.scrollIntoView({behavior:'smooth',block:'start'})}
+ const cid=(typeof googleDriveClientId==='function'?googleDriveClientId():String(window.NLAB_GOOGLE_DRIVE_CONFIG?.clientId||'')).trim();
+ if(cid&&typeof connectGoogleDrive==='function')connectGoogleDrive();else{$('alpha0926GoogleClientId')?.focus();toast('Renseignez le Client ID OAuth Web Google dans 0. Configuration.')}
+}
+function syncPersonalMountBase0926(){
+ const mount=$('alpha0926PersonalMount'),p=$('workspacePanel0918');if(mount&&p&&p.parentElement!==mount)mount.appendChild(p);
+ const cid=$('alpha0926GoogleClientId');if(cid&&!cid.value)cid.value=(typeof googleDriveClientId==='function'?googleDriveClientId():String(window.NLAB_GOOGLE_DRIVE_CONFIG?.clientId||'')).trim();
+}
+function auditInterfaceBase0926(){
+ const a=$('alpha0926Audit');if(!a)return;const thumbs=[...document.querySelectorAll('#pageStrip .pageThumb')],checks=[...document.querySelectorAll('#pageStrip .pageSelectCheck0926')];
+ const visible=id=>{const e=$(id);if(!e)return false;const s=getComputedStyle(e);return s.display!=='none'&&s.visibility!=='hidden'};
+ const rows=[
+ ['Configuration 0',visible('alpha0926Config')],
+ ['Connexion / Espace personnel',visible('personalConnect0926')&&visible('alpha0926OpenPersonal')],
+ ['Barre de portée',visible('pageScopeBar0926')],
+ ['Page en cours / Pages cochées / Tout le document',!!$('pageScopeSelect0926')],
+ ['Cases sur les vignettes',!thumbs.length||checks.length===thumbs.length],
+ ['Navigation horizontale des vignettes',visible('pagePreviewNav0926')],
+ ['Zoom des vignettes',visible('thumbZoom0926')],
+ ['Panneau gauche redimensionnable',!!$('sidebarResizer')],
+ ['5 dates',!!$('alpha0926_STAMP_DATE')&&!!$('alpha0926_DATE_D')],['Menu nLab PDF Studio',visible('alpha0926AppMenu')],['Accès Tampons',visible('alpha0926OpenStamps')],['Accès Traduction',visible('alpha0926OpenTranslation')]
+ ];a.innerHTML=rows.map(([n,ok])=>(ok?'✅ ':'❌ ')+n).join('<br>');
+}
+$('pageScopeSelect0926').onchange=e=>setScopeBase0926(e.target.value);
+$('pageSelectAll0926').onclick=()=>{const s=selectedPagesSetBase0926();s.clear();for(let i=1;i<=(S.pdfjs?.numPages||0);i++)s.add(i);setScopeBase0926('selected');try{window.NLAB_PAGE_SCOPE_0921?.selectAll?.()}catch(e){}};
+$('pageClear0926').onclick=()=>{selectedPagesSetBase0926().clear();setScopeBase0926('selected');try{window.NLAB_PAGE_SCOPE_0921?.clear?.()}catch(e){}};
+$('pageStripLeft0926').onclick=()=>$('pageStrip').scrollBy({left:-Math.max(260,$('pageStrip').clientWidth*.7),behavior:'smooth'});
+$('pageStripRight0926').onclick=()=>$('pageStrip').scrollBy({left:Math.max(260,$('pageStrip').clientWidth*.7),behavior:'smooth'});
+$('thumbZoom0926').oninput=e=>setThumbZoomBase0926(e.target.value);
+$('thumbZoomOut0926').onclick=()=>setThumbZoomBase0926((+$('thumbZoom0926').value||1)-.1);
+$('thumbZoomIn0926').onclick=()=>setThumbZoomBase0926((+$('thumbZoom0926').value||1)+.1);
+$('loadDestinationPreset0926').onclick=e=>{const v=$('destinationPreset').value;if(v==='default')run(reuseDest,e.currentTarget);else run(chooseDest,e.currentTarget)};
+$('activateOutputMode0926').onclick=activateOutputBase0926;
+$('personalConnect0926').onclick=openPersonalBase0926;$('alpha0926OpenPersonal').onclick=openPersonalBase0926;
+function openStampBase0926(){try{if(S.tool!=='pdf')openTool('pdf');setTimeout(()=>{try{setEditorTool('stamp')}catch(e){};const x=$('stampHub0916')||$('alpha0926_STAMP_DATE');x?.scrollIntoView({behavior:'smooth',block:'center'})},80)}catch(e){toast('Tampons indisponibles : '+(e.message||e))}}
+function openTranslationBase0926(){try{if(S.tool!=='pdf')openTool('pdf');setTimeout(()=>{const p=$('brk104Panel');if(p){p.scrollIntoView({behavior:'smooth',block:'center'});const d=p.closest('details');if(d)d.open=true}else toast('Module Traduction non chargé')},100)}catch(e){toast('Traduction indisponible : '+(e.message||e))}}
+$('alpha0926OpenStamps').onclick=openStampBase0926;$('alpha0926OpenTranslation').onclick=openTranslationBase0926;
+$('alpha0926MenuInput').onclick=()=>{const x=[...document.querySelectorAll('#sidebarPanel>.toolSection')].find(d=>d.querySelector('summary')?.textContent.includes('1. Entrée'));if(x){x.open=true;x.scrollIntoView({behavior:'smooth',block:'start'})}};
+$('alpha0926MenuOutput').onclick=()=>{const x=$('outputSection');if(x){x.open=true;x.scrollIntoView({behavior:'smooth',block:'start'})}};
+$('alpha0926MenuStamp').onclick=openStampBase0926;$('alpha0926MenuTranslation').onclick=openTranslationBase0926;
+$('alpha0926MenuHistory').onclick=()=>{try{openSidebarHistory()}catch(e){}};$('alpha0926MenuConnection').onclick=openPersonalBase0926;
+$('alpha0926ImportJson').onclick=()=>($('workspaceImport0918')||$('loadUserConfig'))?.click();
+$('alpha0926ExportJson').onclick=()=>($('workspaceExport0918')||$('exportUserConfig'))?.click();
+$('alpha0926SaveGoogleClientId').onclick=()=>{const v=($('alpha0926GoogleClientId').value||'').trim();if(v&&!/^[A-Za-z0-9._-]+\.apps\.googleusercontent\.com$/.test(v))return toast('Client ID OAuth invalide');const key=(PROFILE.storagePrefix||'nlab-pdf')+'-google-oauth-client-id';if(v)localStorage.setItem(key,v);else localStorage.removeItem(key);window.NLAB_GOOGLE_DRIVE_CONFIG=window.NLAB_GOOGLE_DRIVE_CONFIG||{};window.NLAB_GOOGLE_DRIVE_CONFIG.clientId=v;try{setGoogleDriveUi()}catch(e){}toast(v?'Client ID OAuth enregistré':'Client ID OAuth effacé')};
+for(const k of ['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D']){$('alpha0926_'+k).value=today();$('alpha0926_'+k).oninput=e=>{S.dateValues0926[k]=e.target.value||today();syncDatesBase0926();try{updateStampPreview()}catch(_e){}try{updatePath()}catch(_e){}}}
+setThumbZoomBase0926(1);syncPageScopeBase0926();syncDatesBase0926();syncPersonalMountBase0926();auditInterfaceBase0926();
+const alpha0926Observer=new MutationObserver(()=>{syncPageScopeBase0926();syncDatesBase0926();syncPersonalMountBase0926();auditInterfaceBase0926()});alpha0926Observer.observe(document.body,{childList:true,subtree:true});
+setInterval(()=>{syncPageScopeBase0926();syncDatesBase0926();syncPersonalMountBase0926();auditInterfaceBase0926()},1000);
+/* ================= /Alpha 0.9.26 ===================== */
 })();
 </script>
+<script id="alpha0910Runtime">
+(()=>{
+  'use strict';
+  const PREF_KEY='nlab-pdf-studio-0910-toolbars-collapsed';
+  function fileNameSafe(){try{return current()?.name||'Aucun fichier'}catch(_){return 'Aucun fichier'}}
+  function syncSidebarDock(){
+    const total=(typeof S!=='undefined'&&Array.isArray(S.files))?S.files.length:0;
+    const idx=total?Math.max(0,Math.min(S.index||0,total-1)):0;
+    const name=document.getElementById('sidebarCurrentFile'),count=document.getElementById('sidebarFileCounter');
+    const prev=document.getElementById('previousFileDock'),next=document.getElementById('nextFileDock');
+    if(name){name.textContent=fileNameSafe();name.title=fileNameSafe()}
+    if(count)count.textContent=total?`${idx+1} / ${total}`:'0 / 0';
+    if(prev)prev.disabled=!total||idx<=0;if(next)next.disabled=!total||idx>=total-1;
+  }
+  function setToolbarsCollapsed(collapsed,{persist=true}={}){
+    const zone=document.querySelector('.documentZone'),b=document.getElementById('toolbarMasterToggle');
+    if(!zone||!b)return;zone.classList.toggle('toolbarsCollapsed',!!collapsed);b.setAttribute('aria-expanded',String(!collapsed));b.textContent=collapsed?'▾ Déplier les barres':'▴ Replier les barres';b.title=collapsed?'Afficher les barres d’outils':'Masquer les barres d’outils';
+    if(persist)try{localStorage.setItem(PREF_KEY,collapsed?'1':'0')}catch(_){}
+  }
+  function init0910(){
+    const prev=document.getElementById('previousFileDock'),next=document.getElementById('nextFileDock'),exp=document.getElementById('sidebarExplorerDock'),master=document.getElementById('toolbarMasterToggle');
+    prev?.addEventListener('click',()=>document.getElementById('previousFile')?.click());
+    next?.addEventListener('click',()=>document.getElementById('nextFile')?.click());
+    exp?.addEventListener('click',()=>document.getElementById('fileExplorerToggle')?.click());
+    master?.addEventListener('click',()=>setToolbarsCollapsed(!document.querySelector('.documentZone')?.classList.contains('toolbarsCollapsed')));
+    let collapsed=false;try{collapsed=localStorage.getItem(PREF_KEY)==='1'}catch(_){}
+    setToolbarsCollapsed(collapsed,{persist:false});
+    const q=document.getElementById('fileQueue');if(q)new MutationObserver(syncSidebarDock).observe(q,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});
+    document.addEventListener('click',()=>setTimeout(syncSidebarDock,0),true);
+    document.addEventListener('change',()=>setTimeout(syncSidebarDock,0),true);
+    syncSidebarDock();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init0910,{once:true});else init0910();
+})();
+</script>
+<style id="alpha0911Styles">
+/* Alpha 0.9.12 — ergonomie compacte et états explicites */
+[hidden]{display:none!important}
+.topbar{display:none!important}
+.layout{--sidebar-width:430px;grid-template-columns:var(--sidebar-width) minmax(0,1fr)!important;align-items:start}
+.sidebarPanel{position:sticky!important;top:8px!important;height:calc(100vh - 16px)!important;max-height:calc(100vh - 16px)!important;overflow:auto!important;padding-top:10px!important}
+.sidebarResizer{right:-8px!important;width:16px!important;z-index:25!important;background:transparent!important}
+.sidebarResizer::after{content:"";position:absolute;top:12px;bottom:12px;left:7px;width:2px;border-radius:2px;background:#c7d2dc;transition:.15s}
+.sidebarResizer:hover::after,.sidebarResizer.dragging::after{background:#0057b8;width:4px;left:6px}
+#sidebarCycle,#sidebarExpand,#sidebarModeHint{display:none!important}
+.sidebarFoldControls{position:sticky;top:0;z-index:22;background:#fff;padding:5px 0 8px;display:grid!important;grid-template-columns:auto 1fr 1fr;gap:5px;border-bottom:1px solid #e5e9ed}
+.sidebarFoldControls #backHome{grid-column:1;white-space:nowrap}
+.sidebarFoldControls .sidebarTitleCompact{grid-column:2/4;align-self:center;font-weight:800;color:#263746;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sidebarFoldControls #sidebarShowHistory{grid-column:1/-1}
+.sidebarFileDock{position:sticky!important;top:82px!important;z-index:21!important;background:#f8fafc!important}
+.editorRibbon{position:sticky;top:0;z-index:35;background:#fff;border:1px solid #d9e0e6;border-radius:10px 10px 0 0;padding:5px 7px;gap:4px;min-height:42px;box-shadow:0 3px 12px #00000010}
+.ribbonTab{opacity:.62;transition:.12s;white-space:nowrap}
+.ribbonTab.active,.ribbonTab[aria-pressed="true"]{opacity:1;background:#e8f2fb!important;border-color:#7caed3!important;color:#0f5689!important;box-shadow:inset 0 -2px 0 #0057b8}
+.ribbonTab:not(.active)[aria-pressed="false"]{background:#fff!important}
+.ribbonHint{display:none!important}
+.editorToolbar{border-radius:0!important;margin-top:0!important}
+.editorToolGroup[hidden],.saveToolGroup[hidden],.navigationToolGroup[hidden],#pageToolGroup[hidden],#documentToolGroup[hidden],#historyToolGroup[hidden],#objectToolGroup[hidden]{display:none!important}
+.googleDriveGate{order:80;margin-left:auto!important;display:inline-flex!important;align-items:center!important;gap:5px!important;padding:4px 7px!important;border:1px solid #e3c65e!important;border-radius:7px!important;background:#fff4c4!important;color:#6d5200!important;max-width:320px}
+.googleDriveGate.connected{background:#eaf7ee!important;border-color:#8bc89d!important;color:#1f6636!important}
+.googleDriveGate .gateState{max-width:175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px!important;font-weight:700}
+.googleDriveGate button{padding:4px 6px!important;font-size:10px!important;white-space:nowrap}
+.toolbarMasterToggle{order:90;margin-left:0!important;white-space:nowrap}
+.notificationHub{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 8px;margin:5px 0 7px;border:1px solid #d6e0e9;border-radius:8px;background:#f8fbfd;min-height:38px}
+.notificationHub::before{content:"Notifications";font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:#657786;margin-right:3px}
+.notificationHub .docReady,.notificationHub .statusPill{font-size:11px!important;padding:5px 7px!important;margin:0!important}
+.notificationHub .editorContextBar{display:flex!important;margin:0!important;padding:4px 7px!important;border:0!important;background:transparent!important;min-height:auto!important;flex:1 1 320px}
+.notificationHub .editorContextBar[hidden]{display:none!important}
+.notificationHub .editorContextBar svg{width:16px;height:16px}
+.notificationHub .toast{position:static!important;transform:none!important;opacity:1!important;display:none!important;margin:0!important;box-shadow:none!important;padding:5px 8px!important;font-size:11px!important}
+.notificationHub .toast.show{display:inline-flex!important}
+.demoBanner.workspaceInfoBar{margin:9px 0 0!important;font-size:11px!important;padding:7px 9px!important;background:#fff8dd!important}
+.navigationToolGroup{gap:4px!important}
+.navigationToolGroup button{padding:5px 7px!important;min-width:31px}
+.navigationToolGroup .navText{font-size:10px}
+#zoomRange{width:90px!important}
+@media(max-width:1450px){.navigationToolGroup .navText{display:none!important}.navigationToolGroup button{width:32px;padding:5px!important}.navigationToolGroup #pageInfo{font-size:10px}.editorToolLabel{display:none}.ribbonTab{font-size:10px;padding:6px 7px}.googleDriveGate .gateState{max-width:110px}}
+@media(max-width:1120px){.ribbonTab svg{margin-right:0!important}.ribbonTab{font-size:0!important;width:34px}.ribbonTab svg{width:17px!important}.googleDriveGate .gateState{display:none}.toolbarMasterToggle{font-size:0!important;width:34px}.toolbarMasterToggle::before{content:"▴";font-size:14px}.toolbarsCollapsed .toolbarMasterToggle::before{content:"▾"}}
+.quickHighlighterStrip{display:inline-flex;align-items:center;gap:4px;padding:2px 5px;border-left:1px solid #d5dde4}
+.quickHighlighterStrip button{width:26px;height:26px;padding:0;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px #aab6c1}
+.quickHighlighterStrip button.active{box-shadow:0 0 0 2px #315a78}
+.stampDateGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:7px 0}
+.stampDateGrid label{font-size:10px;font-weight:700;color:#536474}.stampDateGrid input{margin-top:3px}
+.stampBuilder{margin:9px 0;padding:9px;border:1px solid #d9e2e9;border-radius:8px;background:#fbfcfd}
+.stampBuilder h4{margin:0 0 6px;font-size:12px}.stampBuilder .checkline{display:inline-flex;margin-right:7px}
+.stampVarButtons{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}.stampVarButtons button{padding:4px 6px;font-size:10px}
+.formFill0911{margin-top:9px;border-top:1px solid #e1e6ea;padding-top:8px}.formFill0911 .fillRow{display:grid;grid-template-columns:minmax(110px,.65fr) minmax(0,1fr);gap:6px;align-items:center;margin:5px 0}.formFill0911 .fillRow label{font-size:10px;font-weight:700;overflow:hidden;text-overflow:ellipsis}.formFill0911 input,.formFill0911 select{font-size:11px;padding:5px}
+.convertQuickGroup{display:inline-flex;gap:3px;align-items:center;border-left:1px solid #d4dce3;padding-left:5px}
+.convertQuickGroup button{font-size:10px;padding:5px 7px}
+.signaturePrivacyGate:not(.ok){background:#fff4c4!important;border-color:#e3c65e!important;color:#6d5200!important}
+.textAlignStrip{display:inline-flex;gap:2px}.textAlignStrip button{min-width:30px;padding:4px 6px}.textAlignStrip button.active{background:#e7f1fb;border-color:#6da4d0;color:#164f7d}
+</style>
 </body></html>
