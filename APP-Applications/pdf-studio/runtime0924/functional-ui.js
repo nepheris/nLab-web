@@ -89,7 +89,7 @@ function ensureMenu0924(){
  nav.innerHTML=
  '<details><summary>Fichier</summary><div class="nlabMenuPopup0924"><button data-a="folder">Ouvrir un dossier…</button><button data-a="files">Ouvrir des fichiers…</button><button data-a="driveDocs">Ouvrir depuis Drive / Documents…</button><button data-a="save">Enregistrer</button><button data-a="saveAs">Enregistrer sous…</button><button data-a="zip">Exporter le résultat en ZIP</button></div></details>'+
  '<details><summary>Historique</summary><div class="nlabMenuPopup0924"><button data-a="history">Afficher l’historique complet</button><button data-a="undo">Annuler annotation</button><button data-a="redo">Rétablir annotation</button></div></details>'+
- '<details><summary>Objets</summary><div class="nlabMenuPopup0924"><button data-tool="select">Sélection</button><button data-tool="text">Texte</button><button data-tool="stamp">Tampon & 5 dates</button><button data-tool="highlight">Surligneur</button><button data-tool="pen">Stylo</button><button data-tool="image">Image</button><button data-tool="signatureOp">Signature</button></div></details>'+
+ '<details><summary>Objets</summary><div class="nlabMenuPopup0924"><button data-tool="select">Sélection</button><button data-tool="text">Texte</button><button data-tool="stamp">Tampon & 5 dates</button><button data-tool="highlight">Surligneur</button><button data-tool="pen">Stylo</button><button data-tool="image">Image</button><button data-tool="signatureOp">Signature</button><button data-a="applyObject">Appliquer l’objet sélectionné à la portée</button></div></details>'+
  '<details><summary>Outils</summary><div class="nlabMenuPopup0924"><button data-a="translate">Traduction bilingue</button><button data-a="scope">Portée des pages</button><button data-a="sideFull">Panneau gauche normal</button><button data-a="sideCompact">Panneau gauche compact</button><button data-a="sideHide">Masquer le panneau gauche</button><button data-a="sideShow">Afficher le panneau gauche</button><button data-a="expand">Tout déplier</button><button data-a="collapse">Tout plier</button><button data-a="saveBar">Afficher / masquer la barre de sortie</button><button data-a="output">Options détaillées de sortie</button></div></details>'+
  '<details><summary>Connexion</summary><div class="nlabMenuPopup0924"><small id="menuConnectionState0924">Local</small><button data-a="connect">Se connecter à Google Drive</button><button data-a="personal">Espace personnel & configuration</button><button data-a="importConfig">Importer JSON personnalisé</button><button data-a="exportConfig">Exporter JSON personnalisé</button><button data-a="driveAuto">Activer / désactiver copie Drive des exports</button></div></details>';
  ws.insertBefore(nav,layout);
@@ -105,6 +105,7 @@ function ensureMenu0924(){
   else if(a==='history')clickId0924('sidebarShowHistory')||clickId0924('historyToggle');
   else if(a==='undo')clickId0924('annotationUndo');
   else if(a==='redo')clickId0924('annotationRedo');
+  else if(a==='applyObject')applySelectedObjectToScope0924();
   else if(a==='translate')openTranslation0924();
   else if(a==='scope'){const x=$24('pageScopeBar0921')||$24('pageScopeBar0924');if(x)x.scrollIntoView({behavior:'smooth',block:'center'})}
   else if(a==='sideFull'||a==='sideShow')applySidebar('full');
@@ -199,17 +200,35 @@ function ensureNamingSection0924(){
  }
 }
 
+function applySelectedObjectToScope0924(){
+ const a=S.selectedAnn;if(!a)return toast('Sélectionnez d’abord un objet, un tampon, une image ou une annotation.');
+ const api=window.NLAB_PAGE_SCOPE_0921;if(!api)return toast('Portée multi-pages indisponible.');
+ const targets=api.target?.()||[];if(!targets.length)return toast('Aucune page dans la portée.');
+ const existingPage=a.page||S.page,created=[];
+ for(const pg of targets){
+  if(pg===existingPage)continue;
+  const clone=typeof structuredClone==='function'?structuredClone(a):JSON.parse(JSON.stringify(a));
+  clone.id=crypto.randomUUID?crypto.randomUUID():'ann-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+  clone.page=pg;clone._nlabMeta0920=Object.assign({},clone._nlabMeta0920||{},{id:clone.id,createdAt:new Date().toISOString()});
+  S.annotations.push(clone);created.push(clone);
+ }
+ if(!created.length)return toast('L’objet est déjà sur la seule page de la portée.');
+ try{renderAnns();updatePath();commitAnnotationHistory('Objet appliqué à '+targets.length+' page(s)')}catch(e){}
+ try{recordDocumentAction('Objet multi-pages',targets.join(', '))}catch(e){}
+ toast('Objet appliqué à '+targets.length+' page(s).');
+}
+
 function ensureScopeBar0924(){
  const strip=$24('pageStrip');if(!strip)return;
  let bar=$24('pageScopeBar0921');
- if(bar){bar.style.display='flex';bar.classList.add('pageScopeBar0924');}
+ if(bar){bar.style.display='flex';bar.classList.add('pageScopeBar0924');if(!$24('pageApplyObject0924')){const b=document.createElement('button');b.id='pageApplyObject0924';b.type='button';b.textContent='Appliquer l’objet à la portée';b.onclick=applySelectedObjectToScope0924;bar.appendChild(b)}}
  else if(window.NLAB_PAGE_SCOPE_0921){
   bar=document.createElement('div');bar.id='pageScopeBar0924';bar.className='pageScopeBar0924';
-  bar.innerHTML='<b>Appliquer à</b><select id="pageScopeSelect0924"><option value="current">Page courante</option><option value="selected">Pages cochées</option><option value="all">Tout le document</option></select><button id="pageAll0924" type="button">Tout cocher</button><button id="pageNone0924" type="button">Tout décocher</button><span id="pageCount0924"></span>';
+  bar.innerHTML='<b>Appliquer à</b><select id="pageScopeSelect0924"><option value="current">Page courante</option><option value="selected">Pages cochées</option><option value="all">Tout le document</option></select><button id="pageAll0924" type="button">Tout cocher</button><button id="pageNone0924" type="button">Tout décocher</button><button id="pageApplyObject0924" type="button">Appliquer l’objet à la portée</button><span id="pageCount0924"></span>';
   strip.before(bar);
   const s=$24('pageScopeSelect0924');s.value=S.pageScope0921||'current';s.onchange=()=>{S.pageScope0921=s.value;window.NLAB_PAGE_SCOPE_0921.setScope(s.value);decoratePageChecks0924()};
   $24('pageAll0924').onclick=()=>{window.NLAB_PAGE_SCOPE_0921.selectAll();S.pageScope0921='selected';s.value='selected';decoratePageChecks0924()};
-  $24('pageNone0924').onclick=()=>{window.NLAB_PAGE_SCOPE_0921.clear();decoratePageChecks0924()};
+  $24('pageNone0924').onclick=()=>{window.NLAB_PAGE_SCOPE_0921.clear();decoratePageChecks0924()};$24('pageApplyObject0924').onclick=applySelectedObjectToScope0924;
  }
  if(bar&&!$24('pageScopeMaster0924')){
   const lab=document.createElement('label');lab.id='pageScopeMaster0924';lab.className='pageScopeMaster0924';lab.innerHTML='<input type="checkbox" id="pageMasterCheck0924"> Toutes les pages';
