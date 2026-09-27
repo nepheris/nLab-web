@@ -9,4 +9,12 @@ for i in $(seq 1 30); do
   if curl -fsS http://127.0.0.1:4173/APP-Applications/pdf-studio/app-0.9.25.html >/dev/null; then break; fi
   sleep 1
 done
+if [ -f /tmp/nlab-demo/files/demo-input/PDF/pdf-texte-actif.pdf ]; then
+  export NLAB_TEST_PDF=/tmp/nlab-demo/files/demo-input/PDF/pdf-texte-actif.pdf
+elif [ -f Library/demo/files/demo-input/PDF/pdf-texte-actif.pdf ]; then
+  export NLAB_TEST_PDF=Library/demo/files/demo-input/PDF/pdf-texte-actif.pdf
+else
+  echo "PDF de test multi-pages introuvable" >&2
+  exit 1
+fi
 npx playwright test APP-Applications/pdf-studio/tests/ui-0.9.25.spec.cjs --reporter=line --workers=1
