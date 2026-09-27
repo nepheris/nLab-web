@@ -34,7 +34,8 @@ test('PDF Studio 0.9.25 renders the functional UI', async ({ page }) => {
   await page.locator('#sidebarShow0925').click();
   await expect(page.locator('#mainLayout')).not.toHaveClass(/sidebarHidden/);
 
-  await page.locator('#fallbackOpenFiles').setInputFiles('/tmp/nlab-demo/files/demo-input/PDF/pdf-texte-actif.pdf');
+  const testPdf = process.env.NLAB_TEST_PDF || '/tmp/nlab-demo/files/demo-input/PDF/pdf-texte-actif.pdf';
+  await page.locator('#fallbackOpenFiles').setInputFiles(testPdf);
   await expect(page.locator('#pageStrip .pageThumb')).toHaveCount(3, { timeout: 20000 });
   await expect(page.locator('#pageStrip .pageCheck0925')).toHaveCount(3);
   await expect(page.locator('#pageScopeBar0925')).toBeVisible();
