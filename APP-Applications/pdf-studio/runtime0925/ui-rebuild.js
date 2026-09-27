@@ -39,6 +39,12 @@ function releaseMeta25(){
  const foot=document.querySelector('footer .footerInfo span');if(foot)foot.textContent='nLab PDF Studio · APP07 · '+label+' · dernière MAJ : '+fd+'.';
 }
 
+function ensureEntry25(){
+ const b=document.querySelector('#home .card[data-tool="pdf"]');if(!b)return;
+ if(b.dataset.nlab25Entry==='1')return;b.dataset.nlab25Entry='1';
+ b.onclick=e=>{e.preventDefault();openTool('pdf');setTimeout(install25,0)};
+}
+
 function ensureSiteNav25(){
  if($25('siteNav0925'))return;
  const top=$25('workspace')?.querySelector('.topbar');if(!top)return;
@@ -204,7 +210,7 @@ function watchPages25(){
 }
 
 function install25(){
- addStyle25();releaseMeta25();ensureSiteNav25();ensureSidebarControls25();ensureConfig25();ensurePresets25();ensureOutput25();ensureNaming25();ensureTranslation25();ensureScope25();watchPages25();syncDates25();updateDiag25();
+ addStyle25();releaseMeta25();ensureEntry25();ensureSiteNav25();ensureSidebarControls25();ensureConfig25();ensurePresets25();ensureOutput25();ensureNaming25();ensureTranslation25();ensureScope25();watchPages25();syncDates25();updateDiag25();
 }
 let t25=0;
 const mo25=new MutationObserver(()=>{clearTimeout(t25);t25=setTimeout(install25,40)});
