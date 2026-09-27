@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.22",
+  "test": "0.9.23",
   "versions": [
+    {
+      "version": "0.9.23",
+      "label": "Alpha 0.9.23 TEST",
+      "date": "2026-09-27",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.23.html",
+      "notes": "TEST corrective : conserve BRK104 traduction bilingue et les fonctions 0.9.21/0.9.22, ajoute le correctif GitHub Pages .nojekyll pour publier APP-Applications/_shared, supprime les surcharges DSS inter-runtime qui provoquaient une ReferenceError et remet en cohérence l’entrée TEST. CURRENT reste 0.9.10."
+    },
     {
       "version": "0.9.22",
       "label": "Alpha 0.9.22 TEST",
       "date": "2026-09-27",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.22.html",
       "notes": "TEST : intégration BRK104 PDF Bilingual Translator. Ajoute traduction bilingue EN/FR/DE/ES, original intact + traduction, mode côte à côte avec ratios 1/3–2/3, 50/50, 2/3–1/3 et inversion gauche/droite, ainsi que mode double-page/livre avec original sur page paire ou impaire. Traduction via launcher nLab Apps Script, Translator API navigateur ou endpoint HTTP configurable."
     },
