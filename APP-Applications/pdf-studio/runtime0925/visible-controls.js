@@ -278,7 +278,7 @@ function audit0925(){
 }
 
 function install0925(){
- style0925();brand0925();sidebar0925();ensureConfigZero0925();cleanPresets0925();outputMode0925();ensurePageScope0925();audit0925();
+ style0925();brand0925();sidebar0925();ensureConfigZero0925();const legacyCfg=$25('configSection0924');if(legacyCfg)legacyCfg.hidden=true;cleanPresets0925();outputMode0925();ensurePageScope0925();audit0925();
 }
 let t0925=0;
 const mo0925=new MutationObserver(()=>{clearTimeout(t0925);t0925=setTimeout(install0925,35)});
