@@ -2,9 +2,18 @@ const { test, expect } = require('@playwright/test');
 
 test('PDF Studio 0.9.25 renders the functional UI', async ({ page }) => {
   const pageErrors = [];
-  page.on('pageerror', e => pageErrors.push(String(e.message || e)));
+  page.on('pageerror', e => { const m=String(e.message || e); pageErrors.push(m); console.log('PAGEERROR:',m); });
 
   await page.goto('http://127.0.0.1:4173/APP-Applications/pdf-studio/app-0.9.25.html', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1200);
+  console.log('BOOTDIAG:', await page.evaluate(() => ({
+    title: document.title,
+    ui25: !!window.__NLAB_0925_UI__,
+    scope21: !!window.NLAB_PAGE_SCOPE_0921,
+    workspace18: !!window.__NLAB_WORKSPACE_0918__,
+    errors: window.__NLAB_PATCH_ERRORS__ || [],
+    ready: document.readyState
+  })));
   await expect(page).toHaveTitle(/0\.9\.25/);
 
   await page.locator('#home .card[data-tool="pdf"]').click();
