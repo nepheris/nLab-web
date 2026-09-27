@@ -37,8 +37,8 @@ function reorderOutputUi0919(){
  const section=$o('outputSection')?.querySelector('.sectionBody'),mode=$o('outputMode'),picker=$o('pickDestination');if(!section||!mode||!picker)return;
  const modeField=mode.closest('.field'),rootField=picker.closest('.field');if(modeField&&rootField&&modeField.compareDocumentPosition(rootField)&Node.DOCUMENT_POSITION_PRECEDING){}else if(modeField&&rootField)section.insertBefore(modeField,rootField);
  if(!$o('routingModeInfo0919')){const d=document.createElement('div');d.id='routingModeInfo0919';d.className='routingModeInfo0919';modeField?.appendChild(d)}
- mode.addEventListener('change',syncRoutingUi0919);
- $o('quickOutputMode')?.addEventListener('change',e=>{mode.value=e.target.value;mode.dispatchEvent(new Event('change',{bubbles:true}))});
+ if(!mode.dataset.routing0919){mode.dataset.routing0919='1';mode.addEventListener('change',syncRoutingUi0919)}
+ const quick=$o('quickOutputMode');if(quick&&!quick.dataset.routing0919){quick.dataset.routing0919='1';quick.addEventListener('change',e=>{mode.value=e.target.value;mode.dispatchEvent(new Event('change',{bubbles:true}))})}
  syncRoutingUi0919();
 }
 const chooseDest0919Base=chooseDest;
