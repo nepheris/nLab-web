@@ -2,6 +2,8 @@ import{chromium}from'playwright';import fs from'node:fs';
 const url=process.env.PDF_STUDIO_URL||'http://127.0.0.1:8765/APP-Applications/pdf-studio/v1/';
 const fixture=process.env.PDF_STUDIO_FIXTURE||'/tmp/pdf-studio-v1.pdf';
 const fixture2=process.env.PDF_STUDIO_FIXTURE2||'/tmp/pdf-studio-v1-b.pdf';
+const imageFixture=process.env.PDF_STUDIO_IMAGE||'/tmp/pdf-studio-v1-signature.png';
+const configFixture=process.env.PDF_STUDIO_CONFIG||'/tmp/pdf-studio-v1-config.json';
 const fail=m=>{throw new Error(m)},browser=await chromium.launch({headless:true}),page=await browser.newPage({viewport:{width:1500,height:1000},acceptDownloads:true});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
 const vis=async s=>await page.locator(s).count()>0&&await page.locator(s).first().isVisible();
@@ -14,6 +16,9 @@ try{
  const src=await page.locator('.studioBrand img').getAttribute('src');if(!src?.includes('nlab-wordmark.svg'))fail('Mauvais logo: '+src);
  if(await page.locator('[data-date]').count()!==5)fail('Les 5 dates ne sont pas présentes');
  if(await page.locator('#sourcePreset').inputValue()!=='manual'||await page.locator('#destinationPreset').inputValue()!=='manual')fail('Entrée/sortie pas en choix manuel');
+ await page.locator('#configInput').setInputFiles(configFixture);await page.waitForFunction(()=>document.querySelector('#operatorInitials').value==='CI');
+ if(!(await page.locator('#namePreview').innerText()).startsWith('CI_'))fail('Import configuration JSON non appliqué');
+ const cfgDl=page.waitForEvent('download');await page.locator('#exportConfig').click();const cfgDownload=await cfgDl;if(!cfgDownload.suggestedFilename().endsWith('.json'))fail('Export config JSON invalide');
  await page.locator('#filesInput').setInputFiles(fixture);await page.waitForFunction(()=>document.querySelectorAll('#pageStrip .pageThumb').length===12,null,{timeout:30000});await page.waitForTimeout(400);
  const thumbs=page.locator('#pageStrip .pageThumb'),checks=page.locator('#pageStrip .pageCheck');if(await checks.count()!==12)fail('Cases vignettes: '+await checks.count()+'/12');
  const geo=await thumbs.evaluateAll(ts=>ts.map(t=>{const c=t.querySelector('.pageCheck'),tr=t.getBoundingClientRect(),cr=c.getBoundingClientRect();return{x:cr.left-tr.left,y:cr.top-tr.top,v:getComputedStyle(c).display!=='none'}}));for(const[g,i]of geo.map((g,i)=>[g,i]))if(!g.v||g.x<0||g.x>12||g.y<0||g.y>12)fail('Case page '+(i+1)+' mal placée '+JSON.stringify(g));
