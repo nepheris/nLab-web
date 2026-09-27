@@ -161,14 +161,42 @@ jobs:
           grep -q 'Alpha 0.9.23 TEST' APP-Applications/pdf-studio/app-0.9.23.html
           ! grep -q 'const dssFetchBase0918=dssFetch0916' APP-Applications/pdf-studio/runtime0918/google-drive.js
           ! grep -q '^dssFetch0916=async function' APP-Applications/pdf-studio/runtime0919/unified-config-auth.js
-          grep -q 'app-0.9.23.html' APP-Applications/pdf-studio/index.html
+          grep -q '"version": "0.9.23"' APP-Applications/pdf-studio/versions.json
 
+          # TEST 0.9.24 : remise à plat fonctionnelle et UI explicite
+          test -s APP-Applications/pdf-studio/app-0.9.24.html
+          test -s APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          node --check APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'runtime0924/functional-ui.js' APP-Applications/pdf-studio/app-0.9.24.html
+          grep -q './versions.json' APP-Applications/pdf-studio/app-0.9.24.html
+          grep -q 'NLAB_PDF_RELEASE' APP-Applications/pdf-studio/app-0.9.24.html
+          grep -q 'pageSelectCheck0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'applySelectedObjectToScope0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'pageScopeMaster0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'nlabMenu0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'configSection0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'namingSection0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'translationSection0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'loadDriveDocuments0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'exportZip0924' APP-Applications/pdf-studio/runtime0924/functional-ui.js
+          grep -q 'safePatch' APP-Applications/pdf-studio/app-0.9.24.html
+          grep -q '"releaseRegistry": "./versions.json"' APP-Applications/pdf-studio/config/app-config.v1.json
+          ! grep -q '"version": "0.9.19"' APP-Applications/pdf-studio/config/app-config.v1.json
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('APP-Applications/pdf-studio/app-0.9.24.html').read_text()
+          m=re.search(r'<script>\s*(\(async\(\)=>\{.*?\}\)\(\);)\s*</script></body>',s,re.S)
+          assert m, 'loader 0.9.24 introuvable'
+          Path('/tmp/pdf-studio-0924-loader.js').write_text(m.group(1))
+          PY
+          node --check /tmp/pdf-studio-0924-loader.js
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.23"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.24"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -188,4 +216,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.23 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.24 + DEMO v2: OK'

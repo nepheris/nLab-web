@@ -4,8 +4,8 @@
     "id": "APP07",
     "product": "nLab Scan Studio",
     "module": "PDF Studio",
-    "version": "0.9.19",
-    "channel": "test"
+    "channel": "test",
+    "releaseRegistry": "./versions.json"
   },
   "auth": {
     "google": {
