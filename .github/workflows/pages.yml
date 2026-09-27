@@ -128,7 +128,7 @@ jobs:
           grep -q 'Alpha 0.9.23 TEST' APP-Applications/pdf-studio/app-0.9.23.html
           ! grep -q 'const dssFetchBase0918=dssFetch0916' APP-Applications/pdf-studio/runtime0918/google-drive.js
           ! grep -q '^dssFetch0916=async function' APP-Applications/pdf-studio/runtime0919/unified-config-auth.js
-          grep -q 'app-0.9.23.html' APP-Applications/pdf-studio/index.html
+          grep -q '"version": "0.9.23"' APP-Applications/pdf-studio/versions.json
 
           # TEST 0.9.24 : remise à plat fonctionnelle et UI explicite
           test -s APP-Applications/pdf-studio/app-0.9.24.html
