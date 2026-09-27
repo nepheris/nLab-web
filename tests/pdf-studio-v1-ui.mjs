@@ -27,6 +27,36 @@ try{
  await page.locator('#pageScope').selectOption('current');await page.locator('#rbAddPage').click();await page.waitForFunction(()=>window.__NLAB_PDF_V1__.engine.pageCount===13);await page.locator('#rbDeletePages').click();await page.waitForFunction(()=>window.__NLAB_PDF_V1__.engine.pageCount===12);
  await page.locator('#selectNonePages').click();await page.locator('#pageStrip .pageCheck').nth(0).check();await page.locator('#pageStrip .pageCheck').nth(2).check();const stampSel=await page.evaluate(()=>[...window.__NLAB_PDF_V1__.engine.selected].sort((a,b)=>a-b));if(stampSel.join(',')!=='1,3')fail('Sélection avant tampon incorrecte '+stampSel);
 await page.locator('#sectionStamps').evaluate(e=>e.open=true);await page.locator('#addStampScope').click();await page.waitForTimeout(120);const ac=await page.evaluate(()=>[window.__NLAB_PDF_V1__.engine.annotations(1).length,window.__NLAB_PDF_V1__.engine.annotations(3).length]);if(ac[0]<1||ac[1]<1)fail('Tampon multi-pages KO '+ac);
+
+ // Advanced historical tools.
+ await page.locator('#sectionCodes').evaluate(e=>e.open=true);
+ const currentBeforeQr=await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.currentPage),annBeforeQr=await page.evaluate(p=>window.__NLAB_PDF_V1__.engine.annotations(p).length,currentBeforeQr);
+ await page.locator('#codeValue').fill('NLAB-V1-TEST');await page.locator('#addQr').click();
+ await page.waitForFunction(({p,n})=>window.__NLAB_PDF_V1__.engine.annotations(p).length>n,{p:currentBeforeQr,n:annBeforeQr},{timeout:5000});
+ const qrAnn=await page.evaluate(p=>window.__NLAB_PDF_V1__.engine.annotations(p).at(-1)?.dataUrl||'',currentBeforeQr);if(!qrAnn.startsWith('data:image/'))fail('QR non généré comme image');
+
+ await page.locator('#sectionPageOutput').evaluate(e=>e.open=true);await page.locator('#pageScope').selectOption('current');
+ await page.locator('#headerTemplate').fill('nLab · {FILENAME}');const baseLen=await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.bytes.length);await page.locator('#applyHeaderFooter').click();
+ await page.waitForFunction(n=>window.__NLAB_PDF_V1__.engine.bytes.length!==n,baseLen,{timeout:5000}).catch(()=>fail('En-tête/pied sans modification PDF'));
+ const pngDl=page.waitForEvent('download');await page.locator('#pdfToPng').click();const pd=await pngDl;if(!pd.suggestedFilename().endsWith('.png'))fail('PDF→PNG invalide '+pd.suggestedFilename());
+
+ await page.locator('#sectionForms').evaluate(e=>e.open=true);await page.locator('#newFormFieldName').fill('TestFieldV1');await page.locator('#addFormField').click();
+ await page.waitForFunction(()=>window.__NLAB_PDF_V1__.advanced.inspectForms().some(x=>x.name==='TestFieldV1'),null,{timeout:5000});
+ await page.locator('#formValues').fill('{"TestFieldV1":"OK"}');await page.locator('#fillForms').click();await page.locator('#flattenForms').click();
+ await page.waitForFunction(()=>window.__NLAB_PDF_V1__.advanced.inspectForms().length===0,null,{timeout:5000});
+
+ await page.locator('#sectionRedaction').evaluate(e=>e.open=true);await page.locator('#redactionTool').click();
+ const layer=page.locator('#annotationLayer'),lb=await layer.boundingBox();if(!lb)fail('Couche annotation sans géométrie');await page.mouse.click(lb.x+lb.width*.35,lb.y+lb.height*.35);
+ await page.waitForFunction(()=>window.__NLAB_PDF_V1__.engine.annotations(window.__NLAB_PDF_V1__.engine.currentPage).some(x=>x.type==='redaction'),null,{timeout:3000});
+ await page.locator('#applyRedactions').click();await page.waitForFunction(()=>!window.__NLAB_PDF_V1__.engine.annotations(window.__NLAB_PDF_V1__.engine.currentPage).some(x=>x.type==='redaction'),null,{timeout:10000});
+
+ await page.locator('#sectionCompareBatch').evaluate(e=>e.open=true);await page.locator('#compareInput').setInputFiles(fixture2);
+ await page.waitForFunction(()=>document.querySelector('#compareStatus').textContent.includes('similarité moyenne'),null,{timeout:10000});
+
+ await page.locator('#sectionSecurity').evaluate(e=>e.open=true);await page.locator('#inspectSignatureStructure').click();
+ const secTxt=await page.locator('#securityStatus').innerText();if(!/signature/i.test(secTxt))fail('Inspection structure signature sans résultat');
+ await page.locator('#cleanMetadata').click();
+
  const download=page.waitForEvent('download');await page.locator('#savePdf').click();const d=await download;if(!d.suggestedFilename().endsWith('.pdf'))fail('Export PDF invalide '+d.suggestedFilename());const path=await d.path();if(!path||fs.statSync(path).size<500)fail('PDF exporté vide');
  await page.reload({waitUntil:'domcontentloaded'});await page.waitForFunction(()=>!!window.__NLAB_PDF_V1__);await page.locator('#filesInput').setInputFiles([fixture,fixture2]);await page.waitForFunction(()=>window.__NLAB_PDF_V1__.workspace.items.length===2);await page.locator('#sectionPages').evaluate(e=>e.open=true);await page.locator('#mergeSelectedFiles').click();await page.waitForFunction(()=>window.__NLAB_PDF_V1__.engine.pageCount===15,{timeout:30000}).catch(async()=>{const n=await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.pageCount);fail('Fusion PDF KO pageCount='+n)});
  const diag=await page.evaluate(()=>({version:window.__NLAB_PDF_V1__.version,pages:window.__NLAB_PDF_V1__.engine.pageCount,legacy:[...document.scripts].some(s=>/runtime09/.test(s.src))}));if(diag.version!=='1.0.0 TEST'||diag.legacy)fail('Diagnostic runtime incorrect '+JSON.stringify(diag));
