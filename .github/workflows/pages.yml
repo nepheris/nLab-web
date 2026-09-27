@@ -110,6 +110,15 @@ jobs:
           grep -q "mode==='same-source'" APP-Applications/pdf-studio/runtime0921/output-routing.js
           grep -q 'optimizationPreview0921' APP-Applications/pdf-studio/runtime0921/page-scope.js
 
+          # TEST 0.9.22 : traduction bilingue BRK104
+          test -s APP-Applications/pdf-studio/app-0.9.22.html
+          test -s APP-Applications/pdf-studio/runtime0922/bilingual-translation.js
+          node --check APP-Applications/pdf-studio/runtime0922/bilingual-translation.js
+          grep -q 'runtime0922/bilingual-translation.js' APP-Applications/pdf-studio/app-0.9.22.html
+          grep -q 'BRK104-pdf-bilingual-translator' APP-Applications/pdf-studio/runtime0922/bilingual-translation.js
+          grep -q 'side_by_side' APP-Applications/pdf-studio/runtime0922/bilingual-translation.js
+          grep -q 'facing_pages' APP-Applications/pdf-studio/runtime0922/bilingual-translation.js
+
           test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
           grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
           node --check APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
@@ -139,7 +148,7 @@ jobs:
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.21"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.22"' APP-Applications/pdf-studio/versions.json
 
       - name: Build shared nLab demo corpus
         shell: bash
