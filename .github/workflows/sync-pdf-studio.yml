@@ -188,4 +188,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.22 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.23 + DEMO v2: OK'
