@@ -18,6 +18,7 @@ const history=[],stamps=[
 const workspace=new FileWorkspace({queueEl:qs('#fileQueue'),onOpen:item=>loadItem(item)});
 const annotations=new AnnotationManager({engine,layer:qs('#annotationLayer'),canvasWrap:qs('#pageCanvasWrap'),variables:vars});
 const tools=new PDFTools({engine,annotations,variables:vars});
+window.__NLAB_PDF_V1__={version:VERSION,engine,workspace,drive,variables:vars,annotations,tools};
 
 function log(action,detail=''){history.unshift({time:new Date().toLocaleTimeString('fr-FR'),action,detail});history.splice(60);renderHistory()}
 function renderHistory(){qs('#documentHistory').innerHTML=history.map(x=>'<div class="historyItem"><b>'+escapeHtml(x.action)+'</b><span>'+escapeHtml(x.time+(x.detail?' · '+x.detail:''))+'</span></div>').join('')}
