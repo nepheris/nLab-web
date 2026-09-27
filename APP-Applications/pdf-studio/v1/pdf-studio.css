@@ -11,3 +11,9 @@
 .signaturePreview img{max-width:100%;max-height:80px}.scopeOpGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
 #diagnosticList{font-size:10px;line-height:1.55}.diagOk{color:var(--nlab-success)}.diagWarn{color:var(--nlab-warning)}.diagBad{color:var(--nlab-danger)}
 #translationStatus{white-space:pre-wrap}
+.textLayer{position:absolute;inset:0;overflow:hidden;opacity:1;line-height:1;z-index:2;pointer-events:auto}
+.textLayer span,.textLayer br{color:transparent;position:absolute;white-space:pre;cursor:text;transform-origin:0 0}
+.textLayer span::selection{background:#5B9DCE55}
+.annotationLayer{z-index:3}
+.annotation.redaction{background:#000!important;border:2px solid #A1453F!important;min-width:80px;min-height:24px;opacity:.88}
+#compareStatus{max-height:190px;overflow:auto;white-space:pre-wrap}
