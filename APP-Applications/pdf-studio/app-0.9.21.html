@@ -28,13 +28,14 @@
     const unified0919=await fetchText("./runtime0919/unified-config-auth.js","Patch 0.9.19 configuration/authentification unifiées");
     const patch0920=await fetchText("./runtime0920/ux-consolidation.js","Patch 0.9.20 consolidation UX");
     const sharedScope0921=await fetchText("../_shared/selection-scope.js","Brique commune portée/sélection");
+    const sharedArchive0921=await fetchText("../_shared/archive-workspace.js","Brique commune archive ZIP");
     const pageScope0921=await fetchText("./runtime0921/page-scope.js","Patch 0.9.21 portée pages");
     const archive0921=await fetchText("./runtime0921/archive-workspace.js","Patch 0.9.21 workspace ZIP");
     const routing0921=await fetchText("./runtime0921/output-routing.js","Patch 0.9.21 routage sortie");
     const closeScript="</scr"+"ipt>";
     const marker="})();\n"+closeScript+'\n<script id="alpha0910Runtime">';
     if(!h.includes(marker))throw new Error("Point d’injection interne 0.9.14 introuvable");
-    h=h.replace(marker,"\n"+runtime+"\n"+rc2+"\n"+patch0915+"\n"+patch0916+"\n"+profile0917+"\n"+naming0917+"\n"+stampHelp0917+"\n"+authGate0917+"\n"+variables0918+"\n"+workspace0918+"\n"+drive0918+"\n"+unified0919+"\n"+patch0920+"\n"+sharedScope0921+"\n"+pageScope0921+"\n"+archive0921+"\n"+routing0921+"\n})();\n"+closeScript+'\n<script id="alpha0910Runtime">');
+    h=h.replace(marker,"\n"+runtime+"\n"+rc2+"\n"+patch0915+"\n"+patch0916+"\n"+profile0917+"\n"+naming0917+"\n"+stampHelp0917+"\n"+authGate0917+"\n"+variables0918+"\n"+workspace0918+"\n"+drive0918+"\n"+unified0919+"\n"+patch0920+"\n"+sharedScope0921+"\n"+sharedArchive0921+"\n"+pageScope0921+"\n"+archive0921+"\n"+routing0921+"\n})();\n"+closeScript+'\n<script id="alpha0910Runtime">');
     const debugTag='<script src="./runtime/app-0.9.13-debug.js"></scr'+'ipt>';
     h=h.replace("</body>",debugTag+"</body>");
     document.open();
