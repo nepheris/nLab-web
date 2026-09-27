@@ -25,7 +25,9 @@
       const n=String(i).padStart(2,"0");
       parts.push(await fetchText("./runtime0914/app0914.part"+n+".txt","Runtime 0.9.14 part"+n));
     }
-    const runtime=parts.join("");
+    let runtime=parts.join("");
+    runtime=runtime.replace(/\}\)\(\);\s*$/, "window.__NLAB_0914_API__={formatStore0914,stampDatesAll0914};\n})();");
+    if(!runtime.includes("window.__NLAB_0914_API__"))throw new Error("Pont API 0.9.14 impossible à injecter");
     const rc2=await fetchText("./runtime0914/rc2-patch.js","Patch 0.9.14 RC2");
     const patch0915=await fetchText("./runtime0915/stamp-dates-filename.js","Patch 0.9.15 tampons");
     const patch0916=await fetchText("./runtime0916/stamp-auth-dss.js","Patch 0.9.16 tampons/auth/DSS");
@@ -49,7 +51,10 @@
     const marker="})();\n"+closeScript+'\n<script id="alpha0910Runtime">';
     if(!h.includes(marker))throw new Error("Point d’injection interne introuvable");
     h=h.replace(marker,
-      "\n"+runtime+"\n"+rc2+
+      "\n"+runtime+
+      "\nlet formatStore0914=(...args)=>window.__NLAB_0914_API__.formatStore0914(...args);"+
+      "\nlet stampDatesAll0914=(...args)=>window.__NLAB_0914_API__.stampDatesAll0914(...args);"+
+      "\n"+rc2+
       "\n"+safePatch(patch0915,"0.9.15 tampons")+
       "\n"+safePatch(patch0916,"0.9.16 auth/DSS")+
       "\n"+safePatch(profile0917,"0.9.17 profil")+
