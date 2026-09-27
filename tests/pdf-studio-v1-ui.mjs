@@ -8,7 +8,9 @@ const vis=async s=>await page.locator(s).count()>0&&await page.locator(s).first(
 try{
  await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await page.waitForSelector('#sectionConfig',{timeout:30000});await page.waitForFunction(()=>!!window.__NLAB_PDF_V1__,null,{timeout:30000});
  if(errors.length)fail('Erreurs au démarrage: '+errors.join(' | '));
- for(const [s,n]of[['.studioBrand img','logo nLab'],['#sectionConfig','Configuration 0'],['#connectGoogle','Connexion'],['#pageScope','Portée'],['#thumbZoom','Zoom vignettes'],['#sidebarResizer','Redimensionnement panneau'],['#runOcr','OCR'],['#runTranslation','Traduction'],['#runDss','DSS']])if(!(await vis(s)))fail(n+' absent/invisible');
+ for(const [s,n]of[['.studioBrand img','logo nLab'],['#sectionConfig','Configuration 0'],['#connectGoogle','Connexion'],['#pageScope','Portée'],['#thumbZoom','Zoom vignettes'],['#sidebarResizer','Redimensionnement panneau'],['#sectionOcr>summary','Section OCR'],['#sectionTranslation>summary','Section Traduction'],['#sectionSignature>summary','Section Signature']])if(!(await vis(s)))fail(n+' absent/invisible');
+ for(const id of ['sectionOcr','sectionTranslation','sectionSignature'])await page.locator('#'+id).evaluate(e=>e.open=true);
+ for(const [s,n]of[['#runOcr','OCR'],['#runTranslation','Traduction'],['#runDss','DSS']])if(!(await vis(s)))fail(n+' absent après ouverture de section');
  const src=await page.locator('.studioBrand img').getAttribute('src');if(!src?.includes('nlab-wordmark.svg'))fail('Mauvais logo: '+src);
  if(await page.locator('[data-date]').count()!==5)fail('Les 5 dates ne sont pas présentes');
  if(await page.locator('#sourcePreset').inputValue()!=='manual'||await page.locator('#destinationPreset').inputValue()!=='manual')fail('Entrée/sortie pas en choix manuel');
