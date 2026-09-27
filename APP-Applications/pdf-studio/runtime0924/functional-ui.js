@@ -323,6 +323,7 @@ function moduleDiagnostics0924(){
 function install0924(){
  addStyle0924();applyReleaseMeta0924();removeDemoControls0924();wrapPageStrip0924();ensureScopeBar0924();decoratePageChecks0924();ensureConfigSection0924();ensureOutputEnhancements0924();ensureNamingSection0924();ensureMenu0924();ensureRibbon0924();ensureTranslation0924();ensureArchiveMenu0924();updateConnectionUi0924();moduleDiagnostics0924();
 }
+addStyle0924();applyReleaseMeta0924();
 let timer0924=0;
 const mo0924=new MutationObserver(()=>{clearTimeout(timer0924);timer0924=setTimeout(install0924,30)});
 if(document.body)mo0924.observe(document.body,{childList:true,subtree:true});
