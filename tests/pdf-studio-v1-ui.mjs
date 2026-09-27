@@ -54,12 +54,12 @@ await page.locator('#sectionStamps').evaluate(e=>e.open=true);await page.locator
  const currentBeforeQr=await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.currentPage),annBeforeQr=await page.evaluate(p=>window.__NLAB_PDF_V1__.engine.annotations(p).length,currentBeforeQr);
  await page.locator('#codeValue').fill('NLAB-V1-TEST');await page.locator('#addQr').click();
  await page.waitForFunction(({p,n})=>window.__NLAB_PDF_V1__.engine.annotations(p).length>n,{p:currentBeforeQr,n:annBeforeQr},{timeout:5000});
- const qrAnn=await page.evaluate(p=>window.__NLAB_PDF_V1__.engine.annotations(p).at(-1)?.dataUrl||'',currentBeforeQr);if(!qrAnn.startsWith('data:image/'))fail('QR non généré comme image');
+ const qrAnn=await page.evaluate(p=>window.__NLAB_PDF_V1__.engine.annotations(p).at(-1)?.dataUrl||'',currentBeforeQr);if(!qrAnn.startsWith('data:image/'))fail('QR non généré comme image');const beforeBarcode=await page.evaluate(p=>window.__NLAB_PDF_V1__.engine.annotations(p).length,currentBeforeQr);await page.locator('#codeValue').fill('123456789012');await page.locator('#addBarcode').click();await page.waitForFunction(({p,n})=>window.__NLAB_PDF_V1__.engine.annotations(p).length>n,{p:currentBeforeQr,n:beforeBarcode},{timeout:5000});
 
  await page.locator('#sectionPageOutput').evaluate(e=>e.open=true);await page.locator('#pageScope').selectOption('current');
  await page.locator('#headerTemplate').fill('nLab · {FILENAME}');const baseLen=await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.bytes.length);await page.locator('#applyHeaderFooter').click();
  await page.waitForFunction(n=>window.__NLAB_PDF_V1__.engine.bytes.length!==n,baseLen,{timeout:5000}).catch(()=>fail('En-tête/pied sans modification PDF'));
- const pngDl=page.waitForEvent('download');await page.locator('#pdfToPng').click();const pd=await pngDl;if(!pd.suggestedFilename().endsWith('.png'))fail('PDF→PNG invalide '+pd.suggestedFilename());
+ const pngDl=page.waitForEvent('download');await page.locator('#pdfToPng').click();const pd=await pngDl;if(!pd.suggestedFilename().endsWith('.png'))fail('PDF→PNG invalide '+pd.suggestedFilename());const cropBefore=await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.pdfDoc.getPage(window.__NLAB_PDF_V1__.engine.currentPage-1).getCropBox().width);await page.locator('#cropLeft').fill('1');await page.locator('#cropRight').fill('1');await page.locator('#cropPages').click();await page.waitForFunction(w=>window.__NLAB_PDF_V1__.engine.pdfDoc.getPage(window.__NLAB_PDF_V1__.engine.currentPage-1).getCropBox().width<w,cropBefore,{timeout:5000});
 
  await page.locator('#sectionForms').evaluate(e=>e.open=true);await page.locator('#newFormFieldName').fill('TestFieldV1');await page.locator('#addFormField').click();
  await page.waitForFunction(()=>window.__NLAB_PDF_V1__.advanced.inspectForms().some(x=>x.name==='TestFieldV1'),null,{timeout:5000});
@@ -72,7 +72,7 @@ await page.locator('#sectionStamps').evaluate(e=>e.open=true);await page.locator
  await page.locator('#applyRedactions').click();await page.waitForFunction(()=>!window.__NLAB_PDF_V1__.engine.annotations(window.__NLAB_PDF_V1__.engine.currentPage).some(x=>x.type==='redaction'),null,{timeout:10000});
 
  await page.locator('#sectionCompareBatch').evaluate(e=>e.open=true);await page.locator('#compareInput').setInputFiles(fixture2);
- await page.waitForFunction(()=>document.querySelector('#compareStatus').textContent.includes('similarité moyenne'),null,{timeout:10000});
+ await page.waitForFunction(()=>document.querySelector('#compareStatus').textContent.includes('similarité moyenne'),null,{timeout:10000});const batchDl=page.waitForEvent('download');await page.locator('#batchCleanMetadata').click();const bd=await batchDl;if(!bd.suggestedFilename().endsWith('.zip'))fail('Batch métadonnées sans ZIP');
 
  await page.locator('#sectionSecurity').evaluate(e=>e.open=true);await page.locator('#inspectSignatureStructure').click();
  const secTxt=await page.locator('#securityStatus').innerText();if(!/signature/i.test(secTxt))fail('Inspection structure signature sans résultat');
