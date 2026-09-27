@@ -248,10 +248,11 @@ jobs:
           test -s APP-Applications/pdf-studio/v1/pdf-engine.js
           test -s APP-Applications/pdf-studio/v1/annotations.js
           test -s APP-Applications/pdf-studio/v1/pdf-tools.js
+          test -s APP-Applications/pdf-studio/v1/advanced-tools.js
           for f in core variables file-io drive icons; do test -s "APP-Applications/_shared/studio-v1/$f.js"; done
           test -s APP-Applications/_shared/studio-v1/tokens.css
           test -s APP-Applications/_shared/studio-v1/studio.css
-          for f in APP-Applications/pdf-studio/v1/pdf-studio.js APP-Applications/pdf-studio/v1/pdf-engine.js APP-Applications/pdf-studio/v1/annotations.js APP-Applications/pdf-studio/v1/pdf-tools.js APP-Applications/_shared/studio-v1/core.js APP-Applications/_shared/studio-v1/variables.js APP-Applications/_shared/studio-v1/file-io.js APP-Applications/_shared/studio-v1/drive.js APP-Applications/_shared/studio-v1/icons.js; do node --input-type=module --check < "$f"; done
+          for f in APP-Applications/pdf-studio/v1/pdf-studio.js APP-Applications/pdf-studio/v1/pdf-engine.js APP-Applications/pdf-studio/v1/annotations.js APP-Applications/pdf-studio/v1/pdf-tools.js APP-Applications/pdf-studio/v1/advanced-tools.js APP-Applications/_shared/studio-v1/core.js APP-Applications/_shared/studio-v1/variables.js APP-Applications/_shared/studio-v1/file-io.js APP-Applications/_shared/studio-v1/drive.js APP-Applications/_shared/studio-v1/icons.js; do node --input-type=module --check < "$f"; done
           grep -q 'nlab-wordmark.svg' APP-Applications/pdf-studio/v1/index.html
           grep -q '0. Configuration' APP-Applications/pdf-studio/v1/index.html
           grep -q 'id="connectGoogle"' APP-Applications/pdf-studio/v1/index.html
@@ -259,6 +260,13 @@ jobs:
           grep -q 'id="thumbZoom"' APP-Applications/pdf-studio/v1/index.html
           grep -q 'id="sidebarResizer"' APP-Applications/pdf-studio/v1/index.html
           grep -q 'id="runDss"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="addQr"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="pdfToPng"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="inspectForms"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="applyRedactions"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="pickCompare"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="cleanMetadata"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="textLayer"' APP-Applications/pdf-studio/v1/index.html
           grep -q 'Aucun runtime 0.9.x' APP-Applications/pdf-studio/v1/pdf-studio.js
           ! grep -q 'runtime09' APP-Applications/pdf-studio/v1/index.html
           test -s tests/pdf-studio-v1-ui.mjs
