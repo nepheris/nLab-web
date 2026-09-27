@@ -212,7 +212,44 @@ jobs:
           grep -q 'sidebarGrip0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q 'nLab Web' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q '../studios/' APP-Applications/pdf-studio/runtime0925/visible-controls.js
-          grep -q '"test": "0.9.25"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.26"' APP-Applications/pdf-studio/versions.json
+
+          # TEST 0.9.26 : base structurelle + contrat UI navigateur
+          test -s APP-Applications/pdf-studio/app-base-0.9.26.html
+          test -s APP-Applications/pdf-studio/app-0.9.26.html
+          test -s tests/pdf-studio-0926-ui.mjs
+          node --check tests/pdf-studio-0926-ui.mjs
+          grep -q 'app-base-0.9.26.html' APP-Applications/pdf-studio/app-0.9.26.html
+          ! grep -q 'runtime0924/functional-ui.js' APP-Applications/pdf-studio/app-0.9.26.html
+          ! grep -q 'runtime0925/visible-controls.js' APP-Applications/pdf-studio/app-0.9.26.html
+          grep -q 'id="alpha0926Config"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="personalConnect0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="pageScopeBar0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="pagePreviewNav0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'pageSelectCheck0926' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="thumbZoom0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="loadSourcePreset0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="loadDestinationPreset0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="activateOutputMode0926"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="alpha0926_STAMP_DATE"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="alpha0926_DATE_D"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'id="alpha0926AppMenu"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q 'nlab-wordmark.svg' APP-Applications/pdf-studio/app-base-0.9.26.html
+          ! grep -q 'id="nlabDemoCorpusV2"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          ! grep -q 'id="loadDemoPreset"' APP-Applications/pdf-studio/app-base-0.9.26.html
+          grep -q '"test": "0.9.26"' APP-Applications/pdf-studio/versions.json
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('APP-Applications/pdf-studio/app-0.9.26.html').read_text()
+          m=re.search(r'<script>\s*(\(async\(\)=>\{.*?\}\)\(\);)\s*</script></body>',s,re.S)
+          assert m, 'loader 0.9.26 introuvable'
+          Path('/tmp/pdf-studio-0926-loader.js').write_text(m.group(1))
+          base=Path('APP-Applications/pdf-studio/app-base-0.9.26.html').read_text()
+          assert base.count('pageSelectCheck0926') >= 2
+          assert 'Page en cours' in base and 'Pages cochées' in base and 'Tout le document' in base
+          PY
+          node --check /tmp/pdf-studio-0926-loader.js
 
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
@@ -239,4 +276,38 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.25 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.26 + DEMO v2: OK'
+
+      - name: Install Playwright Chromium
+        shell: bash
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Browser contract PDF Studio 0.9.26
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from reportlab.pdfgen import canvas
+          from reportlab.lib.pagesizes import A4
+          p='/tmp/pdf-studio-ui-contract.pdf'
+          c=canvas.Canvas(p,pagesize=A4)
+          for i in range(1,13):
+              c.setFont('Helvetica',18)
+              c.drawString(72,780,f'nLab PDF Studio UI contract — page {i}/12')
+              c.setFont('Helvetica',11)
+              c.drawString(72,750,'Synthetic test document')
+              c.showPage()
+          c.save()
+          PY
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/nlab-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.26.html >/dev/null; then break; fi
+            sleep 1
+          done
+          PDF_STUDIO_URL=http://127.0.0.1:8765/APP-Applications/pdf-studio/app-0.9.26.html \
+          PDF_STUDIO_FIXTURE=/tmp/pdf-studio-ui-contract.pdf \
+          node tests/pdf-studio-0926-ui.mjs
