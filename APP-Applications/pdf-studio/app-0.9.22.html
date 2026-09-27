@@ -32,6 +32,7 @@
     const pageScope0921=await fetchText("./runtime0921/page-scope.js","Patch 0.9.22 portée pages");
     const archive0921=await fetchText("./runtime0921/archive-workspace.js","Patch 0.9.22 workspace ZIP");
     const routing0921=await fetchText("./runtime0921/output-routing.js","Patch 0.9.22 routage sortie");
+    const bilingual0922=await fetchText("./runtime0922/bilingual-translation.js","Patch 0.9.22 traduction bilingue BRK104");
     const closeScript="</scr"+"ipt>";
     const marker="})();\n"+closeScript+'\n<script id="alpha0910Runtime">';
     if(!h.includes(marker))throw new Error("Point d’injection interne 0.9.14 introuvable");
