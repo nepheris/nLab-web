@@ -1,0 +1,111 @@
+{
+  "referentiel": {
+    "identite": {
+      "referentiel_id": "REF_CIQUAL_IMPORT_CONFIG",
+      "code_normalise": "ciqual_import_config",
+      "libelle_humain": "Ciqual import config",
+      "version_schema": "3.0"
+    },
+    "configuration": {
+      "type_structure": "technique",
+      "sections_vides_conservees": false,
+      "collection_source": "donnees",
+      "racine_source": null,
+      "source_originale": "dev/migration/v72/sources_originales/data/referentiels/ciqual_import_config.json"
+    },
+    "listes_controlees": {
+      "locales": {},
+      "partagees": []
+    },
+    "metadonnees_source": {
+      "version": "1.0",
+      "source_fichier": "data/referentiels/ciqual_source.xlsx",
+      "colonnes_a_conserver": [
+        "code_ciqual",
+        "nom",
+        "groupe",
+        "sous_groupe",
+        "nom_scientifique",
+        "energie_kj",
+        "energie_kcal",
+        "eau_g",
+        "proteines_g",
+        "glucides_g",
+        "sucres_g",
+        "lipides_g",
+        "acides_gras_satures_g",
+        "fibres_g",
+        "sel_g",
+        "sodium_mg",
+        "alcool_g"
+      ],
+      "note": "Le classeur officiel Ciqual n’était pas présent dans les sources disponibles lors de la génération V70.0.",
+      "source": {
+        "path": "assets/documents/references/ciqual/table-ciqual-2025.xlsx"
+      }
+    },
+    "donnees": [
+      {
+        "identite": {
+          "configuration_id": "CFG_CIQUAL_IMPORT_0001",
+          "code_normalise": "import_ciqual",
+          "libelle_humain": "Configuration d’import Ciqual"
+        },
+        "nomenclature": {},
+        "classification": {},
+        "contenu": {},
+        "attributs_metier": {
+          "colonnes_a_conserver": [
+            "code_ciqual",
+            "nom",
+            "groupe",
+            "sous_groupe",
+            "nom_scientifique",
+            "energie_kj",
+            "energie_kcal",
+            "eau_g",
+            "proteines_g",
+            "glucides_g",
+            "sucres_g",
+            "lipides_g",
+            "acides_gras_satures_g",
+            "fibres_g",
+            "sel_g",
+            "sodium_mg",
+            "alcool_g"
+          ],
+          "note": "Le classeur officiel Ciqual n’était pas présent dans les sources disponibles lors de la génération V70.0."
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_fichier": "data/referentiels/ciqual_source.xlsx",
+          "source": {
+            "path": "assets/documents/references/ciqual/table-ciqual-2025.xlsx"
+          }
+        },
+        "illustrations": {},
+        "validation": {},
+        "publication": {},
+        "informations_internes": {
+          "version": "1.0",
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 5
+          }
+        }
+      }
+    ],
+    "historique_versions": [
+      {
+        "version": "72.0",
+        "date": "2026-08-04",
+        "evolution": "Migration initiale vers la structure canonique V72."
+      }
+    ]
+  },
+  "dictionnaire_donnees": {
+    "fichier": "data/dictionnaires_v72/ciqual_import_config_dictionnaire.json",
+    "version": "2.0"
+  }
+}

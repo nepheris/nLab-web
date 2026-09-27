@@ -1,0 +1,216 @@
+﻿CodeContinent;Continent;CodeZoneContinent;ZoneContinent;CodeZone;Zone;AlphaISO3;Note
+5300;Asie;5303;Asie méridionale;2;Afghanistan;AFG;
+5100;Afrique;5104;Afrique australe;202;Afrique du Sud;ZAF;
+5400;Europe;5403;Europe méridionale;3;Albanie;ALB;
+5100;Afrique;5103;Afrique septentrionale;4;Algérie;DZA;
+5400;Europe;5404;Europe occidentale;79;Allemagne;DEU;
+5100;Afrique;5102;Afrique centrale;7;Angola;AGO;
+5200;Amériques;5206;Caraïbes;8;Antigua-et-Barbuda;ATG;
+5200;Amériques;5206;Caraïbes;151;Antilles néerlandaises (ex);ANT;
+5300;Asie;5305;Asie occidentale;194;Arabie saoudite;SAU;Moyen Orient 
+5200;Amériques;5207;Amérique du Sud;9;Argentine;ARG;
+5300;Asie;5305;Asie occidentale;1;Arménie;ARM;Ex URSS
+5500;Océanie;5501;Australie et Nouvelle-Zélande;10;Australie;AUS;
+5400;Europe;5404;Europe occidentale;11;Autriche;AUT;
+5300;Asie;5305;Asie occidentale;52;Azerbaïdjan;AZE;Ex URSS
+5200;Amériques;5206;Caraïbes;12;Bahamas;BHS;
+5300;Asie;5305;Asie occidentale;13;Bahreïn;BHR;Moyen Orient  (uptade1)
+5300;Asie;5303;Asie méridionale;16;Bangladesh;BGD;
+5200;Amériques;5206;Caraïbes;14;Barbade;BRB;
+5400;Europe;5401;Europe orientale;57;Bélarus;BLR;Ex URSS
+5400;Europe;5404;Europe occidentale;255;Belgique;BEL;
+5400;Europe;5404;Europe occidentale;15;Belgique-Luxembourg;BEL;Affectation Be car pop Be 10Mhb  > pop Lux 4-6mhab
+5200;Amériques;5204;Amérique centrale;23;Belize;BLZ;
+5100;Afrique;5105;Afrique occidentale;53;Bénin;BEN;
+5200;Amériques;5207;Amérique septentrionale;17;Bermudes;BMU;Update1
+5300;Asie;5303;Asie méridionale;18;Bhoutan;BTN;Update1
+5200;Amériques;5207;Amérique du Sud;19;Bolivie (État plurinational de);BOL;
+5400;Europe;5403;Europe méridionale;80;Bosnie-Herzégovine;BIH;Yougoslavie
+5100;Afrique;5104;Afrique australe;20;Botswana;BWA;
+5200;Amériques;5207;Amérique du Sud;21;Brésil;BRA;
+5300;Asie;5304;Asie du Sud-Est;26;Brunéi Darussalam;BRN;Update1
+5400;Europe;5401;Europe orientale;27;Bulgarie;BGR;
+5100;Afrique;5105;Afrique occidentale;233;Burkina Faso;BFA;
+5100;Afrique;5101;Afrique orientale;29;Burundi;BDI;
+5100;Afrique;5105;Afrique occidentale;35;Cabo Verde;CPV;
+5300;Asie;5304;Asie du Sud-Est;115;Cambodge;KHM;
+5100;Afrique;5102;Afrique centrale;32;Cameroun;CMR;
+5200;Amériques;5203;Amérique septentrionale;33;Canada;CAN;
+5200;Amériques;5207;Amérique du Sud;40;Chili;CHL;
+5300;Asie;5302;Asie orientale;351;Chine;CHN;
+5300;Asie;5302;Asie orientale;96;Chine - RAS de Hong-Kong;HKG;
+5300;Asie;5302;Asie orientale;128;Chine - RAS de Macao;MAC;
+5300;Asie;5302;Asie orientale;357;Chine (exc. Hong-Kong et Macao);CHN;Uptade1 Aide Alim
+5300;Asie;5302;Asie orientale;41;Chine, continentale;CHN;Chine
+5300;Asie;5302;Asie orientale;214;Chine, Taiwan Province de;TWN;
+5300;Asie;5305;Asie occidentale;50;Chypre;CYP;Moyen Orient 
+5200;Amériques;5207;Amérique du Sud;44;Colombie;COL;
+5100;Afrique;5101;Afrique orientale;45;Comores;COM;
+5100;Afrique;5102;Afrique centrale;46;Congo;COG;
+5200;Amériques;5204;Amérique centrale;48;Costa Rica;CRI;
+5100;Afrique;5105;Afrique occidentale;107;Côte d'Ivoire;CIV;
+5400;Europe;5403;Europe méridionale;98;Croatie;HRV;Yougoslavie
+5200;Amériques;5206;Caraïbes;49;Cuba;CUB;
+5400;Europe;5402;Europe septentrionale;54;Danemark;DNK;
+5100;Afrique;5101;Afrique orientale;72;Djibouti;DJI;
+5200;Amériques;5206;Caraïbes;55;Dominique;DMA;
+5100;Afrique;5103;Afrique septentrionale;59;Égypte;EGY;
+5200;Amériques;5204;Amérique centrale;60;El Salvador;SLV;
+5300;Asie;5305;Asie occidentale;225;Émirats arabes unis;ARE;Moyen Orient 
+5200;Amériques;5207;Amérique du Sud;58;Équateur;ECU;
+5100;Afrique;5101;Afrique orientale;178;Érythrée;ERI;Update1
+5400;Europe;5403;Europe méridionale;203;Espagne;ESP;
+5400;Europe;5402;Europe septentrionale;63;Estonie;EST;Ex URSS
+5100;Afrique;5104;Afrique australe;209;Eswatini;SWZ;
+5200;Amériques;5203;Amérique septentrionale;231;États-Unis d'Amérique;USA;
+5100;Afrique;5101;Afrique orientale;238;Éthiopie;ETH;
+5100;Afrique;5101;Afrique orientale;62;Éthiopie RDP;ETH;Ethopie
+5400;Europe;5401;Europe orientale;185;Fédération de Russie;RUS;Ex URSS
+5500;Océanie;5502;Mélanésie;66;Fidji;FJI;
+5400;Europe;5402;Europe septentrionale;67;Finlande;FIN;
+5400;Europe;5404;Europe occidentale;68;France;FRA;
+5100;Afrique;5102;Afrique centrale;74;Gabon;GAB;
+5100;Afrique;5105;Afrique occidentale;75;Gambie;GMB;
+5300;Asie;5305;Asie occidentale;73;Géorgie;GEO;Ex URSS
+5100;Afrique;5105;Afrique occidentale;81;Ghana;GHA;
+5400;Europe;5403;Europe méridionale;84;Grèce;GRC;
+5200;Amériques;5206;Caraïbes;86;Grenade;GRD;
+5200;Amériques;5204;Amérique centrale;89;Guatemala;GTM;
+5100;Afrique;5105;Afrique occidentale;90;Guinée;GIN;
+5100;Afrique;5102;Afrique centrale;61;Guinée équatoriale;GNQ;Update1
+5100;Afrique;5105;Afrique occidentale;175;Guinée-Bissau;GNB;
+5200;Amériques;5207;Amérique du Sud;91;Guyana;GUY;
+5200;Amériques;5206;Caraïbes;93;Haïti;HTI;
+5200;Amériques;5204;Amérique centrale;95;Honduras;HND;
+5400;Europe;5401;Europe orientale;97;Hongrie;HUN;
+5500;Océanie;5502;Mélanésie;25;Îles Salomon;SLB;
+5300;Asie;5303;Asie méridionale;100;Inde;IND;
+5300;Asie;5304;Asie du Sud-Est;101;Indonésie;IDN;
+5300;Asie;5303;Asie méridionale;102;Iran (République islamique d');IRN;
+5300;Asie;5305;Asie occidentale;103;Iraq;IRQ;
+5400;Europe;5402;Europe septentrionale;104;Irlande;IRL;
+5400;Europe;5402;Europe septentrionale;99;Islande;ISL;
+5300;Asie;5305;Asie occidentale;105;Israël;ISR;Moyen Orient 
+5400;Europe;5403;Europe méridionale;106;Italie;ITA;
+5200;Amériques;5206;Caraïbes;109;Jamaïque;JAM;
+5300;Asie;5302;Asie orientale;110;Japon;JPN;
+5300;Asie;5305;Asie occidentale;112;Jordanie;JOR;Moyen Orient 
+5300;Asie;5301;Asie centrale;108;Kazakhstan;KAZ;Ex URSS (Biélorussie)
+5100;Afrique;5101;Afrique orientale;114;Kenya;KEN;
+5300;Asie;5301;Asie centrale;113;Kirghizistan;KGZ;Ex URSS
+5500;Océanie;5503;Micronésie;83;Kiribati;KIR;
+5300;Asie;5305;Asie occidentale;118;Koweït;KWT;Moyen Orient 
+5100;Afrique;5104;Afrique australe;122;Lesotho;LSO;
+5400;Europe;5402;Europe septentrionale;119;Lettonie;LVA;Ex URSS
+5300;Asie;5305;Asie occidentale;121;Liban;LBN;Moyen Orient 
+5100;Afrique;5105;Afrique occidentale;123;Libéria;LBR;
+5100;Afrique;5103;Afrique septentrionale;124;Libye;LBY;
+5400;Europe;5402;Europe septentrionale;126;Lituanie;LTU;Ex URSS
+5400;Europe;5404;Europe occidentale;256;Luxembourg;LUX;
+5400;Europe;5403;Europe méridionale;154;Macédoine du Nord;MKD;Yougoslavie
+5100;Afrique;5101;Afrique orientale;129;Madagascar;MDG;
+5300;Asie;5304;Asie du Sud-Est;131;Malaisie;MYS;
+5100;Afrique;5101;Afrique orientale;130;Malawi;MWI;
+5300;Asie;5303;Asie méridionale;132;Maldives;MDV;
+5100;Afrique;5105;Afrique occidentale;133;Mali;MLI;
+5400;Europe;5403;Europe méridionale;134;Malte;MLT;
+5100;Afrique;5103;Afrique septentrionale;143;Maroc;MAR;
+5100;Afrique;5101;Afrique orientale;137;Maurice;MUS;
+5100;Afrique;5105;Afrique occidentale;136;Mauritanie;MRT;
+5200;Amériques;5204;Amérique centrale;138;Mexique;MEX;
+5300;Asie;5304;Asie du Sud-Est;145;Micronésie (États fédérés de);FSM;Update1
+5300;Asie;5302;Asie orientale;141;Mongolie;MNG;
+5400;Europe;5403;Europe méridionale;273;Monténégro;MNE;Yougoslavie
+5100;Afrique;5101;Afrique orientale;144;Mozambique;MOZ;
+5300;Asie;5304;Asie du Sud-Est;28;Myanmar;MMR;
+5100;Afrique;5104;Afrique australe;147;Namibie;NAM;
+5300;Asie;5303;Asie méridionale;149;Népal;NPL;
+5200;Amériques;5204;Amérique centrale;157;Nicaragua;NIC;
+5100;Afrique;5105;Afrique occidentale;158;Niger;NER;
+5100;Afrique;5105;Afrique occidentale;159;Nigéria;NGA;
+5400;Europe;5402;Europe septentrionale;162;Norvège;NOR;
+5500;Océanie;5502;Mélanésie;153;Nouvelle-Calédonie;NCL;
+5500;Océanie;5501;Australie et Nouvelle-Zélande;156;Nouvelle-Zélande;NZL;
+5300;Asie;5305;Asie occidentale;221;Oman;OMN;Moyen Orient 
+5100;Afrique;5101;Afrique orientale;226;Ouganda;UGA;
+5300;Asie;5301;Asie centrale;235;Ouzbékistan;UZB;Ex URSS
+5300;Asie;5303;Asie méridionale;165;Pakistan;PAK;
+5300;Asie;5305;Asie occidentale;299;Palestine;PSE;Update2
+5300;Asie;5305;Asie occidentale;76;Palestine;PSE;Uptade1 Aide Alim
+5200;Amériques;5204;Amérique centrale;166;Panama;PAN;
+5500;Océanie;5502;Mélanésie;168;Papouasie-Nouvelle-Guinée;PNG;
+5200;Amériques;5207;Amérique du Sud;169;Paraguay;PRY;
+5400;Europe;5404;Europe occidentale;150;Pays-Bas;NLD;
+5200;Amériques;5207;Amérique du Sud;170;Pérou;PER;
+5300;Asie;5304;Asie du Sud-Est;171;Philippines;PHL;
+5400;Europe;5401;Europe orientale;173;Pologne;POL;
+5500;Océanie;5504;Polynésie;70;Polynésie française;PYF;
+5200;Amériques;5206;Caraïbes;177;Porto Rico;PRI;Update1
+5400;Europe;5403;Europe méridionale;174;Portugal;PRT;
+5300;Asie;5305;Asie occidentale;179;Qatar;QAT;Moyen Orient  (uptade1)
+5300;Asie;5305;Asie occidentale;212;République arabe syrienne;SYR;Moyen Orient 
+5100;Afrique;5102;Afrique centrale;37;République centrafricaine;CAF;
+5300;Asie;5302;Asie orientale;117;République de Corée;KOR;
+5400;Europe;5401;Europe orientale;146;République de Moldova;MDA;Ex URSS
+5100;Afrique;5102;Afrique centrale;250;République démocratique du Congo;COD;
+5300;Asie;5304;Asie du Sud-Est;120;République démocratique populaire lao;LAO;
+5200;Amériques;5206;Caraïbes;56;République dominicaine;DOM;
+5300;Asie;5302;Asie orientale;116;République populaire démocratique de Corée;PRK;
+5100;Afrique;5101;Afrique orientale;215;République-Unie de Tanzanie;TZA;
+5400;Europe;5403;Europe méridionale;248;RFS de Yougoslavie;MNE;Yougoslavie : Monténégro 6Mhab  - Serbie 9Mhab- Kosovo - Macédoine 2Mhab - Bosnie-Herzégovine  3,8Mhab - Croatie 4hba
+5400;Europe;5401;Europe orientale;183;Roumanie;ROU;
+5400;Europe;5402;Europe septentrionale;229;Royaume-Uni de Grande-Bretagne et d'Irlande du Nord;GBR;
+5100;Afrique;5101;Afrique orientale;184;Rwanda;RWA;
+5200;Amériques;5206;Caraïbes;189;Sainte-Lucie;LCA;
+5200;Amériques;5206;Caraïbes;188;Saint-Kitts-et-Nevis;KNA;
+5200;Amériques;5206;Caraïbes;191;Saint-Vincent-et-les Grenadines;VCT;
+5500;Océanie;5504;Polynésie;244;Samoa;WSM;
+5100;Afrique;5102;Afrique centrale;193;Sao Tomé-et-Principe;STP;
+5100;Afrique;5105;Afrique occidentale;195;Sénégal;SEN;
+5400;Europe;5403;Europe méridionale;272;Serbie;SRB;Yougoslavie
+5400;Europe;5403;Europe méridionale;186;Serbie-et-Monténégro;SCG;SCG : Mont 6mhab - Serbie 8,8-9 Mhab -  Yougoslavie
+5100;Afrique;5101;Afrique orientale;196;Seychelles;SYC;
+5100;Afrique;5105;Afrique occidentale;197;Sierra Leone;SLE;
+5300;Asie;5304;Asie du Sud-Est;200;Singapour;SGP;Update1
+5400;Europe;5401;Europe orientale;199;Slovaquie;SVK;
+5400;Europe;5403;Europe méridionale;198;Slovénie;SVN;
+5100;Afrique;5101;Afrique orientale;201;Somalie;SOM;Update1
+5100;Afrique;5103;Afrique septentrionale;206;Soudan;SDN;Soudan ex
+5100;Afrique;5101;Afrique orientale;277;Soudan du Sud;SSD;Update1
+5100;Afrique;5103;Afrique septentrionale;276;Soudan ex;SDN;Soudan ex
+5300;Asie;5303;Asie méridionale;38;Sri Lanka;LKA;
+5400;Europe;5402;Europe septentrionale;210;Suède;SWE;
+5400;Europe;5404;Europe occidentale;211;Suisse;CHE;
+5200;Amériques;5207;Amérique du Sud;207;Suriname;SUR;
+5300;Asie;5301;Asie centrale;208;Tadjikistan;TJK;Ex URSS
+5100;Afrique;5102;Afrique centrale;39;Tchad;TCD;
+5400;Europe;5401;Europe orientale;51;Tchécoslovaquie;CZE;Affectation Tchéquie  :  Pop2020   TCH 10 Mhab. / Slov 5 Mhab.
+5400;Europe;5401;Europe orientale;167;Tchéquie;CZE;
+5300;Asie;5304;Asie du Sud-Est;216;Thaïlande;THA;
+5300;Asie;5304;Asie du Sud-Est;176;Timor-Leste;TLS;
+5100;Afrique;5105;Afrique occidentale;217;Togo;TGO;
+5500;Océanie;5504;Polynésie;219;Tonga;TON;Update1
+5200;Amériques;5206;Caraïbes;220;Trinité-et-Tobago;TTO;
+5100;Afrique;5103;Afrique septentrionale;222;Tunisie;TUN;
+5300;Asie;5301;Asie centrale;213;Turkménistan;TKM;Ex URSS
+5300;Asie;5305;Asie occidentale;223;Turquie;TUR;
+5400;Europe;5401;Europe orientale;230;Ukraine;UKR;Ex URSS
+5400;Europe;5401;Europe orientale;228;URSS;RUS;Russie
+5200;Amériques;5207;Amérique du Sud;234;Uruguay;URY;
+5500;Océanie;5502;Mélanésie;155;Vanuatu;VUT;
+5200;Amériques;5207;Amérique du Sud;236;Venezuela (République bolivarienne du);VEN;
+5300;Asie;5304;Asie du Sud-Est;237;Viet Nam;VNM;
+5300;Asie;5305;Asie occidentale;249;Yémen;YEM;Moyen Orient 
+5100;Afrique;5101;Afrique orientale;251;Zambie;ZMB;
+5100;Afrique;5101;Afrique orientale;181;Zimbabwe;ZWE;
+5200;Amériques;5203;Amérique septentrionale;231;Anguilla;AIA;
+5400;Europe;5403;Europe méridionale;203;Andorra;AND;
+5500;Océanie;5501;Australie et Nouvelle-Zélande;10;Cook Islands;COK;
+5400;Europe;5404;Europe occidentale;68;Monaco;MCO;
+5500;Océanie;5503;Micronésie;83;Iles Marshall;MHL;
+5500;Océanie;5504;Polynésie;219;Niué;NIU;
+5500;Océanie;5503;Micronésie;83;Nauru;NRU;
+5500;Océanie;5503;Micronésie;83;République des Palaos;PLW;
+5400;Europe;5403;Europe méridionale;106;San Marino;SMR;
+5500;Océanie;5504;Polynésie;219;Tuvalu;TUV;
+

@@ -1,0 +1,241 @@
+﻿CodeContinentFAO;ContinentFr;CodeZoneContinentFAO;ZoneContinentFrFAO;CodeZoneFAO;ZoneFr;ZoneEn;AlphaISO3;IncomeGroupWorldBank;Note
+5300;Asie;5303;Asie méridionale;2;Afghanistan;Afghanistan;AFG;Low income;
+5400;Europe;5403;Europe  Centrale;3;Albanie;Albania;ALB;Upper middle income;
+5100;Afrique;5103;Afrique du Nord;4;Algérie;Algeria;DZA;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5400;Europe;5404;Europe occidentale;79;Allemagne;Germany;DEU;High income;
+5100;Afrique;5102;Afrique Australe;7;Angola;Angola;AGO;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5206;Caraïbes;8;Antigua-et-Barbuda;Antigua and Barbuda;ATG;High income;
+5400;Europe;5403;Europe occidentale;203;Andorra;Andorra;AND;High income;
+5300;Asie;5305;Asie occidentale;194;Arabie saoudite;Saudi Arabia;SAU;High income;Moyen Orient 
+5300;Asie;5305;Asie occidentale;225;Émirats arabes unis;United Arab Emirates;ARE;High income;Moyen Orient 
+5200;Amérique;5207;Amérique du Sud;9;Argentine;Argentina;ARG;Upper middle income;
+5300;Asie;5305;Asie occidentale;1;Arménie;Armenia;ARM;Upper middle income;Ex URSS
+5500;Océanie;5501;Australie et Nouvelle-Zélande;10;Australie;Australia;AUS;High income;
+5400;Europe;5404;Europe occidentale;11;Autriche;Austria;AUT;High income;
+5300;Asie;5305;Asie occidentale;52;Azerbaïdjan;Azerbaijan;AZE;Upper middle income;Ex URSS
+5200;Amérique;5206;Caraïbes;12;Bahamas;Bahamas, The;BHS;High income;
+5300;Asie;5305;Asie occidentale;13;Bahreïn;Bahrain;BHR;High income;Moyen Orient  (uptade1)
+5300;Asie;5303;Asie méridionale;16;Bangladesh;Bangladesh;BGD;Lower middle income;
+5100;Afrique;5101;Afrique Centrale;29;Burundi;Burundi;BDI;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5206;Caraïbes;14;Barbade;Barbados;BRB;High income;
+5400;Europe;5404;Europe occidentale;255;Belgique;Belgium;BEL;High income;
+5400;Europe;5404;Europe occidentale;15;Belgique-Luxembourg;Belgium;BEL;High income;Affectation Be car pop Be 10Mhb  > pop Lux 4-6mhab
+5400;Europe;5401;Europe de l'Est;57;Bélarus;Belarus;BLR;Upper middle income;Ex URSS
+5100;Afrique;5105;Afrique de l'Ouest;53;Bénin;Benin;BEN;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5105;Afrique de l'Ouest;233;Burkina Faso;Burkina Faso;BFA;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5204;Amérique centrale;23;Belize;Belize;BLZ;Upper middle income;
+5400;Europe;5401;Europe  Centrale;27;Bulgarie;Bulgaria;BGR;Upper middle income;
+5200;Amérique;5203;Amérique du Nord;17;Bermudes;Bermuda;BMU;High income;Update1
+5300;Asie;5303;Asie méridionale;18;Bhoutan;Bhutan;BTN;Lower middle income;Update1
+5400;Europe;5403;Europe  Centrale;80;Bosnie-Herzégovine;Bosnia and Herzegovina;BIH;Upper middle income;Yougoslavie
+5200;Amérique;5207;Amérique du Sud;19;Bolivie (État plurinational de);Bolivia;BOL;Lower middle income;
+5100;Afrique;5104;Afrique Australe;20;Botswana;Botswana;BWA;Upper middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5207;Amérique du Sud;21;Brésil;Brazil;BRA;Upper middle income;
+5300;Asie;5304;Asie du Sud-Est;26;Brunéi Darussalam;Brunei Darussalam;BRN;High income;Update1
+5100;Afrique;5105;Afrique de l'Ouest;35;Cabo Verde;Cabo Verde;CPV;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5304;Asie du Sud-Est;115;Cambodge;Cambodia;KHM;Lower middle income;
+5100;Afrique;5102;Afrique Centrale;37;République centrafricaine;Central African Republic;CAF;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5102;Afrique Centrale;32;Cameroun;Cameroon;CMR;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5203;Amérique du Nord;33;Canada;Canada;CAN;High income;
+5200;Amérique;5207;Amérique du Sud;40;Chili;Chile;CHL;High income;
+5400;Europe;5404;Europe occidentale;211;Suisse;Switzerland;CHE;High income;
+5300;Asie;5302;Asie orientale;351;Chine;China;CHN;Upper middle income;
+5300;Asie;5302;Asie orientale;357;Chine (exc. Hong-Kong et Macao);China;CHN;Upper middle income;Uptade1 Aide Alim
+5300;Asie;5302;Asie orientale;41;Chine, continentale;China;CHN;Upper middle income;Chine
+5300;Asie;5302;Asie orientale;96;Chine - RAS de Hong-Kong;Hong Kong SAR, China;HKG;High income;
+5300;Asie;5302;Asie orientale;128;Chine - RAS de Macao;Macao SAR, China;MAC;High income;
+5100;Afrique;5105;Afrique de l'Ouest;107;Côte d'Ivoire;Côte d'Ivoire;CIV;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5102;Afrique Centrale;250;République démocratique du Congo;Congo, Dem. Rep.;COD;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5305;Asie occidentale;50;Chypre;Cyprus;CYP;High income;Moyen Orient 
+5100;Afrique;5102;Afrique Centrale;46;Congo;Congo, Rep.;COG;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5207;Amérique du Sud;44;Colombie;Colombia;COL;Upper middle income;
+5100;Afrique;5101;Afrique orientale;45;Comores;Comoros;COM;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5204;Amérique centrale;48;Costa Rica;Costa Rica;CRI;Upper middle income;
+5400;Europe;5403;Europe  Centrale;98;Croatie;Croatia;HRV;High income;Yougoslavie
+5200;Amérique;5206;Caraïbes;49;Cuba;Cuba;CUB;Upper middle income;
+5400;Europe;5402;Europe occidentale;54;Danemark;Denmark;DNK;High income;
+5100;Afrique;5101;Afrique orientale;72;Djibouti;Djibouti;DJI;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5206;Caraïbes;55;Dominique;Dominica;DMA;Upper middle income;
+5400;Europe;5401;Europe  Centrale;51;Tchécoslovaquie;Czech Republic;CZE;High income;Affectation Tchéquie  :  Pop2020   TCH 10 Mhab. / Slov 5 Mhab.
+5400;Europe;5401;Europe  Centrale;167;Tchéquie;Czech Republic;CZE;High income;
+5100;Afrique;5103;Afrique du Nord;59;Égypte;Egypt, Arab Rep.;EGY;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5204;Amérique centrale;60;El Salvador;El Salvador;SLV;Lower middle income;
+5200;Amérique;5207;Amérique du Sud;58;Équateur;Ecuador;ECU;Upper middle income;
+5100;Afrique;5101;Afrique orientale;178;Érythrée;Eritrea;ERI;Low income;Update1 / https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5206;Caraïbes;56;République dominicaine;Dominican Republic;DOM;Upper middle income;
+5400;Europe;5403;Europe occidentale;203;Espagne;Spain;ESP;High income;
+5400;Europe;5402;Europe  Centrale;63;Estonie;Estonia;EST;High income;Ex URSS
+5100;Afrique;5101;Afrique orientale;238;Éthiopie;Ethiopia;ETH;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5101;Afrique orientale;62;Éthiopie RDP;Ethiopia;ETH;Low income;Ethopie
+5400;Europe;5401;Europe de l'Est;185;Fédération de Russie;Russian Federation;RUS;Upper middle income;Ex URSS
+5400;Europe;5401;Europe de l'Est;228;URSS;Russian Federation;RUS;Upper middle income;Russie
+5500;Océanie;5502;Mélanésie;66;Fidji;Fiji;FJI;Upper middle income;
+5400;Europe;5402;Europe occidentale;67;Finlande;Finland;FIN;High income;
+5400;Europe;5404;Europe occidentale;68;France;France;FRA;High income;
+5100;Afrique;5102;Afrique Centrale;74;Gabon;Gabon;GAB;Upper middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5105;Afrique de l'Ouest;75;Gambie;Gambia, The;GMB;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5305;Asie occidentale;73;Géorgie;Georgia;GEO;Upper middle income;Ex URSS
+5100;Afrique;5105;Afrique de l'Ouest;81;Ghana;Ghana;GHA;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5400;Europe;5403;Europe occidentale;84;Grèce;Greece;GRC;High income;
+5200;Amérique;5206;Caraïbes;86;Grenade;Grenada;GRD;Upper middle income;
+5200;Amérique;5204;Amérique centrale;89;Guatemala;Guatemala;GTM;Upper middle income;
+5100;Afrique;5105;Afrique de l'Ouest;90;Guinée;Guinea;GIN;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5102;Afrique Centrale;61;Guinée équatoriale;Equatorial Guinea;GNQ;Upper middle income;Update1
+5100;Afrique;5105;Afrique de l'Ouest;175;Guinée-Bissau;Guinea-Bissau;GNB;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5304;Asie du Sud-Est;145;Micronésie (États fédérés de);Micronesia, Fed. Sts.;FSM;Lower middle income;Update1
+5200;Amérique;5207;Amérique du Sud;91;Guyana;Guyana;GUY;Upper middle income;
+5200;Amérique;5206;Caraïbes;93;Haïti;Haiti;HTI;Lower middle income;
+5400;Europe;5402;Europe occidentale;229;Royaume-Uni de Grande-Bretagne et d'Irlande du Nord;United Kingdom;GBR;High income;
+5200;Amérique;5204;Amérique centrale;95;Honduras;Honduras;HND;Lower middle income;
+5400;Europe;5401;Europe occidentale;97;Hongrie;Hungary;HUN;High income;
+5500;Océanie;5502;Mélanésie;25;Îles Salomon;Solomon Islands;SLB;Lower middle income;
+5300;Asie;5303;Asie méridionale;100;Inde;India;IND;Lower middle income;
+5300;Asie;5304;Asie du Sud-Est;101;Indonésie;Indonesia;IDN;Lower middle income;
+5300;Asie;5303;Asie méridionale;102;Iran (République islamique d');Iran, Islamic Rep.;IRN;Lower middle income;
+5300;Asie;5305;Asie occidentale;103;Iraq;Iraq;IRQ;Upper middle income;Moyen Orient 
+5400;Europe;5402;Europe occidentale;104;Irlande;Ireland;IRL;High income;
+5400;Europe;5402;Europe occidentale;99;Islande;Iceland;ISL;High income;
+5300;Asie;5305;Asie occidentale;105;Israël;Israel;ISR;High income;Moyen Orient 
+5400;Europe;5403;Europe occidentale;106;Italie;Italy;ITA;High income;
+5200;Amérique;5206;Caraïbes;109;Jamaïque;Jamaica;JAM;Upper middle income;
+5300;Asie;5302;Asie orientale;110;Japon;Japan;JPN;High income;
+5300;Asie;5305;Asie occidentale;112;Jordanie;Jordan;JOR;Upper middle income;Moyen Orient 
+5300;Asie;5301;Asie centrale;108;Kazakhstan;Kazakhstan;KAZ;Upper middle income;Ex URSS (Biélorussie)
+5100;Afrique;5101;Afrique orientale;114;Kenya;Kenya;KEN;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5301;Asie centrale;113;Kirghizistan;Kyrgyz Republic;KGZ;Lower middle income;Ex URSS
+5500;Océanie;5503;Micronésie;83;Kiribati;Kiribati;KIR;Lower middle income;
+5300;Asie;5305;Asie occidentale;118;Koweït;Kuwait;KWT;High income;Moyen Orient 
+5100;Afrique;5104;Afrique Australe;122;Lesotho;Lesotho;LSO;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5400;Europe;5402;Europe  Centrale;119;Lettonie;Latvia;LVA;High income;Ex URSS
+5300;Asie;5305;Asie occidentale;121;Liban;Lebanon;LBN;Lower middle income;Moyen Orient 
+5100;Afrique;5105;Afrique de l'Ouest;123;Libéria;Liberia;LBR;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5103;Afrique du Nord;124;Libye;Libya;LBY;Upper middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5400;Europe;5402;Europe  Centrale;126;Lituanie;Lithuania;LTU;High income;Ex URSS
+5400;Europe;5404;Europe occidentale;256;Luxembourg;Luxembourg;LUX;High income;
+5400;Europe;5403;Europe  Centrale;154;Macédoine du Nord;North Macedonia;MKD;Upper middle income;Yougoslavie
+5100;Afrique;5101;Afrique orientale;129;Madagascar;Madagascar;MDG;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5304;Asie du Sud-Est;131;Malaisie;Malaysia;MYS;Upper middle income;
+5100;Afrique;5101;Afrique Australe;130;Malawi;Malawi;MWI;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5303;Asie méridionale;132;Maldives;Maldives;MDV;Upper middle income;
+5100;Afrique;5105;Afrique de l'Ouest;133;Mali;Mali;MLI;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5400;Europe;5403;Europe occidentale;134;Malte;Malta;MLT;High income;
+5100;Afrique;5103;Afrique du Nord;143;Maroc;Morocco;MAR;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5101;Afrique orientale;137;Maurice;Mauritius;MUS;Upper middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5105;Afrique du Nord;136;Mauritanie;Mauritania;MRT;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5204;Amérique centrale;138;Mexique;Mexico;MEX;Upper middle income;
+5300;Asie;5302;Asie orientale;141;Mongolie;Mongolia;MNG;Lower middle income;
+5400;Europe;5403;Europe  Centrale;273;Monténégro;Montenegro;MNE;Upper middle income;Yougoslavie
+5400;Europe;5403;Europe  Centrale;248;RFS de Yougoslavie;Montenegro;MNE;Upper middle income;Yougoslavie : Monténégro 6Mhab  - Serbie 9Mhab- Kosovo - Macédoine 2Mhab - Bosnie-Herzégovine  3,8Mhab - Croatie 4hba
+5100;Afrique;5101;Afrique Australe;144;Mozambique;Mozambique;MOZ;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5304;Asie du Sud-Est;28;Myanmar;Myanmar;MMR;Lower middle income;
+5100;Afrique;5104;Afrique Australe;147;Namibie;Namibia;NAM;Upper middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5206;Caraïbes;188;Saint-Kitts-et-Nevis;St. Kitts and Nevis;KNA;High income;
+5300;Asie;5303;Asie méridionale;149;Népal;Nepal;NPL;Lower middle income;
+5300;Asie;5302;Asie orientale;117;République de Corée;Korea, Rep.;KOR;High income;
+5200;Amérique;5204;Amérique centrale;157;Nicaragua;Nicaragua;NIC;Lower middle income;
+5100;Afrique;5105;Afrique de l'Ouest;158;Niger;Niger;NER;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5105;Afrique de l'Ouest;159;Nigéria;Nigeria;NGA;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5304;Asie du Sud-Est;120;République démocratique populaire lao;Lao PDR;LAO;Lower middle income;
+5400;Europe;5402;Europe occidentale;162;Norvège;Norway;NOR;High income;
+5500;Océanie;5502;Mélanésie;153;Nouvelle-Calédonie;New Caledonia;NCL;High income;
+5500;Océanie;5501;Australie et Nouvelle-Zélande;156;Nouvelle-Zélande;New Zealand;NZL;High income;
+5300;Asie;5305;Asie occidentale;221;Oman;Oman;OMN;High income;Moyen Orient 
+5200;Amérique;5206;Caraïbes;189;Sainte-Lucie;St. Lucia;LCA;Upper middle income;
+5300;Asie;5303;Asie méridionale;165;Pakistan;Pakistan;PAK;Lower middle income;
+5300;Asie;5305;Asie occidentale;299;Palestine;West Bank and Gaza;PSE;Lower middle income;Update2
+5300;Asie;5305;Asie occidentale;76;Palestine;West Bank and Gaza;PSE;Lower middle income;Uptade1 Aide Alim
+5300;Asie;5303;Asie méridionale;38;Sri Lanka;Sri Lanka;LKA;Lower middle income;
+5200;Amérique;5204;Amérique centrale;166;Panama;Panama;PAN;High income;
+5500;Océanie;5502;Mélanésie;168;Papouasie-Nouvelle-Guinée;Papua New Guinea;PNG;Lower middle income;
+5200;Amérique;5207;Amérique du Sud;169;Paraguay;Paraguay;PRY;Upper middle income;
+5400;Europe;5404;Europe occidentale;150;Pays-Bas;Netherlands;NLD;High income;
+5200;Amérique;5207;Amérique du Sud;170;Pérou;Peru;PER;Upper middle income;
+5300;Asie;5304;Asie du Sud-Est;171;Philippines;Philippines;PHL;Lower middle income;
+5400;Europe;5401;Europe  Centrale;173;Pologne;Poland;POL;High income;
+5500;Océanie;5504;Polynésie;70;Polynésie française;French Polynesia;PYF;High income;
+5200;Amérique;5206;Caraïbes;177;Porto Rico;Puerto Rico;PRI;High income;Update1
+5400;Europe;5403;Europe occidentale;174;Portugal;Portugal;PRT;High income;
+5300;Asie;5305;Asie occidentale;179;Qatar;Qatar;QAT;High income;Moyen Orient  (uptade1)
+5400;Europe;5404;Europe occidentale;68;Monaco;Monaco;MCO;High income;
+5400;Europe;5401;Europe  Centrale;146;République de Moldova;Moldova;MDA;Upper middle income;Ex URSS
+5500;Océanie;5503;Micronésie;83;Iles Marshall;Marshall Islands;MHL;Upper middle income;
+5300;Asie;5302;Asie orientale;116;République populaire démocratique de Corée;Korea, Dem. People's Rep.;PRK;Low income;
+5400;Europe;5401;Europe  Centrale;183;Roumanie;Romania;ROU;High income;
+5100;Afrique;5101;Afrique orientale;184;Rwanda;Rwanda;RWA;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5105;Afrique de l'Ouest;195;Sénégal;Senegal;SEN;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5400;Europe;5403;Europe  Centrale;272;Serbie;Serbia;SRB;Upper middle income;Yougoslavie
+5100;Afrique;5105;Afrique de l'Ouest;197;Sierra Leone;Sierra Leone;SLE;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5304;Asie du Sud-Est;200;Singapour;Singapore;SGP;High income;Update1
+5100;Afrique;5101;Afrique orientale;201;Somalie;Somalia;SOM;Low income;Update1
+5100;Afrique;5103;Afrique du Nord;206;Soudan;Sudan;SDN;Low income;Soudan ex
+5100;Afrique;5103;Afrique du Nord;276;Soudan ex;Sudan;SDN;Low income;Soudan ex
+5100;Afrique;5101;Afrique orientale;277;Soudan du Sud;South Sudan;SSD;Low income;Update1
+5500;Océanie;5503;Micronésie;83;Nauru;Nauru;NRU;High income;
+5500;Océanie;5503;Micronésie;83;République des Palaos;Palau;PLW;Upper middle income;
+5400;Europe;5403;Europe occidentale;106;San Marino;San Marino;SMR;High income;
+5100;Afrique;5102;Afrique Centrale;193;Sao Tomé-et-Principe;São Tomé and Principe;STP;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5207;Amérique du Sud;207;Suriname;Suriname;SUR;Upper middle income;
+5400;Europe;5401;Europe  Centrale;199;Slovaquie;Slovak Republic;SVK;High income;
+5400;Europe;5403;Europe  Centrale;198;Slovénie;Slovenia;SVN;High income;
+5400;Europe;5402;Europe occidentale;210;Suède;Sweden;SWE;High income;
+5100;Afrique;5104;Afrique Australe;209;Eswatini;Eswatini;SWZ;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5101;Afrique orientale;196;Seychelles;Seychelles;SYC;High income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5305;Asie occidentale;212;République arabe syrienne;Syrian Arab Republic;SYR;Low income;Moyen Orient 
+5100;Afrique;5102;Afrique Centrale;39;Tchad;Chad;TCD;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5105;Afrique de l'Ouest;217;Togo;Togo;TGO;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5304;Asie du Sud-Est;216;Thaïlande;Thailand;THA;Upper middle income;
+5300;Asie;5301;Asie centrale;208;Tadjikistan;Tajikistan;TJK;Lower middle income;Ex URSS
+5300;Asie;5301;Asie centrale;213;Turkménistan;Turkmenistan;TKM;Upper middle income;Ex URSS
+5300;Asie;5304;Asie du Sud-Est;176;Timor-Leste;Timor-Leste;TLS;Lower middle income;
+5500;Océanie;5504;Polynésie;219;Tonga;Tonga;TON;Upper middle income;Update1
+5200;Amérique;5206;Caraïbes;220;Trinité-et-Tobago;Trinidad and Tobago;TTO;High income;
+5100;Afrique;5103;Afrique du Nord;222;Tunisie;Tunisia;TUN;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5300;Asie;5305;Asie occidentale;223;Turquie;Türkiye;TUR;Upper middle income;
+5500;Océanie;5504;Polynésie;219;Tuvalu;Tuvalu;TUV;Upper middle income;
+5100;Afrique;5101;Afrique orientale;215;République-Unie de Tanzanie;Tanzania;TZA;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5101;Afrique orientale;226;Ouganda;Uganda;UGA;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5400;Europe;5401;Europe  Centrale;230;Ukraine;Ukraine;UKR;Lower middle income;Ex URSS
+5200;Amérique;5207;Amérique du Sud;234;Uruguay;Uruguay;URY;High income;
+5200;Amérique;5203;Amérique du Nord;231;États-Unis d'Amérique;United States;USA;High income;
+5300;Asie;5301;Asie centrale;235;Ouzbékistan;Uzbekistan;UZB;Lower middle income;Ex URSS
+5200;Amérique;5206;Caraïbes;191;Saint-Vincent-et-les Grenadines;St. Vincent and the Grenadines;VCT;Upper middle income;
+5200;Amérique;5207;Amérique du Sud;236;Venezuela (République bolivarienne du);Venezuela, RB;VEN;Upper middle income;
+5300;Asie;5304;Asie du Sud-Est;237;Viet Nam;Vietnam;VNM;Lower middle income;
+5500;Océanie;5502;Mélanésie;155;Vanuatu;Vanuatu;VUT;Lower middle income;
+5500;Océanie;5504;Polynésie;244;Samoa;Samoa;WSM;Lower middle income;
+5300;Asie;5305;Asie occidentale;249;Yémen;Yemen, Rep.;YEM;Low income;Moyen Orient 
+5100;Afrique;5104;Afrique Australe;202;Afrique du Sud;South Africa;ZAF;Upper middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5101;Afrique Australe;251;Zambie;Zambia;ZMB;Low income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5100;Afrique;5101;Afrique Australe;181;Zimbabwe;Zimbabwe;ZWE;Lower middle income;https://www.oecd.org/swac/maps/48-six-regions-African-Union.pdf
+5200;Amérique;5206;Caraïbes;;Anguilla;Anguilla;AIA;;Anguilla, territoire britannique d'outre-mer situé dans les Caraïbes orientales
+5400;Europe;5403;Europe occidentale;6;Andorra;Andorra;AND;High income;Andorre est une petite principauté indépendante située entre la France et l'Espagne, dans les Pyrénées
+5500;Océanie;5501;Australie et Nouvelle-Zélande;47;Cook Islands;Cook Islands;COK;High income;Les Îles Cook sont un État du Pacifique Sud, politiquement lié à la Nouvelle-Zélande. 
+5500;Océanie;5503;Micronésie;127;Iles Marshall;Marshall Islands;MHL;Upper middle income;Les Îles Marshall, en forme longue la république des Îles Marshall, sont un État de Micronésie, en Océanie
+5500;Océanie;5504;Polynésie;160;Niué;Niue;NIU;;Niué ou Niue /nju.e/ ou Nioué est un pays insulaire de l'océan Pacifique sud, en Polynésie occidentale. Il est situé à 2 400 km au nord-est de la Nouvelle-Zélande, au centre d'un triangle formé par les îles Tonga, Samoa et Cook.  Devise : Dollar néo-zélandais
+5500;Océanie;5503;Micronésie;148;Nauru;Nauru;NRU;High income;Nauru : la république de Nauru est un État insulaire d'Océanie situé en Micronésie
+5500;Océanie;5503;Micronésie;180;République des Palaos;Palau;PLW;Upper middle income;Les Palaos sont un archipel de plus de 500 îles situé en Micronésie, dans l'ouest de l'océan Pacifique 
+5400;Europe;5403;Europe occidentale;;San Marino;Republic of San Marino;SMR;High income;Saint-Marin est un micro-État montagneux enclavé dans le centre-nord de l'Italie
+5500;Océanie;5504;Polynésie;227;Tuvalu;Tuvalu;TUV;Upper middle income;Les Tuvalu sont un État et un archipel polynésien Monaie : Australian dollar
+5500;Océanie;5504;Polynésie;5;American Samoa;American Samoa;ASM;Upper middle income;World Bank data :   USA Les Samoa américaines sont un territoire non incorporé et non organisé des États-Unis situé en Océanie. Les Samoa américaines sont la partie américaine de l'archipel des Samoa, divisé le 2 décembre 1899
+5200;Amérique;5207;Amérique du Sud;;Aruba;Aruba;ABW;High income;World Bank data  Aruban florin  Aruba est une petite île des Antilles néerlandaises située au large du Venezuela,
+5200;Amérique;5206;Caraïbes;;British Virgin Islands;British Virgin Islands;VGB;High income;World Bank data :   Royaume-Uni de Grande-Bretagne et d'Irlande du Nord  GBR
+5200;Amérique;5206;Caraïbes;;Cayman Islands;Cayman Islands;CYM;High income;World Bank data : Les îles Caïmans, territoire d’outre-mer britannique, comportent 3 îles situées à l’ouest de la mer des Caraïbes
+5400;Europe;5402;Europe occidentale;;Channel Islands;Channel Islands;CHI;High income;"World Bank data :   Royaume-Uni de Grande-Bretagne et d'Irlande du Nord  GBR  The Channel Islands (Norman: Îles d'la Manche; French: îles Anglo-Normandes or îles de la Manche)["
+5200;Amérique;5207;Amérique du Sud;;Curaçao;Curaçao;CUW;High income;World Bank data :  Netherlands Antillean guilder  Curaçao est une île des Caraïbes qui fait partie du Royaume des Pays-Bas
+5400;Europe;5402;Europe occidentale;; Îles Féroé;Faroe Islands;FRO;High income;World Bank data : Danish krone -  Les Îles Féroé sont un archipel autonome faisant partie du Royaume du Danemark.
+5400;Europe;5403;Europe occidentale;; Gibraltar; Gibraltar;GIB;High income;World Bank data :   Gibraltar pound territoire britannique d'outre-mer Gibraltar est un territoire britannique d'outre-mer sur un promontoire situé sur la côte sud de l'Espagne et dominé par le rocher de Gibraltar, 
+5400;Europe;5403;Europe occidentale;85;Groenland;Greenland;GRL;High income;World Bank data : Danish krone   ratache au DNK   - Greenland Le Groenland est une île immense et un territoire danois autonome situé entre l'Atlantique Nord et l'océan Arctique. 
+5300;Asie;5304;Asie du Sud-Est;;Guam;Guam;GUM ;High income;World Bank Data  : territoire insulaire américain de Micronésie  U.S. dollar Guam est un territoire insulaire américain de Micronésie situé dans la partie ouest de l'océan Pacifique.
+5400;Europe;5402;Europe occidentale;;Ile de Man;Isle of Man;IMN;High income;World Bank data :  L'île de Man est une dépendance autonome de la Couronne britannique située dans la mer d'Irlande, entre l'Angleterre et l'Irlande
+5400;Europe;5403;Europe  Centrale;;Kosovo;Republic of Kosovo;XKX;Upper middle income;World Bans Data  : revendiqué par la serbie Monaie €uro  Le Kosovo, en forme longue la république du Kosovo, également appelé officiellement par les autorités serbes Kosovo-et-Métochie, est un territoire au statut contesté situé en Europe du Sud, plus particulièrement dans les Balkans et en ex-Yougoslavie
+5400;Europe;5402;Europe occidentale;;Liechtenstein;Principality of Liechtenstein;LIE;High income;Worls Bank Data  : Swiss franc   Le Liechtenstein est une principauté alémanique de 25 km de long entre l'Autriche et la Suisse.
+5400;Europe;5404;Europe occidentale;;Monaco;Monaco;MCO;High income;World Bans Data  : Monaco est une petite ville-État indépendante sur la côte méditerranéenne française 
+5300;Asie;5304;Asie du Sud-Est;;Northern Mariana Islands;Northern Mariana Islands;MNP;High income;World Bans Data  :  ancien territoire insulaire américain de Micronésie  U.S. dollar Les îles Mariannes du Nord font partie des îles Mariannes, dans l'est de la mer des Philippines.
+5200;Amérique;5206;Caraïbes;;Sint Maarten (Dutch part);Sint Maarten (Dutch part);SXM;High income;Wordl Bank : Netherlands Antillean guilder Sint Maarten, territoire du Royaume des Pays-Bas, est un pays occupant la partie sud d'une île des Antilles partagée avec Saint-Martin, une collectivité française d'outre-mer Saint-Martin fait partie des îles Leeward dans la mer des Caraïbes. Elle est divisée entre 2 pays distincts : sa partie nord, appelée Saint-Martin,
+5200;Amérique;5206;Caraïbes;;St. Martin (Francepart);St. Martin (Francepart);MAF;High income;Wordl Bank :  Saint-Martin, une collectivité française d'outre-mer   Saint-Martin fait partie des îles Leeward dans la mer des Caraïbes. Elle est divisée entre 2 pays distincts : sa partie nord, appelée Saint-Martin,
+5200;Amérique;5206;Caraïbes;;Îles Turks et Caïques ;(Turks and Caicos Islands;TCA;High income;Wordl Bank :'archipel Turques-et-Caïques comprenant 40 îles coralliennes de faible altitude dans l'océan Atlantique est un territoire britannique d'outre-mer au sud-est des Bahamas
+5200;Amérique;5206;Caraïbes;; Îles Vierges  (U.S.);Virgin Islands (U.S.);VIR;High income;Wordl Bank : Virgin Islands (U.S.) es Îles Vierges des États-Unis sont un ensemble d'îles et d'îlots de la mer des Caraïbes. C
+5300;Asie;5302;Asie orientale;351;Tawain;Tawain_China;TWN;Upper middle income;Update2
+5500;Océanie;5503;Micronésie;145;Guam;Guam.;GUAM;Lower middle income;Update2
+
+Guam
