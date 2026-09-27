@@ -2,42 +2,28 @@
 if(window.__NLAB_0921_PAGE_SCOPE__)return;
 window.__NLAB_0921_PAGE_SCOPE__=true;
 const $p=id=>document.getElementById(id);
-S.pageSelection0921=S.pageSelection0921||new Set();
-S.pageSelectionAnchor0921=S.pageSelectionAnchor0921||null;
+const Scope0921=window.NLAB_SELECTION_SCOPE;
+if(!Scope0921)throw new Error('Brique commune NLAB_SELECTION_SCOPE non chargée');
+S.selectionScope0921=S.selectionScope0921||Scope0921.create([]);
 S.pageScope0921=S.pageScope0921||'current';
 
 function pageCount0921(){return S.pdfjs?.numPages||0}
-function selectedPages0921(){return [...S.pageSelection0921].filter(p=>p>=1&&p<=pageCount0921()).sort((a,b)=>a-b)}
-function targetPages0921(scope=S.pageScope0921){
- const n=pageCount0921();if(!n)return[];
- if(scope==='all')return Array.from({length:n},(_,i)=>i+1);
- const sel=selectedPages0921();if(scope==='selected'&&sel.length)return sel;
- return[Math.max(1,Math.min(n,S.page||1))];
-}
-window.NLAB_PAGE_SCOPE_0921={selected:selectedPages0921,target:targetPages0921,setScope:s=>{S.pageScope0921=s;renderScope0921()},selectAll:()=>{S.pageSelection0921=new Set(Array.from({length:pageCount0921()},(_,i)=>i+1));renderPageStrip();renderScope0921()},clear:()=>{S.pageSelection0921.clear();renderPageStrip();renderScope0921()}};
+function syncItems0921(){Scope0921.setItems(S.selectionScope0921,Array.from({length:pageCount0921()},(_,i)=>i+1));return S.selectionScope0921}
+function selectedPages0921(){syncItems0921();return Scope0921.resolve(S.selectionScope0921,'selected',S.page||1)}
+function targetPages0921(scope=S.pageScope0921){syncItems0921();const resolved=Scope0921.resolve(S.selectionScope0921,scope,S.page||1);return(scope==='selected'&&!resolved.length)?[S.page||1]:resolved}
+window.NLAB_PAGE_SCOPE_0921={selected:selectedPages0921,target:targetPages0921,setScope:s=>{S.pageScope0921=s;renderScope0921()},selectAll:()=>{syncItems0921();Scope0921.all(S.selectionScope0921);renderPageStrip();renderScope0921()},clear:()=>{Scope0921.clear(S.selectionScope0921);renderPageStrip();renderScope0921()},shared:Scope0921};
 
 function selectClick0921(page,e){
- const n=pageCount0921(),multi=!!(e.ctrlKey||e.metaKey),range=!!e.shiftKey;
- if(range&&S.pageSelectionAnchor0921){
-  const lo=Math.min(S.pageSelectionAnchor0921,page),hi=Math.max(S.pageSelectionAnchor0921,page);
-  if(!multi)S.pageSelection0921.clear();
-  for(let p=lo;p<=hi;p++)S.pageSelection0921.add(p);
- }else if(multi){
-  S.pageSelection0921.has(page)?S.pageSelection0921.delete(page):S.pageSelection0921.add(page);
-  S.pageSelectionAnchor0921=page;
- }else{
-  S.pageSelection0921=new Set([page]);S.pageSelectionAnchor0921=page;
- }
- S.page=page;render();renderScope0921();
+ syncItems0921();Scope0921.click(S.selectionScope0921,page,e);S.page=page;render();renderScope0921();
 }
 function decorateThumbs0921(){
  const thumbs=[...document.querySelectorAll('#pageStrip .pageThumb')],n=pageCount0921();
  for(let i=0;i<thumbs.length;i++){
-  const t=thumbs[i],page=i+1;t.dataset.page=String(page);t.classList.toggle('multiSelected0921',S.pageSelection0921.has(page));
+  const t=thumbs[i],page=i+1;t.dataset.page=String(page);t.classList.toggle('multiSelected0921',S.selectionScope0921.selected.has(page));
   t.title=(S.pageLocks.has(page)?'Page verrouillée':'Page '+page)+' · clic = sélection unique · Ctrl/Cmd+clic = multi-sélection · Maj+clic = plage';
   t.onclick=e=>{if(e.target.closest('button'))return;selectClick0921(page,e)};
  }
- S.pageSelection0921=new Set([...S.pageSelection0921].filter(p=>p<=n));
+ syncItems0921();
 }
 const renderPageStrip0921Base=renderPageStrip;
 renderPageStrip=function(){renderPageStrip0921Base();decorateThumbs0921();renderScope0921()};
@@ -45,17 +31,17 @@ renderPageStrip=function(){renderPageStrip0921Base();decorateThumbs0921();render
 function ensureScopeUi0921(){
  if($p('pageScopeBar0921')||!E.pageStrip)return;
  const bar=document.createElement('div');bar.id='pageScopeBar0921';bar.className='pageScopeBar0921';
- bar.innerHTML='<b>Portée des opérations</b><select id="pageScope0921"><option value="current">Page courante</option><option value="selected">Page(s) sélectionnée(s)</option><option value="all">Tout le document</option></select><button id="pageSelectAll0921" type="button">Tout sélectionner</button><button id="pageClear0921" type="button">Effacer sélection</button><span id="pageSelectionInfo0921">0 sélectionnée</span><small>Ctrl/Cmd + clic : ajouter/retirer une page · Maj + clic : sélectionner une plage.</small>';
+ bar.innerHTML='<b>Portée commune</b><select id="pageScope0921"><option value="current">Page courante</option><option value="selected">Page(s) sélectionnée(s)</option><option value="all">Tout le document</option></select><button id="pageSelectAll0921" type="button">Tout sélectionner</button><button id="pageClear0921" type="button">Effacer sélection</button><span id="pageSelectionInfo0921">0 sélectionnée</span><small>Rotation, tampon et optimisation utilisent cette même portée. Ctrl/Cmd + clic : ajouter/retirer · Maj + clic : plage.</small>';
  E.pageStrip.before(bar);
  $p('pageScope0921').value=S.pageScope0921;
  $p('pageScope0921').onchange=e=>{S.pageScope0921=e.target.value;renderScope0921()};
- $p('pageSelectAll0921').onclick=()=>{S.pageSelection0921=new Set(Array.from({length:pageCount0921()},(_,i)=>i+1));renderPageStrip()};
- $p('pageClear0921').onclick=()=>{S.pageSelection0921.clear();renderPageStrip()};
+ $p('pageSelectAll0921').onclick=()=>{syncItems0921();Scope0921.all(S.selectionScope0921);renderPageStrip()};
+ $p('pageClear0921').onclick=()=>{Scope0921.clear(S.selectionScope0921);renderPageStrip()};
 }
 function renderScope0921(){
  const x=$p('pageScope0921');if(x)x.value=S.pageScope0921;
  const sel=selectedPages0921(),info=$p('pageSelectionInfo0921');if(info)info.textContent=sel.length?sel.length+' page(s) : '+sel.join(', '):'Aucune page sélectionnée';
- document.querySelectorAll('#pageStrip .pageThumb').forEach((t,i)=>t.classList.toggle('multiSelected0921',S.pageSelection0921.has(i+1)));
+ document.querySelectorAll('#pageStrip .pageThumb').forEach((t,i)=>t.classList.toggle('multiSelected0921',S.selectionScope0921.selected.has(i+1)));
 }
 
 rotatePage=async function(delta){
