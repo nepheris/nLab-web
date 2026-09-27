@@ -119,12 +119,36 @@ jobs:
           grep -q 'oauthHelp0920' APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
           grep -q 'penDelete0920' APP-Applications/pdf-studio/runtime0920/ux-consolidation.js
 
+          # TEST 0.9.21 : ZIP local + portée commune réutilisable + multi-pages + preview optimisation
+          test -s APP-Applications/pdf-studio/app-0.9.21.html
+          test -s APP-Applications/_shared/selection-scope.js
+          test -s APP-Applications/_shared/archive-workspace.js
+          node --check APP-Applications/_shared/selection-scope.js
+          node --check APP-Applications/_shared/archive-workspace.js
+          for f in page-scope archive-workspace output-routing; do test -s "APP-Applications/pdf-studio/runtime0921/${f}.js"; node --check "APP-Applications/pdf-studio/runtime0921/${f}.js"; done
+          grep -q '../_shared/selection-scope.js' APP-Applications/pdf-studio/app-0.9.21.html
+          grep -q '../_shared/archive-workspace.js' APP-Applications/pdf-studio/app-0.9.21.html
+          grep -q 'runtime0921/page-scope.js' APP-Applications/pdf-studio/app-0.9.21.html
+          grep -q 'runtime0921/archive-workspace.js' APP-Applications/pdf-studio/app-0.9.21.html
+          grep -q 'runtime0921/output-routing.js' APP-Applications/pdf-studio/app-0.9.21.html
+          grep -q 'NLAB_SELECTION_SCOPE' APP-Applications/pdf-studio/runtime0921/page-scope.js
+          grep -q 'targetPages0921' APP-Applications/pdf-studio/runtime0921/page-scope.js
+          grep -q 'runPdfQuickOcr=async function' APP-Applications/pdf-studio/runtime0921/page-scope.js
+          grep -q 'extractPage=async function' APP-Applications/pdf-studio/runtime0921/page-scope.js
+          grep -q 'deleteCurrentPage=async function' APP-Applications/pdf-studio/runtime0921/page-scope.js
+          grep -q 'NLAB_ARCHIVE_WORKSPACE' APP-Applications/pdf-studio/runtime0921/archive-workspace.js
+          grep -q 'buildWorkspaceBlob0921' APP-Applications/pdf-studio/runtime0921/archive-workspace.js
+          grep -q 'exportArchiveZip0921' APP-Applications/pdf-studio/runtime0921/archive-workspace.js
+          grep -q 'extractArchiveFolder0921' APP-Applications/pdf-studio/runtime0921/archive-workspace.js
+          grep -q "mode==='same-source'" APP-Applications/pdf-studio/runtime0921/output-routing.js
+          grep -q 'optimizationPreview0921' APP-Applications/pdf-studio/runtime0921/page-scope.js
+
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.20"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.21"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -144,4 +168,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.20 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.21 + DEMO v2: OK'
