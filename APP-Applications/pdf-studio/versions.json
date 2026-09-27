@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.24",
+  "test": "0.9.25",
   "versions": [
+    {
+      "version": "0.9.25",
+      "label": "Alpha 0.9.25 TEST",
+      "date": "2026-09-27",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.25.html",
+      "notes": "TEST reconstruite en page autonome : UI nLab Web/Framework, navigation nLab Web + Studios, catégorie 0 Configuration/variables/workspace au-dessus d’Entrée, cinq dates toujours visibles, choix manuel par défaut avec bouton Charger pour entrée/sortie, activation explicite du mode de sortie, synchronisation sortie=dossier source, panneau gauche redimensionnable/compact/masqué, cases à cocher sur chaque vignette, portée page en cours/pages cochées/tout document et test navigateur réel."
+    },
     {
       "version": "0.9.24",
       "label": "Alpha 0.9.24 TEST",
       "date": "2026-09-27",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.24.html",
       "notes": "TEST fonctionnelle : sélection explicite des pages par cases à cocher dans les vignettes, portée page courante / pages cochées / tout le document, chargement résilient des modules, menus Fichier/Historique/Objets/Outils/Connexion, section 0 Configuration & espace personnel, section de nommage préfixes/suffixes, visibilité Traduction BRK104 et 5 dates, suppression des contrôles Démo d’entrée, sortie même dossier source, ZIP en sortie et accès au dossier Google Drive nLab/PDF Studio/Documents. Numéro de version et date proviennent uniquement de versions.json."
     },
