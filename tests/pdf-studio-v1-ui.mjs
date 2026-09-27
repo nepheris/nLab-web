@@ -66,10 +66,24 @@ await page.locator('#sectionStamps').evaluate(e=>e.open=true);await page.locator
  await page.locator('#formValues').fill('{"TestFieldV1":"OK"}');await page.locator('#fillForms').click();await page.locator('#flattenForms').click();
  await page.waitForFunction(()=>window.__NLAB_PDF_V1__.advanced.inspectForms().length===0,null,{timeout:5000});
 
+ // OCR and optimization on the current page.
+ await page.locator('#pageScope').selectOption('current');await page.locator('#ocrLang').selectOption('eng');await page.locator('#runOcr').click();
+ await page.waitForFunction(()=>document.querySelector('#ocrResult').value.trim().length>8,null,{timeout:120000}).catch(()=>fail('OCR réel sans résultat'));
+ const ocrText=(await page.locator('#ocrResult').inputValue()).trim();if(!/fixture|synthetic|nlab/i.test(ocrText))fail('OCR résultat inattendu: '+ocrText.slice(0,120));
+ await page.locator('#optDpi').fill('150');await page.locator('#optJpeg').fill('82');await page.locator('#runOptimize').click();
+ await page.waitForFunction(()=>window.__NLAB_PDF_V1__.variables.operation.jpeg===82,null,{timeout:30000});
+
+
  await page.locator('#sectionRedaction').evaluate(e=>e.open=true);await page.locator('#redactionTool').click();
  const layer=page.locator('#annotationLayer'),lb=await layer.boundingBox();if(!lb)fail('Couche annotation sans géométrie');await page.mouse.click(lb.x+lb.width*.35,lb.y+lb.height*.35);
  await page.waitForFunction(()=>window.__NLAB_PDF_V1__.engine.annotations(window.__NLAB_PDF_V1__.engine.currentPage).some(x=>x.type==='redaction'),null,{timeout:3000});
  await page.locator('#applyRedactions').click();await page.waitForFunction(()=>!window.__NLAB_PDF_V1__.engine.annotations(window.__NLAB_PDF_V1__.engine.currentPage).some(x=>x.type==='redaction'),null,{timeout:10000});
+
+ // Translation endpoint contract + bilingual PDF composition.
+ await page.route('https://translation.test/**',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({translation:'Translated by nLab CI'})}));
+ await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.selectPage(4));await page.locator('#pageScope').selectOption('current');await page.locator('#translationSource').selectOption('fr');await page.locator('#translationTarget').selectOption('en');await page.locator('#translationEndpoint').fill('https://translation.test/api');
+ const trDl=page.waitForEvent('download');await page.locator('#runTranslation').click();const td=await trDl;if(!/_bilingue\.pdf$/i.test(td.suggestedFilename()))fail('Traduction sans PDF bilingue: '+td.suggestedFilename());
+
 
  await page.locator('#sectionCompareBatch').evaluate(e=>e.open=true);await page.locator('#compareInput').setInputFiles(fixture2);
  await page.waitForFunction(()=>document.querySelector('#compareStatus').textContent.includes('similarité moyenne'),null,{timeout:10000});const batchDl=page.waitForEvent('download');await page.locator('#batchCleanMetadata').click();const bd=await batchDl;if(!bd.suggestedFilename().endsWith('.zip'))fail('Batch métadonnées sans ZIP');
@@ -77,6 +91,12 @@ await page.locator('#sectionStamps').evaluate(e=>e.open=true);await page.locator
  await page.locator('#sectionSecurity').evaluate(e=>e.open=true);await page.locator('#inspectSignatureStructure').click();
  const secTxt=await page.locator('#securityStatus').innerText();if(!/signature/i.test(secTxt))fail('Inspection structure signature sans résultat');
  await page.locator('#cleanMetadata').click();
+
+ // DSS connector contract: simulate a private signer returning a PDF.
+ await page.route('https://dss.test/**',route=>route.fulfill({status:200,contentType:'application/pdf',body:fs.readFileSync(fixture)}));
+ await page.locator('#dssEndpoint').fill('https://dss.test/sign');await page.locator('#dssToken').fill('ci-token');await page.locator('#runDss').click();
+ await page.waitForFunction(()=>document.querySelector('#documentHistory').textContent.includes('Signature DSS'),null,{timeout:15000}).catch(()=>fail('Connecteur DSS sans résultat'));
+
 
  const download=page.waitForEvent('download');await page.locator('#savePdf').click();const d=await download;if(!d.suggestedFilename().endsWith('.pdf'))fail('Export PDF invalide '+d.suggestedFilename());const path=await d.path();if(!path||fs.statSync(path).size<500)fail('PDF exporté vide');const zipDl=page.waitForEvent('download');await page.locator('#exportZip').click();const zd=await zipDl;if(!zd.suggestedFilename().endsWith('.zip'))fail('Export ZIP invalide '+zd.suggestedFilename());const zp=await zd.path();if(!zp||fs.statSync(zp).size<800)fail('ZIP exporté vide');
  await page.reload({waitUntil:'domcontentloaded'});await page.waitForFunction(()=>!!window.__NLAB_PDF_V1__);await page.locator('#filesInput').setInputFiles([fixture,fixture2]);await page.waitForFunction(()=>window.__NLAB_PDF_V1__.workspace.items.length===2);await page.locator('#sectionPages').evaluate(e=>e.open=true);await page.locator('#mergeSelectedFiles').click();await page.waitForFunction(()=>window.__NLAB_PDF_V1__.engine.pageCount===15,{timeout:30000}).catch(async()=>{const n=await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.pageCount);fail('Fusion PDF KO pageCount='+n)});
