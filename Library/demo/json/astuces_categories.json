@@ -1,0 +1,470 @@
+{
+  "referentiel": {
+    "identite": {
+      "referentiel_id": "REF_ASTUCES_CATEGORIES",
+      "code_normalise": "astuces_categories",
+      "libelle_humain": "Astuces categories",
+      "version_schema": "3.0"
+    },
+    "configuration": {
+      "type_structure": "metier_principal",
+      "sections_vides_conservees": true,
+      "collection_source": "categories",
+      "racine_source": "referentiel_astuces_categories",
+      "source_originale": "dev/migration/v72/sources_originales/data/referentiels/astuces_categories.json"
+    },
+    "listes_controlees": {
+      "locales": {},
+      "partagees": []
+    },
+    "metadonnees_source": {
+      "metadonnees": {
+        "nom": "Astuces Categories",
+        "numero_version": "V70.0",
+        "prefixe_id": "ASTCAT",
+        "largeur_numerique": 4,
+        "nombre_entrees": 6
+      },
+      "regles": {
+        "hierarchie": "parent_id",
+        "migration": "Les anciens IDs CLS sont conservés dans classification_id_legacy."
+      },
+      "sources": [
+        {
+          "source_id": "SRC_CLS_001",
+          "nom": "Taxonomie historique des recettes du site V50.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "fichier_projet_historique",
+          "fichier_source": "recettes/data-recettes/taxonomie-recettes.json",
+          "description": "Source de migration des catégories et sous-catégories actuelles des recettes. Elle mélangeait auparavant plusieurs dimensions désormais séparées.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_historique",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_002",
+          "nom": "Base Ingrédients avec Ciqual V2.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "source_de_verite_metier",
+          "fichier_source": "Base_Ingredients_avec_CIQUAL_V2.1.ods",
+          "description": "Source des catégories historiques d’ingrédients et des besoins de migration vers les IDs CLS.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_interne",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_003",
+          "nom": "Référentiel et JSON des astuces V7 / V50.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "source_editoriale_historique",
+          "fichier_source": "astuces/data_astuces/Referentiel_Astuces_V7.0.ods et astuces/json_astuces/",
+          "description": "Source des quatre thèmes éditoriaux actuellement utilisés pour les astuces.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_historique",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_004",
+          "nom": "Table Ciqual 2025",
+          "organisme": "ANSES",
+          "type_source": "open_data_officiel_comparatif",
+          "fichier_source": "Table Ciqual 2025_FR_2025_11_03.xlsx",
+          "description": "Classification officielle en groupes, sous-groupes et sous-sous-groupes utilisée comme contrôle et source d’inspiration, sans devenir l’autorité de la classification métier du projet.",
+          "url": "https://ciqual.anses.fr/cms/fr/la-table-ciqual-2025",
+          "date_consultation": "2026-07-30",
+          "autorite": "source_officielle_comparative",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_005",
+          "nom": "Décisions d’architecture OpenFW",
+          "organisme": "Projet Les Recettes du Cœur / OpenFW",
+          "type_source": "norme_interne",
+          "fichier_source": "NORME_DES_REFERENTIELS_V1.md et décisions de conception du 29/07/2026",
+          "description": "Décisions validées : référentiel global avec domaine, hiérarchie principale simplifiée, séparation stricte de la taxonomie scientifique et des tags.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "norme_interne",
+          "actif": true
+        }
+      ]
+    },
+    "donnees": [
+      {
+        "identite": {
+          "classification_id": "ASTCAT0000",
+          "code_normalise": "classification_inconnue",
+          "libelle_humain": "Classification inconnue ou non déterminée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "à classer",
+            "non classé",
+            "classification inconnue"
+          ],
+          "codes_historiques": [
+            "INGCAT0000"
+          ]
+        },
+        "classification": {
+          "type_entree": "valeur_speciale",
+          "domaine": "commun",
+          "categorie_classification_id": "CLSC0000",
+          "classification_parent_id": null
+        },
+        "contenu": {
+          "description": "Valeur transitoire utilisée lorsqu'aucune classification principale fiable ne peut encore être attribuée."
+        },
+        "attributs_metier": {
+          "code": "classification_inconnue",
+          "libelle": "Classification inconnue ou non déterminée",
+          "niveau": "special",
+          "assignable": true,
+          "criteres_inclusion": [
+            "élément en cours de migration ou dont la catégorie métier n'est pas encore déterminée"
+          ],
+          "criteres_exclusion": [
+            "élément classable dans une catégorie active du domaine concerné"
+          ]
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "❔"
+        },
+        "validation": {
+          "statut_validation": "proposition_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 0,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 21
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "ASTCAT0001",
+          "code_normalise": "astuces",
+          "libelle_humain": "Astuces"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS2000"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "astuce",
+          "categorie_classification_id": "CLSC0003",
+          "classification_parent_id": null
+        },
+        "contenu": {
+          "description": "Racine des thèmes principaux des astuces éditoriales."
+        },
+        "attributs_metier": {
+          "code": "astuces",
+          "libelle": "Astuces",
+          "niveau": "racine",
+          "assignable": false,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_003",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "💡"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 3,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "ASTCAT0002",
+          "code_normalise": "reflexes_malins",
+          "libelle_humain": "Les réflexes malins"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "réflexes malins",
+            "bons réflexes"
+          ],
+          "codes_historiques": [
+            "CLS2010"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "astuce",
+          "categorie_classification_id": "CLSC0003",
+          "classification_parent_id": "ASTCAT0001"
+        },
+        "contenu": {
+          "description": "Conseils de compréhension, d’organisation, de conservation et de décision avant de jeter."
+        },
+        "attributs_metier": {
+          "code": "reflexes_malins",
+          "libelle": "Les réflexes malins",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_003",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🧭"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "ASTCAT0003",
+          "code_normalise": "sauvetage_express",
+          "libelle_humain": "Sauvetage express"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "sauver un aliment",
+            "aliment fatigué"
+          ],
+          "codes_historiques": [
+            "CLS2020"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "astuce",
+          "categorie_classification_id": "CLSC0003",
+          "classification_parent_id": "ASTCAT0001"
+        },
+        "contenu": {
+          "description": "Solutions rapides pour sauver un aliment mûr, flétri, rassis ou proche de se perdre."
+        },
+        "attributs_metier": {
+          "code": "sauvetage_express",
+          "libelle": "Sauvetage express",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_003",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🚑"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "ASTCAT0004",
+          "code_normalise": "restes_ont_du_talent",
+          "libelle_humain": "Les restes ont du talent"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "restes de talent",
+            "cuisiner les restes"
+          ],
+          "codes_historiques": [
+            "CLS2030"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "astuce",
+          "categorie_classification_id": "CLSC0003",
+          "classification_parent_id": "ASTCAT0001"
+        },
+        "contenu": {
+          "description": "Idées pour transformer des restes ou des parties comestibles délaissées."
+        },
+        "attributs_metier": {
+          "code": "restes_ont_du_talent",
+          "libelle": "Les restes ont du talent",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_003",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "✨"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "ASTCAT0005",
+          "code_normalise": "ca_mijote",
+          "libelle_humain": "Ça mijote !"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "ça mijote",
+            "cuisson maline"
+          ],
+          "codes_historiques": [
+            "CLS2040"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "astuce",
+          "categorie_classification_id": "CLSC0003",
+          "classification_parent_id": "ASTCAT0001"
+        },
+        "contenu": {
+          "description": "Conseils de cuisson, d’énergie et de gestes culinaires simples."
+        },
+        "attributs_metier": {
+          "code": "ca_mijote",
+          "libelle": "Ça mijote !",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_003",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🍳"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 40,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      }
+    ],
+    "historique_versions": [
+      {
+        "version": "72.0",
+        "date": "2026-08-04",
+        "evolution": "Migration initiale vers la structure canonique V72."
+      }
+    ]
+  },
+  "dictionnaire_donnees": {
+    "fichier": "data/dictionnaires_v72/astuces_categories_dictionnaire.json",
+    "version": "2.0"
+  }
+}

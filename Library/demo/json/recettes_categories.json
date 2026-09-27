@@ -1,0 +1,3365 @@
+{
+  "referentiel": {
+    "identite": {
+      "referentiel_id": "REF_RECETTES_CATEGORIES",
+      "code_normalise": "recettes_categories",
+      "libelle_humain": "Recettes categories",
+      "version_schema": "3.0"
+    },
+    "configuration": {
+      "type_structure": "metier_principal",
+      "sections_vides_conservees": true,
+      "collection_source": "categories",
+      "racine_source": "referentiel_recettes_categories",
+      "source_originale": "dev/migration/v72/sources_originales/data/referentiels/recettes_categories.json"
+    },
+    "listes_controlees": {
+      "locales": {},
+      "partagees": []
+    },
+    "metadonnees_source": {
+      "metadonnees": {
+        "nom": "Recettes Categories",
+        "numero_version": "V70.0",
+        "prefixe_id": "RECCAT",
+        "largeur_numerique": 4,
+        "nombre_entrees": 57
+      },
+      "regles": {
+        "hierarchie": "parent_id",
+        "migration": "Les anciens IDs CLS sont conservés dans classification_id_legacy."
+      },
+      "sources": [
+        {
+          "source_id": "SRC_CLS_001",
+          "nom": "Taxonomie historique des recettes du site V50.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "fichier_projet_historique",
+          "fichier_source": "recettes/data-recettes/taxonomie-recettes.json",
+          "description": "Source de migration des catégories et sous-catégories actuelles des recettes. Elle mélangeait auparavant plusieurs dimensions désormais séparées.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_historique",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_002",
+          "nom": "Base Ingrédients avec Ciqual V2.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "source_de_verite_metier",
+          "fichier_source": "Base_Ingredients_avec_CIQUAL_V2.1.ods",
+          "description": "Source des catégories historiques d’ingrédients et des besoins de migration vers les IDs CLS.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_interne",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_003",
+          "nom": "Référentiel et JSON des astuces V7 / V50.1",
+          "organisme": "Projet Les Recettes du Cœur",
+          "type_source": "source_editoriale_historique",
+          "fichier_source": "astuces/data_astuces/Referentiel_Astuces_V7.0.ods et astuces/json_astuces/",
+          "description": "Source des quatre thèmes éditoriaux actuellement utilisés pour les astuces.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "source_metier_historique",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_004",
+          "nom": "Table Ciqual 2025",
+          "organisme": "ANSES",
+          "type_source": "open_data_officiel_comparatif",
+          "fichier_source": "Table Ciqual 2025_FR_2025_11_03.xlsx",
+          "description": "Classification officielle en groupes, sous-groupes et sous-sous-groupes utilisée comme contrôle et source d’inspiration, sans devenir l’autorité de la classification métier du projet.",
+          "url": "https://ciqual.anses.fr/cms/fr/la-table-ciqual-2025",
+          "date_consultation": "2026-07-30",
+          "autorite": "source_officielle_comparative",
+          "actif": true
+        },
+        {
+          "source_id": "SRC_CLS_005",
+          "nom": "Décisions d’architecture OpenFW",
+          "organisme": "Projet Les Recettes du Cœur / OpenFW",
+          "type_source": "norme_interne",
+          "fichier_source": "NORME_DES_REFERENTIELS_V1.md et décisions de conception du 29/07/2026",
+          "description": "Décisions validées : référentiel global avec domaine, hiérarchie principale simplifiée, séparation stricte de la taxonomie scientifique et des tags.",
+          "url": null,
+          "date_consultation": "2026-07-30",
+          "autorite": "norme_interne",
+          "actif": true
+        }
+      ]
+    },
+    "donnees": [
+      {
+        "identite": {
+          "classification_id": "RECCAT0000",
+          "code_normalise": "classification_inconnue",
+          "libelle_humain": "Classification inconnue ou non déterminée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [
+            "à classer",
+            "non classé",
+            "classification inconnue"
+          ],
+          "codes_historiques": [
+            "INGCAT0000"
+          ]
+        },
+        "classification": {
+          "type_entree": "valeur_speciale",
+          "domaine": "commun",
+          "categorie_classification_id": "CLSC0000",
+          "classification_parent_id": null
+        },
+        "contenu": {
+          "description": "Valeur transitoire utilisée lorsqu'aucune classification principale fiable ne peut encore être attribuée."
+        },
+        "attributs_metier": {
+          "code": "classification_inconnue",
+          "libelle": "Classification inconnue ou non déterminée",
+          "niveau": "special",
+          "assignable": true,
+          "criteres_inclusion": [
+            "élément en cours de migration ou dont la catégorie métier n'est pas encore déterminée"
+          ],
+          "criteres_exclusion": [
+            "élément classable dans une catégorie active du domaine concerné"
+          ]
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "❔"
+        },
+        "validation": {
+          "statut_validation": "proposition_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 0,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 21
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0001",
+          "code_normalise": "recettes",
+          "libelle_humain": "Recettes"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1000"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": null
+        },
+        "contenu": {
+          "description": "Racine de la classification principale des recettes et de leur navigation."
+        },
+        "attributs_metier": {
+          "code": "recettes",
+          "libelle": "Recettes",
+          "niveau": "racine",
+          "assignable": false,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🍽️"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 2,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0002",
+          "code_normalise": "entree",
+          "libelle_humain": "Entrée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1010"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation servie avant le plat principal."
+        },
+        "attributs_metier": {
+          "code": "entree",
+          "libelle": "Entrée",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🥗"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0003",
+          "code_normalise": "entree_salade",
+          "libelle_humain": "Salade"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1011"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0002"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Entrée »."
+        },
+        "attributs_metier": {
+          "code": "entree_salade",
+          "libelle": "Salade",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0004",
+          "code_normalise": "entree_soupe",
+          "libelle_humain": "Soupe"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1012"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0002"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Entrée »."
+        },
+        "attributs_metier": {
+          "code": "entree_soupe",
+          "libelle": "Soupe",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0005",
+          "code_normalise": "entree_tartine",
+          "libelle_humain": "Tartine"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1013"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0002"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Entrée »."
+        },
+        "attributs_metier": {
+          "code": "entree_tartine",
+          "libelle": "Tartine",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0006",
+          "code_normalise": "entree_terrine",
+          "libelle_humain": "Terrine"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1014"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0002"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Entrée »."
+        },
+        "attributs_metier": {
+          "code": "entree_terrine",
+          "libelle": "Terrine",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 40,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0007",
+          "code_normalise": "plat_principal",
+          "libelle_humain": "Plat principal"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1020"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation constituant le cœur du repas."
+        },
+        "attributs_metier": {
+          "code": "plat_principal",
+          "libelle": "Plat principal",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🍲"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0008",
+          "code_normalise": "plat_principal_gratin",
+          "libelle_humain": "Gratin"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1021"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_gratin",
+          "libelle": "Gratin",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0009",
+          "code_normalise": "plat_principal_pates",
+          "libelle_humain": "Pâtes"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1022"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_pates",
+          "libelle": "Pâtes",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0010",
+          "code_normalise": "plat_principal_riz",
+          "libelle_humain": "Riz"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1023"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_riz",
+          "libelle": "Riz",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0011",
+          "code_normalise": "plat_principal_poelee",
+          "libelle_humain": "Poêlée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1024"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_poelee",
+          "libelle": "Poêlée",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 40,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0012",
+          "code_normalise": "plat_principal_omelette",
+          "libelle_humain": "Omelette"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1025"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_omelette",
+          "libelle": "Omelette",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 50,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0013",
+          "code_normalise": "plat_principal_soupe",
+          "libelle_humain": "Soupe-repas"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1026"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_soupe",
+          "libelle": "Soupe-repas",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 60,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0014",
+          "code_normalise": "plat_principal_quiche",
+          "libelle_humain": "Quiche"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1027"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_quiche",
+          "libelle": "Quiche",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 70,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0015",
+          "code_normalise": "plat_principal_salade",
+          "libelle_humain": "Salade-repas"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1028"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_salade",
+          "libelle": "Salade-repas",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 80,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0016",
+          "code_normalise": "plat_principal_tartine",
+          "libelle_humain": "Tartine-repas"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1029"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_tartine",
+          "libelle": "Tartine-repas",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 90,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0017",
+          "code_normalise": "plat_principal_cremeux",
+          "libelle_humain": "Plat crémeux"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1030"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_cremeux",
+          "libelle": "Plat crémeux",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 100,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0018",
+          "code_normalise": "plat_principal_tarte_salee",
+          "libelle_humain": "Tarte salée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1031"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_tarte_salee",
+          "libelle": "Tarte salée",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 110,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0019",
+          "code_normalise": "plat_principal_tian",
+          "libelle_humain": "Tian"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1032"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_tian",
+          "libelle": "Tian",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 120,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0020",
+          "code_normalise": "plat_principal_mijote",
+          "libelle_humain": "Plat mijoté"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1033"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_mijote",
+          "libelle": "Plat mijoté",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 130,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0021",
+          "code_normalise": "plat_principal_autre",
+          "libelle_humain": "Autre plat principal"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1034"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0007"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Plat principal »."
+        },
+        "attributs_metier": {
+          "code": "plat_principal_autre",
+          "libelle": "Autre plat principal",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 140,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0022",
+          "code_normalise": "accompagnement",
+          "libelle_humain": "Accompagnement"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1040"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation destinée à compléter un plat principal."
+        },
+        "attributs_metier": {
+          "code": "accompagnement",
+          "libelle": "Accompagnement",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🥔"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0023",
+          "code_normalise": "accompagnement_legumes",
+          "libelle_humain": "Légumes"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1041"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0022"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Accompagnement »."
+        },
+        "attributs_metier": {
+          "code": "accompagnement_legumes",
+          "libelle": "Légumes",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0024",
+          "code_normalise": "accompagnement_feculents",
+          "libelle_humain": "Féculents"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1042"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0022"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Accompagnement »."
+        },
+        "attributs_metier": {
+          "code": "accompagnement_feculents",
+          "libelle": "Féculents",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0025",
+          "code_normalise": "accompagnement_salade",
+          "libelle_humain": "Salade"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1043"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0022"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Accompagnement »."
+        },
+        "attributs_metier": {
+          "code": "accompagnement_salade",
+          "libelle": "Salade",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0026",
+          "code_normalise": "accompagnement_puree",
+          "libelle_humain": "Purée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1044"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0022"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Accompagnement »."
+        },
+        "attributs_metier": {
+          "code": "accompagnement_puree",
+          "libelle": "Purée",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 40,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0027",
+          "code_normalise": "dessert",
+          "libelle_humain": "Dessert"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1050"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation sucrée servie en fin de repas."
+        },
+        "attributs_metier": {
+          "code": "dessert",
+          "libelle": "Dessert",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🍰"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 40,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0028",
+          "code_normalise": "dessert_compote",
+          "libelle_humain": "Compote"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1051"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0027"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Dessert »."
+        },
+        "attributs_metier": {
+          "code": "dessert_compote",
+          "libelle": "Compote",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0029",
+          "code_normalise": "dessert_creme",
+          "libelle_humain": "Crème"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1052"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0027"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Dessert »."
+        },
+        "attributs_metier": {
+          "code": "dessert_creme",
+          "libelle": "Crème",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0030",
+          "code_normalise": "dessert_flan",
+          "libelle_humain": "Flan"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1053"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0027"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Dessert »."
+        },
+        "attributs_metier": {
+          "code": "dessert_flan",
+          "libelle": "Flan",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0031",
+          "code_normalise": "dessert_gateau",
+          "libelle_humain": "Gâteau"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1054"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0027"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Dessert »."
+        },
+        "attributs_metier": {
+          "code": "dessert_gateau",
+          "libelle": "Gâteau",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 40,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0032",
+          "code_normalise": "dessert_biscuit",
+          "libelle_humain": "Biscuit"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1055"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0027"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Dessert »."
+        },
+        "attributs_metier": {
+          "code": "dessert_biscuit",
+          "libelle": "Biscuit",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 50,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0033",
+          "code_normalise": "dessert_lacte",
+          "libelle_humain": "Dessert lacté"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1056"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0027"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Dessert »."
+        },
+        "attributs_metier": {
+          "code": "dessert_lacte",
+          "libelle": "Dessert lacté",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 60,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0034",
+          "code_normalise": "dessert_mousse",
+          "libelle_humain": "Mousse"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1057"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0027"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Dessert »."
+        },
+        "attributs_metier": {
+          "code": "dessert_mousse",
+          "libelle": "Mousse",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 70,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0035",
+          "code_normalise": "dessert_fruits",
+          "libelle_humain": "Dessert aux fruits"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1058"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0027"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Dessert »."
+        },
+        "attributs_metier": {
+          "code": "dessert_fruits",
+          "libelle": "Dessert aux fruits",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 80,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0036",
+          "code_normalise": "petit_dejeuner",
+          "libelle_humain": "Petit-déjeuner"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1060"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation destinée au premier repas de la journée."
+        },
+        "attributs_metier": {
+          "code": "petit_dejeuner",
+          "libelle": "Petit-déjeuner",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "☕"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 50,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0037",
+          "code_normalise": "petit_dejeuner_tartine",
+          "libelle_humain": "Tartine"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1061"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0036"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Petit-déjeuner »."
+        },
+        "attributs_metier": {
+          "code": "petit_dejeuner_tartine",
+          "libelle": "Tartine",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0038",
+          "code_normalise": "petit_dejeuner_porridge",
+          "libelle_humain": "Porridge"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1062"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0036"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Petit-déjeuner »."
+        },
+        "attributs_metier": {
+          "code": "petit_dejeuner_porridge",
+          "libelle": "Porridge",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0039",
+          "code_normalise": "petit_dejeuner_boisson",
+          "libelle_humain": "Boisson"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1063"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0036"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Petit-déjeuner »."
+        },
+        "attributs_metier": {
+          "code": "petit_dejeuner_boisson",
+          "libelle": "Boisson",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0040",
+          "code_normalise": "gouter",
+          "libelle_humain": "Goûter"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1070"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation destinée à une collation sucrée ou familiale."
+        },
+        "attributs_metier": {
+          "code": "gouter",
+          "libelle": "Goûter",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🍪"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 60,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0041",
+          "code_normalise": "gouter_gateau",
+          "libelle_humain": "Gâteau"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1071"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0040"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Goûter »."
+        },
+        "attributs_metier": {
+          "code": "gouter_gateau",
+          "libelle": "Gâteau",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0042",
+          "code_normalise": "gouter_biscuit",
+          "libelle_humain": "Biscuit"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1072"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0040"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Goûter »."
+        },
+        "attributs_metier": {
+          "code": "gouter_biscuit",
+          "libelle": "Biscuit",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0043",
+          "code_normalise": "gouter_compote",
+          "libelle_humain": "Compote"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1073"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0040"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Goûter »."
+        },
+        "attributs_metier": {
+          "code": "gouter_compote",
+          "libelle": "Compote",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0044",
+          "code_normalise": "gouter_tartine",
+          "libelle_humain": "Tartine"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1074"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0040"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Goûter »."
+        },
+        "attributs_metier": {
+          "code": "gouter_tartine",
+          "libelle": "Tartine",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 40,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0045",
+          "code_normalise": "aperitif",
+          "libelle_humain": "Apéritif"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1080"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Petite préparation servie avant le repas ou à partager."
+        },
+        "attributs_metier": {
+          "code": "aperitif",
+          "libelle": "Apéritif",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🫒"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 70,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0046",
+          "code_normalise": "aperitif_tartinade",
+          "libelle_humain": "Tartinade"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1081"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0045"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Apéritif »."
+        },
+        "attributs_metier": {
+          "code": "aperitif_tartinade",
+          "libelle": "Tartinade",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0047",
+          "code_normalise": "aperitif_bouchee",
+          "libelle_humain": "Bouchée"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1082"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0045"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Apéritif »."
+        },
+        "attributs_metier": {
+          "code": "aperitif_bouchee",
+          "libelle": "Bouchée",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0048",
+          "code_normalise": "aperitif_cake_sale",
+          "libelle_humain": "Cake salé"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1083"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0045"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Apéritif »."
+        },
+        "attributs_metier": {
+          "code": "aperitif_cake_sale",
+          "libelle": "Cake salé",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0049",
+          "code_normalise": "boisson",
+          "libelle_humain": "Boisson"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1090"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation liquide destinée à être bue."
+        },
+        "attributs_metier": {
+          "code": "boisson",
+          "libelle": "Boisson",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🥤"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 80,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0050",
+          "code_normalise": "boisson_chaude",
+          "libelle_humain": "Boisson chaude"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1091"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0049"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Boisson »."
+        },
+        "attributs_metier": {
+          "code": "boisson_chaude",
+          "libelle": "Boisson chaude",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0051",
+          "code_normalise": "boisson_froide",
+          "libelle_humain": "Boisson froide"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1092"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0049"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Boisson »."
+        },
+        "attributs_metier": {
+          "code": "boisson_froide",
+          "libelle": "Boisson froide",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0052",
+          "code_normalise": "boisson_smoothie",
+          "libelle_humain": "Smoothie"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1093"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0049"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Boisson »."
+        },
+        "attributs_metier": {
+          "code": "boisson_smoothie",
+          "libelle": "Smoothie",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0053",
+          "code_normalise": "sauce",
+          "libelle_humain": "Sauce"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1100"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0001"
+        },
+        "contenu": {
+          "description": "Préparation destinée à accompagner, napper ou assaisonner."
+        },
+        "attributs_metier": {
+          "code": "sauce",
+          "libelle": "Sauce",
+          "niveau": "famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": "🥣"
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 90,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0054",
+          "code_normalise": "sauce_tomate",
+          "libelle_humain": "Sauce tomate"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1101"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0053"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Sauce »."
+        },
+        "attributs_metier": {
+          "code": "sauce_tomate",
+          "libelle": "Sauce tomate",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 10,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0055",
+          "code_normalise": "sauce_cremeuse",
+          "libelle_humain": "Sauce crémeuse"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1102"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0053"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Sauce »."
+        },
+        "attributs_metier": {
+          "code": "sauce_cremeuse",
+          "libelle": "Sauce crémeuse",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 20,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      },
+      {
+        "identite": {
+          "classification_id": "RECCAT0056",
+          "code_normalise": "sauce_vinaigrette",
+          "libelle_humain": "Vinaigrette"
+        },
+        "nomenclature": {
+          "synonymes_recherche": [],
+          "codes_historiques": [
+            "CLS1103"
+          ]
+        },
+        "classification": {
+          "type_entree": "classification",
+          "domaine": "recette",
+          "categorie_classification_id": "CLSC0002",
+          "classification_parent_id": "RECCAT0053"
+        },
+        "contenu": {
+          "description": "Sous-catégorie de recettes rattachée à « Sauce »."
+        },
+        "attributs_metier": {
+          "code": "sauce_vinaigrette",
+          "libelle": "Vinaigrette",
+          "niveau": "sous_famille",
+          "assignable": true,
+          "criteres_inclusion": [],
+          "criteres_exclusion": []
+        },
+        "relations": {},
+        "sources_et_tracabilite": {
+          "source_ids": [
+            "SRC_CLS_001",
+            "SRC_CLS_005"
+          ]
+        },
+        "illustrations": {
+          "pictogramme": null
+        },
+        "validation": {
+          "statut_validation": "reprise_existant_a_valider"
+        },
+        "publication": {
+          "ordre_affichage": 30,
+          "actif": true
+        },
+        "informations_internes": {
+          "date_creation": "2026-07-30",
+          "date_mise_a_jour": "2026-07-30",
+          "commentaire_interne": null,
+          "migration": {
+            "version_schema": "3.0",
+            "source_v70": true,
+            "champs_source": 22
+          }
+        }
+      }
+    ],
+    "historique_versions": [
+      {
+        "version": "72.0",
+        "date": "2026-08-04",
+        "evolution": "Migration initiale vers la structure canonique V72."
+      }
+    ]
+  },
+  "dictionnaire_donnees": {
+    "fichier": "data/dictionnaires_v72/recettes_categories_dictionnaire.json",
+    "version": "2.0"
+  }
+}

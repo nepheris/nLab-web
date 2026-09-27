@@ -1,0 +1,250 @@
+﻿Region_Code;Region_Name;Sub-region_Code;Sub-region_Name;Intermediate_RegionCode;Intermediate_RegionName;Country_or_Area;M49Code;ISO-alpha2Code;ISO-alpha3Code
+2;Afrique;15;Afrique septentrionale;;;Algérie;12;DZ;DZA
+2;Afrique;15;Afrique septentrionale;;;Égypte;818;EG;EGY
+2;Afrique;15;Afrique septentrionale;;;Libye;434;LY;LBY
+2;Afrique;15;Afrique septentrionale;;;Maroc;504;MA;MAR
+2;Afrique;15;Afrique septentrionale;;;Soudan;729;SD;SDN
+2;Afrique;15;Afrique septentrionale;;;Tunisie;788;TN;TUN
+2;Afrique;15;Afrique septentrionale;;;Sahara occidental;732;EH;ESH
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Territoire britannique de l'océan Indien;86;IO;IOT
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Burundi;108;BI;BDI
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Comores;174;KM;COM
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Djibouti;262;DJ;DJI
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Érythrée;232;ER;ERI
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Éthiopie;231;ET;ETH
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Terres australes françaises;260;TF;ATF
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Kenya;404;KE;KEN
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Madagascar;450;MG;MDG
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Malawi;454;MW;MWI
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Maurice;480;MU;MUS
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Mayotte;175;YT;MYT
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Mozambique;508;MZ;MOZ
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Réunion;638;RE;REU
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Rwanda;646;RW;RWA
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Seychelles;690;SC;SYC
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Somalie;706;SO;SOM
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Soudan du Sud;728;SS;SSD
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Ouganda;800;UG;UGA
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;République-Unie de Tanzanie;834;TZ;TZA
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Zambie;894;ZM;ZMB
+2;Afrique;202;Afrique subsaharienne;14;Afrique orientale;Zimbabwe;716;ZW;ZWE
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;Angola;24;AO;AGO
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;Cameroun;120;CM;CMR
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;République centrafricaine;140;CF;CAF
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;Tchad;148;TD;TCD
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;Congo;178;CG;COG
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;République démocratique du Congo;180;CD;COD
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;Guinée équatoriale;226;GQ;GNQ
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;Gabon;266;GA;GAB
+2;Afrique;202;Afrique subsaharienne;17;Afrique centrale;Sao Tomé-et-Principe;678;ST;STP
+2;Afrique;202;Afrique subsaharienne;18;Afrique australe;Botswana;72;BW;BWA
+2;Afrique;202;Afrique subsaharienne;18;Afrique australe;Eswatini;748;SZ;SWZ
+2;Afrique;202;Afrique subsaharienne;18;Afrique australe;Lesotho;426;LS;LSO
+2;Afrique;202;Afrique subsaharienne;18;Afrique australe;Namibie;516;NA;NAM
+2;Afrique;202;Afrique subsaharienne;18;Afrique australe;Afrique du Sud;710;ZA;ZAF
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Bénin;204;BJ;BEN
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Burkina Faso;854;BF;BFA
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Cabo Verde;132;CV;CPV
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Côte d’Ivoire;384;CI;CIV
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Gambie;270;GM;GMB
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Ghana;288;GH;GHA
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Guinée;324;GN;GIN
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Guinée-Bissau;624;GW;GNB
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Libéria;430;LR;LBR
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Mali;466;ML;MLI
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Mauritanie;478;MR;MRT
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Niger;562;NE;NER
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Nigéria;566;NG;NGA
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Sainte-Hélène;654;SH;SHN
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Sénégal;686;SN;SEN
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Sierra Leone;694;SL;SLE
+2;Afrique;202;Afrique subsaharienne;11;Afrique occidentale;Togo;768;TG;TGO
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Anguilla;660;AI;AIA
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Antigua-et-Barbuda;28;AG;ATG
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Aruba;533;AW;ABW
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Bahamas;44;BS;BHS
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Barbade;52;BB;BRB
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Bonaire, Saint-Eustache et Saba;535;BQ;BES
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Îles Vierges britanniques;92;VG;VGB
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Îles Caïmanes;136;KY;CYM
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Cuba;192;CU;CUB
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Curaçao;531;CW;CUW
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Dominique;212;DM;DMA
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;République dominicaine;214;DO;DOM
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Grenade;308;GD;GRD
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Guadeloupe;312;GP;GLP
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Haïti;332;HT;HTI
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Jamaïque;388;JM;JAM
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Martinique;474;MQ;MTQ
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Montserrat;500;MS;MSR
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Porto Rico;630;PR;PRI
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Saint-Barthélemy;652;BL;BLM
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Saint-Kitts-et-Nevis;659;KN;KNA
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Sainte-Lucie;662;LC;LCA
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Saint-Martin (partie française);663;MF;MAF
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Saint-Vincent-et-les Grenadines;670;VC;VCT
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Saint-Martin (partie néerlandaise);534;SX;SXM
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Trinité-et-Tobago;780;TT;TTO
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Îles Turques-et-Caïques;796;TC;TCA
+19;Amériques;419;Amérique latine et Caraïbes;29;Caraïbes;Îles Vierges américaines;850;VI;VIR
+19;Amériques;419;Amérique latine et Caraïbes;13;Amérique centrale;Belize;84;BZ;BLZ
+19;Amériques;419;Amérique latine et Caraïbes;13;Amérique centrale;Costa Rica;188;CR;CRI
+19;Amériques;419;Amérique latine et Caraïbes;13;Amérique centrale;El Salvador;222;SV;SLV
+19;Amériques;419;Amérique latine et Caraïbes;13;Amérique centrale;Guatemala;320;GT;GTM
+19;Amériques;419;Amérique latine et Caraïbes;13;Amérique centrale;Honduras;340;HN;HND
+19;Amériques;419;Amérique latine et Caraïbes;13;Amérique centrale;Mexique;484;MX;MEX
+19;Amériques;419;Amérique latine et Caraïbes;13;Amérique centrale;Nicaragua;558;NI;NIC
+19;Amériques;419;Amérique latine et Caraïbes;13;Amérique centrale;Panama;591;PA;PAN
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Argentine;32;AR;ARG
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Bolivie (État plurinational de);68;BO;BOL
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Île Bouvet;74;BV;BVT
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Brésil;76;BR;BRA
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Chili;152;CL;CHL
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Colombie;170;CO;COL
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Équateur;218;EC;ECU
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Îles Falkland (Malvinas);238;FK;FLK
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Guyane française;254;GF;GUF
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Guyana;328;GY;GUY
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Paraguay;600;PY;PRY
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Pérou;604;PE;PER
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Géorgie du Sud-et-les Îles Sandwich du Sud;239;GS;SGS
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Suriname;740;SR;SUR
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Uruguay;858;UY;URY
+19;Amériques;419;Amérique latine et Caraïbes;5;Amérique du Sud;Venezuela (République bolivarienne du);862;VE;VEN
+19;Amériques;21;Amérique septentrionale;;;Bermudes;60;BM;BMU
+19;Amériques;21;Amérique septentrionale;;;Canada;124;CA;CAN
+19;Amériques;21;Amérique septentrionale;;;Groenland;304;GL;GRL
+19;Amériques;21;Amérique septentrionale;;;Saint-Pierre-et-Miquelon;666;PM;SPM
+19;Amériques;21;Amérique septentrionale;;;États-Unis d’Amérique;840;US;USA
+;;;;;;Antarctique;10;AQ;ATA
+142;Asie;143;Asie centrale;;;Kazakhstan;398;KZ;KAZ
+142;Asie;143;Asie centrale;;;Kirghizistan;417;KG;KGZ
+142;Asie;143;Asie centrale;;;Tadjikistan;762;TJ;TJK
+142;Asie;143;Asie centrale;;;Turkménistan;795;TM;TKM
+142;Asie;143;Asie centrale;;;Ouzbékistan;860;UZ;UZB
+142;Asie;30;Asie orientale;;;Chine;156;CN;CHN
+142;Asie;30;Asie orientale;;;Chine, région administrative spéciale de Hong Kong;344;HK;HKG
+142;Asie;30;Asie orientale;;;Chine, région administrative spéciale de Macao;446;MO;MAC
+142;Asie;30;Asie orientale;;;République populaire démocratique de Corée;408;KP;PRK
+142;Asie;30;Asie orientale;;;Japon;392;JP;JPN
+142;Asie;30;Asie orientale;;;Mongolie;496;MN;MNG
+142;Asie;30;Asie orientale;;;République de Corée;410;KR;KOR
+142;Asie;35;Asie du Sud-Est;;;Brunéi Darussalam;96;BN;BRN
+142;Asie;35;Asie du Sud-Est;;;Cambodge;116;KH;KHM
+142;Asie;35;Asie du Sud-Est;;;Indonésie;360;ID;IDN
+142;Asie;35;Asie du Sud-Est;;;République démocratique populaire lao;418;LA;LAO
+142;Asie;35;Asie du Sud-Est;;;Malaisie;458;MY;MYS
+142;Asie;35;Asie du Sud-Est;;;Myanmar;104;MM;MMR
+142;Asie;35;Asie du Sud-Est;;;Philippines;608;PH;PHL
+142;Asie;35;Asie du Sud-Est;;;Singapour;702;SG;SGP
+142;Asie;35;Asie du Sud-Est;;;Thaïlande;764;TH;THA
+142;Asie;35;Asie du Sud-Est;;;Timor-Leste;626;TL;TLS
+142;Asie;35;Asie du Sud-Est;;;Viet Nam;704;VN;VNM
+142;Asie;34;Asie méridionale;;;Afghanistan;4;AF;AFG
+142;Asie;34;Asie méridionale;;;Bangladesh;50;BD;BGD
+142;Asie;34;Asie méridionale;;;Bhoutan;64;BT;BTN
+142;Asie;34;Asie méridionale;;;Inde;356;IN;IND
+142;Asie;34;Asie méridionale;;;Iran (République islamique d’);364;IR;IRN
+142;Asie;34;Asie méridionale;;;Maldives;462;MV;MDV
+142;Asie;34;Asie méridionale;;;Népal;524;NP;NPL
+142;Asie;34;Asie méridionale;;;Pakistan;586;PK;PAK
+142;Asie;34;Asie méridionale;;;Sri Lanka;144;LK;LKA
+142;Asie;145;Asie occidentale;;;Arménie;51;AM;ARM
+142;Asie;145;Asie occidentale;;;Azerbaïdjan;31;AZ;AZE
+142;Asie;145;Asie occidentale;;;Bahreïn;48;BH;BHR
+142;Asie;145;Asie occidentale;;;Chypre;196;CY;CYP
+142;Asie;145;Asie occidentale;;;Géorgie;268;GE;GEO
+142;Asie;145;Asie occidentale;;;Iraq;368;IQ;IRQ
+142;Asie;145;Asie occidentale;;;Israël;376;IL;ISR
+142;Asie;145;Asie occidentale;;;Jordanie;400;JO;JOR
+142;Asie;145;Asie occidentale;;;Koweït;414;KW;KWT
+142;Asie;145;Asie occidentale;;;Liban;422;LB;LBN
+142;Asie;145;Asie occidentale;;;Oman;512;OM;OMN
+142;Asie;145;Asie occidentale;;;Qatar;634;QA;QAT
+142;Asie;145;Asie occidentale;;;Arabie saoudite;682;SA;SAU
+142;Asie;145;Asie occidentale;;;État de Palestine;275;PS;PSE
+142;Asie;145;Asie occidentale;;;République arabe syrienne;760;SY;SYR
+142;Asie;145;Asie occidentale;;;Turquie;792;TR;TUR
+142;Asie;145;Asie occidentale;;;Émirats arabes unis;784;AE;ARE
+142;Asie;145;Asie occidentale;;;Yémen;887;YE;YEM
+150;Europe;151;Europe orientale;;;Bélarus;112;BY;BLR
+150;Europe;151;Europe orientale;;;Bulgarie;100;BG;BGR
+150;Europe;151;Europe orientale;;;Tchéquie;203;CZ;CZE
+150;Europe;151;Europe orientale;;;Hongrie;348;HU;HUN
+150;Europe;151;Europe orientale;;;Pologne;616;PL;POL
+150;Europe;151;Europe orientale;;;République de Moldova;498;MD;MDA
+150;Europe;151;Europe orientale;;;Roumanie;642;RO;ROU
+150;Europe;151;Europe orientale;;;Fédération de Russie;643;RU;RUS
+150;Europe;151;Europe orientale;;;Slovaquie;703;SK;SVK
+150;Europe;151;Europe orientale;;;Ukraine;804;UA;UKR
+150;Europe;154;Europe septentrionale;;;Îles d’Åland;248;AX;ALA
+150;Europe;154;Europe septentrionale;830;Îles Anglo-Normandes;Guernesey;831;GG;GGY
+150;Europe;154;Europe septentrionale;830;Îles Anglo-Normandes;Jersey;832;JE;JEY
+150;Europe;154;Europe septentrionale;830;Îles Anglo-Normandes;Sercq;680;;
+150;Europe;154;Europe septentrionale;;;Danemark;208;DK;DNK
+150;Europe;154;Europe septentrionale;;;Estonie;233;EE;EST
+150;Europe;154;Europe septentrionale;;;Îles Féroé;234;FO;FRO
+150;Europe;154;Europe septentrionale;;;Finlande;246;FI;FIN
+150;Europe;154;Europe septentrionale;;;Islande;352;IS;ISL
+150;Europe;154;Europe septentrionale;;;Irlande;372;IE;IRL
+150;Europe;154;Europe septentrionale;;;Île de Man;833;IM;IMN
+150;Europe;154;Europe septentrionale;;;Lettonie;428;LV;LVA
+150;Europe;154;Europe septentrionale;;;Lituanie;440;LT;LTU
+150;Europe;154;Europe septentrionale;;;Norvège;578;NO;NOR
+150;Europe;154;Europe septentrionale;;;Îles Svalbard-et-Jan Mayen;744;SJ;SJM
+150;Europe;154;Europe septentrionale;;;Suède;752;SE;SWE
+150;Europe;154;Europe septentrionale;;;Royaume-Uni de Grande-Bretagne et d’Irlande du Nord;826;GB;GBR
+150;Europe;39;Europe méridionale;;;Albanie;8;AL;ALB
+150;Europe;39;Europe méridionale;;;Andorre;20;AD;AND
+150;Europe;39;Europe méridionale;;;Bosnie-Herzégovine;70;BA;BIH
+150;Europe;39;Europe méridionale;;;Croatie;191;HR;HRV
+150;Europe;39;Europe méridionale;;;Gibraltar;292;GI;GIB
+150;Europe;39;Europe méridionale;;;Grèce;300;GR;GRC
+150;Europe;39;Europe méridionale;;;Saint-Siège;336;VA;VAT
+150;Europe;39;Europe méridionale;;;Italie;380;IT;ITA
+150;Europe;39;Europe méridionale;;;Malte;470;MT;MLT
+150;Europe;39;Europe méridionale;;;Monténégro;499;ME;MNE
+150;Europe;39;Europe méridionale;;;Macédoine du Nord;807;MK;MKD
+150;Europe;39;Europe méridionale;;;Portugal;620;PT;PRT
+150;Europe;39;Europe méridionale;;;Saint-Marin;674;SM;SMR
+150;Europe;39;Europe méridionale;;;Serbie;688;RS;SRB
+150;Europe;39;Europe méridionale;;;Slovénie;705;SI;SVN
+150;Europe;39;Europe méridionale;;;Espagne;724;ES;ESP
+150;Europe;155;Europe occidentale;;;Autriche;40;AT;AUT
+150;Europe;155;Europe occidentale;;;Belgique;56;BE;BEL
+150;Europe;155;Europe occidentale;;;France;250;FR;FRA
+150;Europe;155;Europe occidentale;;;Allemagne;276;DE;DEU
+150;Europe;155;Europe occidentale;;;Liechtenstein;438;LI;LIE
+150;Europe;155;Europe occidentale;;;Luxembourg;442;LU;LUX
+150;Europe;155;Europe occidentale;;;Monaco;492;MC;MCO
+150;Europe;155;Europe occidentale;;;Pays-Bas;528;NL;NLD
+150;Europe;155;Europe occidentale;;;Suisse;756;CH;CHE
+9;Océanie;53;Australie et Nouvelle-Zélande;;;Australie;36;AU;AUS
+9;Océanie;53;Australie et Nouvelle-Zélande;;;Île Christmas;162;CX;CXR
+9;Océanie;53;Australie et Nouvelle-Zélande;;;Îles des Cocos (Keeling);166;CC;CCK
+9;Océanie;53;Australie et Nouvelle-Zélande;;;Île Heard-et-Îles MacDonald;334;HM;HMD
+9;Océanie;53;Australie et Nouvelle-Zélande;;;Nouvelle-Zélande;554;NZ;NZL
+9;Océanie;53;Australie et Nouvelle-Zélande;;;Île Norfolk;574;NF;NFK
+9;Océanie;54;Mélanésie;;;Fidji;242;FJ;FJI
+9;Océanie;54;Mélanésie;;;Nouvelle-Calédonie;540;NC;NCL
+9;Océanie;54;Mélanésie;;;Papouasie-Nouvelle-Guinée;598;PG;PNG
+9;Océanie;54;Mélanésie;;;Îles Salomon;90;SB;SLB
+9;Océanie;54;Mélanésie;;;Vanuatu;548;VU;VUT
+9;Océanie;57;Micronésie;;;Guam;316;GU;GUM
+9;Océanie;57;Micronésie;;;Kiribati;296;KI;KIR
+9;Océanie;57;Micronésie;;;Îles Marshall;584;MH;MHL
+9;Océanie;57;Micronésie;;;Micronésie (États fédérés de);583;FM;FSM
+9;Océanie;57;Micronésie;;;Nauru;520;NR;NRU
+9;Océanie;57;Micronésie;;;Îles Mariannes du Nord;580;MP;MNP
+9;Océanie;57;Micronésie;;;Palaos;585;PW;PLW
+9;Océanie;57;Micronésie;;;Îles mineures éloignées des États-Unis;581;UM;UMI
+9;Océanie;61;Polynésie;;;Samoa américaines;16;AS;ASM
+9;Océanie;61;Polynésie;;;Îles Cook;184;CK;COK
+9;Océanie;61;Polynésie;;;Polynésie française;258;PF;PYF
+9;Océanie;61;Polynésie;;;Nioué;570;NU;NIU
+9;Océanie;61;Polynésie;;;Pitcairn;612;PN;PCN
+9;Océanie;61;Polynésie;;;Samoa;882;WS;WSM
+9;Océanie;61;Polynésie;;;Tokélaou;772;TK;TKL
+9;Océanie;61;Polynésie;;;Tonga;776;TO;TON
+9;Océanie;61;Polynésie;;;Tuvalu;798;TV;TUV
+9;Océanie;61;Polynésie;;;Îles Wallis-et-Futuna;876;WF;WLF
