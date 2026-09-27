@@ -3,28 +3,44 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="nLab — accès direct aux applications publiques nLab Web.">
-<title>nLab</title>
+<meta name="description" content="Portail des projets publics Nepheris et nLab.">
+<title>Nepheris · Projets</title>
 <link rel="icon" href="https://nepheris.github.io/nLab-web/assets/branding/nlab-favicon.svg" type="image/svg+xml">
 <style>
-:root{--blue:#3282ca;--ink:#25313a;--muted:#687784;--line:#dce4ea;--bg:#f4f7f9}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
-main{width:min(760px,calc(100% - 30px));background:#fff;border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:0 18px 60px #20304018}
-.logo{width:150px;height:auto}.eyebrow{margin-top:28px;color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
-h1{font-size:clamp(32px,6vw,54px);margin:8px 0 12px}.lead{font-size:18px;line-height:1.55;color:#52636f}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.btn{display:inline-flex;padding:11px 15px;border:1px solid #bac8d2;border-radius:9px;text-decoration:none;color:inherit;font-weight:700}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
-small{display:block;margin-top:28px;color:var(--muted)}
+:root{--blue:#3282ca;--ink:#25313a;--muted:#687784;--line:#dce4ea;--bg:#f4f7f9;--panel:#fff;--soft:#eef4f8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+header{background:#fff;border-bottom:1px solid var(--line)}.wrap{width:min(1080px,calc(100% - 30px));margin:auto}.head{padding:32px 0}
+.logo{width:145px;height:auto}.eyebrow{margin-top:22px;color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+h1{font-size:clamp(32px,6vw,52px);margin:8px 0 10px}.lead{max-width:760px;font-size:17px;line-height:1.55;color:#52636f;margin:0}
+main{padding:26px 0 50px}.section{margin:24px 0 12px}.section h2{margin:0 0 5px;font-size:20px}.section p{margin:0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}.card{display:flex;flex-direction:column;gap:9px;min-height:165px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit;box-shadow:0 5px 18px #2030400d}.card:hover{border-color:#9fb2c0;box-shadow:0 9px 28px #20304016;transform:translateY(-1px)}
+.card h3{margin:0;font-size:19px}.card p{margin:0;color:var(--muted);line-height:1.45}.tag{margin-top:auto;align-self:flex-start;padding:6px 9px;border-radius:999px;background:var(--soft);font-size:12px;font-weight:700}
+footer{padding:0 0 36px;color:var(--muted);font-size:13px}
 </style>
 </head>
-<body><main>
+<body>
+<header><div class="wrap head">
 <img class="logo" src="https://nepheris.github.io/nLab-web/assets/branding/nlab-wordmark.svg" alt="nLab">
-<div class="eyebrow">Public · Applications nLab</div>
-<h1>Accéder à nLab Web</h1>
-<p class="lead">Portail public des nLab Studios, applications et jeux de démonstration.</p>
-<div class="actions">
-<a class="btn primary" href="https://nepheris.github.io/nLab-web/">nLab Web</a>
-<a class="btn" href="https://nepheris.github.io/nLab-web/APP-Applications/studios/">nLab Studios</a>
-<a class="btn" href="https://nepheris.github.io/nLab-web/APP-Applications/pdf-studio/">PDF Studio</a>
+<div class="eyebrow">nepheris.github.io · portail public</div>
+<h1>Projets Nepheris</h1>
+<p class="lead">Point d’entrée vers les applications, démonstrateurs et dépôts publics. Chaque projet reste publié dans son dépôt ; cette page sert de sommaire simple.</p>
+</div></header>
+<main class="wrap">
+<section class="section"><h2>Applications et sites</h2><p>Accès direct aux projets disposant d’une publication web.</p></section>
+<div class="grid">
+<a class="card" href="https://nepheris.github.io/nLab-web/"><h3>nLab Web</h3><p>Portail public des applications, briques, frameworks et démonstrateurs nLab.</p><span class="tag">GitHub Pages</span></a>
+<a class="card" href="https://nepheris.github.io/nLab-web/APP-Applications/studios/"><h3>nLab Studios</h3><p>Accès aux différents Studios et outils web nLab.</p><span class="tag">nLab</span></a>
+<a class="card" href="https://nepheris.github.io/nLab-web/APP-Applications/pdf-studio/"><h3>PDF Studio</h3><p>Atelier PDF local-first : annotation, pages, archives, sélection et traduction bilingue.</p><span class="tag">APP07</span></a>
+<a class="card" href="https://nepheris.github.io/nLab-web/APP-Applications/pdf-studio/app-0.9.23.html"><h3>PDF Studio · TEST</h3><p>Accès direct à Alpha 0.9.23 TEST avec les correctifs Pages/runtime et BRK104.</p><span class="tag">0.9.23 TEST</span></a>
+<a class="card" href="https://nepheris.github.io/nLab-Webmaster-Preview/"><h3>nLab Webmaster Preview</h3><p>Prévisualisation publique des travaux Webmaster.</p><span class="tag">GitHub Pages</span></a>
+<a class="card" href="https://nepheris.github.io/MadaNotes/"><h3>MadaNotes</h3><p>Accès au projet public MadaNotes.</p><span class="tag">GitHub Pages</span></a>
 </div>
-<small>nLab · Synergies SVA SARL</small>
-</main></body></html>
+<section class="section"><h2>Dépôts publics</h2><p>Accès aux projets publics sans site Pages dédié.</p></section>
+<div class="grid">
+<a class="card" href="https://github.com/nepheris/nLab-Web-Framework"><h3>nLab Web Framework</h3><p>Framework public pour les composants et structures web nLab.</p><span class="tag">Dépôt GitHub</span></a>
+<a class="card" href="https://github.com/nepheris"><h3>GitHub Nepheris</h3><p>Liste générale des dépôts publics du compte.</p><span class="tag">GitHub</span></a>
+</div>
+</main>
+<footer><div class="wrap">nLab · Nepheris · portail statique public</div></footer>
+</body>
+</html>
