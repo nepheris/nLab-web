@@ -22,12 +22,10 @@ function applyReleaseMeta0924(){
  qa24('#home .card em,.demoChip').forEach(x=>{x.textContent=(x.textContent||'').replace(/Alpha 0\.9\.\d+(?: TEST| RC2)?/g,label)});
  const foot=q24('footer .footerInfo span');
  if(foot)foot.textContent='nLab PDF Studio · APP07 · '+label+' · dernière MAJ : '+date+'.';
- let badge=$24('releaseBadge0924');
  const meta=q24('header .headerMeta')||q24('header');
- if(meta&&!badge){
-  badge=document.createElement('span');badge.id='releaseBadge0924';badge.className='buildBadge releaseBadge0924';meta.prepend(badge);
- }
- if(badge)badge.innerHTML='<strong>'+label+'</strong><span>MAJ '+date+'</span>';
+ let badge=$24('releaseBadge0924')||(meta?q24('.buildBadge',meta):null);
+ if(meta&&!badge){badge=document.createElement('div');badge.className='buildBadge';meta.prepend(badge)}
+ if(badge){badge.id='releaseBadge0924';badge.classList.add('releaseBadge0924');badge.innerHTML='<strong>'+label+'</strong><span>MAJ '+date+'</span>'}
 }
 
 function addStyle0924(){
