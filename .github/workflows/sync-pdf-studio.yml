@@ -123,6 +123,7 @@ jobs:
           test -s APP-Applications/pdf-studio/app-0.9.21.html
           test -s APP-Applications/_shared/selection-scope.js
           test -s APP-Applications/_shared/archive-workspace.js
+          test -f .nojekyll
           node --check APP-Applications/_shared/selection-scope.js
           node --check APP-Applications/_shared/archive-workspace.js
           for f in page-scope archive-workspace output-routing; do test -s "APP-Applications/pdf-studio/runtime0921/${f}.js"; node --check "APP-Applications/pdf-studio/runtime0921/${f}.js"; done
@@ -152,12 +153,22 @@ jobs:
           grep -q 'side_by_side' APP-Applications/pdf-studio/runtime0922/bilingual-translation.js
           grep -q 'facing_pages' APP-Applications/pdf-studio/runtime0922/bilingual-translation.js
 
+          # TEST 0.9.23 : correctif publication/runtime + traduction BRK104
+          test -s APP-Applications/pdf-studio/app-0.9.23.html
+          grep -q '../_shared/selection-scope.js' APP-Applications/pdf-studio/app-0.9.23.html
+          grep -q '../_shared/archive-workspace.js' APP-Applications/pdf-studio/app-0.9.23.html
+          grep -q 'runtime0922/bilingual-translation.js' APP-Applications/pdf-studio/app-0.9.23.html
+          grep -q 'Alpha 0.9.23 TEST' APP-Applications/pdf-studio/app-0.9.23.html
+          ! grep -q 'const dssFetchBase0918=dssFetch0916' APP-Applications/pdf-studio/runtime0918/google-drive.js
+          ! grep -q '^dssFetch0916=async function' APP-Applications/pdf-studio/runtime0919/unified-config-auth.js
+          grep -q 'app-0.9.23.html' APP-Applications/pdf-studio/index.html
+
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.22"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "0.9.23"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -177,4 +188,4 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.22 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 0.9.23 + DEMO v2: OK'

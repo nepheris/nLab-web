@@ -105,13 +105,7 @@ function canonicalSetGoogleDriveUi0919(){
 setGoogleDriveUi=canonicalSetGoogleDriveUi0919;
 
 // APP13 trust-service authentication is deliberately independent from Google Drive OAuth.
-dssFetch0916=async function(path,options={}){
- const base=typeof dssUrl0916==='function'?dssUrl0916():'';
- if(!base)throw new Error('Configurez d’abord l’URL du service nLab DSS.');
- const r=await fetch(base+path,Object.assign({credentials:'include'},options));
- if(!r.ok)throw new Error('DSS HTTP '+r.status+' · '+await r.text());
- return r;
-};
+ // Le transport DSS reste géré par le runtime 0.9.16 ; aucune référence inter-IIFE n'est faite ici.
 
 function mergeStampLibraries0919(globalItems,personalItems){
  const map=new Map();
