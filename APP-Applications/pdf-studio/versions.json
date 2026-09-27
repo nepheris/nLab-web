@@ -1,7 +1,16 @@
 {
   "current": "0.9.10",
-  "test": "0.9.21",
+  "test": "0.9.22",
   "versions": [
+    {
+      "version": "0.9.22",
+      "label": "Alpha 0.9.22 TEST",
+      "date": "2026-09-27",
+      "current": false,
+      "status": "test",
+      "href": "./app-0.9.22.html",
+      "notes": "TEST : intégration BRK104 PDF Bilingual Translator. Ajoute traduction bilingue EN/FR/DE/ES, original intact + traduction, mode côte à côte avec ratios 1/3–2/3, 50/50, 2/3–1/3 et inversion gauche/droite, ainsi que mode double-page/livre avec original sur page paire ou impaire. Traduction via launcher nLab Apps Script, Translator API navigateur ou endpoint HTTP configurable."
+    },
     {
       "version": "0.9.21",
       "label": "Alpha 0.9.21 TEST",
