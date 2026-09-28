@@ -1,6 +1,6 @@
 import{qs,qsa,toast,setStatus,bindSidebar,bindSectionControls,wireMenuTabs,jsonDownload,readJsonFile,today,downloadBlob,safeName}from'../../_shared/studio-v1/core.js';
 import{VariableEngine}from'../../_shared/studio-v1/variables.js';
-import{FileWorkspace}from'../../_shared/studio-v1/file-io.js';
+import{FileWorkspace,renderSelectedFilesSummary}from'../../_shared/studio-v1/file-io.js';
 import{DriveService}from'../../_shared/studio-v1/drive.js';
 import{PDFEngine}from'./pdf-engine.js';
 import{AnnotationManager}from'./annotations.js';
@@ -24,7 +24,7 @@ window.__NLAB_PDF_V1__={version:VERSION,engine,workspace,drive,variables:vars,an
 function log(action,detail='',meta={}){historyStore.add(action,detail,meta);renderHistory();if(ribbonContextKind==='history')showRibbonContext('history')}
 function renderHistory(){const box=qs('#documentHistory');if(box)box.innerHTML=historyStore.list(250).map(x=>'<div class="historyItem"><b>'+escapeHtml(x.action)+'</b><span>'+escapeHtml(new Date(x.at).toLocaleString('fr-FR')+(x.detail?' · '+x.detail:''))+'</span></div>').join('')}
 function escapeHtml(s){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
-function renderSelectedFiles(){const selected=workspace.selected(),all=workspace.items;vars.setRuntime({SELECTED_COUNT:selected.length});const n=qs('#selectedFilesCount'),box=qs('#selectedFilesSummary');if(n)n.textContent=selected.length+' / '+all.length;if(box)box.textContent=selected.length?selected.slice(0,12).map(x=>'✓ '+x.name).join('\n')+(selected.length>12?'\n… +'+(selected.length-12):''):'Aucun fichier sélectionné.';updateNamePreview()}
+function renderSelectedFiles(){const state=renderSelectedFilesSummary(workspace,{countEl:'#selectedFilesCount',summaryEl:'#selectedFilesSummary',limit:12});vars.setRuntime({SELECTED_COUNT:state.selected});updateNamePreview()}
 function currentScope(){return qs('#pageScope').value}
 function targetPages(){const p=engine.targetPages(currentScope());if(currentScope()==='selected'&&!p.length)toast('Cochez au moins une page');return p}
 function markSection(id){const d=qs(id);if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}}
