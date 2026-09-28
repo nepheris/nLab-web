@@ -304,6 +304,8 @@ jobs:
           PDF_STUDIO_FIXTURE2=/tmp/pdf-studio-v1-b.pdf \
           PDF_STUDIO_IMAGE=/tmp/pdf-studio-v1-signature.png \
           PDF_STUDIO_CONFIG=/tmp/pdf-studio-v1-config.json \
+          PDF_STUDIO_DOCX=/tmp/pdf-studio-v1.docx \
+          PDF_STUDIO_ODT=/tmp/pdf-studio-v1.odt \
           node tests/pdf-studio-v1-ui.mjs
 
       - name: Build PDF Studio 1.0 portable package
