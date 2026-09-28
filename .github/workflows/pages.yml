@@ -244,6 +244,24 @@ jobs:
           test -s "$ZIP"
           python -m zipfile -t "$ZIP"
 
+      - name: Prepare PDF Studio 1.0 transferable release artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/nlab-pdf-studio-v1-portable
+          mkdir -p /tmp/nlab-pdf-studio-v1-portable
+          python -m zipfile -e APP-Applications/pdf-studio/downloads/nLab-PDF-Studio-1.0.0-PORTABLE.zip /tmp/nlab-pdf-studio-v1-portable
+          test -s /tmp/nlab-pdf-studio-v1-portable/RELEASE.json
+          test -s /tmp/nlab-pdf-studio-v1-portable/index.html
+
+      - name: Upload PDF Studio 1.0 transferable release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nLab-PDF-Studio-1.0.0-PORTABLE
+          path: /tmp/nlab-pdf-studio-v1-portable/
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Build shared nLab demo corpus
         shell: bash
         run: |
