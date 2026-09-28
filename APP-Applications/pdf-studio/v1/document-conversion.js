@@ -1,4 +1,4 @@
-import{downloadBlob,safeName}from'../../_shared/studio-v1/core.js';
+import{safeName}from'../../_shared/studio-v1/core.js';
 function esc(s=''){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
 function stem(name='document.pdf'){return safeName(name.replace(/\.[^.]+$/,''))}
 async function pdfPagesText(engine,pages){const out=[];for(const p of pages)out.push({page:p,text:await engine.pageText(p)});return out}
@@ -27,9 +27,9 @@ export class DocumentConversion{
  async pdfTo(format,pages){
   if(!this.engine.pdfDoc)throw new Error('Aucun PDF');
   const list=pages?.length?pages:Array.from({length:this.engine.pageCount},(_,i)=>i+1),rows=await pdfPagesText(this.engine,list),base=stem(this.engine.fileName);
-  if(format==='txt'){const blob=new Blob([rows.map(r=>'--- Page '+r.page+' ---\n'+r.text).join('\n\n')],{type:'text/plain;charset=utf-8'});downloadBlob(blob,base+'.txt');return{blob,name:base+'.txt',fidelity:'texte'}}
-  if(format==='docx'){const blob=await makeDocx(rows);downloadBlob(blob,base+'.docx');return{blob,name:base+'.docx',fidelity:'texte-structure'}}
-  if(format==='odt'){const blob=await makeOdt(rows);downloadBlob(blob,base+'.odt');return{blob,name:base+'.odt',fidelity:'texte-structure'}}
+  if(format==='txt'){const blob=new Blob([rows.map(r=>'--- Page '+r.page+' ---\n'+r.text).join('\n\n')],{type:'text/plain;charset=utf-8'});return{blob,name:base+'.txt',fidelity:'texte'}}
+  if(format==='docx'){const blob=await makeDocx(rows);return{blob,name:base+'.docx',fidelity:'texte-structure'}}
+  if(format==='odt'){const blob=await makeOdt(rows);return{blob,name:base+'.odt',fidelity:'texte-structure'}}
   throw new Error('Format de conversion inconnu : '+format)
  }
 }
