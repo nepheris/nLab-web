@@ -17,7 +17,7 @@ try{
  if(await page.locator('[data-date]').count()!==5)fail('Les 5 dates ne sont pas présentes');
  if(await page.locator('#sourcePreset').inputValue()!=='manual'||await page.locator('#destinationPreset').inputValue()!=='manual')fail('Entrée/sortie pas en choix manuel');
  await page.locator('#configInput').setInputFiles(configFixture);await page.waitForFunction(()=>document.querySelector('#operatorInitials').value==='CI');
- if(!(await page.locator('#namePreview').innerText()).startsWith('CI_'))fail('Import configuration JSON non appliqué');
+ {const preview=(await page.locator('#namePreview').innerText()).trim(),debug=await page.evaluate(()=>({initials:document.querySelector('#operatorInitials')?.value,prefix:document.querySelector('#namePrefix')?.value,template:document.querySelector('#nameTemplate')?.value,suffix:document.querySelector('#nameSuffix')?.value,preview:document.querySelector('#namePreview')?.textContent,vars:window.__NLAB_PDF_V1__?.variables?.values}));if(!preview.startsWith('CI_'))fail('Import configuration JSON non appliqué: '+JSON.stringify(debug));}
  const cfgDl=page.waitForEvent('download');await page.locator('#exportConfig').click();const cfgDownload=await cfgDl;if(!cfgDownload.suggestedFilename().endsWith('.json'))fail('Export config JSON invalide');
  await page.locator('#filesInput').setInputFiles(fixture);await page.waitForFunction(()=>document.querySelectorAll('#pageStrip .pageThumb').length===12,null,{timeout:30000});await page.waitForTimeout(400);
  const thumbs=page.locator('#pageStrip .pageThumb'),checks=page.locator('#pageStrip .pageCheck');if(await checks.count()!==12)fail('Cases vignettes: '+await checks.count()+'/12');
