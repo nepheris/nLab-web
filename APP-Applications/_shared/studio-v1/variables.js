@@ -5,7 +5,7 @@ function extension(name=''){const m=String(name).match(/\.([^.]+)$/);return m?m[
 export class VariableEngine{
  constructor(){
   this.values={STAMP_DATE:today(),DATE_A:today(),DATE_B:today(),DATE_C:today(),DATE_D:today(),INITIALS:'',CLIENT:'',SITE:'',SERVICE:'',REFERENCE:'',PROJECT:'',CATEGORY:'',TAG:'',TREATMENT:'TRAITEMENT'};
-  this.runtime={FOLDER:'',PATH:'',RELATIVE_PATH:'',SOURCE:'LOCAL',OUTPUT:'LOCAL',PAGE:'',PAGES:'',SELECTED_COUNT:'',FILESIZE:'',STAMP_ID:'',STAMP_LABEL:'',STAMP_PREFIX:'',STAMP_SUFFIX:''};
+  this.runtime={FOLDER:'',PATH:'',RELATIVE_PATH:'',SOURCE:'LOCAL',OUTPUT:'LOCAL',PAGE:'',PAGES:'',SELECTED_COUNT:'',FILESIZE:'',INDEX:'',OCR_LANG:'',GRAY:'',OUTPUT_FORMAT:'PDF',STAMP_ID:'',STAMP_LABEL:'',STAMP_PREFIX:'',STAMP_SUFFIX:''};
   this.operation={ocr:false,dpi:null,jpeg:null,gray:false,annot:false,fusion:false,stamp:false}
  }
  set(k,v){this.values[k]=v??'';return this}
