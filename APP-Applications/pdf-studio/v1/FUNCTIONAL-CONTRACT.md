@@ -27,6 +27,7 @@ Status vocabulary:
 | Output | provider: local / source / Drive / browser | IMPLEMENTED |
 | Output | structure: root / treatment / year-month / week / custom template | IMPLEMENTED |
 | Output | variable nested Drive folders under Exports | EXTERNAL |
+| Output | safe folder/path code template + resolved preview | IMPLEMENTED |
 | Output | explicit Activate mode | BROWSER-TESTED |
 | Output | PDF + ZIP | BROWSER-TESTED |
 | Naming | prefix/template/suffix | IMPLEMENTED |
@@ -54,7 +55,7 @@ Status vocabulary:
 | Optimization | independent DPI/JPEG/grayscale scope | IMPLEMENTED |
 | Translation | side-by-side / facing pages | IMPLEMENTED |
 | Translation | Browser Translator API | EXTERNAL |
-| Translation | HTTP provider | EXTERNAL |
+| Translation | HTTP provider (priority when explicitly configured) | EXTERNAL |
 | Header/footer | left/center/right templates + PAGE/PAGES | IMPLEMENTED |
 | Header/footer | variable-driven QR placement | IMPLEMENTED |
 | Conversion | PDF -> PNG/JPG/TXT/DOCX/ODT | IMPLEMENTED |
