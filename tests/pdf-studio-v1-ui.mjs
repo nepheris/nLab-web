@@ -91,7 +91,7 @@ await page.locator('#sectionStamps').evaluate(e=>e.open=true);await page.locator
  // Translation endpoint contract + bilingual PDF composition.
  await page.route('https://translation.test/**',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({translation:'Translated by nLab CI'})}));
  await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.selectPage(4));await page.locator('#pageScope').selectOption('current');await page.locator('#translationSource').selectOption('fr');await page.locator('#translationTarget').selectOption('en');await page.locator('#translationEndpoint').fill('https://translation.test/api');
- const trDl=page.waitForEvent('download');await page.locator('#runTranslation').click();const td=await trDl;if(!/_bilingue\.pdf$/i.test(td.suggestedFilename()))fail('Traduction sans PDF bilingue: '+td.suggestedFilename());
+ const trDl=page.waitForEvent('download',{timeout:12000}).catch(()=>null);await page.locator('#runTranslation').click();const td=await trDl;if(!td){const debug=await page.evaluate(()=>({translation:document.querySelector('#translationStatus')?.textContent,status:document.querySelector('#studioStatusText')?.textContent,outputProvider:document.querySelector('#outputProvider')?.value,outputActive:document.querySelector('#outputModeStatus')?.textContent}));fail('Traduction sans téléchargement: '+JSON.stringify(debug)+' errors='+errors.join(' | '))}if(!/_bilingue\.pdf$/i.test(td.suggestedFilename()))fail('Traduction sans PDF bilingue: '+td.suggestedFilename());
 
 
  await page.locator('#sectionCompareBatch').evaluate(e=>e.open=true);await page.locator('#compareInput').setInputFiles(fixture2);
