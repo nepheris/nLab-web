@@ -314,8 +314,10 @@ jobs:
           BASE_URL="https://nepheris.github.io/nLab-web"
           smoke_fetch() {
             local path="$1" out="$2" ok=0
-            for attempt in 1 2 3 4 5 6 7 8; do
+            echo "Smoke test: ${path}"
+            for attempt in $(seq 1 36); do
               if curl -fsS "${BASE_URL}/${path}?v=${GITHUB_SHA}" -o "${out}"; then ok=1; break; fi
+              echo "  tentative ${attempt}/36 — propagation GitHub Pages en cours"
               sleep 5
             done
             test "${ok}" -eq 1
@@ -323,7 +325,7 @@ jobs:
           smoke_fetch "APP-Applications/_shared/selection-scope.js" /tmp/nlab-selection-scope.js
           smoke_fetch "APP-Applications/_shared/archive-workspace.js" /tmp/nlab-archive-workspace.js
           smoke_fetch "APP-Applications/pdf-studio/app-0.9.25.html" /tmp/nlab-pdf-studio-0925.html
-          smoke_fetch "APP-Applications/pdf-studio/v1/" /tmp/nlab-pdf-studio-v1.html
+          smoke_fetch "APP-Applications/pdf-studio/v1/index.html" /tmp/nlab-pdf-studio-v1.html
           smoke_fetch "APP-Applications/pdf-studio/downloads/nLab-PDF-Studio-1.0.0-PORTABLE.zip" /tmp/nlab-pdf-studio-v1.zip
           grep -q 'NLAB_SELECTION_SCOPE' /tmp/nlab-selection-scope.js
           grep -q 'NLAB_ARCHIVE_WORKSPACE' /tmp/nlab-archive-workspace.js
