@@ -27,3 +27,11 @@ export class FileWorkspace{
  async writeBlob(blob,name,{mode='download',operationFolder='TRAITEMENT',granularity='month',pathTemplate=''}={}){try{if(mode!=='download'){const dir=await this.routeDirectory(mode,{operationFolder,granularity,pathTemplate});if(dir){const fh=await dir.getFileHandle(name,{create:true}),w=await fh.createWritable();await w.write(blob);await w.close();toast('Enregistré : '+name);return{kind:'filesystem',name}}}downloadBlob(blob,name);toast('Téléchargé : '+name);return{kind:'download',name}}catch(e){downloadBlob(blob,name);toast('Repli téléchargement : '+name);return{kind:'download',name,error:String(e.message||e)}}}
 }
 function isoWeek(d){const x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));x.setUTCDate(x.getUTCDate()+4-(x.getUTCDay()||7));const y=new Date(Date.UTC(x.getUTCFullYear(),0,1));return String(Math.ceil((((x-y)/86400000)+1)/7)).padStart(2,'0')}
+
+export function renderSelectedFilesSummary(workspace,{countEl=null,summaryEl=null,limit=12}={}){
+ const selected=workspace?.selected?.()||[],all=workspace?.items||[];
+ const count=typeof countEl==='string'?document.querySelector(countEl):countEl,summary=typeof summaryEl==='string'?document.querySelector(summaryEl):summaryEl;
+ if(count)count.textContent=selected.length+' / '+all.length;
+ if(summary)summary.textContent=selected.length?selected.slice(0,limit).map(x=>'✓ '+x.name).join('\n')+(selected.length>limit?'\n… +'+(selected.length-limit):''):'Aucun fichier sélectionné.';
+ return{selected:selected.length,total:all.length}
+}
