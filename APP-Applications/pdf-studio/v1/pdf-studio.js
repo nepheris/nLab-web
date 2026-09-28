@@ -7,32 +7,48 @@ import{AnnotationManager}from'./annotations.js';
 import{PDFTools}from'./pdf-tools.js';
 import{AdvancedPDFTools}from'./advanced-tools.js';
 import{icon}from'../../_shared/studio-v1/icons.js';
+import{ActionHistory}from'../../_shared/studio-v1/history.js';
+import{STUDIO_TEMPLATE_PRESETS,presetBy}from'../../_shared/studio-v1/templates.js';
+import{DocumentConversion}from'./document-conversion.js';
 
 const VERSION='1.0.0 TEST',vars=new VariableEngine(),engine=new PDFEngine(),drive=new DriveService({storageKey:'nlab-pdf-studio-v1-google'});
-const history=[],stamps=[
-{id:'valid',label:'VALIDÉ',template:'VALIDÉ · {INITIALS} · {STAMP_DATE:DD/MM/YYYY}'},
-{id:'date',label:'DATE',template:'{STAMP_DATE:DD/MM/YYYY}'},
-{id:'received',label:'REÇU',template:'REÇU le {DATE_A:DD/MM/YYYY} · {INITIALS}'},
-{id:'nc',label:'NON CONFORME',template:'NON CONFORME · {DATE_B:DD/MM/YYYY} · {INITIALS}'},
-{id:'display',label:'AFFICHÉ JUSQU’AU',template:'AFFICHÉ · jusqu’au {DATE_C:DD/MM/YYYY}'}
-];let activeStamp=stamps[0].id,signatureData=null,outputActive=false;
-const workspace=new FileWorkspace({queueEl:qs('#fileQueue'),onOpen:item=>loadItem(item)});
+const historyStore=new ActionHistory({storageKey:'nlab-pdf-studio-v1-actions',limit:250});
+const stamps=STUDIO_TEMPLATE_PRESETS.stamp.map(x=>({...x}));
+let activeStamp=stamps[0].id,signatureData=null,outputActive=false;
+const workspace=new FileWorkspace({queueEl:qs('#fileQueue'),onOpen:item=>loadItem(item),onSelectionChange:renderSelectedFiles,onLoad:renderSelectedFiles});
 const annotations=new AnnotationManager({engine,layer:qs('#annotationLayer'),canvasWrap:qs('#pageCanvasWrap'),variables:vars});
 const tools=new PDFTools({engine,annotations,variables:vars}),advanced=new AdvancedPDFTools({engine,annotations,variables:vars});
-window.__NLAB_PDF_V1__={version:VERSION,engine,workspace,drive,variables:vars,annotations,tools,advanced};
+const conversion=new DocumentConversion({engine,workspace,variables:vars});
+window.__NLAB_PDF_V1__={version:VERSION,engine,workspace,drive,variables:vars,annotations,tools,advanced,conversion,history:historyStore};
 
-function log(action,detail=''){history.unshift({time:new Date().toLocaleTimeString('fr-FR'),action,detail});history.splice(60);renderHistory()}
-function renderHistory(){qs('#documentHistory').innerHTML=history.map(x=>'<div class="historyItem"><b>'+escapeHtml(x.action)+'</b><span>'+escapeHtml(x.time+(x.detail?' · '+x.detail:''))+'</span></div>').join('')}
+function log(action,detail='',meta={}){historyStore.add(action,detail,meta);renderHistory()}
+function renderHistory(){const box=qs('#documentHistory');if(box)box.innerHTML=historyStore.list(250).map(x=>'<div class="historyItem"><b>'+escapeHtml(x.action)+'</b><span>'+escapeHtml(new Date(x.at).toLocaleString('fr-FR')+(x.detail?' · '+x.detail:''))+'</span></div>').join('')}
 function escapeHtml(s){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function renderSelectedFiles(){const selected=workspace.selected(),all=workspace.items;vars.setRuntime({SELECTED_COUNT:selected.length});const n=qs('#selectedFilesCount'),box=qs('#selectedFilesSummary');if(n)n.textContent=selected.length+' / '+all.length;if(box)box.textContent=selected.length?selected.slice(0,12).map(x=>'✓ '+x.name).join('\n')+(selected.length>12?'\n… +'+(selected.length-12):''):'Aucun fichier sélectionné.';updateNamePreview()}
 function currentScope(){return qs('#pageScope').value}
 function targetPages(){const p=engine.targetPages(currentScope());if(currentScope()==='selected'&&!p.length)toast('Cochez au moins une page');return p}
 function markSection(id){const d=qs(id);if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}}
-function syncVariablesFromUi(){vars.set('INITIALS',qs('#operatorInitials').value.trim());for(const k of ['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D'])vars.set(k,qs('[data-date="'+k+'"]').value||today());syncNameFlags()}
-function syncNameFlags(){vars.setOperation({ocr:qs('#suffixOcr').checked,dpi:qs('#suffixDpi').checked?Number(qs('#optDpi').value||150):vars.operation.dpi,jpeg:qs('#suffixJpeg').checked?Number(qs('#optJpeg').value||82):vars.operation.jpeg,gray:qs('#suffixGray').checked,annot:qs('#suffixAnnot').checked,fusion:qs('#suffixFusion').checked});updateNamePreview()}
-function outputName(ext='.pdf'){syncVariablesFromUi();return vars.buildName(engine.fileName,{prefix:qs('#namePrefix').value,template:qs('#nameTemplate').value||'{FILENAME}',suffix:qs('#nameSuffix').value,extension:ext,operationSuffix:true})}
-function updateNamePreview(){if(!qs('#namePreview'))return;qs('#namePreview').textContent=vars.buildName(engine.fileName,{prefix:qs('#namePrefix').value,template:qs('#nameTemplate').value||'{FILENAME}',suffix:qs('#nameSuffix').value,extension:'.pdf',operationSuffix:true})}
-function renderVariables(){const keys=['FILENAME','DATE','TIME','DATETIME','INITIALS','STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D','OP','DPI','JPEG'];qs('#variableGrid').innerHTML='';for(const k of keys){const c=document.createElement('code');c.textContent='{'+k+'}';c.title='Copier';c.onclick=async()=>{await navigator.clipboard?.writeText(c.textContent);toast(c.textContent+' copié')};qs('#variableGrid').append(c)}const grid=qs('#dateGrid');for(const k of ['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D']){const l=document.createElement('label');l.className='dateRow';l.innerHTML='<span>'+({STAMP_DATE:'Date tampon',DATE_A:'Date A',DATE_B:'Date B',DATE_C:'Date C',DATE_D:'Date D'}[k])+'</span><input type="date" data-date="'+k+'" value="'+today()+'">';grid.append(l)}qsa('[data-date]').forEach(x=>x.oninput=()=>{syncVariablesFromUi();renderStampLibrary()})}
-function renderStampLibrary(){const box=qs('#stampLibrary');box.innerHTML='';for(const s of stamps){const row=document.createElement('div');row.className='stampPreset'+(s.id===activeStamp?' active':'');row.innerHTML='<button type="button">'+escapeHtml(s.label)+'</button><button type="button" title="Utiliser">✓</button>';row.querySelectorAll('button').forEach(b=>b.onclick=()=>{activeStamp=s.id;qs('#stampTemplate').value=s.template;renderStampLibrary()});box.append(row)}}
+function extDot(name=''){const m=String(name).match(/(\.[^.]+)$/);return m?m[1]:''}
+function currentStamp(){return stamps.find(s=>s.id===activeStamp)||stamps[0]}
+function applyStampNaming(){const s=currentStamp();vars.setRuntime({STAMP_ID:s.id,STAMP_LABEL:s.label,STAMP_PREFIX:qs('#stampApplyNaming')?.checked?(qs('#stampNamePrefix')?.value||s.filenamePrefix||''):'',STAMP_SUFFIX:qs('#stampApplyNaming')?.checked?(qs('#stampNameSuffix')?.value||s.filenameSuffix||''):''});vars.setOperation({stamp:true,annot:true});updateNamePreview()}
+function syncVariablesFromUi(){
+ const map={INITIALS:'operatorInitials',CLIENT:'globalClient',PROJECT:'globalProject',REFERENCE:'globalReference',SITE:'globalSite',SERVICE:'globalService',CATEGORY:'globalCategory',TAG:'globalTag',TREATMENT:'globalTreatment'};
+ for(const[k,id]of Object.entries(map)){const el=qs('#'+id);if(el)vars.set(k,el.value.trim())}
+ for(const k of ['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D'])vars.set(k,qs('[data-date="'+k+'"]')?.value||today());
+ vars.setRuntime({PAGE:engine.currentPage||'',PAGES:engine.pageCount||'',SELECTED_COUNT:workspace.selected().length,SOURCE:(qs('#sourceProvider')?.value||'local').toUpperCase(),OUTPUT:(qs('#outputProvider')?.value||'local').toUpperCase()});
+ if(qs('#operationFolder'))qs('#operationFolder').value=vars.values.TREATMENT||'TRAITEMENT';
+ syncNameFlags()
+}
+function syncNameFlags(){vars.setOperation({ocr:qs('#suffixOcr')?.checked,dpi:qs('#suffixDpi')?.checked?Number(qs('#optDpi')?.value||150):null,jpeg:qs('#suffixJpeg')?.checked?Number(qs('#optJpeg')?.value||82):null,gray:qs('#suffixGray')?.checked,annot:qs('#suffixAnnot')?.checked||vars.operation.annot,fusion:qs('#suffixFusion')?.checked,stamp:vars.operation.stamp});updateNamePreview()}
+function nameForFile(fileName,ext=extDot(fileName)||'.pdf'){
+ const sp={prefix:vars.runtime.STAMP_PREFIX||'',suffix:vars.runtime.STAMP_SUFFIX||''},mode=qs('#namingMode')?.value||'classic';
+ if(mode==='code')return vars.buildName(fileName,{prefix:sp.prefix,template:qs('#nameCodeTemplate')?.value||'{FILENAME}',suffix:sp.suffix,extension:ext,operationSuffix:true});
+ return vars.buildName(fileName,{prefix:(qs('#namePrefix')?.value||'')+sp.prefix,template:qs('#nameTemplate')?.value||'{FILENAME}',suffix:(qs('#nameSuffix')?.value||'')+sp.suffix,extension:ext,operationSuffix:true})
+}
+function outputName(ext='.pdf'){syncVariablesFromUi();return nameForFile(engine.fileName,ext)}
+function updateNamePreview(){const el=qs('#namePreview');if(el)el.textContent=nameForFile(engine.fileName,'.pdf')}
+function renderVariables(){const keys=['FILENAME','FULLNAME','EXT','FOLDER','PATH','RELATIVE_PATH','DATE','TIME','DATETIME','YEAR','MONTH','DAY','WEEK','PAGE','PAGES','SELECTED_COUNT','INITIALS','CLIENT','PROJECT','REFERENCE','SITE','SERVICE','CATEGORY','TAG','TREATMENT','STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D','STAMP_ID','STAMP_LABEL','STAMP_PREFIX','STAMP_SUFFIX','SOURCE','OUTPUT','OP','DPI','JPEG'];const box=qs('#variableGrid');box.innerHTML='';for(const k of keys){const el=document.createElement('code');el.textContent='{'+k+'}';el.title='Copier';el.onclick=async()=>{await navigator.clipboard?.writeText(el.textContent);toast(el.textContent+' copié')};box.append(el)}const grid=qs('#dateGrid');grid.innerHTML='';for(const k of ['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D']){const l=document.createElement('label');l.className='dateRow';l.innerHTML='<span>'+({STAMP_DATE:'Date tampon',DATE_A:'Date A',DATE_B:'Date B',DATE_C:'Date C',DATE_D:'Date D'}[k])+'</span><input type="date" data-date="'+k+'" value="'+(vars.values[k]||today())+'">';grid.append(l)}qsa('[data-date]').forEach(x=>x.oninput=()=>syncVariablesFromUi())}
+function renderStampLibrary(){const box=qs('#stampLibrary');box.innerHTML='';for(const s of stamps){const row=document.createElement('div');row.className='stampPreset'+(s.id===activeStamp?' active':'');row.innerHTML='<button type="button">'+escapeHtml(s.label)+'</button><button type="button" title="Utiliser">✓</button>';row.querySelectorAll('button').forEach(b=>b.onclick=()=>{activeStamp=s.id;qs('#stampTemplate').value=s.template;qs('#stampNamePrefix').value=s.filenamePrefix||'';qs('#stampNameSuffix').value=s.filenameSuffix||'';renderStampLibrary();showRibbonContext('stamp')});box.append(row)}}
 let renderGeneration=0,renderTimer=0;
 function scheduleViewerRender(){clearTimeout(renderTimer);const gen=++renderGeneration;renderTimer=setTimeout(()=>renderViewer(gen),0)}
 async function renderSelectableText(page,viewport,gen){
