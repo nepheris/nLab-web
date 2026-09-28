@@ -23,7 +23,7 @@ export function bindSidebar({main='#studioMain',sidebar='#studioSidebar',resizer
    const move=ev=>applyWidth(w+ev.clientX-x),up=()=>{dragging=false;g.classList.remove('dragging');window.removeEventListener(kind+'move',move);window.removeEventListener(kind+'up',up);if(kind==='pointer')window.removeEventListener('pointercancel',up)};
    window.addEventListener(kind+'move',move);window.addEventListener(kind+'up',up,{once:true});if(kind==='pointer')window.addEventListener('pointercancel',up,{once:true})
   };
-  g.addEventListener('pointerdown',e=>start(e,'pointer'));g.addEventListener('mousedown',e=>start(e,'mouse'))
+  g.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;start(e,'pointer')});g.addEventListener('mousedown',e=>start(e,'mouse'))
  }
 }
 export function bindSectionControls({expand='#sidebarExpandAll',collapse='#sidebarCollapseAll',root='#studioSidebar'}={}){
