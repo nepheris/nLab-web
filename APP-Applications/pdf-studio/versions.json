@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "0.9.25",
+  "test": "1.0.0",
   "versions": [
+    {
+      "version": "1.0.0",
+      "label": "PDF Studio 1.0.0 TEST",
+      "date": "2026-09-28",
+      "current": false,
+      "status": "test",
+      "href": "./v1/",
+      "notes": "Réécriture majeure autonome : framework Studio V1 commun, branding nLab, entrée locale/Drive fichiers multiples/dossiers/ZIP, module fichiers sélectionnés, sorties/classification à templates, nommage code, portée multi-pages avec cases, annotations/images/tampons/signatures, historique persistant et ruban contextuel, en-têtes/pieds variables + QR, OCR séparé de l’optimisation, conversions PDF↔DOCX/ODT/TXT/images, traduction bilingue, formulaires, caviardage, comparaison/batch et package portable 1.0. Aucun runtime 0.9.x."
+    },
     {
       "version": "0.9.25",
       "label": "Alpha 0.9.25 TEST",
       "date": "2026-09-27",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./app-0.9.25.html",
       "notes": "TEST de remise en visibilité : contrôles persistants pour les cases à cocher sur les vignettes, portée Page en cours / Pages cochées / Tout le document, catégorie 0 Configuration regroupant variables nommées, préconfiguration JSON, espace personnel et 5 dates, presets entrée/sortie par défaut sur Choix manuel avec bouton Charger, activation explicite du mode de sortie, sortie même dossier que la source, panneau gauche redimensionnable/compact/masquable avec restauration, navigation nLab Web / Studios / PDF Studio et identité visuelle nLab Web."
     },

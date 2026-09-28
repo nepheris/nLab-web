@@ -1,0 +1,19 @@
+.pdfViewerHeader{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px}.pdfViewerHeader .spacer{flex:1}
+#pageCanvasWrap{position:relative;width:max-content;min-width:100%;margin:auto}.annotationLayer{pointer-events:none}.annotation{pointer-events:auto}
+#pageCanvas{transform-origin:top left}.stampLibrary{display:grid;gap:4px;max-height:180px;overflow:auto}
+.stampPreset{display:grid;grid-template-columns:1fr auto;gap:4px;align-items:center}.stampPreset button:first-child{text-align:left}
+.stampPreset.active button:first-child{background:#FFF2F0;border-color:#D7A09B;color:#8F332D;font-weight:800}
+.namedSuffixes{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}.namedSuffixes label{font-size:10px;display:flex;align-items:center;gap:4px;border:1px solid #DDE4EA;border-radius:6px;padding:5px;background:#fff}.namedSuffixes input{width:auto}
+.configDates .dateRow{grid-template-columns:95px 1fr}.oauthStatus.connected{background:#EDF7F1;border-color:#BBDCC7;color:#205C2F}
+.historyList{display:grid;gap:4px;max-height:190px;overflow:auto}.historyItem{font-size:10px;padding:5px;border-bottom:1px solid #EDF0F2}.historyItem b{display:block}
+.translationGrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}#ocrResult{min-height:110px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px}
+.signaturePreview{display:grid;place-items:center;min-height:84px;border:1px dashed #AEBCCA;border-radius:7px;background:#fff}
+.signaturePreview img{max-width:100%;max-height:80px}.scopeOpGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
+#diagnosticList{font-size:10px;line-height:1.55}.diagOk{color:var(--nlab-success)}.diagWarn{color:var(--nlab-warning)}.diagBad{color:var(--nlab-danger)}
+#translationStatus{white-space:pre-wrap}
+.textLayer{position:absolute;inset:0;overflow:hidden;opacity:1;line-height:1;z-index:2;pointer-events:auto}
+.textLayer span,.textLayer br{color:transparent;position:absolute;white-space:pre;cursor:text;transform-origin:0 0}
+.textLayer span::selection{background:#5B9DCE55}
+.annotationLayer{z-index:3}
+.annotation.redaction{background:#000!important;border:2px solid #A1453F!important;min-width:80px;min-height:24px;opacity:.88}
+#compareStatus{max-height:190px;overflow:auto;white-space:pre-wrap}

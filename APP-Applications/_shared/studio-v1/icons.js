@@ -1,0 +1,28 @@
+export const ICONS={
+home:'<svg viewBox="0 0 24 24"><path d="M3 11 12 3l9 8v10h-6v-6H9v6H3z"/></svg>',
+open:'<svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v10H3z"/><path d="M12 13h6M15 10l3 3-3 3"/></svg>',
+folder:'<svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v10H3z"/><path d="M3 7V5h6l2 2"/></svg>',
+save:'<svg viewBox="0 0 24 24"><path d="M5 3h12l2 2v16H5z"/><path d="M8 3v6h8V3M8 16h8"/></svg>',
+zip:'<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM15 3v5h5"/><path d="M10 6h2M10 9h2M10 12h2M10 15h2M10 18h2"/></svg>',
+rotateL:'<svg viewBox="0 0 24 24"><path d="M7 7H3V3"/><path d="M3 7a9 9 0 1 1-1 8"/></svg>',
+rotateR:'<svg viewBox="0 0 24 24"><path d="M17 7h4V3"/><path d="M21 7a9 9 0 1 0 1 8"/></svg>',
+addPage:'<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h5M12 11v6M9 14h6"/></svg>',
+duplicate:'<svg viewBox="0 0 24 24"><rect x="7" y="7" width="12" height="14" rx="2"/><path d="M15 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h2"/></svg>',
+trash:'<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
+extract:'<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM15 3v5h5"/><path d="M9 13h6M12 10v6"/><path d="m17 16 3 3 3-3"/></svg>',
+text:'<svg viewBox="0 0 24 24"><path d="M5 5h14M12 5v14M8 19h8"/></svg>',
+stamp:'<svg viewBox="0 0 24 24"><path d="M7 20h10M8 16h8l-1-4c-.4-1.5-1.1-2.7-3-2.7S9.4 10.5 9 12zM9 9V5a3 3 0 0 1 6 0v4"/></svg>',
+highlight:'<svg viewBox="0 0 24 24"><path d="m5 15 9-9 4 4-9 9H5zM4 21h16"/></svg>',
+pen:'<svg viewBox="0 0 24 24"><path d="m4 20 4.5-1L19 8.5 15.5 5 5 15.5zM13.5 7l3.5 3.5"/></svg>',
+image:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/></svg>',
+signature:'<svg viewBox="0 0 24 24"><path d="M3 17c4-1 5-8 8-8 2 0 0 6 2 6 2 0 3-4 5-4 1.5 0 1.5 3 3 3"/><path d="M3 21h18"/></svg>',
+ocr:'<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/><path d="M3 7V3h4M17 3h4v4M3 17v4h4M21 17v4h-4"/></svg>',
+translate:'<svg viewBox="0 0 24 24"><path d="M4 5h10M9 3v2M6 9c2.5 3 5 4.5 8 5"/><path d="M12 9c-1 3-3.5 6-7 8M15 21l3-8 3 8M16 18h4"/></svg>',
+drive:'<svg viewBox="0 0 24 24"><path d="M8 3h8l5 9-4 7H7l-4-7z"/><path d="M8 3l5 9h8M3 12h10l4 7"/></svg>',
+rename:'<svg viewBox="0 0 24 24"><path d="M4 6h10M4 12h8M4 18h6"/><path d="m14 16 5-5 2 2-5 5-3 1z"/></svg>',
+headerFooter:'<svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 7h8M8 17h8"/><path d="M8 10h8M8 14h8"/></svg>',
+convert:'<svg viewBox="0 0 24 24"><path d="M4 7h13l-3-3M17 7l-3 3M20 17H7l3 3M7 17l3-3"/></svg>',
+history:'<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6"/><path d="M4 4v5h5M12 8v5l3 2"/></svg>',
+config:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9 6.1a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L5 11a7 7 0 0 0 0 2l-2.1 1.5 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.5 3.1h5l.5-3.1a7 7 0 0 0 1.7-1l2.4 1 2-3.4L19 13a7 7 0 0 0 .1-1z"/></svg>'
+};
+export function icon(name){return ICONS[name]||''}

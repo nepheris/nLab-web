@@ -1,0 +1,69 @@
+# PDF Studio 1.0 — functional contract
+
+Status vocabulary:
+- IMPLEMENTED: code and UI exist.
+- BROWSER-TESTED: automated Chromium interaction passed.
+- EXTERNAL: requires a configured provider or account.
+- PENDING: not yet accepted.
+
+| Area | Function | Target |
+|---|---|---|
+| Branding | canonical nLab wordmark and design tokens | BROWSER-TESTED |
+| Studio shell | common header/menu/ribbon/status | BROWSER-TESTED |
+| Sidebar | resize, normal/compact/hidden, restore | BROWSER-TESTED |
+| Configuration | section 0 before input | BROWSER-TESTED |
+| Variables | global/template variables + five stamp dates | IMPLEMENTED |
+| Variables | file/path/page/technical/stamp runtime variables | IMPLEMENTED |
+| Config JSON | import/export profile | IMPLEMENTED |
+| Input | manual by default + Load | BROWSER-TESTED |
+| Input | single/multiple files, folders, ZIP | IMPLEMENTED |
+| Input | PDF/images/DOCX/ODT/TXT sources | IMPLEMENTED |
+| Input | explicit Local / Google Drive provider | IMPLEMENTED |
+| Input | Google Drive multi-file Picker | EXTERNAL |
+| Input | persistent last folder handle | IMPLEMENTED |
+| File queue | explorer, current file, select all/none, history | IMPLEMENTED |
+| File queue | selected-files summary module | IMPLEMENTED |
+| Output | manual root + persistent handle | IMPLEMENTED |
+| Output | provider: local / source / Drive / browser | IMPLEMENTED |
+| Output | structure: root / treatment / year-month / week / custom template | IMPLEMENTED |
+| Output | variable nested Drive folders under Exports | EXTERNAL |
+| Output | safe folder/path code template + resolved preview | IMPLEMENTED |
+| Output | explicit Activate mode | BROWSER-TESTED |
+| Output | PDF + ZIP | BROWSER-TESTED |
+| Naming | prefix/template/suffix | IMPLEMENTED |
+| Naming | full code-template mode + presets | IMPLEMENTED |
+| Naming | batch preview + safe renamed copies + renamed ZIP | IMPLEMENTED |
+| Naming | OCR/DPI/JPEG/GRIS/ANNOT/FUSION suffixes | IMPLEMENTED |
+| Pages | thumbnails with top-left checkbox | BROWSER-TESTED |
+| Pages | current / checked / entire document scope | BROWSER-TESTED |
+| Pages | all / none selection | BROWSER-TESTED |
+| Viewer | horizontal thumbnail scrolling | BROWSER-TESTED |
+| Viewer | thumbnail zoom | BROWSER-TESTED |
+| Viewer | document zoom / width / page fit | IMPLEMENTED |
+| Pages | rotate scope | BROWSER-TESTED |
+| Pages | add blank / duplicate / delete / extract | IMPLEMENTED |
+| Pages | merge checked PDFs | BROWSER-TESTED |
+| Objects | text / highlight / pen / image | IMPLEMENTED |
+| Ribbon | contextual quick controls linked to detailed sidebar | IMPLEMENTED |
+| Stamps | presets + custom template + five dates | IMPLEMENTED |
+| Stamps | apply to current/scope | BROWSER-TESTED |
+| Stamps | import/export JSON | IMPLEMENTED |
+| Stamps | linked filename prefix/suffix on actual stamp use | IMPLEMENTED |
+| Signature | visual draw/import | IMPLEMENTED |
+| Signature | Drive signature library | EXTERNAL |
+| OCR | independent Tesseract scope OCR | IMPLEMENTED |
+| Optimization | independent DPI/JPEG/grayscale scope | IMPLEMENTED |
+| Translation | side-by-side / facing pages | IMPLEMENTED |
+| Translation | Browser Translator API | EXTERNAL |
+| Translation | HTTP provider (priority when explicitly configured) | EXTERNAL |
+| Header/footer | left/center/right templates + PAGE/PAGES | IMPLEMENTED |
+| Header/footer | variable-driven QR placement | IMPLEMENTED |
+| Conversion | PDF -> PNG/JPG/TXT/DOCX/ODT | IMPLEMENTED |
+| Conversion | images/DOCX/ODT/TXT -> internal PDF | IMPLEMENTED |
+| Conversion | high-fidelity office layout conversion | PENDING |
+| Google | OAuth Drive connection | EXTERNAL |
+| Google | Documents / Signatures / Exports / Releases folders | EXTERNAL |
+| Google | Picker for arbitrary/multiple Drive files | EXTERNAL |
+| DSS | external PAdES endpoint connector | EXTERNAL |
+| History | persistent shared history + quick last-five view + JSON export | IMPLEMENTED |
+| Diagnostics | visible runtime contract | IMPLEMENTED |
