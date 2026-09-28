@@ -4,6 +4,8 @@ const fixture=process.env.PDF_STUDIO_FIXTURE||'/tmp/pdf-studio-v1.pdf';
 const fixture2=process.env.PDF_STUDIO_FIXTURE2||'/tmp/pdf-studio-v1-b.pdf';
 const imageFixture=process.env.PDF_STUDIO_IMAGE||'/tmp/pdf-studio-v1-signature.png';
 const configFixture=process.env.PDF_STUDIO_CONFIG||'/tmp/pdf-studio-v1-config.json';
+const docxFixture=process.env.PDF_STUDIO_DOCX||'/tmp/pdf-studio-v1.docx';
+const odtFixture=process.env.PDF_STUDIO_ODT||'/tmp/pdf-studio-v1.odt';
 const fail=m=>{throw new Error(m)},browser=await chromium.launch({headless:true}),page=await browser.newPage({viewport:{width:1500,height:1000},acceptDownloads:true});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
 const vis=async s=>await page.locator(s).count()>0&&await page.locator(s).first().isVisible();
@@ -110,6 +112,9 @@ await page.locator('#sectionStamps').evaluate(e=>e.open=true);await page.locator
  await page.reload({waitUntil:'domcontentloaded'});await page.waitForFunction(()=>!!window.__NLAB_PDF_V1__);const historyAfter=await page.evaluate(()=>window.__NLAB_PDF_V1__.history.list().length);if(historyAfter<historyBefore)fail('Historique non persistant '+historyBefore+' -> '+historyAfter);if(!(await page.locator('#documentHistory').innerText()).trim())fail('Historique persistant non rendu');
  await page.locator('#filesInput').setInputFiles([fixture,fixture2]);await page.waitForFunction(()=>window.__NLAB_PDF_V1__.workspace.items.length===2);await page.locator('#sectionPages').evaluate(e=>e.open=true);await page.locator('#mergeSelectedFiles').click();await page.waitForFunction(()=>window.__NLAB_PDF_V1__.engine.pageCount===15,{timeout:30000}).catch(async()=>{const n=await page.evaluate(()=>window.__NLAB_PDF_V1__.engine.pageCount);fail('Fusion PDF KO pageCount='+n)});
  const diag=await page.evaluate(()=>({version:window.__NLAB_PDF_V1__.version,pages:window.__NLAB_PDF_V1__.engine.pageCount,legacy:[...document.scripts].some(s=>/runtime09/.test(s.src))}));if(diag.version!=='1.0.0 TEST'||diag.legacy)fail('Diagnostic runtime incorrect '+JSON.stringify(diag));
+ // Bidirectional office-source conversion: DOCX/ODT -> internal PDF -> downloadable PDF.
+ await page.locator('#filesInput').setInputFiles(docxFixture);await page.waitForFunction(()=>/\.docx$/i.test(window.__NLAB_PDF_V1__.engine.fileName)&&window.__NLAB_PDF_V1__.engine.pageCount>0,null,{timeout:15000}).catch(()=>fail('DOCX → PDF interne KO'));const docxPdfDl=page.waitForEvent('download');await page.locator('#savePdf').click();const dpd=await docxPdfDl;if(!dpd.suggestedFilename().endsWith('.pdf'))fail('DOCX → PDF export KO');
+ await page.locator('#filesInput').setInputFiles(odtFixture);await page.waitForFunction(()=>/\.odt$/i.test(window.__NLAB_PDF_V1__.engine.fileName)&&window.__NLAB_PDF_V1__.engine.pageCount>0,null,{timeout:15000}).catch(()=>fail('ODT → PDF interne KO'));const odtPdfDl=page.waitForEvent('download');await page.locator('#savePdf').click();const opd=await odtPdfDl;if(!opd.suggestedFilename().endsWith('.pdf'))fail('ODT → PDF export KO');
  if(errors.length)fail('Erreurs navigateur: '+errors.join(' | '));
  console.log(JSON.stringify({ok:true,geometry:geo.slice(0,2),thumbZoom:[w1,w2],sidebar:[sw1,sw2],rotations,annotations:ac,mergePages:diag.pages},null,2));
 }finally{await browser.close()}
