@@ -184,6 +184,9 @@ jobs:
           test -s APP-Applications/pdf-studio/v1/index.html
           test -s APP-Applications/pdf-studio/v1/pdf-studio.js
           test -s APP-Applications/pdf-studio/v1/pdf-engine.js
+          test -s APP-Applications/pdf-studio/v1/document-conversion.js
+          test -s APP-Applications/_shared/studio-v1/history.js
+          test -s APP-Applications/_shared/studio-v1/templates.js
           test -s APP-Applications/pdf-studio/v1/FUNCTIONAL-CONTRACT.md
           test -s APP-Applications/pdf-studio/v1/MASTER-REBUILD-CHECKLIST.md
           test -s APP-Applications/_shared/studio-v1/studio.css
@@ -192,6 +195,11 @@ jobs:
           test -s APP-Applications/_shared/studio-v1/drive.js
           grep -q 'nlab-wordmark.svg' APP-Applications/pdf-studio/v1/index.html
           grep -q '1.0.0 TEST' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="ribbonContext"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="selectedFilesSummary"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="sectionOptimize"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="sectionConversion"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="headerFooterQr"' APP-Applications/pdf-studio/v1/index.html
           ! grep -q 'runtime09' APP-Applications/pdf-studio/v1/index.html
 
 
