@@ -1,0 +1,11 @@
+:root{
+  --nlab-bg:#F7F8FA;--nlab-surface:#FFFFFF;--nlab-surface-hover:#F1F3F5;
+  --nlab-ink:#17202A;--nlab-muted:#667085;--nlab-line:#D8DEE6;
+  --nlab-brand:#316D9A;--nlab-brand-soft:#EAF2F8;--nlab-accent:#247B78;
+  --nlab-success:#2E7D5B;--nlab-info:#316D9A;--nlab-warning:#B8682C;--nlab-danger:#A1453F;
+  --nlab-font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --nlab-radius-sm:6px;--nlab-radius-md:10px;--nlab-radius-lg:18px;--nlab-radius-pill:999px;
+  --nlab-shadow-soft:0 8px 28px rgba(16,24,40,.07);--nlab-shadow-medium:0 12px 34px rgba(16,24,40,.12);
+  --studio-sidebar-width:390px;--studio-header-h:58px;--studio-menu-h:34px;--studio-ribbon-h:76px;
+  --studio-status-h:30px;
+}

@@ -178,7 +178,31 @@ jobs:
           grep -q 'sidebarGrip0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q 'nLab Web' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q '../studios/' APP-Applications/pdf-studio/runtime0925/visible-controls.js
-          grep -q '"test": "0.9.25"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "1.0.0"' APP-Applications/pdf-studio/versions.json
+          grep -q 'PDF Studio 1.0.0 TEST' APP-Applications/pdf-studio/versions.json
+
+          # PDF Studio 1.0 standalone rewrite
+          test -s APP-Applications/pdf-studio/v1/index.html
+          test -s APP-Applications/pdf-studio/v1/pdf-studio.js
+          test -s APP-Applications/pdf-studio/v1/pdf-engine.js
+          test -s APP-Applications/pdf-studio/v1/document-conversion.js
+          test -s APP-Applications/_shared/studio-v1/history.js
+          test -s APP-Applications/_shared/studio-v1/templates.js
+          test -s APP-Applications/pdf-studio/v1/FUNCTIONAL-CONTRACT.md
+          test -s APP-Applications/pdf-studio/v1/MASTER-REBUILD-CHECKLIST.md
+          test -s APP-Applications/_shared/studio-v1/studio.css
+          test -s APP-Applications/_shared/studio-v1/core.js
+          test -s APP-Applications/_shared/studio-v1/file-io.js
+          test -s APP-Applications/_shared/studio-v1/drive.js
+          grep -q 'nlab-wordmark.svg' APP-Applications/pdf-studio/v1/index.html
+          grep -q '1.0.0 TEST' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="ribbonContext"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="selectedFilesSummary"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="sectionOptimize"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="sectionConversion"' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'id="headerFooterQr"' APP-Applications/pdf-studio/v1/index.html
+          ! grep -q 'runtime09' APP-Applications/pdf-studio/v1/index.html
+
 
           test -s APP-Applications/pdf-studio/runtime0916/stamp-auth-dss.js
           grep -q 'runtime0916/stamp-auth-dss.js' APP-Applications/pdf-studio/app-0.9.16.html
@@ -209,7 +233,16 @@ jobs:
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "0.9.25"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "1.0.0"' APP-Applications/pdf-studio/versions.json
+
+      - name: Build PDF Studio 1.0 portable package
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_pdf_studio_v1_package.py
+          ZIP="APP-Applications/pdf-studio/downloads/nLab-PDF-Studio-1.0.0-PORTABLE.zip"
+          test -s "$ZIP"
+          python -m zipfile -t "$ZIP"
 
       - name: Build shared nLab demo corpus
         shell: bash
@@ -273,6 +306,7 @@ jobs:
           git add -f Library/demo/nLab-DEMO-CORPUS-v2.zip Library/demo/nLab-DEMO-CORPUS-v3.zip
           git add -f Library/demo/demo-manifest.json Library/demo/demo-catalog-v2.json Library/demo/demo-catalog-v3.json Library/demo/demo-gallery-v3.json
           git add -f Library/demo/manifests Library/demo/packs
+          git add -f APP-Applications/pdf-studio/downloads/nLab-PDF-Studio-1.0.0-PORTABLE.zip
           git commit -m 'build: publish nLab Web + demo corpus v3 [skip ci]' || true
           git push origin HEAD:gh-pages
 
@@ -289,6 +323,11 @@ jobs:
           smoke_fetch "APP-Applications/_shared/selection-scope.js" /tmp/nlab-selection-scope.js
           smoke_fetch "APP-Applications/_shared/archive-workspace.js" /tmp/nlab-archive-workspace.js
           smoke_fetch "APP-Applications/pdf-studio/app-0.9.25.html" /tmp/nlab-pdf-studio-0925.html
+          smoke_fetch "APP-Applications/pdf-studio/v1/" /tmp/nlab-pdf-studio-v1.html
+          smoke_fetch "APP-Applications/pdf-studio/downloads/nLab-PDF-Studio-1.0.0-PORTABLE.zip" /tmp/nlab-pdf-studio-v1.zip
           grep -q 'NLAB_SELECTION_SCOPE' /tmp/nlab-selection-scope.js
           grep -q 'NLAB_ARCHIVE_WORKSPACE' /tmp/nlab-archive-workspace.js
           grep -q 'Alpha 0.9.25 TEST' /tmp/nlab-pdf-studio-0925.html
+          grep -q '1.0.0 TEST' /tmp/nlab-pdf-studio-v1.html
+          test -s /tmp/nlab-pdf-studio-v1.zip
+          python -m zipfile -t /tmp/nlab-pdf-studio-v1.zip
