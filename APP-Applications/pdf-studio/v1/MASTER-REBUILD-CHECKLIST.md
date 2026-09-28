@@ -46,7 +46,7 @@ Status levels:
 - [x] Google Picker API key/App ID fields.
 - [x] Connect / disconnect controls.
 - [x] Visible local/Drive state.
-- [ ] Browser acceptance for imported naming profile (current active defect).
+- [x] Imported naming profile applies variables and naming controls; covered by Chromium acceptance.
 - [ ] Real OAuth acceptance with production Client ID. EXTERNAL.
 
 ## 4. Input
@@ -58,6 +58,10 @@ Status levels:
 - [x] PDF input.
 - [x] Image input.
 - [x] DOCX input.
+- [x] ODT input.
+- [x] TXT input.
+- [x] Explicit Local / Google Drive source selector.
+- [x] Common “Selected files” summary module.
 - [x] Remember last source handle.
 - [x] File explorer/queue.
 - [x] Current file selection.
@@ -81,6 +85,9 @@ Status levels:
 - [x] Save PDF.
 - [x] Export result ZIP.
 - [x] Copy result to Drive / Exports. EXTERNAL for live account.
+- [x] Separate destination provider from classification structure.
+- [x] Output structures: root / treatment / year-month / year-month-week / treatment-date / custom template.
+- [x] Variable-driven nested output paths on local/source and Google Drive.
 - [ ] Build and publish major portable ZIP `nLab-PDF-Studio-1.0.0-PORTABLE.zip`.
 - [ ] Copy major portable ZIP to Google Drive / nLab / PDF Studio / Releases.
 
@@ -96,7 +103,13 @@ Status levels:
 - [x] ANNOT suffix.
 - [x] FUSION suffix.
 - [x] Live filename preview.
-- [ ] Browser acceptance for config-import -> naming preview (current first failing gate).
+- [x] Classic prefix/template/suffix mode.
+- [x] Full “code” template mode.
+- [x] Naming presets.
+- [x] Batch rename preview for selected files.
+- [x] Safe renamed copies to configured output.
+- [x] ZIP of renamed copies.
+- [x] Config import updates naming preview; covered by Chromium acceptance.
 
 ## 7. Page thumbnails / selection
 - [x] Horizontal thumbnail strip.
@@ -126,6 +139,9 @@ Status levels:
 - [x] PDF -> JPG ZIP.
 - [x] Crop page scope.
 - [x] Header/footer templates with variables.
+- [x] Header left/center/right and footer left/center/right.
+- [x] PAGE/PAGES variables per page.
+- [x] QR code in header/footer driven by a variable template.
 
 ## 9. Viewer
 - [x] PDF canvas.
@@ -160,6 +176,8 @@ Status levels:
 - [x] Import stamps JSON.
 - [x] Export stamps JSON.
 - [x] STAMP operation flag.
+- [x] Stamp preset may define linked filename prefix/suffix.
+- [x] Linked filename rule is applied when the stamp is actually used.
 
 ## 12. Signature / security
 - [x] Draw visual signature.
@@ -173,7 +191,11 @@ Status levels:
 - [x] Redaction workflow.
 - [ ] Real DSS provider acceptance. EXTERNAL.
 
-## 13. OCR / optimization
+## 13. OCR
+- [x] OCR is a separate workflow from optimization.
+- [x] OCR_LANG global/runtime variable.
+
+## 13b. Optimization / compression
 - [x] OCR scope.
 - [x] Tesseract languages FR/EN/DE/ES.
 - [x] OCR result textarea.
@@ -181,6 +203,8 @@ Status levels:
 - [x] JPEG quality.
 - [x] Grayscale.
 - [x] Operation variables updated after optimization.
+- [x] DPI / JPEG / GRAY reusable as template variables.
+- [x] Optimization usable without OCR.
 - [ ] Full browser acceptance after current earlier gates pass.
 
 ## 14. Translation
@@ -222,11 +246,59 @@ My Drive/
 - [x] Documents list/download.
 - [x] Signatures list/upload/download.
 - [x] Exports upload.
+- [x] Nested variable-driven folders below Exports.
 - [x] Releases folder model.
 - [ ] Live Google OAuth acceptance. EXTERNAL.
 - [ ] Upload 1.0 portable ZIP to Releases after green acceptance.
 
-## 17. Release gates
+
+## 17. Common contextual ribbon UX
+- [x] Ribbon and left sidebar use the same authoritative controls/state.
+- [x] Compact contextual panel below ribbon.
+- [x] “Details” opens the matching left-sidebar section.
+- [x] Contexts for naming, stamps, image, header/footer, conversion, OCR, optimization, translation, history and output.
+- [x] History context shows the last five operations.
+
+## 18. Persistent history
+- [x] Shared Studio V1 persistent action history service.
+- [x] Full history in the left sidebar.
+- [x] Last operations in ribbon context.
+- [x] Export history JSON.
+- [x] Clear history.
+- [x] Persistence across page reloads.
+
+## 19. Document conversions
+- [x] PDF -> PNG/JPG.
+- [x] PDF -> PNG/JPG ZIP.
+- [x] PDF -> TXT.
+- [x] PDF -> DOCX (browser text/structure fidelity).
+- [x] PDF -> ODT (browser text/structure fidelity).
+- [x] Images -> PDF.
+- [x] DOCX -> PDF (browser text extraction fidelity).
+- [x] ODT -> PDF (browser text extraction fidelity).
+- [x] TXT -> PDF.
+- [ ] High-fidelity office conversion backend/LibreOffice connector. IN DEVELOPMENT / EXTERNAL.
+
+## 20. Global template language
+- [x] Same {VARIABLE} syntax for naming, stamps, paths, headers/footers and QR/barcode values.
+- [x] Global variables: dates, client, project, reference, site, service, category, tag, treatment.
+- [x] File variables: filename/fullname/ext/folder/path/relative path/filesize/index.
+- [x] Time/classification variables: year/month/day/week.
+- [x] Page variables: page/pages/selected count.
+- [x] Technical variables: source/output/output format/OCR language/DPI/JPEG/gray/operation.
+- [x] Stamp variables: id/label/prefix/suffix.
+
+## 21. Planned development after 1.0 acceptance
+- [ ] Undo/redo snapshots with restore points across destructive PDF operations.
+- [ ] Saved reusable workflow presets (pipeline: open -> stamp -> optimize -> rename -> classify -> export).
+- [ ] High-fidelity DOCX/ODT conversion through an optional local/private service.
+- [ ] Watermark/background layer presets.
+- [ ] Bates/page numbering profiles.
+- [ ] Batch processing of every selected PDF with the same operation pipeline.
+- [ ] Reusable Studio preset library synchronized through personal Drive.
+- [ ] Optional job report / manifest JSON per exported batch.
+
+## 22. Release gates
 A 1.0 feature is accepted only when:
 1. requirement is in this checklist;
 2. UI control exists;
