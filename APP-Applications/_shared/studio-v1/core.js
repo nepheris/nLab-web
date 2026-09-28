@@ -17,7 +17,14 @@ export function bindSidebar({main='#studioMain',sidebar='#studioSidebar',resizer
  qs(hide)?.addEventListener('click',()=>{m.classList.add('sidebarHidden');m.classList.remove('sidebarCompact');qs(restore)?.removeAttribute('hidden')});
  qs(compact)?.addEventListener('click',()=>{m.classList.remove('sidebarHidden');m.classList.add('sidebarCompact');qs(restore)?.removeAttribute('hidden')});
  const full=()=>{m.classList.remove('sidebarHidden','sidebarCompact');qs(restore)?.setAttribute('hidden','')};qs(normal)?.addEventListener('click',full);qs(restore)?.addEventListener('click',full);
- if(g){g.addEventListener('pointerdown',e=>{e.preventDefault();full();const x=e.clientX,w=s.getBoundingClientRect().width;g.classList.add('dragging');g.setPointerCapture?.(e.pointerId);const move=ev=>applyWidth(w+ev.clientX-x);const up=()=>{g.classList.remove('dragging');window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up)};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up,{once:true});window.addEventListener('pointercancel',up,{once:true})})}
+ if(g){
+  let dragging=false;
+  const start=(e,kind)=>{if(dragging)return;dragging=true;e.preventDefault();full();const x=e.clientX,w=s.getBoundingClientRect().width;g.classList.add('dragging');if(kind==='pointer')g.setPointerCapture?.(e.pointerId);
+   const move=ev=>applyWidth(w+ev.clientX-x),up=()=>{dragging=false;g.classList.remove('dragging');window.removeEventListener(kind+'move',move);window.removeEventListener(kind+'up',up);if(kind==='pointer')window.removeEventListener('pointercancel',up)};
+   window.addEventListener(kind+'move',move);window.addEventListener(kind+'up',up,{once:true});if(kind==='pointer')window.addEventListener('pointercancel',up,{once:true})
+  };
+  g.addEventListener('pointerdown',e=>start(e,'pointer'));g.addEventListener('mousedown',e=>start(e,'mouse'))
+ }
 }
 export function bindSectionControls({expand='#sidebarExpandAll',collapse='#sidebarCollapseAll',root='#studioSidebar'}={}){
  qs(expand)?.addEventListener('click',()=>qsa('details.sidebarSection',qs(root)).forEach(x=>x.open=true));
