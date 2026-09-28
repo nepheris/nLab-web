@@ -88,6 +88,8 @@ Status levels:
 - [x] Separate destination provider from classification structure.
 - [x] Output structures: root / treatment / year-month / year-month-week / treatment-date / custom template.
 - [x] Variable-driven nested output paths on local/source and Google Drive.
+- [x] Folder naming/classification uses the same code-template language, with resolved path preview.
+- [x] Folder handling is safe-copy/classification by default; source directories are not destructively renamed.
 - [ ] Build and publish major portable ZIP `nLab-PDF-Studio-1.0.0-PORTABLE.zip`.
 - [ ] Copy major portable ZIP to Google Drive / nLab / PDF Studio / Releases.
 
@@ -193,12 +195,12 @@ Status levels:
 
 ## 13. OCR
 - [x] OCR is a separate workflow from optimization.
-- [x] OCR_LANG global/runtime variable.
-
-## 13b. Optimization / compression
 - [x] OCR scope.
 - [x] Tesseract languages FR/EN/DE/ES.
 - [x] OCR result textarea.
+- [x] OCR_LANG global/runtime variable.
+
+## 13b. Optimization / compression
 - [x] Optimization DPI.
 - [x] JPEG quality.
 - [x] Grayscale.
@@ -215,6 +217,7 @@ Status levels:
 - [x] Facing-pages layout.
 - [x] Browser Translator API path.
 - [x] Configurable HTTP endpoint path.
+- [x] Explicit HTTP endpoint takes priority when configured; Browser Translator API is fallback.
 - [x] Bilingual PDF output.
 - [ ] Real translation provider acceptance. EXTERNAL.
 
