@@ -82,7 +82,7 @@ function syncOutputUi(){
 function outputOptions(){syncVariablesFromUi();const o=syncOutputUi();return{mode:o.mode,pathTemplate:o.pathTemplate,operationFolder:o.operationFolder,granularity:qs('#archiveGranularity')?.value||'month'}}
 async function saveBlobConfigured(blob,name,{forceDrive=false}={}){
  const out=syncOutputUi();
- if(forceDrive||out.provider==='drive'){if(!drive.connected)throw new Error('Connectez Google Drive');await drive.upload(blob,name,'exports');log('Drive export',name,{provider:'drive'});return{kind:'drive',name}}
+ if(forceDrive||out.provider==='drive'){if(!drive.connected)throw new Error('Connectez Google Drive');await drive.uploadPath(blob,name,out.pathTemplate||'','exports');log('Drive export',name,{provider:'drive',path:out.pathTemplate||''});return{kind:'drive',name}}
  const r=await workspace.writeBlob(blob,name,outputActive?outputOptions():{mode:'download'});log(r.kind==='download'?'Téléchargement':'Enregistrement',name,{provider:out.provider,path:out.pathTemplate});return r
 }
 function batchRenameRows(){syncVariablesFromUi();return workspace.selected().map((x,i)=>{vars.setRuntime({INDEX:i+1,PATH:x.relativePath||x.name,RELATIVE_PATH:x.relativePath||x.name,FILESIZE:x.file?.size||0});return{item:x,name:nameForFile(x.name,extDot(x.name))}})}
