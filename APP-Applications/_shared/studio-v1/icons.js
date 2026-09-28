@@ -19,6 +19,10 @@ signature:'<svg viewBox="0 0 24 24"><path d="M3 17c4-1 5-8 8-8 2 0 0 6 2 6 2 0 3
 ocr:'<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/><path d="M3 7V3h4M17 3h4v4M3 17v4h4M21 17v4h-4"/></svg>',
 translate:'<svg viewBox="0 0 24 24"><path d="M4 5h10M9 3v2M6 9c2.5 3 5 4.5 8 5"/><path d="M12 9c-1 3-3.5 6-7 8M15 21l3-8 3 8M16 18h4"/></svg>',
 drive:'<svg viewBox="0 0 24 24"><path d="M8 3h8l5 9-4 7H7l-4-7z"/><path d="M8 3l5 9h8M3 12h10l4 7"/></svg>',
+rename:'<svg viewBox="0 0 24 24"><path d="M4 6h10M4 12h8M4 18h6"/><path d="m14 16 5-5 2 2-5 5-3 1z"/></svg>',
+headerFooter:'<svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 7h8M8 17h8"/><path d="M8 10h8M8 14h8"/></svg>',
+convert:'<svg viewBox="0 0 24 24"><path d="M4 7h13l-3-3M17 7l-3 3M20 17H7l3 3M7 17l3-3"/></svg>',
+history:'<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6"/><path d="M4 4v5h5M12 8v5l3 2"/></svg>',
 config:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9 6.1a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L5 11a7 7 0 0 0 0 2l-2.1 1.5 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.5 3.1h5l.5-3.1a7 7 0 0 0 1.7-1l2.4 1 2-3.4L19 13a7 7 0 0 0 .1-1z"/></svg>'
 };
 export function icon(name){return ICONS[name]||''}
