@@ -1,0 +1,92 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "markdown-studio",
+  "label": "Markdown Studio",
+  "source": "Google Drive reference 2026-09-29",
+  "files": [
+    {
+      "name": "rec-aub-001-caviar-d-aubergine-classique.md",
+      "path": "../files/demo-input/MD/rec-aub-001-caviar-d-aubergine-classique.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-002-baba-ganoush.md",
+      "path": "../files/demo-input/MD/rec-aub-002-baba-ganoush.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-003-creme-d-aubergine-au-fromage-frais.md",
+      "path": "../files/demo-input/MD/rec-aub-003-creme-d-aubergine-au-fromage-frais.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-004-aubergine-au-yaourt-ail-et-menthe.md",
+      "path": "../files/demo-input/MD/rec-aub-004-aubergine-au-yaourt-ail-et-menthe.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-005-houmous-aubergine-pois-chiches.md",
+      "path": "../files/demo-input/MD/rec-aub-005-houmous-aubergine-pois-chiches.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-006-aubergines-farcies-vegetariennes.md",
+      "path": "../files/demo-input/MD/rec-aub-006-aubergines-farcies-vegetariennes.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-007-aubergines-farcies-au-b-uf.md",
+      "path": "../files/demo-input/MD/rec-aub-007-aubergines-farcies-au-b-uf.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-008-gratin-cremeux-de-pulpe-d-aubergine.md",
+      "path": "../files/demo-input/MD/rec-aub-008-gratin-cremeux-de-pulpe-d-aubergine.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-017-puree-d-aubergine-et-pomme-de-terre.md",
+      "path": "../files/demo-input/MD/rec-aub-017-puree-d-aubergine-et-pomme-de-terre.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-018-flan-sale-d-aubergine.md",
+      "path": "../files/demo-input/MD/rec-aub-018-flan-sale-d-aubergine.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-019-quiche-aubergine-feta.md",
+      "path": "../files/demo-input/MD/rec-aub-019-quiche-aubergine-feta.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-020-hachis-vegetal-aubergine-champignons.md",
+      "path": "../files/demo-input/MD/rec-aub-020-hachis-vegetal-aubergine-champignons.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-021-sauce-aubergine-tomate-pour-pizza.md",
+      "path": "../files/demo-input/MD/rec-aub-021-sauce-aubergine-tomate-pour-pizza.md",
+      "storage": "local",
+      "kind": "markdown"
+    },
+    {
+      "name": "rec-aub-022-aubergine-aux-ufs-facon-brouillade.md",
+      "path": "../files/demo-input/MD/rec-aub-022-aubergine-aux-ufs-facon-brouillade.md",
+      "storage": "local",
+      "kind": "markdown"
+    }
+  ]
+}
