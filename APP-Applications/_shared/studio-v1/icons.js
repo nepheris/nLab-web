@@ -23,6 +23,10 @@ rename:'<svg viewBox="0 0 24 24"><path d="M4 6h10M4 12h8M4 18h6"/><path d="m14 1
 headerFooter:'<svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 7h8M8 17h8"/><path d="M8 10h8M8 14h8"/></svg>',
 convert:'<svg viewBox="0 0 24 24"><path d="M4 7h13l-3-3M17 7l-3 3M20 17H7l3 3M7 17l3-3"/></svg>',
 history:'<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6"/><path d="M4 4v5h5M12 8v5l3 2"/></svg>',
-config:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9 6.1a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L5 11a7 7 0 0 0 0 2l-2.1 1.5 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.5 3.1h5l.5-3.1a7 7 0 0 0 1.7-1l2.4 1 2-3.4L19 13a7 7 0 0 0 .1-1z"/></svg>'
+config:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9 6.1a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L5 11a7 7 0 0 0 0 2l-2.1 1.5 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.5 3.1h5l.5-3.1a7 7 0 0 0 1.7-1l2.4 1 2-3.4L19 13a7 7 0 0 0 .1-1z"/></svg>',
+classify:'<svg viewBox="0 0 24 24"><path d="M4 6h6l2 2h8v11H4z"/><path d="M8 12h8M8 15h5"/><path d="M17 4v5M14.5 6.5H19.5"/></svg>',
+chevronUp:'<svg viewBox="0 0 24 24"><path d="m5 15 7-7 7 7"/></svg>',
+chevronDown:'<svg viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></svg>',
+panel:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>'
 };
 export function icon(name){return ICONS[name]||''}
