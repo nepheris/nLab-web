@@ -1,0 +1,16 @@
+{
+  "name": "QR & Barcode Studio",
+  "current": "0.2.0",
+  "test": null,
+  "versions": [
+    {
+      "version": "0.2.0",
+      "label": "QR & Barcode Studio Alpha 0.2",
+      "date": "2026-09-29",
+      "current": true,
+      "status": "current",
+      "href": "./",
+      "notes": "QR, Data Matrix, Code128, EAN, personnalisation et lecteur HID."
+    }
+  ]
+}
