@@ -1,0 +1,16 @@
+{
+  "name": "JSON Studio",
+  "current": "0.2.0",
+  "test": null,
+  "versions": [
+    {
+      "version": "0.2.0",
+      "label": "JSON Studio Alpha 0.2",
+      "date": "2026-09-29",
+      "current": true,
+      "status": "current",
+      "href": "./",
+      "notes": "Formatage, validation, tri, navigation et export JSON."
+    }
+  ]
+}
