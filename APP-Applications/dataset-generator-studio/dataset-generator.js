@@ -1,5 +1,6 @@
-import{loadStudioVersion}from'../_shared/studio-v1/version.js';
-const V=await loadStudioVersion({registryUrl:'./versions.json',channel:'test',appName:'Dataset Generator Studio',fallback:'TEST'});
+import{mountStudioFrame}from'../_shared/studio-v1/frame.js';
+import studioManifest from'./studio-manifest.js';
+await mountStudioFrame({manifest:studioManifest,registryUrl:'./versions.json',versionChannel:'test'});
 const $=s=>document.querySelector(s),qsa=s=>[...document.querySelectorAll(s)];
 let data=[];
 function rng(seed){let x=seed>>>0;return()=>((x=(1664525*x+1013904223)>>>0)/4294967296)}
