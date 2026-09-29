@@ -12,7 +12,11 @@ const DEFAULTS={
   density:'normal',
   sidebarMode:'normal',
   sidebarWidth:360,
-  floatingWindows:true
+  floatingWindows:true,
+  headerMode:'sticky',
+  headerShadow:true,
+  headerBlur:true,
+  headerVisible:true
 };
 
 export function loadStudioSettings(){
@@ -39,6 +43,10 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.style.setProperty('--studio-font-family',fonts[settings.fontFamily]||fonts.system);
   b.style.setProperty('--studio-sidebar-width',(Number(settings.sidebarWidth)||360)+'px');
   b.classList.toggle('studioFloatingWindowsDisabled',settings.floatingWindows===false);
+  b.classList.toggle('headerHidden',settings.headerVisible===false);
+  b.classList.toggle('headerShadow',!!settings.headerShadow);
+  b.classList.toggle('headerBlur',!!settings.headerBlur);
+  b.dataset.headerMode=settings.headerMode||'sticky';
   const main=qs('#studioMain');if(main){main.classList.toggle('sidebarCompact',settings.sidebarMode==='compact');main.classList.toggle('sidebarHidden',settings.sidebarMode==='hidden')}
   return settings;
 }
@@ -88,6 +96,19 @@ export function renderStudioSettingsPanel(host){
       <label class="checkboxField"><input type="checkbox" data-setting="showDevBadges"><span>Afficher les badges DEV</span></label>
     </section>
     <section>
+      <h3>Header & navigation</h3>
+      <label class="field"><span>Comportement du header</span>
+        <select data-setting="headerMode">
+          <option value="sticky">Sticky / suit le défilement</option>
+          <option value="fixed">Fixe</option>
+          <option value="static">Statique</option>
+        </select>
+      </label>
+      <label class="checkboxField"><input type="checkbox" data-setting="headerVisible"><span>Afficher le header</span></label>
+      <label class="checkboxField"><input type="checkbox" data-setting="headerShadow"><span>Ombre du header</span></label>
+      <label class="checkboxField"><input type="checkbox" data-setting="headerBlur"><span>Fond translucide / blur</span></label>
+    </section>
+    <section>
       <h3>Interface & panneaux</h3>
       <label class="field"><span>Volet détaillé</span>
         <select data-setting="sidebarMode">
@@ -104,11 +125,11 @@ export function renderStudioSettingsPanel(host){
     </section>
   </div>`;
   host.querySelector('[data-setting="theme"]').value=s.theme;
-  for(const k of ['fontFamily','density','sidebarMode'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
+  for(const k of ['fontFamily','density','sidebarMode','headerMode'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
   const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';
-  for(const k of ['architectureMarkers','showDevelopment','showScopeBadges','showDevBadges','floatingWindows']){
+  for(const k of ['architectureMarkers','showDevelopment','showScopeBadges','showDevBadges','floatingWindows','headerVisible','headerShadow','headerBlur']){
     host.querySelector('[data-setting="'+k+'"]').checked=!!s[k];
   }
   host.querySelectorAll('[data-setting]').forEach(el=>{
