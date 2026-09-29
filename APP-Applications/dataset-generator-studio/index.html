@@ -1,1 +1,28 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dataset Generator Studio · nLab</title><link rel="stylesheet" href="../_shared/studio.css"><style>.dev{background:#fff9e8;border-color:#e0b74c}.cap{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.tag{display:inline-block;background:#fff0b8;color:#765600;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:800}</style></head><body><header><div class="wrap head"><a href="../studios/">← Studios</a><span class="brand">Dataset Generator Studio</span></div></header><main class="wrap"><section class="hero dev"><div class="eyebrow">ALPHA / POC · DÉVELOPPEMENT</div><h1>Dataset Generator Studio</h1><p class="lead">Interface future au-dessus des générateurs de corpus nLab existants. Le moteur de génération existe déjà côté scripts ; l’interface Studio navigateur reste en développement.</p><div class="actions"><a class="btn" href="./versions.html">Toutes les versions</a><a class="btn" href="../../Library/demo/">Voir Demo Studio</a></div></section><section class="panel dev" style="margin-top:14px"><h2>Capacités déjà présentes dans les moteurs</h2><div class="cap"><div><span class="tag">EXISTANT</span><h3>Images</h3><p>Calibration, couleurs et images de test.</p></div><div><span class="tag">EXISTANT</span><h3>Codes</h3><p>QR, Data Matrix et Code128.</p></div><div><span class="tag">EXISTANT</span><h3>Datasets</h3><p>CSV, JSON et XLSX synthétiques.</p></div><div><span class="tag">EXISTANT</span><h3>Fichiers</h3><p>Lots de noms, arbres de comparaison et ZIP.</p></div><div><span class="tag">EXISTANT</span><h3>Packaging</h3><p>Manifests, packs par Studio et corpus global.</p></div><div><span class="tag">DEV</span><h3>Interface Studio</h3><p>Paramétrage interactif, presets, génération depuis le navigateur et historique.</p></div></div></section></main></body></html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nLab Dataset Generator Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/branding/nlab-favicon.svg">
+<link rel="stylesheet" href="../_shared/studio-v1/studio.css">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head><body>
+<header class="studioHeader"><a class="studioBrand" href="../../"><img src="../../assets/branding/nlab-wordmark.svg" alt="nLab"><span class="studioBrandText"><strong>Dataset Generator Studio</strong><small>nLab Studios · version <span data-version>—</span></small></span></a><div class="studioHeaderRight"><span class="studioPill local">● local-first</span><span class="studioPill test" data-version-status>TEST</span><a class="btn" href="../studios/">Studios</a><a class="btn" href="./versions.html">Versions</a></div></header>
+<nav class="studioMenu"><button class="active">Accueil</button><button>Génération</button><button>Export</button><button>Aide</button></nav>
+<div class="studioRibbon"><div class="ribbonGroup"><button class="ribbonBtn primary" id="generate">⚙<span>Générer</span></button><button class="ribbonBtn" id="randomize">↻<span>Nouveau seed</span></button><span class="ribbonLabel">Dataset</span></div><div class="ribbonGroup"><button class="ribbonBtn" id="exportJson">{ }<span>JSON</span></button><button class="ribbonBtn" id="exportCsv">▦<span>CSV</span></button><button class="ribbonBtn" id="exportXlsx">XLS<span>XLSX</span></button><button class="ribbonBtn" id="exportMd">M↓<span>Markdown</span></button><span class="ribbonLabel">Export</span></div><div class="ribbonGroup"><button class="ribbonBtn devFeatureBtn" id="advanced">✦<span>Générateurs avancés</span><small class="devBadge">DEV</small></button><span class="ribbonLabel">Outils</span></div></div>
+<main class="studioMain">
+<aside class="studioSidebar"><div class="sidebarTop"><strong>Configuration</strong></div><div class="studioSidebarBody">
+<label class="field"><span>Preset</span><select id="preset"><option value="generic">Dataset générique</option><option value="people">Personnes synthétiques</option><option value="finance">Valeurs financières</option><option value="catalog">Catalogue produits</option></select></label>
+<label class="field"><span>Nombre de lignes</span><input id="rows" type="number" min="1" max="5000" value="40"></label>
+<label class="field"><span>Seed</span><input id="seed" type="number" value="20260929"></label>
+<div class="statusBox">Données synthétiques uniquement. Aucun identifiant réel n'est généré.</div>
+<div class="sectionSubhead">Colonnes</div>
+<label class="checkboxField"><input type="checkbox" data-col="id" checked><span>ID synthétique</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="name" checked><span>Nom de test</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="category" checked><span>Catégorie</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="number" checked><span>Valeur numérique</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="date" checked><span>Date</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="url" checked><span>URL publique</span></label>
+<div class="sectionSubhead">État</div><div id="status" class="statusBox">Prêt.</div>
+</div></aside>
+<section class="viewer"><div class="viewerCard"><div class="viewerToolbar"><strong>Aperçu</strong><span class="spacer"></span><span id="count">0 ligne</span></div><div style="overflow:auto"><table id="table" style="width:100%;border-collapse:collapse;font-size:12px"></table></div></div></section>
+</main>
+<div class="studioStatus"><span class="statusDot"></span><span>Dataset Generator Studio</span><span class="grow">nLab Studio Core V1</span></div>
+<script type="module" src="./dataset-generator.js"></script></body></html>
