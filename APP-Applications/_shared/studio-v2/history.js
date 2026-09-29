@@ -1,5 +1,5 @@
 import{qs}from'./core.js';
-import{loadStudioSettings,saveStudioSettings}from'./settings.js';
+import{loadStudioSettings}from'./settings.js';
 import{enhanceStudioWindow}from'./window-system.js';
 
 const KEY='nlab-studio-v2-history';
@@ -25,7 +25,7 @@ export function clearHistory(){write(KEY,[]);write(FAVORITES_KEY,[]);renderQuick
 export function toggleHistoryFavorite(id){
   const fav=new Set(read(FAVORITES_KEY,[]));fav.has(id)?fav.delete(id):fav.add(id);write(FAVORITES_KEY,[...fav]);renderQuickHistory();renderFullHistory();
 }
-function getFilter(){return{search:'',groupBy:'date',type:'all',...read(FILTER_KEY,{})}}
+function getFilter(){const s=loadStudioSettings();return{search:'',groupBy:s.historyGroupBy||'date',type:'all',...read(FILTER_KEY,{})}}
 function setFilter(next){const v={...getFilter(),...next};write(FILTER_KEY,v);return v}
 function filteredItems(){
   const f=getFilter(),q=f.search.trim().toLowerCase();return loadHistory().filter(x=>(f.type==='all'||x.type===f.type)&&(!q||[x.label,x.detail,x.target,x.type,x.studio].join(' ').toLowerCase().includes(q)));
@@ -43,6 +43,11 @@ export function renderQuickHistory(){
   const visible=[...pinned,...regular].slice(0,limit);
   host.innerHTML=visible.length?visible.map(x=>card(x,favs,false)).join(''):'<div class="historyEmpty">Aucune activité enregistrée.</div>';
   const count=qs('#history-recent-count');if(count)count.textContent=String(visible.length);
+  const recent=qs('#recent-items-list');if(recent){
+    const seen=new Set(),files=[];
+    for(const x of items){if(x.type!=='file'||!x.target||seen.has(x.target))continue;seen.add(x.target);files.push(x);if(files.length>=limit)break}
+    recent.innerHTML=files.length?files.map(x=>'<button type="button" class="recentItem" title="'+esc(x.target)+'" data-recent-target="'+esc(x.target)+'"><strong>'+esc(x.target)+'</strong><small>'+esc(new Date(x.timestamp).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}))+'</small></button>').join(''):'<div class="historyEmpty">Aucun fichier récent.</div>';
+  }
 }
 export function renderFullHistory(){
   const host=qs('#history-full-list');if(!host)return;
