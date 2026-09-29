@@ -63,3 +63,11 @@ body{font-family:var(--studio-font-family,system-ui,Arial,sans-serif);font-size:
 .headerShadow .studioHeader{box-shadow:0 5px 18px #00000014}
 .headerBlur .studioHeader{background:#ffffffeb;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .themeDark.headerBlur .studioHeader{background:#20262ceb}
+
+/* contextual help metadata — development view only */
+.featureHelp h3{margin:0 0 6px;font-size:12px}.featureHelp p{margin:0 0 7px}.featureHelpDetails{font-size:10px;color:var(--nlab-muted);margin-bottom:8px}
+.technicalMeta{display:none;border-top:1px dashed #b8c6d1;margin-top:8px;padding-top:8px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px}
+.technicalMeta>div{display:grid;gap:2px;padding:5px 6px;border:1px solid #dce4ea;border-radius:6px;background:#f8fafc}
+.technicalMeta b{font-size:8px;text-transform:uppercase;color:#6c7a86}.technicalMeta code{font-size:9px;overflow-wrap:anywhere}
+.architectureMarkers .technicalMeta{display:grid}
+.themeDark .technicalMeta>div{background:#252c33;border-color:#39434c}
