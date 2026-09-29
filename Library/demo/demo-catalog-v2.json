@@ -1,0 +1,43 @@
+{
+  "schema": "nlab-demo-catalog/v2",
+  "version": "2.2",
+  "updated": "2026-09-29",
+  "cards": [
+    {
+      "kind": "MD",
+      "title": "Recette Markdown structurée",
+      "description": "Markdown réel de test pour titres, listes, YAML/front matter et rendu HTML.",
+      "path": "demo-input/MD/rec-aub-001-caviar-d-aubergine-classique.md"
+    },
+    {
+      "kind": "JSON",
+      "title": "Catégories recettes JSON",
+      "description": "Jeu JSON conséquent pour formatage, recherche, navigation et validation.",
+      "path": "demo-input/JSON/recettes_categories.json"
+    },
+    {
+      "kind": "JSON",
+      "title": "Base recettes JSON",
+      "description": "Jeu JSON volumineux pour tests de performance et navigation.",
+      "path": "demo-input/JSON/recettes.json"
+    },
+    {
+      "kind": "Code",
+      "title": "Script JavaScript synthétique",
+      "description": "Petit script de démonstration pour Code Studio.",
+      "path": "demo-input/Code/demo-script.js"
+    },
+    {
+      "kind": "Code",
+      "title": "YAML synthétique",
+      "description": "Configuration YAML de démonstration pour Markdown/Code Studio.",
+      "path": "demo-input/Code/demo-config.yaml"
+    },
+    {
+      "kind": "QR-Barcode",
+      "title": "Payloads QR / code-barres",
+      "description": "Valeurs synthétiques et URL publiques utilisées par QR & Barcode Studio.",
+      "path": "demo-input/QR-Barcode/payloads.json"
+    }
+  ]
+}
