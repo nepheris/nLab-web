@@ -1,0 +1,16 @@
+{
+  "name": "Demo Studio",
+  "current": "1.0.0",
+  "test": null,
+  "versions": [
+    {
+      "version": "1.0.0",
+      "label": "Demo Studio 1.0.0",
+      "date": "2026-09-29",
+      "current": true,
+      "status": "current",
+      "href": "../../Library/demo/",
+      "notes": "Galerie publique et corpus de démonstration nLab : manifests par Studio, catalogue, aperçus et fichiers de test publics."
+    }
+  ]
+}
