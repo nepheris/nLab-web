@@ -1,5 +1,6 @@
 import{bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel}from'./settings.js';
+import{enhanceStudioWindow}from'./window-system.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>x?.scope==='core'?'core':'studio';
@@ -61,7 +62,8 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   bindStudioChrome();
   applyRibbonGroups();
   const settingsPanel=qs('#studioCoreSettingsPanel');
-  qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;settingsPanel.hidden=!settingsPanel.hidden;if(!settingsPanel.hidden)renderStudioSettingsPanel(qs('#studioCoreSettingsBody'))});
+  if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core V2'});
+  qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;settingsPanel.hidden=!settingsPanel.hidden;if(!settingsPanel.hidden){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));settingsPanel.style.zIndex='230'}});
   qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)settingsPanel.hidden=true});
 
   const ribbon=qs('.studioRibbon');
