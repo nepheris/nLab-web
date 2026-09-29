@@ -244,3 +244,18 @@ body.studioRibbonCollapsed .ribbonContext{
 .headerHidden .ribbonContext{top:calc(var(--studio-menu-h) + var(--studio-ribbon-h))}
 .headerHidden.studioRibbonCollapsed .ribbonContext{top:calc(var(--studio-menu-h) + 32px)}
 .headerHidden[data-header-mode="fixed"] #nlabStudioV2Chrome{padding-top:0}
+
+
+/* Studio Core V2 — persistent history / recent items */
+.historyQuickHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:10px}
+.historyQuickHead span{color:var(--nlab-muted);font-size:9px}.historyRecentList{display:grid;gap:5px;margin-bottom:7px}
+.historyItem{border:1px solid #dce4ea;border-radius:7px;padding:7px;background:#fff;display:grid;gap:3px}
+.historyItem.pinned{border-color:#c7a43b;background:#fffaf0}.historyItemHead{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.historyItemHead strong{font-size:10px}.historyItemHead span{font-size:8px;color:var(--nlab-muted);white-space:nowrap}.historyItem small{font-size:9px;color:var(--nlab-muted)}
+.historyItem code{font-size:8px;overflow-wrap:anywhere}.historyItemActions{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}.historyItemActions button{font-size:8px;padding:4px 6px}
+.historyViewAll{width:100%;margin:2px 0 7px;font-weight:800}.historyEmpty{padding:10px;border:1px dashed #cbd6de;border-radius:7px;color:var(--nlab-muted);font-size:9px;text-align:center}
+.historyFullView{position:fixed;left:50%;top:12%;transform:translateX(-50%);z-index:235;width:min(860px,calc(100vw - 24px));height:min(70vh,720px);background:#fff;border:1px solid #cbd6de;border-radius:10px;box-shadow:0 16px 44px #0003;padding:8px}
+.historyFullView[hidden]{display:none}.historyFullControls{display:grid;grid-template-columns:minmax(180px,1fr) 170px 150px auto;gap:6px;margin-bottom:8px}
+#history-full-list{display:grid;gap:10px}.historyGroup{display:grid;gap:5px}.historyGroup h4{margin:4px 0 0;font-size:11px;border-bottom:1px solid #e3e9ee;padding-bottom:4px}.historyGroup h4 small{color:var(--nlab-muted)}
+.themeDark .historyItem,.themeDark .historyFullView{background:#20262c;border-color:#39434c}.themeDark .historyItem.pinned{background:#3a2d18;border-color:#8d6f2d}
+@media(max-width:760px){.historyFullControls{grid-template-columns:1fr 1fr}.historyFullView{top:8%;height:78vh}}
