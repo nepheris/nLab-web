@@ -1,6 +1,7 @@
 import{mountStudioV2}from'../../_shared/studio-v2/frame.js';
 import{setStatus,openStudioSection}from'../../_shared/studio-v2/core.js';
 import studioManifest from'./studio-manifest.js';
+import{findFeature,renderFeatureHelp}from'../../_shared/studio-v2/help.js';
 import{PDFEngine}from'../v1/pdf-engine.js';
 
 await mountStudioV2({manifest:studioManifest,versionInfo:{version:'2.0.0',status:'TEST'}});
@@ -47,20 +48,17 @@ $('#zoomIn').onclick=()=>{zoom=Math.min(2.5,zoom+.1);render()};
 $('#fitWidth').onclick=()=>{if(!engine.pageCount)return;const stage=$('#canvasStage'),canvas=$('#pageCanvas');const base=canvas.width/zoom;zoom=Math.max(.3,Math.min(2.5,(stage.clientWidth-50)/base));render()};
 $('#rotateLeftSide').onclick=()=>rotate(-90);$('#rotateRightSide').onclick=()=>rotate(90);$('#addPageSide').onclick=addPage;$('#deletePageSide').onclick=deletePage;$('#savePdfSide').onclick=save;
 
-const help={
-  openPdf:['Entrée','Ouvre un fichier PDF ou un format convertible par le moteur existant.'],
-  openFolder:['Entrée dossier','Sélectionne un dossier local puis charge le premier PDF détecté dans cette V2 initiale.'],
-  savePdf:['Enregistrer','Télécharge le PDF courant localement.'],
-  rotateLeft:['Rotation −90°','Tourne la portée active de 90° vers la gauche.'],
-  rotateRight:['Rotation +90°','Tourne la portée active de 90° vers la droite.'],
-  addPage:['Ajouter une page','Ajoute une page blanche après la page courante.'],
-  deletePage:['Supprimer','Supprime la portée active.'],
-  history:['Historique','DÉVELOPPEMENT — sera fourni comme service commun du Core V2.'],
-  classifyPdf:['Enregistrer / classer','DÉVELOPPEMENT — sortie et classement seront mutualisés dans le Core V2.']
-};
 function showHelp(action){
-  const h=help[action]||['Fonction',action];
-  $('#helpContent').innerHTML='<div><b>'+h[0]+'</b>'+h[1]+'</div>';
+  const feature=findFeature(studioManifest,action)||{
+    featureId:'pdf.unknown.'+action,
+    label:action,
+    scope:'pdf',
+    plugin:'pdf-studio',
+    status:'development',
+    capability:'',
+    help:{summary:'Fonction non documentée dans le manifest V2.',details:'Ajouter ses métadonnées dans studio-manifest.js.'}
+  };
+  renderFeatureHelp($('#helpContent'),feature);
   openStudioSection('#sectionHelp');
 }
 document.addEventListener('studio-v2:action',e=>{
