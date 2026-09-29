@@ -1,5 +1,6 @@
 import{MarkdownEngine}from'../_shared/studio-v1/markdown-engine.js';
 import{loadStudioVersion}from'../_shared/studio-v1/version.js';
+import{DemoCorpus}from'../_shared/studio-v1/demo-corpus.js';
 
 const VERSION_INFO=await loadStudioVersion({registryUrl:'./versions.json',channel:'test',appName:'Markdown Studio',fallback:'TEST'});
 document.title='nLab Markdown Studio '+VERSION_INFO.version+(VERSION_INFO.status==='TEST'?' TEST':'');
@@ -7,6 +8,7 @@ const $=s=>document.querySelector(s), qsa=s=>[...document.querySelectorAll(s)];
 const engine=new MarkdownEngine();
 const editor=$('#mdEditor'),preview=$('#preview'),toc=$('#toc'),yamlEditor=$('#yamlEditor'),yamlBig=$('#yamlBig');
 let fileName='nouveau.md',dirty=false,imageSeq=0,objectUrls=[];
+const demoCorpus=new DemoCorpus({indexUrl:'../../Library/demo/manifests/index.json'});
 const demo=`---
 title: Markdown Studio
 lang: fr
@@ -91,6 +93,7 @@ $('#insertColor').onclick=()=>{const c=prompt('Couleur CSS ou hexadécimale','#B
 $('#insertFont').onclick=()=>{const f=prompt('Police CSS','Arial');if(f)insert('<span style="font-family:'+f+'">','</span>','texte')};
 $('#wysiwygDev').onclick=()=>setStatus('WYSIWYG complet : DÉVELOPPEMENT');
 $('#openMd').onclick=()=>$('#fileInput').click();
+$('#openDemoCorpus').onclick=async()=>{try{const files=await demoCorpus.fetchFiles('markdown-studio',{extensions:['md','markdown']});if(!files.length)throw new Error('Aucun fichier Markdown local dans le corpus public');const f=files[0];fileName=f.name;$('#docName').textContent=fileName;editor.value=await f.text();syncPreview();syncYamlFromSource(true);setDirty(false);setStatus('Corpus démo nLab · '+files.length+' fichier(s) disponible(s) · '+f.name)}catch(e){setStatus('Corpus démo : '+e.message)}};
 $('#fileInput').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;fileName=f.name;$('#docName').textContent=fileName;editor.value=await f.text();syncPreview();syncYamlFromSource(true);setDirty(false);setStatus('Fichier chargé')};
 $('#saveMd').onclick=saveMarkdown;$('#exportHtml').onclick=exportHtml;
 $('#refreshToc').onclick=syncPreview;
