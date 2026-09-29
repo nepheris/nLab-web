@@ -1,0 +1,16 @@
+{
+  "name": "File Studio",
+  "current": "0.1.0",
+  "test": null,
+  "versions": [
+    {
+      "version": "0.1.0",
+      "label": "File Studio Alpha 0.1",
+      "date": "2026-09-29",
+      "current": true,
+      "status": "current",
+      "href": "./",
+      "notes": "Première version suivie dans le registre commun Studio. Renommage par lot et règles de fichiers."
+    }
+  ]
+}
