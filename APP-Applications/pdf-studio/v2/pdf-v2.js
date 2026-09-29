@@ -6,13 +6,16 @@ import{PDFEngine}from'../v1/pdf-engine.js';
 import{recordHistory}from'../../_shared/studio-v2/history.js';
 import{StudioPageViewer}from'../../_shared/studio-v2/page-viewer.js';
 import{createStudioContext}from'../../_shared/studio-v2/studio-context.js';
+import{detectFileCapabilities}from'../../_shared/studio-v2/file-capabilities.js';
+import{registerPipelineHandler,runPipeline}from'../../_shared/studio-v2/pipeline-service.js';
+import{runCapabilitySelfTests}from'../../_shared/studio-v2/capability-tests.js';
 
 const VERSION='2.0.2';
 await mountStudioV2({manifest:studioManifest,versionInfo:{version:VERSION,status:'TEST'}});
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const engine=new PDFEngine();
-let undoStack=[],redoStack=[],loadedFiles=[];
+let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null;
 
 const viewer=new StudioPageViewer({
   engine,
@@ -35,7 +38,8 @@ function syncViewerMeta(){
   $('#zoomInput').value=Math.round(viewer.zoom*100);
   $('#pagesPerRow').value=viewer.pagesPerRow;
   $('#previewColumns').value=viewer.previewColumns;
-  $('#sourceStatus').textContent=engine.pageCount?engine.fileName+' · '+engine.pageCount+' page(s) · '+engine.selected.size+' sélectionnée(s)':'Aucun document chargé.';
+  const capInfo=activeFileCapabilities?.extension?(' · '+activeFileCapabilities.extension.toUpperCase()):'';
+  $('#sourceStatus').textContent=engine.pageCount?engine.fileName+' · '+engine.pageCount+' page(s) · '+engine.selected.size+' sélectionnée(s)'+capInfo:'Aucun document chargé.';
   viewer.refreshActive();
 }
 async function renderAll(){if(!engine.pageCount){$('#mainPageGrid').innerHTML='';$('#previewGrid').innerHTML='';syncViewerMeta();return}await viewer.renderMain();await viewer.renderPreview();syncViewerMeta()}
@@ -43,8 +47,10 @@ async function load(file){
   if(!file)return;
   setStatus('Chargement…');
   try{
+    activeFileCapabilities=detectFileCapabilities(file);
     await engine.loadFile(file);undoStack=[];redoStack=[];syncUndoRedo();viewer.setZoom(1);viewer.setPagesPerRow(1);await renderAll();
-    setStatus('Document chargé');
+    const converted=!/\.pdf$/i.test(file.name)&&!/^image\//.test(file.type||'')?' · conversion PDF simplifiée':'';
+    setStatus('Document chargé'+converted);
     recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s)',target:engine.fileName});
   }catch(e){setStatus('Erreur : '+e.message)}
 }
@@ -141,8 +147,20 @@ document.addEventListener('studio-v2:action',e=>{
 document.addEventListener('studio-v2:menu',e=>{if(e.detail.tab==='help')activateSidebarTab('help');if(e.detail.tab==='history')activateSidebarTab('history');if(e.detail.tab==='view')$('#studioCoreSettings')?.click()});
 document.addEventListener('studio-v2:repeat-action',e=>{const a=e.detail?.action;if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='savePdf')save();else showHelp(a||'history')});
 
+registerPipelineHandler('rotateLeft',async()=>{await rotate(-90);return engine});
+registerPipelineHandler('rotateRight',async()=>{await rotate(90);return engine});
+registerPipelineHandler('addPage',async()=>{await addPage();return engine});
+registerPipelineHandler('savePdf',async()=>{await save();return engine});
+document.addEventListener('studio-v2:workflow-run',async e=>{
+  const steps=(e.detail?.steps||[]).map(action=>({capability:action}));
+  if(!steps.length)return;
+  try{await runPipeline({steps,context:{input:engine,studio:'pdf-studio',fileName:engine.fileName},onProgress:x=>setStatus('Workflow '+(x.index+1)+'/'+x.total+' · '+x.capability)})}
+  catch(err){setStatus('Workflow interrompu : '+err.message)}
+});
+
 $('#copyDiagnostics').onclick=async()=>{
-  const info={studio:'pdf-studio',version:VERSION,file:engine.fileName,pages:engine.pageCount,currentPage:engine.currentPage,selectedPages:[...engine.selected],pagesPerRow:viewer.pagesPerRow,zoom:viewer.zoom,userAgent:navigator.userAgent};
+  const tests=runCapabilitySelfTests({manifest:studioManifest,root:document});
+  const info={studio:'pdf-studio',version:VERSION,file:engine.fileName,pages:engine.pageCount,currentPage:engine.currentPage,selectedPages:[...engine.selected],pagesPerRow:viewer.pagesPerRow,zoom:viewer.zoom,fileCapabilities:activeFileCapabilities,capabilityTests:tests,userAgent:navigator.userAgent};
   await navigator.clipboard?.writeText(JSON.stringify(info,null,2));setStatus('Diagnostic copié');
 };
 
