@@ -1,0 +1,15 @@
+{
+  "current": null,
+  "test": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "label": "Markdown Studio 1.0.0 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "test",
+      "href": "./",
+      "notes": "Premier Studio V1 transversal : édition Markdown, preview HTML sécurisé, vue scindée, sommaire dynamique, insertion tableaux/images/liens, styles simples, YAML/front matter, export MD/HTML/YAML. Mode WYSIWYG avancé marqué DÉVELOPPEMENT."
+    }
+  ]
+}
