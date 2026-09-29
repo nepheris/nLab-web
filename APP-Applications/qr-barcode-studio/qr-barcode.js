@@ -1,5 +1,6 @@
-import{loadStudioVersion}from'../_shared/studio-v1/version.js';
-const V=await loadStudioVersion({registryUrl:'./versions.json',channel:'test',appName:'QR & Barcode Studio',fallback:'TEST'});
+import{mountStudioFrame}from'../_shared/studio-v1/frame.js';
+import studioManifest from'./studio-manifest.js';
+await mountStudioFrame({manifest:studioManifest,registryUrl:'./versions.json',versionChannel:'test'});
 const $=s=>document.querySelector(s),qsa=s=>[...document.querySelectorAll(s)];
 let type='qrcode',qr=null,logoUrl='',hist=JSON.parse(localStorage.getItem('nlab-qr-history')||'[]');
 const presets={qrcode:'https://nepheris.github.io/nLab-web/',datamatrix:'NLAB-DEMO-DATAMATRIX-001',code128:'NLAB-DEMO-CODE128-001','gs1-128':'(01)09501101530003(10)ABC123',ean13:'123456789012',ean8:'1234567'};
