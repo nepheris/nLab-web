@@ -1,0 +1,44 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "qr-barcode-studio",
+  "label": "QR & Barcode Studio",
+  "source": "Google Drive reference 2026-09-29",
+  "files": [
+    {
+      "name": "payloads.json",
+      "path": "../files/demo-input/QR-Barcode/payloads.json",
+      "storage": "local",
+      "kind": "json"
+    },
+    {
+      "name": "code128-test.svg",
+      "storage": "reference-only",
+      "kind": "svg"
+    },
+    {
+      "name": "datamatrix-test.svg",
+      "storage": "reference-only",
+      "kind": "svg"
+    },
+    {
+      "name": "qr-google.svg",
+      "storage": "reference-only",
+      "kind": "svg"
+    },
+    {
+      "name": "qr-lemonde.svg",
+      "storage": "reference-only",
+      "kind": "svg"
+    },
+    {
+      "name": "qr-nlab.svg",
+      "storage": "reference-only",
+      "kind": "svg"
+    },
+    {
+      "name": "qr-youtube.svg",
+      "storage": "reference-only",
+      "kind": "svg"
+    }
+  ]
+}
