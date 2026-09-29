@@ -79,6 +79,11 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   mountHistoryUI();
   bindStudioChrome();
   applyRibbonGroups();
+  qsa('details[id]').forEach(d=>{
+    const key='nlab-studio-v2-panel-'+manifest.id+'-'+d.id;
+    const saved=localStorage.getItem(key);if(saved!==null)d.open=saved==='1';
+    d.addEventListener('toggle',()=>localStorage.setItem(key,d.open?'1':'0'));
+  });
   const settingsPanel=qs('#studioCoreSettingsPanel');
   if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core V2'});
   qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;settingsPanel.hidden=!settingsPanel.hidden;if(!settingsPanel.hidden){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));settingsPanel.style.zIndex='230'}});
