@@ -1,0 +1,28 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "ocr-studio",
+  "label": "OCR Studio",
+  "source": "Google Drive reference 2026-09-29",
+  "files": [
+    {
+      "name": "ocr-imprime-faible-contraste.jpg",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "ocr-imprime-propre.png",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "ocr-pseudo-manuscrit.png",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "ocr-scan-incline-bruite.jpg",
+      "storage": "reference-only",
+      "kind": "image"
+    }
+  ]
+}
