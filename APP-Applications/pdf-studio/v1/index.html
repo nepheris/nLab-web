@@ -58,8 +58,8 @@
 <input id="filesInput" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.bmp,.docx,.odt,.txt,.zip" hidden><input id="folderInput" type="file" multiple webkitdirectory hidden accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.bmp,.docx,.odt,.txt,.zip">
 <div id="sourceInfo" class="statusBox">Choix manuel · aucun fichier chargé.</div>
 <div class="sectionSubhead">1.2 · Fichiers sélectionnés <button class="helpDot" type="button" data-help-key="selected-files">?</button></div>
-<div class="fileNavBar"><button id="prevFile" class="compactAction">← Précédent</button><button id="nextFile" class="compactAction">Suivant →</button><span class="grow"></span><label class="hint">Trier <select id="fileSort"><option value="name">Nom</option><option value="path">Chemin</option><option value="type">Type</option><option value="size">Taille</option><option value="pages">Pages</option></select></label></div>
-<div class="grid2"><button id="selectAllFiles">Tout sélectionner</button><button id="selectNoneFiles">Tout désélectionner</button></div>
+<div class="grid2 filePrimaryNav"><button id="prevFile" class="fileNavPrimary">← Précédent</button><button id="nextFile" class="fileNavPrimary">Suivant →</button></div>
+<div class="fileNavBar fileNavSecondary"><button id="selectAllFiles" class="compactAction">Tout sélectionner</button><button id="selectNoneFiles" class="compactAction">Tout désélectionner</button><span class="grow"></span><label class="hint">Trier <select id="fileSort"><option value="name">Nom</option><option value="path">Chemin</option><option value="type">Type</option><option value="size">Taille</option><option value="pages">Pages</option></select></label></div>
 <div class="selectedModule"><div class="selectedModuleHead"><strong>Fichiers sélectionnés</strong><span id="selectedFilesCount">0 / 0</span></div><div id="selectedFilesSummary" class="selectedFilesSummary">Aucun fichier sélectionné.</div></div>
 <div id="fileQueue" class="fileQueue"></div>
 <details><summary class="hint">Historique des fichiers chargés</summary><div id="fileHistory" class="historyList"></div></details>
