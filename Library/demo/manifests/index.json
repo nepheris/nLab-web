@@ -1,0 +1,63 @@
+{
+  "schema": "nlab-demo-manifests-index/v1",
+  "updated": "2026-09-29",
+  "sourceReference": "Google Drive corpus reference supplied by HUMAN-00",
+  "studios": [
+    {
+      "id": "pdf-studio",
+      "label": "PDF Studio",
+      "manifest": "./pdf.json",
+      "fileCount": 6,
+      "pack": null
+    },
+    {
+      "id": "image-studio",
+      "label": "Image Studio",
+      "manifest": "./image.json",
+      "fileCount": 6,
+      "pack": null
+    },
+    {
+      "id": "ocr-studio",
+      "label": "OCR Studio",
+      "manifest": "./ocr.json",
+      "fileCount": 4,
+      "pack": null
+    },
+    {
+      "id": "code-json",
+      "label": "Code + JSON Studios",
+      "manifest": "./code-json.json",
+      "fileCount": 27,
+      "pack": null
+    },
+    {
+      "id": "data-studio",
+      "label": "Data Studio",
+      "manifest": "./data.json",
+      "fileCount": 10,
+      "pack": null
+    },
+    {
+      "id": "qr-barcode-studio",
+      "label": "QR & Barcode Studio",
+      "manifest": "./qr-barcode.json",
+      "fileCount": 7,
+      "pack": null
+    },
+    {
+      "id": "file-studio",
+      "label": "File Studio",
+      "manifest": "./file.json",
+      "fileCount": 3,
+      "pack": null
+    },
+    {
+      "id": "markdown-studio",
+      "label": "Markdown Studio",
+      "manifest": "./markdown.json",
+      "fileCount": 14,
+      "pack": null
+    }
+  ]
+}
