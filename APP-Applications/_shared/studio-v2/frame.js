@@ -3,16 +3,17 @@ import{applyStudioSettings,renderStudioSettingsPanel}from'./settings.js';
 import{enhanceStudioWindow}from'./window-system.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const scopeOf=x=>x?.scope==='core'?'core':'studio';
+const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
+const scopeClass=x=>scopeOf(x)==='core'?'core':'studio';
 function itemButton(it){
-  const scope=scopeOf(it);
+  const scope=scopeOf(it),visualScope=scopeClass(it);
   const dev=it.status==='development';
   const featureId=it.featureId||it.id||it.action||'unknown';
-  const plugin=it.plugin||((scope==='core')?'studio-core':'studio');
+  const plugin=it.plugin||((scope==='core')?'studio-core':scope+'-studio');
   const status=it.status||'stable';
   const capability=it.capability||'';
   return '<button'+(it.id?' id="'+esc(it.id)+'"':'')+
-    ' class="ribbonBtn scope-'+scope+(it.primary?' primary':'')+(dev?' devFeatureBtn':'')+'"'+
+    ' class="ribbonBtn scope-'+visualScope+(it.primary?' primary':'')+(dev?' devFeatureBtn':'')+'"'+
     ' data-scope="'+scope+'" data-plugin="'+esc(plugin)+'" data-feature-id="'+esc(featureId)+'" data-feature-status="'+esc(status)+'" data-capability="'+esc(capability)+'" data-studio-action="'+esc(it.action||it.id||'')+'" title="'+esc(it.title||it.label||'')+'">'+
     '<span class="scopeIcon">'+(it.icon||'•')+'</span><span>'+esc(it.label||'')+'</span>'+
     '<small class="scopeBadge">'+scope.toUpperCase()+'</small>'+(dev?'<small class="devBadge">DEV</small>':'')+'</button>';
@@ -38,10 +39,10 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   </div>
 </header>
 <nav class="studioMenu">
-  ${(manifest.menus||[]).map((m,i)=>'<button class="scope-'+scopeOf(m)+(i===0?' active':'')+'" data-scope="'+scopeOf(m)+'" data-menu="'+esc(m.id)+'">'+esc(m.label)+'<small class="scopeBadge">'+scopeOf(m).toUpperCase()+'</small></button>').join('')}
+  ${(manifest.menus||[]).map((m,i)=>'<button class="scope-'+scopeClass(m)+(i===0?' active':'')+'" data-scope="'+scopeOf(m)+'" data-menu="'+esc(m.id)+'">'+esc(m.label)+'<small class="scopeBadge">'+scopeOf(m).toUpperCase()+'</small></button>').join('')}
 </nav>
 <div class="studioRibbon">
-  ${(manifest.ribbon||[]).map(g=>'<div class="ribbonGroup scope-'+scopeOf(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
+  ${(manifest.ribbon||[]).map(g=>'<div class="ribbonGroup scope-'+scopeClass(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
   <button id="studioRibbonToggle" class="studioRibbonToggle scope-core" data-scope="core" title="Replier/déplier le ruban">⌃<small class="scopeBadge">CORE</small></button>
 </div>
 <div id="ribbonContext" class="ribbonContext scope-core" data-scope="core" hidden>
