@@ -3,8 +3,9 @@ import{setStatus,openStudioSection}from'../../_shared/studio-v2/core.js';
 import studioManifest from'./studio-manifest.js';
 import{findFeature,renderFeatureHelp}from'../../_shared/studio-v2/help.js';
 import{PDFEngine}from'../v1/pdf-engine.js';
+import{recordHistory}from'../../_shared/studio-v2/history.js';
 
-await mountStudioV2({manifest:studioManifest,versionInfo:{version:'2.0.0',status:'TEST'}});
+await mountStudioV2({manifest:studioManifest,versionInfo:{version:'2.0.1',status:'TEST'}});
 const $=s=>document.querySelector(s);
 const engine=new PDFEngine();
 let zoom=1;
@@ -28,14 +29,16 @@ async function load(file){
   zoom=1;
   await render();
   setStatus('Document chargé');
+  recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s)',target:engine.fileName});
 }
 async function rotate(delta){
   if(!engine.pageCount)return;
   await engine.rotate(engine.targetPages($('#pageScope').value),delta);await render();setStatus('Rotation '+(delta>0?'+90°':'−90°'));
+  recordHistory({studio:'pdf-studio',type:'action',label:'Rotation '+(delta>0?'+90°':'−90°'),detail:'Portée : '+$('#pageScope').value,target:engine.fileName,action:delta>0?'rotateRight':'rotateLeft',repeatable:true});
 }
-async function addPage(){if(!engine.pageCount)return;await engine.addBlank(engine.currentPage);await render();setStatus('Page ajoutée')}
-async function deletePage(){if(!engine.pageCount)return;await engine.deletePages(engine.targetPages($('#pageScope').value));await render();setStatus('Page(s) supprimée(s)')}
-async function save(){if(!engine.pageCount)return;download(await engine.baseBytes(),engine.fileName.replace(/\.pdf$/i,'')+'-v2.pdf');setStatus('PDF enregistré')}
+async function addPage(){if(!engine.pageCount)return;await engine.addBlank(engine.currentPage);await render();setStatus('Page ajoutée');recordHistory({studio:'pdf-studio',type:'action',label:'Page ajoutée',target:engine.fileName,action:'addPage',repeatable:true})}
+async function deletePage(){if(!engine.pageCount)return;await engine.deletePages(engine.targetPages($('#pageScope').value));await render();setStatus('Page(s) supprimée(s)');recordHistory({studio:'pdf-studio',type:'action',label:'Page(s) supprimée(s)',detail:'Portée : '+$('#pageScope').value,target:engine.fileName,action:'deletePage',repeatable:false})}
+async function save(){if(!engine.pageCount)return;download(await engine.baseBytes(),engine.fileName.replace(/\.pdf$/i,'')+'-v2.pdf');setStatus('PDF enregistré');recordHistory({studio:'pdf-studio',type:'action',label:'PDF enregistré',target:engine.fileName,action:'savePdf',repeatable:true})}
 
 $('#pickFile').onclick=()=>$('#fileInput').click();
 $('#fileInput').onchange=e=>load(e.target.files?.[0]);
@@ -76,5 +79,13 @@ document.addEventListener('studio-v2:action',e=>{
   else if(['rotateLeft','rotateRight','addPage','deletePage'].includes(a))openStudioSection('#sectionPages');
   else if(['savePdf','classifyPdf'].includes(a))openStudioSection('#sectionOutput');
 });
-document.addEventListener('studio-v2:menu',e=>{if(e.detail.tab==='help')openStudioSection('#sectionHelp');if(e.detail.tab==='view')document.querySelector('#studioCoreSettings')?.click()});
-setStatus('PDF Studio V2 TEST 2.0.0 prêt');
+document.addEventListener('studio-v2:menu',e=>{if(e.detail.tab==='help')openStudioSection('#sectionHelp');if(e.detail.tab==='view')document.querySelector('#studioCoreSettings')?.click();if(e.detail.tab==='history')document.querySelector('#history-view-all')?.click()});
+document.addEventListener('studio-v2:repeat-action',e=>{
+  const a=e.detail?.action;
+  if(a==='rotateLeft')rotate(-90);
+  else if(a==='rotateRight')rotate(90);
+  else if(a==='addPage')addPage();
+  else if(a==='savePdf')save();
+  else showHelp(a||'history');
+});
+setStatus('PDF Studio V2 TEST 2.0.1 prêt');
