@@ -12,7 +12,7 @@ import{STUDIO_TEMPLATE_PRESETS,presetBy}from'../../_shared/studio-v1/templates.j
 import{DocumentConversion}from'./document-conversion.js';
 import{ContextHelp}from'../../_shared/studio-v1/help.js';
 
-const VERSION='1.0.1 TEST',vars=new VariableEngine(),engine=new PDFEngine(),drive=new DriveService({storageKey:'nlab-pdf-studio-v1-google'});
+const VERSION='1.0.2 TEST',vars=new VariableEngine(),engine=new PDFEngine(),drive=new DriveService({storageKey:'nlab-pdf-studio-v1-google'});
 const historyStore=new ActionHistory({storageKey:'nlab-pdf-studio-v1-actions',limit:250});
 const snapshotHistory=new SnapshotHistory({engine,limit:35});
 const stamps=STUDIO_TEMPLATE_PRESETS.stamp.map(x=>({...x}));
