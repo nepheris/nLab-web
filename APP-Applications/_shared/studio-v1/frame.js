@@ -17,6 +17,9 @@ export async function mountStudioFrame({
   preserveExisting=false
 }={}){
   if(!manifest)throw new Error('Studio manifest requis');
+  if(!preserveExisting){
+    root.querySelectorAll(':scope > .studioHeader, :scope > .studioMenu, :scope > .studioRibbon, :scope > .ribbonContext, :scope > .studioStatus').forEach(el=>el.remove());
+  }
   const version=await loadStudioVersion({registryUrl,channel:versionChannel,appName:manifest.name,fallback:'—'});
   const chrome=document.createElement('div');
   chrome.id='nlabStudioCoreChrome';
