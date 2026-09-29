@@ -3,7 +3,7 @@ export const qsa=(s,r=document)=>[...r.querySelectorAll(s)];
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
 export const STUDIO_V2={
-  version:'2.0.0',
+  version:null,
   architecture:'single-core',
   devScopeMarkers:true
 };
