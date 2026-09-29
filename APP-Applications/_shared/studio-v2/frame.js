@@ -7,9 +7,13 @@ const scopeOf=x=>x?.scope==='core'?'core':'studio';
 function itemButton(it){
   const scope=scopeOf(it);
   const dev=it.status==='development';
+  const featureId=it.featureId||it.id||it.action||'unknown';
+  const plugin=it.plugin||((scope==='core')?'studio-core':'studio');
+  const status=it.status||'stable';
+  const capability=it.capability||'';
   return '<button'+(it.id?' id="'+esc(it.id)+'"':'')+
     ' class="ribbonBtn scope-'+scope+(it.primary?' primary':'')+(dev?' devFeatureBtn':'')+'"'+
-    ' data-scope="'+scope+'" data-studio-action="'+esc(it.action||it.id||'')+'" title="'+esc(it.title||it.label||'')+'">'+
+    ' data-scope="'+scope+'" data-plugin="'+esc(plugin)+'" data-feature-id="'+esc(featureId)+'" data-feature-status="'+esc(status)+'" data-capability="'+esc(capability)+'" data-studio-action="'+esc(it.action||it.id||'')+'" title="'+esc(it.title||it.label||'')+'">'+
     '<span class="scopeIcon">'+(it.icon||'•')+'</span><span>'+esc(it.label||'')+'</span>'+
     '<small class="scopeBadge">'+scope.toUpperCase()+'</small>'+(dev?'<small class="devBadge">DEV</small>':'')+'</button>';
 }
@@ -69,7 +73,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   const ribbon=qs('.studioRibbon');
   ribbon?.addEventListener('click',e=>{
     const b=e.target.closest('[data-studio-action]');if(!b)return;
-    document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,element:b,scope:b.dataset.scope,studio:manifest.id}}));
+    document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,element:b,scope:b.dataset.scope,plugin:b.dataset.plugin,featureId:b.dataset.featureId,status:b.dataset.featureStatus,capability:b.dataset.capability,studio:manifest.id}}));
   });
   const menu=qs('.studioMenu');
   menu?.addEventListener('click',e=>{
