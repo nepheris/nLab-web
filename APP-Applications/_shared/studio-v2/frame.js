@@ -1,4 +1,5 @@
-import{bindArchitectureMarkers,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
+import{bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
+import{applyStudioSettings,renderStudioSettingsPanel}from'./settings.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>x?.scope==='core'?'core':'studio';
@@ -26,7 +27,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   <div class="studioHeaderRight">
     <span class="studioPill local">● local-first</span>
     <span class="studioPill test">${esc(versionInfo.status||'TEST')}</span>
-    <label class="architectureToggle" title="Afficher les repères CORE / STUDIO"><input id="architectureMarkersToggle" type="checkbox"> Repères architecture</label>
+    <button id="studioCoreSettings" class="btn scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
     <a class="btn scope-core" data-scope="core" href="${esc(manifest.studiosHref||'../studios/')}">Studios</a>
     <a class="btn scope-core" data-scope="core" href="${esc(manifest.versionsHref||'./versions.html')}">Versions</a>
   </div>
@@ -41,6 +42,10 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
 <div id="ribbonContext" class="ribbonContext scope-core" data-scope="core" hidden>
   <div class="ribbonContextHead"><strong id="ribbonContextTitle">Outil</strong><button id="ribbonContextDetails">Détails</button><button id="ribbonContextToggle">⌃</button><button id="ribbonContextClose">×</button></div>
   <div id="ribbonContextBody"></div>
+</div>
+<div id="studioCoreSettingsPanel" class="coreSettingsPanel scope-core" data-scope="core" hidden>
+ <div class="coreSettingsHead"><strong>Paramètres Studio Core V2</strong><button id="studioCoreSettingsClose">×</button></div>
+ <div id="studioCoreSettingsBody"></div>
 </div>`;
   root.prepend(chrome);
 
@@ -52,9 +57,12 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
     s.innerHTML='<span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span class="grow">'+esc(manifest.name)+' · Studio Core V2</span>';root.append(s);
   }
 
-  bindArchitectureMarkers('#architectureMarkersToggle');
+  applyStudioSettings();
   bindStudioChrome();
   applyRibbonGroups();
+  const settingsPanel=qs('#studioCoreSettingsPanel');
+  qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;settingsPanel.hidden=!settingsPanel.hidden;if(!settingsPanel.hidden)renderStudioSettingsPanel(qs('#studioCoreSettingsBody'))});
+  qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)settingsPanel.hidden=true});
 
   const ribbon=qs('.studioRibbon');
   ribbon?.addEventListener('click',e=>{
