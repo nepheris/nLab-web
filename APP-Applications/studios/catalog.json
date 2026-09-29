@@ -92,19 +92,29 @@
       "versions": "./markdown",
       "versions_path": "../markdown-studio/versions.html",
       "version_registry": "../markdown-studio/versions.json"
+    },
+    {
+      "id": "demo-studio",
+      "name": "Demo Studio",
+      "status": "current",
+      "path": "../demo-studio/",
+      "purpose": "Galerie publique et corpus de démonstration nLab, avec manifests et jeux de test par Studio.",
+      "versions_path": "../demo-studio/versions.html",
+      "version_registry": "../demo-studio/versions.json",
+      "card_kind": "transversal"
+    },
+    {
+      "id": "dataset-generator-studio",
+      "name": "Dataset Generator Studio",
+      "status": "alpha-poc",
+      "path": "../dataset-generator-studio/",
+      "purpose": "Génération de datasets, images, QR/Data Matrix/Code128, fichiers de test, manifests et packs. Interface Studio en développement.",
+      "versions_path": "../dataset-generator-studio/versions.html",
+      "version_registry": "../dataset-generator-studio/versions.json",
+      "card_kind": "development"
     }
   ],
   "future": [
-    {
-      "id": "demo-dataset-generator-studio",
-      "name": "Demo / Dataset Generator Studio",
-      "status": "candidate",
-      "source": [
-        "Library/demo/generate_demo.py",
-        "Library/demo/generate_studio_demo.py"
-      ],
-      "purpose": "Generate reproducible synthetic datasets, images, QR/Data Matrix and multi-format demo packs."
-    },
     {
       "id": "translation-studio",
       "name": "Translation Studio",
