@@ -71,3 +71,164 @@ body{font-family:var(--studio-font-family,system-ui,Arial,sans-serif);font-size:
 .technicalMeta b{font-size:8px;text-transform:uppercase;color:#6c7a86}.technicalMeta code{font-size:9px;overflow-wrap:anywhere}
 .architectureMarkers .technicalMeta{display:grid}
 .themeDark .technicalMeta>div{background:#252c33;border-color:#39434c}
+
+/* nLab Web portal header template — shared by all Studio V2 */
+:root{
+  --studio-header-h:76px;
+  --studio-menu-h:34px;
+  --studio-ribbon-h:72px;
+  --studio-content-width:1180px;
+}
+.studioHeader{
+  height:var(--studio-header-h);
+  min-height:var(--studio-header-h);
+  padding:0;
+  background:#fff;
+  border-bottom:1px solid var(--nlab-line);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.studioHeaderInner{
+  width:min(var(--studio-content-width),calc(100% - 32px));
+  min-height:var(--studio-header-h);
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.studioLogo{
+  width:92px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  flex:0 0 auto;
+}
+.studioLogo img{
+  display:block;
+  width:92px;
+  height:auto;
+}
+.studioBrand{
+  display:block;
+  min-width:0;
+}
+.studioBrand b{
+  display:block;
+  font-size:20px;
+  line-height:1.05;
+}
+.studioBrand small{
+  display:block;
+  margin-top:2px;
+  color:var(--nlab-muted);
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:460px;
+}
+.studioHeaderMeta{
+  display:flex;
+  gap:5px;
+  margin-top:4px;
+}
+.studioGlobalNav{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.studioGlobalNav a,
+.studioNavAction{
+  padding:8px 11px;
+  text-decoration:none;
+  color:#405160;
+  border:0;
+  background:transparent;
+  border-radius:8px;
+  font-weight:500;
+  white-space:nowrap;
+}
+.studioGlobalNav a:hover,
+.studioNavAction:hover{
+  background:#eef5fb;
+  color:#0057b8;
+}
+.studioNavAction{
+  font:inherit;
+  cursor:pointer;
+}
+.studioPill{
+  padding:3px 6px;
+  font-size:8px;
+}
+.studioMenu{
+  top:var(--studio-header-h);
+  height:var(--studio-menu-h);
+  min-height:var(--studio-menu-h);
+}
+.studioRibbon{
+  top:calc(var(--studio-header-h) + var(--studio-menu-h));
+  min-height:var(--studio-ribbon-h);
+}
+.ribbonContext{
+  top:calc(var(--studio-header-h) + var(--studio-menu-h) + var(--studio-ribbon-h));
+}
+body.studioRibbonCollapsed .ribbonContext{
+  top:calc(var(--studio-header-h) + var(--studio-menu-h) + 32px);
+}
+[data-header-mode="fixed"] .studioHeader{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+}
+[data-header-mode="fixed"] .studioMenu{
+  top:var(--studio-header-h);
+}
+[data-density="compact"]{
+  --studio-header-h:64px;
+  --studio-menu-h:30px;
+  --studio-ribbon-h:60px;
+}
+[data-density="compact"] .studioHeader,
+[data-density="compact"] .studioHeaderInner{height:var(--studio-header-h);min-height:var(--studio-header-h)}
+[data-density="compact"] .studioLogo{width:80px}
+[data-density="compact"] .studioLogo img{width:80px}
+[data-density="compact"] .studioBrand b{font-size:17px}
+[data-density="comfortable"]{
+  --studio-header-h:84px;
+  --studio-menu-h:38px;
+  --studio-ribbon-h:82px;
+}
+[data-density="comfortable"] .studioHeader,
+[data-density="comfortable"] .studioHeaderInner{height:var(--studio-header-h);min-height:var(--studio-header-h)}
+.headerBlur .studioHeader{background:#ffffffeb}
+.headerShadow .studioHeader{box-shadow:0 5px 18px #00000014}
+.themeDark .studioHeader{background:#20262c}
+.themeDark.headerBlur .studioHeader{background:#20262ceb}
+.themeDark .studioGlobalNav a,
+.themeDark .studioNavAction{color:#c7d0d8}
+.themeDark .studioGlobalNav a:hover,
+.themeDark .studioNavAction:hover{background:#263847;color:#fff}
+@media(max-width:980px){
+  .studioBrand small{max-width:300px}
+  .studioGlobalNav{gap:2px}
+  .studioGlobalNav a,.studioNavAction{padding:7px 8px;font-size:11px}
+}
+@media(max-width:800px){
+  .studioHeaderInner{width:min(100% - 20px,var(--studio-content-width))}
+  .studioGlobalNav a:not([href*="studios"]):not([href*="versions"]),
+  .studioGlobalNav a[href*="github.com"]{display:none}
+  .studioBrand small{max-width:220px}
+}
+@media(max-width:620px){
+  .studioLogo{width:72px}.studioLogo img{width:72px}
+  .studioBrand b{font-size:16px}
+  .studioBrand small{font-size:9px;max-width:150px}
+  .studioHeaderMeta{display:none}
+  .studioGlobalNav{margin-left:auto}
+  .studioGlobalNav a{display:none!important}
+  .studioNavAction{padding:6px 8px;font-size:10px}
+}
