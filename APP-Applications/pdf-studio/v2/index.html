@@ -1,66 +1,101 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>nLab PDF Studio V2</title>
+<title>nLab PDF Studio</title>
 <link rel="icon" type="image/svg+xml" href="../../../assets/branding/nlab-favicon.svg">
 <link rel="stylesheet" href="../../_shared/studio-v2/studio.css">
-<style>
-.pdfV2Sidebar{padding:8px}.pdfV2Sidebar details{border-bottom:1px solid #e2e8ee;padding:4px 0}.pdfV2Sidebar summary{cursor:pointer;font-weight:800;font-size:11px;padding:8px}.pdfV2Sidebar .body{padding:8px}.viewerToolbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}.viewerToolbar .grow{flex:1}.canvasStage{min-height:680px;display:grid;place-items:center;background:#38424b;border-radius:8px;overflow:auto;padding:20px}.canvasWrap{position:relative;display:inline-block}.canvasStage canvas{display:block;background:#fff;box-shadow:0 10px 30px #0005}.statusBox{border:1px solid #d9e2e8;border-radius:7px;padding:7px;background:#f8fafc;font-size:10px}.devBox{background:#fff8e8;border-color:#e8c875}.helpList{display:grid;gap:6px;font-size:10px}.helpList b{display:block}.scopeButtons{display:flex;gap:5px;flex-wrap:wrap}
-
-.scopeLegend{font-size:9px;color:#687684;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.scopeLegend b{padding:2px 5px;border-radius:4px;font-size:8px}.scopeLegend .coreKey{color:#1976b8;background:#eaf5fc}.scopeLegend .studioKey{color:#7b3fb5;background:#f3ebfb}.scopeLegend .devKey{color:#765600;background:#fff0b8}.architectureMarkers .pdfV2Sidebar details.scope-core>summary{border-left:4px solid #1976b8}.architectureMarkers .pdfV2Sidebar details.scope-studio>summary{border-left:4px solid #7b3fb5}.architectureMarkers .viewer.scope-core{box-shadow:inset 0 3px 0 #1976b8}
-</style>
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head><body>
 <main id="studioMain" class="studioMain">
 <aside id="studioSidebar" class="studioSidebar pdfV2Sidebar scope-core" data-scope="core">
-  <details id="sectionInput" class="scope-core" data-scope="core" open><summary>1. Entrée <small class="scopeBadge">CORE</small></summary><div class="body">
-    <div class="scopeButtons"><button id="pickFile">Choisir un fichier</button><button id="pickFolder">Choisir un dossier</button></div>
-    <input id="fileInput" type="file" accept=".pdf,application/pdf,image/*,.txt,.docx,.odt" hidden>
-    <input id="folderInput" type="file" webkitdirectory multiple hidden>
-    <div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
-  </div></details>
-  <details id="sectionPages" class="scope-studio" data-scope="studio" open><summary>2. Pages PDF <small class="scopeBadge">PDF</small></summary><div class="body">
-    <label>Portée
-      <select id="pageScope">
-        <option value="current">Page en cours</option>
-        <option value="selected">Pages sélectionnées</option>
-        <option value="all">Tout le document</option>
-      </select>
-    </label>
-    <div class="scopeButtons"><button id="rotateLeftSide">−90°</button><button id="rotateRightSide">+90°</button><button id="addPageSide">Ajouter page</button><button id="deletePageSide">Supprimer page</button></div>
-  </div></details>
-  <details id="sectionOutput" class="scope-core" data-scope="core"><summary>3. Sortie <small class="scopeBadge">CORE</small></summary><div class="body">
-    <button id="savePdfSide">Enregistrer le PDF</button>
-    <div class="statusBox">Sortie locale validée. Classement avancé reste <b>DÉVELOPPEMENT</b> dans cette première V2.</div>
-  </div></details>
-  <details id="sectionDevelopment" class="scope-studio devFeatureBtn" data-scope="studio" data-feature-status="development"><summary>4. Fonctions PDF en migration <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">
-    <div class="helpList">
-      <div><b>Objets / tampons / signatures</b>DÉVELOPPEMENT — moteur existant à reconnecter via plugins V2.</div>
-      <div><b>OCR / traduction / QR</b>DÉVELOPPEMENT — appels vers moteurs spécialisés à reconnecter.</div>
-      <div><b>Historique / classement</b>DÉVELOPPEMENT — services communs à sortir du PDF et promouvoir dans le Core.</div>
-    </div>
-  </div></details>
-  <details id="history-panel" class="scope-core" data-scope="core" open><summary>5. Historique & récents <small class="scopeBadge">CORE</small></summary><div class="body">
-    <div class="historyQuickHead"><strong>Historique rapide</strong><span><span id="history-recent-count">0</span> affiché(s)</span></div>
+  <div id="sidebarResizer" class="sidebarResizer" title="Glisser pour régler la largeur"></div>
+  <div class="sidebarTabs" role="tablist">
+    <button id="sidebar-tab-tools" class="active" data-sidebar-tab="tools">Outils</button>
+    <button id="sidebar-tab-properties" data-sidebar-tab="properties">Propriétés</button>
+    <button id="sidebar-tab-help" data-sidebar-tab="help">Aide</button>
+    <button id="sidebar-tab-history" data-sidebar-tab="history">Historique</button>
+  </div>
+  <div class="sidebarGlobalControls">
+    <button id="sidebar-collapse-all" type="button">▸ Tout plier</button>
+    <button id="sidebar-expand-all" type="button">▾ Tout déplier</button>
+  </div>
+
+  <section id="sidebar-pane-tools" class="sidebarPane active" data-sidebar-pane="tools">
+    <details id="sectionConfig" class="toolSection scope-core" data-scope="core"><summary>0. Configuration & espace personnel <small class="scopeBadge">CORE</small></summary><div class="body"><div class="statusBox">Préférences communes, identité opérateur, presets et espace personnel.</div><button type="button" data-open-core-settings>Ouvrir les paramètres Core</button></div></details>
+
+    <details id="sectionInput" class="toolSection scope-core" data-scope="core" open><summary>1. Entrée <small class="scopeBadge">CORE</small></summary><div class="body">
+      <div class="scopeButtons"><button id="pickFile" type="button">Choisir un fichier</button><button id="pickFolder" type="button">Choisir un dossier</button></div>
+      <div id="inputDropZone" class="inputDropZone" tabindex="0"><strong>Glisser-déposer</strong><span>Fichier(s) ou dossier compatible</span></div>
+      <input id="fileInput" type="file" multiple accept=".pdf,application/pdf,image/*,.txt,.docx,.odt" hidden>
+      <input id="folderInput" type="file" webkitdirectory multiple hidden>
+      <div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
+    </div></details>
+
+    <details id="sectionOutput" class="toolSection scope-core" data-scope="core"><summary>2. Sortie & classement <small class="scopeBadge">CORE</small></summary><div class="body"><button id="savePdfSide">Enregistrer le PDF</button><button id="classifyPdfSide" class="devFeatureBtn">Enregistrer + classer <small class="devBadge">DEV</small></button><div class="statusBox">OutputService avancé en migration depuis V1.</div></div></details>
+
+    <details id="sectionNaming" class="toolSection scope-core" data-scope="core"><summary>3. Nommage · préfixes & suffixes <small class="scopeBadge">CORE</small></summary><div class="body"><label>Nom / modèle<input id="namingTemplate" value="{FILENAME}"></label><div class="scopeButtons"><input id="namingPrefix" placeholder="Préfixe"><input id="namingSuffix" placeholder="Suffixe"></div><div id="namingPreview" class="statusBox">Aperçu du nom</div></div></details>
+
+    <details id="sectionPages" class="toolSection scope-studio" data-scope="pdf" open><summary>4. Pages & portée <small class="scopeBadge">PDF</small></summary><div class="body">
+      <label>Portée<select id="pageScope"><option value="current">Page courante</option><option value="selected">Pages sélectionnées</option><option value="all">Toutes les pages</option></select></label>
+      <div class="scopeButtons"><button id="rotateLeftSide">−90°</button><button id="rotateRightSide">+90°</button><button id="addPageSide">Ajouter page</button><button id="deletePageSide">Supprimer</button></div>
+    </div></details>
+
+    <details id="sectionStamps" class="toolSection scope-studio" data-scope="pdf"><summary>5. Tampons & 5 dates <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="statusBox">Tampons dynamiques, initiales, variables de date et 5 dates — à reconnecter depuis la V1.</div></div></details>
+    <details id="sectionAnnotations" class="toolSection scope-studio" data-scope="pdf"><summary>6. Annotations & objets <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="scopeButtons"><button data-studio-action="text">Texte</button><button data-studio-action="stamp">Tampon</button><button data-studio-action="highlight">Surligneur</button><button data-studio-action="pen">Stylo</button><button data-studio-action="image">Image</button></div></div></details>
+    <details id="sectionOCR" class="toolSection scope-studio" data-scope="pdf"><summary>7. OCR · reconnaissance de texte <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="ocr">OCR rapide</button><button data-advanced-studio="ocr-studio">OCR avancé…</button></div></details>
+    <details id="sectionOptimize" class="toolSection scope-studio" data-scope="pdf"><summary>8. Optimisation & compression <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="optimize">Optimisation rapide</button><div class="statusBox">DPI, JPEG, niveaux de gris, compression structurelle et profils écran/bureautique/archive/impression.</div></div></details>
+    <details id="sectionTranslate" class="toolSection scope-studio" data-scope="pdf"><summary>9. Traduction bilingue <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="translate">Traduction rapide</button><button data-advanced-studio="translation-studio">Traduction avancée…</button></div></details>
+    <details id="sectionSignature" class="toolSection scope-studio" data-scope="pdf"><summary>10. Signature & espace personnel <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="statusBox">Signature visuelle, initiales, bibliothèque locale et certificats P12/PFX à reconnecter.</div></div></details>
+    <details id="sectionCodes" class="toolSection scope-studio" data-scope="pdf"><summary>11. QR & code-barres <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="qr">QR / code rapide</button><button data-advanced-studio="code-studio">Code Studio…</button></div></details>
+    <details id="sectionHeaderFooter" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête · pied · recadrage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="statusBox">Composeur en-tête/pied, pagination, QR, recadrage et marges.</div></div></details>
+    <details id="sectionConversions" class="toolSection scope-studio" data-scope="pdf"><summary>13. Conversions <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="convert">Conversion rapide</button><button data-advanced-studio="conversion-studio">Conversion avancée…</button><div class="statusBox">DOCX/PDF, PDF/Office, images/PDF et conversions complexes via moteurs spécialisés.</div></div></details>
+    <details id="sectionForms" class="toolSection scope-studio" data-scope="pdf"><summary>14. Formulaires PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Lecture, remplissage, création et aplatissement AcroForm.</div></details>
+    <details id="sectionRedaction" class="toolSection scope-studio" data-scope="pdf"><summary>15. Caviardage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Marquage puis application irréversible du caviardage.</div></details>
+    <details id="sectionCompare" class="toolSection scope-studio" data-scope="pdf"><summary>16. Comparaison PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Comparaison visuelle, pixel et texte.</div></details>
+    <details id="sectionBatch" class="toolSection scope-studio" data-scope="pdf"><summary>17. Traitements batch <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Traitements en lot et PipelineService.</div></details>
+    <details id="sectionSecurity" class="toolSection scope-studio" data-scope="pdf"><summary>18. Sécurité & métadonnées <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Métadonnées, chiffrement, PDF/A, pièces jointes et contrôles de sécurité.</div></details>
+    <details id="sectionDiagnostics" class="toolSection scope-core" data-scope="core"><summary>19. Historique & diagnostics <small class="scopeBadge">CORE</small></summary><div class="body"><button id="history-view-all-inline">Voir l’historique complet</button><button id="copyDiagnostics">Copier le diagnostic</button></div></details>
+  </section>
+
+  <section id="sidebar-pane-properties" class="sidebarPane" data-sidebar-pane="properties" hidden>
+    <div class="paneTitle">Propriétés de l’outil actif</div><div id="activeToolProperties" class="statusBox">Sélectionnez un outil pour afficher ses propriétés.</div>
+  </section>
+
+  <section id="sidebar-pane-help" class="sidebarPane" data-sidebar-pane="help" hidden>
+    <div class="paneTitle">Aide contextuelle</div><div id="helpContent" class="helpList"><div><b>PDF Studio</b>Sélectionnez une commande. Le mode Repères UI affiche ses IDs et métadonnées.</div></div>
+  </section>
+
+  <section id="sidebar-pane-history" class="sidebarPane" data-sidebar-pane="history" hidden>
+    <div class="paneTitle">Historique & récents</div>
     <div class="historyUndoRow"><button id="history-undo" type="button" disabled>↶ Annuler</button><button id="history-redo" type="button" disabled>↷ Rétablir</button></div>
+    <div class="historyQuickHead"><strong>Historique rapide</strong><span><span id="history-recent-count">0</span></span></div>
     <div id="history-recent-list" class="historyRecentList"></div>
     <div class="historyQuickHead"><strong>Fichiers récents</strong><span>accès rapide</span></div>
     <div id="recent-items-list" class="recentItemsList"></div>
     <button id="history-view-all" type="button" class="historyViewAll">Voir tout l’historique →</button>
-    <div class="statusBox">Le nombre d’éléments visibles se règle dans <b>⚙ Core → Historique & récents</b>. Les éléments plus anciens restent dans l’historique complet.</div>
-  </div></details>
-  <details id="sectionHelp" class="scope-core" data-scope="core"><summary>6. Aide contextuelle <small class="scopeBadge">CORE</small></summary><div class="body">
-    <div id="helpContent" class="helpList"><div><b>PDF Studio V2</b>Sélectionnez une commande du ruban. Les fonctions normales sont celles déjà opérationnelles dans cette V2 ; les fonctions jaunes restent en développement.</div></div>
-  </div></details>
+  </section>
 </aside>
-<section class="viewer scope-core" data-scope="core"><div class="viewerCard">
-  <div class="viewerToolbar"><span class="scopeLegend"><b class="coreKey">CORE</b> infrastructure commune · <b class="studioKey">PDF</b> plugin métier · <b class="devKey">DEV</b> non validé</span><span class="grow"></span>
-    <button id="prevPage" class="scope-core" data-scope="core">◀</button><span id="pageInfo">0 / 0</span><button id="nextPage" class="scope-core" data-scope="core">▶</button>
-    <span class="grow"></span>
-    <button id="zoomOut" class="scope-core" data-scope="core">−</button><span id="zoomLabel">100 %</span><button id="zoomIn" class="scope-core" data-scope="core">+</button>
-    <button id="fitWidth" class="scope-core" data-scope="core">Largeur</button>
+
+<section class="viewer scope-core" data-scope="core">
+  <details id="previewPanel" class="previewPanel" open><summary>Aperçu / organisation des pages</summary><div class="previewPanelBody">
+    <div class="previewToolbar"><button id="previewSelectAll">Tout sélectionner</button><button id="previewSelectNone">Tout désélectionner</button><button id="previewAddPage">Ajouter</button><button id="previewDeleteSelected">Supprimer sélection</button><label>Vignettes/largeur <input id="previewColumns" type="number" min="1" max="20" value="6"></label></div>
+    <div id="previewGrid" class="previewGrid"></div>
+  </div></details>
+
+  <div class="viewerCard">
+    <div class="viewerToolbar">
+      <button id="firstPage" title="Première page">⏮</button><button id="prevPage" title="Page précédente">◀</button>
+      <label>Page <input id="pageNumberInput" type="number" min="1" value="1"></label><span id="pageInfo">/ 0</span>
+      <button id="nextPage" title="Page suivante">▶</button><button id="lastPage" title="Dernière page">⏭</button>
+      <span class="grow"></span>
+      <button id="zoomOut">−</button><label>Zoom <input id="zoomInput" type="number" min="15" max="500" step="5" value="100"> %</label><button id="zoomIn">+</button>
+      <button id="fitWidth">Largeur</button>
+      <label>Pages/largeur <input id="pagesPerRow" type="number" min="1" max="12" value="1"></label>
+    </div>
+    <div id="canvasStage" class="canvasStage"><div id="mainPageGrid" class="mainPageGrid"></div></div>
   </div>
-  <div id="canvasStage" class="canvasStage"><div class="canvasWrap"><canvas id="pageCanvas"></canvas></div></div>
-</div></section>
+</section>
 </main>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 <script type="module" src="./pdf-v2.js"></script>
