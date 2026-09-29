@@ -1,6 +1,7 @@
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel}from'./settings.js';
 import{enhanceStudioWindow}from'./window-system.js';
+import{mountHistoryUI,recordHistory}from'./history.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
@@ -75,6 +76,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   }
 
   applyStudioSettings();
+  mountHistoryUI();
   bindStudioChrome();
   applyRibbonGroups();
   const settingsPanel=qs('#studioCoreSettingsPanel');
@@ -85,12 +87,15 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   const ribbon=qs('.studioRibbon');
   ribbon?.addEventListener('click',e=>{
     const b=e.target.closest('[data-studio-action]');if(!b)return;
-    document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,element:b,scope:b.dataset.scope,plugin:b.dataset.plugin,featureId:b.dataset.featureId,status:b.dataset.featureStatus,capability:b.dataset.capability,studio:manifest.id}}));
+    const detail={action:b.dataset.studioAction,element:b,scope:b.dataset.scope,plugin:b.dataset.plugin,featureId:b.dataset.featureId,status:b.dataset.featureStatus,capability:b.dataset.capability,studio:manifest.id};
+    recordHistory({studio:manifest.id,type:'action',label:b.textContent.trim().replace(/\\s+/g,' '),detail:b.title||b.dataset.featureId||'',action:b.dataset.studioAction,repeatable:!['openPdf','openFolder','openDemo'].includes(b.dataset.studioAction)});
+    document.dispatchEvent(new CustomEvent('studio-v2:action',{detail}));
   });
   const menu=qs('.studioMenu');
   menu?.addEventListener('click',e=>{
     const b=e.target.closest('[data-menu]');if(!b)return;
     qsa('[data-menu]',menu).forEach(x=>x.classList.toggle('active',x===b));
+    recordHistory({studio:manifest.id,type:'navigation',label:'Menu '+b.textContent.trim(),detail:b.dataset.menu});
     document.dispatchEvent(new CustomEvent('studio-v2:menu',{detail:{tab:b.dataset.menu,scope:b.dataset.scope,studio:manifest.id}}));
   });
   return{manifest,versionInfo,chrome,setRibbonGroupVisible};
