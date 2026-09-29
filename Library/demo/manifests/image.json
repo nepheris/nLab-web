@@ -1,0 +1,38 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "image-studio",
+  "label": "Image Studio",
+  "source": "Google Drive reference 2026-09-29",
+  "files": [
+    {
+      "name": "calibration-regles-300x150.json",
+      "storage": "reference-only",
+      "kind": "json"
+    },
+    {
+      "name": "calibration-regles-300x150.png",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-image-anime.gif",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-image-color.jpg",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-image-color.png",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-image-color.webp",
+      "storage": "reference-only",
+      "kind": "image"
+    }
+  ]
+}
