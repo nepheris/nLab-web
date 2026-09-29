@@ -1,5 +1,5 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>nLab PDF Studio 1.0.1 TEST</title>
+<title>nLab PDF Studio 1.0.2 TEST</title>
 <link rel="icon" type="image/svg+xml" href="../../../assets/branding/nlab-favicon.svg">
 <link rel="stylesheet" href="../../_shared/studio-v1/studio.css"><link rel="stylesheet" href="./pdf-studio.css">
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -12,7 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script><script src="https://apis.google.com/js/api.js" async defer></script>
 </head><body>
-<header class="studioHeader"><a class="studioBrand" href="../../../"><img src="../../../assets/branding/nlab-wordmark.svg" alt="nLab"><span class="studioBrandText"><strong>PDF Studio</strong><small>nLab Studios · APP07 · réécriture 1.0</small></span></a><div class="studioHeaderRight"><span class="studioPill local">● local-first</span><span class="studioPill test">1.0.1 TEST</span><a class="btn" href="../../studios/">Studios</a><a class="btn" href="../">Versions</a></div></header>
+<header class="studioHeader"><a class="studioBrand" href="../../../"><img src="../../../assets/branding/nlab-wordmark.svg" alt="nLab"><span class="studioBrandText"><strong>PDF Studio</strong><small>nLab Studios · APP07 · réécriture 1.0</small></span></a><div class="studioHeaderRight"><span class="studioPill local">● local-first</span><span class="studioPill test">1.0.2 TEST</span><a class="btn" href="../../studios/">Studios</a><a class="btn" href="../">Versions</a></div></header>
 <nav class="studioMenu"><button class="active" data-tab="home">Accueil</button><button data-tab="file">Fichier</button><button data-tab="edit">Édition</button><button data-tab="tools">Outils</button><button data-tab="objects">Objets</button><button data-tab="view">Affichage</button><button data-tab="history">Historique</button><button data-tab="connection">Connexion</button><button data-tab="help">Aide</button></nav>
 <div id="studioMenuPanel" class="studioMenuPanel" hidden></div>
 <div class="studioRibbon">
@@ -30,7 +30,7 @@
 <div class="sidebarTop"><button id="sidebarHide">◀</button><button id="sidebarCompact">▥</button><button id="sidebarNormal">▤</button><button id="sidebarExpandAll">Tout ouvrir</button><button id="sidebarCollapseAll">Tout fermer</button></div><div id="sidebarResizer" class="sidebarResizer"></div>
 
 <details class="sidebarSection" id="sectionConfig" open><summary><span class="fullLabel">0. Configuration & espace personnel</span><span class="shortLabel">0<br>Cfg</span></summary><div class="studioSidebarBody">
-<div class="statusBox">Version <b>1.0.1 TEST</b> · code autonome, aucun runtime 0.9.x.</div>
+<div class="statusBox">Version <b>1.0.2 TEST</b> · code autonome, aucun runtime 0.9.x.</div>
 <div class="field"><span>Variables nommées — cliquez pour copier <button class="helpDot" type="button" data-help-key="variables">?</button></span><div id="variableGrid" class="variableGrid"></div></div>
 <div class="field configDates"><span>Dates utilisables par les tampons <button class="helpDot" type="button" data-help-key="stamp-dates">?</button></span><div id="dateGrid" class="dateGrid"></div></div>
 <div class="grid2"><button id="importConfig">Importer JSON</button><button id="exportConfig">Exporter JSON</button></div><input id="configInput" type="file" accept=".json,application/json" hidden>
@@ -176,6 +176,6 @@
 <div id="canvasStage" class="canvasStage"><div id="pageCanvasWrap"><canvas id="pageCanvas"></canvas><div id="textLayer" class="textLayer"></div><div id="annotationLayer" class="annotationLayer"></div></div><div id="emptyViewer" style="color:#fff;margin:220px auto">Ouvrez un PDF, une image ou un ZIP pour commencer.</div></div>
 </div></section></main>
 <button id="sidebarRestore" hidden style="position:fixed;left:6px;top:50%;z-index:150">▶ Panneau</button>
-<div class="studioStatus"><span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span id="docStatus">Aucun document</span><span class="grow">nLab PDF Studio 1.0.1 TEST</span></div><div id="studioToast" class="toast"></div>
+<div class="studioStatus"><span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span id="docStatus">Aucun document</span><span class="grow">nLab PDF Studio 1.0.2 TEST</span></div><div id="studioToast" class="toast"></div>
 <div id="signatureModal" class="modal" hidden><div class="modalCard"><h3>Dessiner une signature</h3><canvas id="signatureCanvas" width="700" height="260" style="width:100%;height:260px;border:1px solid #B8C6D1;border-radius:8px;touch-action:none"></canvas><div class="row" style="justify-content:flex-end;margin-top:8px"><button id="signatureClear">Effacer</button><button id="signatureCancel">Annuler</button><button id="signatureUse" class="btnPrimary">Utiliser</button></div></div></div>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script><script type="module" src="./pdf-studio.js"></script></body></html>
