@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "1.0.2",
+  "test": "1.0.3",
   "versions": [
+    {
+      "version": "1.0.3",
+      "label": "PDF Studio 1.0.3 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "test",
+      "href": "./v1/",
+      "notes": "Sortie refondue : format séparé de la destination (PDF / conserver format d'origine / ZIP), Drive conservé comme destination DÉVELOPPEMENT, suppression du bouton Drive redondant, actions Enregistrer / Enregistrer sous / Enregistrer + classer, aperçu d'état de sortie, et variables de date enrichies avec mois/jours numériques ou texte FR/EN."
+    },
     {
       "version": "1.0.2",
       "label": "PDF Studio 1.0.2 TEST",
       "date": "2026-09-29",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v1/",
       "notes": "Workspace fichiers avec vignettes optionnelles PDF/image, menu supérieur élargi, groupes de ruban masquables, synchronisation outil/ruban/panneau détaillé, historique Undo/Redo par snapshots, comparaison séparée du batch, badges développement, et moteur d’objet commun pour déplacement, redimensionnement, rotation, verrouillage, opacité et suppression."
     },
