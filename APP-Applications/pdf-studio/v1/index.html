@@ -117,30 +117,44 @@
 <div class="grid2"><label class="field"><span>Marge gauche %</span><input id="cropLeft" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge droite %</span><input id="cropRight" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge haut %</span><input id="cropTop" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge bas %</span><input id="cropBottom" type="number" value="0" min="0" max="40"></label></div><button id="cropPages" style="width:100%">Recadrer la portée</button>
 </div></details>
 
-<details class="sidebarSection" id="sectionConversion"><summary><span class="fullLabel">13. Conversions</span><span class="shortLabel">13<br>Conv</span></summary><div class="studioSidebarBody">
+<details class="sidebarSection" id="sectionConversion"><summary><span class="fullLabel">13. Conversions <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">13<br>Conv</span></summary><div class="studioSidebarBody">
 <div class="statusBox">Entrées → PDF : images, DOCX, ODT et TXT peuvent être ouvertes directement. Les conversions documentaires navigateur privilégient le texte/structure plutôt qu’une fidélité bureautique parfaite.</div>
 <label class="field"><span>PDF vers</span><select id="documentExportFormat"><option value="docx">Word DOCX</option><option value="odt">OpenDocument ODT</option><option value="txt">Texte TXT</option></select></label><button id="convertPdfDocument" style="width:100%">Convertir la portée</button>
 <div class="grid2"><button id="pdfToPng">Page → PNG</button><button id="pdfToJpg">Page → JPG</button><button id="pdfToPngZip">Portée → PNG ZIP</button><button id="pdfToJpgZip">Portée → JPG ZIP</button></div>
 </div></details>
 
-<details class="sidebarSection" id="sectionForms"><summary><span class="fullLabel">14. Formulaires PDF</span><span class="shortLabel">14<br>Form</span></summary><div class="studioSidebarBody">
+<details class="sidebarSection" id="sectionForms"><summary><span class="fullLabel">14. Formulaires PDF <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">14<br>Form</span></summary><div class="studioSidebarBody">
 <div class="grid2"><button id="inspectForms">Lister les champs</button><button id="addFormField">Ajouter champ texte</button></div><label class="field"><span>Nom du nouveau champ</span><input id="newFormFieldName" value="Champ_1"></label><label class="field"><span>Réponses JSON</span><textarea id="formValues" rows="5" placeholder='{"Champ_1":"Valeur"}'></textarea></label><div class="grid2"><button id="fillForms">Appliquer réponses</button><button id="flattenForms">Aplatir</button></div><div id="formStatus" class="statusBox">Aucune inspection.</div>
 </div></details>
 
-<details class="sidebarSection" id="sectionRedaction"><summary><span class="fullLabel">15. Caviardage</span><span class="shortLabel">15<br>Red</span></summary><div class="studioSidebarBody">
+<details class="sidebarSection" id="sectionRedaction"><summary><span class="fullLabel">15. Caviardage <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">15<br>Red</span></summary><div class="studioSidebarBody">
 <button id="redactionTool" style="width:100%">Ajouter une zone de caviardage</button><div class="hint">Cliquez ensuite dans la page pour placer une zone noire. Elle reste déplaçable avant application.</div><button id="applyRedactions" class="btnDanger" style="width:100%;margin-top:6px">Appliquer définitivement à la portée</button><div class="statusBox">L’application définitive rasterise les pages concernées pour supprimer le texte/vectoriel sous les zones.</div>
 </div></details>
 
-<details class="sidebarSection" id="sectionCompareBatch"><summary><span class="fullLabel">16. Comparaison & batch</span><span class="shortLabel">14<br>Batch</span></summary><div class="studioSidebarBody">
-<button id="pickCompare" style="width:100%">Choisir le PDF B à comparer</button><input id="compareInput" type="file" accept=".pdf,application/pdf" hidden><div id="compareStatus" class="statusBox">Aucune comparaison.</div>
-<button id="batchCleanMetadata" style="width:100%;margin-top:6px">Batch · nettoyer métadonnées des PDF cochés → ZIP</button>
+<details class="sidebarSection" id="sectionCompare"><summary><span class="fullLabel">16. Comparaison PDF <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">16<br>Cmp</span></summary><div class="studioSidebarBody">
+<div class="grid2">
+  <div><div class="fieldHead">PDF A</div><div id="compareAName" class="statusBox">Document courant</div><canvas id="compareAPreview" class="comparePreview"></canvas></div>
+  <div><div class="fieldHead">PDF B</div><button id="pickCompare" style="width:100%">Choisir PDF B</button><input id="compareInput" type="file" accept=".pdf,application/pdf" hidden><div id="compareBName" class="statusBox">Aucun PDF B</div><canvas id="compareBPreview" class="comparePreview"></canvas></div>
+</div>
+<div id="compareStatus" class="statusBox">Aucune comparaison.</div>
 </div></details>
 
-<details class="sidebarSection" id="sectionSecurity"><summary><span class="fullLabel">17. Sécurité & métadonnées</span><span class="shortLabel">15<br>Sécu</span></summary><div class="studioSidebarBody">
+<details class="sidebarSection" id="sectionBatch"><summary><span class="fullLabel">17. Traitements batch <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">17<br>Batch</span></summary><div class="studioSidebarBody">
+<div class="hint">Les opérations batch s'appliquent aux PDF cochés dans « Fichiers sélectionnés ».</div>
+<div id="batchSelectionStatus" class="statusBox">0 PDF sélectionné.</div>
+<button id="batchCleanMetadata" style="width:100%;margin-top:6px">Nettoyer métadonnées → ZIP</button>
+</div></details>
+
+<details class="sidebarSection" id="sectionSecurity"><summary><span class="fullLabel">18. Sécurité & métadonnées</span><span class="shortLabel">15<br>Sécu</span></summary><div class="studioSidebarBody">
 <div class="grid2"><button id="inspectSignatureStructure">Inspecter signatures</button><button id="cleanMetadata">Nettoyer métadonnées</button></div><div id="securityStatus" class="statusBox">Inspection structurelle uniquement. La validation cryptographique PAdES utilise DSS.</div>
 </div></details>
 
-<details class="sidebarSection" id="sectionDiagnostics"><summary><span class="fullLabel">18. Historique & diagnostics</span><span class="shortLabel">18<br>Diag</span></summary><div class="studioSidebarBody"><div id="documentHistory" class="historyList"></div><div class="grid2"><button id="exportHistory">Exporter historique</button><button id="clearHistory">Effacer historique</button></div><button id="runDiagnostics" style="width:100%">Relancer les diagnostics</button><div id="diagnosticList"></div></div></details>
+<details class="sidebarSection" id="sectionDiagnostics"><summary><span class="fullLabel">19. Historique & diagnostics</span><span class="shortLabel">19<br>Hist</span></summary><div class="studioSidebarBody">
+<div class="grid3"><button id="undoHistory">↶ Annuler</button><button id="redoHistory">↷ Rétablir</button><button id="captureHistory">＋ Point de retour</button></div>
+<div class="sectionSubhead">Historique de travail</div><div id="snapshotHistory" class="historyList"></div>
+<div class="sectionSubhead">Journal persistant</div><div id="documentHistory" class="historyList"></div>
+<div class="grid2"><button id="exportHistory">Exporter historique</button><button id="clearHistory">Effacer historique</button></div>
+<button id="runDiagnostics" style="width:100%">Relancer les diagnostics</button><div id="diagnosticList"></div></div></details>
 </aside>
 
 <section class="viewer"><div class="viewerCard">
