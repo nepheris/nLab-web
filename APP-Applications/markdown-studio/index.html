@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nLab Markdown Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/branding/nlab-favicon.svg">
+<link rel="stylesheet" href="../_shared/studio-v1/studio.css">
+<link rel="stylesheet" href="./markdown-studio.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@18.0.6/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-yaml@5.2.0/dist/js-yaml.min.js"></script>
+</head>
+<body>
+<header class="studioHeader">
+<a class="studioBrand" href="../../"><img src="../../assets/branding/nlab-wordmark.svg" alt="nLab"><span class="studioBrandText"><strong>Markdown Studio</strong><small>nLab Studios · éditeur texte structuré transversal</small></span></a>
+<div class="studioHeaderRight"><span class="studioPill local">● local-first</span><span class="studioPill test" data-version-status>TEST</span><a class="btn" href="../studios/">Studios</a></div>
+</header>
+
+<nav class="studioMenu">
+<button class="active" data-mode="edit">Édition</button>
+<button data-mode="split">Édition + aperçu</button>
+<button data-mode="preview">Lecture</button>
+<button data-mode="yaml">YAML</button>
+<button data-mode="help">Aide</button>
+</nav>
+
+<div class="studioRibbon">
+<div class="ribbonGroup"><button class="ribbonBtn primary" id="openMd">📄<span>Ouvrir</span></button><button class="ribbonBtn" id="saveMd">💾<span>MD</span></button><button class="ribbonBtn" id="exportHtml">🌐<span>HTML</span></button><span class="ribbonLabel">Fichier</span></div>
+<div class="ribbonGroup"><button class="ribbonBtn" data-wrap="**|**"><b>B</b><span>Gras</span></button><button class="ribbonBtn" data-wrap="*|*"><i>I</i><span>Italique</span></button><button class="ribbonBtn" data-prefix="# ">H1<span>Titre 1</span></button><button class="ribbonBtn" data-prefix="## ">H2<span>Titre 2</span></button><button class="ribbonBtn" data-prefix="### ">H3<span>Titre 3</span></button><span class="ribbonLabel">Texte</span></div>
+<div class="ribbonGroup"><button class="ribbonBtn" id="insertLink">🔗<span>Lien</span></button><button class="ribbonBtn" id="insertImage">🖼<span>Image</span></button><button class="ribbonBtn" id="insertTable">▦<span>Tableau</span></button><button class="ribbonBtn" id="insertList">☷<span>Liste</span></button><span class="ribbonLabel">Insertion</span></div>
+<div class="ribbonGroup"><button class="ribbonBtn" id="insertColor">🎨<span>Couleur</span></button><button class="ribbonBtn" id="insertFont">Aa<span>Police</span></button><button class="ribbonBtn devFeatureBtn" id="wysiwygDev">✦<span>WYSIWYG</span><small class="devBadge">DEV</small></button><span class="ribbonLabel">Format</span></div>
+</div>
+
+<main class="markdownMain">
+<aside class="markdownSidebar">
+<section class="sideCard">
+<h3>Document</h3>
+<div class="field"><span>Titre</span><input id="metaTitle" placeholder="Titre du document"></div>
+<div class="field"><span>Langue</span><input id="metaLang" placeholder="fr"></div>
+<div class="field"><span>Auteur</span><input id="metaAuthor" placeholder="Auteur"></div>
+<button id="syncMeta" class="btnPrimary">Mettre à jour le YAML</button>
+</section>
+
+<section class="sideCard">
+<div class="sideHead"><h3>Sommaire</h3><button id="refreshToc" class="compactAction">↻</button></div>
+<div id="toc" class="toc"></div>
+</section>
+
+<section class="sideCard">
+<h3>YAML / Front matter <span class="studioPill local">ACTIF</span></h3>
+<textarea id="yamlEditor" spellcheck="false" placeholder="title: Mon document&#10;lang: fr"></textarea>
+<div id="yamlStatus" class="statusBox">YAML prêt.</div>
+<button id="applyYaml">Appliquer le YAML</button>
+<button id="exportYaml">Exporter YAML</button>
+</section>
+
+<section class="sideCard">
+<h3>Insertion rapide</h3>
+<button id="addTable2x3">Tableau 2 × 3</button>
+<button id="addQuote">Citation</button>
+<button id="addCode">Bloc de code</button>
+</section>
+</aside>
+
+<section class="markdownWorkspace">
+<div class="editorToolbar">
+<span id="docName">nouveau.md</span>
+<span id="dirtyState" class="statusBox">Enregistré</span>
+<span class="spacer"></span>
+<span id="stats">0 mot</span>
+</div>
+
+<div id="editorGrid" class="editorGrid mode-split">
+<section id="editorPane" class="editorPane">
+<textarea id="mdEditor" spellcheck="true"></textarea>
+</section>
+<section id="previewPane" class="previewPane">
+<article id="preview" class="markdownPreview"></article>
+</section>
+<section id="yamlPane" class="yamlPane" hidden>
+<div class="yamlBigWrap">
+<h2>Front matter YAML</h2>
+<textarea id="yamlBig" spellcheck="false"></textarea>
+<p class="hint">Le YAML est stocké en tête du fichier Markdown entre deux lignes <code>---</code>.</p>
+</div>
+</section>
+</div>
+</section>
+</main>
+
+<input id="fileInput" type="file" accept=".md,.markdown,.txt,.yaml,.yml" hidden>
+<input id="imageInput" type="file" accept="image/*" hidden>
+<div class="studioStatus"><span class="statusDot"></span><span id="status">Prêt</span><span class="grow">Markdown Studio <span data-version-status>TEST</span></span></div>
+<script type="module" src="./markdown-studio.js"></script>
+</body></html>
