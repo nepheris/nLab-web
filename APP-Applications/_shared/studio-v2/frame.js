@@ -26,16 +26,27 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   chrome.id='nlabStudioV2Chrome';
   chrome.innerHTML=`
 <header class="studioHeader">
-  <a class="studioBrand" href="${esc(manifest.homeHref||'../../')}">
-    <img src="${esc(manifest.logoHref||'../../assets/branding/nlab-wordmark.svg')}" alt="nLab">
-    <span class="studioBrandText"><strong>${esc(manifest.name)}</strong><small>${esc(manifest.subtitle||'nLab Studio')} · ${esc(versionInfo.version)}</small></span>
-  </a>
-  <div class="studioHeaderRight">
-    <span class="studioPill local">● local-first</span>
-    <span class="studioPill test">${esc(versionInfo.status||'TEST')}</span>
-    <button id="studioCoreSettings" class="btn scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
-    <a class="btn scope-core" data-scope="core" href="${esc(manifest.studiosHref||'../studios/')}">Studios</a>
-    <a class="btn scope-core" data-scope="core" href="${esc(manifest.versionsHref||'./versions.html')}">Versions</a>
+  <div class="studioHeaderInner">
+    <a class="studioLogo" href="${esc(manifest.homeHref||'../../')}" aria-label="nLab Web">
+      <img src="${esc(manifest.logoHref||'../../assets/branding/nlab-wordmark.svg')}" alt="nLab">
+    </a>
+    <div class="studioBrand">
+      <b>${esc(manifest.name)}</b>
+      <small>${esc(manifest.subtitle||'nLab Studio')} · v${esc(versionInfo.version)}</small>
+      <span class="studioHeaderMeta">
+        <span class="studioPill local">● local-first</span>
+        <span class="studioPill test">${esc(versionInfo.status||'TEST')}</span>
+      </span>
+    </div>
+    <nav class="studioGlobalNav" aria-label="Navigation nLab">
+      <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'APP-Applications/')}">Applications</a>
+      <a class="scope-core" data-scope="core" href="${esc(manifest.studiosHref||'../studios-v2/')}">Studios</a>
+      <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Library/demo/')}">Démos</a>
+      <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Info/')}">Info</a>
+      <a class="scope-core" data-scope="core" href="https://github.com/nepheris/nLab-web">GitHub</a>
+      <button id="studioCoreSettings" class="studioNavAction scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
+      <a class="studioNavAction scope-core" data-scope="core" href="${esc(manifest.versionsHref||'./versions.html')}">Versions</a>
+    </nav>
   </div>
 </header>
 <nav class="studioMenu">
