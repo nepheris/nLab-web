@@ -1,0 +1,38 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "pdf-studio",
+  "label": "PDF Studio",
+  "source": "Google Drive reference 2026-09-29",
+  "files": [
+    {
+      "name": "pdf-formulaire-acroform.pdf",
+      "storage": "reference-only",
+      "kind": "pdf"
+    },
+    {
+      "name": "pdf-multipage-orientations.pdf",
+      "storage": "reference-only",
+      "kind": "pdf"
+    },
+    {
+      "name": "pdf-scan-image-only-incline-bruite.pdf",
+      "storage": "reference-only",
+      "kind": "pdf"
+    },
+    {
+      "name": "pdf-scan-image-only-propre.pdf",
+      "storage": "reference-only",
+      "kind": "pdf"
+    },
+    {
+      "name": "pdf-scan-pseudo-manuscrit.pdf",
+      "storage": "reference-only",
+      "kind": "pdf"
+    },
+    {
+      "name": "pdf-texte-actif.pdf",
+      "storage": "reference-only",
+      "kind": "pdf"
+    }
+  ]
+}
