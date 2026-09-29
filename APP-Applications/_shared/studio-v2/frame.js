@@ -67,7 +67,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   <div id="ribbonContextBody"></div>
 </div>
 <div id="studioCoreSettingsPanel" class="coreSettingsPanel scope-core" data-scope="core" hidden>
- <div class="coreSettingsHead"><strong>Paramètres Studio Core V2</strong><button id="studioCoreSettingsClose">×</button></div>
+ <div class="coreSettingsHead"><strong>Paramètres Studio Core</strong><button id="studioCoreSettingsClose">×</button></div>
  <div id="studioCoreSettingsBody"></div>
 </div>`;
   root.prepend(chrome);
@@ -91,6 +91,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   applyRibbonGroups();
   qsa('[id]').forEach(el=>{if(!el.dataset.uiId)el.dataset.uiId=(manifest.id+'-'+el.id).replace(/[^a-z0-9_-]+/gi,'-').toLowerCase()});
   qsa('[data-studio-action]:not([id])').forEach(el=>{const a=String(el.dataset.studioAction||'action').replace(/[^a-z0-9_-]+/gi,'-').toLowerCase();el.id=(manifest.id+'-action-'+a);el.dataset.uiId=el.id});
+  qsa('[data-icon]').forEach(el=>{if(!el.querySelector('.studioIcon'))el.insertAdjacentHTML('afterbegin',icon(el.dataset.icon||'command'))});
   qsa('details[id]').forEach(d=>{
     const key='nlab-studio-v2-panel-'+manifest.id+'-'+d.id;
     const saved=localStorage.getItem(key);if(saved!==null)d.open=saved==='1';
@@ -101,12 +102,11 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
     });
   });
   const settingsPanel=qs('#studioCoreSettingsPanel');
-  if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core V2'});
+  if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core'});
   qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;settingsPanel.hidden=!settingsPanel.hidden;if(!settingsPanel.hidden){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));settingsPanel.style.zIndex='230'}});
   qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)settingsPanel.hidden=true});
   qs('#studioCommandOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-command-palette')));
   qs('#studioWorkflowOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-workflows')));
-  document.addEventListener('studio-v2:workflow-run',e=>{for(const action of e.detail?.steps||[])document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action,source:'workflow',workflowId:e.detail.id}}))});
 
   const ribbon=qs('.studioRibbon');
   ribbon?.addEventListener('click',e=>{
