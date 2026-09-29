@@ -25,3 +25,18 @@ body.studioRibbonCollapsed .studioRibbon{height:32px;min-height:32px;padding-top
 .architectureMarkers .devFeatureBtn{box-shadow:inset 0 -3px 0 var(--scope-accent);background:#FFF8E8!important}
 .architectureMarkers .studioHeader .scope-core{border-bottom:2px solid #1976b8}
 .architectureMarkers .ribbonGroup.scope-core>.ribbonLabel{color:#1976b8}.architectureMarkers .ribbonGroup.scope-studio>.ribbonLabel{color:#7b3fb5}
+
+/* Studio Core V2 settings */
+.coreSettingsPanel{position:fixed;right:12px;top:54px;z-index:220;width:min(520px,calc(100vw - 24px));max-height:calc(100vh - 80px);overflow:auto;background:#fff;border:1px solid #cbd6de;border-radius:10px;box-shadow:0 16px 44px #0003;padding:12px}
+.coreSettingsPanel[hidden]{display:none}.coreSettingsHead{display:flex;align-items:center;gap:8px;border-bottom:1px solid #e1e7ec;padding-bottom:8px;margin-bottom:8px}.coreSettingsHead button{margin-left:auto}.coreSettingsGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.coreSettingsGrid section{border:1px solid #dce4ea;border-radius:8px;padding:10px}.coreSettingsGrid section:last-child{grid-column:1/-1}.coreSettingsGrid h3{margin:0 0 8px;font-size:11px}.checkboxField{display:grid;grid-template-columns:auto 1fr;gap:7px;align-items:center;margin:7px 0}.checkboxField input{width:auto}
+.hideDevelopment .devFeatureBtn,.hideDevelopment [data-feature-status="development"]{display:none!important}
+.hideScopeBadges .scopeBadge{display:none!important}
+.hideDevBadges .devBadge{display:none!important}
+
+/* dark mode */
+.themeDark{background:#15191d;color:#e6edf3}
+.themeDark .studioHeader,.themeDark .studioMenu,.themeDark .studioRibbon,.themeDark .ribbonContext,.themeDark .studioStatus,.themeDark .coreSettingsPanel,.themeDark .studioSidebar,.themeDark .viewerCard{background:#20262c;color:#e6edf3;border-color:#39434c}
+.themeDark .studioMenu button,.themeDark .ribbonBtn,.themeDark .btn,.themeDark button,.themeDark input,.themeDark select,.themeDark textarea{color:#e6edf3;background:#252c33;border-color:#46515c}
+.themeDark .studioMenu button.active{background:#263847}.themeDark .ribbonBtn.primary{background:#196da5}.themeDark .studioPill.local{background:#183425;color:#8fd3a8}.themeDark .studioPill.test{background:#3a2d18;color:#f0c66f}.themeDark .devFeatureBtn{background:#3a2d18!important;border-color:#8d6f2d!important;color:#f0c66f!important}
+.themeDark .coreSettingsGrid section{border-color:#39434c}.themeDark .architectureToggle{background:#252c33;border-color:#46515c}.themeDark .ribbonLabel,.themeDark .studioBrandText small,.themeDark .studioStatus{color:#aeb9c3}
+@media(max-width:700px){.coreSettingsGrid{grid-template-columns:1fr}.coreSettingsGrid section:last-child{grid-column:auto}}
