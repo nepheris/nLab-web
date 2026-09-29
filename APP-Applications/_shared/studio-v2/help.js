@@ -23,7 +23,7 @@ export function renderFeatureHelp(host,feature={},fallback={}){
   const statusLabel=m.status==='development'?'DEV':String(m.status||'stable').toUpperCase();
   host.innerHTML=
     '<article class="featureHelp">'+
-      '<h3>'+esc(m.label)+'</h3>'+
+      '<h3>'+esc(m.label)+'</h3>'+ '<button type="button" class="copyUiId" data-copy-ui-id="'+esc(m.uiId)+'">Copier l\'ID UI</button>'+
       (m.summary?'<p>'+esc(m.summary)+'</p>':'')+
       (m.details?'<div class="featureHelpDetails">'+esc(m.details)+'</div>':'')+
       '<div class="technicalMeta">'+
@@ -37,6 +37,7 @@ export function renderFeatureHelp(host,feature={},fallback={}){
         (m.testRef?'<div><b>Test</b><code>'+esc(m.testRef)+'</code></div>':'')+
       '</div>'+
     '</article>';
+  host.querySelector('[data-copy-ui-id]')?.addEventListener('click',async e=>{try{await navigator.clipboard.writeText(e.currentTarget.dataset.copyUiId);e.currentTarget.textContent='ID copié'}catch{}});
   return m;
 }
 
