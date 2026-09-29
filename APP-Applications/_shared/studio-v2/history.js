@@ -16,7 +16,14 @@ const dayKey=iso=>{
   const delta=Math.floor((start-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/86400000);
   if(delta<=0)return"Aujourd'hui";if(delta===1)return'Hier';if(delta<7)return'7 derniers jours';return'Plus ancien';
 };
-export function loadHistory(){const v=read(KEY,[]);return Array.isArray(v)?v:[]}
+export function loadHistory(){
+  const v=read(KEY,[]),items=Array.isArray(v)?v:[],s=loadStudioSettings(),mode=s.historyRetention||'keep';
+  if(!['30d','90d'].includes(mode))return items;
+  const days=mode==='30d'?30:90,cut=Date.now()-days*86400000,fav=new Set(read(FAVORITES_KEY,[]));
+  const kept=items.filter(x=>fav.has(x.id)||new Date(x.timestamp).getTime()>=cut);
+  if(kept.length!==items.length)write(KEY,kept);
+  return kept;
+}
 export function recordHistory(entry={}){
   const item={id:entry.id||uid(),timestamp:entry.timestamp||new Date().toISOString(),studio:entry.studio||document.body.dataset.studio||'studio',type:entry.type||'action',label:String(entry.label||'Action'),detail:String(entry.detail||''),target:String(entry.target||''),action:entry.action||null,repeatable:!!entry.repeatable};
   const out=[item,...loadHistory().filter(x=>x.id!==item.id)].slice(0,MAX_ITEMS);write(KEY,out);renderQuickHistory();return item;
@@ -46,7 +53,7 @@ export function renderQuickHistory(){
   const recent=qs('#recent-items-list');if(recent){
     const seen=new Set(),files=[];
     for(const x of items){if(x.type!=='file'||!x.target||seen.has(x.target))continue;seen.add(x.target);files.push(x);if(files.length>=limit)break}
-    recent.innerHTML=files.length?files.map(x=>'<button type="button" class="recentItem" title="'+esc(x.target)+'" data-recent-target="'+esc(x.target)+'"><strong>'+esc(x.target)+'</strong><small>'+esc(new Date(x.timestamp).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}))+'</small></button>').join(''):'<div class="historyEmpty">Aucun fichier récent.</div>';
+    recent.innerHTML=files.length?files.map(x=>'<div class="recentItem" title="'+esc(x.target)+'"><strong>'+esc(x.target)+'</strong><small>'+esc(new Date(x.timestamp).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}))+'</small></div>').join(''):'<div class="historyEmpty">Aucun fichier récent.</div>';
   }
 }
 export function renderFullHistory(){
