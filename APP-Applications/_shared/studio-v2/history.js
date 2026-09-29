@@ -41,7 +41,9 @@ function groupItems(items,mode){
   const groups=new Map();for(const x of items){const k=mode==='studio'?(x.studio||'Studio'):mode==='type'?(x.type||'action'):dayKey(x.timestamp);if(!groups.has(k))groups.set(k,[]);groups.get(k).push(x)}return groups;
 }
 function card(item,favs,full=false){
-  return '<article class="historyItem'+(favs.has(item.id)?' pinned':'')+'" data-history-id="'+esc(item.id)+'"><div class="historyItemHead"><strong>'+esc(item.label)+'</strong><span>'+esc(new Date(item.timestamp).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}))+'</span></div>'+(item.detail?'<small>'+esc(item.detail)+'</small>':'')+(item.target?'<code>'+esc(item.target)+'</code>':'')+(full?'<div class="historyItemActions"><button type="button" data-history-pin="'+esc(item.id)+'">'+(favs.has(item.id)?'★ Désépingler':'☆ Épingler')+'</button>'+(item.repeatable&&item.action?'<button type="button" data-history-repeat="'+esc(item.id)+'">↻ Refaire</button>':'')+'</div>':'')+'</article>';
+  const body=(item.detail?'<small>'+esc(item.detail)+'</small>':'')+(item.target?'<code>'+esc(item.target)+'</code>':'')+(full?'<div class="historyItemActions"><button type="button" data-history-pin="'+esc(item.id)+'">'+(favs.has(item.id)?'★ Désépingler':'☆ Épingler')+'</button>'+(item.repeatable&&item.action?'<button type="button" data-history-repeat="'+esc(item.id)+'">↻ Refaire</button>':'')+'</div>':'');
+  if(!full)return '<article class="historyItem'+(favs.has(item.id)?' pinned':'')+'" data-history-id="'+esc(item.id)+'"><div class="historyItemHead"><strong>'+esc(item.label)+'</strong><span>'+esc(new Date(item.timestamp).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}))+'</span></div>'+body+'</article>';
+  return '<details class="historyItem historyItemFold'+(favs.has(item.id)?' pinned':'')+'" data-history-id="'+esc(item.id)+'"><summary><span>'+esc(item.label)+'</span><time>'+esc(new Date(item.timestamp).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}))+'</time></summary><div class="historyItemBody">'+body+'</div></details>';
 }
 export function renderQuickHistory(){
   const host=qs('#history-recent-list');if(!host)return;
@@ -59,18 +61,26 @@ export function renderQuickHistory(){
 export function renderFullHistory(){
   const host=qs('#history-full-list');if(!host)return;
   const f=getFilter(),items=filteredItems(),favs=new Set(read(FAVORITES_KEY,[])),groups=groupItems(items,f.groupBy);
-  host.innerHTML=items.length?[...groups].map(([k,list])=>'<section class="historyGroup"><h4>'+esc(k)+' <small>'+list.length+'</small></h4>'+list.map(x=>card(x,favs,true)).join('')+'</section>').join(''):'<div class="historyEmpty">Aucun élément pour ce filtre.</div>';
+  host.innerHTML=items.length?[...groups].map(([k,list])=>{
+    const groupId='history-group-'+String(k).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    const state=localStorage.getItem('nlab-studio-v2-'+groupId);
+    const open=state===null||state==='1'?' open':'';
+    return '<details class="historyGroup" id="'+esc(groupId)+'"'+open+'><summary><span>'+esc(k)+'</span><small>'+list.length+'</small></summary><div class="historyGroupBody">'+list.map(x=>card(x,favs,true)).join('')+'</div></details>';
+  }).join(''):'<div class="historyEmpty">Aucun élément pour ce filtre.</div>';
+  host.querySelectorAll('.historyGroup[id]').forEach(g=>g.addEventListener('toggle',()=>localStorage.setItem('nlab-studio-v2-'+g.id,g.open?'1':'0')));
 }
 function openFullHistory(){const p=qs('#history-full-view');if(!p)return;p.hidden=false;renderFullHistory();p.style.zIndex='235'}
 function mountPanel(){
   if(qs('#history-full-view'))return;
   const p=document.createElement('div');p.id='history-full-view';p.className='studioWindow historyFullView scope-core';p.dataset.scope='core';p.hidden=true;
-  p.innerHTML='<div class="historyFullControls"><input id="history-search" type="search" placeholder="Rechercher dans l’historique"><select id="history-group-by"><option value="date">Grouper par date</option><option value="studio">Grouper par Studio</option><option value="type">Grouper par type</option></select><select id="history-filter-type"><option value="all">Tous les types</option><option value="file">Fichiers</option><option value="action">Actions</option><option value="setting">Paramètres</option><option value="navigation">Navigation</option></select><button id="history-clear" type="button">Effacer</button></div><div id="history-full-list"></div>';
+  p.innerHTML='<div class="historyFullControls"><input id="history-search" type="search" placeholder="Rechercher dans l’historique"><select id="history-group-by"><option value="date">Grouper par date</option><option value="studio">Grouper par Studio</option><option value="type">Grouper par type</option></select><select id="history-filter-type"><option value="all">Tous les types</option><option value="file">Fichiers</option><option value="action">Actions</option><option value="setting">Paramètres</option><option value="navigation">Navigation</option></select><button id="history-expand-all" type="button">Tout déplier</button><button id="history-collapse-all" type="button">Tout plier</button><button id="history-clear" type="button">Effacer</button></div><div id="history-full-list"></div>';
   document.body.append(p);enhanceStudioWindow(p,{key:'history-full',title:'Historique complet'});
   const f=getFilter();qs('#history-search',p).value=f.search;qs('#history-group-by',p).value=f.groupBy;qs('#history-filter-type',p).value=f.type;
   qs('#history-search',p).addEventListener('input',e=>{setFilter({search:e.target.value});renderFullHistory()});
   qs('#history-group-by',p).addEventListener('change',e=>{setFilter({groupBy:e.target.value});renderFullHistory()});
   qs('#history-filter-type',p).addEventListener('change',e=>{setFilter({type:e.target.value});renderFullHistory()});
+  qs('#history-expand-all',p).addEventListener('click',()=>{p.querySelectorAll('#history-full-list details').forEach(d=>d.open=true)});
+  qs('#history-collapse-all',p).addEventListener('click',()=>{p.querySelectorAll('#history-full-list details').forEach(d=>d.open=false)});
   qs('#history-clear',p).addEventListener('click',()=>{if(confirm('Effacer tout l’historique local de ce navigateur ?'))clearHistory()});
   p.addEventListener('click',e=>{
     const pin=e.target.closest('[data-history-pin]');if(pin)return toggleHistoryFavorite(pin.dataset.historyPin);
