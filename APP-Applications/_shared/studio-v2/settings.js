@@ -16,7 +16,10 @@ const DEFAULTS={
   headerMode:'sticky',
   headerShadow:true,
   headerBlur:true,
-  headerVisible:true
+  headerVisible:true,
+  historyLimit:10,
+  historyGroupBy:'date',
+  historyRetention:'keep'
 };
 
 export function loadStudioSettings(){
@@ -109,6 +112,31 @@ export function renderStudioSettingsPanel(host){
       <label class="checkboxField"><input type="checkbox" data-setting="headerBlur"><span>Fond translucide / blur</span></label>
     </section>
     <section>
+      <h3>Historique & récents</h3>
+      <label class="field"><span>Historique rapide</span>
+        <select id="history-display-limit" data-setting="historyLimit">
+          <option value="5">5 éléments</option>
+          <option value="10">10 éléments</option>
+          <option value="15">15 éléments</option>
+          <option value="20">20 éléments</option>
+        </select>
+      </label>
+      <label class="field"><span>Regroupement par défaut</span>
+        <select id="history-default-group" data-setting="historyGroupBy">
+          <option value="date">Date</option>
+          <option value="studio">Studio</option>
+          <option value="type">Type d’action</option>
+        </select>
+      </label>
+      <label class="field"><span>Conservation</span>
+        <select id="history-retention-mode" data-setting="historyRetention">
+          <option value="keep">Conserver l’historique</option>
+          <option value="manual">Nettoyage manuel</option>
+        </select>
+      </label>
+      <button id="history-settings-view-all" type="button" data-open-full-history>Voir tout l’historique</button>
+    </section>
+    <section>
       <h3>Interface & panneaux</h3>
       <label class="field"><span>Volet détaillé</span>
         <select data-setting="sidebarMode">
@@ -125,7 +153,7 @@ export function renderStudioSettingsPanel(host){
     </section>
   </div>`;
   host.querySelector('[data-setting="theme"]').value=s.theme;
-  for(const k of ['fontFamily','density','sidebarMode','headerMode'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
+  for(const k of ['fontFamily','density','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
   const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';
@@ -133,7 +161,7 @@ export function renderStudioSettingsPanel(host){
     host.querySelector('[data-setting="'+k+'"]').checked=!!s[k];
   }
   host.querySelectorAll('[data-setting]').forEach(el=>{
-    const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth'].includes(k))v=Number(v);saveStudioSettings({[k]:v});const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %'};
+    const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth','historyLimit'].includes(k))v=Number(v);saveStudioSettings({[k]:v});if(k==='historyGroupBy'){try{localStorage.setItem('nlab-studio-v2-history-filter',JSON.stringify({...JSON.parse(localStorage.getItem('nlab-studio-v2-history-filter')||'{}'),groupBy:v}))}catch{}}document.dispatchEvent(new CustomEvent('studio-v2:history-changed'));const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %'};
     el.addEventListener('change',handler);if(el.type==='range')el.addEventListener('input',handler);
   });
   host.querySelector('[data-core-pref="expand-ribbon"]')?.addEventListener('click',()=>{localStorage.setItem('nlab-studio-v2-ribbon-collapsed','0');location.reload()});
