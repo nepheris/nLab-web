@@ -1,0 +1,23 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "file-studio",
+  "label": "File Studio",
+  "source": "Google Drive reference 2026-09-29",
+  "files": [
+    {
+      "name": "lot-A",
+      "storage": "reference-only",
+      "kind": "folder"
+    },
+    {
+      "name": "lot-B",
+      "storage": "reference-only",
+      "kind": "folder"
+    },
+    {
+      "name": "archive-imbriquee-demo.zip",
+      "storage": "reference-only",
+      "kind": "zip"
+    }
+  ]
+}
