@@ -13,7 +13,11 @@ export class FileWorkspace{
  async addFiles(files){const existing=new Set(this.items.map(x=>x.relativePath));for(const file of [...files]){if(!ACCEPT.test(file.name))continue;const add=/\.zip$/i.test(file.name)?await unpackZip(file):[{id:uid('file'),file,name:file.name,relativePath:file.webkitRelativePath||file.name,checked:true}];for(const x of add)if(!existing.has(x.relativePath)){this.items.push(x);existing.add(x.relativePath)}}this.afterLoad('Fichiers ajoutés');return this.items}
  afterLoad(label){this.currentId=this.items[0]?.id||null;this.recordHistory();this.render();setStatus(label+' · '+this.items.length+' élément(s)');this.onLoad?.(this.items);this.onSelectionChange?.(this.selected(),this.items);if(this.current())this.onOpen?.(this.current())}
  current(){return this.items.find(x=>x.id===this.currentId)||null}
+ currentIndex(){return this.items.findIndex(x=>x.id===this.currentId)}
  selected(){return this.items.filter(x=>x.checked)}
+ previous(){if(!this.items.length)return null;let i=this.currentIndex();if(i<0)i=0;i=(i-1+this.items.length)%this.items.length;this.setCurrent(this.items[i].id);return this.current()}
+ next(){if(!this.items.length)return null;let i=this.currentIndex();if(i<0)i=-1;i=(i+1)%this.items.length;this.setCurrent(this.items[i].id);return this.current()}
+ sort(mode='name',direction=1){const dir=direction<0?-1:1,ext=n=>(String(n||'').match(/\.([^.]+)$/)?.[1]||'').toLowerCase(),cmp=(a,b)=>{if(mode==='size')return((a.file?.size||0)-(b.file?.size||0))*dir;if(mode==='type')return ext(a.name).localeCompare(ext(b.name),'fr')*dir;if(mode==='path')return String(a.relativePath||a.name).localeCompare(String(b.relativePath||b.name),'fr')*dir;if(mode==='pages')return((a.meta?.pages||0)-(b.meta?.pages||0))*dir;return String(a.name).localeCompare(String(b.name),'fr')*dir};this.items.sort(cmp);this.render();return this.items}
  setCurrent(id){this.currentId=id;this.render();const x=this.current();if(x)this.onOpen?.(x)}
  setAll(v){this.items.forEach(x=>x.checked=v);this.render();this.onSelectionChange?.(this.selected(),this.items)}
  remove(id){const i=this.items.findIndex(x=>x.id===id);if(i<0)return;this.items.splice(i,1);if(this.currentId===id)this.currentId=this.items[0]?.id||null;this.render();this.onSelectionChange?.(this.selected(),this.items);if(this.current())this.onOpen?.(this.current())}
