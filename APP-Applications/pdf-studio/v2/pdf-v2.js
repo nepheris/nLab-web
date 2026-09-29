@@ -9,20 +9,22 @@ import{createStudioContext}from'../../_shared/studio-v2/studio-context.js';
 import{detectFileCapabilities}from'../../_shared/studio-v2/file-capabilities.js';
 import{registerPipelineHandler,runPipeline}from'../../_shared/studio-v2/pipeline-service.js';
 import{runCapabilitySelfTests}from'../../_shared/studio-v2/capability-tests.js';
+import{DocumentSession}from'../../_shared/studio-v2/document-session.js';
 
 const VERSION='2.0.2';
 await mountStudioV2({manifest:studioManifest,versionInfo:{version:VERSION,status:'TEST'}});
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const engine=new PDFEngine();
+const session=new DocumentSession();
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null;
 
 const viewer=new StudioPageViewer({
   engine,
   mainHost:$('#mainPageGrid'),
   previewHost:$('#previewGrid'),
-  onActivate:()=>syncViewerMeta(),
-  onSelection:()=>syncViewerMeta()
+  onActivate:page=>{session.setPage(page);syncViewerMeta()},
+  onSelection:pages=>{session.selectedPages=new Set(pages);session.dispatchEvent(new Event('selection'));syncViewerMeta()}
 });
 
 function syncUndoRedo(){const u=$('#history-undo'),r=$('#history-redo');if(u)u.disabled=!undoStack.length;if(r)r.disabled=!redoStack.length}
@@ -48,7 +50,8 @@ async function load(file){
   setStatus('Chargement…');
   try{
     activeFileCapabilities=detectFileCapabilities(file);
-    await engine.loadFile(file);undoStack=[];redoStack=[];syncUndoRedo();viewer.setZoom(1);viewer.setPagesPerRow(1);await renderAll();
+    await engine.loadFile(file);
+    session.patch({file,fileName:engine.fileName,page:engine.currentPage,pageCount:engine.pageCount,selectedPages:new Set(),dirty:false,meta:{sourceCapabilities:activeFileCapabilities}});undoStack=[];redoStack=[];syncUndoRedo();viewer.setZoom(1);viewer.setPagesPerRow(1);await renderAll();
     const converted=!/\.pdf$/i.test(file.name)&&!/^image\//.test(file.type||'')?' · conversion PDF simplifiée':'';
     setStatus('Document chargé'+converted);
     recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s)',target:engine.fileName});
@@ -160,7 +163,7 @@ document.addEventListener('studio-v2:workflow-run',async e=>{
 
 $('#copyDiagnostics').onclick=async()=>{
   const tests=runCapabilitySelfTests({manifest:studioManifest,root:document});
-  const info={studio:'pdf-studio',version:VERSION,file:engine.fileName,pages:engine.pageCount,currentPage:engine.currentPage,selectedPages:[...engine.selected],pagesPerRow:viewer.pagesPerRow,zoom:viewer.zoom,fileCapabilities:activeFileCapabilities,capabilityTests:tests,userAgent:navigator.userAgent};
+  const info={studio:'pdf-studio',version:VERSION,documentSession:session.snapshot(),file:engine.fileName,pages:engine.pageCount,currentPage:engine.currentPage,selectedPages:[...engine.selected],pagesPerRow:viewer.pagesPerRow,zoom:viewer.zoom,fileCapabilities:activeFileCapabilities,capabilityTests:tests,userAgent:navigator.userAgent};
   await navigator.clipboard?.writeText(JSON.stringify(info,null,2));setStatus('Diagnostic copié');
 };
 
