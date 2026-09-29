@@ -178,7 +178,7 @@ jobs:
           grep -q 'sidebarGrip0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q 'nLab Web' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q '../studios/' APP-Applications/pdf-studio/runtime0925/visible-controls.js
-          grep -q '"test": "1.0.0"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "2.0.0"' APP-Applications/pdf-studio/versions.json
           grep -q 'PDF Studio 1.0.0 TEST' APP-Applications/pdf-studio/versions.json
 
           # PDF Studio 1.0 standalone rewrite
@@ -190,12 +190,26 @@ jobs:
           test -s APP-Applications/_shared/studio-v1/templates.js
           test -s APP-Applications/pdf-studio/v1/FUNCTIONAL-CONTRACT.md
           test -s APP-Applications/pdf-studio/v1/MASTER-REBUILD-CHECKLIST.md
+          test -s APP-Applications/studios-v2/index.html
+          test -s APP-Applications/studios-v2/catalog.json
+          test -s APP-Applications/pdf-studio/v2/index.html
+          test -s APP-Applications/pdf-studio/v2/pdf-v2.js
+          test -s APP-Applications/pdf-studio/v2/studio-manifest.js
+          test -s APP-Applications/_shared/studio-v2/core.js
+          test -s APP-Applications/_shared/studio-v2/frame.js
+          test -s APP-Applications/_shared/studio-v2/settings.js
+          test -s APP-Applications/_shared/studio-v2/window-system.js
+          test -s APP-Applications/_shared/studio-v2/plugins.js
+          test -s APP-Applications/_shared/studio-v2/studio.css
+          grep -q 'Studio Core V2' APP-Applications/studios-v2/index.html
+          grep -q '2.0.0' APP-Applications/pdf-studio/v2/index.html
+          grep -q 'mountStudioV2' APP-Applications/pdf-studio/v2/pdf-v2.js
           test -s APP-Applications/_shared/studio-v1/studio.css
           test -s APP-Applications/_shared/studio-v1/core.js
           test -s APP-Applications/_shared/studio-v1/file-io.js
           test -s APP-Applications/_shared/studio-v1/drive.js
           grep -q 'nlab-wordmark.svg' APP-Applications/pdf-studio/v1/index.html
-          grep -q '1.0.0 TEST' APP-Applications/pdf-studio/v1/index.html
+          grep -q 'data-version' APP-Applications/pdf-studio/v1/index.html
           grep -q 'id="ribbonContext"' APP-Applications/pdf-studio/v1/index.html
           grep -q 'id="selectedFilesSummary"' APP-Applications/pdf-studio/v1/index.html
           grep -q 'id="sectionOptimize"' APP-Applications/pdf-studio/v1/index.html
@@ -233,7 +247,7 @@ jobs:
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "1.0.0"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "2.0.0"' APP-Applications/pdf-studio/versions.json
 
       - name: Build PDF Studio 1.0 portable package
         shell: bash
@@ -344,10 +358,16 @@ jobs:
           smoke_fetch "APP-Applications/_shared/archive-workspace.js" /tmp/nlab-archive-workspace.js
           smoke_fetch "APP-Applications/pdf-studio/app-0.9.25.html" /tmp/nlab-pdf-studio-0925.html
           smoke_fetch "APP-Applications/pdf-studio/v1/index.html" /tmp/nlab-pdf-studio-v1.html
+          smoke_fetch "APP-Applications/studios-v2/index.html" /tmp/nlab-studios-v2.html
+          smoke_fetch "APP-Applications/_shared/studio-v2/core.js" /tmp/nlab-studio-core-v2.js
+          smoke_fetch "APP-Applications/pdf-studio/v2/index.html" /tmp/nlab-pdf-studio-v2.html
           smoke_fetch "APP-Applications/pdf-studio/downloads/nLab-PDF-Studio-1.0.0-PORTABLE.zip" /tmp/nlab-pdf-studio-v1.zip
           grep -q 'NLAB_SELECTION_SCOPE' /tmp/nlab-selection-scope.js
           grep -q 'NLAB_ARCHIVE_WORKSPACE' /tmp/nlab-archive-workspace.js
           grep -q 'Alpha 0.9.25 TEST' /tmp/nlab-pdf-studio-0925.html
-          grep -q '1.0.0 TEST' /tmp/nlab-pdf-studio-v1.html
+          grep -q 'data-version' /tmp/nlab-pdf-studio-v1.html
+          grep -q 'Studios V2' /tmp/nlab-studios-v2.html
+          grep -q 'STUDIO_V2' /tmp/nlab-studio-core-v2.js
+          grep -q 'PDF Studio V2' /tmp/nlab-pdf-studio-v2.html
           test -s /tmp/nlab-pdf-studio-v1.zip
           python -m zipfile -t /tmp/nlab-pdf-studio-v1.zip
