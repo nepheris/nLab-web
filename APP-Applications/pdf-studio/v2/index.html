@@ -25,20 +25,20 @@
     <details id="sectionConfig" class="toolSection scope-core" data-scope="core"><summary>0. Configuration & espace personnel <small class="scopeBadge">CORE</small></summary><div class="body"><div class="statusBox">Préférences communes, identité opérateur, presets et espace personnel.</div><button type="button" data-open-core-settings>Ouvrir les paramètres Core</button></div></details>
 
     <details id="sectionInput" class="toolSection scope-core" data-scope="core" open><summary>1. Entrée <small class="scopeBadge">CORE</small></summary><div class="body">
-      <div class="scopeButtons"><button id="pickFile" type="button">Choisir un fichier</button><button id="pickFolder" type="button">Choisir un dossier</button></div>
+      <div class="scopeButtons"><button id="pickFile" type="button" data-icon="file">Choisir un fichier</button><button id="pickFolder" type="button" data-icon="folder">Choisir un dossier</button></div>
       <div id="inputDropZone" class="inputDropZone" tabindex="0"><strong>Glisser-déposer</strong><span>Fichier(s) ou dossier compatible</span></div>
       <input id="fileInput" type="file" multiple accept=".pdf,application/pdf,image/*,.txt,.docx,.odt" hidden>
       <input id="folderInput" type="file" webkitdirectory multiple hidden>
       <div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
     </div></details>
 
-    <details id="sectionOutput" class="toolSection scope-core" data-scope="core"><summary>2. Sortie & classement <small class="scopeBadge">CORE</small></summary><div class="body"><button id="savePdfSide">Enregistrer le PDF</button><button id="classifyPdfSide" class="devFeatureBtn">Enregistrer + classer <small class="devBadge">DEV</small></button><div class="statusBox">OutputService avancé en migration depuis V1.</div></div></details>
+    <details id="sectionOutput" class="toolSection scope-core" data-scope="core"><summary>2. Sortie & classement <small class="scopeBadge">CORE</small></summary><div class="body"><button id="savePdfSide" data-icon="save">Enregistrer le PDF</button><button id="classifyPdfSide" class="devFeatureBtn" data-icon="folder">Enregistrer + classer <small class="devBadge">DEV</small></button><div class="statusBox">OutputService avancé en migration depuis V1.</div></div></details>
 
     <details id="sectionNaming" class="toolSection scope-core" data-scope="core"><summary>3. Nommage · préfixes & suffixes <small class="scopeBadge">CORE</small></summary><div class="body"><label>Nom / modèle<input id="namingTemplate" value="{FILENAME}"></label><div class="scopeButtons"><input id="namingPrefix" placeholder="Préfixe"><input id="namingSuffix" placeholder="Suffixe"></div><div id="namingPreview" class="statusBox">Aperçu du nom</div></div></details>
 
     <details id="sectionPages" class="toolSection scope-studio" data-scope="pdf" open><summary>4. Pages & portée <small class="scopeBadge">PDF</small></summary><div class="body">
       <label>Portée<select id="pageScope"><option value="current">Page courante</option><option value="selected">Pages sélectionnées</option><option value="all">Toutes les pages</option></select></label>
-      <div class="scopeButtons"><button id="rotateLeftSide">−90°</button><button id="rotateRightSide">+90°</button><button id="addPageSide">Ajouter page</button><button id="deletePageSide">Supprimer</button></div>
+      <div class="scopeButtons"><button id="rotateLeftSide">−90°</button><button id="rotateRightSide">+90°</button><button id="addPageSide" data-icon="add">Ajouter page</button><button id="deletePageSide" data-icon="delete">Supprimer</button></div>
     </div></details>
 
     <details id="sectionStamps" class="toolSection scope-studio" data-scope="pdf"><summary>5. Tampons & 5 dates <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="statusBox">Tampons dynamiques, initiales, variables de date et 5 dates — à reconnecter depuis la V1.</div></div></details>
@@ -79,7 +79,7 @@
 
 <section class="viewer scope-core" data-scope="core">
   <details id="previewPanel" class="previewPanel" open><summary>Aperçu / organisation des pages</summary><div class="previewPanelBody">
-    <div class="previewToolbar"><button id="previewSelectAll">Tout sélectionner</button><button id="previewSelectNone">Tout désélectionner</button><button id="previewAddPage">Ajouter</button><button id="previewDeleteSelected">Supprimer sélection</button><label>Vignettes/largeur <input id="previewColumns" type="number" min="1" max="20" value="6"></label></div>
+    <div class="previewToolbar"><button id="previewSelectAll">Tout sélectionner</button><button id="previewSelectNone">Tout désélectionner</button><button id="previewAddPage" data-icon="add">Ajouter</button><button id="previewDeleteSelected" data-icon="delete">Supprimer sélection</button><label>Vignettes/largeur <input id="previewColumns" type="number" min="1" max="20" value="6"></label></div>
     <div id="previewGrid" class="previewGrid"></div>
   </div></details>
 
