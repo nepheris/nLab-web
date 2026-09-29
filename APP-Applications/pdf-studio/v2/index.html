@@ -1,0 +1,58 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nLab PDF Studio V2</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/branding/nlab-favicon.svg">
+<link rel="stylesheet" href="../../_shared/studio-v2/studio.css">
+<style>
+.pdfV2Sidebar{padding:8px}.pdfV2Sidebar details{border-bottom:1px solid #e2e8ee;padding:4px 0}.pdfV2Sidebar summary{cursor:pointer;font-weight:800;font-size:11px;padding:8px}.pdfV2Sidebar .body{padding:8px}.viewerToolbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}.viewerToolbar .grow{flex:1}.canvasStage{min-height:680px;display:grid;place-items:center;background:#38424b;border-radius:8px;overflow:auto;padding:20px}.canvasWrap{position:relative;display:inline-block}.canvasStage canvas{display:block;background:#fff;box-shadow:0 10px 30px #0005}.statusBox{border:1px solid #d9e2e8;border-radius:7px;padding:7px;background:#f8fafc;font-size:10px}.devBox{background:#fff8e8;border-color:#e8c875}.helpList{display:grid;gap:6px;font-size:10px}.helpList b{display:block}.scopeButtons{display:flex;gap:5px;flex-wrap:wrap}
+
+.scopeLegend{font-size:9px;color:#687684;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.scopeLegend b{padding:2px 5px;border-radius:4px;font-size:8px}.scopeLegend .coreKey{color:#1976b8;background:#eaf5fc}.scopeLegend .studioKey{color:#7b3fb5;background:#f3ebfb}.scopeLegend .devKey{color:#765600;background:#fff0b8}.architectureMarkers .pdfV2Sidebar details.scope-core>summary{border-left:4px solid #1976b8}.architectureMarkers .pdfV2Sidebar details.scope-studio>summary{border-left:4px solid #7b3fb5}.architectureMarkers .viewer.scope-core{box-shadow:inset 0 3px 0 #1976b8}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head><body>
+<main id="studioMain" class="studioMain">
+<aside id="studioSidebar" class="studioSidebar pdfV2Sidebar scope-core" data-scope="core">
+  <details id="sectionInput" class="scope-core" data-scope="core" open><summary>1. Entrée <small class="scopeBadge">CORE</small></summary><div class="body">
+    <div class="scopeButtons"><button id="pickFile">Choisir un fichier</button><button id="pickFolder">Choisir un dossier</button></div>
+    <input id="fileInput" type="file" accept=".pdf,application/pdf,image/*,.txt,.docx,.odt" hidden>
+    <input id="folderInput" type="file" webkitdirectory multiple hidden>
+    <div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
+  </div></details>
+  <details id="sectionPages" class="scope-studio" data-scope="studio" open><summary>2. Pages PDF <small class="scopeBadge">PDF</small></summary><div class="body">
+    <label>Portée
+      <select id="pageScope">
+        <option value="current">Page en cours</option>
+        <option value="selected">Pages sélectionnées</option>
+        <option value="all">Tout le document</option>
+      </select>
+    </label>
+    <div class="scopeButtons"><button id="rotateLeftSide">−90°</button><button id="rotateRightSide">+90°</button><button id="addPageSide">Ajouter page</button><button id="deletePageSide">Supprimer page</button></div>
+  </div></details>
+  <details id="sectionOutput" class="scope-core" data-scope="core"><summary>3. Sortie <small class="scopeBadge">CORE</small></summary><div class="body">
+    <button id="savePdfSide">Enregistrer le PDF</button>
+    <div class="statusBox">Sortie locale validée. Classement avancé reste <b>DÉVELOPPEMENT</b> dans cette première V2.</div>
+  </div></details>
+  <details id="sectionDevelopment" class="scope-studio devFeatureBtn" data-scope="studio" data-feature-status="development"><summary>4. Fonctions PDF en migration <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">
+    <div class="helpList">
+      <div><b>Objets / tampons / signatures</b>DÉVELOPPEMENT — moteur existant à reconnecter via plugins V2.</div>
+      <div><b>OCR / traduction / QR</b>DÉVELOPPEMENT — appels vers moteurs spécialisés à reconnecter.</div>
+      <div><b>Historique / classement</b>DÉVELOPPEMENT — services communs à sortir du PDF et promouvoir dans le Core.</div>
+    </div>
+  </div></details>
+  <details id="sectionHelp" class="scope-core" data-scope="core"><summary>5. Aide contextuelle <small class="scopeBadge">CORE</small></summary><div class="body">
+    <div id="helpContent" class="helpList"><div><b>PDF Studio V2</b>Sélectionnez une commande du ruban. Les fonctions normales sont celles déjà opérationnelles dans cette V2 ; les fonctions jaunes restent en développement.</div></div>
+  </div></details>
+</aside>
+<section class="viewer scope-core" data-scope="core"><div class="viewerCard">
+  <div class="viewerToolbar"><span class="scopeLegend"><b class="coreKey">CORE</b> infrastructure commune · <b class="studioKey">PDF</b> plugin métier · <b class="devKey">DEV</b> non validé</span><span class="grow"></span>
+    <button id="prevPage" class="scope-core" data-scope="core">◀</button><span id="pageInfo">0 / 0</span><button id="nextPage" class="scope-core" data-scope="core">▶</button>
+    <span class="grow"></span>
+    <button id="zoomOut" class="scope-core" data-scope="core">−</button><span id="zoomLabel">100 %</span><button id="zoomIn" class="scope-core" data-scope="core">+</button>
+    <button id="fitWidth" class="scope-core" data-scope="core">Largeur</button>
+  </div>
+  <div id="canvasStage" class="canvasStage"><div class="canvasWrap"><canvas id="pageCanvas"></canvas></div></div>
+</div></section>
+</main>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<script type="module" src="./pdf-v2.js"></script>
+</body></html>

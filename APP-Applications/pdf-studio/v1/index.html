@@ -1,5 +1,5 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>nLab PDF Studio 1.0.0 TEST</title>
+<title>nLab PDF Studio</title>
 <link rel="icon" type="image/svg+xml" href="../../../assets/branding/nlab-favicon.svg">
 <link rel="stylesheet" href="../../_shared/studio-v1/studio.css"><link rel="stylesheet" href="./pdf-studio.css">
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -12,24 +12,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script><script src="https://apis.google.com/js/api.js" async defer></script>
 </head><body>
-<header class="studioHeader"><a class="studioBrand" href="../../../"><img src="../../../assets/branding/nlab-wordmark.svg" alt="nLab"><span class="studioBrandText"><strong>PDF Studio</strong><small>nLab Studios · APP07 · réécriture 1.0</small></span></a><div class="studioHeaderRight"><span class="studioPill local">● local-first</span><span class="studioPill test">1.0.0 TEST</span><a class="btn" href="../../studios/">Studios</a><a class="btn" href="../">Versions</a></div></header>
-<nav class="studioMenu"><button class="active" data-tab="home">Accueil</button><button data-tab="file">Fichier</button><button data-tab="tools">Outils</button><button data-tab="view">Affichage</button><button data-tab="connection">Connexion</button><button data-tab="help">Aide</button></nav>
+<header class="studioHeader"><a class="studioBrand" href="../../../"><img src="../../../assets/branding/nlab-wordmark.svg" alt="nLab"><span class="studioBrandText"><strong>PDF Studio</strong><small>nLab Studios · APP07 · version <span data-version>—</span></small></span></a><div class="studioHeaderRight"><span class="studioPill local">● local-first</span><span class="studioPill test" data-version-status>TEST</span><button id="studioViewSettings" class="studioHeaderControl" title="Affichage / ruban">⚙</button><a class="btn" href="../../studios/">Studios</a><a class="btn" href="../versions.html">Versions</a></div></header>
+<nav class="studioMenu"><button class="active" data-tab="home">Accueil</button><button data-tab="file">Fichier</button><button data-tab="edit">Édition</button><button data-tab="tools">Outils</button><button data-tab="objects">Objets</button><button data-tab="view">Affichage</button><button data-tab="history">Historique</button><button data-tab="connection">Connexion</button><button data-tab="help">Aide</button></nav>
+<div id="studioMenuPanel" class="studioMenuPanel" hidden></div>
 <div class="studioRibbon">
-<div class="ribbonGroup"><button class="ribbonBtn primary" id="rbOpenFiles">📄<span>Fichiers</span></button><button class="ribbonBtn" id="rbOpenFolder">📁<span>Dossier</span></button><button class="ribbonBtn" id="rbSelectedFiles">☷<span>Sélection</span></button><button class="ribbonBtn" id="rbPrevFile">←<span>Préc.</span></button><button class="ribbonBtn" id="rbNextFile">→<span>Suiv.</span></button><button class="ribbonBtn" id="rbOpenDrive">☁<span>Drive</span><small class="devBadge">DEV</small></button><span class="ribbonLabel">Entrée</span></div>
-<div class="ribbonGroup"><button class="ribbonBtn" id="rbOutputSettings">⌘<span>Classer</span></button><button class="ribbonBtn" id="rbSave">💾<span>Enregistrer</span></button><button class="ribbonBtn" id="rbZip">🗜<span>ZIP</span></button><button class="ribbonBtn" id="rbDriveExport">☁<span>Drive</span></button><span class="ribbonLabel">Sortie</span></div>
-<div class="ribbonGroup"><button class="ribbonBtn" id="rbRotateLeft">↺<span>Gauche</span></button><button class="ribbonBtn" id="rbRotateRight">↻<span>Droite</span></button><button class="ribbonBtn" id="rbAddPage">＋<span>Page</span></button><button class="ribbonBtn" id="rbDeletePages">🗑<span>Suppr.</span></button><span class="ribbonLabel">Pages</span></div>
-<div class="ribbonGroup"><button class="ribbonBtn" id="rbText">T<span>Texte</span></button><button class="ribbonBtn" id="rbStamp">▣<span>Tampon</span></button><button class="ribbonBtn" id="rbHighlight">▰<span>Surlign.</span></button><button class="ribbonBtn" id="rbSignature">✍<span>Signature</span></button><span class="ribbonLabel">Objets</span></div>
-<div class="ribbonGroup"><button class="ribbonBtn" id="rbNaming">✎<span>Renommer</span></button><button class="ribbonBtn" id="rbHeaderFooter">↕<span>En-tête/Pied</span></button><button class="ribbonBtn" id="rbConvert">⇄<span>Convertir</span></button><span class="ribbonLabel">Production</span></div>
-<div class="ribbonGroup"><button class="ribbonBtn" id="rbImage">▧<span>Image</span></button><button class="ribbonBtn" id="rbOcr">OCR<span>OCR</span></button><button class="ribbonBtn" id="rbOptimize">⚙<span>Optimiser</span></button><button class="ribbonBtn" id="rbTranslate">🌐<span>Traduire</span></button><span class="ribbonLabel">Outils</span></div>
-<div class="ribbonGroup"><button class="ribbonBtn" id="rbHistory">↶<span>Historique</span></button><span class="ribbonLabel">Suivi</span></div>
+<div class="ribbonGroup" data-ribbon-group="input"><button class="ribbonBtn primary" id="rbOpenFiles">📄<span>Fichiers</span></button><button class="ribbonBtn" id="rbOpenFolder">📁<span>Dossier</span></button><button class="ribbonBtn" id="rbSelectedFiles">☷<span>Sélection</span></button><button class="ribbonBtn" id="rbPrevFile">←<span>Préc.</span></button><button class="ribbonBtn" id="rbNextFile">→<span>Suiv.</span></button><button class="ribbonBtn" id="rbOpenDrive">☁<span>Drive</span><small class="devBadge">DEV</small></button><span class="ribbonLabel">Entrée</span></div>
+<div class="ribbonGroup" data-ribbon-group="output"><button class="ribbonBtn" id="rbOutputSettings">⌘<span>Classer</span></button><button class="ribbonBtn" id="rbSave">💾<span>Enregistrer</span></button><button class="ribbonBtn" id="rbZip">🗜<span>ZIP</span></button><button class="ribbonBtn" id="rbDriveExport">☁<span>Drive</span></button><span class="ribbonLabel">Sortie</span></div>
+<div class="ribbonGroup" data-ribbon-group="pages"><button class="ribbonBtn" id="rbRotateLeft">↺<span>Gauche</span></button><button class="ribbonBtn" id="rbRotateRight">↻<span>Droite</span></button><button class="ribbonBtn" id="rbAddPage">＋<span>Page</span></button><button class="ribbonBtn" id="rbDeletePages">🗑<span>Suppr.</span></button><span class="ribbonLabel">Pages</span></div>
+<div class="ribbonGroup" data-ribbon-group="objects"><button class="ribbonBtn" id="rbText">T<span>Texte</span></button><button class="ribbonBtn" id="rbStamp">▣<span>Tampon</span></button><button class="ribbonBtn" id="rbHighlight">▰<span>Surlign.</span></button><button class="ribbonBtn" id="rbSignature">✍<span>Signature</span></button><span class="ribbonLabel">Objets</span></div>
+<div class="ribbonGroup" data-ribbon-group="production"><button class="ribbonBtn" id="rbNaming">✎<span>Renommer</span></button><button class="ribbonBtn" id="rbHeaderFooter">↕<span>En-tête/Pied</span></button><button class="ribbonBtn" id="rbConvert">⇄<span>Convertir</span></button><span class="ribbonLabel">Production</span></div>
+<div class="ribbonGroup" data-ribbon-group="tools"><button class="ribbonBtn" id="rbImage">▧<span>Image</span></button><button class="ribbonBtn" id="rbOcr">OCR<span>OCR</span></button><button class="ribbonBtn" id="rbOptimize">⚙<span>Optimiser</span></button><button class="ribbonBtn" id="rbTranslate">🌐<span>Traduire</span></button><span class="ribbonLabel">Outils</span></div>
+<div class="ribbonGroup" data-ribbon-group="history"><button class="ribbonBtn" id="rbHistory">↶<span>Historique</span></button><span class="ribbonLabel">Suivi</span></div><button id="studioRibbonToggle" class="studioRibbonToggle studioChromeToggle" title="Replier le ruban" aria-expanded="true">⌃</button>
 </div>
-<div id="ribbonContext" class="ribbonContext" hidden><div class="ribbonContextHead"><strong id="ribbonContextTitle">Outil</strong><button id="ribbonContextDetails">Détails</button><button id="ribbonContextClose" title="Fermer">×</button></div><div id="ribbonContextBody"></div></div>
+<div id="ribbonContext" class="ribbonContext" hidden><div class="ribbonContextHead"><strong id="ribbonContextTitle">Outil</strong><button id="ribbonContextDetails">Détails</button><button id="ribbonContextToggle" class="contextToggle" title="Replier les détails" aria-expanded="true">⌃</button><button id="ribbonContextClose" title="Fermer">×</button></div><div id="ribbonContextBody"></div></div>
 <main id="studioMain" class="studioMain">
 <aside id="studioSidebar" class="studioSidebar">
 <div class="sidebarTop"><button id="sidebarHide">◀</button><button id="sidebarCompact">▥</button><button id="sidebarNormal">▤</button><button id="sidebarExpandAll">Tout ouvrir</button><button id="sidebarCollapseAll">Tout fermer</button></div><div id="sidebarResizer" class="sidebarResizer"></div>
 
 <details class="sidebarSection" id="sectionConfig" open><summary><span class="fullLabel">0. Configuration & espace personnel</span><span class="shortLabel">0<br>Cfg</span></summary><div class="studioSidebarBody">
-<div class="statusBox">Version <b>1.0.0 TEST</b> · code autonome, aucun runtime 0.9.x.</div>
+<div class="statusBox">Version <b data-version-status>TEST</b> · code autonome, aucun runtime 0.9.x.</div>
 <div class="field"><span>Variables nommées — cliquez pour copier <button class="helpDot" type="button" data-help-key="variables">?</button></span><div id="variableGrid" class="variableGrid"></div></div>
 <div class="field configDates"><span>Dates utilisables par les tampons <button class="helpDot" type="button" data-help-key="stamp-dates">?</button></span><div id="dateGrid" class="dateGrid"></div></div>
 <div class="grid2"><button id="importConfig">Importer JSON</button><button id="exportConfig">Exporter JSON</button></div><input id="configInput" type="file" accept=".json,application/json" hidden>
@@ -46,19 +47,19 @@
 </div>
 <label class="field"><span>Google OAuth Client ID <span class="devBadge">DÉVELOPPEMENT</span> <button class="helpDot" type="button" data-help-key="google-oauth">?</button></span><input id="googleClientId" placeholder="Configuration locale uniquement · jamais de secret dans le dépôt public"></label>
 <div class="grid2"><label class="field"><span>Picker API Key</span><input id="googleApiKey" placeholder="optionnel"></label><label class="field"><span>App ID</span><input id="googleAppId" placeholder="optionnel"></label></div>
-<div class="grid2"><button id="saveGoogleConfig">Enregistrer OAuth</button><button id="connectGoogle" class="btnPrimary">🔐 Connexion</button></div><button id="disconnectGoogle" hidden>Déconnexion</button>
-<div id="googleStatus" class="statusBox oauthStatus">Mode local · Google Drive non connecté</div><div class="grid2"><button id="openDriveDocuments">Documents Drive</button><button id="openDriveExports">Exports Drive</button></div>
+<div class="grid2 devFeature"><button id="saveGoogleConfig">Enregistrer OAuth</button><button id="connectGoogle">🔐 Connexion <span class="devBadge">DEV</span></button></div><button id="disconnectGoogle" hidden>Déconnexion</button>
+<div id="googleStatus" class="statusBox oauthStatus statusWarning">Mode local · Google Drive non connecté</div><div class="grid2 devFeature"><button id="openDriveDocuments">Documents Drive <span class="devBadge">DEV</span></button><button id="openDriveExports">Exports Drive <span class="devBadge">DEV</span></button></div>
 </div></details>
 
 <details class="sidebarSection" id="sectionInput" open><summary><span class="fullLabel">1. Entrée</span><span class="shortLabel">1<br>In</span></summary><div class="studioSidebarBody">
 <div class="sectionSubhead">1.1 · Source d’entrée <button class="helpDot" type="button" data-help-key="input-source">?</button></div>
-<div class="field"><span>Source</span><div class="row"><select id="sourceProvider"><option value="local" selected>Ordinateur / local</option><option value="drive">Google Drive</option></select><select id="sourcePreset"><option value="manual" selected>Choix manuel</option><option value="last">Dernière source mémorisée</option></select><button id="loadSourcePreset">Charger</button></div></div>
+<div class="field"><span>Source</span><div class="row sourceRow"><select id="sourceProvider" class="compactSelect"><option value="local" selected>Ordinateur / local</option><option value="drive">Google Drive — DÉVELOPPEMENT</option></select><select id="sourcePreset" class="compactSelect"><option value="manual" selected>Choix manuel</option><option value="last">Dernière source mémorisée</option></select><button id="loadSourcePreset">Charger</button></div></div>
 <div class="grid2"><button id="pickFiles">Choisir fichiers</button><button id="pickFolder">Choisir dossier</button></div>
 <input id="filesInput" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.bmp,.docx,.odt,.txt,.zip" hidden><input id="folderInput" type="file" multiple webkitdirectory hidden accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.bmp,.docx,.odt,.txt,.zip">
 <div id="sourceInfo" class="statusBox">Choix manuel · aucun fichier chargé.</div>
 <div class="sectionSubhead">1.2 · Fichiers sélectionnés <button class="helpDot" type="button" data-help-key="selected-files">?</button></div>
-<div class="fileNavBar"><button id="prevFile" class="compactAction">← Précédent</button><button id="nextFile" class="compactAction">Suivant →</button><span class="grow"></span><label class="hint">Trier <select id="fileSort"><option value="name">Nom</option><option value="path">Chemin</option><option value="type">Type</option><option value="size">Taille</option><option value="pages">Pages</option></select></label></div>
-<div class="grid2"><button id="selectAllFiles">Tout sélectionner</button><button id="selectNoneFiles">Tout désélectionner</button></div>
+<div class="grid2 filePrimaryNav"><button id="prevFile" class="fileNavPrimary">← Précédent</button><button id="nextFile" class="fileNavPrimary">Suivant →</button></div>
+<div class="fileNavBar fileNavSecondary"><button id="selectAllFiles" class="compactAction">Tout sélectionner</button><button id="selectNoneFiles" class="compactAction">Tout désélectionner</button><span class="grow"></span><label class="hint">Trier <select id="fileSort"><option value="name">Nom</option><option value="path">Chemin</option><option value="type">Type</option><option value="size">Taille</option><option value="pages">Pages</option></select></label></div>
 <div class="selectedModule"><div class="selectedModuleHead"><strong>Fichiers sélectionnés</strong><span id="selectedFilesCount">0 / 0</span></div><div id="selectedFilesSummary" class="selectedFilesSummary">Aucun fichier sélectionné.</div></div>
 <div id="fileQueue" class="fileQueue"></div>
 <details><summary class="hint">Historique des fichiers chargés</summary><div id="fileHistory" class="historyList"></div></details>
@@ -67,15 +68,18 @@
 <details class="sidebarSection" id="sectionOutput" open><summary><span class="fullLabel">2. Sortie & classement</span><span class="shortLabel">2<br>Out</span></summary><div class="studioSidebarBody">
 <div class="field"><span>Racine de sortie</span><div class="row"><select id="destinationPreset"><option value="manual" selected>Choix manuel</option><option value="last">Dernière sortie mémorisée</option></select><button id="loadDestinationPreset">Charger</button></div></div>
 <button id="pickDestination" style="width:100%">Choisir le dossier de sortie</button><div id="destinationInfo" class="statusBox">Choix manuel · repli navigateur si nécessaire.</div>
-<label class="field"><span>Destination <button class="helpDot" type="button" data-help-key="output-destination">?</button></span><select id="outputProvider"><option value="local" selected>Dossier local choisi</option><option value="source">À côté de la source</option><option value="drive">Google Drive / Exports — DÉVELOPPEMENT</option><option value="download">Téléchargement navigateur</option></select></label>
+<label class="field"><span>Format de sortie <button class="helpDot" type="button" data-help-key="output-format">?</button></span><select id="outputFormat"><option value="pdf" selected>PDF</option><option value="same">Conserver le format / extension d'origine</option><option value="zip">ZIP</option></select></label>
+<label class="field"><span>Destination <button class="helpDot" type="button" data-help-key="output-destination">?</button></span><select id="outputProvider"><option value="local" selected>Dossier local choisi</option><option value="source">À côté de la source</option><option value="download">Téléchargement navigateur</option><option value="drive">Google Drive / Exports — DÉVELOPPEMENT</option></select></label>
 <label class="field"><span>Structure de classement <button class="helpDot" type="button" data-help-key="classification">?</button></span><select id="outputStructure"><option value="root">Racine de destination</option><option value="treatment">Dossier traitement</option><option value="year-month">Année / mois</option><option value="year-month-week">Année / mois / semaine</option><option value="treatment-date">Traitement / année / mois</option><option value="custom">Template personnalisé</option></select></label>
 <label class="field"><span>Template dossier / chemin <button class="helpDot" type="button" data-help-key="path-template">?</button></span><input id="outputPathTemplate" value="{TREATMENT}" placeholder="{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}"></label>
 <div class="templateHint">Ex. <code>{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}</code> · mêmes variables que nommage, tampons, en-têtes/pieds et QR.</div>
 <div id="outputPathPreview" class="statusBox mono">Racine de destination</div>
 <select id="outputMode" hidden><option value="subfolder">Sous-dossier</option><option value="same-source">Source</option><option value="same-source-custom">Source + sous-dossier</option><option value="manual-root" selected>Dossier local racine</option><option value="custom-path">Dossier local + chemin</option><option value="download">Download</option></select>
 <input id="operationFolder" value="TRAITEMENT" hidden><select id="archiveGranularity" hidden><option value="month">Mois</option><option value="week">Semaine</option></select>
-<button id="activateOutput" class="btnPrimary" style="width:100%">Activer cette sortie</button><div id="outputModeStatus" class="statusBox">Sortie non activée.</div>
-<div class="grid3"><button id="savePdf" class="btnSuccess">PDF</button><button id="exportZip">ZIP</button><button id="saveDrive">Drive</button></div>
+<button id="activateOutput" class="btnPrimary" style="width:100%">Activer cette sortie</button>
+<div id="outputModeStatus" class="statusBox">Sortie non activée.</div>
+<div id="outputStatePreview" class="statusBox mono">Aucune sortie configurée.</div>
+<div class="grid3"><button id="saveCurrent" class="btnSuccess">Enregistrer</button><button id="saveAs">Enregistrer sous</button><button id="saveAndClassify">Enregistrer + classer</button></div>
 </div></details>
 
 <details class="sidebarSection" id="sectionNaming"><summary><span class="fullLabel">3. Nommage · préfixes & suffixes</span><span class="shortLabel">3<br>Nom</span></summary><div class="studioSidebarBody">
@@ -91,7 +95,18 @@
 <details class="sidebarSection" id="sectionStamps"><summary><span class="fullLabel">5. Tampons & 5 dates</span><span class="shortLabel">5<br>Tmp</span></summary><div class="studioSidebarBody"><div id="stampLibrary" class="stampLibrary"></div><label class="field"><span>Texte / modèle du tampon</span><textarea id="stampTemplate" rows="3">VALIDÉ · {INITIALS} · {STAMP_DATE:DD/MM/YYYY}</textarea></label><div class="grid2"><label class="field"><span>X %</span><input id="stampX" type="number" value="70" min="0" max="95"></label><label class="field"><span>Y %</span><input id="stampY" type="number" value="10" min="0" max="95"></label></div>
 <label class="field checkboxField"><input id="stampApplyNaming" type="checkbox" checked><span>Associer le tampon au nom de sortie</span></label><div class="grid2"><label class="field"><span>Préfixe lié</span><input id="stampNamePrefix" placeholder="ex. VALIDE_"></label><label class="field"><span>Suffixe lié</span><input id="stampNameSuffix" placeholder="ex. _VALIDE"></label></div><div class="grid2"><button id="addStampCurrent">Ajouter page</button><button id="addStampScope">Ajouter à la portée</button></div><div class="grid2"><button id="importStamps">Importer tampons</button><button id="exportStamps">Exporter tampons</button></div><input id="stampsInput" type="file" accept=".json" hidden></div></details>
 
-<details class="sidebarSection" id="sectionAnnotations"><summary><span class="fullLabel">6. Annotations & objets</span><span class="shortLabel">6<br>Obj</span></summary><div class="studioSidebarBody"><div class="grid2"><button data-tool="select" class="toolBtn active">Sélection</button><button data-tool="text" class="toolBtn">Texte</button><button data-tool="highlight" class="toolBtn">Surligneur</button><button data-tool="pen" class="toolBtn">Stylo</button><button data-tool="image" class="toolBtn">Image</button><button data-tool="signature" class="toolBtn">Signature</button></div><label class="field"><span>Texte à insérer</span><input id="annotationText" value="Texte"></label><div class="grid2"><label class="field"><span>Taille</span><input id="annotationSize" type="number" min="6" max="72" value="12"></label><label class="field"><span>Couleur</span><input id="annotationColor" type="color" value="#316D9A"></label></div><button id="deleteSelectedAnnotation" class="btnDanger" style="width:100%">Supprimer l’objet sélectionné</button><input id="imageInput" type="file" accept="image/*" hidden></div></details>
+<details class="sidebarSection" id="sectionAnnotations"><summary><span class="fullLabel">6. Annotations & objets</span><span class="shortLabel">6<br>Obj</span></summary><div class="studioSidebarBody">
+<div class="grid2"><button data-tool="select" class="toolBtn active">Sélection</button><button data-tool="text" class="toolBtn">Texte</button><button data-tool="highlight" class="toolBtn">Surligneur</button><button data-tool="pen" class="toolBtn">Stylo</button><button data-tool="image" class="toolBtn">Image</button><button data-tool="signature" class="toolBtn">Signature</button></div>
+<label class="field"><span>Texte à insérer</span><input id="annotationText" value="Texte"></label>
+<div class="grid2"><label class="field"><span>Taille</span><input id="annotationSize" type="number" min="6" max="72" value="12"></label><label class="field"><span>Couleur</span><input id="annotationColor" type="color" value="#316D9A"></label></div>
+<div class="sectionSubhead">Objet sélectionné</div>
+<div id="selectedObjectStatus" class="statusBox">Aucun objet sélectionné.</div>
+<div class="grid3"><button id="objRotateLeft">↺ 90°</button><button id="objRotateRight">↻ 90°</button><button id="objLock">🔓 Verrouiller</button></div>
+<div class="grid2"><label class="field"><span>Rotation libre °</span><input id="objRotation" type="number" min="-360" max="360" value="0"></label><label class="field"><span>Opacité %</span><input id="objOpacity" type="number" min="0" max="100" value="100"></label></div>
+<div class="grid2"><button id="objBringFront">Premier plan</button><button id="objSendBack">Arrière-plan</button></div>
+<button id="deleteSelectedAnnotation" class="btnDanger" style="width:100%">Supprimer l’objet sélectionné</button>
+<input id="imageInput" type="file" accept="image/*" hidden>
+</div></details>
 
 <details class="sidebarSection" id="sectionOcr"><summary><span class="fullLabel">7. OCR · reconnaissance de texte</span><span class="shortLabel">7<br>OCR</span></summary><div class="studioSidebarBody"><label class="field"><span>Langue OCR</span><select id="ocrLang"><option value="fra">Français</option><option value="eng">English</option><option value="deu">Deutsch</option><option value="spa">Español</option></select></label><button id="runOcr" style="width:100%">Lancer OCR sur la portée</button><textarea id="ocrResult" placeholder="Résultat OCR"></textarea></div></details>
 <details class="sidebarSection" id="sectionOptimize"><summary><span class="fullLabel">8. Optimisation & compression <button class="helpDot" type="button" data-help-key="optimization">?</button></span><span class="shortLabel">8<br>Opt</span></summary><div class="studioSidebarBody"><div class="grid2"><label class="field"><span>DPI</span><input id="optDpi" type="number" value="150" min="72" max="300"></label><label class="field"><span>JPEG %</span><input id="optJpeg" type="number" value="82" min="30" max="100"></label></div><label class="field"><span>Couleur</span><select id="optGray"><option value="0">Couleur</option><option value="1">Niveaux de gris</option></select></label><button id="runOptimize" style="width:100%">Optimiser / compresser la portée</button><div class="hint">Indépendant de l’OCR. Peut être utilisé seul.</div></div></details>
@@ -116,30 +131,44 @@
 <div class="grid2"><label class="field"><span>Marge gauche %</span><input id="cropLeft" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge droite %</span><input id="cropRight" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge haut %</span><input id="cropTop" type="number" value="0" min="0" max="40"></label><label class="field"><span>Marge bas %</span><input id="cropBottom" type="number" value="0" min="0" max="40"></label></div><button id="cropPages" style="width:100%">Recadrer la portée</button>
 </div></details>
 
-<details class="sidebarSection" id="sectionConversion"><summary><span class="fullLabel">13. Conversions</span><span class="shortLabel">13<br>Conv</span></summary><div class="studioSidebarBody">
+<details class="sidebarSection" id="sectionConversion"><summary><span class="fullLabel">13. Conversions <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">13<br>Conv</span></summary><div class="studioSidebarBody">
 <div class="statusBox">Entrées → PDF : images, DOCX, ODT et TXT peuvent être ouvertes directement. Les conversions documentaires navigateur privilégient le texte/structure plutôt qu’une fidélité bureautique parfaite.</div>
 <label class="field"><span>PDF vers</span><select id="documentExportFormat"><option value="docx">Word DOCX</option><option value="odt">OpenDocument ODT</option><option value="txt">Texte TXT</option></select></label><button id="convertPdfDocument" style="width:100%">Convertir la portée</button>
 <div class="grid2"><button id="pdfToPng">Page → PNG</button><button id="pdfToJpg">Page → JPG</button><button id="pdfToPngZip">Portée → PNG ZIP</button><button id="pdfToJpgZip">Portée → JPG ZIP</button></div>
 </div></details>
 
-<details class="sidebarSection" id="sectionForms"><summary><span class="fullLabel">14. Formulaires PDF</span><span class="shortLabel">14<br>Form</span></summary><div class="studioSidebarBody">
+<details class="sidebarSection" id="sectionForms"><summary><span class="fullLabel">14. Formulaires PDF <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">14<br>Form</span></summary><div class="studioSidebarBody">
 <div class="grid2"><button id="inspectForms">Lister les champs</button><button id="addFormField">Ajouter champ texte</button></div><label class="field"><span>Nom du nouveau champ</span><input id="newFormFieldName" value="Champ_1"></label><label class="field"><span>Réponses JSON</span><textarea id="formValues" rows="5" placeholder='{"Champ_1":"Valeur"}'></textarea></label><div class="grid2"><button id="fillForms">Appliquer réponses</button><button id="flattenForms">Aplatir</button></div><div id="formStatus" class="statusBox">Aucune inspection.</div>
 </div></details>
 
-<details class="sidebarSection" id="sectionRedaction"><summary><span class="fullLabel">15. Caviardage</span><span class="shortLabel">15<br>Red</span></summary><div class="studioSidebarBody">
+<details class="sidebarSection" id="sectionRedaction"><summary><span class="fullLabel">15. Caviardage <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">15<br>Red</span></summary><div class="studioSidebarBody">
 <button id="redactionTool" style="width:100%">Ajouter une zone de caviardage</button><div class="hint">Cliquez ensuite dans la page pour placer une zone noire. Elle reste déplaçable avant application.</div><button id="applyRedactions" class="btnDanger" style="width:100%;margin-top:6px">Appliquer définitivement à la portée</button><div class="statusBox">L’application définitive rasterise les pages concernées pour supprimer le texte/vectoriel sous les zones.</div>
 </div></details>
 
-<details class="sidebarSection" id="sectionCompareBatch"><summary><span class="fullLabel">16. Comparaison & batch</span><span class="shortLabel">14<br>Batch</span></summary><div class="studioSidebarBody">
-<button id="pickCompare" style="width:100%">Choisir le PDF B à comparer</button><input id="compareInput" type="file" accept=".pdf,application/pdf" hidden><div id="compareStatus" class="statusBox">Aucune comparaison.</div>
-<button id="batchCleanMetadata" style="width:100%;margin-top:6px">Batch · nettoyer métadonnées des PDF cochés → ZIP</button>
+<details class="sidebarSection" id="sectionCompare"><summary><span class="fullLabel">16. Comparaison PDF <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">16<br>Cmp</span></summary><div class="studioSidebarBody">
+<div class="grid2">
+  <div><div class="fieldHead">PDF A</div><div id="compareAName" class="statusBox">Document courant</div><canvas id="compareAPreview" class="comparePreview"></canvas></div>
+  <div><div class="fieldHead">PDF B</div><button id="pickCompare" style="width:100%">Choisir PDF B</button><input id="compareInput" type="file" accept=".pdf,application/pdf" hidden><div id="compareBName" class="statusBox">Aucun PDF B</div><canvas id="compareBPreview" class="comparePreview"></canvas></div>
+</div>
+<div id="compareStatus" class="statusBox">Aucune comparaison.</div>
 </div></details>
 
-<details class="sidebarSection" id="sectionSecurity"><summary><span class="fullLabel">17. Sécurité & métadonnées</span><span class="shortLabel">15<br>Sécu</span></summary><div class="studioSidebarBody">
+<details class="sidebarSection" id="sectionBatch"><summary><span class="fullLabel">17. Traitements batch <span class="devBadge">DÉVELOPPEMENT</span></span><span class="shortLabel">17<br>Batch</span></summary><div class="studioSidebarBody">
+<div class="hint">Les opérations batch s'appliquent aux PDF cochés dans « Fichiers sélectionnés ».</div>
+<div id="batchSelectionStatus" class="statusBox">0 PDF sélectionné.</div>
+<button id="batchCleanMetadata" style="width:100%;margin-top:6px">Nettoyer métadonnées → ZIP</button>
+</div></details>
+
+<details class="sidebarSection" id="sectionSecurity"><summary><span class="fullLabel">18. Sécurité & métadonnées</span><span class="shortLabel">15<br>Sécu</span></summary><div class="studioSidebarBody">
 <div class="grid2"><button id="inspectSignatureStructure">Inspecter signatures</button><button id="cleanMetadata">Nettoyer métadonnées</button></div><div id="securityStatus" class="statusBox">Inspection structurelle uniquement. La validation cryptographique PAdES utilise DSS.</div>
 </div></details>
 
-<details class="sidebarSection" id="sectionDiagnostics"><summary><span class="fullLabel">18. Historique & diagnostics</span><span class="shortLabel">18<br>Diag</span></summary><div class="studioSidebarBody"><div id="documentHistory" class="historyList"></div><div class="grid2"><button id="exportHistory">Exporter historique</button><button id="clearHistory">Effacer historique</button></div><button id="runDiagnostics" style="width:100%">Relancer les diagnostics</button><div id="diagnosticList"></div></div></details>
+<details class="sidebarSection" id="sectionDiagnostics"><summary><span class="fullLabel">19. Historique & diagnostics</span><span class="shortLabel">19<br>Hist</span></summary><div class="studioSidebarBody">
+<div class="grid3"><button id="undoHistory">↶ Annuler</button><button id="redoHistory">↷ Rétablir</button><button id="captureHistory">＋ Point de retour</button></div>
+<div class="sectionSubhead">Historique de travail</div><div id="snapshotHistory" class="historyList"></div>
+<div class="sectionSubhead">Journal persistant</div><div id="documentHistory" class="historyList"></div>
+<div class="grid2"><button id="exportHistory">Exporter historique</button><button id="clearHistory">Effacer historique</button></div>
+<button id="runDiagnostics" style="width:100%">Relancer les diagnostics</button><div id="diagnosticList"></div></div></details>
 </aside>
 
 <section class="viewer"><div class="viewerCard">
@@ -149,7 +178,7 @@
 <div id="pageStrip" class="pageStrip"></div>
 <div id="canvasStage" class="canvasStage"><div id="pageCanvasWrap"><canvas id="pageCanvas"></canvas><div id="textLayer" class="textLayer"></div><div id="annotationLayer" class="annotationLayer"></div></div><div id="emptyViewer" style="color:#fff;margin:220px auto">Ouvrez un PDF, une image ou un ZIP pour commencer.</div></div>
 </div></section></main>
-<button id="sidebarRestore" hidden style="position:fixed;left:6px;top:50%;z-index:150">▶ Panneau</button>
-<div class="studioStatus"><span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span id="docStatus">Aucun document</span><span class="grow">nLab PDF Studio 1.0.0 TEST</span></div><div id="studioToast" class="toast"></div>
+<button id="sidebarRestore" class="studioSidebarRestore" hidden title="Afficher le panneau">▶</button>
+<div class="studioStatus"><span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span id="docStatus">Aucun document</span><span class="grow">nLab PDF Studio <span data-version-status>TEST</span></span></div><div id="studioToast" class="toast"></div>
 <div id="signatureModal" class="modal" hidden><div class="modalCard"><h3>Dessiner une signature</h3><canvas id="signatureCanvas" width="700" height="260" style="width:100%;height:260px;border:1px solid #B8C6D1;border-radius:8px;touch-action:none"></canvas><div class="row" style="justify-content:flex-end;margin-top:8px"><button id="signatureClear">Effacer</button><button id="signatureCancel">Annuler</button><button id="signatureUse" class="btnPrimary">Utiliser</button></div></div></div>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script><script type="module" src="./pdf-studio.js"></script></body></html>

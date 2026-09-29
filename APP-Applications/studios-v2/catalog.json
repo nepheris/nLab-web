@@ -1,0 +1,88 @@
+{
+  "schema": "nlab-studios-v2-catalog/v1",
+  "core": "../_shared/studio-v2/",
+  "version": "2.0.0",
+  "updated": "2026-09-29",
+  "studios": [
+    {
+      "id": "pdf-studio",
+      "name": "PDF Studio V2",
+      "status": "test",
+      "version": "2.0.0",
+      "href": "../pdf-studio/v2/",
+      "note": "Banc d’intégration du Studio Core V2. Fonctions PDF validées migrées progressivement."
+    },
+    {
+      "id": "markdown-studio",
+      "name": "Markdown Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../markdown-studio/",
+      "note": "Plugin Markdown à migrer sur Core V2."
+    },
+    {
+      "id": "qr-barcode-studio",
+      "name": "QR & Barcode Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../qr-barcode-studio/",
+      "note": "Plugin QR/Barcode à migrer sur Core V2."
+    },
+    {
+      "id": "dataset-generator-studio",
+      "name": "Dataset Generator Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../dataset-generator-studio/",
+      "note": "Plugin Dataset Generator à migrer sur Core V2."
+    },
+    {
+      "id": "image-studio",
+      "name": "Image Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../image-studio/",
+      "note": "Plugin Image à migrer sur Core V2."
+    },
+    {
+      "id": "ocr-studio",
+      "name": "OCR Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../ocr-studio/",
+      "note": "Plugin OCR à migrer sur Core V2."
+    },
+    {
+      "id": "data-studio",
+      "name": "Data Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../data-studio/",
+      "note": "Plugin Data à migrer sur Core V2."
+    },
+    {
+      "id": "json-studio",
+      "name": "JSON Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../json-studio/",
+      "note": "Plugin JSON à migrer sur Core V2."
+    },
+    {
+      "id": "code-studio",
+      "name": "Code Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../code-studio/",
+      "note": "Plugin Code à migrer sur Core V2."
+    },
+    {
+      "id": "file-studio",
+      "name": "File Studio V2",
+      "status": "development",
+      "version": "2.0.0",
+      "href": "../file-studio/",
+      "note": "Plugin File à migrer sur Core V2."
+    }
+  ]
+}

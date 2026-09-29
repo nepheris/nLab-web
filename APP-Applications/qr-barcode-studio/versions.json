@@ -1,0 +1,25 @@
+{
+  "name": "QR & Barcode Studio",
+  "current": "0.2.0",
+  "test": "0.3.0",
+  "versions": [
+    {
+      "version": "0.3.0",
+      "label": "QR & Barcode Studio 0.3.0 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "test",
+      "href": "./",
+      "notes": "Migration Studio Core V1. Aperçu unique avec rafraîchissement, outils contextuels QR/Data Matrix/Code128/GS1-128/EAN-13/EAN-8, couleurs en lignes séparées avec HEX par défaut et affichage RGB/HSL, scan HID et lecture d’images par sélection ou glisser-déposer."
+    },
+    {
+      "version": "0.2.0",
+      "label": "QR & Barcode Studio Alpha 0.2",
+      "date": "2026-09-29",
+      "current": true,
+      "status": "current",
+      "href": "./app-0.2.0.html",
+      "notes": "QR, Data Matrix, Code128, EAN, personnalisation et lecteur HID."
+    }
+  ]
+}

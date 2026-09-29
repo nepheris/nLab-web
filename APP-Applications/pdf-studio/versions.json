@@ -1,13 +1,49 @@
 {
   "current": "0.9.10",
-  "test": "1.0.0",
+  "test": "2.0.0",
   "versions": [
+    {
+      "version": "2.0.0",
+      "label": "PDF Studio 2.0.0 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Nouvelle architecture Studio Core V2 unique + plugin PDF. Header, menus, ruban, paramètres, thèmes, fenêtres, repères CORE/STUDIO/DEV et layout proviennent du Core partagé. PDF V2 réutilise le moteur PDF existant via un adapter. Première base opérationnelle : ouverture locale, aperçu, navigation, zoom, rotation, ajout/suppression de pages et enregistrement. Les fonctions non encore migrées sont marquées DÉVELOPPEMENT."
+    },
+    {
+      "version": "1.0.3",
+      "label": "PDF Studio 1.0.3 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "historical",
+      "href": "./v1/",
+      "notes": "Sortie refondue : format séparé de la destination (PDF / conserver format d'origine / ZIP), Drive conservé comme destination DÉVELOPPEMENT, suppression du bouton Drive redondant, actions Enregistrer / Enregistrer sous / Enregistrer + classer, aperçu d'état de sortie, et variables de date enrichies avec mois/jours numériques ou texte FR/EN."
+    },
+    {
+      "version": "1.0.2",
+      "label": "PDF Studio 1.0.2 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "historical",
+      "href": "./v1/",
+      "notes": "Workspace fichiers avec vignettes optionnelles PDF/image, menu supérieur élargi, groupes de ruban masquables, synchronisation outil/ruban/panneau détaillé, historique Undo/Redo par snapshots, comparaison séparée du batch, badges développement, et moteur d’objet commun pour déplacement, redimensionnement, rotation, verrouillage, opacité et suppression."
+    },
+    {
+      "version": "1.0.1",
+      "label": "PDF Studio 1.0.1 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "historical",
+      "href": "./v1/",
+      "notes": "Revue opérateur V1 : aide contextuelle variables/paramètres, séparation source/fichiers sélectionnés, navigation fichier précédent/suivant, tri du workspace, restauration tuile ajouter page/corbeille/drag-drop pages, statuts développement pour fonctions externes, et convergence planifiée avec OCR Studio, Code Studio et Image Studio."
+    },
     {
       "version": "1.0.0",
       "label": "PDF Studio 1.0.0 TEST",
       "date": "2026-09-28",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v1/",
       "notes": "Réécriture majeure autonome : framework Studio V1 commun, branding nLab, entrée locale/Drive fichiers multiples/dossiers/ZIP, module fichiers sélectionnés, sorties/classification à templates, nommage code, portée multi-pages avec cases, annotations/images/tampons/signatures, historique persistant et ruban contextuel, en-têtes/pieds variables + QR, OCR séparé de l’optimisation, conversions PDF↔DOCX/ODT/TXT/images, traduction bilingue, formulaires, caviardage, comparaison/batch et package portable 1.0. Aucun runtime 0.9.x."
     },

@@ -12,15 +12,15 @@ export class VariableEngine{
  setMany(v={}){Object.assign(this.values,v);return this}
  setRuntime(v={}){Object.assign(this.runtime,v);return this}
  setOperation(p={}){Object.assign(this.operation,p);return this}
- dateParts(v){const d=new Date((v||today())+'T12:00:00');return{YYYY:d.getFullYear(),YY:String(d.getFullYear()).slice(-2),MM:pad(d.getMonth()+1),DD:pad(d.getDate())}}
- formatDate(v,fmt='DD/MM/YYYY'){const p=this.dateParts(v);return fmt.replace(/YYYY/g,p.YYYY).replace(/YY/g,p.YY).replace(/MM/g,p.MM).replace(/DD/g,p.DD)}
+ dateParts(v){const d=new Date((v||today())+'T12:00:00');const frMonth=d.toLocaleDateString('fr-FR',{month:'long'}),enMonth=d.toLocaleDateString('en-US',{month:'long'}),frDay=d.toLocaleDateString('fr-FR',{weekday:'long'}),enDay=d.toLocaleDateString('en-US',{weekday:'long'});return{YYYY:d.getFullYear(),YY:String(d.getFullYear()).slice(-2),MM:pad(d.getMonth()+1),M:String(d.getMonth()+1),DD:pad(d.getDate()),D:String(d.getDate()),MONTH_NAME_FR:frMonth,MONTH_NAME_EN:enMonth,DAY_NAME_FR:frDay,DAY_NAME_EN:enDay}}
+ formatDate(v,fmt='DD/MM/YYYY'){const p=this.dateParts(v);return String(fmt).replace(/MONTH_NAME_FR/g,p.MONTH_NAME_FR).replace(/MONTH_NAME_EN/g,p.MONTH_NAME_EN).replace(/DAY_NAME_FR/g,p.DAY_NAME_FR).replace(/DAY_NAME_EN/g,p.DAY_NAME_EN).replace(/YYYY/g,p.YYYY).replace(/YY/g,p.YY).replace(/MM/g,p.MM).replace(/DD/g,p.DD).replace(/\bM\b/g,p.M).replace(/\bD\b/g,p.D)}
  context(fileName='document.pdf',extra={}){
   const now=new Date(),stem=fileStem(fileName),ext=extension(fileName);
   const c={...this.values,...this.runtime,...extra,
    FILENAME:stem,FULLNAME:fileName,STEM:stem,EXT:ext,EXT_DOT:ext?'.'+ext:'',
    DATE:today(),TIME:pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds()),
    DATETIME:today()+'_'+pad(now.getHours())+pad(now.getMinutes())+pad(now.getSeconds()),
-   YEAR:String(now.getFullYear()),MONTH:pad(now.getMonth()+1),DAY:pad(now.getDate()),WEEK:isoWeek(now),
+   YEAR:String(now.getFullYear()),MONTH:pad(now.getMonth()+1),MONTH_NUM:String(now.getMonth()+1),MONTH_NAME_FR:now.toLocaleDateString('fr-FR',{month:'long'}),MONTH_NAME_EN:now.toLocaleDateString('en-US',{month:'long'}),DAY:pad(now.getDate()),DAY_NUM:String(now.getDate()),DAY_NAME_FR:now.toLocaleDateString('fr-FR',{weekday:'long'}),DAY_NAME_EN:now.toLocaleDateString('en-US',{weekday:'long'}),WEEK:isoWeek(now),
    OP:this.operationLabel(),DPI:this.operation.dpi??'',JPEG:this.operation.jpeg??''
   };
   return c

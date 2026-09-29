@@ -1,10 +1,39 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>nLab Studios</title><link rel="stylesheet" href="../_shared/studio.css"></head><body data-studio="nLab Studios" data-icon="file" data-status="Alpha POC"><header><div class="wrap head"><a href="../../">← nLab Web</a><span class="brand">nLab Studios</span></div></header><main class="wrap"><section class="hero"><div class="eyebrow">Suite publique · local-first</div><h1>nLab Studios</h1><p class="lead">Une famille d'outils navigateur fondés sur des moteurs communs : fichiers, batch, nommage, sorties, édition, image, OCR, code, données et codes 1D/2D. Les POC ci-dessous sont publics pour test ; les fonctions privées et connecteurs restent hors du dépôt public.</p><div class="badges"><span class="badge local">Traitement local prioritaire</span><span class="badge alpha">Alpha / POC</span></div></section><section class="grid">
-<a class="card" href="../pdf-studio/"><div class="eyebrow">CURRENT + TEST</div><h2>📄 PDF Studio</h2><p class="muted">PDF, pages, annotations, OCR, classement, batch et sorties.</p></a>
-<a class="card" href="../image-studio/"><div class="eyebrow">ALPHA POC</div><h2>🖼 Image Studio</h2><p class="muted">Rotation, miroir, resize, export et module Mesure & Calibration.</p></a>
-<a class="card" href="../ocr-studio/"><div class="eyebrow">ALPHA POC</div><h2>🔎 OCR Studio</h2><p class="muted">Reconnaissance OCR locale navigateur à partir d'images.</p></a>
-<a class="card" href="../code-studio/"><div class="eyebrow">ALPHA POC</div><h2>&lt;/&gt; Code Studio</h2><p class="muted">Éditeur multi-langages, chargement et sauvegarde locale.</p></a>
-<a class="card" href="../json-studio/"><div class="eyebrow">ALPHA POC</div><h2>{ } JSON Studio</h2><p class="muted">Formatage, validation, tri, requêtes par chemin et export.</p></a>
-<a class="card" href="../data-studio/"><div class="eyebrow">ALPHA POC</div><h2>▦ Data Studio</h2><p class="muted">CSV/JSON, aperçu tabulaire, profil de colonnes et export JSON.</p></a>
-<a class="card" href="../qr-barcode-studio/"><div class="eyebrow">ALPHA POC</div><h2>▣ QR & Barcode Studio</h2><p class="muted">QR, EAN/Code128/Data Matrix/GS1 et entrée lecteur HID.</p></a>
-<a class="card" href="../file-studio/"><div class="eyebrow">ALPHA POC</div><h2>📁 File Studio</h2><p class="muted">Renommage par lot, préfixe/suffixe, regex, date et compteur.</p></a>
-</section><section class="panel" style="margin-top:14px"><div class="eyebrow">R&D CANDIDATE</div><h2>🧪 Demo / Dataset Generator Studio</h2><p class="muted">Idée retenue pour une phase ultérieure : une interface graphique au-dessus des scripts de génération existants pour créer des datasets synthétiques, images de test, QR/Data Matrix et corpus multi-formats paramétrables. Le moteur commence dès maintenant avec <span class="mono">Library/demo/generate_demo.py</span> + <span class="mono">generate_studio_demo.py</span>.</p></section><section class="panel" style="margin-top:14px"><h2>Jeux de test</h2><p class="muted">Le corpus global reste disponible, mais chaque Studio dispose maintenant d'un manifest et d'un ZIP de démonstration ciblés.</p><div class="actions"><a class="btn" href="../../Library/demo/">Corpus démo</a><a class="btn" href="../../Library/demo/manifests/index.json">Index des manifests</a><a class="btn" href="./catalog.json">Catalogue JSON des Studios</a></div></section></main><footer><div class="wrap foot">nLab Studios · publication publique expérimentale</div></footer><script src="../_shared/studio-shell.js"></script></body></html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>nLab Studios</title><link rel="stylesheet" href="../_shared/studio.css"></head><body data-studio="nLab Studios" data-icon="file" data-status="Alpha POC"><header><div class="wrap head"><a href="../../">← nLab Web</a><span class="brand">nLab Studios</span></div></header><main class="wrap"><section class="hero"><div class="eyebrow">Suite publique · local-first</div><h1>nLab Studios</h1><p class="lead">Une famille d'outils navigateur fondés sur des moteurs communs : fichiers, batch, nommage, sorties, édition, image, OCR, code, données et codes 1D/2D. Les POC ci-dessous sont publics pour test ; les fonctions privées et connecteurs restent hors du dépôt public.</p><div class="badges"><span class="badge local">Traitement local prioritaire</span><span class="badge alpha">Alpha / POC</span></div></section><section id="studioGrid" class="grid"><div class="card"><div class="eyebrow">CHARGEMENT</div><h2>Studios…</h2><p class="muted">Lecture du catalogue.</p></div></section><section class="panel" style="margin-top:14px"><h2>Jeux de test</h2><p class="muted">Le corpus global reste disponible, mais chaque Studio dispose maintenant d'un manifest et d'un ZIP de démonstration ciblés.</p><div class="actions"><a class="btn" href="../../Library/demo/">Corpus démo</a><a class="btn" href="../../Library/demo/manifests/index.json">Index des manifests</a><a class="btn" href="./catalog.json">Catalogue JSON des Studios</a></div></section></main><footer><div class="wrap foot">nLab Studios · publication publique expérimentale</div></footer><script>
+(async()=>{
+  const grid=document.getElementById('studioGrid');
+  const icons={'pdf-studio':'📄','image-studio':'🖼','ocr-studio':'🔎','code-studio':'</>','json-studio':'{ }','data-studio':'▦','qr-barcode-studio':'▣','file-studio':'📁','markdown-studio':'📝','translation-studio':'🌐','demo-studio':'🧪','dataset-generator-studio':'🧬'};
+  const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const resolve=(base,href)=>{try{return new URL(href,base).href}catch{return href}};
+  try{
+    const r=await fetch('./catalog.json',{cache:'no-store'}); if(!r.ok)throw new Error('catalog '+r.status);
+    const data=await r.json();
+    const cards=await Promise.all((data.studios||[]).map(async s=>{
+      let current=null,test=null,registry=null,registryUrl=s.version_registry||('../'+s.id+'/versions.json');
+      try{
+        const vr=await fetch(registryUrl,{cache:'no-store'});
+        if(vr.ok){
+          registry=await vr.json();
+          const by=new Map((registry.versions||[]).map(v=>[String(v.version),v]));
+          current=registry.current?by.get(String(registry.current)):null;
+          test=registry.test?by.get(String(registry.test)):null;
+        }
+      }catch{}
+      const studioBase=new URL(s.path,location.href).href;
+      const currentHref=current?resolve(studioBase,current.href||'./'):null;
+      const testHref=test?resolve(studioBase,test.href||'./'):null;
+      const versionsHref=resolve(location.href,s.versions_path||('../'+s.id+'/versions.html'));
+      const icon=icons[s.id]||'◫';
+      const currentBtn=current
+        ? '<a class="btn primary" href="'+esc(currentHref)+'">CURRENT '+esc(current.version)+'</a>'
+        : '<span class="btn" aria-disabled="true" style="opacity:.55;pointer-events:none">CURRENT —</span>';
+      const testBtn=test
+        ? '<a class="btn" style="background:#fff7d6;border-color:#e1bd43;color:#765600" href="'+esc(testHref)+'">TEST '+esc(test.version)+'</a>'
+        : '<span class="btn" aria-disabled="true" style="opacity:.55;pointer-events:none">TEST —</span>';
+      const extra=s.card_kind==='development'?' style="background:#fff9e8;border-color:#e0b74c"':'';return '<article class="card"'+extra+'><div class="eyebrow">'+esc(String(s.status||'').replace(/-/g,' ').toUpperCase())+'</div><h2>'+esc(icon)+' '+esc(s.name)+'</h2><p class="muted">'+esc(s.purpose||'Studio nLab.')+'</p><div class="actions">'+currentBtn+testBtn+'<a class="btn" href="'+esc(versionsHref)+'">Toutes les versions</a></div></article>';
+    }));
+    grid.innerHTML=cards.join('');
+  }catch(e){
+    grid.innerHTML='<div class="card"><div class="eyebrow">ERREUR</div><h2>Catalogue indisponible</h2><p class="muted">'+esc(e.message||e)+'</p></div>';
+  }
+})();
+</script><script src="../_shared/studio-shell.js"></script></body></html>

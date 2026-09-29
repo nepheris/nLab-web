@@ -1,0 +1,25 @@
+{
+  "name": "Dataset Generator Studio",
+  "current": null,
+  "test": "0.2.0",
+  "versions": [
+    {
+      "version": "0.2.0",
+      "label": "Dataset Generator Studio 0.2.0 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "test",
+      "href": "./",
+      "notes": "Premier générateur navigateur opérationnel sur Studio Core V1 : presets synthétiques, seed reproductible, choix de colonnes, aperçu tabulaire et exports JSON, CSV, XLSX et Markdown. Les générateurs avancés existants côté scripts restent à intégrer à l’interface."
+    },
+    {
+      "version": "0.1.0",
+      "label": "Dataset Generator Studio 0.1.0 ALPHA / POC",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "historical",
+      "href": "./",
+      "notes": "Interface Alpha/POC au-dessus des générateurs existants. Les moteurs Python produisent déjà images de calibration, code, QR/Data Matrix/Code128, datasets CSV/JSON/XLSX, fichiers de test, comparaisons, manifests et ZIP. L’exécution navigateur reste à développer."
+    }
+  ]
+}

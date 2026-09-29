@@ -33,3 +33,56 @@ export function bindSectionControls({expand='#sidebarExpandAll',collapse='#sideb
 export function jsonDownload(data,name='config.json'){downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),name)}
 export async function readJsonFile(file){return JSON.parse(await file.text())}
 export function wireMenuTabs(){qsa('.studioMenu button[data-tab]').forEach(b=>b.addEventListener('click',()=>{qsa('.studioMenu button[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.dispatchEvent(new CustomEvent('studio:menu',{detail:{tab:b.dataset.tab}}))}))}
+
+
+export function bindStudioChrome({
+  main='#studioMain',
+  sidebar='#studioSidebar',
+  sidebarRestore='#sidebarRestore',
+  ribbon='.studioRibbon',
+  ribbonToggle='#studioRibbonToggle',
+  context='#ribbonContext',
+  contextToggle='#ribbonContextToggle',
+  contextClose='#ribbonContextClose',
+  menuPanel='#studioMenuPanel'
+}={}){
+  const m=qs(main),s=qs(sidebar),r=qs(ribbon),rt=qs(ribbonToggle),ctx=qs(context),ct=qs(contextToggle),cc=qs(contextClose),mp=qs(menuPanel);
+  const apply=()=>{
+    const ribbonCollapsed=localStorage.getItem('nlab-studio-v1-ribbon-collapsed')==='1';
+    const contextCollapsed=localStorage.getItem('nlab-studio-v1-context-collapsed')==='1';
+    document.body.classList.toggle('studioRibbonCollapsed',ribbonCollapsed);
+    if(rt){rt.setAttribute('aria-expanded',String(!ribbonCollapsed));rt.title=ribbonCollapsed?'Déplier le ruban':'Replier le ruban'}
+    ctx?.classList.toggle('collapsed',contextCollapsed);
+    if(ct){ct.setAttribute('aria-expanded',String(!contextCollapsed));ct.title=contextCollapsed?'Déplier les détails':'Replier les détails'}
+  };
+  rt?.addEventListener('click',()=>{localStorage.setItem('nlab-studio-v1-ribbon-collapsed',document.body.classList.contains('studioRibbonCollapsed')?'0':'1');apply()});
+  ct?.addEventListener('click',()=>{localStorage.setItem('nlab-studio-v1-context-collapsed',ctx?.classList.contains('collapsed')?'0':'1');apply()});
+  cc?.addEventListener('click',()=>{if(ctx)ctx.hidden=true});
+  qs(sidebarRestore)?.addEventListener('click',()=>{m?.classList.remove('sidebarHidden','sidebarCompact');qs(sidebarRestore)?.setAttribute('hidden','')});
+  document.addEventListener('studio:open-section',e=>{
+    const id=e.detail?.section;if(!id)return;const el=qs(id);if(!el)return;
+    m?.classList.remove('sidebarHidden');qs(sidebarRestore)?.setAttribute('hidden','');el.open=true;el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+  document.addEventListener('studio:show-context',()=>{if(ctx){ctx.hidden=false;ctx.classList.remove('collapsed')}});
+  apply();
+  return{apply};
+}
+export function openStudioSection(section){document.dispatchEvent(new CustomEvent('studio:open-section',{detail:{section}}))}
+
+
+export function applyRibbonGroups({root=document,prefix='nlab-ribbon-'}={}){
+  qsa('[data-ribbon-group]',root).forEach(g=>g.classList.toggle('ribbonHidden',localStorage.getItem(prefix+g.dataset.ribbonGroup)==='0'));
+}
+export function setRibbonGroupVisible(group,visible,{root=document,prefix='nlab-ribbon-'}={}){
+  localStorage.setItem(prefix+group,visible?'1':'0');
+  applyRibbonGroups({root,prefix});
+}
+export function bindRibbonGroupToggles({controls=document,root=document,prefix='nlab-ribbon-'}={}){
+  qsa('[data-ribbon-toggle]',controls).forEach(x=>{
+    const key=x.dataset.ribbonToggle;
+    x.checked=localStorage.getItem(prefix+key)!=='0';
+    x.addEventListener('change',()=>setRibbonGroupVisible(key,x.checked,{root,prefix}));
+  });
+  qsa('[data-ribbon-show-all]',controls).forEach(b=>b.addEventListener('click',()=>{qsa('[data-ribbon-group]',root).forEach(g=>localStorage.setItem(prefix+g.dataset.ribbonGroup,'1'));applyRibbonGroups({root,prefix})}));
+  applyRibbonGroups({root,prefix});
+}

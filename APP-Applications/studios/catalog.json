@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studios-catalog/v1",
-  "updated": "2026-09-22",
+  "updated": "2026-09-29",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
     {
@@ -8,68 +8,118 @@
       "name": "PDF Studio",
       "status": "current+test",
       "path": "../pdf-studio/",
-      "demo": "../../Library/demo/manifests/pdf.json"
+      "demo": "../../Library/demo/manifests/pdf.json",
+      "versions": "./pdf",
+      "versions_path": "../pdf-studio/versions.html",
+      "version_registry": "../pdf-studio/versions.json"
     },
     {
       "id": "image-studio",
       "name": "Image Studio",
       "status": "alpha-poc",
       "path": "../image-studio/",
-      "demo": "../../Library/demo/manifests/image.json"
+      "demo": "../../Library/demo/manifests/image.json",
+      "versions": "./image",
+      "versions_path": "../image-studio/versions.html",
+      "version_registry": "../image-studio/versions.json"
     },
     {
       "id": "ocr-studio",
       "name": "OCR Studio",
       "status": "alpha-poc",
       "path": "../ocr-studio/",
-      "demo": "../../Library/demo/manifests/ocr.json"
+      "demo": "../../Library/demo/manifests/ocr.json",
+      "versions": "./ocr",
+      "versions_path": "../ocr-studio/versions.html",
+      "version_registry": "../ocr-studio/versions.json"
     },
     {
       "id": "code-studio",
       "name": "Code Studio",
       "status": "alpha-poc",
       "path": "../code-studio/",
-      "demo": "../../Library/demo/manifests/code-json.json"
+      "demo": "../../Library/demo/manifests/code-json.json",
+      "versions": "./code",
+      "versions_path": "../code-studio/versions.html",
+      "version_registry": "../code-studio/versions.json"
     },
     {
       "id": "json-studio",
       "name": "JSON Studio",
       "status": "alpha-poc",
       "path": "../json-studio/",
-      "demo": "../../Library/demo/manifests/code-json.json"
+      "demo": "../../Library/demo/manifests/code-json.json",
+      "versions": "./json",
+      "versions_path": "../json-studio/versions.html",
+      "version_registry": "../json-studio/versions.json"
     },
     {
       "id": "data-studio",
       "name": "Data Studio",
       "status": "alpha-poc",
       "path": "../data-studio/",
-      "demo": "../../Library/demo/manifests/data.json"
+      "demo": "../../Library/demo/manifests/data.json",
+      "versions": "./data",
+      "versions_path": "../data-studio/versions.html",
+      "version_registry": "../data-studio/versions.json"
     },
     {
       "id": "qr-barcode-studio",
       "name": "QR & Barcode Studio",
-      "status": "alpha-poc",
+      "status": "current+test",
       "path": "../qr-barcode-studio/",
-      "demo": "../../Library/demo/manifests/qr-barcode.json"
+      "demo": "../../Library/demo/manifests/qr-barcode.json",
+      "versions": "./qr-barcode",
+      "versions_path": "../qr-barcode-studio/versions.html",
+      "version_registry": "../qr-barcode-studio/versions.json"
     },
     {
       "id": "file-studio",
       "name": "File Studio",
       "status": "alpha-poc",
       "path": "../file-studio/",
-      "demo": "../../Library/demo/manifests/file.json"
+      "demo": "../../Library/demo/manifests/file.json",
+      "versions": "./file",
+      "versions_path": "../file-studio/versions.html",
+      "version_registry": "../file-studio/versions.json"
+    },
+    {
+      "id": "markdown-studio",
+      "name": "Markdown Studio",
+      "status": "test-1.0.0",
+      "path": "../markdown-studio/",
+      "purpose": "Éditeur Markdown transversal V1 : source, aperçu HTML, sommaire, YAML/front matter et exports.",
+      "versions": "./markdown",
+      "versions_path": "../markdown-studio/versions.html",
+      "version_registry": "../markdown-studio/versions.json"
+    },
+    {
+      "id": "demo-studio",
+      "name": "Demo Studio",
+      "status": "current",
+      "path": "../demo-studio/",
+      "purpose": "Galerie publique et corpus de démonstration nLab, avec manifests et jeux de test par Studio.",
+      "versions_path": "../demo-studio/versions.html",
+      "version_registry": "../demo-studio/versions.json",
+      "card_kind": "transversal"
+    },
+    {
+      "id": "dataset-generator-studio",
+      "name": "Dataset Generator Studio",
+      "status": "test-0.2.0",
+      "path": "../dataset-generator-studio/",
+      "purpose": "Génération de datasets, images, QR/Data Matrix/Code128, fichiers de test, manifests et packs. Interface Studio en développement.",
+      "versions_path": "../dataset-generator-studio/versions.html",
+      "version_registry": "../dataset-generator-studio/versions.json",
+      "card_kind": "development"
     }
   ],
   "future": [
     {
-      "id": "demo-dataset-generator-studio",
-      "name": "Demo / Dataset Generator Studio",
+      "id": "translation-studio",
+      "name": "Translation Studio",
       "status": "candidate",
-      "source": [
-        "Library/demo/generate_demo.py",
-        "Library/demo/generate_studio_demo.py"
-      ],
-      "purpose": "Generate reproducible synthetic datasets, images, QR/Data Matrix and multi-format demo packs."
+      "purpose": "Studio spécialisé de traduction multilingue réutilisé par PDF, OCR, Markdown et autres Studios."
     }
   ]
 }

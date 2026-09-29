@@ -1,0 +1,16 @@
+{
+  "name": "Image Studio",
+  "current": "0.2.0",
+  "test": null,
+  "versions": [
+    {
+      "version": "0.2.0",
+      "label": "Image Studio Alpha 0.2",
+      "date": "2026-09-29",
+      "current": true,
+      "status": "current",
+      "href": "./",
+      "notes": "Version publiée lors de l’introduction du registre commun Studio. Rotation, miroir, redimensionnement, export et calibration/mesure."
+    }
+  ]
+}
