@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.0.1",
+  "test": "2.0.2",
   "versions": [
+    {
+      "version": "2.0.2",
+      "label": "PDF Studio 2.0.2 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe de convergence cumulative 0.9.x/1.0.x : 20 sections du volet gauche restaurées, panneau type classeur à onglets, drag & drop, volet redimensionnable, preview/vignettes et viewer multipage communs, sélection/réorganisation de pages, navigation et zoom saisissables, nombre libre de pages par largeur, bibliothèque SVG centrale, CapabilityRegistry, StudioContext inter-Studio, PipelineService, détection de capacités par type de fichier, lazy rendering, auto-tests, palette globale Ctrl/Cmd+K, workflows enregistrables, personnalisation des groupes du ruban et repères UI/IDs enrichis. Les fonctions non encore reconnectées restent visibles en DEV."
+    },
     {
       "version": "2.0.1",
       "label": "PDF Studio 2.0.1 TEST",
       "date": "2026-09-29",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe Studio Core V2 de micro-gestion : historique rapide configurable à 5/10/15/20 éléments, historique complet commun aux Studios, recherche, filtres et regroupement date/Studio/type, favoris/épinglage, préférences persistantes, IDs stables, journalisation des fichiers et actions PDF, et possibilité de rejouer les actions sûres. Les éléments plus anciens restent accessibles au-delà de la limite d’affichage rapide."
     },
