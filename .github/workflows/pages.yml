@@ -31,7 +31,7 @@ jobs:
       - name: Verify PDF Studio public runtime
         shell: bash
         run: |
-          set -euxo pipefail
+          set -euo pipefail
           test -s APP-Applications/pdf-studio/app.html
           test -s APP-Applications/pdf-studio/app-0.9.10.html
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
@@ -200,9 +200,10 @@ jobs:
           test -s APP-Applications/_shared/studio-v2/settings.js
           test -s APP-Applications/_shared/studio-v2/window-system.js
           test -s APP-Applications/_shared/studio-v2/plugins.js
+          test -s APP-Applications/_shared/studio-v2/help.js
           test -s APP-Applications/_shared/studio-v2/studio.css
           grep -q 'Studio Core V2' APP-Applications/studios-v2/index.html
-          grep -q '2.0.0' APP-Applications/pdf-studio/v2/index.html
+          grep -q 'pdf-v2.js' APP-Applications/pdf-studio/v2/index.html
           grep -q 'mountStudioV2' APP-Applications/pdf-studio/v2/pdf-v2.js
           test -s APP-Applications/_shared/studio-v1/studio.css
           test -s APP-Applications/_shared/studio-v1/core.js
