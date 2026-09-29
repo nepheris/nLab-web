@@ -68,3 +68,21 @@ export function bindStudioChrome({
   return{apply};
 }
 export function openStudioSection(section){document.dispatchEvent(new CustomEvent('studio:open-section',{detail:{section}}))}
+
+
+export function applyRibbonGroups({root=document,prefix='nlab-ribbon-'}={}){
+  qsa('[data-ribbon-group]',root).forEach(g=>g.classList.toggle('ribbonHidden',localStorage.getItem(prefix+g.dataset.ribbonGroup)==='0'));
+}
+export function setRibbonGroupVisible(group,visible,{root=document,prefix='nlab-ribbon-'}={}){
+  localStorage.setItem(prefix+group,visible?'1':'0');
+  applyRibbonGroups({root,prefix});
+}
+export function bindRibbonGroupToggles({controls=document,root=document,prefix='nlab-ribbon-'}={}){
+  qsa('[data-ribbon-toggle]',controls).forEach(x=>{
+    const key=x.dataset.ribbonToggle;
+    x.checked=localStorage.getItem(prefix+key)!=='0';
+    x.addEventListener('change',()=>setRibbonGroupVisible(key,x.checked,{root,prefix}));
+  });
+  qsa('[data-ribbon-show-all]',controls).forEach(b=>b.addEventListener('click',()=>{qsa('[data-ribbon-group]',root).forEach(g=>localStorage.setItem(prefix+g.dataset.ribbonGroup,'1'));applyRibbonGroups({root,prefix})}));
+  applyRibbonGroups({root,prefix});
+}
