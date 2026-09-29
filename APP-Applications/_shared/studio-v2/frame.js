@@ -24,7 +24,7 @@ function itemButton(it){
     '<span class="scopeIcon">'+icon(it.icon||'command')+'</span><span>'+esc(it.label||'')+'</span>'+
     '<small class="scopeBadge">'+scope.toUpperCase()+'</small>'+(dev?'<small class="devBadge">DEV</small>':'')+'</button>';
 }
-export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',status:'TEST'},root=document.body}={}){
+export async function mountStudioV2({manifest,versionInfo={version:'',status:'TEST'},root=document.body}={}){
   if(!manifest)throw new Error('Manifest Studio V2 requis');
   root.querySelector('#nlabStudioV2Chrome')?.remove();
 
@@ -38,7 +38,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
     </a>
     <div class="studioBrand">
       <b>${esc(manifest.name)}</b>
-      <small>${esc(manifest.subtitle||'nLab Studio')} · v${esc(versionInfo.version)}</small>
+      <small>${esc(manifest.subtitle||'nLab Studio')}${versionInfo.version?' · v'+esc(versionInfo.version):''}</small>
       <span class="studioHeaderMeta">
         <span class="studioPill local">● local-first</span>
         <span class="studioPill test">${esc(versionInfo.status||'TEST')}</span>
