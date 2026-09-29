@@ -1,0 +1,16 @@
+{
+  "name": "Data Studio",
+  "current": "0.2.0",
+  "test": null,
+  "versions": [
+    {
+      "version": "0.2.0",
+      "label": "Data Studio Alpha 0.2",
+      "date": "2026-09-29",
+      "current": true,
+      "status": "current",
+      "href": "./",
+      "notes": "CSV/JSON, aperçu tabulaire, profil de colonnes et export."
+    }
+  ]
+}
