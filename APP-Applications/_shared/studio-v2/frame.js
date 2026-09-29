@@ -1,4 +1,4 @@
-import{bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
+import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel}from'./settings.js';
 import{enhanceStudioWindow}from'./window-system.js';
 
