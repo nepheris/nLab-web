@@ -12,6 +12,7 @@ import{runCapabilitySelfTests}from'../../_shared/studio-v2/capability-tests.js';
 import{DocumentSession}from'../../_shared/studio-v2/document-session.js';
 import{CollectionBrowser}from'../../_shared/studio-v2/collection-browser.js';
 import{mountDropZone}from'../../_shared/studio-v2/drop-zone.js';
+import{loadStudioSettings,saveStudioSettings}from'../../_shared/studio-v2/settings.js';
 
 const VERSION='2.0.2';
 await mountStudioV2({manifest:studioManifest,versionInfo:{version:VERSION,status:'TEST'}});
@@ -69,7 +70,7 @@ async function loadFiles(files){
   loadedFiles=[...files];
   fileBrowser.setItems(loadedFiles.map((file,i)=>({id:'file-'+i+'-'+file.name,label:file.name,subtitle:(file.relativePath||'')+(file.size?' · '+Math.round(file.size/1024)+' Ko':''),data:file})));
   const compatible=loadedFiles.find(x=>/\.(pdf|png|jpe?g|webp|txt|docx|odt)$/i.test(x.name));
-  if(compatible){fileBrowser.activate(fileBrowser.items.find(x=>x.data===compatible)?.id);await load(compatible)}
+  if(compatible){fileBrowser.activeId=fileBrowser.items.find(x=>x.data===compatible)?.id||null;fileBrowser.render();await load(compatible)}
   else setStatus('Aucun fichier compatible');
 }
 async function rotate(delta){if(!engine.pageCount)return;await checkpoint();await engine.rotate(engine.targetPages($('#pageScope').value),delta);await renderAll();setStatus('Rotation '+(delta>0?'+90°':'−90°'));recordHistory({studio:'pdf-studio',type:'action',label:'Rotation '+(delta>0?'+90°':'−90°'),detail:'Portée : '+$('#pageScope').value,target:engine.fileName,action:delta>0?'rotateRight':'rotateLeft',repeatable:true})}
@@ -114,7 +115,9 @@ function activateSidebarTab(tab){
 }
 $$('[data-sidebar-tab]').forEach(b=>b.onclick=()=>activateSidebarTab(b.dataset.sidebarTab));
 $('#sidebar-collapse-all').onclick=()=>$$('#sidebar-pane-tools details').forEach(x=>x.open=false);
-$('#sidebar-expand-all').onclick=()=>$$('#sidebar-pane-tools details').forEach(x=>x.open=true);
+$('#sidebar-expand-all').onclick=()=>$('#sidebar-pane-tools details').forEach(x=>x.open=true);
+$('#sidebarModeQuick').value=loadStudioSettings().sidebarMode||'normal';
+$('#sidebarModeQuick').addEventListener('change',()=>saveStudioSettings({sidebarMode:$('#sidebarModeQuick').value}));
 
 const resizer=$('#sidebarResizer');
 let resizing=false;
