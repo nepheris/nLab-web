@@ -1,0 +1,27 @@
+@import url("../studio-v1/tokens.css");
+*{box-sizing:border-box}html,body{min-height:100%}body{margin:0;background:var(--nlab-bg);color:var(--nlab-ink);font-family:var(--nlab-font-family);padding-bottom:30px}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.btn,button{border:1px solid #B8C6D1;background:#fff;border-radius:7px;padding:7px 9px;color:inherit;text-decoration:none}
+.studioHeader{height:48px;background:#fff;border-bottom:1px solid var(--nlab-line);display:flex;align-items:center;padding:0 12px;gap:10px;position:sticky;top:0;z-index:100}
+.studioBrand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.studioBrand img{width:72px}.studioBrandText strong{display:block;font-size:14px}.studioBrandText small{display:block;color:var(--nlab-muted);font-size:9px}
+.studioHeaderRight{margin-left:auto;display:flex;align-items:center;gap:5px;flex-wrap:wrap}.studioPill{padding:4px 7px;border:1px solid var(--nlab-line);border-radius:999px;font-size:9px;font-weight:800}.studioPill.local{background:#EDF7F1;color:#21633a}.studioPill.test{background:#FFF5E9;color:#9A6700}
+.architectureToggle{display:flex;align-items:center;gap:5px;font-size:9px;padding:4px 7px;border:1px dashed #aab8c4;border-radius:7px;background:#f8fafc}.architectureToggle input{width:auto}
+.studioMenu{height:34px;background:#fff;border-bottom:1px solid var(--nlab-line);display:flex;align-items:end;padding:0 12px;gap:2px;position:sticky;top:48px;z-index:98}.studioMenu button{border:0;background:transparent;padding:7px 10px 6px;border-radius:5px 5px 0 0;font-size:10px;position:relative}.studioMenu button.active{background:#eef6fb;font-weight:800}
+.studioRibbon{min-height:72px;background:#F8FAFC;border-bottom:1px solid var(--nlab-line);display:flex;align-items:stretch;padding:6px 12px;gap:5px;position:sticky;top:82px;z-index:96;overflow-x:auto}.ribbonGroup{display:flex;align-items:center;gap:4px;padding:0 8px;border-right:1px solid #DDE4EA;min-width:max-content;position:relative}.ribbonLabel{align-self:flex-end;font-size:8px;color:#71808C;text-transform:uppercase}.ribbonBtn{min-width:52px;height:56px;border:1px solid transparent;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;position:relative}.ribbonBtn.primary{background:var(--nlab-brand);color:#fff}.scopeIcon{font-size:15px;line-height:1}.scopeBadge{display:none;font-size:7px;font-weight:900;letter-spacing:.04em}
+.devBadge{display:inline-flex;padding:1px 4px;border-radius:999px;background:#FFF0B8;border:1px solid #E1BD43;color:#765600;font-size:7px;font-weight:900}.devFeatureBtn{background:#FFF8E8!important;border-color:#E8C875!important;color:#8A5A00!important}
+.studioRibbonToggle{min-width:34px;width:34px;height:34px;align-self:flex-start;margin-left:auto}.ribbonHidden{display:none!important}
+.ribbonContext{position:sticky;top:154px;z-index:95;background:#f7fafc;border-bottom:1px solid var(--nlab-line);padding:6px 10px}.ribbonContext[hidden]{display:none}.ribbonContextHead{display:flex;align-items:center;gap:6px}.ribbonContextHead strong{font-size:10px}.ribbonContextHead button:first-of-type{margin-left:auto}.ribbonContext.collapsed #ribbonContextBody{display:none}
+.studioMain{display:grid;grid-template-columns:360px minmax(0,1fr);gap:10px;padding:10px}.studioMain.sidebarHidden{grid-template-columns:minmax(0,1fr)}.studioMain.sidebarHidden .studioSidebar{display:none}.studioMain.sidebarCompact{grid-template-columns:68px minmax(0,1fr)}
+.studioSidebar{background:#fff;border:1px solid var(--nlab-line);border-radius:8px;min-width:0}.viewer{min-width:0}.viewerCard{background:#fff;border:1px solid var(--nlab-line);border-radius:8px;padding:8px}
+.studioSidebarRestore{position:fixed;left:4px;top:50%;z-index:160;width:34px;height:44px;padding:0;border-radius:0 8px 8px 0}.studioSidebarRestore[hidden]{display:none}
+.studioStatus{position:fixed;bottom:0;left:0;right:0;height:28px;background:#fff;border-top:1px solid var(--nlab-line);display:flex;align-items:center;padding:0 10px;font-size:9px;color:var(--nlab-muted);z-index:110}.studioStatus .grow{margin-left:auto}.statusDot{width:7px;height:7px;border-radius:50%;background:#25834a;display:inline-block;margin-right:5px}
+body.studioRibbonCollapsed .studioRibbon{height:32px;min-height:32px;padding-top:2px;padding-bottom:2px}body.studioRibbonCollapsed .studioRibbon .ribbonGroup{display:none}.studioRibbonCollapsed .ribbonContext{top:114px}
+
+/* Development-only architecture markers: CORE vs STUDIO */
+.architectureMarkers [data-scope="core"],.architectureMarkers .scope-core{--scope-accent:#1976b8}
+.architectureMarkers [data-scope="studio"],.architectureMarkers .scope-studio{--scope-accent:#7b3fb5}
+.architectureMarkers .scope-core,.architectureMarkers .scope-studio{box-shadow:inset 0 -3px 0 var(--scope-accent)}
+.architectureMarkers .scope-core .scopeIcon,.architectureMarkers .scope-studio .scopeIcon,.architectureMarkers button.scope-core,.architectureMarkers button.scope-studio{color:var(--scope-accent)}
+.architectureMarkers .scopeBadge{display:inline-flex;color:var(--scope-accent)}
+.architectureMarkers .devFeatureBtn{box-shadow:inset 0 -3px 0 var(--scope-accent);background:#FFF8E8!important}
+.architectureMarkers .studioHeader .scope-core{border-bottom:2px solid #1976b8}
+.architectureMarkers .ribbonGroup.scope-core>.ribbonLabel{color:#1976b8}.architectureMarkers .ribbonGroup.scope-studio>.ribbonLabel{color:#7b3fb5}
