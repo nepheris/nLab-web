@@ -9,6 +9,11 @@ await mountStudioV2({manifest:studioManifest,versionInfo:{version:'2.0.1',status
 const $=s=>document.querySelector(s);
 const engine=new PDFEngine();
 let zoom=1;
+let undoStack=[],redoStack=[];
+function syncUndoRedo(){const u=$('#history-undo'),r=$('#history-redo');if(u)u.disabled=!undoStack.length;if(r)r.disabled=!redoStack.length}
+async function checkpoint(){if(!engine.pageCount)return;undoStack.push(await engine.baseBytes());if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo()}
+async function undo(){if(!undoStack.length||!engine.pageCount)return;redoStack.push(await engine.baseBytes());await engine.setBytes(undoStack.pop());await render();syncUndoRedo();setStatus('Modification annulée');recordHistory({studio:'pdf-studio',type:'action',label:'Annulation',target:engine.fileName})}
+async function redo(){if(!redoStack.length||!engine.pageCount)return;undoStack.push(await engine.baseBytes());await engine.setBytes(redoStack.pop());await render();syncUndoRedo();setStatus('Modification rétablie');recordHistory({studio:'pdf-studio',type:'action',label:'Rétablissement',target:engine.fileName})}
 
 function download(bytes,name){
   const blob=new Blob([bytes],{type:'application/pdf'});
@@ -27,17 +32,19 @@ async function load(file){
   setStatus('Chargement…');
   await engine.loadFile(file);
   zoom=1;
+  undoStack=[];redoStack=[];syncUndoRedo();
   await render();
   setStatus('Document chargé');
   recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s)',target:engine.fileName});
 }
 async function rotate(delta){
   if(!engine.pageCount)return;
+  await checkpoint();
   await engine.rotate(engine.targetPages($('#pageScope').value),delta);await render();setStatus('Rotation '+(delta>0?'+90°':'−90°'));
   recordHistory({studio:'pdf-studio',type:'action',label:'Rotation '+(delta>0?'+90°':'−90°'),detail:'Portée : '+$('#pageScope').value,target:engine.fileName,action:delta>0?'rotateRight':'rotateLeft',repeatable:true});
 }
-async function addPage(){if(!engine.pageCount)return;await engine.addBlank(engine.currentPage);await render();setStatus('Page ajoutée');recordHistory({studio:'pdf-studio',type:'action',label:'Page ajoutée',target:engine.fileName,action:'addPage',repeatable:true})}
-async function deletePage(){if(!engine.pageCount)return;await engine.deletePages(engine.targetPages($('#pageScope').value));await render();setStatus('Page(s) supprimée(s)');recordHistory({studio:'pdf-studio',type:'action',label:'Page(s) supprimée(s)',detail:'Portée : '+$('#pageScope').value,target:engine.fileName,action:'deletePage',repeatable:false})}
+async function addPage(){if(!engine.pageCount)return;await checkpoint();await engine.addBlank(engine.currentPage);await render();setStatus('Page ajoutée');recordHistory({studio:'pdf-studio',type:'action',label:'Page ajoutée',target:engine.fileName,action:'addPage',repeatable:true})}
+async function deletePage(){if(!engine.pageCount)return;await checkpoint();await engine.deletePages(engine.targetPages($('#pageScope').value));await render();setStatus('Page(s) supprimée(s)');recordHistory({studio:'pdf-studio',type:'action',label:'Page(s) supprimée(s)',detail:'Portée : '+$('#pageScope').value,target:engine.fileName,action:'deletePage',repeatable:false})}
 async function save(){if(!engine.pageCount)return;download(await engine.baseBytes(),engine.fileName.replace(/\.pdf$/i,'')+'-v2.pdf');setStatus('PDF enregistré');recordHistory({studio:'pdf-studio',type:'action',label:'PDF enregistré',target:engine.fileName,action:'savePdf',repeatable:true})}
 
 $('#pickFile').onclick=()=>$('#fileInput').click();
@@ -50,6 +57,7 @@ $('#zoomOut').onclick=()=>{zoom=Math.max(.3,zoom-.1);render()};
 $('#zoomIn').onclick=()=>{zoom=Math.min(2.5,zoom+.1);render()};
 $('#fitWidth').onclick=()=>{if(!engine.pageCount)return;const stage=$('#canvasStage'),canvas=$('#pageCanvas');const base=canvas.width/zoom;zoom=Math.max(.3,Math.min(2.5,(stage.clientWidth-50)/base));render()};
 $('#rotateLeftSide').onclick=()=>rotate(-90);$('#rotateRightSide').onclick=()=>rotate(90);$('#addPageSide').onclick=addPage;$('#deletePageSide').onclick=deletePage;$('#savePdfSide').onclick=save;
+$('#history-undo').onclick=undo;$('#history-redo').onclick=redo;
 
 function showHelp(action){
   const feature=findFeature(studioManifest,action)||{
