@@ -1,0 +1,23 @@
+{
+  "schema": "nlab-demo-corpus/v3",
+  "updated": "2026-09-29",
+  "sourceReference": "Google Drive corpus supplied by HUMAN-00",
+  "policy": "Public gallery keeps synthetic/test files only; personal-looking or third-party manuals are excluded from automatic publication.",
+  "manifests": "./manifests/index.json",
+  "localCategories": [
+    "MD",
+    "JSON",
+    "Code",
+    "QR-Barcode"
+  ],
+  "referenceOnlyCategories": [
+    "PDF",
+    "OCR",
+    "Images",
+    "Data",
+    "File",
+    "Office",
+    "Compare",
+    "Zip"
+  ]
+}
