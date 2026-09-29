@@ -1,0 +1,86 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "code-studio+json-studio",
+  "label": "Code + JSON Studios",
+  "source": "Google Drive reference 2026-09-29",
+  "files": [
+    {
+      "name": "demo-config.yaml",
+      "path": "../files/demo-input/Code/demo-config.yaml",
+      "storage": "local",
+      "kind": "code"
+    },
+    {
+      "name": "demo-markdown.md",
+      "path": "../files/demo-input/Code/demo-markdown.md",
+      "storage": "local",
+      "kind": "code"
+    },
+    {
+      "name": "demo-record.xml",
+      "path": "../files/demo-input/Code/demo-record.xml",
+      "storage": "local",
+      "kind": "code"
+    },
+    {
+      "name": "demo-script.js",
+      "path": "../files/demo-input/Code/demo-script.js",
+      "storage": "local",
+      "kind": "code"
+    },
+    {
+      "name": "demo-structure.json",
+      "path": "../files/demo-input/Code/demo-structure.json",
+      "storage": "local",
+      "kind": "code"
+    },
+    {
+      "name": "recettes_categories.json",
+      "path": "../files/demo-input/JSON/recettes_categories.json",
+      "storage": "local",
+      "kind": "json"
+    },
+    {
+      "name": "recettes.json",
+      "path": "../files/demo-input/JSON/recettes.json",
+      "storage": "local",
+      "kind": "json"
+    },
+    {
+      "name": "relations_contenus.json",
+      "path": "../files/demo-input/JSON/relations_contenus.json",
+      "storage": "local",
+      "kind": "json"
+    },
+    {
+      "name": "saisonnalite.json",
+      "path": "../files/demo-input/JSON/saisonnalite.json",
+      "storage": "local",
+      "kind": "json"
+    },
+    {
+      "name": "ciqual_taxonomie_correspondances.json",
+      "path": "../files/demo-input/JSON/ciqual_taxonomie_correspondances.json",
+      "storage": "local",
+      "kind": "json"
+    },
+    {
+      "name": "allergenes.json",
+      "path": "../files/demo-input/JSON/allergenes.json",
+      "storage": "local",
+      "kind": "json"
+    },
+    {
+      "name": "astuces_categories.json",
+      "path": "../files/demo-input/JSON/astuces_categories.json",
+      "storage": "local",
+      "kind": "json"
+    },
+    {
+      "name": "ciqual_import_config.json",
+      "path": "../files/demo-input/JSON/ciqual_import_config.json",
+      "storage": "local",
+      "kind": "json"
+    }
+  ]
+}
