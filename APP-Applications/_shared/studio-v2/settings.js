@@ -1,9 +1,10 @@
-import{qs}from'./core.js';
+import{qs,qsa,setRibbonGroupVisible,applyRibbonGroups}from'./core.js';
 
 const KEY='nlab-studio-v2-settings';
 const DEFAULTS={
   theme:'system',
   architectureMarkers:true,
+  showUiIds:true,
   showDevelopment:true,
   showScopeBadges:true,
   showDevBadges:true,
@@ -35,6 +36,7 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   const b=document.body;
   b.dataset.theme=settings.theme;
   b.classList.toggle('architectureMarkers',!!settings.architectureMarkers);
+  b.classList.toggle('showUiIds',!!settings.showUiIds);
   b.classList.toggle('hideDevelopment',!settings.showDevelopment);
   b.classList.toggle('hideScopeBadges',!settings.showScopeBadges);
   b.classList.toggle('hideDevBadges',!settings.showDevBadges);
@@ -50,7 +52,7 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.classList.toggle('headerShadow',!!settings.headerShadow);
   b.classList.toggle('headerBlur',!!settings.headerBlur);
   b.dataset.headerMode=settings.headerMode||'sticky';
-  const main=qs('#studioMain');if(main){main.classList.toggle('sidebarCompact',settings.sidebarMode==='compact');main.classList.toggle('sidebarHidden',settings.sidebarMode==='hidden')}
+  const main=qs('#studioMain');if(main){main.classList.toggle('sidebarCompact',settings.sidebarMode==='compact');main.classList.toggle('sidebarWide',settings.sidebarMode==='wide');main.classList.toggle('sidebarHidden',settings.sidebarMode==='hidden')}
   return settings;
 }
 export function renderStudioSettingsPanel(host){
@@ -94,6 +96,7 @@ export function renderStudioSettingsPanel(host){
     <section>
       <h3>Mode développement</h3>
       <label class="checkboxField"><input type="checkbox" data-setting="architectureMarkers"><span>Repères architecture CORE / STUDIO</span></label>
+      <label class="checkboxField"><input type="checkbox" data-setting="showUiIds"><span>Afficher les IDs UI dans les repères</span></label>
       <label class="checkboxField"><input type="checkbox" data-setting="showDevelopment"><span>Afficher les fonctions DÉVELOPPEMENT</span></label>
       <label class="checkboxField"><input type="checkbox" data-setting="showScopeBadges"><span>Afficher les badges CORE / STUDIO</span></label>
       <label class="checkboxField"><input type="checkbox" data-setting="showDevBadges"><span>Afficher les badges DEV</span></label>
@@ -144,6 +147,7 @@ export function renderStudioSettingsPanel(host){
         <select data-setting="sidebarMode">
           <option value="normal">Normal</option>
           <option value="compact">Compact</option>
+          <option value="wide">Large</option>
           <option value="hidden">Masqué</option>
         </select>
       </label>
@@ -151,6 +155,7 @@ export function renderStudioSettingsPanel(host){
       <label class="checkboxField"><input type="checkbox" data-setting="floatingWindows"><span>Fenêtres flottantes / ancrables</span></label>
       <button data-core-pref="expand-ribbon">Déplier le ruban</button>
       <button data-core-pref="collapse-ribbon">Replier le ruban</button>
+      <div id="ribbon-group-settings"></div>
       <button data-core-pref="reset-ui">Réinitialiser l'interface</button>
     </section>
   </div>`;
@@ -159,8 +164,14 @@ export function renderStudioSettingsPanel(host){
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
   const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';
-  for(const k of ['architectureMarkers','showDevelopment','showScopeBadges','showDevBadges','floatingWindows','headerVisible','headerShadow','headerBlur']){
+  for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','floatingWindows','headerVisible','headerShadow','headerBlur']){
     host.querySelector('[data-setting="'+k+'"]').checked=!!s[k];
+  }
+  const ribbonHost=host.querySelector('#ribbon-group-settings');
+  if(ribbonHost){
+    const groups=qsa('[data-ribbon-group]').map(g=>({id:g.dataset.ribbonGroup,label:g.querySelector('.ribbonLabel')?.textContent?.trim()||g.dataset.ribbonGroup}));
+    ribbonHost.innerHTML='<h4>Groupes du ruban</h4>'+groups.map(g=>'<label class="checkboxField"><input type="checkbox" data-ribbon-setting="'+g.id+'" '+(localStorage.getItem('nlab-studio-v2-ribbon-'+g.id)==='0'?'':'checked')+'><span>'+g.label+'</span></label>').join('');
+    ribbonHost.querySelectorAll('[data-ribbon-setting]').forEach(el=>el.addEventListener('change',()=>{setRibbonGroupVisible(el.dataset.ribbonSetting,el.checked);applyRibbonGroups()}));
   }
   host.querySelectorAll('[data-setting]').forEach(el=>{
     const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth','historyLimit'].includes(k))v=Number(v);saveStudioSettings({[k]:v});if(k==='historyGroupBy'){try{localStorage.setItem('nlab-studio-v2-history-filter',JSON.stringify({...JSON.parse(localStorage.getItem('nlab-studio-v2-history-filter')||'{}'),groupBy:v}))}catch{}}document.dispatchEvent(new CustomEvent('studio-v2:history-changed'));const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %'};
