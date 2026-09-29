@@ -312,3 +312,56 @@ A 1.0 feature is accepted only when:
 7. portable package builds;
 8. release ZIP is published to site and Drive;
 9. only then 1.0 may replace the 0.9.x TEST entry.
+
+
+## 23. Cross-Studio convergence — review 2026-09-29
+
+### Shared UX / Studio Shell
+- [x] Shared contextual-help service exists.
+- [x] Shared previous/next file navigation exists.
+- [x] Shared queue sorting exists.
+- [x] PDF V1 exposes Selected files / Previous / Next in the ribbon.
+- [ ] Migrate OCR Studio to Studio V1 shell.
+- [ ] Migrate Code Studio to Studio V1 shell.
+- [ ] Migrate Image Studio to Studio V1 shell.
+
+### OCR Studio capabilities to converge into PDF
+- [ ] Dynamic preview refresh on input change.
+- [ ] Image/PDF-aware preview.
+- [ ] Preview zoom +/-/fit.
+- [ ] Editable OCR text post-processing.
+- [ ] OCR editor undo/redo/reset.
+- [ ] Context help for OCR engine/language/output.
+- [ ] Shared local OCR service integration retained.
+
+### Code Studio capabilities to converge into PDF
+- [ ] Consume shared Code Engine.
+- [ ] QR / Data Matrix / Aztec / PDF417 / 1D formats.
+- [ ] Foreground/background color pickers + hexadecimal fields.
+- [ ] Output scale/size.
+- [ ] Advanced QR module/dot styling when supported.
+- [ ] Center logo/image when supported and scan-safe.
+- [ ] PNG/SVG.
+- [ ] Decode/read workflow.
+- [ ] Context help for formats and parameters.
+
+### Image Studio capabilities to converge into PDF
+- [ ] Quick ±90 degree rotation.
+- [ ] Free rotation -360..+360.
+- [ ] Horizontal/vertical mirror.
+- [ ] Graphical crop.
+- [ ] Source/result zoom.
+- [ ] DPI/quality/format processing through shared Image Engine.
+- [ ] Visible movable watermark: text/image/SVG/logo + opacity/size/rotation/margin.
+- [ ] Simple invisible local mark encode/read/verify; not a web tracker.
+- [ ] EXIF/metadata inspect/edit/delete/import/export.
+
+### Common object manipulation
+- [ ] Stamps move/resize/rotate.
+- [ ] Text move/resize where applicable.
+- [ ] Highlight move/resize.
+- [ ] Image move/resize/rotate/crop.
+- [ ] Signature move/resize/rotate.
+- [ ] QR/barcode move/resize/rotate.
+- [ ] Object operations recorded in shared history.
+
