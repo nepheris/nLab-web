@@ -1,0 +1,58 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "data-studio",
+  "label": "Data Studio",
+  "source": "Google Drive reference 2026-09-29",
+  "files": [
+    {
+      "name": "dataset-validation-complet.csv",
+      "storage": "reference-only",
+      "kind": "csv"
+    },
+    {
+      "name": "dataset-validation-complet.json",
+      "storage": "reference-only",
+      "kind": "json"
+    },
+    {
+      "name": "dataset-validation-complet.xlsx",
+      "storage": "reference-only",
+      "kind": "xlsx"
+    },
+    {
+      "name": "ISOAlphaCrossTab.csv",
+      "storage": "reference-only",
+      "kind": "csv"
+    },
+    {
+      "name": "ISOAlphaFAO.csv",
+      "storage": "reference-only",
+      "kind": "csv"
+    },
+    {
+      "name": "ISOAlpaCode.csv",
+      "storage": "reference-only",
+      "kind": "csv"
+    },
+    {
+      "name": "population.csv",
+      "storage": "reference-only",
+      "kind": "csv"
+    },
+    {
+      "name": "sous_nutrition.csv",
+      "storage": "reference-only",
+      "kind": "csv"
+    },
+    {
+      "name": "aide_alimentaire.csv",
+      "storage": "reference-only",
+      "kind": "csv"
+    },
+    {
+      "name": "CodePaysMonde.csv",
+      "storage": "reference-only",
+      "kind": "csv"
+    }
+  ]
+}
