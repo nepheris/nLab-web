@@ -30,7 +30,7 @@ let DATA=null,active='Tous';const grid=document.getElementById('grid'),q=documen
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function fileHref(c){return './files/'+String(c.path||'').split('/').map(encodeURIComponent).join('/')}
 function render(){const needle=q.value.trim().toLowerCase();const cards=(DATA?.cards||[]).filter(c=>(active==='Tous'||c.kind===active)&&(!needle||[c.title,c.kind,c.description,c.path].join(' ').toLowerCase().includes(needle)));
-grid.innerHTML=cards.length?cards.map(c=>{const href=fileHref(c);return `<article class="card"><a class="preview" href="${href}" target="_blank" rel="noopener" title="Ouvrir le fichier de démonstration"><img src="${esc(c.preview)}" alt="Aperçu ${esc(c.title)}" loading="lazy"></a><div class="body"><span class="kind">${esc(c.kind)}</span><h2>${esc(c.title)}</h2><p>${esc(c.description)}</p><div class="path">${esc(c.path)}</div><div class="fileActions"><a class="primary" href="${href}" target="_blank" rel="noopener">Ouvrir / aperçu</a><a href="${href}" download>Télécharger</a></div></div></article>`}).join(''):'<div class="empty">Aucun fichier ne correspond au filtre.</div>'}
+grid.innerHTML=cards.length?cards.map(c=>{const href=fileHref(c);return `<article class="card"><a class="preview" href="${href}" target="_blank" rel="noopener" title="Ouvrir le fichier de démonstration">${c.preview?'<img src="'+esc(c.preview)+'" alt="Aperçu '+esc(c.title)+'" loading="lazy">':'<div><b>'+esc(c.kind)+'</b><br><span style="font-size:11px;color:#607181">Aperçu texte / téléchargement</span></div>'}</a><div class="body"><span class="kind">${esc(c.kind)}</span><h2>${esc(c.title)}</h2><p>${esc(c.description)}</p><div class="path">${esc(c.path)}</div><div class="fileActions"><a class="primary" href="${href}" target="_blank" rel="noopener">Ouvrir / aperçu</a><a href="${href}" download>Télécharger</a></div></div></article>`}).join(''):'<div class="empty">Aucun fichier ne correspond au filtre.</div>'}
 fetch('./demo-catalog-v2.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('catalogue '+r.status);return r.json()}).then(d=>{DATA=d;const ks=['Tous',...new Set((d.cards||[]).map(c=>c.kind))];filters.innerHTML=ks.map(k=>`<button data-k="${esc(k)}" class="${k==='Tous'?'active':''}">${esc(k)}</button>`).join('');filters.onclick=e=>{const b=e.target.closest('button');if(!b)return;active=b.dataset.k;filters.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));render()};q.oninput=render;render()}).catch(e=>grid.innerHTML='<div class="empty">Erreur galerie : '+esc(e.message)+'</div>');
 
 async function techPreview(f){
@@ -43,7 +43,7 @@ async function techPreview(f){
   }catch{return '<pre>Preview indisponible</pre>'}
 }
 fetch('./demo-gallery-v3.json',{cache:'no-store'}).then(r=>r.json()).then(async d=>{
-  const subset=(d.files||[]).filter(f=>['Images','QR-Barcode','JSON','Code','Data','OCR'].includes(f.category)).slice(0,36);
+  const subset=(d.files||[]).filter(f=>['Images','QR-Barcode','JSON','Code','Data','OCR','MD'].includes(f.category)).slice(0,48);
   techgrid.innerHTML='';
   for(const f of subset){
     const c=document.createElement('article');c.className='card';
@@ -53,6 +53,6 @@ fetch('./demo-gallery-v3.json',{cache:'no-store'}).then(r=>r.json()).then(async 
 }).catch(e=>techgrid.innerHTML='<div class="empty">Galerie technique indisponible : '+esc(e.message)+'</div>');
 
 fetch('./manifests/index.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
-  packs.innerHTML=(d.studios||[]).map(x=>'<div class="pack"><b>'+esc(x.label)+'</b><div class="path">'+x.fileCount+' fichier(s)</div><div class="actions"><a class="btn" href="'+x.manifest+'">Manifest</a><a class="btn" href="'+x.pack+'">ZIP</a></div></div>').join('');
+  packs.innerHTML=(d.studios||[]).map(x=>'<div class="pack"><b>'+esc(x.label)+'</b><div class="path">'+x.fileCount+' fichier(s)</div><div class="actions"><a class="btn" href="'+x.manifest+'">Manifest</a>'+(x.pack?'<a class="btn" href="'+x.pack+'">ZIP</a>':'<span class="badge">ZIP à générer</span>')+'</div></div>').join('');
 }).catch(e=>packs.innerHTML='<div class="empty">Packs indisponibles : '+esc(e.message)+'</div>');
 </script></body></html>
