@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studios-catalog/v1",
-  "updated": "2026-09-22",
+  "updated": "2026-09-29",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
     {
@@ -58,6 +58,13 @@
       "status": "alpha-poc",
       "path": "../file-studio/",
       "demo": "../../Library/demo/manifests/file.json"
+    },
+    {
+      "id": "markdown-studio",
+      "name": "Markdown Studio",
+      "status": "test-1.0.0",
+      "path": "../markdown-studio/",
+      "purpose": "Éditeur Markdown transversal V1 : source, aperçu HTML, sommaire, YAML/front matter et exports."
     }
   ],
   "future": [
@@ -70,6 +77,12 @@
         "Library/demo/generate_studio_demo.py"
       ],
       "purpose": "Generate reproducible synthetic datasets, images, QR/Data Matrix and multi-format demo packs."
+    },
+    {
+      "id": "translation-studio",
+      "name": "Translation Studio",
+      "status": "candidate",
+      "purpose": "Studio spécialisé de traduction multilingue réutilisé par PDF, OCR, Markdown et autres Studios."
     }
   ]
 }
