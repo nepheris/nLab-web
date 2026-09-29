@@ -17,29 +17,33 @@ export class StudioPageViewer{
     if(!this.engine.pageCount)return;
     const cols=this.pagesPerRow,scale=this.pagesPerRow>1?this.fitScale(this.mainHost,cols):this.zoom;
     this.mainHost.style.setProperty('--viewer-columns',String(cols));
+    const pending=[];
     for(let page=1;page<=this.engine.pageCount;page++){
-      if(token!==this.renderToken)return;
       const wrap=document.createElement('button');wrap.type='button';wrap.className='pageTile'+(page===this.engine.currentPage?' active':'');wrap.dataset.page=page;
-      const canvas=document.createElement('canvas'),label=document.createElement('span');label.className='pageTileLabel';label.textContent='Page '+page;wrap.append(canvas,label);this.mainHost.append(wrap);
-      await this.engine.renderPage(canvas,page,scale);
-      wrap.onclick=()=>{this.engine.selectPage(page);this.onActivate(page);this.refreshActive()};
+      const canvas=document.createElement('canvas'),label=document.createElement('span');canvas.dataset.renderPage=page;canvas.dataset.renderScale=scale;label.className='pageTileLabel';label.textContent='Page '+page;wrap.append(canvas,label);this.mainHost.append(wrap);
+      wrap.onclick=()=>{this.engine.selectPage(page);this.onActivate(page);this.refreshActive()};pending.push(canvas);
     }
+    const renderCanvas=async canvas=>{if(token!==this.renderToken||canvas.dataset.rendered)return;canvas.dataset.rendered='1';await this.engine.renderPage(canvas,Number(canvas.dataset.renderPage),Number(canvas.dataset.renderScale))};
+    if('IntersectionObserver'in window){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){renderCanvas(e.target);io.unobserve(e.target)}}),{root:this.mainHost.parentElement,rootMargin:'800px'});pending.forEach(c=>io.observe(c))}
+    else for(const canvas of pending)await renderCanvas(canvas);
   }
   async renderPreview(){
     if(!this.previewHost)return;
     this.previewHost.innerHTML='';if(!this.engine.pageCount)return;
     this.previewHost.style.setProperty('--preview-columns',String(this.previewColumns));
+    const pending=[];
     for(let page=1;page<=this.engine.pageCount;page++){
       const item=document.createElement('div');item.className='previewTile';item.dataset.page=page;
       const head=document.createElement('label');head.className='previewSelect';const cb=document.createElement('input');cb.type='checkbox';cb.checked=this.engine.selected.has(page);cb.dataset.previewSelect=page;head.append(cb,document.createTextNode(' '+page));
       const canvas=document.createElement('canvas');canvas.className='previewCanvas';canvas.draggable=true;canvas.dataset.page=page;
-      item.append(head,canvas);this.previewHost.append(item);
-      await this.engine.renderThumb(canvas,page,this.previewScale);
+      item.append(head,canvas);this.previewHost.append(item);pending.push(canvas);
       cb.onchange=()=>{this.engine.toggleSelected(page,cb.checked);this.onSelection([...this.engine.selected])};
       canvas.onclick=()=>{this.engine.selectPage(page);this.onActivate(page);this.refreshActive()};
     }
-    this.bindReorder();
-    this.refreshActive();
+    const renderCanvas=async canvas=>{if(canvas.dataset.rendered)return;canvas.dataset.rendered='1';await this.engine.renderThumb(canvas,Number(canvas.dataset.page),this.previewScale)};
+    if('IntersectionObserver'in window){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){renderCanvas(e.target);io.unobserve(e.target)}}),{root:this.previewHost,rootMargin:'400px'});pending.forEach(c=>io.observe(c))}
+    else for(const canvas of pending)await renderCanvas(canvas);
+    this.bindReorder();this.refreshActive();
   }
   bindReorder(){
     let from=null;
