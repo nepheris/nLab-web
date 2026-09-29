@@ -232,3 +232,15 @@ body.studioRibbonCollapsed .ribbonContext{
   .studioGlobalNav a{display:none!important}
   .studioNavAction{padding:6px 8px;font-size:10px}
 }
+
+/* header mode offset corrections */
+[data-header-mode="fixed"] #nlabStudioV2Chrome{padding-top:var(--studio-header-h)}
+[data-header-mode="static"] .studioMenu{top:0}
+[data-header-mode="static"] .studioRibbon{top:var(--studio-menu-h)}
+[data-header-mode="static"] .ribbonContext{top:calc(var(--studio-menu-h) + var(--studio-ribbon-h))}
+[data-header-mode="static"].studioRibbonCollapsed .ribbonContext{top:calc(var(--studio-menu-h) + 32px)}
+.headerHidden .studioMenu{top:0}
+.headerHidden .studioRibbon{top:var(--studio-menu-h)}
+.headerHidden .ribbonContext{top:calc(var(--studio-menu-h) + var(--studio-ribbon-h))}
+.headerHidden.studioRibbonCollapsed .ribbonContext{top:calc(var(--studio-menu-h) + 32px)}
+.headerHidden[data-header-mode="fixed"] #nlabStudioV2Chrome{padding-top:0}
