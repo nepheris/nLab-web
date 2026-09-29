@@ -1,0 +1,72 @@
+{
+  "schema": "nlab-demo-gallery/v3",
+  "updated": "2026-09-29",
+  "files": [
+    {
+      "category": "MD",
+      "path": "MD/rec-aub-001-caviar-d-aubergine-classique.md",
+      "href": "./files/demo-input/MD/rec-aub-001-caviar-d-aubergine-classique.md",
+      "preview": "text"
+    },
+    {
+      "category": "MD",
+      "path": "MD/rec-aub-002-baba-ganoush.md",
+      "href": "./files/demo-input/MD/rec-aub-002-baba-ganoush.md",
+      "preview": "text"
+    },
+    {
+      "category": "JSON",
+      "path": "JSON/recettes_categories.json",
+      "href": "./files/demo-input/JSON/recettes_categories.json",
+      "preview": "text"
+    },
+    {
+      "category": "JSON",
+      "path": "JSON/recettes.json",
+      "href": "./files/demo-input/JSON/recettes.json",
+      "preview": "text"
+    },
+    {
+      "category": "JSON",
+      "path": "JSON/allergenes.json",
+      "href": "./files/demo-input/JSON/allergenes.json",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-config.yaml",
+      "href": "./files/demo-input/Code/demo-config.yaml",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-markdown.md",
+      "href": "./files/demo-input/Code/demo-markdown.md",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-record.xml",
+      "href": "./files/demo-input/Code/demo-record.xml",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-script.js",
+      "href": "./files/demo-input/Code/demo-script.js",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-structure.json",
+      "href": "./files/demo-input/Code/demo-structure.json",
+      "preview": "text"
+    },
+    {
+      "category": "QR-Barcode",
+      "path": "QR-Barcode/payloads.json",
+      "href": "./files/demo-input/QR-Barcode/payloads.json",
+      "preview": "text"
+    }
+  ]
+}
