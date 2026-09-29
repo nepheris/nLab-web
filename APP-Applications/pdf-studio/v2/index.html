@@ -15,6 +15,7 @@
     <button id="sidebar-tab-properties" data-sidebar-tab="properties">Propriétés</button>
     <button id="sidebar-tab-help" data-sidebar-tab="help">Aide</button>
     <button id="sidebar-tab-history" data-sidebar-tab="history">Historique</button>
+    <button id="sidebar-tab-tasks" data-sidebar-tab="tasks">Tâches</button>
   </div>
   <div class="sidebarGlobalControls">
     <button id="sidebar-collapse-all" type="button">▸ Tout plier</button>
@@ -29,6 +30,8 @@
       <div id="inputDropZone" class="inputDropZone" tabindex="0"><strong>Glisser-déposer</strong><span>Fichier(s) ou dossier compatible</span></div>
       <input id="fileInput" type="file" multiple accept=".pdf,application/pdf,image/*,.txt,.docx,.odt" hidden>
       <input id="folderInput" type="file" webkitdirectory multiple hidden>
+      <div class="collectionToolbar"><label>Vue <select id="fileCollectionView"><option value="list">Liste</option><option value="grid">Grille</option><option value="thumbs">Vignettes</option></select></label><button id="fileSelectAll" type="button">Tout sélectionner</button><button id="fileSelectNone" type="button">Aucun</button></div>
+      <div id="fileCollection" class="collectionBrowser"></div>
       <div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
     </div></details>
 
@@ -74,6 +77,12 @@
     <div class="historyQuickHead"><strong>Fichiers récents</strong><span>accès rapide</span></div>
     <div id="recent-items-list" class="recentItemsList"></div>
     <button id="history-view-all" type="button" class="historyViewAll">Voir tout l’historique →</button>
+  </section>
+
+  <section id="sidebar-pane-tasks" class="sidebarPane" data-sidebar-pane="tasks" hidden>
+    <div class="paneTitle">Tâches & pipelines</div>
+    <div class="statusBox">Les workflows enregistrés et les pipelines de traitement utilisent le PipelineService commun.</div>
+    <button id="sidebar-open-workflows" type="button">Ouvrir les workflows</button>
   </section>
 </aside>
 
