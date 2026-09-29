@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.0.0",
+  "test": "2.0.1",
   "versions": [
+    {
+      "version": "2.0.1",
+      "label": "PDF Studio 2.0.1 TEST",
+      "date": "2026-09-29",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe Studio Core V2 de micro-gestion : historique rapide configurable à 5/10/15/20 éléments, historique complet commun aux Studios, recherche, filtres et regroupement date/Studio/type, favoris/épinglage, préférences persistantes, IDs stables, journalisation des fichiers et actions PDF, et possibilité de rejouer les actions sûres. Les éléments plus anciens restent accessibles au-delà de la limite d’affichage rapide."
+    },
     {
       "version": "2.0.0",
       "label": "PDF Studio 2.0.0 TEST",
       "date": "2026-09-29",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Nouvelle architecture Studio Core V2 unique + plugin PDF. Header, menus, ruban, paramètres, thèmes, fenêtres, repères CORE/STUDIO/DEV et layout proviennent du Core partagé. PDF V2 réutilise le moteur PDF existant via un adapter. Première base opérationnelle : ouverture locale, aperçu, navigation, zoom, rotation, ajout/suppression de pages et enregistrement. Les fonctions non encore migrées sont marquées DÉVELOPPEMENT."
     },
