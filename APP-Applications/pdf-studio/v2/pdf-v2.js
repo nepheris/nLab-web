@@ -10,6 +10,8 @@ import{detectFileCapabilities}from'../../_shared/studio-v2/file-capabilities.js'
 import{registerPipelineHandler,runPipeline}from'../../_shared/studio-v2/pipeline-service.js';
 import{runCapabilitySelfTests}from'../../_shared/studio-v2/capability-tests.js';
 import{DocumentSession}from'../../_shared/studio-v2/document-session.js';
+import{CollectionBrowser}from'../../_shared/studio-v2/collection-browser.js';
+import{mountDropZone}from'../../_shared/studio-v2/drop-zone.js';
 
 const VERSION='2.0.2';
 await mountStudioV2({manifest:studioManifest,versionInfo:{version:VERSION,status:'TEST'}});
@@ -18,6 +20,12 @@ const $$=s=>[...document.querySelectorAll(s)];
 const engine=new PDFEngine();
 const session=new DocumentSession();
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null;
+const fileBrowser=new CollectionBrowser({host:$('#fileCollection'),view:'list',key:'pdf-files'});
+fileBrowser.addEventListener('activate',e=>{const file=e.detail?.data;if(file)load(file)});
+$('#fileCollectionView').value=fileBrowser.view;
+$('#fileCollectionView').addEventListener('change',()=>fileBrowser.setView($('#fileCollectionView').value));
+$('#fileSelectAll').onclick=()=>fileBrowser.selectAll();
+$('#fileSelectNone').onclick=()=>fileBrowser.clearSelection();
 
 const viewer=new StudioPageViewer({
   engine,
@@ -57,7 +65,13 @@ async function load(file){
     recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s)',target:engine.fileName});
   }catch(e){setStatus('Erreur : '+e.message)}
 }
-async function loadFiles(files){loadedFiles=[...files];const compatible=loadedFiles.find(x=>/\.(pdf|png|jpe?g|webp|txt|docx|odt)$/i.test(x.name));if(compatible)await load(compatible);else setStatus('Aucun fichier compatible')}
+async function loadFiles(files){
+  loadedFiles=[...files];
+  fileBrowser.setItems(loadedFiles.map((file,i)=>({id:'file-'+i+'-'+file.name,label:file.name,subtitle:(file.relativePath||'')+(file.size?' · '+Math.round(file.size/1024)+' Ko':''),data:file})));
+  const compatible=loadedFiles.find(x=>/\.(pdf|png|jpe?g|webp|txt|docx|odt)$/i.test(x.name));
+  if(compatible){fileBrowser.activate(fileBrowser.items.find(x=>x.data===compatible)?.id);await load(compatible)}
+  else setStatus('Aucun fichier compatible');
+}
 async function rotate(delta){if(!engine.pageCount)return;await checkpoint();await engine.rotate(engine.targetPages($('#pageScope').value),delta);await renderAll();setStatus('Rotation '+(delta>0?'+90°':'−90°'));recordHistory({studio:'pdf-studio',type:'action',label:'Rotation '+(delta>0?'+90°':'−90°'),detail:'Portée : '+$('#pageScope').value,target:engine.fileName,action:delta>0?'rotateRight':'rotateLeft',repeatable:true})}
 async function addPage(){if(!engine.pageCount)return;await checkpoint();await engine.addBlank(engine.pageCount);await renderAll();setStatus('Page ajoutée en fin de document');recordHistory({studio:'pdf-studio',type:'action',label:'Page ajoutée',target:engine.fileName,action:'addPage',repeatable:true})}
 async function deletePages(){if(!engine.pageCount)return;const pages=engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();try{await engine.deletePages(pages);await renderAll();setStatus('Page(s) supprimée(s)')}catch(e){setStatus(e.message)}}
@@ -69,20 +83,7 @@ $('#fileInput').onchange=e=>loadFiles(e.target.files||[]);
 $('#pickFolder').onclick=()=>$('#folderInput').click();
 $('#folderInput').onchange=e=>loadFiles(e.target.files||[]);
 
-async function readEntry(entry,path=''){
-  if(entry.isFile)return new Promise(res=>entry.file(f=>{Object.defineProperty(f,'relativePath',{value:path+f.name});res([f])},()=>res([])));
-  if(entry.isDirectory){const reader=entry.createReader(),all=[];while(true){const batch=await new Promise(res=>reader.readEntries(res,()=>res([])));if(!batch.length)break;for(const child of batch)all.push(...await readEntry(child,path+entry.name+'/'))}return all}
-  return[];
-}
-const dz=$('#inputDropZone');
-for(const ev of ['dragenter','dragover'])dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('dragover')});
-for(const ev of ['dragleave','drop'])dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('dragover')});
-dz.addEventListener('drop',async e=>{
-  const items=[...(e.dataTransfer?.items||[])],files=[];
-  for(const item of items){const entry=item.webkitGetAsEntry?.();if(entry)files.push(...await readEntry(entry));else{const f=item.getAsFile?.();if(f)files.push(f)}}
-  if(!files.length)files.push(...[...(e.dataTransfer?.files||[])]);
-  await loadFiles(files);
-});
+mountDropZone($('#inputDropZone'),{onFiles:loadFiles});
 
 $('#firstPage').onclick=()=>{if(engine.pageCount){engine.selectPage(1);syncViewerMeta()}};
 $('#prevPage').onclick=()=>{if(engine.currentPage>1){engine.selectPage(engine.currentPage-1);syncViewerMeta()}};
@@ -105,6 +106,7 @@ $('#rotateLeftSide').onclick=()=>rotate(-90);$('#rotateRightSide').onclick=()=>r
 $('#history-undo').onclick=undo;$('#history-redo').onclick=redo;
 $('#history-view-all-inline').onclick=()=>$('#history-view-all')?.click();
 $('[data-open-core-settings]').onclick=()=>$('#studioCoreSettings')?.click();
+$('#sidebar-open-workflows').onclick=()=>document.dispatchEvent(new Event('studio-v2:open-workflows'));
 
 function activateSidebarTab(tab){
   $$('[data-sidebar-tab]').forEach(x=>x.classList.toggle('active',x.dataset.sidebarTab===tab));
