@@ -48,3 +48,31 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:var(--nl
 .fileQueue.withFileThumbs .fileRow{grid-template-columns:22px 54px minmax(0,1fr) auto;min-height:58px}.fileThumb{display:none;width:48px;height:48px;border:1px solid #D7E0E7;border-radius:5px;background:#fff;overflow:hidden;place-items:center;color:#7A8894;font-size:18px;cursor:pointer}.withFileThumbs .fileThumb{display:grid}.fileThumb img{width:100%;height:100%;object-fit:contain;display:block}.comparePreview{width:100%;max-height:180px;object-fit:contain;background:#F7F9FB;border:1px solid #D8E0E7;border-radius:6px;margin-top:5px}.snapshotRow{grid-template-columns:minmax(0,1fr) auto auto!important}.snapshotRow.current{background:#EDF7F1}
 
 .devFeature{padding:6px;border:1px solid #E8C875;border-radius:7px;background:#FFF8E8}.devFeature button{background:#FFF8E8;border-color:#E8C875;color:#8A5A00}.compactSelect{width:auto!important;min-width:118px;max-width:170px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.sourceRow{display:grid;grid-template-columns:minmax(118px,170px) minmax(118px,170px) auto;align-items:center}.studioMain.sidebarCompact .sourceRow{display:none}.studioMain.sidebarCompact .field>span:after{content:" …";color:var(--nlab-muted)}.pageDeleteMini{position:absolute;right:4px;top:4px;width:22px;height:22px;padding:0!important;border-radius:50%!important;background:#FFF0F0!important;border:1px solid #D9534F!important;color:#B42318!important;font-size:12px!important;display:grid!important;place-items:center!important;z-index:6}.pageDeleteMini:hover{background:#FDE3E2!important;border-color:#B42318!important}
+
+/* Studio Core V1.1 — shared chrome states */
+.studioHeaderControl{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;border-radius:7px}
+.studioHeaderControl svg,.studioChromeToggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.studioRibbonToggle{position:sticky;right:4px;align-self:flex-start;z-index:3;min-width:30px;width:30px;height:30px;padding:5px;margin-left:auto;background:#fff;border:1px solid #cbd6de;border-radius:7px;display:grid;place-items:center}
+body.studioRibbonCollapsed .studioRibbon{min-height:34px;height:34px;padding-top:2px;padding-bottom:2px;overflow:hidden}
+body.studioRibbonCollapsed .studioRibbon .ribbonGroup{display:none}
+body.studioRibbonCollapsed .studioRibbon .studioRibbonToggle{display:grid}
+body.studioRibbonCollapsed .studioMenuPanel{top:calc(var(--studio-header-h) + var(--studio-menu-h) + 34px)}
+body.studioRibbonCollapsed .studioSidebar{top:calc(var(--studio-header-h) + var(--studio-menu-h) + 42px);height:calc(100vh - var(--studio-header-h) - var(--studio-menu-h) - 34px - var(--studio-status-h) - 16px)}
+.ribbonContext.collapsed{padding:4px 10px}
+.ribbonContext.collapsed #ribbonContextBody{display:none!important}
+.ribbonContext.collapsed .ribbonContextHead{margin-bottom:0}
+.contextToggle{margin-left:auto!important}
+.ribbonContextHead .contextToggle + button{margin-left:0!important}
+.studioMain.sidebarHidden{grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+.studioMain.sidebarHidden .studioSidebar{display:none!important}
+#sidebarRestore.studioSidebarRestore{position:fixed;left:6px;top:50%;z-index:160;width:34px;height:44px;padding:0;display:grid;place-items:center;border-radius:0 9px 9px 0;box-shadow:0 5px 16px #0002;background:#fff}
+#sidebarRestore.studioSidebarRestore[hidden]{display:none!important}
+.studioMain.sidebarCompact .studioSidebar{overflow:hidden}
+.studioMain.sidebarCompact .sidebarTop{display:grid;grid-template-columns:1fr;padding:5px}
+.studioMain.sidebarCompact .sidebarTop button{font-size:0;min-height:30px;padding:4px}
+.studioMain.sidebarCompact .sidebarTop button::first-letter{font-size:12px}
+.studioMain.sidebarCompact .sidebarSection{margin:5px}
+.studioMain.sidebarCompact .sidebarSection>summary{padding:8px 3px}
+.studioMain.sidebarCompact .sidebarSection>summary:before{display:none}
+.inlineActionIcon{display:inline-flex;vertical-align:-3px;margin-right:4px}
+.inlineActionIcon svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
