@@ -1,4 +1,4 @@
-import{qs,qsa}from'./core.js';
+import{qs,qsa,bindStudioChrome}from'./core.js';
 
 export class StudioShell{
   constructor(manifest={}){
@@ -18,6 +18,7 @@ export class StudioShell{
     this.renderRibbon();
     this.renderSidebar();
     this.applyDevelopmentStates();
+    bindStudioChrome();
     return this;
   }
   applyIdentity(){
