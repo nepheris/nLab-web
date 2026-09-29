@@ -2,19 +2,34 @@
 (async()=>{
   const grid=document.getElementById('studioGrid');
   const icons={'pdf-studio':'📄','image-studio':'🖼','ocr-studio':'🔎','code-studio':'</>','json-studio':'{ }','data-studio':'▦','qr-barcode-studio':'▣','file-studio':'📁','markdown-studio':'📝','translation-studio':'🌐'};
-  const desc={'pdf-studio':'PDF, pages, annotations, OCR, classement, batch et sorties.','image-studio':'Rotation, miroir, resize, export et traitement image.','ocr-studio':'Reconnaissance OCR, extraction et reconstruction documentaire.','code-studio':'Éditeur multi-langages, chargement et sauvegarde locale.','json-studio':'Formatage, validation, tri, navigation et export.','data-studio':'CSV/JSON, aperçu tabulaire, profil de colonnes et export.','qr-barcode-studio':'QR, EAN/Code128/Data Matrix/GS1 et lecteur HID.','file-studio':'Renommage par lot, préfixe/suffixe, regex, date et compteur.','markdown-studio':'Éditeur Markdown transversal : source, aperçu HTML, sommaire, YAML/front matter et exports.'};
   const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const resolve=(base,href)=>{try{return new URL(href,base).href}catch{return href}};
   try{
     const r=await fetch('./catalog.json',{cache:'no-store'}); if(!r.ok)throw new Error('catalog '+r.status);
     const data=await r.json();
     const cards=await Promise.all((data.studios||[]).map(async s=>{
-      let current='—',test='—';
+      let current=null,test=null,registry=null,registryUrl=s.version_registry||('../'+s.id+'/versions.json');
       try{
-        const vr=await fetch(s.version_registry||('../'+s.id+'/versions.json'),{cache:'no-store'});
-        if(vr.ok){const v=await vr.json(); current=v.current||'—'; test=v.test||'—'}
+        const vr=await fetch(registryUrl,{cache:'no-store'});
+        if(vr.ok){
+          registry=await vr.json();
+          const by=new Map((registry.versions||[]).map(v=>[String(v.version),v]));
+          current=registry.current?by.get(String(registry.current)):null;
+          test=registry.test?by.get(String(registry.test)):null;
+        }
       }catch{}
-      const icon=icons[s.id]||'◫',purpose=s.purpose||desc[s.id]||'Studio nLab.';
-      return '<article class="card"><div class="eyebrow">'+esc(String(s.status||'').replace(/-/g,' ').toUpperCase())+'</div><h2>'+esc(icon)+' '+esc(s.name)+'</h2><p class="muted">'+esc(purpose)+'</p><div class="badges"><span class="badge local">CURRENT '+esc(current)+'</span><span class="badge alpha">TEST '+esc(test)+'</span></div><div class="actions"><a class="btn primary" href="'+esc(s.path)+'">Ouvrir</a><a class="btn" href="'+esc(s.versions_path||('../'+s.id+'/versions.html'))+'">Versions</a></div></article>';
+      const studioBase=new URL(s.path,location.href).href;
+      const currentHref=current?resolve(studioBase,current.href||'./'):null;
+      const testHref=test?resolve(studioBase,test.href||'./'):null;
+      const versionsHref=resolve(location.href,s.versions_path||('../'+s.id+'/versions.html'));
+      const icon=icons[s.id]||'◫';
+      const currentBtn=current
+        ? '<a class="btn primary" href="'+esc(currentHref)+'">CURRENT '+esc(current.version)+'</a>'
+        : '<span class="btn" aria-disabled="true" style="opacity:.55;pointer-events:none">CURRENT —</span>';
+      const testBtn=test
+        ? '<a class="btn" style="background:#fff7d6;border-color:#e1bd43;color:#765600" href="'+esc(testHref)+'">TEST '+esc(test.version)+'</a>'
+        : '<span class="btn" aria-disabled="true" style="opacity:.55;pointer-events:none">TEST —</span>';
+      return '<article class="card"><div class="eyebrow">'+esc(String(s.status||'').replace(/-/g,' ').toUpperCase())+'</div><h2>'+esc(icon)+' '+esc(s.name)+'</h2><p class="muted">'+esc(s.purpose||'Studio nLab.')+'</p><div class="actions">'+currentBtn+testBtn+'<a class="btn" href="'+esc(versionsHref)+'">Toutes les versions</a></div></article>';
     }));
     grid.innerHTML=cards.join('');
   }catch(e){
