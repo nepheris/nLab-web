@@ -1,5 +1,5 @@
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
-import{applyStudioSettings,renderStudioSettingsPanel}from'./settings.js';
+import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings}from'./settings.js';
 import{enhanceStudioWindow}from'./window-system.js';
 import{mountHistoryUI,recordHistory}from'./history.js';
 import{icon}from'./icon-registry.js';
@@ -17,7 +17,8 @@ function itemButton(it){
   const plugin=it.plugin||((scope==='core')?'studio-core':scope+'-studio');
   const status=it.status||'stable';
   const capability=it.capability||'';
-  return '<button'+(it.id?' id="'+esc(it.id)+'"':'')+
+  const domId=it.id||('studio-action-'+String(it.action||featureId).replace(/[^a-z0-9_-]+/gi,'-').toLowerCase());
+  return '<button id="'+esc(domId)+'" data-ui-id="'+esc(featureId)+'"'+
     ' class="ribbonBtn scope-'+visualScope+(it.primary?' primary':'')+(dev?' devFeatureBtn':'')+'"'+
     ' data-scope="'+scope+'" data-plugin="'+esc(plugin)+'" data-feature-id="'+esc(featureId)+'" data-feature-status="'+esc(status)+'" data-capability="'+esc(capability)+'" data-studio-action="'+esc(it.action||it.id||'')+'" title="'+esc(it.title||it.label||'')+'">'+
     '<span class="scopeIcon">'+icon(it.icon||'command')+'</span><span>'+esc(it.label||'')+'</span>'+
@@ -88,10 +89,16 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   mountWorkflowUI();
   bindStudioChrome();
   applyRibbonGroups();
+  qsa('[id]').forEach(el=>{if(!el.dataset.uiId)el.dataset.uiId=(manifest.id+'-'+el.id).replace(/[^a-z0-9_-]+/gi,'-').toLowerCase()});
+  qsa('[data-studio-action]:not([id])').forEach(el=>{const a=String(el.dataset.studioAction||'action').replace(/[^a-z0-9_-]+/gi,'-').toLowerCase();el.id=(manifest.id+'-action-'+a);el.dataset.uiId=el.id});
   qsa('details[id]').forEach(d=>{
     const key='nlab-studio-v2-panel-'+manifest.id+'-'+d.id;
     const saved=localStorage.getItem(key);if(saved!==null)d.open=saved==='1';
-    d.addEventListener('toggle',()=>localStorage.setItem(key,d.open?'1':'0'));
+    d.addEventListener('toggle',()=>{
+      localStorage.setItem(key,d.open?'1':'0');
+      const main=qs('#studioMain');
+      if(d.open&&main?.classList.contains('sidebarCompact'))saveStudioSettings({sidebarMode:'normal'});
+    });
   });
   const settingsPanel=qs('#studioCoreSettingsPanel');
   if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core V2'});
