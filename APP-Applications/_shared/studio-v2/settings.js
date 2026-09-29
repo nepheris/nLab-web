@@ -131,6 +131,8 @@ export function renderStudioSettingsPanel(host){
       <label class="field"><span>Conservation</span>
         <select id="history-retention-mode" data-setting="historyRetention">
           <option value="keep">Conserver l’historique</option>
+          <option value="30d">Conserver 30 jours</option>
+          <option value="90d">Conserver 90 jours</option>
           <option value="manual">Nettoyage manuel</option>
         </select>
       </label>
