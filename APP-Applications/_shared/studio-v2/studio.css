@@ -54,3 +54,12 @@ body{font-family:var(--studio-font-family,system-ui,Arial,sans-serif);font-size:
 .studioFloatingWindowsDisabled .studioWindow{resize:none!important}.studioFloatingWindowsDisabled .studioWindowGrip,.studioFloatingWindowsDisabled [data-win-lock],.studioFloatingWindowsDisabled [data-win-dock]{display:none!important}
 .settingsScaleValue{font-size:9px;color:var(--nlab-muted);margin-top:-5px}
 .themeDark .studioWindowBar{background:#252c33;border-color:#39434c}
+
+/* framework-derived header behavior */
+.headerHidden .studioHeader{display:none!important}
+[data-header-mode="static"] .studioHeader{position:relative;top:auto}
+[data-header-mode="fixed"] .studioHeader{position:fixed;top:0;left:0;right:0}
+[data-header-mode="fixed"] .studioMenu{top:48px}
+.headerShadow .studioHeader{box-shadow:0 5px 18px #00000014}
+.headerBlur .studioHeader{background:#ffffffeb;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.themeDark.headerBlur .studioHeader{background:#20262ceb}
