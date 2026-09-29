@@ -1,0 +1,12 @@
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+export class CollectionBrowser extends EventTarget{
+  constructor({host,view='list',key='collection'}={}){super();this.host=host;this.key=key;this.items=[];this.selected=new Set();this.activeId=null;this.view=localStorage.getItem('nlab-studio-v2-'+key+'-view')||view}
+  setItems(items=[]){this.items=items.map((x,i)=>({id:x.id||('item-'+i),label:x.label||x.name||('Élément '+(i+1)),subtitle:x.subtitle||x.type||'',thumb:x.thumb||'',data:x.data??x}));this.selected=new Set([...this.selected].filter(id=>this.items.some(x=>x.id===id)));this.render();return this}
+  setView(view){this.view=['list','grid','thumbs'].includes(view)?view:'list';localStorage.setItem('nlab-studio-v2-'+this.key+'-view',this.view);this.render()}
+  select(id,on=true){on?this.selected.add(id):this.selected.delete(id);this.dispatchEvent(new CustomEvent('selection',{detail:this.selectedItems()}));this.render()}
+  selectAll(){this.selected=new Set(this.items.map(x=>x.id));this.dispatchEvent(new CustomEvent('selection',{detail:this.selectedItems()}));this.render()}
+  clearSelection(){this.selected.clear();this.dispatchEvent(new CustomEvent('selection',{detail:[]}));this.render()}
+  selectedItems(){return this.items.filter(x=>this.selected.has(x.id))}
+  activate(id){this.activeId=id;const item=this.items.find(x=>x.id===id)||null;this.dispatchEvent(new CustomEvent('activate',{detail:item}));this.render()}
+  render(){if(!this.host)return;this.host.className='collectionBrowser collection-'+this.view;this.host.innerHTML=this.items.length?this.items.map(x=>'<article class="collectionItem '+(x.id===this.activeId?'active':'')+'" data-collection-id="'+esc(x.id)+'"><label><input type="checkbox" data-collection-select="'+esc(x.id)+'" '+(this.selected.has(x.id)?'checked':'')+'></label>'+(x.thumb?'<img src="'+esc(x.thumb)+'" alt="">':'<span class="collectionThumbPlaceholder"></span>')+'<button type="button" data-collection-open="'+esc(x.id)+'"><strong>'+esc(x.label)+'</strong><small>'+esc(x.subtitle)+'</small></button></article>').join(''):'<div class="collectionEmpty">Aucun élément.</div>';this.host.querySelectorAll('[data-collection-select]').forEach(cb=>cb.onchange=()=>this.select(cb.dataset.collectionSelect,cb.checked));this.host.querySelectorAll('[data-collection-open]').forEach(b=>b.onclick=()=>this.activate(b.dataset.collectionOpen))}
+}
