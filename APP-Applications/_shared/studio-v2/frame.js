@@ -1,7 +1,11 @@
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
-import{applyStudioSettings,renderStudioSettingsPanel}from'./settings.js';
+import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings}from'./settings.js';
 import{enhanceStudioWindow}from'./window-system.js';
 import{mountHistoryUI,recordHistory}from'./history.js';
+import{icon}from'./icon-registry.js';
+import{registerCapabilities}from'./capability-registry.js';
+import{mountCommandPalette}from'./command-palette.js';
+import{mountWorkflowUI}from'./workflow-ui.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
@@ -13,13 +17,14 @@ function itemButton(it){
   const plugin=it.plugin||((scope==='core')?'studio-core':scope+'-studio');
   const status=it.status||'stable';
   const capability=it.capability||'';
-  return '<button'+(it.id?' id="'+esc(it.id)+'"':'')+
+  const domId=it.id||('studio-action-'+String(it.action||featureId).replace(/[^a-z0-9_-]+/gi,'-').toLowerCase());
+  return '<button id="'+esc(domId)+'" data-ui-id="'+esc(featureId)+'"'+
     ' class="ribbonBtn scope-'+visualScope+(it.primary?' primary':'')+(dev?' devFeatureBtn':'')+'"'+
     ' data-scope="'+scope+'" data-plugin="'+esc(plugin)+'" data-feature-id="'+esc(featureId)+'" data-feature-status="'+esc(status)+'" data-capability="'+esc(capability)+'" data-studio-action="'+esc(it.action||it.id||'')+'" title="'+esc(it.title||it.label||'')+'">'+
-    '<span class="scopeIcon">'+(it.icon||'•')+'</span><span>'+esc(it.label||'')+'</span>'+
+    '<span class="scopeIcon">'+icon(it.icon||'command')+'</span><span>'+esc(it.label||'')+'</span>'+
     '<small class="scopeBadge">'+scope.toUpperCase()+'</small>'+(dev?'<small class="devBadge">DEV</small>':'')+'</button>';
 }
-export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',status:'TEST'},root=document.body}={}){
+export async function mountStudioV2({manifest,versionInfo={version:'',status:'TEST'},root=document.body}={}){
   if(!manifest)throw new Error('Manifest Studio V2 requis');
   root.querySelector('#nlabStudioV2Chrome')?.remove();
 
@@ -33,7 +38,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
     </a>
     <div class="studioBrand">
       <b>${esc(manifest.name)}</b>
-      <small>${esc(manifest.subtitle||'nLab Studio')} · v${esc(versionInfo.version)}</small>
+      <small>${esc(manifest.subtitle||'nLab Studio')}${versionInfo.version?' · v'+esc(versionInfo.version):''}</small>
       <span class="studioHeaderMeta">
         <span class="studioPill local">● local-first</span>
         <span class="studioPill test">${esc(versionInfo.status||'TEST')}</span>
@@ -45,7 +50,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
       <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Library/demo/')}">Démos</a>
       <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Info/')}">Info</a>
       <a class="scope-core" data-scope="core" href="https://github.com/nepheris/nLab-web">GitHub</a>
-      <button id="studioCoreSettings" class="studioNavAction scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
+      <button id="studioCommandOpen" class="studioNavAction scope-core" data-scope="core" title="Rechercher une commande (Ctrl+K)">⌕ Commandes</button><button id="studioWorkflowOpen" class="studioNavAction scope-core" data-scope="core" title="Workflows enregistrés">Workflows</button><button id="studioCoreSettings" class="studioNavAction scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
       <a class="studioNavAction scope-core" data-scope="core" href="${esc(manifest.versionsHref||'./versions.html')}">Versions</a>
     </nav>
   </div>
@@ -62,7 +67,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   <div id="ribbonContextBody"></div>
 </div>
 <div id="studioCoreSettingsPanel" class="coreSettingsPanel scope-core" data-scope="core" hidden>
- <div class="coreSettingsHead"><strong>Paramètres Studio Core V2</strong><button id="studioCoreSettingsClose">×</button></div>
+ <div class="coreSettingsHead"><strong>Paramètres Studio Core</strong><button id="studioCoreSettingsClose">×</button></div>
  <div id="studioCoreSettingsBody"></div>
 </div>`;
   root.prepend(chrome);
@@ -72,22 +77,36 @@ export async function mountStudioV2({manifest,versionInfo={version:'2.0.0',statu
   }
   if(!qs('.studioStatus[data-core-owned]')){
     const s=document.createElement('div');s.className='studioStatus scope-core';s.dataset.coreOwned='1';s.dataset.scope='core';
-    s.innerHTML='<span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span class="grow">'+esc(manifest.name)+' · Studio Core V2</span>';root.append(s);
+    s.innerHTML='<span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span class="grow">'+esc(manifest.name)+' · Studio Core</span>';root.append(s);
   }
 
+  document.body.dataset.studio=manifest.id||'studio';
+  document.body.dataset.studioVersion=versionInfo.version||'';
+  registerCapabilities(manifest);
   applyStudioSettings();
   mountHistoryUI();
+  mountCommandPalette();
+  mountWorkflowUI();
   bindStudioChrome();
   applyRibbonGroups();
+  qsa('[id]').forEach(el=>{if(!el.dataset.uiId)el.dataset.uiId=(manifest.id+'-'+el.id).replace(/[^a-z0-9_-]+/gi,'-').toLowerCase()});
+  qsa('[data-studio-action]:not([id])').forEach(el=>{const a=String(el.dataset.studioAction||'action').replace(/[^a-z0-9_-]+/gi,'-').toLowerCase();el.id=(manifest.id+'-action-'+a);el.dataset.uiId=el.id});
+  qsa('[data-icon]').forEach(el=>{if(!el.querySelector('.studioIcon'))el.insertAdjacentHTML('afterbegin',icon(el.dataset.icon||'command'))});
   qsa('details[id]').forEach(d=>{
     const key='nlab-studio-v2-panel-'+manifest.id+'-'+d.id;
     const saved=localStorage.getItem(key);if(saved!==null)d.open=saved==='1';
-    d.addEventListener('toggle',()=>localStorage.setItem(key,d.open?'1':'0'));
+    d.addEventListener('toggle',()=>{
+      localStorage.setItem(key,d.open?'1':'0');
+      const main=qs('#studioMain');
+      if(d.open&&main?.classList.contains('sidebarCompact'))saveStudioSettings({sidebarMode:'normal'});
+    });
   });
   const settingsPanel=qs('#studioCoreSettingsPanel');
-  if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core V2'});
+  if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core'});
   qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;settingsPanel.hidden=!settingsPanel.hidden;if(!settingsPanel.hidden){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));settingsPanel.style.zIndex='230'}});
   qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)settingsPanel.hidden=true});
+  qs('#studioCommandOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-command-palette')));
+  qs('#studioWorkflowOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-workflows')));
 
   const ribbon=qs('.studioRibbon');
   ribbon?.addEventListener('click',e=>{
