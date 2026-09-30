@@ -120,6 +120,7 @@ const viewer=new StudioPageViewer({
 });
 objectLayer=new PdfObjectLayer({engine,mainHost:$('#mainPageGrid'),templates});
 objectLayer.addEventListener('error',e=>setStatus(e.detail?.error?.message||'Erreur objet PDF'));
+objectLayer.addEventListener('select',e=>{const o=e.detail?.object;if($('#selectedObjectInfo'))$('#selectedObjectInfo').textContent=o?(o.type+' · '+o.id):'Aucun';if(o&&$('#objectRotation'))$('#objectRotation').value=Number(o.rotation)||0});
 engine.addEventListener('annotations',()=>objectLayer?.render());
 
 async function exportBytesWithObjects(){return objectLayer?.hasObjects()?objectLayer.exportBytes():engine.baseBytes()}
@@ -166,11 +167,19 @@ $('#stampPresetSelect')?.addEventListener('change',async()=>{const item=listPers
 $('#saveStampPreset')?.addEventListener('click',()=>{const label=$('#stampPresetLabel').value.trim();if(!label){setStatus('Donnez un nom au modèle de tampon.');return}const current=$('#stampPresetSelect').value,id=current&&current.startsWith('user-stamp-')?current:'user-stamp-'+Date.now();savePersonalTemplate('stamps',{id,label,category:'Personnalisés',template:$('#stampTemplate').value||'',imageAssetId:$('#stampImageAsset').value||'',system:false});renderStampPresets();$('#stampPresetSelect').value=id;$('#stampPresetLabel').value='';setStatus('Modèle de tampon enregistré dans le profil.')});
 $('#deleteStampPreset')?.addEventListener('click',()=>{const id=$('#stampPresetSelect').value;if(!id.startsWith('user-stamp-')){setStatus('Seuls les tampons personnels peuvent être supprimés.');return}removePersonalTemplate('stamps',id);renderStampPresets();setStatus('Tampon personnel supprimé.')});
 $('#activateStampTool')?.addEventListener('click',async()=>{try{syncStampDates();objectLayer.setStamp({template:$('#stampTemplate').value||'',imageData:await stampImageData()});openToolSection('#sectionAnnotations');activateObjectTool('stamp')}catch(e){setStatus(e.message)}});
+$('#applyStampScope')?.addEventListener('click',async()=>{try{
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');syncStampDates();objectLayer.setStamp({template:$('#stampTemplate').value||'',imageData:await stampImageData()});
+ const pages=toolPages('stampScope'),pos=$('#stampPosition').value;const xy={ 'top-left':[6,7],'top-right':[65,7],'bottom-left':[6,82],'bottom-right':[65,82],center:[35,45]}[pos]||[65,82];
+ for(const p of pages)objectLayer.addAt(p,xy[0],xy[1],'stamp');objectLayer.setTool('select');objectLayer.render();setStatus('Tampon ajouté sur '+pages.length+' page(s).')
+}catch(e){setStatus(e.message)}});
 $('[data-object-tool]').forEach(b=>b.addEventListener('click',()=>activateObjectTool(b.dataset.objectTool)));
 for(const id of ['objectText','objectColor','objectFontSize','objectOpacity','objectPenWidth'])$('#'+id)?.addEventListener('input',()=>{objectLayer.setText($('#objectText').value);objectLayer.setStyle({color:$('#objectColor').value,fontSize:Number($('#objectFontSize').value)||12,opacity:(Number($('#objectOpacity').value)||100)/100,penWidth:Number($('#objectPenWidth').value)||2})});
 $('#pickObjectImage')?.addEventListener('click',()=>$('#objectImageInput').click());
 $('#objectImageInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{await objectLayer.setImageBlob(file,'image');$('#objectImageName').textContent=file.name;activateObjectTool('image')}catch(err){setStatus(err.message)}});
 $('#objectImageAsset')?.addEventListener('change',async()=>{const id=$('#objectImageAsset').value;if(!id)return;try{const a=await getPersonalAsset(id);if(!a?.blob)throw new Error('Image personnelle indisponible.');await objectLayer.setImageBlob(a.blob,'image');$('#objectImageName').textContent=a.meta?.label||a.name;activateObjectTool('image')}catch(e){setStatus(e.message)}});
+$('#rotateObjectLeft')?.addEventListener('click',()=>{const o=objectLayer.rotateSelected(-90);if(o){$('#objectRotation').value=o.rotation;setStatus('Objet tourné de −90°')}});$('#rotateObjectRight')?.addEventListener('click',()=>{const o=objectLayer.rotateSelected(90);if(o){$('#objectRotation').value=o.rotation;setStatus('Objet tourné de +90°')}});
+$('#applyObjectRotation')?.addEventListener('click',()=>{const o=objectLayer.setSelectedRotation($('#objectRotation').value);if(o)setStatus('Rotation objet : '+o.rotation+'°');else setStatus('Aucun objet sélectionné.')});
+$('#lockSelectedObject')?.addEventListener('click',()=>{const o=objectLayer.toggleLock();if(o)setStatus(o.locked?'Objet verrouillé.':'Objet déverrouillé.');else setStatus('Aucun objet sélectionné.')});
 $('#deleteSelectedObject')?.addEventListener('click',()=>{if(objectLayer.deleteSelected()){objectLayer.render();setStatus('Objet supprimé.')}else setStatus('Aucun objet sélectionné.')});
 $('#commitObjects')?.addEventListener('click',async()=>{try{if(await commitObjectsIfNeeded()){markPdfModifiedAfterSignature();await renderAll();setStatus('Objets intégrés au PDF.')}else setStatus('Aucun objet à intégrer.')}catch(e){setStatus(e.message)}});
 $('#markRedaction')?.addEventListener('click',()=>{openToolSection('#sectionAnnotations');activateObjectTool('redaction')});
