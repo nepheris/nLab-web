@@ -8,6 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 </head><body>
 <main id="studioMain" class="studioMain">
 <aside id="studioSidebar" class="studioSidebar pdfV2Sidebar scope-core" data-scope="core">
@@ -139,9 +140,19 @@
     <pre id="signatureCryptoStatus" class="signatureCryptoStatus">Service DSS non testé.</pre>
    </div>
   </div></details>
-  <details id="sectionCodes" class="toolSection scope-studio" data-scope="pdf"><summary>11. QR & code-barres <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">QR/Data Matrix/Aztec/PDF417/1D via Code Studio.</div></details>
+  <details id="sectionCodes" class="toolSection scope-studio" data-scope="pdf"><summary>11. QR & code-barres <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+ <label>Contenu QR<input id="qrValue" placeholder="Texte, URL ou {VARIABLE}"></label>
+ <div class="grid2"><label>Position<select id="qrPosition"><option value="bottom-right">Bas droite</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-left">Haut gauche</option></select></label><label>Largeur %<input id="qrWidthPct" type="number" min="4" max="40" value="12"></label></div>
+ <label>Portée<select id="qrScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
+ <div id="qrPreview" class="signatureAssetPreview"><span>Aperçu QR</span></div>
+ <div class="compactInputRow"><button id="generateQrPreview" type="button">Aperçu</button><button id="applyQrQuick" type="button" data-icon="qr">Placer dans le PDF</button><button type="button" data-advanced-studio="code-studio">Code Studio</button></div>
+</div></details>
   <details id="sectionPageOutput" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête · pied · recadrage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Templates gauche/centre/droite, PAGE/PAGES, QR et recadrage.</div></details>
-  <details id="sectionConversion" class="toolSection scope-studio" data-scope="pdf"><summary>13. Conversions <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Conversions rapides et passage vers Conversion Studio pour la haute fidélité.</div></details>
+  <details id="sectionConversion" class="toolSection scope-studio" data-scope="pdf"><summary>13. Conversions <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+ <label>Conversion rapide<select id="quickConversion"><option value="txt">PDF → texte</option><option value="png">PDF → PNG</option><option value="jpg">PDF → JPEG</option></select></label>
+ <label>Portée<select id="convertScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
+ <div class="compactInputRow"><button id="runQuickConversion" type="button" data-icon="convert">Convertir</button><button type="button" data-advanced-studio="conversion-studio">Conversion Studio</button></div>
+</div></details>
   <details id="sectionForms" class="toolSection scope-studio" data-scope="pdf"><summary>14. Formulaires PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Inspection, ajout, remplissage et aplatissement.</div></details>
   <details id="sectionRedaction" class="toolSection scope-studio" data-scope="pdf"><summary>15. Caviardage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Marquage, application irréversible et contrôle de texte résiduel.</div></details>
   <details id="sectionCompare" class="toolSection scope-studio" data-scope="pdf"><summary>16. Comparaison PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Comparaison visuelle, pixel et texte.</div></details>
