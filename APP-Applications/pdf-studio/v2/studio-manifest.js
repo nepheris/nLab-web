@@ -29,7 +29,7 @@ export default {
    {id:'addPage',featureId:'pdf.pages.add',action:'addPage',label:'Ajouter',icon:'addPage',scope:'pdf',plugin:'pdf-studio',status:'stable',capability:'pdf.pages.add'},
    {featureId:'pdf.pages.duplicate',action:'duplicatePage',label:'Dupliquer',icon:'duplicate',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.pages.duplicate'},
    {id:'deletePage',featureId:'pdf.pages.delete',action:'deletePage',label:'Supprimer',icon:'delete',scope:'pdf',plugin:'pdf-studio',status:'stable',capability:'pdf.pages.delete'},
-   {featureId:'pdf.pages.extract',action:'extractPages',label:'Extraire',icon:'extract',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.pages.extract'},
+   {featureId:'pdf.pages.extract',action:'extractPages',label:'Extraire',icon:'extract',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.pages.extract',help:{summary:'Extraire les pages sélectionnées dans un nouveau PDF.',details:'Si aucune page n’est cochée, la page active est extraite. Le document source reste inchangé.'}},
    {featureId:'pdf.pages.assemble',action:'assemblePdf',label:'Assembler',icon:'merge',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.pages.assemble',help:{summary:'Fusionner plusieurs PDF ou insérer un PDF dans le document courant.',details:'Utilise les PDF sélectionnés dans la collection ou un fichier PDF externe. L’ordre de fusion peut être ajusté avant assemblage.'}}
   ]},
   {id:'objects',label:'Annotations',scope:'pdf',items:[
