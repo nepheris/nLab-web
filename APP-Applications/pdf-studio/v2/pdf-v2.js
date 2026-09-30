@@ -371,7 +371,7 @@ async function runQuickConversion(){
  const blob=await advancedTools.allImagesZip({type:type==='jpg'?'jpg':'png',scale:2,quality:.9,pages});await saveOutputBlob(blob,stem+'_'+type+'.zip',{parts:[]});setStatus('Images '+type.toUpperCase()+' exportées en ZIP.')
 }
 async function protectCurrentPdf(){
- if(!engine.pageCount)throw new Error('Chargez un PDF.');const bytes=await exportBytesWithObjects(),user=$('#pdfOpenPassword').value||'',owner=$('#pdfOwnerPassword').value||'';
+ if(!engine.pageCount)throw new Error('Chargez un PDF.');if(advancedTools.signatureStructure().hasSignature||cryptoSignatureState)throw new Error('Le PDF est déjà signé : le chiffrement modifierait les octets signés. Protégez le document avant de le signer.');const bytes=await exportBytesWithObjects(),user=$('#pdfOpenPassword').value||'',owner=$('#pdfOwnerPassword').value||'';
  $('#pdfSecurityStatus').textContent='Chargement de qpdf WASM et chiffrement AES-256…';
  const protectedBytes=await securityService.protect(bytes,{userPassword:user,ownerPassword:owner,print:$('#pdfPermissionPrint').value,modify:$('#pdfPermissionModify').value,extract:$('#pdfPermissionExtract').checked});
  const name=(engine.fileName||'document.pdf').replace(/\.pdf$/i,'')+'_protege.pdf';await saveOutputBlob(new Blob([protectedBytes],{type:'application/pdf'}),name,{parts:[]});
