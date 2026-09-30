@@ -2,37 +2,17 @@
   "schema": "nlab-demo-manifest/v1",
   "studio": "image-studio",
   "label": "Image Studio",
-  "source": "Google Drive reference 2026-09-29",
+  "source": "Google Drive reference + synthetic local fixtures 2026-09-30",
   "files": [
-    {
-      "name": "calibration-regles-300x150.json",
-      "storage": "reference-only",
-      "kind": "json"
-    },
-    {
-      "name": "calibration-regles-300x150.png",
-      "storage": "reference-only",
-      "kind": "image"
-    },
-    {
-      "name": "demo-image-anime.gif",
-      "storage": "reference-only",
-      "kind": "image"
-    },
-    {
-      "name": "demo-image-color.jpg",
-      "storage": "reference-only",
-      "kind": "image"
-    },
-    {
-      "name": "demo-image-color.png",
-      "storage": "reference-only",
-      "kind": "image"
-    },
-    {
-      "name": "demo-image-color.webp",
-      "storage": "reference-only",
-      "kind": "image"
-    }
+    {"name":"calibration-regles-300x150.json","storage":"reference-only","kind":"json"},
+    {"name":"calibration-regles-300x150.png","storage":"reference-only","kind":"image"},
+    {"name":"demo-image-anime.gif","storage":"reference-only","kind":"image"},
+    {"name":"demo-image-color.jpg","storage":"reference-only","kind":"image"},
+    {"name":"demo-image-color.png","storage":"reference-only","kind":"image"},
+    {"name":"demo-image-color.webp","storage":"reference-only","kind":"image"},
+    {"name":"demo-document-illustration.png","path":"../files/demo-input/Images/demo-document-illustration.png","storage":"local","kind":"png"},
+    {"name":"demo-format-bmp.bmp","path":"../files/demo-input/Images/demo-format-bmp.bmp","storage":"local","kind":"bmp"},
+    {"name":"demo-format-tiff.tiff","path":"../files/demo-input/Images/demo-format-tiff.tiff","storage":"local","kind":"tiff"},
+    {"name":"demo-format-svg.svg","path":"../files/demo-input/Images/demo-format-svg.svg","storage":"local","kind":"svg"}
   ]
 }
