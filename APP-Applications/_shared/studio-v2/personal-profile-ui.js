@@ -39,7 +39,7 @@ export function mountPersonalProfileUI(host){
   host.querySelector('[data-profile-import]').onclick=()=>importInput.click();
   importInput.onchange=async()=>{const file=importInput.files?.[0];if(!file)return;try{status(host,'Analyse du profil…');const x=await inspectPersonalProfileZip(file),s=x.summary;preview.hidden=false;preview.innerHTML='<strong>Profil détecté</strong><div class="profileImportStats"><span>'+esc(s.displayName||s.initials||'Profil nLab')+'</span><span>'+s.variables+' variables</span><span>'+s.namingTemplates+' modèles nommage</span><span>'+s.classificationTemplates+' modèles classement</span><span>'+s.stampTemplates+' tampons</span><span>'+s.assets+' fichiers personnels</span></div><div class="profileActions"><button type="button" data-import-replace>Remplacer mon profil</button><button type="button" data-import-merge>Fusionner</button><button type="button" data-import-cancel>Annuler</button></div>';
     preview.querySelector('[data-import-cancel]').onclick=()=>{preview.hidden=true;importInput.value='';status(host,'Import annulé.')};
-    const go=async mode=>{try{status(host,'Import du profil…');await importPersonalProfileZip(file,{mode});status(host,'Profil importé. Les variables et préférences sont actives.','ok');await render()}catch(e){status(host,e.message||String(e),'error')}};
+    const go=async mode=>{try{status(host,'Import du profil…');await importPersonalProfileZip(file,{mode});await render();status(host,'Profil importé. Les variables et préférences sont actives.','ok')}catch(e){status(host,e.message||String(e),'error')}};
     preview.querySelector('[data-import-replace]').onclick=()=>go('replace');preview.querySelector('[data-import-merge]').onclick=()=>go('merge');status(host,'Profil vérifié. Choisir Fusionner ou Remplacer.','ok')
    }catch(e){preview.hidden=true;status(host,e.message||String(e),'error')}};
 
@@ -50,6 +50,6 @@ export function mountPersonalProfileUI(host){
    clear.onclick=async()=>{const p2=loadPersonalProfile(),ref=kind==='signature'?p2.assets?.signature:p2.assets?.initialsImage;if(ref?.assetId)await deletePersonalAsset(ref.assetId);if(kind==='signature')p2.assets.signature=null;else p2.assets.initialsImage=null;savePersonalProfile(p2);status(host,'Asset retiré.','ok');await render()}
   }
  };
- render();document.addEventListener('nlab:personal-profile-changed',()=>{});
+ render();
  return{refresh:render}
 }
