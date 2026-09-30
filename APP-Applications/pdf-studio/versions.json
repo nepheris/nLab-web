@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.0.2",
+  "test": "2.1.0",
   "versions": [
+    {
+      "version": "2.1.0",
+      "label": "PDF Studio 2.1.0 TEST",
+      "date": "2026-09-30",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Nouvelle base de convergence UX/Core : navigateur de fichiers avec miniatures légères, tri/groupement/navigation, registre multi-format, aperçu rapide PDF/images/texte/Markdown/CSV/DOCX/ODT/XLSX selon moteur disponible, organisation des pages compacte avec zoom de vignettes, actions par vignette et tuile Ajouter, Undo/Redo et historique filtrable, sortie PDF/ZIP + classement, nommage dynamique par variables, ruban complet avec SVG historiques, visibilité/ruban configurables et fenêtres Core flottantes."
+    },
     {
       "version": "2.0.2",
       "label": "PDF Studio 2.0.2 TEST",
       "date": "2026-09-29",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe de convergence cumulative 0.9.x/1.0.x : 20 sections du volet gauche restaurées, panneau type classeur à onglets, drag & drop, volet redimensionnable, preview/vignettes et viewer multipage communs, sélection/réorganisation de pages, navigation et zoom saisissables, nombre libre de pages par largeur, bibliothèque SVG centrale, CapabilityRegistry, StudioContext inter-Studio, PipelineService, détection de capacités par type de fichier, lazy rendering, auto-tests, palette globale Ctrl/Cmd+K, workflows enregistrables, personnalisation des groupes du ruban et repères UI/IDs enrichis. Les fonctions non encore reconnectées restent visibles en DEV."
     },
