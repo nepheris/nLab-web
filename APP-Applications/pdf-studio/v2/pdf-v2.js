@@ -29,13 +29,13 @@ await mountStudioV2({manifest:studioManifest,versionInfo:{version:runtimeVersion
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let personalProfile=loadPersonalProfile();
 const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService(),signatureService=new PdfSignatureService();
-let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null;
+let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null,assemblyItems=[],assemblySelectedIndex=-1,assemblyInsertFile=null;
 
 mountPersonalProfileUI($('#personalProfileHost'));
 $('#fileInput').accept=acceptAttribute();
 const fileBrowser=new CollectionBrowser({host:$('#fileCollection'),view:'list',key:'pdf-files',getThumbnail:item=>lightweightThumbnail(item.data)});
 fileBrowser.addEventListener('activate',e=>{const file=e.detail?.data;if(file)load(file)});
-fileBrowser.addEventListener('selection',()=>syncViewerMeta());
+fileBrowser.addEventListener('selection',()=>{syncViewerMeta();const count=fileBrowser.selectedItems().filter(x=>formatInfo(x.data).family==='pdf').length;if($('#assemblySelectionCount'))$('#assemblySelectionCount').textContent=count+' PDF sélectionné(s)'});
 $('#fileCollectionView').value=fileBrowser.view;$('#fileSort').value=fileBrowser.sortMode;$('#fileGroupBy').value=fileBrowser.groupBy;
 $('#fileCollectionView').addEventListener('change',()=>fileBrowser.setView($('#fileCollectionView').value));
 $('#fileSort').addEventListener('change',()=>fileBrowser.setSort($('#fileSort').value,fileBrowser.sortDirection));
@@ -234,6 +234,47 @@ async function duplicatePage(){assertPdfMutationAllowed();if(!engine.pageCount)r
 async function deletePageNumber(page){assertPdfMutationAllowed();if(!engine.pageCount)return;await checkpoint();try{await engine.deletePages([page]);markPdfModifiedAfterSignature();await renderAll();setStatus('Page '+page+' supprimée')}catch(e){setStatus(e.message)}}
 async function deletePages(){assertPdfMutationAllowed();if(!engine.pageCount)return;const pages=engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();try{await engine.deletePages(pages);markPdfModifiedAfterSignature();await renderAll();setStatus('Page(s) supprimée(s)')}catch(e){setStatus(e.message)}}
 async function deleteSelected(){assertPdfMutationAllowed();if(!engine.selected.size)return;await checkpoint();try{await engine.deletePages([...engine.selected]);markPdfModifiedAfterSignature();await renderAll();setStatus('Sélection supprimée')}catch(e){setStatus(e.message)}}
+function renderAssemblyList(){
+ const host=$('#assemblyList');if(!host)return;$('#assemblySelectionCount').textContent=assemblyItems.length+' PDF';
+ host.innerHTML=assemblyItems.length?assemblyItems.map((x,i)=>'<button type="button" class="assemblyItem '+(i===assemblySelectedIndex?'active':'')+'" data-assembly-index="'+i+'"><span class="assemblyOrder">'+(i+1)+'</span><span><b>'+x.name+'</b><small>'+((x.isCurrent?'Document courant · ':'')+(x.size?Math.round(x.size/1024)+' Ko':''))+'</small></span></button>').join(''):'<div class="collectionEmpty">Sélectionnez au moins deux PDF dans la collection.</div>';
+ host.querySelectorAll('[data-assembly-index]').forEach(b=>b.onclick=()=>{assemblySelectedIndex=Number(b.dataset.assemblyIndex);renderAssemblyList()})
+}
+function fillAssemblyFromSelection(){
+ const selected=fileBrowser.selectedItems().filter(x=>formatInfo(x.data).family==='pdf');
+ assemblyItems=selected.map(x=>({id:x.id,name:x.label,file:x.data,size:x.size,isCurrent:x.id===fileBrowser.activeId}));
+ assemblySelectedIndex=assemblyItems.length?0:-1;renderAssemblyList();
+ if(assemblyItems.length<2)setStatus('Sélectionnez au moins deux PDF dans la collection pour les fusionner.')
+}
+function moveAssemblyItem(delta){
+ const i=assemblySelectedIndex,j=i+delta;if(i<0||j<0||j>=assemblyItems.length)return;
+ [assemblyItems[i],assemblyItems[j]]=[assemblyItems[j],assemblyItems[i]];assemblySelectedIndex=j;renderAssemblyList()
+}
+async function mergeAssemblySelection(){
+ assertPdfMutationAllowed();if(assemblyItems.length<2)throw new Error('Sélectionnez au moins deux PDF à fusionner.');
+ const entries=[];
+ for(const x of assemblyItems){
+  if(x.isCurrent&&engine.pageCount)entries.push({name:x.name,bytes:await engine.baseBytes()});
+  else entries.push({name:x.name,bytes:new Uint8Array(await x.file.arrayBuffer())})
+ }
+ const previous=engine.pageCount?await engine.baseBytes():null;
+ if(previous){undoStack.push(previous);if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo()}
+ const name=($('#assemblyOutputName').value||'fusion.pdf').trim().replace(/[^a-zA-Z0-9._ -]+/g,'_');
+ const sources=await engine.mergePdfBytes(entries,{fileName:/\.pdf$/i.test(name)?name:name+'.pdf'});
+ cryptoSignatureState=null;activeFileCapabilities={family:'pdf',extension:'pdf'};fileBrowser.activeId=null;fileBrowser.render();await renderAll();
+ setStatus('Fusion créée : '+engine.fileName+' · '+engine.pageCount+' pages');
+ recordHistory({studio:'pdf-studio',type:'action',label:'Fusion PDF',detail:sources.map(x=>x.name+' ('+x.pages+' p.)').join(' + '),target:engine.fileName,action:'assemblePdf',repeatable:false})
+}
+async function insertAssemblyPdf(){
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez d’abord le PDF de destination.');if(!assemblyInsertFile)throw new Error('Choisissez un PDF à insérer.');
+ await checkpoint();const r=await engine.insertPdfFile(assemblyInsertFile,{position:$('#assemblyInsertPosition').value});markPdfModifiedAfterSignature();await renderAll();
+ setStatus(assemblyInsertFile.name+' inséré · '+r.count+' page(s)');
+ recordHistory({studio:'pdf-studio',type:'action',label:'PDF inséré',detail:r.count+' page(s) · position '+$('#assemblyInsertPosition').value,target:engine.fileName,action:'assemblePdf',repeatable:false})
+}
+async function extractSelectedPages(){
+ if(!engine.pageCount)return;const pages=engine.selected.size?[...engine.selected]:[engine.currentPage],bytes=await engine.extractPages(pages),stem=(engine.fileName||'document').replace(/\.pdf$/i,'');
+ const name=stem+'_extrait_'+pages.join('-')+'.pdf';await output.saveBlob(new Blob([bytes],{type:'application/pdf'}),name,{parts:[]});setStatus('Pages extraites : '+name);
+ recordHistory({studio:'pdf-studio',type:'action',label:'Pages extraites',detail:pages.join(', '),target:name,action:'extractPages',repeatable:false})
+}
 async function currentBlob(){return new Blob([await engine.baseBytes()],{type:'application/pdf'})}
 async function saveCurrent({classify=false,forcePicker=false}={}){
  if(!engine.pageCount)return;const format=$('#outputFormat').value;if(format==='zip')return saveZip({classify});
@@ -251,6 +292,14 @@ $('#loadLastSource').onclick=()=>setStatus('Réouverture de source mémorisée :
 $('#pickOutputFolder').onclick=async()=>{try{await output.chooseDirectory();$('#outputProvider').value='local';updateOutputPreview();setStatus('Dossier de sortie : '+output.handle.name)}catch(e){setStatus(e.message)}};
 $('#loadLastOutput').onclick=async()=>{try{await output.loadLastDirectory();$('#outputProvider').value='local';updateOutputPreview();setStatus('Dernière sortie : '+output.handle.name)}catch(e){setStatus(e.message)}};
 $('#savePdfSide').onclick=()=>saveCurrent();$('#saveZipSide').onclick=saveZip;$('#saveAndClassify').onclick=()=>saveCurrent({classify:true});$('#saveAs').onclick=()=>saveCurrent({forcePicker:true});
+$('[data-assembly-mode]').forEach(b=>b.onclick=()=>{const mode=b.dataset.assemblyMode;$('[data-assembly-mode]').forEach(x=>x.classList.toggle('active',x===b));$('#assemblyMergePanel').hidden=mode!=='merge';$('#assemblyInsertPanel').hidden=mode!=='insert'});
+$('#assemblyUseSelection').onclick=fillAssemblyFromSelection;$('#assemblyMoveUp').onclick=()=>moveAssemblyItem(-1);$('#assemblyMoveDown').onclick=()=>moveAssemblyItem(1);
+$('#assemblyRemove').onclick=()=>{if(assemblySelectedIndex<0)return;assemblyItems.splice(assemblySelectedIndex,1);assemblySelectedIndex=Math.min(assemblySelectedIndex,assemblyItems.length-1);renderAssemblyList()};
+$('#assemblyMergeNow').onclick=()=>mergeAssemblySelection().catch(e=>setStatus(e.message));
+$('#assemblyPickInsertPdf').onclick=()=>$('#assemblyInsertFile').click();
+$('#assemblyInsertFile').onchange=e=>{assemblyInsertFile=e.target.files?.[0]||null;$('#assemblyInsertFileName').textContent=assemblyInsertFile?.name||'Aucun fichier'};
+$('#assemblyInsertNow').onclick=()=>insertAssemblyPdf().catch(e=>setStatus(e.message));
+renderAssemblyList();
 
 function goPage(p){if(!engine.pageCount)return;engine.selectPage(p);session.setPage(engine.currentPage);syncViewerMeta()}
 $('#firstPage').onclick=()=>goPage(1);$('#prevPage').onclick=()=>goPage(engine.currentPage-1);$('#nextPage').onclick=()=>goPage(engine.currentPage+1);$('#lastPage').onclick=()=>goPage(engine.pageCount);$('#pageNumberInput').addEventListener('change',()=>goPage(Number($('#pageNumberInput').value)||1));
@@ -270,7 +319,7 @@ $('#propertiesToHelp').onclick=()=>activateSidebarTab('help');$('#detachHelp').o
 function openAdvancedStudio(id){createStudioContext({sourceStudio:'pdf-studio',targetStudio:id,capability:id,fileName:engine.fileName,page:engine.currentPage,selectedPages:[...engine.selected],returnTarget:location.href});const u=new URL(studioManifest.studiosHref,location.href);u.searchParams.set('target',id);u.searchParams.set('return','pdf-studio');location.href=u.href}
 $$('[data-advanced-studio]').forEach(b=>b.onclick=()=>openAdvancedStudio(b.dataset.advancedStudio));document.addEventListener('click',e=>{const b=e.target.closest('[data-studio-action]');if(b&&!b.closest('.studioRibbon'))document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,source:'sidebar',element:b}}))});
 
-document.addEventListener('studio-v2:action',e=>{const a=e.detail.action;if(a==='openPdf')$('#pickFile').click();else if(a==='openFolder')$('#pickFolder').click();else if(a==='prevFile')$('#filePrev').click();else if(a==='nextFile')$('#fileNext').click();else if(a==='savePdf')saveCurrent();else if(a==='saveZip')saveZip();else if(a==='classifyPdf'){activateSidebarTab('tools');$('#sectionOutput').open=true;$('#sectionOutput').scrollIntoView({block:'nearest'})}else if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='deletePage')deletePages();else if(a==='undo')undo();else if(a==='redo')redo();else if(a==='signature'){activateSidebarTab('tools');$('#sectionSignature').open=true;$('#sectionSignature').scrollIntoView({block:'nearest'});setSignatureMode('visual')}else if(a==='history')activateSidebarTab('history');else if(a==='commands')document.dispatchEvent(new Event('studio-v2:open-command-palette'));else if(a==='workflows')document.dispatchEvent(new Event('studio-v2:open-workflows'));else showHelp(a,e.detail.element||null)});
+document.addEventListener('studio-v2:action',e=>{const a=e.detail.action;if(a==='openPdf')$('#pickFile').click();else if(a==='openFolder')$('#pickFolder').click();else if(a==='prevFile')$('#filePrev').click();else if(a==='nextFile')$('#fileNext').click();else if(a==='savePdf')saveCurrent();else if(a==='saveZip')saveZip();else if(a==='classifyPdf'){activateSidebarTab('tools');$('#sectionOutput').open=true;$('#sectionOutput').scrollIntoView({block:'nearest'})}else if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='deletePage')deletePages();else if(a==='extractPages')extractSelectedPages();else if(a==='assemblePdf'){activateSidebarTab('tools');$('#sectionAssembly').open=true;$('#sectionAssembly').scrollIntoView({block:'nearest'});fillAssemblyFromSelection();}else if(a==='undo')undo();else if(a==='redo')redo();else if(a==='signature'){activateSidebarTab('tools');$('#sectionSignature').open=true;$('#sectionSignature').scrollIntoView({block:'nearest'});setSignatureMode('visual')}else if(a==='history')activateSidebarTab('history');else if(a==='commands')document.dispatchEvent(new Event('studio-v2:open-command-palette'));else if(a==='workflows')document.dispatchEvent(new Event('studio-v2:open-workflows'));else showHelp(a,e.detail.element||null)});
 document.addEventListener('studio-v2:menu',e=>{if(e.detail.tab==='help')activateSidebarTab('help');if(e.detail.tab==='history')activateSidebarTab('history');if(e.detail.tab==='view')$('#studioVisibilityOpen')?.click();if(e.detail.tab==='file')$('#sectionInput').open=true});
 document.addEventListener('studio-v2:repeat-action',e=>{const a=e.detail?.action;if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='savePdf')saveCurrent();else showHelp(a||'history')});
 registerPipelineHandler('rotateLeft',async()=>{await rotate(-90);return engine});registerPipelineHandler('rotateRight',async()=>{await rotate(90);return engine});registerPipelineHandler('addPage',async()=>{await addPage();return engine});registerPipelineHandler('duplicatePage',async()=>{await duplicatePage();return engine});registerPipelineHandler('savePdf',async()=>{await saveCurrent();return engine});

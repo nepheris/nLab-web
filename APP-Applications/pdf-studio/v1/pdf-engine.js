@@ -40,6 +40,40 @@ export class PDFEngine extends EventTarget{
  async deletePages(pages){const set=new Set(pages);if(!set.size)return;if(set.size>=this.pageCount)throw new Error('Impossible de supprimer toutes les pages');const out=await PDFDocument.create(),map=new Map();let newIndex=0;for(let i=1;i<=this.pageCount;i++){if(set.has(i))continue;const [cp]=await out.copyPages(this.pdfDoc,[i-1]);out.addPage(cp);newIndex++;if(this.pageAnnotations.has(i))map.set(newIndex,this.pageAnnotations.get(i))}this.pageAnnotations=map;this.selected.clear();this.currentPage=Math.min(this.currentPage,out.getPageCount());await this.setBytes(new Uint8Array(await out.save()))}
  async extractPages(pages){if(!pages.length)throw new Error('Aucune page à extraire');const out=await PDFDocument.create(),copies=await out.copyPages(this.pdfDoc,pages.map(x=>x-1));copies.forEach(p=>out.addPage(p));return new Uint8Array(await out.save())}
  async mergeFiles(files){const out=await PDFDocument.create();for(const f of files){if(!/\.pdf$/i.test(f.name))continue;const d=await PDFDocument.load(await f.arrayBuffer(),{ignoreEncryption:true}),copies=await out.copyPages(d,d.getPageIndices());copies.forEach(p=>out.addPage(p))}if(!out.getPageCount())throw new Error('Aucun PDF à fusionner');this.fileName='fusion.pdf';this.pageAnnotations.clear();await this.setBytes(new Uint8Array(await out.save()),{resetAnnotations:true})}
+ async insertPdfFile(file,{position='after-current'}={}){
+  if(!this.pdfDoc||!this.pageCount)throw new Error('Aucun document courant');
+  if(!(file instanceof Blob)||(!/\.pdf$/i.test(file.name||'')&&file.type!=='application/pdf'))throw new Error('Sélectionnez un fichier PDF');
+  const incoming=await PDFDocument.load(await file.arrayBuffer(),{ignoreEncryption:true}),count=incoming.getPageCount();if(!count)throw new Error('PDF source vide');
+  const out=await PDFDocument.create();
+  let insertAt=this.pageCount;
+  if(position==='start')insertAt=0;
+  else if(position==='before-current')insertAt=Math.max(0,this.currentPage-1);
+  else if(position==='after-current')insertAt=Math.min(this.pageCount,this.currentPage);
+  else if(position==='end')insertAt=this.pageCount;
+  const newMap=new Map();let newIndex=0;
+  for(let i=0;i<=this.pageCount;i++){
+   if(i===insertAt){
+    const copies=await out.copyPages(incoming,incoming.getPageIndices());for(const p of copies){out.addPage(p);newIndex++}
+   }
+   if(i<this.pageCount){
+    const [cp]=await out.copyPages(this.pdfDoc,[i]);out.addPage(cp);newIndex++;
+    const oldPage=i+1;if(this.pageAnnotations.has(oldPage))newMap.set(newIndex,this.pageAnnotations.get(oldPage))
+   }
+  }
+  this.pageAnnotations=newMap;this.selected.clear();this.currentPage=Math.max(1,insertAt+1);
+  await this.setBytes(new Uint8Array(await out.save()));return{insertAt:insertAt+1,count}
+ }
+ async mergePdfBytes(entries,{fileName='fusion.pdf'}={}){
+  const out=await PDFDocument.create(),sources=[];
+  for(const entry of entries||[]){
+   const name=entry?.name||'document.pdf',bytes=entry?.bytes instanceof Uint8Array?entry.bytes:new Uint8Array(entry?.bytes||[]);
+   if(!bytes.length)continue;const d=await PDFDocument.load(bytes,{ignoreEncryption:true}),count=d.getPageCount();if(!count)continue;
+   const copies=await out.copyPages(d,d.getPageIndices());copies.forEach(p=>out.addPage(p));sources.push({name,pages:count})
+  }
+  if(!out.getPageCount())throw new Error('Aucun PDF à fusionner');
+  this.sourceFile=null;this.fileName=fileName;this.pageAnnotations.clear();this.currentPage=1;this.selected.clear();
+  await this.setBytes(new Uint8Array(await out.save()),{resetAnnotations:true});return sources
+ }
  async applyImageOverlay(blob,pages,{position='bottom-right',widthPct=24,xPct=70,yPct=6,opacity=1,margin=24}={}){
   if(!(blob instanceof Blob))throw new Error('Image de signature invalide');
   const targets=[...new Set((pages||[]).map(Number).filter(n=>n>=1&&n<=this.pageCount))];if(!targets.length)throw new Error('Aucune page cible');
