@@ -1,63 +1,63 @@
 {
-  "schema": "nlab-studio-demo-index/v1",
-  "version": "3.0",
-  "privacy": "synthetic-only",
+  "schema": "nlab-demo-manifests-index/v1",
+  "updated": "2026-09-30",
+  "sourceReference": "Google Drive reference supplied by HUMAN-00 + synthetic local regression fixtures",
   "studios": [
     {
-      "id": "pdf",
+      "id": "pdf-studio",
       "label": "PDF Studio",
       "manifest": "./pdf.json",
-      "pack": "../packs/nLab-DEMO-pdf-v3.zip",
-      "fileCount": 11
+      "fileCount": 17,
+      "pack": null
     },
     {
-      "id": "image",
+      "id": "image-studio",
       "label": "Image Studio",
       "manifest": "./image.json",
-      "pack": "../packs/nLab-DEMO-image-v3.zip",
-      "fileCount": 8
+      "fileCount": 10,
+      "pack": null
     },
     {
-      "id": "ocr",
+      "id": "ocr-studio",
       "label": "OCR Studio",
       "manifest": "./ocr.json",
-      "pack": "../packs/nLab-DEMO-ocr-v3.zip",
-      "fileCount": 6
+      "fileCount": 4,
+      "pack": null
     },
     {
       "id": "code-json",
-      "label": "Code Studio",
+      "label": "Code + JSON Studios",
       "manifest": "./code-json.json",
-      "pack": "../packs/nLab-DEMO-code-json-v3.zip",
-      "fileCount": 5
+      "fileCount": 27,
+      "pack": null
     },
     {
-      "id": "json",
-      "label": "JSON Studio",
-      "manifest": "./json.json",
-      "pack": "../packs/nLab-DEMO-json-v3.zip",
-      "fileCount": 6
-    },
-    {
-      "id": "data",
+      "id": "data-studio",
       "label": "Data Studio",
       "manifest": "./data.json",
-      "pack": "../packs/nLab-DEMO-data-v3.zip",
-      "fileCount": 11
+      "fileCount": 17,
+      "pack": null
     },
     {
-      "id": "qr-barcode",
+      "id": "qr-barcode-studio",
       "label": "QR & Barcode Studio",
       "manifest": "./qr-barcode.json",
-      "pack": "../packs/nLab-DEMO-qr-barcode-v3.zip",
-      "fileCount": 7
+      "fileCount": 7,
+      "pack": null
     },
     {
-      "id": "file",
+      "id": "file-studio",
       "label": "File Studio",
       "manifest": "./file.json",
-      "pack": "../packs/nLab-DEMO-file-v3.zip",
-      "fileCount": 13
+      "fileCount": 7,
+      "pack": null
+    },
+    {
+      "id": "markdown-studio",
+      "label": "Markdown Studio",
+      "manifest": "./markdown.json",
+      "fileCount": 15,
+      "pack": null
     }
   ]
 }

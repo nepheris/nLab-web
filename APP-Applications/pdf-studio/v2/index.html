@@ -6,105 +6,106 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head><body>
 <main id="studioMain" class="studioMain">
 <aside id="studioSidebar" class="studioSidebar pdfV2Sidebar scope-core" data-scope="core">
-  <div id="sidebarResizer" class="sidebarResizer" title="Glisser pour régler la largeur"></div>
-  <div class="sidebarTabs" role="tablist">
-    <button id="sidebar-tab-tools" class="active" data-sidebar-tab="tools">Outils</button>
-    <button id="sidebar-tab-properties" data-sidebar-tab="properties">Propriétés</button>
-    <button id="sidebar-tab-help" data-sidebar-tab="help">Aide</button>
-    <button id="sidebar-tab-history" data-sidebar-tab="history">Historique</button>
-    <button id="sidebar-tab-tasks" data-sidebar-tab="tasks">Tâches</button>
-  </div>
-  <div class="sidebarGlobalControls">
-    <button id="sidebar-collapse-all" type="button">▸ Tout plier</button>
-    <button id="sidebar-expand-all" type="button">▾ Tout déplier</button>
-    <select id="sidebarModeQuick" title="Mode du volet"><option value="normal">Normal</option><option value="compact">Compact</option><option value="wide">Large</option><option value="hidden">Masqué</option></select>
-  </div>
+ <div id="sidebarResizer" class="sidebarResizer" title="Glisser pour régler librement la largeur"></div>
+ <div class="sidebarTabs" role="tablist">
+  <button id="sidebar-tab-tools" class="active" data-sidebar-tab="tools">Outils</button>
+  <button id="sidebar-tab-properties" data-sidebar-tab="properties">Propriétés</button>
+  <button id="sidebar-tab-help" data-sidebar-tab="help">Aide</button>
+  <button id="sidebar-tab-history" data-sidebar-tab="history">Historique</button>
+  <button id="sidebar-tab-tasks" data-sidebar-tab="tasks">Tâches</button>
+ </div>
+ <div class="sidebarGlobalControls">
+  <button id="sidebar-collapse-all" type="button">▸ Tout plier</button><button id="sidebar-expand-all" type="button">▾ Tout déplier</button>
+  <select id="sidebarModeQuick" title="Mode du volet"><option value="normal">Normal</option><option value="compact">Compact</option><option value="wide">Large</option><option value="hidden">Masqué</option></select>
+ </div>
 
-  <section id="sidebar-pane-tools" class="sidebarPane active" data-sidebar-pane="tools">
-    <details id="sectionConfig" class="toolSection scope-core" data-scope="core"><summary>0. Configuration & espace personnel <small class="scopeBadge">CORE</small></summary><div class="body"><div class="statusBox">Préférences communes, identité opérateur, presets et espace personnel.</div><button type="button" data-open-core-settings>Ouvrir les paramètres Core</button></div></details>
+ <section id="sidebar-pane-tools" class="sidebarPane active" data-sidebar-pane="tools">
+  <details id="sectionConfig" class="toolSection scope-core" data-scope="core"><summary>0. Configuration & espace personnel <small class="scopeBadge">CORE</small></summary><div class="body"><div class="statusBox">Préférences communes, variables, identité opérateur, presets et espace personnel.</div><button type="button" data-open-core-settings>Paramètres Core</button></div></details>
 
-    <details id="sectionInput" class="toolSection scope-core" data-scope="core" open><summary>1. Entrée <small class="scopeBadge">CORE</small></summary><div class="body">
-      <div class="scopeButtons"><button id="pickFile" type="button" data-icon="file">Choisir un fichier</button><button id="pickFolder" type="button" data-icon="folder">Choisir un dossier</button></div>
-      <div id="inputDropZone" class="inputDropZone" tabindex="0"><strong>Glisser-déposer</strong><span>Fichier(s) ou dossier compatible</span></div>
-      <input id="fileInput" type="file" multiple accept=".pdf,application/pdf,image/*,.txt,.docx,.odt" hidden>
-      <input id="folderInput" type="file" webkitdirectory multiple hidden>
-      <div class="collectionToolbar"><label>Vue <select id="fileCollectionView"><option value="list">Liste</option><option value="grid">Grille</option><option value="thumbs">Vignettes</option></select></label><button id="fileSelectAll" type="button">Tout sélectionner</button><button id="fileSelectNone" type="button">Aucun</button></div>
-      <div id="fileCollection" class="collectionBrowser"></div>
-      <div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
-    </div></details>
+  <details id="sectionInput" class="toolSection scope-core" data-scope="core" open><summary>1. Entrée <small class="scopeBadge">CORE</small></summary><div class="body">
+   <div class="compactInputRow"><button id="pickFile" type="button" data-icon="file">Fichier</button><button id="pickFolder" type="button" data-icon="folder">Dossier</button><button id="loadLastSource" type="button" class="devFeatureBtn" title="Réouverture du dernier handle lorsque le navigateur l'autorise">Récent <small class="devBadge">DEV</small></button><label class="inlineCheck"><input id="recursiveFolders" type="checkbox" checked> Sous-dossiers</label></div>
+   <div id="inputDropZone" class="inputDropZone" tabindex="0"><strong>Glisser-déposer</strong><span>Fichiers ou dossier compatible</span></div>
+   <input id="fileInput" type="file" multiple hidden><input id="folderInput" type="file" webkitdirectory multiple hidden>
+   <div class="collectionToolbar collectionToolbarPrimary">
+    <select id="fileCollectionView" title="Vue"><option value="list">Liste</option><option value="grid">Grille</option><option value="thumbs">Vignettes</option></select>
+    <select id="fileSort" title="Trier"><option value="name">Nom</option><option value="path">Chemin</option><option value="type">Type</option><option value="size">Taille</option><option value="pages">Pages</option><option value="selected">Sélection</option></select>
+    <button id="fileSortDirection" type="button" title="Tri croissant / décroissant">↑</button>
+    <select id="fileGroupBy" title="Grouper"><option value="none">Sans groupe</option><option value="path">Dossier</option><option value="type">Type</option><option value="pages">Pages</option><option value="selected">Sélection</option></select>
+   </div>
+   <div class="collectionToolbar collectionToolbarNav">
+    <button id="filePrev" type="button" data-icon="previous" title="Fichier précédent"></button><button id="fileNext" type="button" data-icon="next" title="Fichier suivant"></button>
+    <label class="inlineCheck"><input id="navigateSelectedOnly" type="checkbox"> Navigation sélection</label><span class="grow"></span>
+    <button id="fileSelectAll" type="button">Tout</button><button id="fileSelectNone" type="button">Aucun</button>
+   </div>
+   <div id="fileCollection" class="collectionBrowser"></div><div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
+  </div></details>
 
-    <details id="sectionOutput" class="toolSection scope-core" data-scope="core"><summary>2. Sortie & classement <small class="scopeBadge">CORE</small></summary><div class="body"><button id="savePdfSide" data-icon="save">Enregistrer le PDF</button><button id="classifyPdfSide" class="devFeatureBtn" data-icon="folder">Enregistrer + classer <small class="devBadge">DEV</small></button><div class="statusBox">OutputService avancé en migration depuis V1.</div></div></details>
+  <details id="sectionOutput" class="toolSection scope-core" data-scope="core"><summary>2. Sortie & classement <small class="scopeBadge">CORE</small></summary><div class="body">
+   <div class="grid2"><label>Format<select id="outputFormat"><option value="pdf">PDF</option><option value="zip">ZIP</option><option value="same">Format d’origine</option></select></label><label>Destination<select id="outputProvider"><option value="download">Téléchargement navigateur</option><option value="local">Dossier local</option></select></label></div>
+   <div class="compactInputRow"><button id="pickOutputFolder" data-icon="folder">Dossier sortie</button><button id="loadLastOutput">Dernière sortie</button></div>
+   <label>Classement<select id="outputStructure"><option value="root">Racine</option><option value="treatment">Traitement</option><option value="year-month">Année / mois</option><option value="year-month-week">Année / mois / semaine</option><option value="treatment-date">Traitement / année / mois</option><option value="custom">Template personnalisé</option></select></label>
+   <input id="outputPathTemplate" value="{TREATMENT}/{YEAR}/{MONTH}" placeholder="{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}">
+   <div id="outputPathPreview" class="statusBox mono">Téléchargement navigateur · racine</div>
+   <div class="grid2"><button id="savePdfSide" data-icon="save">Enregistrer</button><button id="saveZipSide" data-icon="zip">ZIP</button><button id="saveAndClassify" data-icon="classify">Enregistrer + classer</button><button id="saveAs" data-icon="save">Enregistrer sous</button></div>
+  </div></details>
 
-    <details id="sectionNaming" class="toolSection scope-core" data-scope="core"><summary>3. Nommage · préfixes & suffixes <small class="scopeBadge">CORE</small></summary><div class="body"><label>Nom / modèle<input id="namingTemplate" value="{FILENAME}"></label><div class="scopeButtons"><input id="namingPrefix" placeholder="Préfixe"><input id="namingSuffix" placeholder="Suffixe"></div><div id="namingPreview" class="statusBox">Aperçu du nom</div></div></details>
+  <details id="sectionNaming" class="toolSection scope-core" data-scope="core"><summary>3. Nommage · préfixes & suffixes <small class="scopeBadge">CORE</small></summary><div class="body">
+   <label>Nom / modèle<input id="namingTemplate" value="{FILENAME}" placeholder="{FILENAME}_{DATE:YYYY-MM-DD}"></label>
+   <div class="grid2"><label>Préfixe<input id="namingPrefix" placeholder="ex. SCAN_"></label><label>Suffixe<input id="namingSuffix" placeholder="ex. _SIGNE"></label></div>
+   <div id="namingPreview" class="statusBox mono">Aperçu du nom</div>
+   <details class="inlineHelp"><summary>Variables disponibles</summary><div id="namingVariables" class="variableHelp"></div></details>
+  </div></details>
 
-    <details id="sectionPages" class="toolSection scope-studio" data-scope="pdf" open><summary>4. Pages & portée <small class="scopeBadge">PDF</small></summary><div class="body">
-      <label>Portée<select id="pageScope"><option value="current">Page courante</option><option value="selected">Pages sélectionnées</option><option value="all">Toutes les pages</option></select></label>
-      <div class="scopeButtons"><button id="rotateLeftSide">−90°</button><button id="rotateRightSide">+90°</button><button id="addPageSide" data-icon="add">Ajouter page</button><button id="deletePageSide" data-icon="delete">Supprimer</button></div>
-    </div></details>
+  <details id="sectionPages" class="toolSection scope-studio" data-scope="pdf" open><summary>4. Pages & portée <small class="scopeBadge">PDF</small></summary><div class="body"><label>Portée<select id="pageScope"><option value="current">Page courante</option><option value="selected">Pages sélectionnées</option><option value="all">Toutes les pages</option></select></label><div class="statusBox">Les opérations courantes de page sont également disponibles directement dans « Aperçu / organisation ».</div></div></details>
 
-    <details id="sectionStamps" class="toolSection scope-studio" data-scope="pdf"><summary>5. Tampons & 5 dates <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="statusBox">Tampons dynamiques, initiales, variables de date et 5 dates — à reconnecter depuis la V1.</div></div></details>
-    <details id="sectionAnnotations" class="toolSection scope-studio" data-scope="pdf"><summary>6. Annotations & objets <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="scopeButtons"><button data-studio-action="text">Texte</button><button data-studio-action="stamp">Tampon</button><button data-studio-action="highlight">Surligneur</button><button data-studio-action="pen">Stylo</button><button data-studio-action="image">Image</button></div></div></details>
-    <details id="sectionOCR" class="toolSection scope-studio" data-scope="pdf"><summary>7. OCR · reconnaissance de texte <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="ocr">OCR rapide</button><button data-advanced-studio="ocr-studio">OCR avancé…</button></div></details>
-    <details id="sectionOptimize" class="toolSection scope-studio" data-scope="pdf"><summary>8. Optimisation & compression <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="optimize">Optimisation rapide</button><div class="statusBox">DPI, JPEG, niveaux de gris, compression structurelle et profils écran/bureautique/archive/impression.</div></div></details>
-    <details id="sectionTranslate" class="toolSection scope-studio" data-scope="pdf"><summary>9. Traduction bilingue <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="translate">Traduction rapide</button><button data-advanced-studio="translation-studio">Traduction avancée…</button></div></details>
-    <details id="sectionSignature" class="toolSection scope-studio" data-scope="pdf"><summary>10. Signature & espace personnel <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="statusBox">Signature visuelle, initiales, bibliothèque locale et certificats P12/PFX à reconnecter.</div></div></details>
-    <details id="sectionCodes" class="toolSection scope-studio" data-scope="pdf"><summary>11. QR & code-barres <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="qr">QR / code rapide</button><button data-advanced-studio="code-studio">Code Studio…</button></div></details>
-    <details id="sectionHeaderFooter" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête · pied · recadrage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><div class="statusBox">Composeur en-tête/pied, pagination, QR, recadrage et marges.</div></div></details>
-    <details id="sectionConversions" class="toolSection scope-studio" data-scope="pdf"><summary>13. Conversions <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox"><button data-studio-action="convert">Conversion rapide</button><button data-advanced-studio="conversion-studio">Conversion avancée…</button><div class="statusBox">DOCX/PDF, PDF/Office, images/PDF et conversions complexes via moteurs spécialisés.</div></div></details>
-    <details id="sectionForms" class="toolSection scope-studio" data-scope="pdf"><summary>14. Formulaires PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Lecture, remplissage, création et aplatissement AcroForm.</div></details>
-    <details id="sectionRedaction" class="toolSection scope-studio" data-scope="pdf"><summary>15. Caviardage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Marquage puis application irréversible du caviardage.</div></details>
-    <details id="sectionCompare" class="toolSection scope-studio" data-scope="pdf"><summary>16. Comparaison PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Comparaison visuelle, pixel et texte.</div></details>
-    <details id="sectionBatch" class="toolSection scope-studio" data-scope="pdf"><summary>17. Traitements batch <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Traitements en lot et PipelineService.</div></details>
-    <details id="sectionSecurity" class="toolSection scope-studio" data-scope="pdf"><summary>18. Sécurité & métadonnées <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Métadonnées, chiffrement, PDF/A, pièces jointes et contrôles de sécurité.</div></details>
-    <details id="sectionDiagnostics" class="toolSection scope-core" data-scope="core"><summary>19. Historique & diagnostics <small class="scopeBadge">CORE</small></summary><div class="body"><button id="history-view-all-inline">Voir l’historique complet</button><button id="copyDiagnostics">Copier le diagnostic</button></div></details>
-  </section>
+  <details id="sectionStamps" class="toolSection scope-studio" data-scope="pdf"><summary>5. Tampons & 5 dates <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Bibliothèque, modèle, variables, position, portée et 5 dates à reconnecter depuis V1.</div></details>
+  <details id="sectionAnnotations" class="toolSection scope-studio" data-scope="pdf"><summary>6. Annotations & objets <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Texte, tampon, surligneur, stylo, image, signature et moteur d’objets.</div></details>
+  <details id="sectionOcr" class="toolSection scope-studio" data-scope="pdf"><summary>7. OCR · reconnaissance de texte <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">OCR rapide + ouverture OCR Studio pour les traitements avancés.</div></details>
+  <details id="sectionOptimize" class="toolSection scope-studio" data-scope="pdf"><summary>8. Optimisation & compression <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">DPI, JPEG, niveaux de gris et compression structurelle.</div></details>
+  <details id="sectionTranslate" class="toolSection scope-studio" data-scope="pdf"><summary>9. Traduction bilingue <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Original + traduction, côte à côte et pages en vis-à-vis.</div></details>
+  <details id="sectionSignature" class="toolSection scope-studio" data-scope="pdf"><summary>10. Signature & espace personnel <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Signature visuelle, paraphe, bibliothèque personnelle et connecteur PAdES.</div></details>
+  <details id="sectionCodes" class="toolSection scope-studio" data-scope="pdf"><summary>11. QR & code-barres <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">QR/Data Matrix/Aztec/PDF417/1D via Code Studio.</div></details>
+  <details id="sectionPageOutput" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête · pied · recadrage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Templates gauche/centre/droite, PAGE/PAGES, QR et recadrage.</div></details>
+  <details id="sectionConversion" class="toolSection scope-studio" data-scope="pdf"><summary>13. Conversions <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Conversions rapides et passage vers Conversion Studio pour la haute fidélité.</div></details>
+  <details id="sectionForms" class="toolSection scope-studio" data-scope="pdf"><summary>14. Formulaires PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Inspection, ajout, remplissage et aplatissement.</div></details>
+  <details id="sectionRedaction" class="toolSection scope-studio" data-scope="pdf"><summary>15. Caviardage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Marquage, application irréversible et contrôle de texte résiduel.</div></details>
+  <details id="sectionCompare" class="toolSection scope-studio" data-scope="pdf"><summary>16. Comparaison PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Comparaison visuelle, pixel et texte.</div></details>
+  <details id="sectionBatch" class="toolSection scope-studio" data-scope="pdf"><summary>17. Traitements batch <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Traitements en lot et PipelineService.</div></details>
+  <details id="sectionSecurity" class="toolSection scope-studio" data-scope="pdf"><summary>18. Sécurité & métadonnées <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Métadonnées, nettoyage, chiffrement, PDF/A, pièces jointes et inspection de signatures.</div></details>
+  <details id="sectionDiagnostics" class="toolSection scope-core" data-scope="core"><summary>19. Historique & diagnostics <small class="scopeBadge">CORE</small></summary><div class="body"><button id="history-view-all-inline" data-icon="history">Historique complet</button><button id="copyDiagnostics">Copier le diagnostic</button></div></details>
+ </section>
 
-  <section id="sidebar-pane-properties" class="sidebarPane" data-sidebar-pane="properties" hidden>
-    <div class="paneTitle">Propriétés de l’outil actif</div><div id="activeToolProperties" class="statusBox">Sélectionnez un outil pour afficher ses propriétés.</div>
-  </section>
-
-  <section id="sidebar-pane-help" class="sidebarPane" data-sidebar-pane="help" hidden>
-    <div class="paneTitle">Aide contextuelle</div><div id="helpContent" class="helpList"><div><b>PDF Studio</b>Sélectionnez une commande. Le mode Repères UI affiche ses IDs et métadonnées.</div></div>
-  </section>
-
-  <section id="sidebar-pane-history" class="sidebarPane" data-sidebar-pane="history" hidden>
-    <div class="paneTitle">Historique & récents</div>
-    <div class="historyUndoRow"><button id="history-undo" type="button" disabled>↶ Annuler</button><button id="history-redo" type="button" disabled>↷ Rétablir</button></div>
-    <div class="historyQuickHead"><strong>Historique rapide</strong><span><span id="history-recent-count">0</span></span></div>
-    <div id="history-recent-list" class="historyRecentList"></div>
-    <div class="historyQuickHead"><strong>Fichiers récents</strong><span>accès rapide</span></div>
-    <div id="recent-items-list" class="recentItemsList"></div>
-    <button id="history-view-all" type="button" class="historyViewAll">Voir tout l’historique →</button>
-  </section>
-
-  <section id="sidebar-pane-tasks" class="sidebarPane" data-sidebar-pane="tasks" hidden>
-    <div class="paneTitle">Tâches & pipelines</div>
-    <div class="statusBox">Les workflows enregistrés et les pipelines de traitement utilisent le PipelineService commun.</div>
-    <button id="sidebar-open-workflows" type="button">Ouvrir les workflows</button>
-  </section>
+ <section id="sidebar-pane-properties" class="sidebarPane" data-sidebar-pane="properties" hidden><div class="paneTitle">Contexte de l’outil actif</div><div id="activeToolProperties" class="statusBox">Sélectionnez un outil. Les propriétés sont liées à l’aide contextuelle.</div><button id="propertiesToHelp">Voir l’aide détaillée</button></section>
+ <section id="sidebar-pane-help" class="sidebarPane" data-sidebar-pane="help" hidden><div class="paneTitle">Aide contextuelle</div><div id="helpContent" class="helpList"><div><b>PDF Studio</b>Sélectionnez une commande pour afficher son aide, ses propriétés et ses IDs.</div></div><button id="detachHelp" type="button">Détacher l’aide</button></section>
+ <section id="sidebar-pane-history" class="sidebarPane" data-sidebar-pane="history" hidden>
+  <div class="paneTitle">Historique & récents</div><div class="historyUndoRow"><button id="history-undo" type="button" data-icon="undo" disabled>Annuler</button><button id="history-redo" type="button" data-icon="redo" disabled>Rétablir</button><button id="history-view-all" type="button" data-icon="history" title="Historique complet"></button></div>
+  <div class="historyQuickHead"><strong>Historique rapide</strong><span id="history-recent-count">0</span></div><div id="history-recent-list" class="historyRecentList"></div>
+  <div class="historyQuickHead"><strong>Fichiers récents</strong><span>accès rapide</span></div><div id="recent-items-list" class="recentItemsList"></div>
+ </section>
+ <section id="sidebar-pane-tasks" class="sidebarPane" data-sidebar-pane="tasks" hidden><div class="paneTitle">Tâches & pipelines <small class="devBadge">DEV</small></div><div class="statusBox">Réservé aux workflows/pipelines et futurs traitements longs.</div><button id="sidebar-open-workflows" type="button">Ouvrir les workflows</button></section>
 </aside>
 
 <section class="viewer scope-core" data-scope="core">
-  <details id="previewPanel" class="previewPanel" open><summary>Aperçu / organisation des pages</summary><div class="previewPanelBody">
-    <div class="previewToolbar"><button id="previewSelectAll">Tout sélectionner</button><button id="previewSelectNone">Tout désélectionner</button><button id="previewAddPage" data-icon="add">Ajouter</button><button id="previewDeleteSelected" data-icon="delete">Supprimer sélection</button><label>Vignettes/largeur <input id="previewColumns" type="number" min="1" max="20" value="6"></label></div>
-    <div id="previewGrid" class="previewGrid"></div>
-  </div></details>
-
-  <div class="viewerCard">
-    <div class="viewerToolbar">
-      <button id="firstPage" title="Première page">⏮</button><button id="prevPage" title="Page précédente">◀</button>
-      <label>Page <input id="pageNumberInput" type="number" min="1" value="1"></label><span id="pageInfo">/ 0</span>
-      <button id="nextPage" title="Page suivante">▶</button><button id="lastPage" title="Dernière page">⏭</button>
-      <span class="grow"></span>
-      <button id="zoomOut">−</button><label>Zoom <input id="zoomInput" type="number" min="15" max="500" step="5" value="100"> %</label><button id="zoomIn">+</button>
-      <button id="fitWidth">Largeur</button>
-      <label>Pages/largeur <input id="pagesPerRow" type="number" min="1" max="12" value="1"></label>
-    </div>
-    <div id="canvasStage" class="canvasStage"><div id="mainPageGrid" class="mainPageGrid"></div></div>
+ <details id="previewPanel" class="previewPanel" open><summary>Aperçu / organisation des pages</summary><div class="previewPanelBody">
+  <div class="previewToolbar compactBar">
+   <button id="previewSelectAll" title="Tout sélectionner">☑</button><button id="previewSelectNone" title="Tout désélectionner">☐</button>
+   <span class="barSep"></span><button id="previewZoomOut" title="Réduire les vignettes">−</button><input id="previewZoom" type="range" min="8" max="60" value="18" step="2" title="Zoom des vignettes"><button id="previewZoomIn" title="Agrandir les vignettes">+</button>
+   <label title="Nombre de vignettes par largeur">Colonnes <input id="previewColumns" type="number" min="1" max="20" value="6"></label>
+   <span class="barSep"></span><button id="previewRotateLeft" data-icon="rotateLeft" title="Rotation -90° sur la portée"></button><button id="previewRotateRight" data-icon="rotateRight" title="Rotation +90° sur la portée"></button>
+   <button id="previewAddPage" data-icon="addPage" title="Ajouter une page"></button><button id="previewDeleteSelected" data-icon="delete" title="Supprimer les pages sélectionnées"></button>
   </div>
+  <div id="previewGrid" class="previewGrid"></div>
+ </div></details>
+
+ <details class="viewerCard viewerNavigationCard" open><summary>Document / navigation</summary><div class="viewerToolbar singleLineBar">
+  <button id="firstPage" title="Première page">⏮</button><button id="prevPage" title="Page précédente">◀</button><label>Page <input id="pageNumberInput" type="number" min="1" value="1"></label><span id="pageInfo">/ 0</span><button id="nextPage" title="Page suivante">▶</button><button id="lastPage" title="Dernière page">⏭</button>
+  <span class="barSep"></span><button id="zoomOut" title="Zoom arrière">−</button><label>Zoom <input id="zoomInput" type="number" min="15" max="500" step="5" value="100">%</label><button id="zoomIn" title="Zoom avant">+</button><button id="fitWidth">Largeur</button><label>Pages/largeur <input id="pagesPerRow" type="number" min="1" max="12" value="1"></label>
+ </div></details>
+ <div id="canvasStage" class="canvasStage"><div id="mainPageGrid" class="mainPageGrid"></div></div>
 </section>
 </main>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>

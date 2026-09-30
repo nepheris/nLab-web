@@ -1,486 +1,176 @@
 {
-  "schema": "nlab-demo-gallery/v1",
-  "version": "3.0",
+  "schema": "nlab-demo-gallery/v3",
+  "updated": "2026-09-30",
   "files": [
     {
-      "path": "files/demo-input/Code/demo-config.yaml",
+      "category": "MD",
+      "path": "MD/rec-aub-001-caviar-d-aubergine-classique.md",
+      "href": "./files/demo-input/MD/rec-aub-001-caviar-d-aubergine-classique.md",
+      "preview": "text"
+    },
+    {
+      "category": "MD",
+      "path": "MD/rec-aub-002-baba-ganoush.md",
+      "href": "./files/demo-input/MD/rec-aub-002-baba-ganoush.md",
+      "preview": "text"
+    },
+    {
+      "category": "JSON",
+      "path": "JSON/recettes_categories.json",
+      "href": "./files/demo-input/JSON/recettes_categories.json",
+      "preview": "text"
+    },
+    {
+      "category": "JSON",
+      "path": "JSON/recettes.json",
+      "href": "./files/demo-input/JSON/recettes.json",
+      "preview": "text"
+    },
+    {
+      "category": "JSON",
+      "path": "JSON/allergenes.json",
+      "href": "./files/demo-input/JSON/allergenes.json",
+      "preview": "text"
+    },
+    {
       "category": "Code",
-      "size": 68,
-      "sha256": "016006d7922afec64200e5273ad7e1d6255a220ee9141874611c15ae7fe248ed",
+      "path": "Code/demo-config.yaml",
       "href": "./files/demo-input/Code/demo-config.yaml",
       "preview": "text"
     },
     {
-      "path": "files/demo-input/Code/demo-markdown.md",
       "category": "Code",
-      "size": 78,
-      "sha256": "e72bfb20afa3f7678cec862ca15dd05608e9dffabd23f95a21089c9b8d9ad90e",
+      "path": "Code/demo-markdown.md",
       "href": "./files/demo-input/Code/demo-markdown.md",
       "preview": "text"
     },
     {
-      "path": "files/demo-input/Code/demo-record.xml",
       "category": "Code",
-      "size": 111,
-      "sha256": "caea5aae3961bba5590b462f619a9c208f4dde187c961c28982e6dddbd3973ee",
+      "path": "Code/demo-record.xml",
       "href": "./files/demo-input/Code/demo-record.xml",
       "preview": "text"
     },
     {
-      "path": "files/demo-input/Code/demo-script.js",
       "category": "Code",
-      "size": 141,
-      "sha256": "9d0b8720817fe3aec9f47c63d1b6d160e7c68631c46d45399013eb8d7a1e8eeb",
+      "path": "Code/demo-script.js",
       "href": "./files/demo-input/Code/demo-script.js",
       "preview": "text"
     },
     {
-      "path": "files/demo-input/Code/demo-structure.json",
       "category": "Code",
-      "size": 304,
-      "sha256": "daf67b86a36b4edd01dde66c4e32414296dd8ede56bc8ad41a8f090d51e14da8",
+      "path": "Code/demo-structure.json",
       "href": "./files/demo-input/Code/demo-structure.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/Compare/tree-A/docs/commun.txt",
-      "category": "Compare",
-      "size": 20,
-      "sha256": "8e5106367e2eaa263b12088efd79cfab534056e26ad025e5a1a57f0957b92e51",
-      "href": "./files/demo-input/Compare/tree-A/docs/commun.txt",
       "preview": "text"
     },
     {
-      "path": "files/demo-input/Compare/tree-A/docs/modifie.txt",
-      "category": "Compare",
-      "size": 25,
-      "sha256": "e4e0faf5e183c00f3a67459c952c7e02560d29285d9367f8596437f59afebd1c",
-      "href": "./files/demo-input/Compare/tree-A/docs/modifie.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/Compare/tree-B/docs/commun.txt",
-      "category": "Compare",
-      "size": 20,
-      "sha256": "8e5106367e2eaa263b12088efd79cfab534056e26ad025e5a1a57f0957b92e51",
-      "href": "./files/demo-input/Compare/tree-B/docs/commun.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/Compare/tree-B/docs/modifie.txt",
-      "category": "Compare",
-      "size": 35,
-      "sha256": "12cb05412a2d119efd91e7a420dadb5972214b8ab39bc53d4b27e05efdf6011f",
-      "href": "./files/demo-input/Compare/tree-B/docs/modifie.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/Data/dataset-validation-complet.csv",
-      "category": "Data",
-      "size": 24539,
-      "sha256": "6aa2511d5440fab8dfe26762063ae6cb2d1f62fd12baf3e82defb8c82de494a3",
-      "href": "./files/demo-input/Data/dataset-validation-complet.csv",
-      "preview": "csv"
-    },
-    {
-      "path": "files/demo-input/Data/dataset-validation-complet.json",
-      "category": "Data",
-      "size": 53818,
-      "sha256": "0ee93744fc5d6a67a3a1f6cab740f234a55fb1a750870580d00a20a3f360b258",
-      "href": "./files/demo-input/Data/dataset-validation-complet.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/Data/dataset-validation-complet.xlsx",
-      "category": "Data",
-      "size": 83545,
-      "sha256": "4b0d519323274496da099d6524c0ae7c32bfec1ab07674ce751d57d5cc39351c",
-      "href": "./files/demo-input/Data/dataset-validation-complet.xlsx",
-      "preview": "download"
-    },
-    {
-      "path": "files/demo-input/Data/images/bleu-test.png",
-      "category": "Data",
-      "size": 1434,
-      "sha256": "7d318161caa63a020f27c53fbf0d7bb66ec98d82503a43f35eacb4a74d524a65",
-      "href": "./files/demo-input/Data/images/bleu-test.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Data/images/gris-test.png",
-      "category": "Data",
-      "size": 1407,
-      "sha256": "83f917b2e64a81851be636545841c259d6d2f0c02d84f3e62cb76616e8f2d463",
-      "href": "./files/demo-input/Data/images/gris-test.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Data/images/jaune-test.png",
-      "category": "Data",
-      "size": 1590,
-      "sha256": "dd881d4685634492e0c5831df46985b11b32c97b4f07cf12f5b90a62cb0f4fce",
-      "href": "./files/demo-input/Data/images/jaune-test.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Data/images/orange-test.png",
-      "category": "Data",
-      "size": 1988,
-      "sha256": "a18e977f8da7c4946db705fd38776745822a95dc5888b51804c7e9de99ccd0f5",
-      "href": "./files/demo-input/Data/images/orange-test.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Data/images/rouge-test.png",
-      "category": "Data",
-      "size": 1888,
-      "sha256": "6aaa2651ebe02c48a27ce97110d5202a94b7d02e4be005f97435a2a02d79d40b",
-      "href": "./files/demo-input/Data/images/rouge-test.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Data/images/turquoise-test.png",
-      "category": "Data",
-      "size": 1831,
-      "sha256": "87fdbf3a5aacf738ea69c2eb1724704745f8e0aee0d0cf02ba3ba0a99a38d745",
-      "href": "./files/demo-input/Data/images/turquoise-test.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Data/images/vert-test.png",
-      "category": "Data",
-      "size": 1476,
-      "sha256": "fe70cfbe0bfd92189b284bd62884a3fbed2a3e002f99c7178053c039aeeef696",
-      "href": "./files/demo-input/Data/images/vert-test.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Data/images/violet-test.png",
-      "category": "Data",
-      "size": 1659,
-      "sha256": "2f238607ceec2e339aa3a23b7be90a3e351b55b7078823e7d8486ff4de984678",
-      "href": "./files/demo-input/Data/images/violet-test.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/File/lot-A/IMG_0001 photo ROUGE.txt",
-      "category": "File",
-      "size": 20,
-      "sha256": "3720d0a2e0ae514a4cf26f632ba2e657272c5342e1c87ba4f9ce9b432deb1ce5",
-      "href": "./files/demo-input/File/lot-A/IMG_0001 photo ROUGE.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/File/lot-A/IMG_0002 photo BLEUE.txt",
-      "category": "File",
-      "size": 20,
-      "sha256": "b0727099416b92e8b37cd1a361915dfa8a8155db8b2b2fe4b51b1fc532e6f654",
-      "href": "./files/demo-input/File/lot-A/IMG_0002 photo BLEUE.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/File/lot-A/facture test 0003.txt",
-      "category": "File",
-      "size": 26,
-      "sha256": "22e3e666a20bb67a4967790e021da021b3d9f5dc6fbd42e4b133d071c6386015",
-      "href": "./files/demo-input/File/lot-A/facture test 0003.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/File/lot-A/rapport.v1.final.TEST.txt",
-      "category": "File",
-      "size": 26,
-      "sha256": "3408cb1b036edbfd9612d33d22498369a81a413953fbde6e3bf31976e2c4af6f",
-      "href": "./files/demo-input/File/lot-A/rapport.v1.final.TEST.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/File/lot-B/sous-dossier/2026_09_22-client_demo-A.txt",
-      "category": "File",
-      "size": 21,
-      "sha256": "b97c23826247d466a87a50860cf42484e7005756bfd509c9320eabb63fac0d90",
-      "href": "./files/demo-input/File/lot-B/sous-dossier/2026_09_22-client_demo-A.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/File/lot-B/sous-dossier/Nom Avec Espaces et accents É.txt",
-      "category": "File",
-      "size": 18,
-      "sha256": "677880f273fe8f27b6278be82e5462c9d11ad678099d1dddbb94e4a41b5af9a3",
-      "href": "./files/demo-input/File/lot-B/sous-dossier/Nom Avec Espaces et accents É.txt",
-      "preview": "text"
-    },
-    {
-      "path": "files/demo-input/File/lot-B/sous-dossier/data_TEST_001.json",
-      "category": "File",
-      "size": 38,
-      "sha256": "8c038c9d4926f29285b4fb4ed87db131f28113d053d85d88e4638cddf2a132fd",
-      "href": "./files/demo-input/File/lot-B/sous-dossier/data_TEST_001.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/File/lot-B/sous-dossier/liste_TEST.csv",
-      "category": "File",
-      "size": 24,
-      "sha256": "469b6f91a4270043ad46e5c4b51c19af5d881fe12f1071b7dfadde3c8685b856",
-      "href": "./files/demo-input/File/lot-B/sous-dossier/liste_TEST.csv",
-      "preview": "csv"
-    },
-    {
-      "path": "files/demo-input/Images/calibration-regles-300x150.json",
-      "category": "Images",
-      "size": 305,
-      "sha256": "36d550a05df77fe7000952f1904c400f20a48602bd26d4fe933cc8b9887442d4",
-      "href": "./files/demo-input/Images/calibration-regles-300x150.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/Images/calibration-regles-300x150.png",
-      "category": "Images",
-      "size": 31165,
-      "sha256": "e90e3955a80d633da2279a2e674ee2132a4aa60ac243be844fcf3118927cf454",
-      "href": "./files/demo-input/Images/calibration-regles-300x150.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Images/calibration-scan-reel-01-public.webp",
-      "category": "Images",
-      "size": 6718,
-      "sha256": "188733c179d5f39f8823ecc825413d99f48e250c8827cf4e468bbc46a8aa4979",
-      "href": "./files/demo-input/Images/calibration-scan-reel-01-public.webp",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Images/calibration-scan-reel-02-public.webp",
-      "category": "Images",
-      "size": 6134,
-      "sha256": "d0f2094026274b2cc74aeabbe3ebfa21de3e0bbb361f47deee52f526ecd6d2aa",
-      "href": "./files/demo-input/Images/calibration-scan-reel-02-public.webp",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Images/demo-image-anime.gif",
-      "category": "Images",
-      "size": 23773,
-      "sha256": "46fd0c38eb883bf25abb1910c4eca28e67838a839000bcdda8b9058ea02e8a79",
-      "href": "./files/demo-input/Images/demo-image-anime.gif",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Images/demo-image-color.jpg",
-      "category": "Images",
-      "size": 44949,
-      "sha256": "a8a08c37491cd2df4828796c5ddce52f13eaf43aa89269f1c8569c477401bd20",
-      "href": "./files/demo-input/Images/demo-image-color.jpg",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Images/demo-image-color.png",
-      "category": "Images",
-      "size": 18341,
-      "sha256": "76c2b138e267e740c5909b4733dcf1a1a2212d96206405aceb18e896793855fe",
-      "href": "./files/demo-input/Images/demo-image-color.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Images/demo-image-color.webp",
-      "category": "Images",
-      "size": 16224,
-      "sha256": "1e382e65305775985d93c1e86332ed75676f241ff4ab5340ff39fda36dab5ef4",
-      "href": "./files/demo-input/Images/demo-image-color.webp",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/JSON/rdc-allergenes-demo.json",
-      "category": "JSON",
-      "size": 44568,
-      "sha256": "fd82573405d031a9d26dbf454c5cd5165611cfcaee565116ec89e66163addc8e",
-      "href": "./files/demo-input/JSON/rdc-allergenes-demo.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/JSON/rdc-categories-recettes-demo.json",
-      "category": "JSON",
-      "size": 18128,
-      "sha256": "7aea32e387cdb2f66d64ffad48b211b4f78d5b64daa5293ec9bbabaea63c6345",
-      "href": "./files/demo-input/JSON/rdc-categories-recettes-demo.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/JSON/rdc-recettes-complexes-demo.json",
-      "category": "JSON",
-      "size": 37340,
-      "sha256": "386bd6e9d3e5a3f1da6f5aa20888e4f9101ccd3eceeae70e5c455a04dcdcb016",
-      "href": "./files/demo-input/JSON/rdc-recettes-complexes-demo.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/JSON/rdc-relations-contenus-demo.json",
-      "category": "JSON",
-      "size": 10950,
-      "sha256": "accf6fe28557fc19f63350c8cf25757c30ab12e18a28023d78e99a0cac7ee487",
-      "href": "./files/demo-input/JSON/rdc-relations-contenus-demo.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/JSON/rdc-saisonnalite-demo.json",
-      "category": "JSON",
-      "size": 60237,
-      "sha256": "d0f08dcf42a3bcb89e457756f5b3d4560319d8d1d6b0a044c0da1ac11ffabe15",
-      "href": "./files/demo-input/JSON/rdc-saisonnalite-demo.json",
-      "preview": "json"
-    },
-    {
-      "path": "files/demo-input/OCR/ocr-imprime-faible-contraste.jpg",
-      "category": "OCR",
-      "size": 80713,
-      "sha256": "7dd30de08d15a74137a008adf3efbf338ed27328d91dd71363b20cb1788a0688",
-      "href": "./files/demo-input/OCR/ocr-imprime-faible-contraste.jpg",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/OCR/ocr-imprime-propre.png",
-      "category": "OCR",
-      "size": 41650,
-      "sha256": "742b132282335d6a57b087a5bb6239e71b40226da0ffb65931e38f85b6042f96",
-      "href": "./files/demo-input/OCR/ocr-imprime-propre.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/OCR/ocr-pseudo-manuscrit.png",
-      "category": "OCR",
-      "size": 51896,
-      "sha256": "4a0d651ed72d286f111898f6401cf9687bc6edd299df8fe0dbb5f28b2c53d253",
-      "href": "./files/demo-input/OCR/ocr-pseudo-manuscrit.png",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/OCR/ocr-scan-incline-bruite.jpg",
-      "category": "OCR",
-      "size": 129595,
-      "sha256": "3d549ee3c5554804ff3218e88fdd3b2632d6de30354f2fb8cfc10f1c0a7302f4",
-      "href": "./files/demo-input/OCR/ocr-scan-incline-bruite.jpg",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/Office/document-demo.docx",
-      "category": "Office",
-      "size": 37171,
-      "sha256": "8819de1c405f92bf699f0a6eceaccb6a8551064c42b2b167c180966f4d7211b0",
-      "href": "./files/demo-input/Office/document-demo.docx",
-      "preview": "download"
-    },
-    {
-      "path": "files/demo-input/PDF/pdf-formulaire-acroform.pdf",
-      "category": "PDF",
-      "size": 8752,
-      "sha256": "271425939688e2d1eb13f036aaf8b959ba84a973e78f3e937bf3aba01cabc0cf",
-      "href": "./files/demo-input/PDF/pdf-formulaire-acroform.pdf",
-      "preview": "pdf"
-    },
-    {
-      "path": "files/demo-input/PDF/pdf-multipage-orientations.pdf",
-      "category": "PDF",
-      "size": 2439,
-      "sha256": "e4358a18d8f154f10ed083cc3d64b5375fe359fc946da0ccb93d6a70854aeff6",
-      "href": "./files/demo-input/PDF/pdf-multipage-orientations.pdf",
-      "preview": "pdf"
-    },
-    {
-      "path": "files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
-      "category": "PDF",
-      "size": 149500,
-      "sha256": "0b9b23f6b2230c65fbb408e421558275bd485cccbc4c7dd49cffc5b97bcfe21a",
-      "href": "./files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
-      "preview": "pdf"
-    },
-    {
-      "path": "files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
-      "category": "PDF",
-      "size": 116805,
-      "sha256": "79755be4506bcbfb1127ef8a543fcc46f009b68db7e8fe349980b5af83d695bf",
-      "href": "./files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
-      "preview": "pdf"
-    },
-    {
-      "path": "files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
-      "category": "PDF",
-      "size": 116698,
-      "sha256": "6925b52c2191d4a9f40b693c69b20eb35c53624aaa6cc28dc9258077addf8277",
-      "href": "./files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
-      "preview": "pdf"
-    },
-    {
-      "path": "files/demo-input/PDF/pdf-texte-actif.pdf",
-      "category": "PDF",
-      "size": 3377,
-      "sha256": "e244716ffd023489c0d4f283cfde77fb23f9de12f768c89d0bce10c882d3ca6e",
-      "href": "./files/demo-input/PDF/pdf-texte-actif.pdf",
-      "preview": "pdf"
-    },
-    {
-      "path": "files/demo-input/QR-Barcode/code128-test.svg",
       "category": "QR-Barcode",
-      "size": 15426,
-      "sha256": "f40be191d329629aa27efc462d6986f0214b73ad9437bb96af651efb08202ca8",
-      "href": "./files/demo-input/QR-Barcode/code128-test.svg",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/QR-Barcode/datamatrix-test.svg",
-      "category": "QR-Barcode",
-      "size": 159004,
-      "sha256": "b6606660092ac6c49f4e5c872e9e9193aadd799f8d41a07f3342ba8db2b566d4",
-      "href": "./files/demo-input/QR-Barcode/datamatrix-test.svg",
-      "preview": "image"
-    },
-    {
-      "path": "files/demo-input/QR-Barcode/payloads.json",
-      "category": "QR-Barcode",
-      "size": 1190,
-      "sha256": "fca4063614591185bdde70b5c28c9c2faa2c334458e003a8e3eda3a280367afd",
+      "path": "QR-Barcode/payloads.json",
       "href": "./files/demo-input/QR-Barcode/payloads.json",
-      "preview": "json"
+      "preview": "text"
     },
     {
-      "path": "files/demo-input/QR-Barcode/qr-google.svg",
-      "category": "QR-Barcode",
-      "size": 36892,
-      "sha256": "31eba026adeb74416f87d1d0265619cf7def920bba41a7930a18367102f0e84a",
-      "href": "./files/demo-input/QR-Barcode/qr-google.svg",
+      "category": "Documents",
+      "path": "Documents/demo-word-1page.docx",
+      "href": "./files/demo-input/Documents/demo-word-1page.docx",
+      "preview": "file"
+    },
+    {
+      "category": "Documents",
+      "path": "Documents/demo-word-1page.odt",
+      "href": "./files/demo-input/Documents/demo-word-1page.odt",
+      "preview": "file"
+    },
+    {
+      "category": "Documents",
+      "path": "Documents/demo-word-3pages-layout.doc",
+      "href": "./files/demo-input/Documents/demo-word-3pages-layout.doc",
+      "preview": "file"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-tableur-multifeuilles.xlsx",
+      "href": "./files/demo-input/Data/demo-tableur-multifeuilles.xlsx",
+      "preview": "file"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-tableur-multifeuilles.xls",
+      "href": "./files/demo-input/Data/demo-tableur-multifeuilles.xls",
+      "preview": "file"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-csv-virgule.csv",
+      "href": "./files/demo-input/Data/demo-csv-virgule.csv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-csv-point-virgule.csv",
+      "href": "./files/demo-input/Data/demo-csv-point-virgule.csv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-tsv-tabulation.tsv",
+      "href": "./files/demo-input/Data/demo-tsv-tabulation.tsv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-csv-pipe.csv",
+      "href": "./files/demo-input/Data/demo-csv-pipe.csv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-texte-long.txt",
+      "href": "./files/demo-input/Data/demo-texte-long.txt",
+      "preview": "text"
+    },
+    {
+      "category": "MD",
+      "path": "MD/demo-markdown-conversion.md",
+      "href": "./files/demo-input/MD/demo-markdown-conversion.md",
+      "preview": "text"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-document-illustration.png",
+      "href": "./files/demo-input/Images/demo-document-illustration.png",
       "preview": "image"
     },
     {
-      "path": "files/demo-input/QR-Barcode/qr-lemonde.svg",
-      "category": "QR-Barcode",
-      "size": 36684,
-      "sha256": "a2114ca79177d7a40558ee9c53052aee6433fc16b9338ec10475163d265b57d8",
-      "href": "./files/demo-input/QR-Barcode/qr-lemonde.svg",
+      "category": "Images",
+      "path": "Images/demo-format-bmp.bmp",
+      "href": "./files/demo-input/Images/demo-format-bmp.bmp",
       "preview": "image"
     },
     {
-      "path": "files/demo-input/QR-Barcode/qr-nlab.svg",
-      "category": "QR-Barcode",
-      "size": 48432,
-      "sha256": "1200f4c7fb334be98aace94985edb7bd56738e0672511e3f96cd508572d6db42",
-      "href": "./files/demo-input/QR-Barcode/qr-nlab.svg",
+      "category": "Images",
+      "path": "Images/demo-format-tiff.tiff",
+      "href": "./files/demo-input/Images/demo-format-tiff.tiff",
+      "preview": "file"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-format-svg.svg",
+      "href": "./files/demo-input/Images/demo-format-svg.svg",
       "preview": "image"
     },
     {
-      "path": "files/demo-input/QR-Barcode/qr-youtube.svg",
-      "category": "QR-Barcode",
-      "size": 35400,
-      "sha256": "74c20f323da1305b269a988e4808e37bb65fab029abd1aa176840f569e575c38",
-      "href": "./files/demo-input/QR-Barcode/qr-youtube.svg",
-      "preview": "image"
+      "category": "Security",
+      "path": "Security/demo-redaction-secrets.pdf",
+      "href": "./files/demo-input/Security/demo-redaction-secrets.pdf",
+      "preview": "pdf",
+      "synthetic": true
     },
     {
-      "path": "files/demo-input/Zip/archive-imbriquee-demo.zip",
-      "category": "Zip",
-      "size": 715,
-      "sha256": "c37d6766f1dbd62c60aa01711d6a45e23047ac88a8d37481f3f40d997a840bea",
-      "href": "./files/demo-input/Zip/archive-imbriquee-demo.zip",
-      "preview": "download"
+      "category": "Security",
+      "path": "Security/demo-redaction-secrets.txt",
+      "href": "./files/demo-input/Security/demo-redaction-secrets.txt",
+      "preview": "text",
+      "synthetic": true
     }
   ]
 }

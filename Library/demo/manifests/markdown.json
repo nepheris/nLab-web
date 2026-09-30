@@ -2,7 +2,7 @@
   "schema": "nlab-demo-manifest/v1",
   "studio": "markdown-studio",
   "label": "Markdown Studio",
-  "source": "Google Drive reference 2026-09-29",
+  "source": "Google Drive reference + synthetic local fixtures 2026-09-30",
   "files": [
     {
       "name": "rec-aub-001-caviar-d-aubergine-classique.md",
@@ -87,6 +87,13 @@
       "path": "../files/demo-input/MD/rec-aub-022-aubergine-aux-ufs-facon-brouillade.md",
       "storage": "local",
       "kind": "markdown"
+    },
+    {
+      "name": "demo-markdown-conversion.md",
+      "path": "../files/demo-input/MD/demo-markdown-conversion.md",
+      "storage": "local",
+      "kind": "markdown",
+      "purpose": "conversion-regression"
     }
   ]
 }

@@ -1,0 +1,5 @@
+id;nom;ville;quantite;commentaire
+1;Alpha;Paris;12;texte simple
+2;Bêta;Lyon;7;accent éàç
+3;Gamma;Dijon;28;"champ avec séparateur, virgule"
+4;Delta;Tours;5;"guillemets ""test"""

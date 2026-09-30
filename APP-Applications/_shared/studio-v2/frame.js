@@ -1,5 +1,5 @@
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
-import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings}from'./settings.js';
+import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings,loadStudioSettings}from'./settings.js';
 import{enhanceStudioWindow}from'./window-system.js';
 import{mountHistoryUI,recordHistory}from'./history.js';
 import{icon}from'./icon-registry.js';
@@ -57,6 +57,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
 </header>
 <nav class="studioMenu">
   ${(manifest.menus||[]).map((m,i)=>'<button class="scope-'+scopeClass(m)+(i===0?' active':'')+'" data-scope="'+scopeOf(m)+'" data-menu="'+esc(m.id)+'">'+esc(m.label)+'<small class="scopeBadge">'+scopeOf(m).toUpperCase()+'</small></button>').join('')}
+  <button id="studioVisibilityOpen" class="studioMenuUtility scope-core" data-scope="core" title="Afficher / masquer les menus et groupes du ruban">${icon('eye')}<span>Affichage</span></button>
 </nav>
 <div class="studioRibbon">
   ${(manifest.ribbon||[]).map(g=>'<div class="ribbonGroup scope-'+scopeClass(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
@@ -71,6 +72,11 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
  <div id="studioCoreSettingsBody"></div>
 </div>`;
   root.prepend(chrome);
+  const visibility=document.createElement('div');visibility.id='studioVisibilityPanel';visibility.className='studioVisibilityPanel scope-core';visibility.dataset.scope='core';visibility.hidden=true;root.insertBefore(visibility,root.querySelector('#studioMain')||root.firstChild?.nextSibling);
+  const applyMenuVisibility=()=>qsa('[data-menu]',qs('.studioMenu')).forEach(b=>b.classList.toggle('menuHidden',localStorage.getItem('nlab-studio-v2-menu-'+b.dataset.menu)==='0'));
+  const renderVisibility=()=>{const s=loadStudioSettings(),menus=(manifest.menus||[]),groups=qsa('[data-ribbon-group]').map(g=>({id:g.dataset.ribbonGroup,label:g.querySelector('.ribbonLabel')?.textContent?.trim()||g.dataset.ribbonGroup}));visibility.innerHTML='<div class="visibilityGrid"><section><strong>Menus</strong>'+menus.map(m=>'<label><input type="checkbox" data-vis-menu="'+esc(m.id)+'" '+(localStorage.getItem('nlab-studio-v2-menu-'+m.id)==='0'?'':'checked')+'> '+esc(m.label)+'</label>').join('')+'</section><section><strong>Ruban</strong>'+groups.map(g=>'<label><input type="checkbox" data-vis-ribbon="'+esc(g.id)+'" '+(localStorage.getItem('nlab-studio-v2-ribbon-'+g.id)==='0'?'':'checked')+'> '+esc(g.label)+'</label>').join('')+'</section><section><strong>Disposition</strong><label>Ruban <select id="visibilityRibbonRows"><option value="auto">Auto</option><option value="one">1 ligne</option><option value="two">2 lignes</option></select></label></section></div>';visibility.querySelector('#visibilityRibbonRows').value=s.ribbonRows||'auto';visibility.querySelectorAll('[data-vis-menu]').forEach(x=>x.onchange=()=>{localStorage.setItem('nlab-studio-v2-menu-'+x.dataset.visMenu,x.checked?'1':'0');applyMenuVisibility()});visibility.querySelectorAll('[data-vis-ribbon]').forEach(x=>x.onchange=()=>{setRibbonGroupVisible(x.dataset.visRibbon,x.checked);applyRibbonGroups()});visibility.querySelector('#visibilityRibbonRows').onchange=e=>saveStudioSettings({ribbonRows:e.target.value})};
+  applyMenuVisibility();
+  qs('#studioVisibilityOpen')?.addEventListener('click',()=>{visibility.hidden=!visibility.hidden;if(!visibility.hidden)renderVisibility()});
 
   if(!qs('#sidebarRestore')){
     const b=document.createElement('button');b.id='sidebarRestore';b.className='studioSidebarRestore scope-core';b.dataset.scope='core';b.hidden=true;b.textContent='▶';root.append(b);

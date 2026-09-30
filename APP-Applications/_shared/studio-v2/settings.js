@@ -20,7 +20,9 @@ const DEFAULTS={
   headerVisible:true,
   historyLimit:10,
   historyGroupBy:'date',
-  historyRetention:'keep'
+  historyRetention:'keep',
+  ribbonRows:'auto',
+  thumbnailQuality:'light'
 };
 
 export function loadStudioSettings(){
@@ -52,6 +54,8 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.classList.toggle('headerShadow',!!settings.headerShadow);
   b.classList.toggle('headerBlur',!!settings.headerBlur);
   b.dataset.headerMode=settings.headerMode||'sticky';
+  b.dataset.ribbonRows=settings.ribbonRows||'auto';
+  b.dataset.thumbnailQuality=settings.thumbnailQuality||'light';
   const main=qs('#studioMain');if(main){main.classList.toggle('sidebarCompact',settings.sidebarMode==='compact');main.classList.toggle('sidebarWide',settings.sidebarMode==='wide');main.classList.toggle('sidebarHidden',settings.sidebarMode==='hidden')}
   return settings;
 }
@@ -153,6 +157,8 @@ export function renderStudioSettingsPanel(host){
       </label>
       <label class="field"><span>Largeur du volet</span><input type="range" min="220" max="620" step="10" data-setting="sidebarWidth"></label>
       <label class="checkboxField"><input type="checkbox" data-setting="floatingWindows"><span>Fenêtres flottantes / ancrables</span></label>
+      <label class="field"><span>Ruban</span><select data-setting="ribbonRows"><option value="auto">Auto</option><option value="one">1 ligne</option><option value="two">2 lignes</option></select></label>
+      <label class="field"><span>Miniatures collections</span><select data-setting="thumbnailQuality"><option value="light">Légères / rapides</option><option value="standard">Standard</option></select></label>
       <button data-core-pref="expand-ribbon">Déplier le ruban</button>
       <button data-core-pref="collapse-ribbon">Replier le ruban</button>
       <div id="ribbon-group-settings"></div>
@@ -160,7 +166,7 @@ export function renderStudioSettingsPanel(host){
     </section>
   </div>`;
   host.querySelector('[data-setting="theme"]').value=s.theme;
-  for(const k of ['fontFamily','density','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
+  for(const k of ['fontFamily','density','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
   const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';
