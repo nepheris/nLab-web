@@ -60,7 +60,19 @@ export function createDefaultPersonalProfile(){
     {id:'treatment-date',label:'Traitement / année / mois',template:'{TREATMENT}/{YEAR}/{MONTH}'},
     {id:'client-project',label:'Client / projet',template:'{CLIENT}/{PROJECT}'}
    ],
-   stamps:[],
+   stamps:[
+    {id:'date',category:'Date & heure',label:'DATE',template:'DATE - {STAMP_DATE}',system:true},
+    {id:'datetime',category:'Date & heure',label:'HORODATAGE',template:'HORODATAGE - {STAMP_DATE:DD/MM/YYYY} {TIME}',system:true},
+    {id:'initials',category:'Initiales',label:'INITIALES',template:'{INITIALS}',system:true},
+    {id:'nonconforme-initials',category:'Initiales',label:'NON CONFORME · INITIALES',template:'NON CONFORME - {INITIALS}',system:true},
+    {id:'nc-initials',category:'Initiales',label:'NON CONCERNÉ · INITIALES',template:'NC_{INITIALS}',system:true},
+    {id:'vu',category:'Statut',label:'VU',template:'VU - {INITIALS} - {STAMP_DATE}',system:true},
+    {id:'nc',category:'Statut',label:'NON CONCERNÉ',template:'NC_{INITIALS}_{STAMP_DATE:YYYYMMDD}',system:true},
+    {id:'affiche',category:'Statut',label:'AFFICHÉ',template:'AFFICHE_{INITIALS}_{STAMP_DATE:YYYYMMDD}',system:true},
+    {id:'traite',category:'Statut',label:'TRAITÉ',template:'TRAITE - {INITIALS} - {STAMP_DATE}',system:true},
+    {id:'valide',category:'Validation',label:'VALIDÉ',template:'VALIDE - {INITIALS} - {STAMP_DATE}',system:true},
+    {id:'filename',category:'Document',label:'FICHIER + DATE',template:'{FILENAME} - {STAMP_DATE}',system:true}
+   ],
    output:[],
    workflows:[]
   },
@@ -131,7 +143,7 @@ function normalizeProfile(raw){
   templates:{
    naming:(()=>{const m=new Map();for(const x of [...d.templates.naming,...(Array.isArray(p.templates?.naming)?p.templates.naming:[])])m.set(x.id||JSON.stringify(x),x);return[...m.values()]})(),
    classification:Array.isArray(p.templates?.classification)?p.templates.classification:d.templates.classification,
-   stamps:Array.isArray(p.templates?.stamps)?p.templates.stamps:[],
+   stamps:(()=>{const m=new Map();for(const x of [...d.templates.stamps,...(Array.isArray(p.templates?.stamps)?p.templates.stamps:[])])m.set(x.id||JSON.stringify(x),x);return[...m.values()]})(),
    output:Array.isArray(p.templates?.output)?p.templates.output:[],
    workflows:Array.isArray(p.templates?.workflows)?p.templates.workflows:[]
   },
