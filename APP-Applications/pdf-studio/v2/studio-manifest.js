@@ -33,29 +33,29 @@ export default {
    {featureId:'pdf.pages.assemble',action:'assemblePdf',label:'Assembler',icon:'merge',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.pages.assemble',help:{summary:'Fusionner plusieurs PDF ou insérer un PDF dans le document courant.',details:'Utilise les PDF sélectionnés dans la collection ou un fichier PDF externe. L’ordre de fusion peut être ajusté avant assemblage.'}}
   ]},
   {id:'objects',label:'Annotations',scope:'pdf',items:[
-   {featureId:'pdf.objects.text',action:'text',label:'Texte',icon:'text',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.objects.text'},
-   {featureId:'pdf.objects.stamp',action:'stamp',label:'Tampon',icon:'stamp',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.objects.stamp'},
-   {featureId:'pdf.objects.highlight',action:'highlight',label:'Surligner',icon:'highlight',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.objects.highlight'},
-   {featureId:'pdf.objects.pen',action:'pen',label:'Stylo',icon:'pen',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.objects.pen'},
-   {featureId:'pdf.objects.image',action:'image',label:'Image',icon:'image',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.objects.image'},
+   {featureId:'pdf.objects.text',action:'text',label:'Texte',icon:'text',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.objects.text',help:{summary:'Placer du texte déplaçable sur une page.',details:'Le texte reste éditable comme objet jusqu’à son intégration au PDF.'}},
+   {featureId:'pdf.objects.stamp',action:'stamp',label:'Tampon',icon:'stamp',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.objects.stamp',help:{summary:'Créer et placer un tampon composite.',details:'Texte, variables, cinq dates et image/logo facultative ; modèles personnels stockés dans le profil.'}},
+   {featureId:'pdf.objects.highlight',action:'highlight',label:'Surligner',icon:'highlight',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.objects.highlight'},
+   {featureId:'pdf.objects.pen',action:'pen',label:'Stylo',icon:'pen',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.objects.pen'},
+   {featureId:'pdf.objects.image',action:'image',label:'Image',icon:'image',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.objects.image',help:{summary:'Insérer une image déplaçable/redimensionnable.',details:'Fichier local ou asset de la bibliothèque personnelle.'}},
    {featureId:'pdf.signature',action:'signature',label:'Signature',icon:'signature',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.signature',help:{summary:'Ouvrir les trois modes de signature PDF.',details:'PDF Signature visuelle (image non cryptographique), PDF Signature digitale (PAdES) et PDF Signature certifiée (PAdES + règles DocMDP).'}}
   ]},
   {id:'engines',label:'Moteurs',scope:'pdf',items:[
-   {featureId:'pdf.tools.ocr',action:'ocr',label:'OCR',icon:'ocr',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'ocr.quick',advancedStudio:{id:'ocr-studio',label:'OCR Studio'}},
-   {featureId:'pdf.tools.optimize',action:'optimize',label:'Optimiser',icon:'optimize',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.optimize.quick'},
-   {featureId:'pdf.tools.translate',action:'translate',label:'Traduire',icon:'translate',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'translation.quick',advancedStudio:{id:'translation-studio',label:'Translation Studio'}},
-   {featureId:'pdf.tools.qr',action:'qr',label:'QR / Code',icon:'qr',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'code.quick',advancedStudio:{id:'code-studio',label:'Code Studio'}},
-   {featureId:'pdf.tools.convert',action:'convert',label:'Convertir',icon:'convert',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'conversion.quick',advancedStudio:{id:'conversion-studio',label:'Conversion Studio'}}
+   {featureId:'pdf.tools.ocr',action:'ocr',label:'OCR',icon:'ocr',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'ocr.quick',advancedStudio:{id:'ocr-studio',label:'OCR Studio'}},
+   {featureId:'pdf.tools.optimize',action:'optimize',label:'Optimiser',icon:'optimize',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.optimize.quick'},
+   {featureId:'pdf.tools.translate',action:'translate',label:'Traduire',icon:'translate',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'translation.quick',advancedStudio:{id:'translation-studio',label:'Translation Studio'}},
+   {featureId:'pdf.tools.qr',action:'qr',label:'QR / Code',icon:'qr',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'code.quick',advancedStudio:{id:'code-studio',label:'Code Studio'}},
+   {featureId:'pdf.tools.convert',action:'convert',label:'Convertir',icon:'convert',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'conversion.quick',advancedStudio:{id:'conversion-studio',label:'Conversion Studio'}}
   ]},
   {id:'document',label:'Document',scope:'pdf',items:[
-   {featureId:'pdf.headerFooter',action:'headerFooter',label:'En-tête / pied',icon:'headerFooter',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.header-footer'},
-   {featureId:'pdf.crop',action:'crop',label:'Recadrer',icon:'crop',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.crop'},
-   {featureId:'pdf.forms',action:'forms',label:'Formulaires',icon:'forms',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.forms'},
-   {featureId:'pdf.redaction',action:'redaction',label:'Caviardage',icon:'redaction',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.redaction'},
-   {featureId:'pdf.compare',action:'compare',label:'Comparer',icon:'compare',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.compare'},
+   {featureId:'pdf.headerFooter',action:'headerFooter',label:'En-tête / pied',icon:'headerFooter',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.header-footer'},
+   {featureId:'pdf.crop',action:'crop',label:'Recadrer',icon:'crop',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.crop'},
+   {featureId:'pdf.forms',action:'forms',label:'Formulaires',icon:'forms',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.forms',help:{summary:'Inspecter ou aplatir les champs de formulaire PDF.',details:'L’ajout/édition avancée de champs reste à approfondir.'}},
+   {featureId:'pdf.redaction',action:'redaction',label:'Caviardage',icon:'redaction',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.redaction',help:{summary:'Marquer puis appliquer un caviardage irréversible.',details:'L’application rasterise les pages concernées afin d’éviter de laisser le texte masqué récupérable.'}},
+   {featureId:'pdf.compare',action:'compare',label:'Comparer',icon:'compare',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.compare'},
    {featureId:'pdf.batch',action:'batch',label:'Batch',icon:'batch',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.batch'},
-   {featureId:'pdf.security',action:'security',label:'Sécurité',icon:'security',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.security'},
-   {featureId:'pdf.metadata',action:'metadata',label:'Métadonnées',icon:'metadata',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.metadata'}
+   {featureId:'pdf.security',action:'security',label:'Sécurité',icon:'security',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.security',help:{summary:'Inspecter signatures et sécurité du PDF.',details:'La protection par mot de passe nécessite encore un moteur de chiffrement PDF compatible ; aucune protection factice n’est appliquée.'}},
+   {featureId:'pdf.metadata',action:'metadata',label:'Métadonnées',icon:'metadata',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.metadata'}
   ]},
   {id:'history',label:'Suivi',scope:'core',items:[
    {featureId:'core.history.undo',action:'undo',label:'Annuler',icon:'undo',scope:'core',plugin:'studio-core',status:'stable',capability:'history.undo'},
