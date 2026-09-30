@@ -184,14 +184,16 @@ export async function inspectPersonalProfileZip(file){
 }
 export async function importPersonalProfileZip(file,{mode='replace'}={}){
  const inspected=await inspectPersonalProfileZip(file),{zip,manifest}=inspected;
- if(mode==='replace')await clearAssets();
- const importedIds=new Set();
+ const prepared=[];
  for(const a of manifest.assets||[]){
-  const e=zip.file(a.path),blob=await e.async('blob');
+  const e=zip.file(a.path),raw=await e.async('blob'),blob=new Blob([raw],{type:a.type||raw.type||'application/octet-stream'});
   if(blob.size>MAX_ASSET_BYTES)throw new Error('Asset trop volumineux : '+a.name);
   if(a.sha256){const digest=await sha256(blob);if(digest&&digest!==a.sha256)throw new Error('Contrôle d’intégrité échoué : '+a.name)}
-  await putPersonalAsset(a.kind,blob,{id:a.id,name:a.name,meta:a.meta||{}});importedIds.add(a.id)
+  prepared.push({a,blob})
  }
+ if(mode==='replace')await clearAssets();
+ const importedIds=new Set();
+ for(const {a,blob}of prepared){await putPersonalAsset(a.kind,blob,{id:a.id,name:a.name,meta:a.meta||{}});importedIds.add(a.id)}
  let profile=inspected.profile;
  if(mode==='merge'){
   const current=loadPersonalProfile();
