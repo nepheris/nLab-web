@@ -4,7 +4,7 @@ export async function resolveStudioVersions({versionsHref='../versions.json',cor
  const out={...fallback};const requested=new URLSearchParams(location.search).get('version');out.requestedVersion=requested;
  try{
   const reg=await json(versionsHref),known=Array.isArray(reg.versions)?reg.versions:[];
-  const candidate=requested&&known.some(v=>v.version===requested)?requested:(reg[channel]||reg.test||reg.current||known[0]?.version||'');
+  const active=new Set([reg.test,reg.current].filter(Boolean));const candidate=requested&&active.has(requested)?requested:(reg[channel]||reg.test||reg.current||known[0]?.version||'');
   const item=known.find(v=>v.version===candidate);out.studioVersion=candidate;out.studioStatus=String(item?.status||channel||'test').toUpperCase()
  }catch{}
  try{const core=await json(coreVersionHref);out.coreVersion=core.version||''}catch{}
