@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.1.4",
+  "test": "2.2.0",
   "versions": [
+    {
+      "version": "2.2.0",
+      "label": "PDF Studio 2.2.0 TEST",
+      "date": "2026-09-30",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Remise en état fonctionnelle V2 : sélecteurs entrée/sortie et dossiers récents portables, états validés, drag-and-drop Core et fusion réordonnable, presets historiques de nommage et tampons, variables communes enrichies, objets interactifs Texte/Surlignage/Stylo/Image/Tampon/Signature avec déplacement-redimensionnement-rotation-verrouillage, tampons composites avec images/logos, OCR, optimisation, traduction, QR, conversion, en-têtes/pieds, recadrage, formulaires, caviardage, comparaison, métadonnées éditables, trois modes de signature, protection/déverrouillage AES-256 local via qpdf WASM, historique/propriétés rationalisés. Batch et rotation libre de page restent volontairement en développement."
+    },
     {
       "version": "2.1.4",
       "label": "PDF Studio 2.1.4 TEST",
       "date": "2026-09-30",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Ajout d’Assembler/Fusionner : fusion ordonnée de plusieurs PDF sélectionnés, prise en compte de la version modifiée du document courant, insertion d’un PDF avant/après la page active ou au début/à la fin, extraction des pages sélectionnées, ordre manuel Monter/Descendre/Retirer et avertissement sur les signatures cryptographiques lors de la création d’un nouveau PDF."
     },
