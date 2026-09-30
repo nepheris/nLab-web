@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "date": "2026-09-30",
   "channel": "test",
-  "notes": "Studio Core V2 partagé : ajout de l’iconographie et des styles communs pour l’assemblage/fusion PDF, en complément des profils personnels et bibliothèques d’assets."
+  "notes": "Studio Core V2 : profil personnel 1.4, récents entrée/sortie portables avec handles locaux ou éphémères en session privée, drag-and-drop fichiers/dossiers/listes triables, presets historiques de nommage/tampons, registre de variables date/heure enrichi et styles d’objets interactifs."
 }
