@@ -116,7 +116,7 @@ function setSignatureMode(mode){
  signatureMode=['visual','digital','certified'].includes(mode)?mode:'visual';
  $('[data-signature-mode]').forEach(b=>b.classList.toggle('active',b.dataset.signatureMode===signatureMode));
  const visual=signatureMode==='visual',certified=signatureMode==='certified';
- $('#signatureVisualControls').hidden=!visual;$('#signatureCryptoControls').hidden=visual;
+ $('#signatureVisualControls').hidden=false;$('#applyVisualSignature').hidden=!visual;$('#signatureCryptoControls').hidden=visual;
  $('#signatureCertificationField').hidden=!certified;
  $('#signatureModeHelp').textContent=visual
   ?'PDF Signature visuelle — image uniquement, non cryptographique.'
