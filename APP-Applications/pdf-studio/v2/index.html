@@ -13,8 +13,7 @@
  <div id="sidebarResizer" class="sidebarResizer" title="Glisser pour régler librement la largeur"></div>
  <div class="sidebarTabs" role="tablist">
   <button id="sidebar-tab-tools" class="active" data-sidebar-tab="tools">Outils</button>
-  <button id="sidebar-tab-properties" data-sidebar-tab="properties">Propriétés</button>
-  <button id="sidebar-tab-help" data-sidebar-tab="help">Aide</button>
+  <button id="sidebar-tab-properties" data-sidebar-tab="properties">Propriétés & aide</button>
   <button id="sidebar-tab-history" data-sidebar-tab="history">Historique</button>
   <button id="sidebar-tab-tasks" data-sidebar-tab="tasks">Tâches</button>
  </div>
@@ -27,7 +26,7 @@
   <details id="sectionConfig" class="toolSection scope-core" data-scope="core"><summary>0. Configuration & espace personnel <small class="scopeBadge">CORE</small></summary><div class="body"><div class="statusBox">Profil local nLab : variables, modèles, signature/paraphe et préférences exportables dans un ZIP portable.</div><div id="personalProfileHost"></div><button type="button" data-open-core-settings>Paramètres Core</button></div></details>
 
   <details id="sectionInput" class="toolSection scope-core" data-scope="core" open><summary>1. Entrée <small class="scopeBadge">CORE</small></summary><div class="body">
-   <div class="compactInputRow"><button id="pickFile" type="button" data-icon="file">Fichier</button><button id="pickFolder" type="button" data-icon="folder">Dossier</button><button id="loadLastSource" type="button" class="devFeatureBtn" title="Réouverture du dernier handle lorsque le navigateur l'autorise">Récent <small class="devBadge">DEV</small></button><label class="inlineCheck"><input id="recursiveFolders" type="checkbox" checked> Sous-dossiers</label></div>
+   <div class="compactInputRow"><button id="pickFile" type="button" data-icon="file">Fichier</button><button id="pickFolder" type="button" data-icon="folder">Dossier</button><select id="recentInputSelect" title="Entrées récentes"><option value="">Entrées récentes…</option></select><button id="loadRecentInput" type="button">Charger</button><label class="inlineCheck"><input id="recursiveFolders" type="checkbox" checked> Sous-dossiers</label></div>
    <div id="inputDropZone" class="inputDropZone" tabindex="0"><strong>Glisser-déposer</strong><span>Fichiers ou dossier compatible</span></div>
    <input id="fileInput" type="file" multiple hidden><input id="folderInput" type="file" webkitdirectory multiple hidden>
    <div class="collectionToolbar collectionToolbarPrimary">
@@ -46,7 +45,7 @@
 
   <details id="sectionOutput" class="toolSection scope-core" data-scope="core"><summary>2. Sortie & classement <small class="scopeBadge">CORE</small></summary><div class="body">
    <div class="grid2"><label>Format<select id="outputFormat"><option value="pdf">PDF</option><option value="zip">ZIP</option><option value="same">Format d’origine</option></select></label><label>Destination<select id="outputProvider"><option value="download">Téléchargement navigateur</option><option value="local">Dossier local</option></select></label></div>
-   <div class="compactInputRow"><button id="pickOutputFolder" data-icon="folder">Dossier sortie</button><button id="loadLastOutput">Dernière sortie</button></div>
+   <div class="compactInputRow"><button id="pickOutputFolder" data-icon="folder">Dossier sortie</button><select id="recentOutputSelect" title="Sorties récentes"><option value="">Sorties récentes…</option></select><button id="loadRecentOutput">Charger</button></div>
    <label>Classement<select id="outputStructure"><option value="root">Racine</option><option value="treatment">Traitement</option><option value="year-month">Année / mois</option><option value="year-month-week">Année / mois / semaine</option><option value="treatment-date">Traitement / année / mois</option><option value="custom">Template personnalisé</option></select></label>
    <input id="outputPathTemplate" value="{TREATMENT}/{YEAR}/{MONTH}" placeholder="{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}">
    <div id="outputPathPreview" class="statusBox mono">Téléchargement navigateur · racine</div>
@@ -54,8 +53,10 @@
   </div></details>
 
   <details id="sectionNaming" class="toolSection scope-core" data-scope="core"><summary>3. Nommage · préfixes & suffixes <small class="scopeBadge">CORE</small></summary><div class="body">
+   <label>Modèle enregistré<select id="namingPresetSelect"><option value="">Personnalisé</option></select></label>
    <label>Nom / modèle<input id="namingTemplate" value="{FILENAME}" placeholder="{FILENAME}_{DATE:YYYY-MM-DD}"></label>
    <div class="grid2"><label>Préfixe<input id="namingPrefix" placeholder="ex. SCAN_"></label><label>Suffixe<input id="namingSuffix" placeholder="ex. _SIGNE"></label></div>
+   <div class="compactInputRow"><input id="namingPresetLabel" placeholder="Nom du nouveau modèle"><button id="saveNamingPreset" type="button">Enregistrer le modèle</button><button id="deleteNamingPreset" type="button">Supprimer</button></div>
    <div id="namingPreview" class="statusBox mono">Aperçu du nom</div>
    <details class="inlineHelp"><summary>Variables disponibles</summary><div id="namingVariables" class="variableHelp"></div></details>
   </div></details>
@@ -126,15 +127,20 @@
   <details id="sectionRedaction" class="toolSection scope-studio" data-scope="pdf"><summary>15. Caviardage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Marquage, application irréversible et contrôle de texte résiduel.</div></details>
   <details id="sectionCompare" class="toolSection scope-studio" data-scope="pdf"><summary>16. Comparaison PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Comparaison visuelle, pixel et texte.</div></details>
   <details id="sectionBatch" class="toolSection scope-studio" data-scope="pdf"><summary>17. Traitements batch <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Traitements en lot et PipelineService.</div></details>
-  <details id="sectionSecurity" class="toolSection scope-studio" data-scope="pdf"><summary>18. Sécurité & métadonnées <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Métadonnées, nettoyage, chiffrement, PDF/A, pièces jointes et inspection de signatures.</div></details>
-  <details id="sectionDiagnostics" class="toolSection scope-core" data-scope="core"><summary>19. Historique & diagnostics <small class="scopeBadge">CORE</small></summary><div class="body"><button id="history-view-all-inline" data-icon="history">Historique complet</button><button id="copyDiagnostics">Copier le diagnostic</button></div></details>
+  <details id="sectionSecurity" class="toolSection scope-studio" data-scope="pdf"><summary>18. Sécurité & métadonnées <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+ <div class="statusBox">Protection PDF : mot de passe d’ouverture ou restrictions de modification. Les fonctions disponibles dépendent du moteur de chiffrement configuré.</div>
+ <label>Mode<select id="pdfSecurityMode"><option value="inspect">Inspecter la sécurité</option><option value="open-password">Mot de passe d’ouverture</option><option value="permissions">Restreindre les modifications</option><option value="metadata">Métadonnées</option></select></label>
+ <div id="pdfSecurityPasswordFields" class="grid2"><label>Mot de passe<input id="pdfOpenPassword" type="password" autocomplete="new-password"></label><label>Mot de passe propriétaire<input id="pdfOwnerPassword" type="password" autocomplete="new-password"></label></div>
+ <button id="inspectPdfSecurity" type="button" data-icon="security">Inspecter le PDF</button>
+ <div id="pdfSecurityStatus" class="statusBox">Aucune inspection.</div>
+</div></details>
+  <details id="sectionDiagnostics" class="toolSection scope-core" data-scope="core"><summary>19. Historique & diagnostics <small class="scopeBadge">CORE</small></summary><div class="body"><button id="history-view-all-inline" data-icon="history">Ouvrir l’onglet Historique</button><button id="copyDiagnostics">Copier le diagnostic</button></div></details>
  </section>
 
- <section id="sidebar-pane-properties" class="sidebarPane" data-sidebar-pane="properties" hidden><div class="paneTitle">Contexte de l’outil actif</div><div id="activeToolProperties" class="statusBox">Sélectionnez un outil. Les propriétés sont liées à l’aide contextuelle.</div><button id="propertiesToHelp">Voir l’aide détaillée</button></section>
- <section id="sidebar-pane-help" class="sidebarPane" data-sidebar-pane="help" hidden><div class="paneTitle">Aide contextuelle</div><div id="helpContent" class="helpList"><div><b>PDF Studio</b>Sélectionnez une commande pour afficher son aide, ses propriétés et ses IDs.</div></div><button id="detachHelp" type="button">Détacher l’aide</button></section>
+ <section id="sidebar-pane-properties" class="sidebarPane" data-sidebar-pane="properties" hidden><div class="paneTitle">Propriétés & aide</div><div id="activeToolProperties" class="statusBox">Sélectionnez un outil pour afficher ses propriétés et son aide.</div><div id="helpContent" class="helpList"><div><b>PDF Studio</b>Sélectionnez une commande pour afficher son aide, ses propriétés et ses IDs.</div></div><button id="detachHelp" type="button">Détacher l’aide</button></section>
  <section id="sidebar-pane-history" class="sidebarPane" data-sidebar-pane="history" hidden>
   <div class="paneTitle">Historique & récents</div><div class="historyUndoRow"><button id="history-undo" type="button" data-icon="undo" disabled>Annuler</button><button id="history-redo" type="button" data-icon="redo" disabled>Rétablir</button><button id="history-view-all" type="button" data-icon="history" title="Historique complet"></button></div>
-  <div class="historyQuickHead"><strong>Historique rapide</strong><span id="history-recent-count">0</span></div><div id="history-recent-list" class="historyRecentList"></div>
+  <div class="historyQuickHead"><strong>Historique rapide</strong><span id="history-recent-count">0</span></div><div id="history-recent-list" class="historyRecentList"></div><button id="history-open-full-from-tab" type="button" data-open-full-history>Ouvrir l’historique complet</button>
   <div class="historyQuickHead"><strong>Fichiers récents</strong><span>accès rapide</span></div><div id="recent-items-list" class="recentItemsList"></div>
  </section>
  <section id="sidebar-pane-tasks" class="sidebarPane" data-sidebar-pane="tasks" hidden><div class="paneTitle">Tâches & pipelines <small class="devBadge">DEV</small></div><div class="statusBox">Réservé aux workflows/pipelines et futurs traitements longs.</div><button id="sidebar-open-workflows" type="button">Ouvrir les workflows</button></section>
