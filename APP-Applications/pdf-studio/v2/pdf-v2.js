@@ -19,7 +19,7 @@ import{OutputService}from'../../_shared/studio-v2/output-service.js';
 import{acceptAttribute,isSupportedFile,formatInfo}from'../../_shared/studio-v2/format-registry.js';
 import{enhanceStudioWindow}from'../../_shared/studio-v2/window-system.js';
 import{mountPersonalProfileUI}from'../../_shared/studio-v2/personal-profile-ui.js';
-import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues,getPersonalAsset,listPersonalTemplates,savePersonalTemplate,removePersonalTemplate}from'../../_shared/studio-v2/personal-profile-service.js';
+import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues,getPersonalAsset,putPersonalAsset,addPersonalAssetRef,listPersonalTemplates,savePersonalTemplate,removePersonalTemplate}from'../../_shared/studio-v2/personal-profile-service.js';
 import{listRecentLocations,rememberLocation,resolveRecentLocation}from'../../_shared/studio-v2/recent-locations-service.js';
 import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
 import{PdfSignatureService}from'./signature-service.js';
@@ -163,6 +163,11 @@ $('#deleteNamingPreset').onclick=()=>{const id=$('#namingPresetSelect').value;if
 
 for(const id of ['stampDate','stampDateA','stampDateB','stampDateC','stampDateD']){const el=$('#'+id);if(el&&!el.value)el.value=todayValue();el?.addEventListener('input',()=>refreshStampPreview().catch(()=>{}))}
 $('#stampTemplate')?.addEventListener('input',()=>refreshStampPreview().catch(()=>{}));$('#stampImageAsset')?.addEventListener('change',()=>refreshStampPreview().catch(e=>setStatus(e.message)));
+$('#importStampImage')?.addEventListener('click',()=>$('#stampImageInput').click());
+$('#stampImageInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{
+ const a=await putPersonalAsset('stamp-image',file,{name:file.name,meta:{label:file.name,variant:'stamp-image'}}),ref={assetId:a.id,name:a.name,label:file.name,type:a.type,size:a.size,variant:'stamp-image',createdAt:new Date().toISOString()};
+ addPersonalAssetRef('stamp-image',ref);renderObjectAssetSelectors();$('#stampImageAsset').value=a.id;await refreshStampPreview();setStatus('Image ajoutée à la bibliothèque « Images de tampons ».')
+}catch(err){setStatus(err.message)}});
 $('#stampPresetSelect')?.addEventListener('change',async()=>{const item=listPersonalTemplates('stamps').find(x=>x.id===$('#stampPresetSelect').value);if(!item)return;$('#stampTemplate').value=item.template||'';$('#stampImageAsset').value=item.imageAssetId||'';await refreshStampPreview()});
 $('#saveStampPreset')?.addEventListener('click',()=>{const label=$('#stampPresetLabel').value.trim();if(!label){setStatus('Donnez un nom au modèle de tampon.');return}const current=$('#stampPresetSelect').value,id=current&&current.startsWith('user-stamp-')?current:'user-stamp-'+Date.now();savePersonalTemplate('stamps',{id,label,category:'Personnalisés',template:$('#stampTemplate').value||'',imageAssetId:$('#stampImageAsset').value||'',system:false});renderStampPresets();$('#stampPresetSelect').value=id;$('#stampPresetLabel').value='';setStatus('Modèle de tampon enregistré dans le profil.')});
 $('#deleteStampPreset')?.addEventListener('click',()=>{const id=$('#stampPresetSelect').value;if(!id.startsWith('user-stamp-')){setStatus('Seuls les tampons personnels peuvent être supprimés.');return}removePersonalTemplate('stamps',id);renderStampPresets();setStatus('Tampon personnel supprimé.')});
