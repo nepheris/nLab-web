@@ -390,3 +390,5 @@ body.studioRibbonCollapsed .ribbonContext{
 #qrPreview small{font-size:8px;color:var(--nlab-muted);word-break:break-all;text-align:center}.profileSecurityNote pre,.statusBox pre{white-space:pre-wrap}
 .themeDark .validatedChoice{background:#203b2a!important;border-color:#578b66!important;color:#bde0c6!important}.themeDark .validatedDropZone{background:#1d3024!important;border-color:#578b66!important}.themeDark .pdfObject.stamp{background:#20262ddd}
 @media(max-width:560px){.stampDateGrid{grid-template-columns:1fr}.stampDateGrid label:first-child{grid-column:auto}}
+
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}@media(max-width:720px){.grid3{grid-template-columns:1fr}}
