@@ -1,6 +1,6 @@
-import{loadPersonalProfile,updatePersonalProfile}from'./personal-profile-service.js';
+import{loadPersonalProfile,updatePersonalProfile,getPersonalProfileSecurityMode}from'./personal-profile-service.js';
 
-const DB='nlab-studio-v2-handles',STORE='handles',MAX=12;
+const DB='nlab-studio-v2-handles',STORE='handles',MAX=12;const SESSION_HANDLES=new Map();
 const now=()=>new Date().toISOString();
 const uid=()=>globalThis.crypto?.randomUUID?.()||('loc-'+Date.now()+'-'+Math.random().toString(16).slice(2));
 function openDb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,2);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
@@ -16,19 +16,19 @@ export async function rememberLocation(kind,handle,{label='',path='',provider='l
  if(!['input','output'].includes(kind))throw new Error('Type de dossier récent invalide');
  if(!handle)throw new Error('Handle de dossier absent');
  const id=uid(),name=label||handle.name||'Dossier',item={id,name,label:name,path:path||name,provider,kind,updatedAt:now(),portable:true,handleKey:'location:'+id};
- await putHandle(item.handleKey,handle);
+ if(getPersonalProfileSecurityMode()==='session')SESSION_HANDLES.set(item.handleKey,handle);else await putHandle(item.handleKey,handle);
  updatePersonalProfile(p=>{p.recentLocations=p.recentLocations||{input:[],output:[]};const prior=Array.isArray(p.recentLocations[kind])?p.recentLocations[kind]:[];p.recentLocations[kind]=[item,...prior.filter(x=>(x.path||x.name)!==(item.path||item.name))].slice(0,MAX);return p});
  return item
 }
 export async function resolveRecentLocation(kind,id,{mode}={}){
  const item=list(kind).find(x=>x.id===id);if(!item)throw new Error('Dossier récent inconnu');
- const h=await getHandle(item.handleKey||('location:'+item.id));if(!h)throw new Error('Ce dossier vient du profil mais doit être re-sélectionné sur cet appareil.');
+ const key=item.handleKey||('location:'+item.id),h=getPersonalProfileSecurityMode()==='session'?(SESSION_HANDLES.get(key)||null):await getHandle(key);if(!h)throw new Error('Ce dossier vient du profil mais doit être re-sélectionné sur cet appareil.');
  const ok=await ensureHandlePermission(h,mode|| (kind==='output'?'readwrite':'read'));if(!ok)throw new Error('Autorisation refusée pour ce dossier');
  updatePersonalProfile(p=>{const a=p.recentLocations?.[kind]||[];const x=a.find(x=>x.id===id);if(x)x.updatedAt=now();return p});
  return{item,handle:h}
 }
 export async function forgetRecentLocation(kind,id){
- const item=list(kind).find(x=>x.id===id);if(item?.handleKey)await removeHandle(item.handleKey);
+ const item=list(kind).find(x=>x.id===id);if(item?.handleKey){SESSION_HANDLES.delete(item.handleKey);await removeHandle(item.handleKey);}
  updatePersonalProfile(p=>{if(Array.isArray(p.recentLocations?.[kind]))p.recentLocations[kind]=p.recentLocations[kind].filter(x=>x.id!==id);return p})
 }
 export const RecentLocationsService=Object.freeze({list:listRecentLocations,remember:rememberLocation,resolve:resolveRecentLocation,forget:forgetRecentLocation,permission:ensureHandlePermission});
