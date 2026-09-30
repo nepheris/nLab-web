@@ -336,3 +336,21 @@ body.studioRibbonCollapsed .ribbonContext{
 [data-profile-status][data-kind="ok"]{border-color:#9bc7a5;background:#f2faf4}[data-profile-status][data-kind="error"]{border-color:#dca7a7;background:#fff4f4;color:#8b1e1e}
 .themeDark .personalProfileCard,.themeDark .profileAssetRow,.themeDark .profileImportPreview{background:#20262c;border-color:#39434c}.themeDark .profileImportStats span{background:#252c33;border-color:#39434c}
 @media(max-width:520px){.profileGrid2,.profileVariableGrid{grid-template-columns:1fr}.profileAssetRow{grid-template-columns:38px minmax(0,1fr) auto}.profileAssetRow button:last-of-type{grid-column:2/-1}}
+
+
+/* Studio Core — personal profile security + asset libraries */
+.profileSecurity{border:1px solid #d8e2e9;border-radius:7px;padding:6px;background:#fff}
+.profileSecurity>summary,.profileAssetLibrary>summary{cursor:pointer;font-size:9px;font-weight:900}
+.profileSecurityGrid{display:grid;grid-template-columns:150px minmax(0,1fr);gap:7px;margin-top:7px;align-items:start}
+.profileSecurityExplain{display:grid;gap:2px;padding:6px 7px;border-radius:6px;background:#f3f7fa;border:1px solid #dce5eb}
+.profileSecurityExplain b{font-size:9px}.profileSecurityExplain span{font-size:8px;line-height:1.35;color:var(--nlab-muted)}
+.profileSecurityNote{font-size:8px;line-height:1.35;color:#6a5960;background:#fff8e8;border:1px solid #ead6a4;border-radius:6px;padding:6px 7px}
+.profileAssetLibrary{border:1px solid #e0e6eb;border-radius:7px;padding:6px;background:#fff}.profileAssetLibrary+.profileAssetLibrary{margin-top:6px}
+.profileAssetLibrary>summary{display:flex;gap:5px;align-items:center}.profileAssetLibrary>summary small{margin-left:auto;color:var(--nlab-muted)}
+.profileAssetLibraryList{display:grid;gap:4px;margin-top:6px}.profileAssetLibraryRow{display:grid;grid-template-columns:22px 42px minmax(0,1fr) auto;gap:5px;align-items:center;border:1px solid #e6ebef;border-radius:6px;padding:5px;background:#f9fbfc}
+.profileAssetLibraryRow img{width:40px;height:32px;object-fit:contain;border:1px solid #dce4ea;border-radius:4px;background:#fff}.profileDefaultRadio{display:grid!important;place-items:center}.profileDefaultRadio input{width:auto!important}
+.profileAssetInfo{display:grid;min-width:0}.profileAssetInfo b{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profileAssetInfo small{font-size:8px;color:var(--nlab-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profileAssetLibraryRow button{font-size:8px;padding:4px 6px}
+.profileAssetAdd{display:grid;grid-template-columns:minmax(110px,1fr) 120px auto;gap:5px;margin-top:6px}.profileAssetAdd input,.profileAssetAdd select{font-size:8px}.profileAssetAdd button{font-size:8px;padding:5px 7px}
+.profileAssetEmpty{font-size:8px;color:var(--nlab-muted);padding:7px;text-align:center;border:1px dashed #d4dde4;border-radius:6px}
+.themeDark .profileSecurity,.themeDark .profileAssetLibrary{background:#20262c;border-color:#39434c}.themeDark .profileSecurityExplain,.themeDark .profileAssetLibraryRow{background:#252c33;border-color:#39434c}.themeDark .profileSecurityNote{background:#3a2d18;border-color:#6e5726;color:#e9cf94}
+@media(max-width:560px){.profileSecurityGrid{grid-template-columns:1fr}.profileAssetAdd{grid-template-columns:1fr}.profileAssetLibraryRow{grid-template-columns:22px 38px minmax(0,1fr)}.profileAssetLibraryRow button{grid-column:3}}

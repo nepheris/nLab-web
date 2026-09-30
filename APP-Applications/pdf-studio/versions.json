@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.1.1",
+  "test": "2.1.2",
   "versions": [
+    {
+      "version": "2.1.2",
+      "label": "PDF Studio 2.1.2 TEST",
+      "date": "2026-09-30",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Profil personnel sécurisé : choix Appareil local / Session privée, assets de signature/paraphe chiffrés AES-GCM en session, effacement/verrouillage de session, bibliothèques multi-signatures et multi-paraphes avec variante et valeur par défaut, ZIP compatible."
+    },
     {
       "version": "2.1.1",
       "label": "PDF Studio 2.1.1 TEST",
       "date": "2026-09-30",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Ajout du profil personnel nLab local-first : variables personnelles, signature/paraphe, modèles et préférences Studio exportables/importables via ZIP avec manifest, contrôle d’intégrité, prévisualisation Fusionner/Remplacer et restauration des préférences portables."
     },
