@@ -2,13 +2,21 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const uid=()=>globalThis.crypto?.randomUUID?.()||('obj-'+Date.now()+'-'+Math.random().toString(16).slice(2));
 function hexRgb(hex='#316D9A'){const h=String(hex).replace('#','').padEnd(6,'0');return{r:parseInt(h.slice(0,2),16)/255,g:parseInt(h.slice(2,4),16)/255,b:parseInt(h.slice(4,6),16)/255}}
 function blobDataUrl(blob){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(blob)})}
+async function normalizedImageDataUrl(blob){
+ if(!blob)return null;
+ if(['image/png','image/jpeg'].includes(String(blob.type||'').toLowerCase()))return blobDataUrl(blob);
+ const url=URL.createObjectURL(blob);try{
+  const img=await new Promise((res,rej)=>{const x=new Image();x.onload=()=>res(x);x.onerror=()=>rej(new Error('Format image non décodable'));x.src=url});
+  const canvas=document.createElement('canvas');canvas.width=img.naturalWidth||img.width;canvas.height=img.naturalHeight||img.height;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);return canvas.toDataURL('image/png')
+ }finally{URL.revokeObjectURL(url)}
+}
 function dataUrlBytes(dataUrl){const [head,b64]=String(dataUrl).split(','),bin=atob(b64||''),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return{bytes:u,type:/png/i.test(head)?'png':'jpg'}}
 export class PdfObjectLayer extends EventTarget{
  constructor({engine,mainHost,templates}={}){super();this.engine=engine;this.mainHost=mainHost;this.templates=templates;this.tool='select';this.selectedId=null;this.style={color:'#316D9A',fontSize:12,opacity:1,penWidth:2,highlightColor:'#FFEB3B'};this.text='Texte';this.imageData=null;this.imageKind='image';this.stamp={template:'VALIDÉ\n{DISPLAY_NAME}\n{STAMP_DATE:DD/MM/YYYY}',imageData:null};this.penDraft=null}
  setTool(tool){this.tool=tool||'select';this.render();this.dispatchEvent(new CustomEvent('toolchange',{detail:{tool:this.tool}}))}
  setStyle(next={}){this.style={...this.style,...next};this.render()}
  setText(text){this.text=String(text||'Texte')}
- async setImageBlob(blob,kind='image'){this.imageData=blob?await blobDataUrl(blob):null;this.imageKind=kind;return this.imageData}
+ async setImageBlob(blob,kind='image'){this.imageData=blob?await normalizedImageDataUrl(blob):null;this.imageKind=kind;return this.imageData}
  setImageData(dataUrl,kind='image'){this.imageData=dataUrl||null;this.imageKind=kind}
  setStamp({template,imageData}={}){if(template!=null)this.stamp.template=String(template);if(imageData!==undefined)this.stamp.imageData=imageData}
  hasObjects(){return this.engine.pageAnnotations&&[...this.engine.pageAnnotations.values()].some(a=>a?.length)}
