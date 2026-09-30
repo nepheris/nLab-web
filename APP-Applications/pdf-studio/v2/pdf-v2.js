@@ -367,19 +367,19 @@ async function applyQrQuick(){
 }
 async function runQuickConversion(){
  if(!engine.pageCount)throw new Error('Chargez un PDF.');const type=$('#quickConversion').value,pages=toolPages('convertScope'),stem=(engine.fileName||'document').replace(/\.pdf$/i,'');
- if(type==='txt'){const chunks=[];for(const p of pages)chunks.push('--- Page '+p+' ---\n'+await engine.pageText(p));await output.saveBlob(new Blob([chunks.join('\n\n')],{type:'text/plain;charset=utf-8'}),stem+'.txt',{parts:[]});setStatus('Texte exporté.');return}
- const blob=await advancedTools.allImagesZip({type:type==='jpg'?'jpg':'png',scale:2,quality:.9,pages});await output.saveBlob(blob,stem+'_'+type+'.zip',{parts:[]});setStatus('Images '+type.toUpperCase()+' exportées en ZIP.')
+ if(type==='txt'){const chunks=[];for(const p of pages)chunks.push('--- Page '+p+' ---\n'+await engine.pageText(p));await saveOutputBlob(new Blob([chunks.join('\n\n')],{type:'text/plain;charset=utf-8'}),stem+'.txt',{parts:[]});setStatus('Texte exporté.');return}
+ const blob=await advancedTools.allImagesZip({type:type==='jpg'?'jpg':'png',scale:2,quality:.9,pages});await saveOutputBlob(blob,stem+'_'+type+'.zip',{parts:[]});setStatus('Images '+type.toUpperCase()+' exportées en ZIP.')
 }
 async function protectCurrentPdf(){
  if(!engine.pageCount)throw new Error('Chargez un PDF.');const bytes=await exportBytesWithObjects(),user=$('#pdfOpenPassword').value||'',owner=$('#pdfOwnerPassword').value||'';
  $('#pdfSecurityStatus').textContent='Chargement de qpdf WASM et chiffrement AES-256…';
  const protectedBytes=await securityService.protect(bytes,{userPassword:user,ownerPassword:owner,print:$('#pdfPermissionPrint').value,modify:$('#pdfPermissionModify').value,extract:$('#pdfPermissionExtract').checked});
- const name=(engine.fileName||'document.pdf').replace(/\.pdf$/i,'')+'_protege.pdf';await output.saveBlob(new Blob([protectedBytes],{type:'application/pdf'}),name,{parts:[]});
+ const name=(engine.fileName||'document.pdf').replace(/\.pdf$/i,'')+'_protege.pdf';await saveOutputBlob(new Blob([protectedBytes],{type:'application/pdf'}),name,{parts:[]});
  $('#pdfOpenPassword').value='';$('#pdfOwnerPassword').value='';$('#pdfSecurityStatus').textContent='Copie AES-256 créée : '+name;setStatus('PDF protégé exporté : '+name)
 }
 async function unlockSelectedPdf(){
  if(!unlockPdfFile)throw new Error('Choisissez un PDF protégé.');const password=$('#unlockPdfPassword').value||'';$('#pdfSecurityStatus').textContent='Déverrouillage qpdf WASM…';
- const bytes=await securityService.unlock(unlockPdfFile,password),name=(unlockPdfFile.name||'document.pdf').replace(/\.pdf$/i,'')+'_deverrouille.pdf';await output.saveBlob(new Blob([bytes],{type:'application/pdf'}),name,{parts:[]});
+ const bytes=await securityService.unlock(unlockPdfFile,password),name=(unlockPdfFile.name||'document.pdf').replace(/\.pdf$/i,'')+'_deverrouille.pdf';await saveOutputBlob(new Blob([bytes],{type:'application/pdf'}),name,{parts:[]});
  $('#unlockPdfPassword').value='';$('#pdfSecurityStatus').textContent='Copie déverrouillée créée : '+name;setStatus('PDF déverrouillé exporté : '+name)
 }
 async function inspectSecurityAndMetadata(){
@@ -480,7 +480,7 @@ async function insertAssemblyPdf(){
 }
 async function extractSelectedPages(){
  if(!engine.pageCount)return;await commitObjectsIfNeeded();const pages=engine.selected.size?[...engine.selected]:[engine.currentPage],bytes=await engine.extractPages(pages),stem=(engine.fileName||'document').replace(/\.pdf$/i,'');
- const name=stem+'_extrait_'+pages.join('-')+'.pdf';await output.saveBlob(new Blob([bytes],{type:'application/pdf'}),name,{parts:[]});setStatus('Pages extraites : '+name);
+ const name=stem+'_extrait_'+pages.join('-')+'.pdf';await saveOutputBlob(new Blob([bytes],{type:'application/pdf'}),name,{parts:[]});setStatus('Pages extraites : '+name);
  recordHistory({studio:'pdf-studio',type:'action',label:'Pages extraites',detail:pages.join(', '),target:name,action:'extractPages',repeatable:false})
 }
 async function currentBlob(){return new Blob([await exportBytesWithObjects()],{type:'application/pdf'})}
@@ -488,6 +488,11 @@ async function ensureOutputDirectory(){
  if(output.handle)return output.handle;
  const h=await output.chooseDirectory();activeOutputLocation=await rememberLocation('output',h,{label:h.name,path:h.name});$('#outputProvider').value='local';setValidatedButton($('#pickOutputFolder'),true,'Dossier de sortie validé : '+h.name);renderRecentLocationSelects();updateOutputPreview();return h
 }
+async function saveOutputBlob(blob,name,{parts=[]}={}){
+ if($('#outputProvider')?.value==='local'&&!output.handle)await ensureOutputDirectory();
+ return output.saveBlob(blob,name,{parts})
+}
+
 async function saveCurrent({classify=false,forcePicker=false}={}){
  if(!engine.pageCount)return;const format=$('#outputFormat').value;if(format==='zip')return saveZip({classify});
  let blob,name;if(format==='same'&&engine.sourceFile&&activeFileCapabilities?.family!=='pdf'){blob=engine.sourceFile;name=outputName('.'+(formatInfo(engine.sourceFile).extension||'bin'))}else{blob=await currentBlob();name=outputName('.pdf')}
