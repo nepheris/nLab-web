@@ -363,3 +363,10 @@ body.studioRibbonCollapsed .ribbonContext{
 #signatureVisualControls,#signatureCryptoControls{display:grid;gap:7px}.warningBox{background:#fff8e8;border-color:#ead6a4;color:#6d5923}.signatureCryptoStatus{white-space:pre-wrap;max-height:180px;overflow:auto;font:8px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;background:#f8fafc;border:1px solid #dce4ea;border-radius:6px;padding:7px;margin:0}
 .themeDark .signatureAssetPreview,.themeDark .signatureCryptoStatus{background:#252c33;border-color:#39434c}.themeDark .warningBox{background:#3a2d18;border-color:#6e5726;color:#e9cf94}
 @media(max-width:560px){.signatureModeTabs,.signatureCommonGrid{grid-template-columns:1fr}}
+
+
+/* Studio Core — generic personal image libraries */
+.profileAssetKindIcon{display:grid;place-items:center;width:20px;height:20px;border-radius:5px;background:#eef4f8;color:#315a72;font-size:11px;font-weight:800}
+.profileAssetAddSimple{grid-template-columns:minmax(120px,1fr) auto}
+.profileAssetLibraryRow img[hidden]{display:none}
+.themeDark .profileAssetKindIcon{background:#2c3740;color:#9ec4dc}
