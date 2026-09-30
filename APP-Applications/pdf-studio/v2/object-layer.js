@@ -31,6 +31,10 @@ export class PdfObjectLayer extends EventTarget{
   return null
  }
  selected(){for(const arr of this.engine.pageAnnotations.values())for(const a of arr)if(a.id===this.selectedId)return a;return null}
+ updateSelected(patch={}){const a=this.selected();if(!a)return null;Object.assign(a,patch);this.engine.dispatchEvent(new Event('annotations'));this.render();return a}
+ rotateSelected(delta){const a=this.selected();if(!a)return null;a.rotation=(Number(a.rotation)||0)+Number(delta||0);while(a.rotation>360)a.rotation-=360;while(a.rotation<-360)a.rotation+=360;this.engine.dispatchEvent(new Event('annotations'));this.render();return a}
+ setSelectedRotation(value){const a=this.selected();if(!a)return null;a.rotation=Number(value)||0;this.engine.dispatchEvent(new Event('annotations'));this.render();return a}
+ toggleLock(){const a=this.selected();if(!a)return null;a.locked=!a.locked;this.engine.dispatchEvent(new Event('annotations'));this.render();return a}
  deleteSelected(){if(!this.selectedId)return false;const ok=this.engine.removeAnnotation(this.selectedId);if(ok)this.selectedId=null;return ok}
  render(){
   if(!this.mainHost)return;
