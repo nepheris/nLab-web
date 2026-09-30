@@ -61,6 +61,26 @@
   </div></details>
 
   <details id="sectionPages" class="toolSection scope-studio" data-scope="pdf" open><summary>4. Pages & portée <small class="scopeBadge">PDF</small></summary><div class="body"><label>Portée<select id="pageScope"><option value="current">Page courante</option><option value="selected">Pages sélectionnées</option><option value="all">Toutes les pages</option></select></label><div class="statusBox">Les opérations courantes de page sont également disponibles directement dans « Aperçu / organisation ».</div></div></details>
+  <details id="sectionAssembly" class="toolSection scope-studio" data-scope="pdf"><summary>4 bis. Assembler & fusionner <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+   <div class="statusBox">Fusionner plusieurs PDF sélectionnés en un nouveau document, ou insérer un PDF dans le document courant.</div>
+   <div class="assemblyModeTabs">
+    <button type="button" class="active" data-assembly-mode="merge">Fusionner la sélection</button>
+    <button type="button" data-assembly-mode="insert">Insérer un PDF</button>
+   </div>
+   <div id="assemblyMergePanel">
+    <div class="compactInputRow"><button id="assemblyUseSelection" type="button" data-icon="merge">Utiliser les PDF sélectionnés</button><span id="assemblySelectionCount" class="grow">0 PDF</span></div>
+    <div id="assemblyList" class="assemblyList"></div>
+    <div class="compactInputRow"><button id="assemblyMoveUp" type="button">↑ Monter</button><button id="assemblyMoveDown" type="button">↓ Descendre</button><button id="assemblyRemove" type="button">Retirer</button></div>
+    <label>Nom du nouveau document<input id="assemblyOutputName" value="fusion.pdf" placeholder="fusion.pdf"></label>
+    <button id="assemblyMergeNow" type="button" data-icon="merge">Fusionner dans cet ordre</button>
+   </div>
+   <div id="assemblyInsertPanel" hidden>
+    <label>Position d’insertion<select id="assemblyInsertPosition"><option value="after-current">Après la page courante</option><option value="before-current">Avant la page courante</option><option value="start">Au début</option><option value="end">À la fin</option></select></label>
+    <div class="compactInputRow"><button id="assemblyPickInsertPdf" type="button" data-icon="file">Choisir un PDF à insérer</button><span id="assemblyInsertFileName" class="grow">Aucun fichier</span></div>
+    <input id="assemblyInsertFile" type="file" accept=".pdf,application/pdf" hidden>
+    <button id="assemblyInsertNow" type="button" data-icon="addPage">Insérer toutes les pages</button>
+   </div>
+  </div></details>
 
   <details id="sectionStamps" class="toolSection scope-studio" data-scope="pdf"><summary>5. Tampons & 5 dates <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Bibliothèque, modèle, variables, position, portée et 5 dates à reconnecter depuis V1.</div></details>
   <details id="sectionAnnotations" class="toolSection scope-studio" data-scope="pdf"><summary>6. Annotations & objets <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Texte, tampon, surligneur, stylo, image, signature et moteur d’objets.</div></details>
