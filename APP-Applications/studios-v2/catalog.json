@@ -1,16 +1,16 @@
 {
   "schema": "nlab-studios-v2-catalog/v1",
   "core": "../_shared/studio-v2/",
-  "version": "2.0.0",
-  "updated": "2026-09-29",
+  "version": "2.1.0",
+  "updated": "2026-09-30",
   "studios": [
     {
       "id": "pdf-studio",
       "name": "PDF Studio V2",
       "status": "test",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "href": "../pdf-studio/v2/",
-      "note": "Banc d’intégration du Studio Core V2. Fonctions PDF validées migrées progressivement."
+      "note": "PDF Studio 2.1.0 TEST. Le Hub canonique est ../studios/."
     },
     {
       "id": "markdown-studio",
@@ -84,5 +84,7 @@
       "href": "../file-studio/",
       "note": "Plugin File à migrer sur Core V2."
     }
-  ]
+  ],
+  "deprecated": true,
+  "canonical": "../studios/"
 }
