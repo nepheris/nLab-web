@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.1.0",
+  "test": "2.1.1",
   "versions": [
+    {
+      "version": "2.1.1",
+      "label": "PDF Studio 2.1.1 TEST",
+      "date": "2026-09-30",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Ajout du profil personnel nLab local-first : variables personnelles, signature/paraphe, modèles et préférences Studio exportables/importables via ZIP avec manifest, contrôle d’intégrité, prévisualisation Fusionner/Remplacer et restauration des préférences portables."
+    },
     {
       "version": "2.1.0",
       "label": "PDF Studio 2.1.0 TEST",
       "date": "2026-09-30",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Nouvelle base de convergence UX/Core : navigateur de fichiers avec miniatures légères, tri/groupement/navigation, registre multi-format, aperçu rapide PDF/images/texte/Markdown/CSV/DOCX/ODT/XLSX selon moteur disponible, organisation des pages compacte avec zoom de vignettes, actions par vignette et tuile Ajouter, Undo/Redo et historique filtrable, sortie PDF/ZIP + classement, nommage dynamique par variables, ruban complet avec SVG historiques, visibilité/ruban configurables et fenêtres Core flottantes."
     },
