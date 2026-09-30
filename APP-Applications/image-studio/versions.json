@@ -1,13 +1,22 @@
 {
   "name": "Image Studio",
-  "current": "0.2.0",
+  "current": "0.2.1",
   "test": null,
   "versions": [
+    {
+      "version": "0.2.1",
+      "label": "Image Studio Alpha 0.2.1",
+      "date": "2026-09-30",
+      "current": true,
+      "status": "current",
+      "href": "./",
+      "notes": "Correctif : chemins du corpus de démonstration/calibration réparés après réorganisation de Library/demo. Fonctions de rotation, miroir, redimensionnement, export et calibration inchangées."
+    },
     {
       "version": "0.2.0",
       "label": "Image Studio Alpha 0.2",
       "date": "2026-09-29",
-      "current": true,
+      "current": false,
       "status": "current",
       "href": "./",
       "notes": "Version publiée lors de l’introduction du registre commun Studio. Rotation, miroir, redimensionnement, export et calibration/mesure."

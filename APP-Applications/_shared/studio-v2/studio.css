@@ -378,3 +378,17 @@ body.studioRibbonCollapsed .ribbonContext{
 .assemblyList{display:grid;gap:4px;max-height:190px;overflow:auto;padding:4px;border:1px solid #dce4ea;border-radius:7px;background:#f8fafc}
 .assemblyItem{display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:center;text-align:left;border:1px solid #e2e8ed;background:#fff;border-radius:6px;padding:5px}.assemblyItem.active{border-color:#1976b8;box-shadow:0 0 0 1px #1976b8 inset}.assemblyItem b,.assemblyItem small{display:block}.assemblyItem b{font-size:9px}.assemblyItem small{font-size:8px;color:var(--nlab-muted)}.assemblyOrder{display:grid;place-items:center;width:22px;height:22px;border-radius:999px;background:#eaf2f7;font-size:8px;font-weight:900}
 .themeDark .assemblyList{background:#171c21;border-color:#39434c}.themeDark .assemblyItem{background:#252c33;border-color:#39434c}.themeDark .assemblyOrder{background:#33424d}
+
+
+/* Studio Core — validated locations, presets and PDF object layer */
+.validatedChoice{background:#eaf6ee!important;border-color:#86bf97!important;color:#215d2e!important;box-shadow:0 0 0 1px #86bf9740 inset}
+.validatedDropZone{border-color:#75b78a!important;background:#eff9f2!important}
+.presetButtons,.objectToolButtons{display:flex;gap:4px;flex-wrap:wrap}.presetButtons button.active,.objectToolButtons button.active{background:#e8f3fb;border-color:#79aecd;color:#0c5d91;font-weight:800}
+.stampDateGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.stampDateGrid label:first-child{grid-column:1/-1}
+.objectLayerHost{position:relative;overflow:visible}.pageObjectLayer{position:absolute;inset:0 0 18px 0;z-index:8;pointer-events:auto}.pageObjectLayer:empty{pointer-events:auto}
+.pdfObject{position:absolute;min-width:18px;min-height:14px;cursor:move;box-sizing:border-box;white-space:pre-wrap;text-align:left;transform-origin:top left;z-index:3}.pdfObject.selected{outline:1px dashed #1784c4;outline-offset:2px}.pdfObject.locked{cursor:not-allowed}.pdfObject img{display:block;width:100%;height:auto;max-width:none;pointer-events:none}.pdfObject.highlight,.pdfObject.redaction{min-width:35px}.pdfObject.stamp{display:grid;gap:3px;padding:3px;border:1px solid currentColor;border-radius:3px;background:#ffffffcc}.pdfObject.stamp img{max-height:60px;object-fit:contain}.pdfObjectResize{position:absolute;width:10px;height:10px;right:-6px;bottom:-6px;border-radius:2px;background:#1784c4;border:1px solid #fff;cursor:nwse-resize}.penObject{position:absolute;inset:0;width:100%;height:100%;overflow:visible;cursor:pointer;pointer-events:auto}.penObject.selected{filter:drop-shadow(0 0 2px #1684c8)}
+#qrPreview small{font-size:8px;color:var(--nlab-muted);word-break:break-all;text-align:center}.profileSecurityNote pre,.statusBox pre{white-space:pre-wrap}
+.themeDark .validatedChoice{background:#203b2a!important;border-color:#578b66!important;color:#bde0c6!important}.themeDark .validatedDropZone{background:#1d3024!important;border-color:#578b66!important}.themeDark .pdfObject.stamp{background:#20262ddd}
+@media(max-width:560px){.stampDateGrid{grid-template-columns:1fr}.stampDateGrid label:first-child{grid-column:auto}}
+
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}@media(max-width:720px){.grid3{grid-template-columns:1fr}}

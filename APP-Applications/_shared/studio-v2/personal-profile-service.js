@@ -31,18 +31,27 @@ export function getPersonalProfileSecurityMode(){
 export function createDefaultPersonalProfile(){
  return{
   schema:SCHEMA,
-  profileVersion:'1.3.0',
+  profileVersion:'1.4.0',
   createdAt:now(),
   updatedAt:now(),
   identity:{displayName:'',firstName:'',lastName:'',initials:'',displayFormat:'first-last'},
   variables:{FIRST_NAME:'',LAST_NAME:'',FULL_NAME:'',LAST_FIRST:'',DISPLAY_NAME:'',INITIALS:'',CLIENT:'',PROJECT:'',REFERENCE:'',SITE:'',SERVICE:'',CATEGORY:'',TAG:'',TREATMENT:'TRAITEMENT'},
   templates:{
    naming:[
-    {id:'original',label:'Nom original',template:'{FILENAME}',prefix:'',suffix:''},
-    {id:'date-name',label:'Date + nom',template:'{DATE:YYYY-MM-DD}_{FILENAME}',prefix:'',suffix:''},
-    {id:'name-date',label:'Nom + date',template:'{FILENAME}_{DATE:YYYY-MM-DD}',prefix:'',suffix:''},
-    {id:'ocr-name',label:'OCR + nom',template:'{FILENAME}',prefix:'OCR_',suffix:''},
-    {id:'name-ocr',label:'Nom + OCR',template:'{FILENAME}',prefix:'',suffix:'_OCR'}
+    {id:'original',label:'Nom original',template:'{FILENAME}',prefix:'',suffix:'',system:true},
+    {id:'date-name',label:'Date + nom',template:'{DATE:YYYY-MM-DD}_{FILENAME}',prefix:'',suffix:'',system:true},
+    {id:'name-date',label:'Nom + date',template:'{FILENAME}_{DATE:YYYY-MM-DD}',prefix:'',suffix:'',system:true},
+    {id:'ocr-name',label:'OCR + nom',template:'{FILENAME}',prefix:'OCR_',suffix:'',system:true},
+    {id:'name-ocr',label:'Nom + OCR',template:'{FILENAME}',prefix:'',suffix:'_OCR',system:true},
+    {id:'sys-prefix-date',label:'Préfixe · date',template:'{FILENAME}',prefix:'{DATE:YYYYMMDD}_',suffix:'',system:true},
+    {id:'sys-prefix-month',label:'Préfixe · année-mois',template:'{FILENAME}',prefix:'{YEAR}-{MONTH}_',suffix:'',system:true},
+    {id:'sys-prefix-initials',label:'Préfixe · initiales',template:'{FILENAME}',prefix:'{INITIALS}_',suffix:'',system:true},
+    {id:'sys-prefix-valid',label:'Préfixe · validé',template:'{FILENAME}',prefix:'VALIDE_{STAMP_DATE:YYYYMMDD}_',suffix:'',system:true},
+    {id:'sys-suffix-date',label:'Suffixe · date',template:'{FILENAME}',prefix:'',suffix:'_{DATE:YYYYMMDD}',system:true},
+    {id:'sys-suffix-month',label:'Suffixe · année-mois',template:'{FILENAME}',prefix:'',suffix:'_{YEAR}{MONTH}',system:true},
+    {id:'sys-suffix-initials',label:'Suffixe · initiales',template:'{FILENAME}',prefix:'',suffix:'_{INITIALS}',system:true},
+    {id:'sys-suffix-treated',label:'Suffixe · traité',template:'{FILENAME}',prefix:'',suffix:'_TRAITE',system:true},
+    {id:'sys-suffix-review-d',label:'Suffixe · réévaluation D',template:'{FILENAME}',prefix:'',suffix:'_REV_{DATE_D:YYYYMMDD}',system:true}
    ],
    classification:[
     {id:'root',label:'Racine',template:''},
@@ -51,7 +60,19 @@ export function createDefaultPersonalProfile(){
     {id:'treatment-date',label:'Traitement / année / mois',template:'{TREATMENT}/{YEAR}/{MONTH}'},
     {id:'client-project',label:'Client / projet',template:'{CLIENT}/{PROJECT}'}
    ],
-   stamps:[],
+   stamps:[
+    {id:'date',category:'Date & heure',label:'DATE',template:'DATE - {STAMP_DATE}',system:true},
+    {id:'datetime',category:'Date & heure',label:'HORODATAGE',template:'HORODATAGE - {STAMP_DATE:DD/MM/YYYY} {TIME}',system:true},
+    {id:'initials',category:'Initiales',label:'INITIALES',template:'{INITIALS}',system:true},
+    {id:'nonconforme-initials',category:'Initiales',label:'NON CONFORME · INITIALES',template:'NON CONFORME - {INITIALS}',system:true},
+    {id:'nc-initials',category:'Initiales',label:'NON CONCERNÉ · INITIALES',template:'NC_{INITIALS}',system:true},
+    {id:'vu',category:'Statut',label:'VU',template:'VU - {INITIALS} - {STAMP_DATE}',system:true},
+    {id:'nc',category:'Statut',label:'NON CONCERNÉ',template:'NC_{INITIALS}_{STAMP_DATE:YYYYMMDD}',system:true},
+    {id:'affiche',category:'Statut',label:'AFFICHÉ',template:'AFFICHE_{INITIALS}_{STAMP_DATE:YYYYMMDD}',system:true},
+    {id:'traite',category:'Statut',label:'TRAITÉ',template:'TRAITE - {INITIALS} - {STAMP_DATE}',system:true},
+    {id:'valide',category:'Validation',label:'VALIDÉ',template:'VALIDE - {INITIALS} - {STAMP_DATE}',system:true},
+    {id:'filename',category:'Document',label:'FICHIER + DATE',template:'{FILENAME} - {STAMP_DATE}',system:true}
+   ],
    output:[],
    workflows:[]
   },
@@ -120,9 +141,9 @@ function normalizeProfile(raw){
   identity:{...d.identity,...(p.identity||{})},
   variables:{...d.variables,...(p.variables||{})},
   templates:{
-   naming:Array.isArray(p.templates?.naming)?p.templates.naming:d.templates.naming,
+   naming:(()=>{const m=new Map();for(const x of [...d.templates.naming,...(Array.isArray(p.templates?.naming)?p.templates.naming:[])])m.set(x.id||JSON.stringify(x),x);return[...m.values()]})(),
    classification:Array.isArray(p.templates?.classification)?p.templates.classification:d.templates.classification,
-   stamps:Array.isArray(p.templates?.stamps)?p.templates.stamps:[],
+   stamps:(()=>{const m=new Map();for(const x of [...d.templates.stamps,...(Array.isArray(p.templates?.stamps)?p.templates.stamps:[])])m.set(x.id||JSON.stringify(x),x);return[...m.values()]})(),
    output:Array.isArray(p.templates?.output)?p.templates.output:[],
    workflows:Array.isArray(p.templates?.workflows)?p.templates.workflows:[]
   },
@@ -330,7 +351,7 @@ export async function exportPersonalProfileZip({download=true,fileName=null}={})
   manifestAssets.push({id:a.id,kind:a.kind,name:a.name,type:a.type,size:a.size,path,sha256:await sha256(a.blob),meta:a.meta||{}});
   zip.file(path,a.blob,{binary:true})
  }
- const exportedAt=now(),manifest={schema:SCHEMA,profileVersion:profile.profileVersion||'1.3.0',exportedAt,assetCount:manifestAssets.length,assets:manifestAssets};
+ const exportedAt=now(),manifest={schema:SCHEMA,profileVersion:profile.profileVersion||'1.4.0',exportedAt,assetCount:manifestAssets.length,assets:manifestAssets};
  zip.file('manifest.json',JSON.stringify(manifest,null,2));
  zip.file('profile.json',JSON.stringify({...profile,updatedAt:exportedAt},null,2));
  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
