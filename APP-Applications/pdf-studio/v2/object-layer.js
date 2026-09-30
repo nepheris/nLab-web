@@ -4,12 +4,12 @@ function hexRgb(hex='#316D9A'){const h=String(hex).replace('#','').padEnd(6,'0')
 function blobDataUrl(blob){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(blob)})}
 function dataUrlBytes(dataUrl){const [head,b64]=String(dataUrl).split(','),bin=atob(b64||''),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return{bytes:u,type:/png/i.test(head)?'png':'jpg'}}
 export class PdfObjectLayer extends EventTarget{
- constructor({engine,mainHost,templates}={}){super();this.engine=engine;this.mainHost=mainHost;this.templates=templates;this.tool='select';this.selectedId=null;this.style={color:'#316D9A',fontSize:12,opacity:1,penWidth:2,highlightColor:'#FFEB3B'};this.text='Texte';this.imageData=null;this.stamp={template:'VALIDÉ\n{DISPLAY_NAME}\n{STAMP_DATE:DD/MM/YYYY}',imageData:null};this.penDraft=null}
+ constructor({engine,mainHost,templates}={}){super();this.engine=engine;this.mainHost=mainHost;this.templates=templates;this.tool='select';this.selectedId=null;this.style={color:'#316D9A',fontSize:12,opacity:1,penWidth:2,highlightColor:'#FFEB3B'};this.text='Texte';this.imageData=null;this.imageKind='image';this.stamp={template:'VALIDÉ\n{DISPLAY_NAME}\n{STAMP_DATE:DD/MM/YYYY}',imageData:null};this.penDraft=null}
  setTool(tool){this.tool=tool||'select';this.render();this.dispatchEvent(new CustomEvent('toolchange',{detail:{tool:this.tool}}))}
  setStyle(next={}){this.style={...this.style,...next};this.render()}
  setText(text){this.text=String(text||'Texte')}
- async setImageBlob(blob){this.imageData=blob?await blobDataUrl(blob):null;return this.imageData}
- setImageData(dataUrl){this.imageData=dataUrl||null}
+ async setImageBlob(blob,kind='image'){this.imageData=blob?await blobDataUrl(blob):null;this.imageKind=kind;return this.imageData}
+ setImageData(dataUrl,kind='image'){this.imageData=dataUrl||null;this.imageKind=kind}
  setStamp({template,imageData}={}){if(template!=null)this.stamp.template=String(template);if(imageData!==undefined)this.stamp.imageData=imageData}
  hasObjects(){return this.engine.pageAnnotations&&[...this.engine.pageAnnotations.values()].some(a=>a?.length)}
  pointPct(ev,wrap){const r=wrap.getBoundingClientRect();return{x:clamp((ev.clientX-r.left)/r.width*100,0,99),y:clamp((ev.clientY-r.top)/r.height*100,0,99)}}
@@ -17,7 +17,7 @@ export class PdfObjectLayer extends EventTarget{
  addAt(page,x,y,type=this.tool){
   if(type==='text')return this.add(page,{type:'text',xPct:x,yPct:y,text:this.text,fontSize:this.style.fontSize,color:this.style.color,wPct:28});
   if(type==='highlight')return this.add(page,{type:'highlight',xPct:x,yPct:y,wPct:24,hPct:5,color:this.style.highlightColor,opacity:.35});
-  if(type==='image'){if(!this.imageData)throw new Error('Choisissez une image');return this.add(page,{type:'image',xPct:x,yPct:y,wPct:22,dataUrl:this.imageData})}
+  if(type==='image'||type==='signature'){if(!this.imageData)throw new Error(type==='signature'?'Choisissez une signature ou un paraphe':'Choisissez une image');return this.add(page,{type,xPct:x,yPct:y,wPct:type==='signature'?24:22,dataUrl:this.imageData})}
   if(type==='stamp'){const text=this.templates?.resolve?.(this.stamp.template,this.engine.fileName,{PAGE:page,PAGES:this.engine.pageCount})||this.stamp.template;return this.add(page,{type:'stamp',xPct:x,yPct:y,wPct:30,text,fontSize:this.style.fontSize,color:'#A1453F',imageDataUrl:this.stamp.imageData||null})}
   if(type==='redaction')return this.add(page,{type:'redaction',xPct:x,yPct:y,wPct:25,hPct:7,color:'#000000',opacity:1});
   return null
@@ -54,7 +54,7 @@ export class PdfObjectLayer extends EventTarget{
   }
   const el=document.createElement('div');el.className='pdfObject '+a.type+(a.id===this.selectedId?' selected':'')+(a.locked?' locked':'');el.dataset.objectId=a.id;el.style.left=(a.xPct||0)+'%';el.style.top=(a.yPct||0)+'%';el.style.opacity=String(a.opacity??1);el.style.transform='rotate('+(Number(a.rotation)||0)+'deg)';el.style.color=a.color||this.style.color;if(a.wPct)el.style.width=a.wPct+'%';
   if(a.type==='highlight'||a.type==='redaction'){el.style.height=Math.max(14,(a.hPct||5)/100*rect.height)+'px';el.style.background=a.type==='redaction'?'#000':(a.color||'#FFEB3B');if(a.type==='highlight')el.style.opacity=String(a.opacity??.35)}
-  else if(a.type==='image')el.innerHTML='<img src="'+a.dataUrl+'" alt="">';
+  else if(a.type==='image'||a.type==='signature')el.innerHTML='<img src="'+a.dataUrl+'" alt="">';
   else if(a.type==='stamp'){let h='';if(a.imageDataUrl)h+='<img src="'+a.imageDataUrl+'" alt="">';h+='<span>'+String(a.text||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])).replace(/\n/g,'<br>')+'</span>';el.innerHTML=h;el.style.fontSize=(a.fontSize||12)+'px'}
   else {el.textContent=a.text||'';el.style.fontSize=(a.fontSize||12)+'px'}
   el.onpointerdown=e=>{if(this.tool!=='select')return;e.stopPropagation();this.selectedId=a.id;this.dispatchEvent(new CustomEvent('select',{detail:{object:a,page}}));if(a.locked){this.render();return}const start=this.pointPct(e,tile),sx=a.xPct||0,sy=a.yPct||0;el.setPointerCapture?.(e.pointerId);const mv=ev=>{const p=this.pointPct(ev,tile);a.xPct=clamp(sx+p.x-start.x,0,97);a.yPct=clamp(sy+p.y-start.y,0,97);el.style.left=a.xPct+'%';el.style.top=a.yPct+'%'};const up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);this.engine.dispatchEvent(new Event('annotations'));this.render()};el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);this.render()};
@@ -66,7 +66,7 @@ export class PdfObjectLayer extends EventTarget{
   for(let p=1;p<=doc.getPageCount();p++){const page=doc.getPage(p-1),{width,height}=page.getSize();for(const a of this.engine.annotations(p)){const c=hexRgb(a.color),color=PDFLib.rgb(c.r,c.g,c.b),x=(a.xPct||0)/100*width,yTop=(a.yPct||0)/100*height;
    if(a.type==='text'||a.type==='stamp'){let textY=height-yTop-(a.fontSize||12);if(a.type==='stamp'&&a.imageDataUrl){const d=dataUrlBytes(a.imageDataUrl),img=d.type==='png'?await doc.embedPng(d.bytes):await doc.embedJpg(d.bytes),w=(a.wPct||30)/100*width,h=w*(img.height/img.width);page.drawImage(img,{x,y:height-yTop-h,width:w,height:h,opacity:a.opacity??1});textY=height-yTop-h-(a.fontSize||12)-4}for(const [i,line] of String(a.text||'').split(/\n/).entries())page.drawText(line,{x,y:textY-i*(a.fontSize||12)*1.25,size:a.fontSize||12,font,color,rotate:PDFLib.degrees(Number(a.rotation)||0),opacity:a.opacity??1})}
    else if(a.type==='highlight'||a.type==='redaction'){page.drawRectangle({x,y:height-yTop-(a.hPct||5)/100*height,width:(a.wPct||20)/100*width,height:(a.hPct||5)/100*height,color:a.type==='redaction'?PDFLib.rgb(0,0,0):color,opacity:a.opacity??(a.type==='highlight'?.35:1),rotate:PDFLib.degrees(Number(a.rotation)||0)})}
-   else if(a.type==='image'){const d=dataUrlBytes(a.dataUrl),img=d.type==='png'?await doc.embedPng(d.bytes):await doc.embedJpg(d.bytes),w=(a.wPct||20)/100*width,h=w*(img.height/img.width);page.drawImage(img,{x,y:height-yTop-h,width:w,height:h,rotate:PDFLib.degrees(Number(a.rotation)||0),opacity:a.opacity??1})}
+   else if(a.type==='image'||a.type==='signature'){const d=dataUrlBytes(a.dataUrl),img=d.type==='png'?await doc.embedPng(d.bytes):await doc.embedJpg(d.bytes),w=(a.wPct||20)/100*width,h=w*(img.height/img.width);page.drawImage(img,{x,y:height-yTop-h,width:w,height:h,rotate:PDFLib.degrees(Number(a.rotation)||0),opacity:a.opacity??1})}
    else if(a.type==='pen'&&a.points?.length>1){for(let i=1;i<a.points.length;i++){const A=a.points[i-1],B=a.points[i];page.drawLine({start:{x:A.x/100*width,y:height-A.y/100*height},end:{x:B.x/100*width,y:height-B.y/100*height},thickness:a.width||2,color,opacity:a.opacity??1})}}
   }}
   return new Uint8Array(await doc.save())
