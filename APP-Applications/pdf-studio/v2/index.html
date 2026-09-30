@@ -208,7 +208,11 @@
  <div class="statusBox">Inspection de sécurité, signatures et métadonnées. La protection par mot de passe ne sera appliquée que lorsqu’un moteur de chiffrement compatible est configuré ; aucune fausse protection n’est simulée.</div>
  <label>Mode<select id="pdfSecurityMode"><option value="inspect">Inspecter la sécurité</option><option value="open-password">Mot de passe d’ouverture</option><option value="permissions">Restreindre les modifications</option><option value="metadata">Métadonnées</option></select></label>
  <div id="pdfSecurityPasswordFields" class="grid2"><label>Mot de passe<input id="pdfOpenPassword" type="password" autocomplete="new-password"></label><label>Mot de passe propriétaire<input id="pdfOwnerPassword" type="password" autocomplete="new-password"></label></div>
- <div class="compactInputRow"><button id="inspectPdfSecurity" type="button" data-icon="security">Inspecter le PDF</button><button id="cleanPdfMetadata" type="button" data-icon="metadata">Nettoyer les métadonnées</button></div>
+ <details open><summary>Métadonnées du document</summary>
+  <label>Titre<input id="pdfMetaTitle"></label><label>Auteur<input id="pdfMetaAuthor"></label><label>Sujet<input id="pdfMetaSubject"></label><label>Mots-clés<input id="pdfMetaKeywords" placeholder="mot1, mot2, mot3"></label>
+  <div class="compactInputRow"><button id="loadPdfMetadata" type="button" data-icon="metadata">Lire</button><button id="savePdfMetadata" type="button">Enregistrer les métadonnées</button><button id="cleanPdfMetadata" type="button">Nettoyer</button></div>
+ </details>
+ <div class="compactInputRow"><button id="inspectPdfSecurity" type="button" data-icon="security">Inspecter sécurité / signatures</button></div>
  <div id="pdfSecurityStatus" class="statusBox">Aucune inspection.</div>
 </div></details>
   <details id="sectionDiagnostics" class="toolSection scope-core" data-scope="core"><summary>19. Historique & diagnostics <small class="scopeBadge">CORE</small></summary><div class="body"><button id="history-view-all-inline" data-icon="history">Ouvrir l’onglet Historique</button><button id="copyDiagnostics">Copier le diagnostic</button></div></details>
