@@ -370,3 +370,11 @@ body.studioRibbonCollapsed .ribbonContext{
 .profileAssetAddSimple{grid-template-columns:minmax(120px,1fr) auto}
 .profileAssetLibraryRow img[hidden]{display:none}
 .themeDark .profileAssetKindIcon{background:#2c3740;color:#9ec4dc}
+
+
+/* PDF Studio — assembly / merge */
+.assemblyModeTabs{display:grid;grid-template-columns:1fr 1fr;gap:4px}.assemblyModeTabs button{font-size:8px;padding:6px 4px}.assemblyModeTabs button.active{background:#1f6f9f;color:#fff;border-color:#1f6f9f}
+#assemblyMergePanel,#assemblyInsertPanel{display:grid;gap:7px}#assemblyMergePanel[hidden],#assemblyInsertPanel[hidden]{display:none}
+.assemblyList{display:grid;gap:4px;max-height:190px;overflow:auto;padding:4px;border:1px solid #dce4ea;border-radius:7px;background:#f8fafc}
+.assemblyItem{display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:center;text-align:left;border:1px solid #e2e8ed;background:#fff;border-radius:6px;padding:5px}.assemblyItem.active{border-color:#1976b8;box-shadow:0 0 0 1px #1976b8 inset}.assemblyItem b,.assemblyItem small{display:block}.assemblyItem b{font-size:9px}.assemblyItem small{font-size:8px;color:var(--nlab-muted)}.assemblyOrder{display:grid;place-items:center;width:22px;height:22px;border-radius:999px;background:#eaf2f7;font-size:8px;font-weight:900}
+.themeDark .assemblyList{background:#171c21;border-color:#39434c}.themeDark .assemblyItem{background:#252c33;border-color:#39434c}.themeDark .assemblyOrder{background:#33424d}
