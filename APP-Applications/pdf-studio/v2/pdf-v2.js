@@ -166,7 +166,7 @@ async function applyCryptographicSignature(){
    reason:templates.resolve($('#signatureReason').value||'',engine.fileName,outputContext()),
    location:templates.resolve($('#signatureLocation').value||'',engine.fileName,outputContext()),
    contact:templates.resolve($('#signatureContact').value||'',engine.fileName,outputContext()),
-   signerName:templates.resolve($('#signatureSignerName').value||'{FULL_NAME}',engine.fileName,outputContext()),
+   signerName:templates.resolve($('#signatureSignerName').value||'{DISPLAY_NAME}',engine.fileName,outputContext()),
    appearance:$('#signatureAppearanceType').value||'none'
   });
   undoStack.push(before);if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo();
@@ -192,7 +192,7 @@ $('#validateSignaturePdf').onclick=()=>validateCurrentSignature().catch(e=>$('#s
 $('#applyVisualSignature').onclick=()=>applyVisualSignature().catch(e=>setStatus(e.message));
 $('#applyCryptographicSignature').onclick=()=>applyCryptographicSignature().catch(e=>setStatus(e.message));
 $('#signatureDssUrl').value=signatureService.baseUrl||'';
-$('#signatureSignerName').value='{FULL_NAME}';$('#signatureLocation').value='{SITE}';
+$('#signatureSignerName').value='{DISPLAY_NAME}';$('#signatureLocation').value='{SITE}';
 setSignatureMode('visual');refreshSignatureAssets();
 document.addEventListener('nlab:personal-profile-changed',()=>refreshSignatureAssets());
 
