@@ -29,7 +29,7 @@ await mountStudioV2({manifest:studioManifest,versionInfo:{version:runtimeVersion
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let personalProfile=loadPersonalProfile();
 const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService(),signatureService=new PdfSignatureService();
-let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null;
+let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null;
 
 mountPersonalProfileUI($('#personalProfileHost'));
 $('#fileInput').accept=acceptAttribute();
@@ -55,8 +55,8 @@ const viewer=new StudioPageViewer({
 function syncSession(){session.patch({file:engine.sourceFile,fileName:engine.fileName,page:engine.currentPage,pageCount:engine.pageCount,selectedPages:new Set(engine.selected),dirty:engine.dirty,meta:{sourceCapabilities:activeFileCapabilities}})}
 function syncUndoRedo(){const u=$('#history-undo'),r=$('#history-redo');if(u)u.disabled=!undoStack.length;if(r)r.disabled=!redoStack.length}
 async function checkpoint(){if(!engine.pageCount)return;undoStack.push(await engine.baseBytes());if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo()}
-async function undo(){if(!undoStack.length||!engine.pageCount)return;redoStack.push(await engine.baseBytes());await engine.setBytes(undoStack.pop());syncSession();await renderAll();syncUndoRedo();setStatus('Modification annulée');recordHistory({studio:'pdf-studio',type:'action',label:'Annulation',target:engine.fileName})}
-async function redo(){if(!redoStack.length||!engine.pageCount)return;undoStack.push(await engine.baseBytes());await engine.setBytes(redoStack.pop());syncSession();await renderAll();syncUndoRedo();setStatus('Modification rétablie');recordHistory({studio:'pdf-studio',type:'action',label:'Rétablissement',target:engine.fileName})}
+async function undo(){if(!undoStack.length||!engine.pageCount)return;redoStack.push(await engine.baseBytes());await engine.setBytes(undoStack.pop());cryptoSignatureState=null;syncSession();await renderAll();syncUndoRedo();setStatus('Modification annulée');recordHistory({studio:'pdf-studio',type:'action',label:'Annulation',target:engine.fileName})}
+async function redo(){if(!redoStack.length||!engine.pageCount)return;undoStack.push(await engine.baseBytes());await engine.setBytes(redoStack.pop());cryptoSignatureState=null;syncSession();await renderAll();syncUndoRedo();setStatus('Modification rétablie');recordHistory({studio:'pdf-studio',type:'action',label:'Rétablissement',target:engine.fileName})}
 
 function loadPdfProfilePreferences(){
  personalProfile=loadPersonalProfile();templates.setValues(profileTemplateValues(personalProfile));
@@ -126,6 +126,7 @@ function setSignatureMode(mode){
  $('#applyCryptographicSignature').textContent=certified?'Certifier et signer le PDF':'Signer digitalement le PDF'
 }
 async function applyVisualSignature(){
+ assertPdfMutationAllowed();
  if(!engine.pageCount)throw new Error('Chargez d’abord un PDF.');
  const id=$('#signatureAssetSelect')?.value;if(!id)throw new Error('Choisissez une signature ou un paraphe.');
  const asset=await getPersonalAsset(id);if(!asset?.blob)throw new Error('Image de signature/paraphe indisponible.');
@@ -135,6 +136,7 @@ async function applyVisualSignature(){
   xPct:Number($('#signatureXPct').value)||70,yPct:Number($('#signatureYPct').value)||6,
   opacity:(Number($('#signatureOpacityPct').value)||100)/100
  });
+ markPdfModifiedAfterSignature();
  await renderAll();setStatus('Signature visuelle appliquée sur '+pages.length+' page(s).');
  recordHistory({studio:'pdf-studio',type:'action',label:$('#signatureAppearanceType').value==='initials'?'Paraphe visuel':'Signature visuelle',detail:pages.length+' page(s) · non cryptographique',target:engine.fileName,action:'signature',repeatable:false})
 }
@@ -170,7 +172,7 @@ async function applyCryptographicSignature(){
    appearance:$('#signatureAppearanceType').value||'none'
   });
   undoStack.push(before);if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo();
-  await engine.setBytes(signed);await renderAll();$('#signatureCertificatePassword').value='';
+  await engine.setBytes(signed);cryptoSignatureState={mode:signatureMode,certificationLevel:signatureMode==='certified'?$('#signatureCertificationLevel').value:'NOT_CERTIFIED',padesLevel:$('#signaturePadesLevel').value,modified:false};await renderAll();$('#signatureCertificatePassword').value='';
   status.textContent=(signatureMode==='certified'?'PDF certifié et signé':'PDF signé digitalement')+' avec succès.';
   setStatus(status.textContent);
   recordHistory({studio:'pdf-studio',type:'action',label:signatureMode==='certified'?'Signature certifiée':'Signature digitale',detail:$('#signaturePadesLevel').value,target:engine.fileName,action:'signature',repeatable:false})
@@ -208,7 +210,7 @@ async function renderAll(){if(!engine.pageCount){$('#mainPageGrid').innerHTML=''
 async function load(file){
  if(!file)return;setStatus('Chargement…');activeFileCapabilities=detectFileCapabilities(file);
  try{
-  await engine.loadFile(file);undoStack=[];redoStack=[];syncUndoRedo();viewer.setZoom(1);viewer.setPagesPerRow(1);syncSession();await renderAll();
+  await engine.loadFile(file);undoStack=[];redoStack=[];cryptoSignatureState=null;syncUndoRedo();viewer.setZoom(1);viewer.setPagesPerRow(1);syncSession();await renderAll();
   const item=fileBrowser.items.find(x=>x.data===file);if(item){item.pages=engine.pageCount;item.subtitle=item.relativePath||activeFileCapabilities.family;fileBrowser.render()}
   const converted=activeFileCapabilities.family!=='pdf'?' · aperçu PDF rapide':'';
   setStatus('Document chargé'+converted);recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s) · '+activeFileCapabilities.family,target:file.name});
@@ -220,12 +222,18 @@ async function loadFiles(files){
  fileBrowser.setItems(loadedFiles.map((file,i)=>({id:'file-'+i+'-'+file.name,label:file.name,subtitle:file.webkitRelativePath||'',relativePath:file.webkitRelativePath||file.name,size:file.size,type:file.type,extension:formatInfo(file).extension,data:file})));
  const compatible=loadedFiles.find(x=>formatInfo(x).family!=='archive');if(compatible){fileBrowser.activeId=fileBrowser.items.find(x=>x.data===compatible)?.id||null;fileBrowser.render();await load(compatible)}else setStatus(loadedFiles.length?'Formats chargés dans la collection ; aucun aperçu PDF rapide disponible':'Aucun fichier compatible');
 }
-async function rotate(delta,pagesOverride=null){if(!engine.pageCount)return;const pages=pagesOverride||engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();await engine.rotate(pages,delta);await renderAll();setStatus('Rotation '+(delta>0?'+90°':'−90°'));recordHistory({studio:'pdf-studio',type:'action',label:'Rotation '+(delta>0?'+90°':'−90°'),detail:pages.length+' page(s)',target:engine.fileName,action:delta>0?'rotateRight':'rotateLeft',repeatable:true})}
-async function addPage(){if(!engine.pageCount)return;await checkpoint();await engine.addBlank(engine.pageCount);await renderAll();setStatus('Page ajoutée');recordHistory({studio:'pdf-studio',type:'action',label:'Page ajoutée',target:engine.fileName,action:'addPage',repeatable:true})}
-async function duplicatePage(){if(!engine.pageCount)return;await checkpoint();await engine.duplicate(engine.currentPage);await renderAll();setStatus('Page dupliquée');recordHistory({studio:'pdf-studio',type:'action',label:'Page dupliquée',target:engine.fileName,action:'duplicatePage',repeatable:true})}
-async function deletePageNumber(page){if(!engine.pageCount)return;await checkpoint();try{await engine.deletePages([page]);await renderAll();setStatus('Page '+page+' supprimée')}catch(e){setStatus(e.message)}}
-async function deletePages(){if(!engine.pageCount)return;const pages=engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();try{await engine.deletePages(pages);await renderAll();setStatus('Page(s) supprimée(s)')}catch(e){setStatus(e.message)}}
-async function deleteSelected(){if(!engine.selected.size)return;await checkpoint();try{await engine.deletePages([...engine.selected]);await renderAll();setStatus('Sélection supprimée')}catch(e){setStatus(e.message)}}
+function assertPdfMutationAllowed(){
+ if(cryptoSignatureState?.mode==='certified'&&cryptoSignatureState?.certificationLevel==='CERTIFIED_NO_CHANGES_ALLOWED')throw new Error('PDF certifié : aucune modification n’est autorisée. Utilisez Annuler pour revenir avant la certification.');
+}
+function markPdfModifiedAfterSignature(){
+ if(!cryptoSignatureState)return;cryptoSignatureState={...cryptoSignatureState,modified:true};setStatus('Document modifié après signature cryptographique — la validation de signature doit être contrôlée.')
+}
+async function rotate(delta,pagesOverride=null){assertPdfMutationAllowed();if(!engine.pageCount)return;const pages=pagesOverride||engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();await engine.rotate(pages,delta);markPdfModifiedAfterSignature();await renderAll();setStatus('Rotation '+(delta>0?'+90°':'−90°'));recordHistory({studio:'pdf-studio',type:'action',label:'Rotation '+(delta>0?'+90°':'−90°'),detail:pages.length+' page(s)',target:engine.fileName,action:delta>0?'rotateRight':'rotateLeft',repeatable:true})}
+async function addPage(){assertPdfMutationAllowed();if(!engine.pageCount)return;await checkpoint();await engine.addBlank(engine.pageCount);markPdfModifiedAfterSignature();await renderAll();setStatus('Page ajoutée');recordHistory({studio:'pdf-studio',type:'action',label:'Page ajoutée',target:engine.fileName,action:'addPage',repeatable:true})}
+async function duplicatePage(){assertPdfMutationAllowed();if(!engine.pageCount)return;await checkpoint();await engine.duplicate(engine.currentPage);markPdfModifiedAfterSignature();await renderAll();setStatus('Page dupliquée');recordHistory({studio:'pdf-studio',type:'action',label:'Page dupliquée',target:engine.fileName,action:'duplicatePage',repeatable:true})}
+async function deletePageNumber(page){assertPdfMutationAllowed();if(!engine.pageCount)return;await checkpoint();try{await engine.deletePages([page]);markPdfModifiedAfterSignature();await renderAll();setStatus('Page '+page+' supprimée')}catch(e){setStatus(e.message)}}
+async function deletePages(){assertPdfMutationAllowed();if(!engine.pageCount)return;const pages=engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();try{await engine.deletePages(pages);markPdfModifiedAfterSignature();await renderAll();setStatus('Page(s) supprimée(s)')}catch(e){setStatus(e.message)}}
+async function deleteSelected(){assertPdfMutationAllowed();if(!engine.selected.size)return;await checkpoint();try{await engine.deletePages([...engine.selected]);markPdfModifiedAfterSignature();await renderAll();setStatus('Sélection supprimée')}catch(e){setStatus(e.message)}}
 async function currentBlob(){return new Blob([await engine.baseBytes()],{type:'application/pdf'})}
 async function saveCurrent({classify=false,forcePicker=false}={}){
  if(!engine.pageCount)return;const format=$('#outputFormat').value;if(format==='zip')return saveZip({classify});
