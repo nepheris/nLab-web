@@ -40,6 +40,27 @@ export class PDFEngine extends EventTarget{
  async deletePages(pages){const set=new Set(pages);if(!set.size)return;if(set.size>=this.pageCount)throw new Error('Impossible de supprimer toutes les pages');const out=await PDFDocument.create(),map=new Map();let newIndex=0;for(let i=1;i<=this.pageCount;i++){if(set.has(i))continue;const [cp]=await out.copyPages(this.pdfDoc,[i-1]);out.addPage(cp);newIndex++;if(this.pageAnnotations.has(i))map.set(newIndex,this.pageAnnotations.get(i))}this.pageAnnotations=map;this.selected.clear();this.currentPage=Math.min(this.currentPage,out.getPageCount());await this.setBytes(new Uint8Array(await out.save()))}
  async extractPages(pages){if(!pages.length)throw new Error('Aucune page à extraire');const out=await PDFDocument.create(),copies=await out.copyPages(this.pdfDoc,pages.map(x=>x-1));copies.forEach(p=>out.addPage(p));return new Uint8Array(await out.save())}
  async mergeFiles(files){const out=await PDFDocument.create();for(const f of files){if(!/\.pdf$/i.test(f.name))continue;const d=await PDFDocument.load(await f.arrayBuffer(),{ignoreEncryption:true}),copies=await out.copyPages(d,d.getPageIndices());copies.forEach(p=>out.addPage(p))}if(!out.getPageCount())throw new Error('Aucun PDF à fusionner');this.fileName='fusion.pdf';this.pageAnnotations.clear();await this.setBytes(new Uint8Array(await out.save()),{resetAnnotations:true})}
+ async applyImageOverlay(blob,pages,{position='bottom-right',widthPct=24,xPct=70,yPct=6,opacity=1,margin=24}={}){
+  if(!(blob instanceof Blob))throw new Error('Image de signature invalide');
+  const targets=[...new Set((pages||[]).map(Number).filter(n=>n>=1&&n<=this.pageCount))];if(!targets.length)throw new Error('Aucune page cible');
+  let bytes=await blob.arrayBuffer(),img;
+  if(/png/i.test(blob.type))img=await this.pdfDoc.embedPng(bytes);
+  else if(/jpe?g/i.test(blob.type))img=await this.pdfDoc.embedJpg(bytes);
+  else{bytes=await rasterImageBytes(blob);img=await this.pdfDoc.embedPng(bytes)}
+  for(const n of targets){
+   const page=this.pdfDoc.getPage(n-1),size=page.getSize(),pct=Math.max(3,Math.min(80,Number(widthPct)||24))/100,w=Math.max(24,size.width*pct),ratio=img.height/img.width,h=w*ratio;
+   let x=margin,y=margin;
+   if(position==='bottom-center')x=(size.width-w)/2;
+   else if(position==='bottom-right')x=size.width-w-margin;
+   else if(position==='top-left')y=size.height-h-margin;
+   else if(position==='top-center'){x=(size.width-w)/2;y=size.height-h-margin}
+   else if(position==='top-right'){x=size.width-w-margin;y=size.height-h-margin}
+   else if(position==='custom'){x=(size.width-w)*Math.max(0,Math.min(100,Number(xPct)||0))/100;y=(size.height-h)*Math.max(0,Math.min(100,Number(yPct)||0))/100}
+   x=Math.max(0,Math.min(size.width-w,x));y=Math.max(0,Math.min(size.height-h,y));
+   page.drawImage(img,{x,y,width:w,height:h,opacity:Math.max(.05,Math.min(1,Number(opacity)||1))})
+  }
+  await this.setBytes(new Uint8Array(await this.pdfDoc.save()));return targets
+ }
  addAnnotation(page,ann){const arr=this.pageAnnotations.get(page)||[];ann={id:ann.id||uid('ann'),...ann};arr.push(ann);this.pageAnnotations.set(page,arr);this.dirty=true;this.dispatchEvent(new Event('annotations'));return ann}
  removeAnnotation(id){for(const [p,a] of this.pageAnnotations){const n=a.filter(x=>x.id!==id);if(n.length!==a.length){this.pageAnnotations.set(p,n);this.dispatchEvent(new Event('annotations'));return true}}return false}
  annotations(page=this.currentPage){return this.pageAnnotations.get(page)||[]}

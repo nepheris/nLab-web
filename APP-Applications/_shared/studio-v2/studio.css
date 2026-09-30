@@ -354,3 +354,19 @@ body.studioRibbonCollapsed .ribbonContext{
 .profileAssetEmpty{font-size:8px;color:var(--nlab-muted);padding:7px;text-align:center;border:1px dashed #d4dde4;border-radius:6px}
 .themeDark .profileSecurity,.themeDark .profileAssetLibrary{background:#20262c;border-color:#39434c}.themeDark .profileSecurityExplain,.themeDark .profileAssetLibraryRow{background:#252c33;border-color:#39434c}.themeDark .profileSecurityNote{background:#3a2d18;border-color:#6e5726;color:#e9cf94}
 @media(max-width:560px){.profileSecurityGrid{grid-template-columns:1fr}.profileAssetAdd{grid-template-columns:1fr}.profileAssetLibraryRow{grid-template-columns:22px 38px minmax(0,1fr)}.profileAssetLibraryRow button{grid-column:3}}
+
+
+/* PDF signature modes + identity variables */
+.profileDerivedVars{font-size:8px;color:var(--nlab-muted);padding:4px 6px;border:1px dashed #cfd9e0;border-radius:6px}.profileDerivedVars code{font-size:8px;color:#0d5d8f}
+.signatureModeTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.signatureModeTabs button{font-size:8px;padding:6px 4px}.signatureModeTabs button.active{background:#1f6f9f;color:#fff;border-color:#1f6f9f}
+.signatureCommonGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.signatureAssetPreview{min-height:74px;border:1px dashed #aebec9;border-radius:7px;background:#f8fafc;display:grid;place-items:center;padding:7px;overflow:hidden}.signatureAssetPreview img{display:block;max-width:100%;max-height:96px;object-fit:contain}.signatureAssetPreview span{font-size:8px;color:var(--nlab-muted)}
+#signatureVisualControls,#signatureCryptoControls{display:grid;gap:7px}.warningBox{background:#fff8e8;border-color:#ead6a4;color:#6d5923}.signatureCryptoStatus{white-space:pre-wrap;max-height:180px;overflow:auto;font:8px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;background:#f8fafc;border:1px solid #dce4ea;border-radius:6px;padding:7px;margin:0}
+.themeDark .signatureAssetPreview,.themeDark .signatureCryptoStatus{background:#252c33;border-color:#39434c}.themeDark .warningBox{background:#3a2d18;border-color:#6e5726;color:#e9cf94}
+@media(max-width:560px){.signatureModeTabs,.signatureCommonGrid{grid-template-columns:1fr}}
+
+
+/* Studio Core — generic personal image libraries */
+.profileAssetKindIcon{display:grid;place-items:center;width:20px;height:20px;border-radius:5px;background:#eef4f8;color:#315a72;font-size:11px;font-weight:800}
+.profileAssetAddSimple{grid-template-columns:minmax(120px,1fr) auto}
+.profileAssetLibraryRow img[hidden]{display:none}
+.themeDark .profileAssetKindIcon{background:#2c3740;color:#9ec4dc}

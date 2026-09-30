@@ -19,14 +19,17 @@ import{OutputService}from'../../_shared/studio-v2/output-service.js';
 import{acceptAttribute,isSupportedFile,formatInfo}from'../../_shared/studio-v2/format-registry.js';
 import{enhanceStudioWindow}from'../../_shared/studio-v2/window-system.js';
 import{mountPersonalProfileUI}from'../../_shared/studio-v2/personal-profile-ui.js';
-import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues}from'../../_shared/studio-v2/personal-profile-service.js';
+import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues,getPersonalAsset}from'../../_shared/studio-v2/personal-profile-service.js';
+import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
+import{PdfSignatureService}from'./signature-service.js';
 
-const VERSION='2.1.2';
-await mountStudioV2({manifest:studioManifest,versionInfo:{version:VERSION,status:'TEST'}});
+const runtimeVersion=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
+applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:runtimeVersion.studioVersion,studioStatus:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion});
+await mountStudioV2({manifest:studioManifest,versionInfo:{version:runtimeVersion.studioVersion,status:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let personalProfile=loadPersonalProfile();
-const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService();
-let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null;
+const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService(),signatureService=new PdfSignatureService();
+let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null;
 
 mountPersonalProfileUI($('#personalProfileHost'));
 $('#fileInput').accept=acceptAttribute();
@@ -52,8 +55,8 @@ const viewer=new StudioPageViewer({
 function syncSession(){session.patch({file:engine.sourceFile,fileName:engine.fileName,page:engine.currentPage,pageCount:engine.pageCount,selectedPages:new Set(engine.selected),dirty:engine.dirty,meta:{sourceCapabilities:activeFileCapabilities}})}
 function syncUndoRedo(){const u=$('#history-undo'),r=$('#history-redo');if(u)u.disabled=!undoStack.length;if(r)r.disabled=!redoStack.length}
 async function checkpoint(){if(!engine.pageCount)return;undoStack.push(await engine.baseBytes());if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo()}
-async function undo(){if(!undoStack.length||!engine.pageCount)return;redoStack.push(await engine.baseBytes());await engine.setBytes(undoStack.pop());syncSession();await renderAll();syncUndoRedo();setStatus('Modification annulée');recordHistory({studio:'pdf-studio',type:'action',label:'Annulation',target:engine.fileName})}
-async function redo(){if(!redoStack.length||!engine.pageCount)return;undoStack.push(await engine.baseBytes());await engine.setBytes(redoStack.pop());syncSession();await renderAll();syncUndoRedo();setStatus('Modification rétablie');recordHistory({studio:'pdf-studio',type:'action',label:'Rétablissement',target:engine.fileName})}
+async function undo(){if(!undoStack.length||!engine.pageCount)return;redoStack.push(await engine.baseBytes());await engine.setBytes(undoStack.pop());cryptoSignatureState=null;syncSession();await renderAll();syncUndoRedo();setStatus('Modification annulée');recordHistory({studio:'pdf-studio',type:'action',label:'Annulation',target:engine.fileName})}
+async function redo(){if(!redoStack.length||!engine.pageCount)return;undoStack.push(await engine.baseBytes());await engine.setBytes(redoStack.pop());cryptoSignatureState=null;syncSession();await renderAll();syncUndoRedo();setStatus('Modification rétablie');recordHistory({studio:'pdf-studio',type:'action',label:'Rétablissement',target:engine.fileName})}
 
 function loadPdfProfilePreferences(){
  personalProfile=loadPersonalProfile();templates.setValues(profileTemplateValues(personalProfile));
@@ -79,6 +82,122 @@ loadPdfProfilePreferences();
 $('#namingVariables').innerHTML=templateVariableHelp().map(x=>'<code>{'+x.name+'}</code><span>'+x.description+'</span>').join('');
 document.addEventListener('nlab:personal-profile-changed',e=>{personalProfile=e.detail?.profile||loadPersonalProfile();templates.setValues(profileTemplateValues(personalProfile));updateNamingPreview();updateOutputPreview()});
 document.addEventListener('nlab:personal-profile-imported',()=>{loadPdfProfilePreferences();updateNamingPreview();updateOutputPreview();setStatus('Profil personnel importé et appliqué au PDF Studio.')});
+let signatureMode='visual',signaturePreviewUrl=null;
+function signatureTargetPages(){
+ const mode=$('#signaturePageScope')?.value||'current';
+ if(mode==='all')return engine.targetPages('all');
+ if(mode==='selected')return engine.selected.size?[...engine.selected]:[engine.currentPage];
+ return[engine.currentPage]
+}
+function signatureRefs(){
+ const p=loadPersonalProfile(),kind=$('#signatureAppearanceType')?.value||'signature';
+ if(kind==='initials')return{kind,items:p.assets?.initialsImages||[],defaultId:p.assets?.defaultInitialsImageId||null};
+ if(kind==='signature')return{kind,items:p.assets?.signatures||[],defaultId:p.assets?.defaultSignatureId||null};
+ return{kind:'none',items:[],defaultId:null}
+}
+async function refreshSignatureAssets(){
+ const sel=$('#signatureAssetSelect'),box=$('#signatureAssetPreview');if(!sel||!box)return;
+ const {kind,items,defaultId}=signatureRefs();sel.innerHTML='';
+ if(kind==='none'){sel.disabled=true;box.innerHTML='<span>Aucune apparence visuelle.</span>';return}
+ sel.disabled=false;
+ for(const ref of items){const o=document.createElement('option');o.value=ref.assetId;o.textContent=ref.label||ref.name||ref.assetId;sel.append(o)}
+ if(defaultId&&items.some(x=>x.assetId===defaultId))sel.value=defaultId;
+ if(!items.length){box.innerHTML='<span>Aucune image '+(kind==='signature'?'de signature':'de paraphe')+' dans le profil personnel.</span>';return}
+ await refreshSignaturePreview()
+}
+async function refreshSignaturePreview(){
+ const box=$('#signatureAssetPreview'),id=$('#signatureAssetSelect')?.value;if(!box)return;
+ if(signaturePreviewUrl){URL.revokeObjectURL(signaturePreviewUrl);signaturePreviewUrl=null}
+ if(!id){box.innerHTML='<span>Aucune image sélectionnée.</span>';return}
+ const a=await getPersonalAsset(id);if(!a?.blob){box.innerHTML='<span>Image verrouillée ou indisponible.</span>';return}
+ signaturePreviewUrl=URL.createObjectURL(a.blob);box.innerHTML='<img src="'+signaturePreviewUrl+'" alt="Aperçu de la signature ou du paraphe">'
+}
+function setSignatureMode(mode){
+ signatureMode=['visual','digital','certified'].includes(mode)?mode:'visual';
+ $('[data-signature-mode]').forEach(b=>b.classList.toggle('active',b.dataset.signatureMode===signatureMode));
+ const visual=signatureMode==='visual',certified=signatureMode==='certified';
+ $('#signatureVisualControls').hidden=false;$('#applyVisualSignature').hidden=!visual;$('#signatureCryptoControls').hidden=visual;
+ $('#signatureCertificationField').hidden=!certified;
+ $('#signatureModeHelp').textContent=visual
+  ?'PDF Signature visuelle — image uniquement, non cryptographique.'
+  :signatureMode==='digital'
+   ?'PDF Signature digitale — signature cryptographique PAdES du document. Toute modification ultérieure peut rendre la validation invalide.'
+   :'PDF Signature certifiée — signature cryptographique PAdES avec règles DocMDP sur les modifications autorisées.';
+ $('#applyCryptographicSignature').textContent=certified?'Certifier et signer le PDF':'Signer digitalement le PDF'
+}
+async function applyVisualSignature(){
+ assertPdfMutationAllowed();
+ if(!engine.pageCount)throw new Error('Chargez d’abord un PDF.');
+ const id=$('#signatureAssetSelect')?.value;if(!id)throw new Error('Choisissez une signature ou un paraphe.');
+ const asset=await getPersonalAsset(id);if(!asset?.blob)throw new Error('Image de signature/paraphe indisponible.');
+ const pages=signatureTargetPages();await checkpoint();
+ await engine.applyImageOverlay(asset.blob,pages,{
+  position:$('#signaturePosition').value,widthPct:Number($('#signatureWidthPct').value)||24,
+  xPct:Number($('#signatureXPct').value)||70,yPct:Number($('#signatureYPct').value)||6,
+  opacity:(Number($('#signatureOpacityPct').value)||100)/100
+ });
+ markPdfModifiedAfterSignature();
+ await renderAll();setStatus('Signature visuelle appliquée sur '+pages.length+' page(s).');
+ recordHistory({studio:'pdf-studio',type:'action',label:$('#signatureAppearanceType').value==='initials'?'Paraphe visuel':'Signature visuelle',detail:pages.length+' page(s) · non cryptographique',target:engine.fileName,action:'signature',repeatable:false})
+}
+async function bytesWithOptionalSignatureAppearance(){
+ const appearance=$('#signatureAppearanceType')?.value||'none';
+ const before=await engine.baseBytes();
+ if(appearance==='none')return{bytes:before,restore:null};
+ const id=$('#signatureAssetSelect')?.value;if(!id)throw new Error('Choisissez une apparence de signature/paraphe ou « Aucune apparence ».');
+ const asset=await getPersonalAsset(id);if(!asset?.blob)throw new Error('Image de signature/paraphe indisponible.');
+ const pages=signatureTargetPages();
+ await engine.applyImageOverlay(asset.blob,pages,{
+  position:$('#signaturePosition').value,widthPct:Number($('#signatureWidthPct').value)||24,
+  xPct:Number($('#signatureXPct').value)||70,yPct:Number($('#signatureYPct').value)||6,
+  opacity:(Number($('#signatureOpacityPct').value)||100)/100
+ });
+ return{bytes:await engine.baseBytes(),restore:before}
+}
+async function applyCryptographicSignature(){
+ if(!engine.pageCount)throw new Error('Chargez d’abord un PDF.');
+ const cert=$('#signatureCertificate')?.files?.[0];if(!cert)throw new Error('Sélectionnez un certificat .p12 ou .pfx.');
+ const status=$('#signatureCryptoStatus');status.textContent='Préparation de la signature…';
+ const before=await engine.baseBytes();let prepared=null;
+ try{
+  prepared=await bytesWithOptionalSignatureAppearance();
+  const signed=await signatureService.sign({
+   pdfBytes:prepared.bytes,certificateFile:cert,password:$('#signatureCertificatePassword').value||'',
+   padesLevel:$('#signaturePadesLevel').value,
+   certificationLevel:signatureMode==='certified'?$('#signatureCertificationLevel').value:'NOT_CERTIFIED',
+   reason:templates.resolve($('#signatureReason').value||'',engine.fileName,outputContext()),
+   location:templates.resolve($('#signatureLocation').value||'',engine.fileName,outputContext()),
+   contact:templates.resolve($('#signatureContact').value||'',engine.fileName,outputContext()),
+   signerName:templates.resolve($('#signatureSignerName').value||'{DISPLAY_NAME}',engine.fileName,outputContext()),
+   appearance:$('#signatureAppearanceType').value||'none'
+  });
+  undoStack.push(before);if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo();
+  await engine.setBytes(signed);cryptoSignatureState={mode:signatureMode,certificationLevel:signatureMode==='certified'?$('#signatureCertificationLevel').value:'NOT_CERTIFIED',padesLevel:$('#signaturePadesLevel').value,modified:false};await renderAll();$('#signatureCertificatePassword').value='';
+  status.textContent=(signatureMode==='certified'?'PDF certifié et signé':'PDF signé digitalement')+' avec succès.';
+  setStatus(status.textContent);
+  recordHistory({studio:'pdf-studio',type:'action',label:signatureMode==='certified'?'Signature certifiée':'Signature digitale',detail:$('#signaturePadesLevel').value,target:engine.fileName,action:'signature',repeatable:false})
+ }catch(e){
+  if(prepared?.restore)await engine.setBytes(before);
+  await renderAll();status.textContent='Échec : '+(e.message||e);throw e
+ }
+}
+async function validateCurrentSignature(){
+ if(!engine.pageCount)throw new Error('Aucun PDF chargé.');const s=$('#signatureCryptoStatus');s.textContent='Validation DSS…';
+ const r=await signatureService.validate(await engine.baseBytes());s.textContent=typeof r==='string'?r:JSON.stringify(r,null,2)
+}
+$('[data-signature-mode]').forEach(b=>b.onclick=()=>setSignatureMode(b.dataset.signatureMode));
+$('#signatureAppearanceType').onchange=refreshSignatureAssets;$('#signatureAssetSelect').onchange=refreshSignaturePreview;
+$('#signaturePosition').onchange=()=>{$('#signatureCustomPosition').hidden=$('#signaturePosition').value!=='custom'};
+$('#saveSignatureDssUrl').onclick=()=>{try{signatureService.setBaseUrl($('#signatureDssUrl').value);$('#signatureCryptoStatus').textContent='URL DSS enregistrée.'}catch(e){$('#signatureCryptoStatus').textContent=e.message}};
+$('#testSignatureDss').onclick=async()=>{try{$('#signatureCryptoStatus').textContent='Test DSS…';const r=await signatureService.health();$('#signatureCryptoStatus').textContent=JSON.stringify(r,null,2)}catch(e){$('#signatureCryptoStatus').textContent=e.message}};
+$('#validateSignaturePdf').onclick=()=>validateCurrentSignature().catch(e=>$('#signatureCryptoStatus').textContent=e.message);
+$('#applyVisualSignature').onclick=()=>applyVisualSignature().catch(e=>setStatus(e.message));
+$('#applyCryptographicSignature').onclick=()=>applyCryptographicSignature().catch(e=>setStatus(e.message));
+$('#signatureDssUrl').value=signatureService.baseUrl||'';
+$('#signatureSignerName').value='{DISPLAY_NAME}';$('#signatureLocation').value='{SITE}';
+setSignatureMode('visual');refreshSignatureAssets();
+document.addEventListener('nlab:personal-profile-changed',()=>refreshSignatureAssets());
+
 
 function syncViewerMeta(){
  $('#pageNumberInput').value=engine.currentPage||1;$('#pageNumberInput').max=Math.max(1,engine.pageCount);$('#pageInfo').textContent='/ '+engine.pageCount;$('#zoomInput').value=Math.round(viewer.zoom*100);$('#pagesPerRow').value=viewer.pagesPerRow;$('#previewColumns').value=viewer.previewColumns;$('#previewZoom').value=Math.round(viewer.previewScale*100);
@@ -91,7 +210,7 @@ async function renderAll(){if(!engine.pageCount){$('#mainPageGrid').innerHTML=''
 async function load(file){
  if(!file)return;setStatus('Chargement…');activeFileCapabilities=detectFileCapabilities(file);
  try{
-  await engine.loadFile(file);undoStack=[];redoStack=[];syncUndoRedo();viewer.setZoom(1);viewer.setPagesPerRow(1);syncSession();await renderAll();
+  await engine.loadFile(file);undoStack=[];redoStack=[];cryptoSignatureState=null;syncUndoRedo();viewer.setZoom(1);viewer.setPagesPerRow(1);syncSession();await renderAll();
   const item=fileBrowser.items.find(x=>x.data===file);if(item){item.pages=engine.pageCount;item.subtitle=item.relativePath||activeFileCapabilities.family;fileBrowser.render()}
   const converted=activeFileCapabilities.family!=='pdf'?' · aperçu PDF rapide':'';
   setStatus('Document chargé'+converted);recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s) · '+activeFileCapabilities.family,target:file.name});
@@ -103,12 +222,18 @@ async function loadFiles(files){
  fileBrowser.setItems(loadedFiles.map((file,i)=>({id:'file-'+i+'-'+file.name,label:file.name,subtitle:file.webkitRelativePath||'',relativePath:file.webkitRelativePath||file.name,size:file.size,type:file.type,extension:formatInfo(file).extension,data:file})));
  const compatible=loadedFiles.find(x=>formatInfo(x).family!=='archive');if(compatible){fileBrowser.activeId=fileBrowser.items.find(x=>x.data===compatible)?.id||null;fileBrowser.render();await load(compatible)}else setStatus(loadedFiles.length?'Formats chargés dans la collection ; aucun aperçu PDF rapide disponible':'Aucun fichier compatible');
 }
-async function rotate(delta,pagesOverride=null){if(!engine.pageCount)return;const pages=pagesOverride||engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();await engine.rotate(pages,delta);await renderAll();setStatus('Rotation '+(delta>0?'+90°':'−90°'));recordHistory({studio:'pdf-studio',type:'action',label:'Rotation '+(delta>0?'+90°':'−90°'),detail:pages.length+' page(s)',target:engine.fileName,action:delta>0?'rotateRight':'rotateLeft',repeatable:true})}
-async function addPage(){if(!engine.pageCount)return;await checkpoint();await engine.addBlank(engine.pageCount);await renderAll();setStatus('Page ajoutée');recordHistory({studio:'pdf-studio',type:'action',label:'Page ajoutée',target:engine.fileName,action:'addPage',repeatable:true})}
-async function duplicatePage(){if(!engine.pageCount)return;await checkpoint();await engine.duplicate(engine.currentPage);await renderAll();setStatus('Page dupliquée');recordHistory({studio:'pdf-studio',type:'action',label:'Page dupliquée',target:engine.fileName,action:'duplicatePage',repeatable:true})}
-async function deletePageNumber(page){if(!engine.pageCount)return;await checkpoint();try{await engine.deletePages([page]);await renderAll();setStatus('Page '+page+' supprimée')}catch(e){setStatus(e.message)}}
-async function deletePages(){if(!engine.pageCount)return;const pages=engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();try{await engine.deletePages(pages);await renderAll();setStatus('Page(s) supprimée(s)')}catch(e){setStatus(e.message)}}
-async function deleteSelected(){if(!engine.selected.size)return;await checkpoint();try{await engine.deletePages([...engine.selected]);await renderAll();setStatus('Sélection supprimée')}catch(e){setStatus(e.message)}}
+function assertPdfMutationAllowed(){
+ if(cryptoSignatureState?.mode==='certified'&&cryptoSignatureState?.certificationLevel==='CERTIFIED_NO_CHANGES_ALLOWED')throw new Error('PDF certifié : aucune modification n’est autorisée. Utilisez Annuler pour revenir avant la certification.');
+}
+function markPdfModifiedAfterSignature(){
+ if(!cryptoSignatureState)return;cryptoSignatureState={...cryptoSignatureState,modified:true};setStatus('Document modifié après signature cryptographique — la validation de signature doit être contrôlée.')
+}
+async function rotate(delta,pagesOverride=null){assertPdfMutationAllowed();if(!engine.pageCount)return;const pages=pagesOverride||engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();await engine.rotate(pages,delta);markPdfModifiedAfterSignature();await renderAll();setStatus('Rotation '+(delta>0?'+90°':'−90°'));recordHistory({studio:'pdf-studio',type:'action',label:'Rotation '+(delta>0?'+90°':'−90°'),detail:pages.length+' page(s)',target:engine.fileName,action:delta>0?'rotateRight':'rotateLeft',repeatable:true})}
+async function addPage(){assertPdfMutationAllowed();if(!engine.pageCount)return;await checkpoint();await engine.addBlank(engine.pageCount);markPdfModifiedAfterSignature();await renderAll();setStatus('Page ajoutée');recordHistory({studio:'pdf-studio',type:'action',label:'Page ajoutée',target:engine.fileName,action:'addPage',repeatable:true})}
+async function duplicatePage(){assertPdfMutationAllowed();if(!engine.pageCount)return;await checkpoint();await engine.duplicate(engine.currentPage);markPdfModifiedAfterSignature();await renderAll();setStatus('Page dupliquée');recordHistory({studio:'pdf-studio',type:'action',label:'Page dupliquée',target:engine.fileName,action:'duplicatePage',repeatable:true})}
+async function deletePageNumber(page){assertPdfMutationAllowed();if(!engine.pageCount)return;await checkpoint();try{await engine.deletePages([page]);markPdfModifiedAfterSignature();await renderAll();setStatus('Page '+page+' supprimée')}catch(e){setStatus(e.message)}}
+async function deletePages(){assertPdfMutationAllowed();if(!engine.pageCount)return;const pages=engine.targetPages($('#pageScope').value);if(!pages.length)return;await checkpoint();try{await engine.deletePages(pages);markPdfModifiedAfterSignature();await renderAll();setStatus('Page(s) supprimée(s)')}catch(e){setStatus(e.message)}}
+async function deleteSelected(){assertPdfMutationAllowed();if(!engine.selected.size)return;await checkpoint();try{await engine.deletePages([...engine.selected]);markPdfModifiedAfterSignature();await renderAll();setStatus('Sélection supprimée')}catch(e){setStatus(e.message)}}
 async function currentBlob(){return new Blob([await engine.baseBytes()],{type:'application/pdf'})}
 async function saveCurrent({classify=false,forcePicker=false}={}){
  if(!engine.pageCount)return;const format=$('#outputFormat').value;if(format==='zip')return saveZip({classify});
@@ -145,11 +270,11 @@ $('#propertiesToHelp').onclick=()=>activateSidebarTab('help');$('#detachHelp').o
 function openAdvancedStudio(id){createStudioContext({sourceStudio:'pdf-studio',targetStudio:id,capability:id,fileName:engine.fileName,page:engine.currentPage,selectedPages:[...engine.selected],returnTarget:location.href});const u=new URL(studioManifest.studiosHref,location.href);u.searchParams.set('target',id);u.searchParams.set('return','pdf-studio');location.href=u.href}
 $$('[data-advanced-studio]').forEach(b=>b.onclick=()=>openAdvancedStudio(b.dataset.advancedStudio));document.addEventListener('click',e=>{const b=e.target.closest('[data-studio-action]');if(b&&!b.closest('.studioRibbon'))document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,source:'sidebar',element:b}}))});
 
-document.addEventListener('studio-v2:action',e=>{const a=e.detail.action;if(a==='openPdf')$('#pickFile').click();else if(a==='openFolder')$('#pickFolder').click();else if(a==='prevFile')$('#filePrev').click();else if(a==='nextFile')$('#fileNext').click();else if(a==='savePdf')saveCurrent();else if(a==='saveZip')saveZip();else if(a==='classifyPdf'){activateSidebarTab('tools');$('#sectionOutput').open=true;$('#sectionOutput').scrollIntoView({block:'nearest'})}else if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='deletePage')deletePages();else if(a==='undo')undo();else if(a==='redo')redo();else if(a==='history')activateSidebarTab('history');else if(a==='commands')document.dispatchEvent(new Event('studio-v2:open-command-palette'));else if(a==='workflows')document.dispatchEvent(new Event('studio-v2:open-workflows'));else showHelp(a,e.detail.element||null)});
+document.addEventListener('studio-v2:action',e=>{const a=e.detail.action;if(a==='openPdf')$('#pickFile').click();else if(a==='openFolder')$('#pickFolder').click();else if(a==='prevFile')$('#filePrev').click();else if(a==='nextFile')$('#fileNext').click();else if(a==='savePdf')saveCurrent();else if(a==='saveZip')saveZip();else if(a==='classifyPdf'){activateSidebarTab('tools');$('#sectionOutput').open=true;$('#sectionOutput').scrollIntoView({block:'nearest'})}else if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='deletePage')deletePages();else if(a==='undo')undo();else if(a==='redo')redo();else if(a==='signature'){activateSidebarTab('tools');$('#sectionSignature').open=true;$('#sectionSignature').scrollIntoView({block:'nearest'});setSignatureMode('visual')}else if(a==='history')activateSidebarTab('history');else if(a==='commands')document.dispatchEvent(new Event('studio-v2:open-command-palette'));else if(a==='workflows')document.dispatchEvent(new Event('studio-v2:open-workflows'));else showHelp(a,e.detail.element||null)});
 document.addEventListener('studio-v2:menu',e=>{if(e.detail.tab==='help')activateSidebarTab('help');if(e.detail.tab==='history')activateSidebarTab('history');if(e.detail.tab==='view')$('#studioVisibilityOpen')?.click();if(e.detail.tab==='file')$('#sectionInput').open=true});
 document.addEventListener('studio-v2:repeat-action',e=>{const a=e.detail?.action;if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='savePdf')saveCurrent();else showHelp(a||'history')});
 registerPipelineHandler('rotateLeft',async()=>{await rotate(-90);return engine});registerPipelineHandler('rotateRight',async()=>{await rotate(90);return engine});registerPipelineHandler('addPage',async()=>{await addPage();return engine});registerPipelineHandler('duplicatePage',async()=>{await duplicatePage();return engine});registerPipelineHandler('savePdf',async()=>{await saveCurrent();return engine});
 document.addEventListener('studio-v2:workflow-run',async e=>{const steps=(e.detail?.steps||[]).map(action=>({capability:action}));if(!steps.length)return;try{await runPipeline({steps,context:{input:engine,studio:'pdf-studio',fileName:engine.fileName},onProgress:x=>setStatus('Workflow '+(x.index+1)+'/'+x.total+' · '+x.capability)})}catch(err){setStatus('Workflow interrompu : '+err.message)}});
 
-$('#copyDiagnostics').onclick=async()=>{const tests=runCapabilitySelfTests({manifest:studioManifest,root:document}),info={studio:'pdf-studio',version:VERSION,documentSession:session.snapshot(),file:engine.fileName,pages:engine.pageCount,currentPage:engine.currentPage,selectedPages:[...engine.selected],fileCollection:{count:fileBrowser.items.length,selected:fileBrowser.selected.size,view:fileBrowser.view,sort:fileBrowser.sortMode,groupBy:fileBrowser.groupBy},pagesPerRow:viewer.pagesPerRow,zoom:viewer.zoom,previewScale:viewer.previewScale,previewColumns:viewer.previewColumns,fileCapabilities:activeFileCapabilities,capabilityTests:tests,userAgent:navigator.userAgent};await navigator.clipboard?.writeText(JSON.stringify(info,null,2));setStatus('Diagnostic copié')};
-updateNamingPreview();updateOutputPreview();setStatus('PDF Studio TEST '+VERSION+' prêt');
+$('#copyDiagnostics').onclick=async()=>{const tests=runCapabilitySelfTests({manifest:studioManifest,root:document}),info={studio:'pdf-studio',version:runtimeVersion.studioVersion,coreVersion:runtimeVersion.coreVersion,documentSession:session.snapshot(),file:engine.fileName,pages:engine.pageCount,currentPage:engine.currentPage,selectedPages:[...engine.selected],fileCollection:{count:fileBrowser.items.length,selected:fileBrowser.selected.size,view:fileBrowser.view,sort:fileBrowser.sortMode,groupBy:fileBrowser.groupBy},pagesPerRow:viewer.pagesPerRow,zoom:viewer.zoom,previewScale:viewer.previewScale,previewColumns:viewer.previewColumns,fileCapabilities:activeFileCapabilities,capabilityTests:tests,userAgent:navigator.userAgent};await navigator.clipboard?.writeText(JSON.stringify(info,null,2));setStatus('Diagnostic copié')};
+updateNamingPreview();updateOutputPreview();setStatus('PDF Studio '+runtimeVersion.studioStatus+' v'+runtimeVersion.studioVersion+' · Studio Core v'+runtimeVersion.coreVersion+' prêt');

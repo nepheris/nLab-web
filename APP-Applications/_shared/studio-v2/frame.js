@@ -84,11 +84,13 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   }
   if(!qs('.studioStatus[data-core-owned]')){
     const s=document.createElement('div');s.className='studioStatus scope-core';s.dataset.coreOwned='1';s.dataset.scope='core';
-    s.innerHTML='<span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span class="grow">'+esc(manifest.name)+' · Studio Core</span>';root.append(s);
+    const studioVer=versionInfo.version?' v'+esc(versionInfo.version):'',coreVer=versionInfo.coreVersion?' v'+esc(versionInfo.coreVersion):'';
+    s.innerHTML='<span><span class="statusDot"></span><span id="studioStatusText">Prêt</span></span><span class="grow">'+esc(manifest.name)+studioVer+' '+esc(versionInfo.status||'')+' · Studio Core'+coreVer+'</span>';root.append(s);
   }
 
   document.body.dataset.studio=manifest.id||'studio';
   document.body.dataset.studioVersion=versionInfo.version||'';
+  document.body.dataset.studioCoreVersion=versionInfo.coreVersion||'';
   registerCapabilities(manifest);
   applyStudioSettings();
   mountHistoryUI();
