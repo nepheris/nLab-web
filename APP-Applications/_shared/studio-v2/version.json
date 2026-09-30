@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "date": "2026-09-30",
   "channel": "test",
-  "notes": "Studio Core V2 partagé : profils personnels portables/sécurisés, fenêtres, historique, templates, personnalisation et services communs."
+  "notes": "Studio Core V2 partagé : profil personnel 1.3 avec bibliothèques Signatures, Paraphes, Logos, Images de tampons et Images personnelles, assets ZIP référencés par ID, SVG personnels assainis, variables d’identité et versionnement dynamique."
 }
