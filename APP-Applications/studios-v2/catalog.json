@@ -1,16 +1,16 @@
 {
   "schema": "nlab-studios-v2-catalog/v1",
   "core": "../_shared/studio-v2/",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "updated": "2026-09-30",
   "studios": [
     {
       "id": "pdf-studio",
       "name": "PDF Studio V2",
       "status": "test",
-      "version": "2.1.3",
+      "version": "2.1.4",
       "href": "../pdf-studio/v2/",
-      "note": "PDF Studio 2.1.3 TEST. Profil personnel 1.3, bibliothèques d’images partagées et trois modes de signature PDF."
+      "note": "PDF Studio 2.1.4 TEST. Assemblage/fusion ordonnée, insertion et extraction de pages, profils personnels et trois modes de signature."
     },
     {
       "id": "markdown-studio",
