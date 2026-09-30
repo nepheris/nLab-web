@@ -21,7 +21,7 @@ import{enhanceStudioWindow}from'../../_shared/studio-v2/window-system.js';
 import{mountPersonalProfileUI}from'../../_shared/studio-v2/personal-profile-ui.js';
 import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues}from'../../_shared/studio-v2/personal-profile-service.js';
 
-const VERSION='2.1.0';
+const VERSION='2.1.1';
 await mountStudioV2({manifest:studioManifest,versionInfo:{version:VERSION,status:'TEST'}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let personalProfile=loadPersonalProfile();
