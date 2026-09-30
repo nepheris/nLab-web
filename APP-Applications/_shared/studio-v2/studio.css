@@ -320,3 +320,5 @@ body.studioRibbonCollapsed .ribbonContext{
 .commandPaletteWindow[hidden],.workflowWindow[hidden],.floatingHelpWindow[hidden]{display:none}.commandPaletteBox,.workflowBox{width:100%;max-height:none;background:transparent;border-radius:0;box-shadow:none;overflow:visible}.commandPaletteList{max-height:50vh}.workflowBox{padding:0}.floatingHelpWindow{width:min(560px,calc(100vw - 24px))}
 .themeDark .commandPaletteWindow,.themeDark .workflowWindow,.themeDark .floatingHelpWindow{background:#20262c;border-color:#39434c}
 @media(max-width:850px){.visibilityGrid{grid-template-columns:1fr}.collectionToolbar{flex-wrap:wrap}.compactInputRow{flex-wrap:wrap}.grid2{grid-template-columns:1fr}.historyFullControls{grid-template-columns:1fr 1fr}.previewToolbar input[type="range"]{width:80px}}
+
+.studioMain.sidebarCompact [data-sidebar-tab="tasks"]:before{content:"Tâches"}
