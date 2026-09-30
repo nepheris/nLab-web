@@ -19,13 +19,16 @@ import{OutputService}from'../../_shared/studio-v2/output-service.js';
 import{acceptAttribute,isSupportedFile,formatInfo}from'../../_shared/studio-v2/format-registry.js';
 import{enhanceStudioWindow}from'../../_shared/studio-v2/window-system.js';
 import{mountPersonalProfileUI}from'../../_shared/studio-v2/personal-profile-ui.js';
-import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues}from'../../_shared/studio-v2/personal-profile-service.js';
+import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues,getPersonalAsset}from'../../_shared/studio-v2/personal-profile-service.js';
+import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
+import{PdfSignatureService}from'./signature-service.js';
 
-const VERSION='2.1.2';
-await mountStudioV2({manifest:studioManifest,versionInfo:{version:VERSION,status:'TEST'}});
+const runtimeVersion=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
+applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:runtimeVersion.studioVersion,studioStatus:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion});
+await mountStudioV2({manifest:studioManifest,versionInfo:{version:runtimeVersion.studioVersion,status:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let personalProfile=loadPersonalProfile();
-const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService();
+const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService(),signatureService=new PdfSignatureService();
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null;
 
 mountPersonalProfileUI($('#personalProfileHost'));
