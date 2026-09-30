@@ -212,8 +212,18 @@
   <details id="sectionBatch" class="toolSection scope-studio" data-scope="pdf"><summary>17. Traitements batch <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Traitements en lot et PipelineService.</div></details>
   <details id="sectionSecurity" class="toolSection scope-studio" data-scope="pdf"><summary>18. Sécurité & métadonnées <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
  <div class="statusBox">Inspection de sécurité, signatures et métadonnées. La protection par mot de passe ne sera appliquée que lorsqu’un moteur de chiffrement compatible est configuré ; aucune fausse protection n’est simulée.</div>
- <label>Mode<select id="pdfSecurityMode"><option value="inspect">Inspecter la sécurité</option><option value="open-password">Mot de passe d’ouverture</option><option value="permissions">Restreindre les modifications</option><option value="metadata">Métadonnées</option></select></label>
- <div id="pdfSecurityPasswordFields" class="grid2"><label>Mot de passe<input id="pdfOpenPassword" type="password" autocomplete="new-password"></label><label>Mot de passe propriétaire<input id="pdfOwnerPassword" type="password" autocomplete="new-password"></label></div>
+ <details open><summary>Protection AES-256 locale</summary>
+  <div class="statusBox">Le moteur qpdf WebAssembly est chargé uniquement à la demande. Le document reste dans le navigateur. Le mot de passe utilisateur impose l’ouverture ; le mot de passe propriétaire contrôle les permissions.</div>
+  <div class="grid2"><label>Mot de passe d’ouverture<input id="pdfOpenPassword" type="password" autocomplete="new-password"></label><label>Mot de passe propriétaire<input id="pdfOwnerPassword" type="password" autocomplete="new-password"></label></div>
+  <div class="grid2"><label>Impression<select id="pdfPermissionPrint"><option value="full">Autorisée</option><option value="low">Basse résolution</option><option value="none">Interdite</option></select></label><label>Modification<select id="pdfPermissionModify"><option value="all">Toutes</option><option value="annotate">Annotations/formulaires</option><option value="form">Formulaires uniquement</option><option value="assembly">Assemblage uniquement</option><option value="none">Interdite</option></select></label></div>
+  <label class="inlineCheck"><input id="pdfPermissionExtract" type="checkbox" checked> Autoriser copie / extraction</label>
+  <button id="protectCurrentPdf" type="button" data-icon="security">Créer une copie protégée AES-256</button>
+  <div class="profileSecurityNote">Les restrictions d’impression/modification sont des permissions PDF appliquées par les lecteurs conformes ; elles ne remplacent pas le chiffrement par mot de passe d’ouverture.</div>
+ </details>
+ <details><summary>Déverrouiller une copie</summary>
+  <input id="unlockPdfInput" type="file" accept=".pdf,application/pdf" hidden><div class="compactInputRow"><button id="pickUnlockPdf" type="button">Choisir un PDF protégé</button><span id="unlockPdfName" class="grow">Aucun fichier</span></div>
+  <label>Mot de passe<input id="unlockPdfPassword" type="password" autocomplete="current-password"></label><button id="unlockPdfNow" type="button">Créer une copie déverrouillée</button>
+ </details>
  <details open><summary>Métadonnées du document</summary>
   <label>Titre<input id="pdfMetaTitle"></label><label>Auteur<input id="pdfMetaAuthor"></label><label>Sujet<input id="pdfMetaSubject"></label><label>Mots-clés<input id="pdfMetaKeywords" placeholder="mot1, mot2, mot3"></label>
   <div class="compactInputRow"><button id="loadPdfMetadata" type="button" data-icon="metadata">Lire</button><button id="savePdfMetadata" type="button">Enregistrer les métadonnées</button><button id="cleanPdfMetadata" type="button">Nettoyer</button></div>
