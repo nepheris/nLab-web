@@ -7,6 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head><body>
 <main id="studioMain" class="studioMain">
 <aside id="studioSidebar" class="studioSidebar pdfV2Sidebar scope-core" data-scope="core">
@@ -85,9 +86,27 @@
 
   <details id="sectionStamps" class="toolSection scope-studio" data-scope="pdf"><summary>5. Tampons & 5 dates <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Bibliothèque, modèle, variables, position, portée et 5 dates à reconnecter depuis V1.</div></details>
   <details id="sectionAnnotations" class="toolSection scope-studio" data-scope="pdf"><summary>6. Annotations & objets <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Texte, tampon, surligneur, stylo, image, signature et moteur d’objets.</div></details>
-  <details id="sectionOcr" class="toolSection scope-studio" data-scope="pdf"><summary>7. OCR · reconnaissance de texte <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">OCR rapide + ouverture OCR Studio pour les traitements avancés.</div></details>
-  <details id="sectionOptimize" class="toolSection scope-studio" data-scope="pdf"><summary>8. Optimisation & compression <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">DPI, JPEG, niveaux de gris et compression structurelle.</div></details>
-  <details id="sectionTranslate" class="toolSection scope-studio" data-scope="pdf"><summary>9. Traduction bilingue <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Original + traduction, côte à côte et pages en vis-à-vis.</div></details>
+  <details id="sectionOcr" class="toolSection scope-studio" data-scope="pdf"><summary>7. OCR · reconnaissance de texte <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+ <div class="grid2"><label>Langue<select id="ocrLang"><option value="fra">Français</option><option value="eng">Anglais</option><option value="deu">Allemand</option><option value="spa">Espagnol</option><option value="ita">Italien</option></select></label><label>Portée<select id="ocrScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label></div>
+ <label>DPI<select id="ocrDpiPreset"><option value="150">Léger · 150 DPI</option><option value="200" selected>Scan standard · 200 DPI</option><option value="300">Impression · 300 DPI</option><option value="400">Haute qualité · 400 DPI</option></select></label>
+ <div class="compactInputRow"><button id="runOcrQuick" type="button" data-icon="ocr">Lancer OCR</button><button type="button" data-advanced-studio="ocr-studio">Ouvrir OCR Studio</button></div>
+ <textarea id="ocrResult" rows="7" placeholder="Texte OCR…" readonly></textarea><button id="copyOcrResult" type="button">Copier le texte</button>
+</div></details>
+  <details id="sectionOptimize" class="toolSection scope-studio" data-scope="pdf"><summary>8. Optimisation & compression <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+ <div class="presetButtons"><button type="button" data-opt-preset="screen">Écran</button><button type="button" data-opt-preset="balanced" class="active">Équilibré</button><button type="button" data-opt-preset="scan">Scan</button><button type="button" data-opt-preset="print">Impression</button></div>
+ <label>DPI <span id="optDpiLabel">200 · Scan standard</span><input id="optDpi" type="range" min="72" max="600" step="1" value="200"></label>
+ <label>Qualité JPEG <span id="optJpegLabel">82 % · compression moyenne</span><input id="optJpeg" type="range" min="20" max="100" step="1" value="82"></label>
+ <label class="inlineCheck"><input id="optGray" type="checkbox"> Niveaux de gris</label>
+ <label>Portée<select id="optScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
+ <button id="runOptimizeQuick" type="button" data-icon="optimize">Optimiser</button>
+</div></details>
+  <details id="sectionTranslate" class="toolSection scope-studio" data-scope="pdf"><summary>9. Traduction bilingue <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+ <div class="grid2"><label>Source<select id="translateSource"><option value="fr">Français</option><option value="en">Anglais</option><option value="de">Allemand</option><option value="es">Espagnol</option><option value="it">Italien</option></select></label><label>Cible<select id="translateTarget"><option value="en">Anglais</option><option value="fr">Français</option><option value="de">Allemand</option><option value="es">Espagnol</option><option value="it">Italien</option></select></label></div>
+ <label>Mise en page<select id="translateLayout"><option value="side-by-side">Côte à côte 50/50</option><option value="side-13">Original 1/3 · traduction 2/3</option><option value="side-23">Original 2/3 · traduction 1/3</option><option value="facing">Pages en vis-à-vis</option></select></label>
+ <label>Endpoint optionnel<input id="translateEndpoint" type="url" placeholder="https://…/translate"></label>
+ <label>Portée<select id="translateScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
+ <div class="compactInputRow"><button id="runTranslateQuick" type="button" data-icon="translate">Créer PDF bilingue</button><button type="button" data-advanced-studio="translation-studio">Studio avancé</button></div>
+</div></details>
   <details id="sectionSignature" class="toolSection scope-studio" data-scope="pdf"><summary>10. Signature & paraphe <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
    <div class="signatureModeTabs" role="tablist">
     <button type="button" class="active" data-signature-mode="visual">PDF Signature visuelle</button>
