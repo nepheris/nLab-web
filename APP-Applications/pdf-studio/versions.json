@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.1.2",
+  "test": "2.1.3",
   "versions": [
+    {
+      "version": "2.1.3",
+      "label": "PDF Studio 2.1.3 TEST",
+      "date": "2026-09-30",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Profil personnel 1.3 avec prénom/nom/initiales et format d’identité, bibliothèques multi-signatures, paraphes, logos, images de tampons et images personnelles exportables en ZIP. Ajout des trois modes PDF Signature visuelle / digitale / certifiée, preview de signature, moteur d’incrustation visuelle, passerelle DSS/PAdES, suivi des modifications post-signature, et affichage dynamique des versions PDF Studio/Studio Core."
+    },
     {
       "version": "2.1.2",
       "label": "PDF Studio 2.1.2 TEST",
       "date": "2026-09-30",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Profil personnel sécurisé : choix Appareil local / Session privée, assets de signature/paraphe chiffrés AES-GCM en session, effacement/verrouillage de session, bibliothèques multi-signatures et multi-paraphes avec variante et valeur par défaut, ZIP compatible."
     },
