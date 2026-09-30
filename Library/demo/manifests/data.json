@@ -2,57 +2,24 @@
   "schema": "nlab-demo-manifest/v1",
   "studio": "data-studio",
   "label": "Data Studio",
-  "source": "Google Drive reference 2026-09-29",
+  "source": "Google Drive reference + synthetic local fixtures 2026-09-30",
   "files": [
-    {
-      "name": "dataset-validation-complet.csv",
-      "storage": "reference-only",
-      "kind": "csv"
-    },
-    {
-      "name": "dataset-validation-complet.json",
-      "storage": "reference-only",
-      "kind": "json"
-    },
-    {
-      "name": "dataset-validation-complet.xlsx",
-      "storage": "reference-only",
-      "kind": "xlsx"
-    },
-    {
-      "name": "ISOAlphaCrossTab.csv",
-      "storage": "reference-only",
-      "kind": "csv"
-    },
-    {
-      "name": "ISOAlphaFAO.csv",
-      "storage": "reference-only",
-      "kind": "csv"
-    },
-    {
-      "name": "ISOAlpaCode.csv",
-      "storage": "reference-only",
-      "kind": "csv"
-    },
-    {
-      "name": "population.csv",
-      "storage": "reference-only",
-      "kind": "csv"
-    },
-    {
-      "name": "sous_nutrition.csv",
-      "storage": "reference-only",
-      "kind": "csv"
-    },
-    {
-      "name": "aide_alimentaire.csv",
-      "storage": "reference-only",
-      "kind": "csv"
-    },
-    {
-      "name": "CodePaysMonde.csv",
-      "storage": "reference-only",
-      "kind": "csv"
-    }
+    {"name":"dataset-validation-complet.csv","storage":"reference-only","kind":"csv"},
+    {"name":"dataset-validation-complet.json","storage":"reference-only","kind":"json"},
+    {"name":"dataset-validation-complet.xlsx","storage":"reference-only","kind":"xlsx"},
+    {"name":"ISOAlphaCrossTab.csv","storage":"reference-only","kind":"csv"},
+    {"name":"ISOAlphaFAO.csv","storage":"reference-only","kind":"csv"},
+    {"name":"ISOAlpaCode.csv","storage":"reference-only","kind":"csv"},
+    {"name":"population.csv","storage":"reference-only","kind":"csv"},
+    {"name":"sous_nutrition.csv","storage":"reference-only","kind":"csv"},
+    {"name":"aide_alimentaire.csv","storage":"reference-only","kind":"csv"},
+    {"name":"CodePaysMonde.csv","storage":"reference-only","kind":"csv"},
+    {"name":"demo-tableur-multifeuilles.xlsx","path":"../files/demo-input/Data/demo-tableur-multifeuilles.xlsx","storage":"local","kind":"xlsx"},
+    {"name":"demo-tableur-multifeuilles.xls","path":"../files/demo-input/Data/demo-tableur-multifeuilles.xls","storage":"local","kind":"xls"},
+    {"name":"demo-csv-virgule.csv","path":"../files/demo-input/Data/demo-csv-virgule.csv","storage":"local","kind":"csv","delimiter":","},
+    {"name":"demo-csv-point-virgule.csv","path":"../files/demo-input/Data/demo-csv-point-virgule.csv","storage":"local","kind":"csv","delimiter":";"},
+    {"name":"demo-tsv-tabulation.tsv","path":"../files/demo-input/Data/demo-tsv-tabulation.tsv","storage":"local","kind":"tsv","delimiter":"tab"},
+    {"name":"demo-csv-pipe.csv","path":"../files/demo-input/Data/demo-csv-pipe.csv","storage":"local","kind":"csv","delimiter":"|"},
+    {"name":"demo-texte-long.txt","path":"../files/demo-input/Data/demo-texte-long.txt","storage":"local","kind":"text"}
   ]
 }
