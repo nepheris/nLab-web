@@ -170,7 +170,20 @@
  <div id="qrPreview" class="signatureAssetPreview"><span>Aperçu QR</span></div>
  <div class="compactInputRow"><button id="generateQrPreview" type="button">Aperçu</button><button id="applyQrQuick" type="button" data-icon="qr">Placer dans le PDF</button><button type="button" data-advanced-studio="code-studio">Code Studio</button></div>
 </div></details>
-  <details id="sectionPageOutput" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête · pied · recadrage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Templates gauche/centre/droite, PAGE/PAGES, QR et recadrage.</div></details>
+  <details id="sectionPageOutput" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête · pied · recadrage <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+ <details open><summary>En-tête / pied</summary>
+  <div class="grid3"><label>En-tête gauche<input id="headerLeft" placeholder="{DISPLAY_NAME}"></label><label>Centre<input id="headerCenter" placeholder=""></label><label>Droite<input id="headerRight" placeholder="{DATE}"></label></div>
+  <div class="grid3"><label>Pied gauche<input id="footerLeft" placeholder=""></label><label>Centre<input id="footerCenter" placeholder="Page {PAGE}/{PAGES}"></label><label>Droite<input id="footerRight" placeholder="{FILENAME}"></label></div>
+  <div class="grid2"><label>Taille<input id="headerFooterFontSize" type="number" min="6" max="24" value="9"></label><label>Portée<select id="headerFooterScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label></div>
+  <button id="applyHeaderFooter" type="button" data-icon="headerFooter">Appliquer en-tête / pied</button>
+ </details>
+ <details><summary>Recadrage</summary>
+  <div class="grid2"><label>Gauche %<input id="cropLeft" type="number" min="0" max="45" value="0"></label><label>Droite %<input id="cropRight" type="number" min="0" max="45" value="0"></label><label>Haut %<input id="cropTop" type="number" min="0" max="45" value="0"></label><label>Bas %<input id="cropBottom" type="number" min="0" max="45" value="0"></label></div>
+  <label>Portée<select id="cropScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
+  <button id="applyCrop" type="button" data-icon="crop">Recadrer</button>
+ </details>
+ <details class="inlineHelp"><summary>Variables disponibles</summary><div id="headerFooterVariables" class="variableHelp"></div></details>
+</div></details>
   <details id="sectionConversion" class="toolSection scope-studio" data-scope="pdf"><summary>13. Conversions <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
  <label>Conversion rapide<select id="quickConversion"><option value="txt">PDF → texte</option><option value="png">PDF → PNG</option><option value="jpg">PDF → JPEG</option></select></label>
  <label>Portée<select id="convertScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
