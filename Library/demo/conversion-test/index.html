@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nLab · Test conversion HTML → PDF</title>
+<style>
+@page{size:A4;margin:16mm}
+:root{--blue:#0057b8;--ink:#17212b;--muted:#607181;--line:#cbd5df;--bg:#f3f5f7;--note:#fff7df}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+.wrap{width:min(980px,calc(100% - 28px));margin:auto}header{background:#fff;border-bottom:1px solid var(--line)}header .wrap{min-height:64px;display:flex;align-items:center;gap:16px}
+header a{color:inherit;text-decoration:none}.brand{font-weight:900;color:var(--blue);margin-left:auto}
+main{padding:28px 0 60px}.hero,.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.hero{background:#eef6fb}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.note{background:var(--note)}
+h1{font-size:clamp(28px,5vw,46px);margin:4px 0 12px}h2{font-size:19px;border-bottom:1px solid var(--line);padding-bottom:5px}
+.toc a{display:inline-block;margin:4px 10px 4px 0}.imgwrap{text-align:center}.imgwrap svg{width:min(320px,100%);height:auto}
+table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid #b8c3cc;padding:8px;text-align:left}th{background:#edf2f5}
+.code{font:12px ui-monospace,SFMono-Regular,Consolas,monospace;background:#f6f8fa;padding:9px;border-radius:7px;overflow:auto}.small{font-size:11px;color:var(--muted)}
+.pagebreak{break-before:page}.testBadge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eaf6ee;color:#21633a;font-size:11px;font-weight:800}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="wrap"><a href="../">← Galerie démo</a><a href="../../../APP-Applications/pdf-studio/v2/">PDF Studio TEST</a><span class="brand">nLab Conversion Test</span></div></header>
+<main class="wrap">
+<section class="hero">
+<span class="testBadge">Corpus synthétique de validation</span>
+<h1>Test HTML → PDF</h1>
+<p>Cette page sert à vérifier le moteur de conversion nLab sur un cas plus réaliste qu’un simple titre + paragraphe.</p>
+<nav class="toc"><strong>Navigation :</strong> <a href="#section-table">Tableau</a><a href="#section-image">Image</a><a href="#section-links">Liens</a><a href="#section-end">Fin</a><a href="https://example.com/" target="_blank" rel="noopener">Lien externe</a></nav>
+</section>
+
+<section class="grid">
+<div class="box"><h2>Bloc texte A</h2><p>Texte standard avec <strong>gras</strong>, <em>italique</em>, caractères accentués : éèàçù, symbole € et tiret —.</p><ul><li>élément 1</li><li>élément 2</li><li>élément 3</li></ul></div>
+<div class="box note"><h2>Bloc texte B</h2><p>Deuxième bloc pour contrôler la grille CSS, les fonds, les bordures et les espacements.</p><p><a href="#section-end">Lien interne vers la fin du document</a>.</p></div>
+</section>
+
+<section id="section-image" class="box imgwrap">
+<h2>Image vectorielle</h2>
+<svg viewBox="0 0 300 160" role="img" aria-label="Illustration vectorielle de test">
+<rect x="5" y="5" width="290" height="150" rx="18" fill="#eef3f8" stroke="#6f879b" stroke-width="2"/>
+<circle cx="90" cy="80" r="42" fill="#d9ecff" stroke="#2a6f9e" stroke-width="2"/>
+<path d="M65 88l18-20 18 17 24-28 35 47H65z" fill="#85b6d8"/>
+<text x="150" y="142" text-anchor="middle" font-family="Arial" font-size="16">IMAGE SVG TEST</text>
+</svg>
+<p class="small">Le SVG permet de contrôler le rendu d’une image/vectoriel sans dépendre d’une ressource externe.</p>
+</section>
+
+<section id="section-table" class="box"><h2>Tableau</h2>
+<table><thead><tr><th>Fonction</th><th>Attendu PDF</th><th>Contrôle</th></tr></thead><tbody>
+<tr><td>Texte</td><td>Natif et sélectionnable</td><td>Extraction texte</td></tr>
+<tr><td>Image SVG</td><td>Visible et vectorielle</td><td>Inspection visuelle</td></tr>
+<tr><td>Lien interne</td><td>Destination PDF</td><td>Annotation GOTO</td></tr>
+<tr><td>Lien externe</td><td>URL cliquable</td><td>Annotation URI</td></tr>
+<tr><td>Pagination</td><td>Sauts contrôlés</td><td>Nombre de pages</td></tr>
+</tbody></table></section>
+
+<section id="section-links" class="box"><h2>Liens & ancres</h2>
+<p><a href="#section-image">Retour à l’image</a> · <a href="#section-table">Retour au tableau</a> · <a href="https://example.com/">example.com</a></p>
+<div class="code">&lt;a href="#section-table"&gt;Lien interne&lt;/a&gt;<br>&lt;a href="https://example.com/"&gt;Lien externe&lt;/a&gt;</div>
+</section>
+
+<section class="pagebreak box"><h2>Page forcée</h2><p>Cette section force un saut de page. Elle permet de contrôler la pagination et le maintien des styles.</p></section>
+
+<section id="section-end" class="box"><h2>Fin du document</h2><p>Dernier bloc de contrôle. <a href="#section-image">Revenir à l’image</a>.</p></section>
+</main>
+</body></html>
