@@ -37,7 +37,7 @@ export default {
    {featureId:'pdf.objects.highlight',action:'highlight',label:'Surligner',icon:'highlight',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.objects.highlight'},
    {featureId:'pdf.objects.pen',action:'pen',label:'Stylo',icon:'pen',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.objects.pen'},
    {featureId:'pdf.objects.image',action:'image',label:'Image',icon:'image',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.objects.image'},
-   {featureId:'pdf.signature',action:'signature',label:'Signature',icon:'signature',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.signature'}
+   {featureId:'pdf.signature',action:'signature',label:'Signature',icon:'signature',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.signature',help:{summary:'Ouvrir les trois modes de signature PDF.',details:'PDF Signature visuelle (image non cryptographique), PDF Signature digitale (PAdES) et PDF Signature certifiée (PAdES + règles DocMDP).'}}
   ]},
   {id:'engines',label:'Moteurs',scope:'pdf',items:[
    {featureId:'pdf.tools.ocr',action:'ocr',label:'OCR',icon:'ocr',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'ocr.quick',advancedStudio:{id:'ocr-studio',label:'OCR Studio'}},
