@@ -1,0 +1,24 @@
+{
+  "id": "nlab-conversion-html-pdf-test-v1",
+  "purpose": "Validation réaliste HTML/CSS vers PDF",
+  "expected": {
+    "text_native": true,
+    "accented_characters": true,
+    "svg_visible": true,
+    "internal_links": true,
+    "external_links": true,
+    "css_grid": true,
+    "table": true,
+    "forced_page_break": true
+  },
+  "local_validation_2026_09_30": {
+    "engine": "WeasyPrint 68.0",
+    "result": "PASS",
+    "pages": 3,
+    "pdf_text_extractable": true,
+    "internal_links_preserved": true,
+    "external_link_preserved": true,
+    "svg_rendered": true
+  },
+  "note": "Le SVG est vectoriel dans le PDF et n'apparaît donc pas comme image raster dans get_images()."
+}
