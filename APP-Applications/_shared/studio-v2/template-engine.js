@@ -8,12 +8,12 @@ export const TEMPLATE_VARIABLES=Object.freeze({
  FOLDER:'Dossier parent',PATH:'Chemin logique',RELATIVE_PATH:'Chemin relatif',FILESIZE:'Taille en octets',INDEX:'Index du fichier',
  DATE:'Date courante',TIME:'Heure courante',DATETIME:'Date et heure',YEAR:'Année',MONTH:'Mois',DAY:'Jour',WEEK:'Semaine ISO',
  MONTH_NAME_FR:'Nom du mois FR',MONTH_NAME_EN:'Nom du mois EN',DAY_NAME_FR:'Jour FR',DAY_NAME_EN:'Jour EN',
- PAGE:'Page courante',PAGES:'Nombre de pages',SELECTED_COUNT:'Pages sélectionnées',FIRST_NAME:'Prénom',LAST_NAME:'Nom',FULL_NAME:'Prénom Nom',LAST_FIRST:'Nom Prénom',INITIALS:'Initiales',CLIENT:'Client',PROJECT:'Projet',
+ PAGE:'Page courante',PAGES:'Nombre de pages',SELECTED_COUNT:'Pages sélectionnées',FIRST_NAME:'Prénom',LAST_NAME:'Nom',FULL_NAME:'Prénom Nom',LAST_FIRST:'Nom Prénom',DISPLAY_NAME:'Identité affichée',INITIALS:'Initiales',CLIENT:'Client',PROJECT:'Projet',
  REFERENCE:'Référence',SITE:'Site',SERVICE:'Service',CATEGORY:'Catégorie',TAG:'Tag',TREATMENT:'Traitement',
  STAMP_DATE:'Date du tampon',DATE_A:'Date A',DATE_B:'Date B',DATE_C:'Date C',DATE_D:'Date D'
 });
 export class TemplateEngine{
- constructor(values={}){this.values={STAMP_DATE:today(),DATE_A:today(),DATE_B:today(),DATE_C:today(),DATE_D:today(),FIRST_NAME:'',LAST_NAME:'',FULL_NAME:'',LAST_FIRST:'',INITIALS:'',CLIENT:'',PROJECT:'',REFERENCE:'',SITE:'',SERVICE:'',CATEGORY:'',TAG:'',TREATMENT:'TRAITEMENT',...values}}
+ constructor(values={}){this.values={STAMP_DATE:today(),DATE_A:today(),DATE_B:today(),DATE_C:today(),DATE_D:today(),FIRST_NAME:'',LAST_NAME:'',FULL_NAME:'',LAST_FIRST:'',DISPLAY_NAME:'',INITIALS:'',CLIENT:'',PROJECT:'',REFERENCE:'',SITE:'',SERVICE:'',CATEGORY:'',TAG:'',TREATMENT:'TRAITEMENT',...values}}
  setValues(values={}){this.values={...this.values,...values};return this}
  getValues(){return{...this.values}}
  dateParts(v){const d=new Date((v||today())+'T12:00:00');return{YYYY:d.getFullYear(),YY:String(d.getFullYear()).slice(-2),MM:pad(d.getMonth()+1),M:String(d.getMonth()+1),DD:pad(d.getDate()),D:String(d.getDate()),MONTH_NAME_FR:d.toLocaleDateString('fr-FR',{month:'long'}),MONTH_NAME_EN:d.toLocaleDateString('en-US',{month:'long'}),DAY_NAME_FR:d.toLocaleDateString('fr-FR',{weekday:'long'}),DAY_NAME_EN:d.toLocaleDateString('en-US',{weekday:'long'})}}
