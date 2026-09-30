@@ -248,8 +248,8 @@ async function applyVisualSignature(){
  await renderAll();setStatus('Signature visuelle appliquée sur '+pages.length+' page(s).');
  recordHistory({studio:'pdf-studio',type:'action',label:$('#signatureAppearanceType').value==='initials'?'Paraphe visuel':'Signature visuelle',detail:pages.length+' page(s) · non cryptographique',target:engine.fileName,action:'signature',repeatable:false})
 }
-async function bytesWithOptionalSignatureAppearance(){
- const appearance=$('#signatureAppearanceType')?.value||'none';
+async function bytesWithOptionalSignatureAppearance({skipAppearance=false}={}){
+ const appearance=skipAppearance?'none':($('#signatureAppearanceType')?.value||'none');
  const before=await engine.baseBytes();
  if(appearance==='none')return{bytes:before,restore:null};
  const id=$('#signatureAssetSelect')?.value;if(!id)throw new Error('Choisissez une apparence de signature/paraphe ou « Aucune apparence ».');
@@ -264,12 +264,13 @@ async function bytesWithOptionalSignatureAppearance(){
 }
 async function applyCryptographicSignature(){
  if(!engine.pageCount)throw new Error('Chargez d’abord un PDF.');
+ const hadPlacedAppearance=[...engine.pageAnnotations.values()].some(list=>list.some(x=>x.type==='signature'));
  await commitObjectsIfNeeded();
  const cert=$('#signatureCertificate')?.files?.[0];if(!cert)throw new Error('Sélectionnez un certificat .p12 ou .pfx.');
  const status=$('#signatureCryptoStatus');status.textContent='Préparation de la signature…';
  const before=await engine.baseBytes();let prepared=null;
  try{
-  prepared=await bytesWithOptionalSignatureAppearance();
+  prepared=await bytesWithOptionalSignatureAppearance({skipAppearance:hadPlacedAppearance});
   const signed=await signatureService.sign({
    pdfBytes:prepared.bytes,certificateFile:cert,password:$('#signatureCertificatePassword').value||'',
    padesLevel:$('#signaturePadesLevel').value,
