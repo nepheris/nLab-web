@@ -1,5 +1,5 @@
 const DB='nlab-studio-v2-handles',STORE='handles';
-function openDb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function openDb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,2);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 async function putHandle(k,h){try{const db=await openDb(),tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(h,k);await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});db.close()}catch{}}
 async function getHandle(k){try{const db=await openDb(),tx=db.transaction(STORE,'readonly'),r=tx.objectStore(STORE).get(k),v=await new Promise((res,rej)=>{r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});db.close();return v||null}catch{return null}}
 async function permission(h,mode='readwrite'){if(!h)return false;const o={mode};if((await h.queryPermission?.(o))==='granted')return true;return(await h.requestPermission?.(o))==='granted'}
