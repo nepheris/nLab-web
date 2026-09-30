@@ -23,6 +23,7 @@ import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues,getPerson
 import{listRecentLocations,rememberLocation,resolveRecentLocation}from'../../_shared/studio-v2/recent-locations-service.js';
 import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
 import{PdfSignatureService}from'./signature-service.js';
+import{PdfSecurityService}from'./pdf-security-service.js';
 import{PDFTools}from'../v1/pdf-tools.js';
 import{AdvancedPDFTools}from'../v1/advanced-tools.js';
 import{PdfObjectLayer}from'./object-layer.js';
@@ -32,7 +33,7 @@ applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:runtimeVe
 await mountStudioV2({manifest:studioManifest,versionInfo:{version:runtimeVersion.studioVersion,status:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let personalProfile=loadPersonalProfile();
-const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService(),signatureService=new PdfSignatureService();
+const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService(),signatureService=new PdfSignatureService(),securityService=new PdfSecurityService();
 let objectLayer=null;
 const annotationBridge={exportBytes:()=>objectLayer?.hasObjects()?objectLayer.exportBytes():engine.baseBytes()};const pdfTools=new PDFTools({engine,annotations:annotationBridge,variables:templates}),advancedTools=new AdvancedPDFTools({engine,annotations:annotationBridge,variables:templates});
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null,assemblyItems=[],assemblySelectedIndex=-1,assemblyInsertFile=null;
@@ -315,7 +316,9 @@ $('#runOptimizeQuick')?.addEventListener('click',()=>runOptimizeQuick().catch(e=
 $('#runTranslateQuick')?.addEventListener('click',()=>runTranslateQuick().catch(e=>setStatus(e.message)));
 $('#generateQrPreview')?.addEventListener('click',refreshQrPreview);$('#applyQrQuick')?.addEventListener('click',()=>applyQrQuick().catch(e=>setStatus(e.message)));
 $('#runQuickConversion')?.addEventListener('click',()=>runQuickConversion().catch(e=>setStatus(e.message)));
-$('#pdfSecurityMode')?.addEventListener('change',()=>{const mode=$('#pdfSecurityMode').value;if(mode==='open-password'||mode==='permissions')$('#pdfSecurityStatus').textContent='Protection par mot de passe : moteur de chiffrement PDF externe non configuré. Aucun faux verrouillage ne sera appliqué.'});
+$('#protectCurrentPdf')?.addEventListener('click',()=>protectCurrentPdf().catch(e=>{$('#pdfSecurityStatus').textContent='Protection impossible : '+e.message;setStatus(e.message)}));
+$('#pickUnlockPdf')?.addEventListener('click',()=>$('#unlockPdfInput').click());$('#unlockPdfInput')?.addEventListener('change',e=>{unlockPdfFile=e.target.files?.[0]||null;$('#unlockPdfName').textContent=unlockPdfFile?.name||'Aucun fichier'});
+$('#unlockPdfNow')?.addEventListener('click',()=>unlockSelectedPdf().catch(e=>{$('#pdfSecurityStatus').textContent='Déverrouillage impossible : '+e.message;setStatus(e.message)}));
 $('#inspectPdfSecurity')?.addEventListener('click',()=>inspectSecurityAndMetadata().catch(e=>setStatus(e.message)));$('#loadPdfMetadata')?.addEventListener('click',()=>{try{loadPdfMetadataFields()}catch(e){setStatus(e.message)}});$('#savePdfMetadata')?.addEventListener('click',()=>savePdfMetadataFields().catch(e=>setStatus(e.message)));$('#cleanPdfMetadata')?.addEventListener('click',()=>cleanPdfMetadata().catch(e=>setStatus(e.message)));
 $('#pickComparePdf')?.addEventListener('click',()=>$('#comparePdfInput').click());$('#comparePdfInput')?.addEventListener('change',e=>{compareFile=e.target.files?.[0]||null;$('#comparePdfName').textContent=compareFile?.name||''});$('#runComparePdf')?.addEventListener('click',()=>runCompare().catch(e=>setStatus(e.message)));
 $('#inspectForms')?.addEventListener('click',()=>inspectFormsQuick().catch(e=>setStatus(e.message)));$('#flattenForms')?.addEventListener('click',()=>flattenFormsQuick().catch(e=>setStatus(e.message)));
@@ -367,6 +370,18 @@ async function runQuickConversion(){
  if(type==='txt'){const chunks=[];for(const p of pages)chunks.push('--- Page '+p+' ---\n'+await engine.pageText(p));await output.saveBlob(new Blob([chunks.join('\n\n')],{type:'text/plain;charset=utf-8'}),stem+'.txt',{parts:[]});setStatus('Texte exporté.');return}
  const blob=await advancedTools.allImagesZip({type:type==='jpg'?'jpg':'png',scale:2,quality:.9,pages});await output.saveBlob(blob,stem+'_'+type+'.zip',{parts:[]});setStatus('Images '+type.toUpperCase()+' exportées en ZIP.')
 }
+async function protectCurrentPdf(){
+ if(!engine.pageCount)throw new Error('Chargez un PDF.');const bytes=await exportBytesWithObjects(),user=$('#pdfOpenPassword').value||'',owner=$('#pdfOwnerPassword').value||'';
+ $('#pdfSecurityStatus').textContent='Chargement de qpdf WASM et chiffrement AES-256…';
+ const protectedBytes=await securityService.protect(bytes,{userPassword:user,ownerPassword:owner,print:$('#pdfPermissionPrint').value,modify:$('#pdfPermissionModify').value,extract:$('#pdfPermissionExtract').checked});
+ const name=(engine.fileName||'document.pdf').replace(/\.pdf$/i,'')+'_protege.pdf';await output.saveBlob(new Blob([protectedBytes],{type:'application/pdf'}),name,{parts:[]});
+ $('#pdfOpenPassword').value='';$('#pdfOwnerPassword').value='';$('#pdfSecurityStatus').textContent='Copie AES-256 créée : '+name;setStatus('PDF protégé exporté : '+name)
+}
+async function unlockSelectedPdf(){
+ if(!unlockPdfFile)throw new Error('Choisissez un PDF protégé.');const password=$('#unlockPdfPassword').value||'';$('#pdfSecurityStatus').textContent='Déverrouillage qpdf WASM…';
+ const bytes=await securityService.unlock(unlockPdfFile,password),name=(unlockPdfFile.name||'document.pdf').replace(/\.pdf$/i,'')+'_deverrouille.pdf';await output.saveBlob(new Blob([bytes],{type:'application/pdf'}),name,{parts:[]});
+ $('#unlockPdfPassword').value='';$('#pdfSecurityStatus').textContent='Copie déverrouillée créée : '+name;setStatus('PDF déverrouillé exporté : '+name)
+}
 async function inspectSecurityAndMetadata(){
  if(!engine.pageCount)throw new Error('Chargez un PDF.');const sig=advancedTools.signatureStructure(),d=engine.pdfDoc;
  const info={signatures:sig,title:d.getTitle?.()||'',author:d.getAuthor?.()||'',subject:d.getSubject?.()||'',keywords:d.getKeywords?.()||'',creator:d.getCreator?.()||'',producer:d.getProducer?.()||'',creationDate:d.getCreationDate?.()?.toISOString?.()||'',modificationDate:d.getModificationDate?.()?.toISOString?.()||'',encryptionNote:'Inspection structurelle. Le moteur pdf-lib ne chiffre pas les sorties V2.'};
@@ -384,6 +399,7 @@ async function savePdfMetadataFields(){
 async function cleanPdfMetadata(){
  assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');await checkpoint();await advancedTools.cleanMetadata();markPdfModifiedAfterSignature();await renderAll();setStatus('Métadonnées PDF nettoyées.')
 }
+let unlockPdfFile=null;
 let compareFile=null;
 async function runCompare(){
  if(!engine.pageCount||!compareFile)throw new Error('Chargez le PDF courant et choisissez un PDF à comparer.');const r=await advancedTools.compare(compareFile);$('#compareResult').textContent=JSON.stringify(r,null,2);setStatus('Comparaison terminée.')
