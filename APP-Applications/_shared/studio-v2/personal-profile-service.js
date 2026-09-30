@@ -20,7 +20,7 @@ const bytesToB64=bytes=>btoa(String.fromCharCode(...bytes));
 const b64ToBytes=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 
 export const PERSONAL_VARIABLES=Object.freeze([
- ['FIRST_NAME','Prénom'],['LAST_NAME','Nom'],['FULL_NAME','Prénom Nom'],['LAST_FIRST','Nom Prénom'],['INITIALS','Initiales'],['CLIENT','Client'],['PROJECT','Projet'],['REFERENCE','Référence'],
+ ['FIRST_NAME','Prénom'],['LAST_NAME','Nom'],['FULL_NAME','Prénom Nom'],['LAST_FIRST','Nom Prénom'],['DISPLAY_NAME','Identité affichée'],['INITIALS','Initiales'],['CLIENT','Client'],['PROJECT','Projet'],['REFERENCE','Référence'],
  ['SITE','Site'],['SERVICE','Service'],['CATEGORY','Catégorie'],['TAG','Tag'],['TREATMENT','Traitement']
 ]);
 
@@ -34,8 +34,8 @@ export function createDefaultPersonalProfile(){
   profileVersion:'1.2.0',
   createdAt:now(),
   updatedAt:now(),
-  identity:{displayName:'',firstName:'',lastName:'',initials:''},
-  variables:{FIRST_NAME:'',LAST_NAME:'',FULL_NAME:'',LAST_FIRST:'',INITIALS:'',CLIENT:'',PROJECT:'',REFERENCE:'',SITE:'',SERVICE:'',CATEGORY:'',TAG:'',TREATMENT:'TRAITEMENT'},
+  identity:{displayName:'',firstName:'',lastName:'',initials:'',displayFormat:'first-last'},
+  variables:{FIRST_NAME:'',LAST_NAME:'',FULL_NAME:'',LAST_FIRST:'',DISPLAY_NAME:'',INITIALS:'',CLIENT:'',PROJECT:'',REFERENCE:'',SITE:'',SERVICE:'',CATEGORY:'',TAG:'',TREATMENT:'TRAITEMENT'},
   templates:{
    naming:[
     {id:'original',label:'Nom original',template:'{FILENAME}',prefix:'',suffix:''},
@@ -174,8 +174,10 @@ export function removePersonalAssetRef(kind,assetId){
 }
 export function profileTemplateValues(profile=loadPersonalProfile()){
  const first=String(profile.identity?.firstName||profile.variables?.FIRST_NAME||'').trim(),last=String(profile.identity?.lastName||profile.variables?.LAST_NAME||'').trim();
- const initials=String(profile.identity?.initials||profile.variables?.INITIALS||([first,last].filter(Boolean).map(x=>x[0]?.toUpperCase()||'').join(''))).trim();
- return{...(profile.variables||{}),FIRST_NAME:first,LAST_NAME:last,FULL_NAME:[first,last].filter(Boolean).join(' '),LAST_FIRST:[last,first].filter(Boolean).join(' '),INITIALS:initials};
+ const initials=String(profile.identity?.initials||profile.variables?.INITIALS||([first,last].filter(Boolean).map(x=>x[0]?.toUpperCase()||'').join(''))).trim(),format=profile.identity?.displayFormat||'first-last';
+ const choices={'first-last':[first,last].filter(Boolean).join(' '),'last-first':[last,first].filter(Boolean).join(' '),last,last,first,initials};
+ const display=choices[format]||choices['first-last'];
+ return{...(profile.variables||{}),FIRST_NAME:first,LAST_NAME:last,FULL_NAME:[first,last].filter(Boolean).join(' '),LAST_FIRST:[last,first].filter(Boolean).join(' '),DISPLAY_NAME:display,INITIALS:initials};
 }
 export function capturePortableLocalSettings(){
  const out={};
