@@ -6,6 +6,8 @@ const SCHEMA='nlab-personal-profile/v1';
 const MAX_FILES=100;
 const MAX_ASSET_BYTES=10*1024*1024;
 const MAX_TOTAL_BYTES=25*1024*1024;
+const PORTABLE_KEYS=['nlab-studio-v2-settings','nlab-studio-v2-workflow-presets'];
+const PORTABLE_PREFIXES=['nlab-studio-v2-ribbon-','nlab-studio-v2-menu-','nlab-studio-v2-window-','nlab-studio-v2-panel-'];
 
 const clone=x=>JSON.parse(JSON.stringify(x));
 const now=()=>new Date().toISOString();
@@ -93,6 +95,15 @@ export function resetPersonalProfile(){localStorage.removeItem(PROFILE_KEY);docu
 export function profileTemplateValues(profile=loadPersonalProfile()){
  return{...(profile.variables||{}),INITIALS:profile.variables?.INITIALS||profile.identity?.initials||''};
 }
+export function capturePortableLocalSettings(){
+ const out={};
+ for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k)continue;if(PORTABLE_KEYS.includes(k)||PORTABLE_PREFIXES.some(p=>k.startsWith(p)))out[k]=localStorage.getItem(k)}
+ return out
+}
+export function applyPortableLocalSettings(settings={}){
+ for(const [k,v]of Object.entries(settings||{})){if(PORTABLE_KEYS.includes(k)||PORTABLE_PREFIXES.some(p=>k.startsWith(p)))localStorage.setItem(k,String(v))}
+ document.dispatchEvent(new Event('nlab:portable-settings-imported'))
+}
 
 function openDb(){
  return new Promise((res,rej)=>{
@@ -134,6 +145,7 @@ function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.
 
 export async function exportPersonalProfileZip({download=true,fileName=null}={}){
  const JSZip=await ensureJSZip(),zip=new JSZip(),profile=loadPersonalProfile(),assets=await listPersonalAssets(),manifestAssets=[];
+ profile.preferences={...(profile.preferences||{}),portableLocalSettings:capturePortableLocalSettings()};
  for(const a of assets){
   const path='assets/'+assetFolder(a.kind)+'/'+safeName(a.id+'-'+a.name);
   manifestAssets.push({id:a.id,kind:a.kind,name:a.name,type:a.type,size:a.size,path,sha256:await sha256(a.blob),meta:a.meta||{}});
@@ -183,8 +195,10 @@ export async function importPersonalProfileZip(file,{mode='replace'}={}){
  let profile=inspected.profile;
  if(mode==='merge'){
   const current=loadPersonalProfile();
-  profile=normalizeProfile({...current,...profile,identity:{...current.identity,...profile.identity},variables:{...current.variables,...profile.variables},preferences:{...current.preferences,...profile.preferences,studios:{...current.preferences?.studios,...profile.preferences?.studios}},templates:{naming:[...(current.templates?.naming||[]),...(profile.templates?.naming||[])],classification:[...(current.templates?.classification||[]),...(profile.templates?.classification||[])],stamps:[...(current.templates?.stamps||[]),...(profile.templates?.stamps||[])],output:[...(current.templates?.output||[]),...(profile.templates?.output||[])],workflows:[...(current.templates?.workflows||[]),...(profile.templates?.workflows||[])]}});
+  const mergeById=(a,b)=>{const m=new Map();for(const x of[...(a||[]),...(b||[])])m.set(x.id||JSON.stringify(x),x);return[...m.values()]};
+  profile=normalizeProfile({...current,...profile,identity:{...current.identity,...profile.identity},variables:{...current.variables,...profile.variables},preferences:{...current.preferences,...profile.preferences,studios:{...current.preferences?.studios,...profile.preferences?.studios}},templates:{naming:mergeById(current.templates?.naming,profile.templates?.naming),classification:mergeById(current.templates?.classification,profile.templates?.classification),stamps:mergeById(current.templates?.stamps,profile.templates?.stamps),output:mergeById(current.templates?.output,profile.templates?.output),workflows:mergeById(current.templates?.workflows,profile.templates?.workflows)}});
  }
  profile=savePersonalProfile(profile);
+ applyPortableLocalSettings(profile.preferences?.portableLocalSettings||{});
  return{profile,manifest,importedAssets:importedIds.size}
 }
