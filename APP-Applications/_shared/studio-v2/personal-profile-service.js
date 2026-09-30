@@ -92,6 +92,16 @@ export function updatePersonalProfile(mutator){
  return savePersonalProfile(next);
 }
 export function resetPersonalProfile(){localStorage.removeItem(PROFILE_KEY);document.dispatchEvent(new Event('nlab:personal-profile-changed'));return createDefaultPersonalProfile()}
+export function listPersonalTemplates(type){const p=loadPersonalProfile();return Array.isArray(p.templates?.[type])?clone(p.templates[type]):[]}
+export function savePersonalTemplate(type,item={}){
+ if(!['naming','classification','stamps','output','workflows'].includes(type))throw new Error('Type de modèle personnel inconnu');
+ const id=item.id||uid();return updatePersonalProfile(p=>{p.templates=p.templates||{};const list=Array.isArray(p.templates[type])?p.templates[type]:[];p.templates[type]=[{...item,id},...list.filter(x=>x.id!==id)];return p})
+}
+export function removePersonalTemplate(type,id){return updatePersonalProfile(p=>{if(Array.isArray(p.templates?.[type]))p.templates[type]=p.templates[type].filter(x=>x.id!==id);return p})}
+export function rememberRecentLocation(kind,entry={}){
+ if(!['input','output'].includes(kind))throw new Error('Type de dossier récent inconnu');
+ return updatePersonalProfile(p=>{p.recentLocations=p.recentLocations||{input:[],output:[]};const key=String(entry.id||entry.path||entry.name||'').trim();const list=Array.isArray(p.recentLocations[kind])?p.recentLocations[kind]:[];p.recentLocations[kind]=[{...entry,id:key||uid(),updatedAt:now()},...list.filter(x=>String(x.id||x.path||x.name)!==key)].slice(0,20);return p})
+}
 export function profileTemplateValues(profile=loadPersonalProfile()){
  return{...(profile.variables||{}),INITIALS:profile.variables?.INITIALS||profile.identity?.initials||''};
 }
@@ -177,7 +187,7 @@ export async function inspectPersonalProfileZip(file){
  if(manifest.schema!==SCHEMA||profile.schema!==SCHEMA)throw new Error('Schéma de profil nLab non pris en charge');
  const assets=Array.isArray(manifest.assets)?manifest.assets:[];
  if(assets.length>MAX_FILES-2)throw new Error('Trop d’assets dans le profil');
- let total=0;for(const a of assets){if(!a.path?.startsWith('assets/')||a.path.includes('..')||a.path.startsWith('/'))throw new Error('Chemin asset invalide');const e=zip.file(a.path);if(!e)throw new Error('Asset manquant : '+a.name);const n=Number(e?._data?.uncompressedSize||a.size||0);if(n>MAX_ASSET_BYTES)throw new Error('Asset trop volumineux : '+a.name);total+=n}
+ let total=0;for(const a of assets){if(!a.path?.startsWith('assets/')||a.path.includes('..')||a.path.startsWith('/'))throw new Error('Chemin asset invalide');if(['signature','initials'].includes(a.kind)&&!['image/png','image/jpeg','image/webp'].includes(String(a.type||'').toLowerCase()))throw new Error('Format de signature/paraphe non autorisé : '+a.name);const e=zip.file(a.path);if(!e)throw new Error('Asset manquant : '+a.name);const n=Number(e?._data?.uncompressedSize||a.size||0);if(n>MAX_ASSET_BYTES)throw new Error('Asset trop volumineux : '+a.name);total+=n}
  if(total>MAX_TOTAL_BYTES)throw new Error('Contenu décompressé trop volumineux');
  validateProfileAssets(profile,new Set(assets.map(x=>x.id)));
  return{zip,manifest,profile,summary:{displayName:profile.identity?.displayName||'',initials:profile.identity?.initials||profile.variables?.INITIALS||'',variables:Object.values(profile.variables||{}).filter(Boolean).length,namingTemplates:profile.templates?.naming?.length||0,classificationTemplates:profile.templates?.classification?.length||0,stampTemplates:profile.templates?.stamps?.length||0,assets:assets.length}}
