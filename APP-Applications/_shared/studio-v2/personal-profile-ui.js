@@ -1,7 +1,7 @@
 import{PERSONAL_VARIABLES,loadPersonalProfile,savePersonalProfile,putPersonalAsset,getPersonalAsset,deletePersonalAsset,exportPersonalProfileZip,inspectPersonalProfileZip,importPersonalProfileZip}from'./personal-profile-service.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const assetAccept='image/png,image/jpeg,image/webp,image/svg+xml';
+const assetAccept='image/png,image/jpeg,image/webp';
 function assetName(ref){return ref?.name||'Aucun fichier'}
 async function previewAsset(img,ref){
  if(!img)return;if(img.dataset.url){URL.revokeObjectURL(img.dataset.url);delete img.dataset.url}
