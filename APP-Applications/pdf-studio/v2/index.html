@@ -67,7 +67,38 @@
   <details id="sectionOcr" class="toolSection scope-studio" data-scope="pdf"><summary>7. OCR · reconnaissance de texte <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">OCR rapide + ouverture OCR Studio pour les traitements avancés.</div></details>
   <details id="sectionOptimize" class="toolSection scope-studio" data-scope="pdf"><summary>8. Optimisation & compression <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">DPI, JPEG, niveaux de gris et compression structurelle.</div></details>
   <details id="sectionTranslate" class="toolSection scope-studio" data-scope="pdf"><summary>9. Traduction bilingue <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Original + traduction, côte à côte et pages en vis-à-vis.</div></details>
-  <details id="sectionSignature" class="toolSection scope-studio" data-scope="pdf"><summary>10. Signature & espace personnel <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Signature visuelle, paraphe, bibliothèque personnelle et connecteur PAdES.</div></details>
+  <details id="sectionSignature" class="toolSection scope-studio" data-scope="pdf"><summary>10. Signature & paraphe <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+   <div class="signatureModeTabs" role="tablist">
+    <button type="button" class="active" data-signature-mode="visual">PDF Signature visuelle</button>
+    <button type="button" data-signature-mode="digital">PDF Signature digitale</button>
+    <button type="button" data-signature-mode="certified">PDF Signature certifiée</button>
+   </div>
+   <div id="signatureModeHelp" class="statusBox">Signature visuelle — image uniquement, non cryptographique.</div>
+   <div class="signatureCommonGrid">
+    <label>Apparence<select id="signatureAppearanceType"><option value="signature">Signature</option><option value="initials">Paraphe</option><option value="none">Aucune apparence</option></select></label>
+    <label>Modèle<select id="signatureAssetSelect"></select></label>
+   </div>
+   <div id="signatureAssetPreview" class="signatureAssetPreview"><span>Aucune image sélectionnée.</span></div>
+   <div id="signatureVisualControls">
+    <div class="grid2"><label>Portée<select id="signaturePageScope"><option value="current">Page active</option><option value="selected">Sélection sinon page active</option><option value="all">Toutes les pages</option></select></label><label>Position<select id="signaturePosition"><option value="bottom-right">Bas droite</option><option value="bottom-center">Bas centre</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-center">Haut centre</option><option value="top-left">Haut gauche</option><option value="custom">Personnalisée</option></select></label></div>
+    <div class="grid2"><label>Largeur %<input id="signatureWidthPct" type="number" min="3" max="80" value="24"></label><label>Opacité %<input id="signatureOpacityPct" type="number" min="5" max="100" value="100"></label></div>
+    <div id="signatureCustomPosition" class="grid2" hidden><label>X %<input id="signatureXPct" type="number" min="0" max="100" value="70"></label><label>Y %<input id="signatureYPct" type="number" min="0" max="100" value="6"></label></div>
+    <button id="applyVisualSignature" type="button" data-icon="signature">Appliquer la signature visuelle</button>
+   </div>
+   <div id="signatureCryptoControls" hidden>
+    <div class="statusBox warningBox">Signature cryptographique réelle via service privé DSS/PAdES. Le mot de passe P12/PFX reste uniquement en mémoire pendant l’opération et n’est pas enregistré dans le profil.</div>
+    <label>Service DSS/PAdES<input id="signatureDssUrl" type="url" placeholder="https://signature.example.net"></label>
+    <div class="compactInputRow"><button id="saveSignatureDssUrl" type="button">Enregistrer URL</button><button id="testSignatureDss" type="button">Tester DSS</button><button id="validateSignaturePdf" type="button">Valider le PDF</button></div>
+    <label>Certificat PKCS#12<input id="signatureCertificate" type="file" accept=".p12,.pfx,application/x-pkcs12"></label>
+    <label>Mot de passe du certificat<input id="signatureCertificatePassword" type="password" autocomplete="off"></label>
+    <div class="grid2"><label>Niveau PAdES<select id="signaturePadesLevel"><option value="PAdES_BASELINE_B">PAdES-B</option><option value="PAdES_BASELINE_T">PAdES-T</option><option value="PAdES_BASELINE_LT">PAdES-LT</option><option value="PAdES_BASELINE_LTA">PAdES-LTA</option></select></label><label id="signatureCertificationField">Certification<select id="signatureCertificationLevel"><option value="CERTIFIED_NO_CHANGES_ALLOWED">Aucune modification autorisée</option><option value="CERTIFIED_FORM_FILLING">Remplissage formulaires</option><option value="CERTIFIED_FORM_FILLING_AND_ANNOTATIONS">Formulaires + annotations</option></select></label></div>
+    <label>Nom du signataire<input id="signatureSignerName" placeholder="{FULL_NAME}"></label>
+    <div class="grid2"><label>Motif<input id="signatureReason" placeholder="Approbation"></label><label>Lieu<input id="signatureLocation" placeholder="{SITE}"></label></div>
+    <label>Contact<input id="signatureContact" placeholder=""></label>
+    <button id="applyCryptographicSignature" type="button" data-icon="security">Signer cryptographiquement</button>
+    <pre id="signatureCryptoStatus" class="signatureCryptoStatus">Service DSS non testé.</pre>
+   </div>
+  </div></details>
   <details id="sectionCodes" class="toolSection scope-studio" data-scope="pdf"><summary>11. QR & code-barres <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">QR/Data Matrix/Aztec/PDF417/1D via Code Studio.</div></details>
   <details id="sectionPageOutput" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête · pied · recadrage <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Templates gauche/centre/droite, PAGE/PAGES, QR et recadrage.</div></details>
   <details id="sectionConversion" class="toolSection scope-studio" data-scope="pdf"><summary>13. Conversions <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Conversions rapides et passage vers Conversion Studio pour la haute fidélité.</div></details>
