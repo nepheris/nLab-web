@@ -174,7 +174,7 @@ $('#objectImageAsset')?.addEventListener('change',async()=>{const id=$('#objectI
 $('#deleteSelectedObject')?.addEventListener('click',()=>{if(objectLayer.deleteSelected()){objectLayer.render();setStatus('Objet supprimé.')}else setStatus('Aucun objet sélectionné.')});
 $('#commitObjects')?.addEventListener('click',async()=>{try{if(await commitObjectsIfNeeded()){markPdfModifiedAfterSignature();await renderAll();setStatus('Objets intégrés au PDF.')}else setStatus('Aucun objet à intégrer.')}catch(e){setStatus(e.message)}});
 $('#markRedaction')?.addEventListener('click',()=>{openToolSection('#sectionAnnotations');activateObjectTool('redaction')});
-$('#applyRedactions')?.addEventListener('click',async()=>{try{assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const pages=toolPages('redactionScope');await checkpoint();await advancedTools.applySecureRedactions(pages,{dpi:Number($('#redactionDpi').value)||200});markPdfModifiedAfterSignature();await renderAll();setStatus('Caviardage appliqué sur '+pages.length+' page(s).')}catch(e){setStatus(e.message)}});
+$('#applyRedactions')?.addEventListener('click',async()=>{try{assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const pages=toolPages('redactionScope');undoStack.push(await engine.baseBytes());if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo();await advancedTools.applySecureRedactions(pages,{dpi:Number($('#redactionDpi').value)||200});markPdfModifiedAfterSignature();await renderAll();setStatus('Caviardage appliqué sur '+pages.length+' page(s).')}catch(e){setStatus(e.message)}});
 refreshStampPreview().catch(()=>{});
 let signatureMode='visual',signaturePreviewUrl=null;
 function signatureTargetPages(){
@@ -250,6 +250,7 @@ async function bytesWithOptionalSignatureAppearance(){
 }
 async function applyCryptographicSignature(){
  if(!engine.pageCount)throw new Error('Chargez d’abord un PDF.');
+ await commitObjectsIfNeeded();
  const cert=$('#signatureCertificate')?.files?.[0];if(!cert)throw new Error('Sélectionnez un certificat .p12 ou .pfx.');
  const status=$('#signatureCryptoStatus');status.textContent='Préparation de la signature…';
  const before=await engine.baseBytes();let prepared=null;
@@ -299,6 +300,7 @@ $('#runOptimizeQuick')?.addEventListener('click',()=>runOptimizeQuick().catch(e=
 $('#runTranslateQuick')?.addEventListener('click',()=>runTranslateQuick().catch(e=>setStatus(e.message)));
 $('#generateQrPreview')?.addEventListener('click',refreshQrPreview);$('#applyQrQuick')?.addEventListener('click',()=>applyQrQuick().catch(e=>setStatus(e.message)));
 $('#runQuickConversion')?.addEventListener('click',()=>runQuickConversion().catch(e=>setStatus(e.message)));
+$('#pdfSecurityMode')?.addEventListener('change',()=>{const mode=$('#pdfSecurityMode').value;if(mode==='open-password'||mode==='permissions')$('#pdfSecurityStatus').textContent='Protection par mot de passe : moteur de chiffrement PDF externe non configuré. Aucun faux verrouillage ne sera appliqué.'});
 $('#inspectPdfSecurity')?.addEventListener('click',()=>inspectSecurityAndMetadata().catch(e=>setStatus(e.message)));$('#cleanPdfMetadata')?.addEventListener('click',()=>cleanPdfMetadata().catch(e=>setStatus(e.message)));
 $('#pickComparePdf')?.addEventListener('click',()=>$('#comparePdfInput').click());$('#comparePdfInput')?.addEventListener('change',e=>{compareFile=e.target.files?.[0]||null;$('#comparePdfName').textContent=compareFile?.name||''});$('#runComparePdf')?.addEventListener('click',()=>runCompare().catch(e=>setStatus(e.message)));
 $('#inspectForms')?.addEventListener('click',()=>inspectFormsQuick().catch(e=>setStatus(e.message)));$('#flattenForms')?.addEventListener('click',()=>flattenFormsQuick().catch(e=>setStatus(e.message)));
@@ -413,7 +415,7 @@ async function mergeAssemblySelection(){
  assertPdfMutationAllowed();if(assemblyItems.length<2)throw new Error('Sélectionnez au moins deux PDF à fusionner.');
  const entries=[];
  for(const x of assemblyItems){
-  if(x.isCurrent&&engine.pageCount)entries.push({name:x.name,bytes:await engine.baseBytes()});
+  if(x.isCurrent&&engine.pageCount)entries.push({name:x.name,bytes:await exportBytesWithObjects()});
   else entries.push({name:x.name,bytes:new Uint8Array(await x.file.arrayBuffer())})
  }
  const previous=engine.pageCount?await engine.baseBytes():null;
@@ -431,7 +433,7 @@ async function insertAssemblyPdf(){
  recordHistory({studio:'pdf-studio',type:'action',label:'PDF inséré',detail:r.count+' page(s) · position '+$('#assemblyInsertPosition').value,target:engine.fileName,action:'assemblePdf',repeatable:false})
 }
 async function extractSelectedPages(){
- if(!engine.pageCount)return;const pages=engine.selected.size?[...engine.selected]:[engine.currentPage],bytes=await engine.extractPages(pages),stem=(engine.fileName||'document').replace(/\.pdf$/i,'');
+ if(!engine.pageCount)return;await commitObjectsIfNeeded();const pages=engine.selected.size?[...engine.selected]:[engine.currentPage],bytes=await engine.extractPages(pages),stem=(engine.fileName||'document').replace(/\.pdf$/i,'');
  const name=stem+'_extrait_'+pages.join('-')+'.pdf';await output.saveBlob(new Blob([bytes],{type:'application/pdf'}),name,{parts:[]});setStatus('Pages extraites : '+name);
  recordHistory({studio:'pdf-studio',type:'action',label:'Pages extraites',detail:pages.join(', '),target:name,action:'extractPages',repeatable:false})
 }
@@ -473,7 +475,7 @@ mountDropZone($('#assemblyList'),{onFiles:async files=>{const pdfs=[...files].fi
 
 function goPage(p){if(!engine.pageCount)return;engine.selectPage(p);session.setPage(engine.currentPage);syncViewerMeta()}
 $('#firstPage').onclick=()=>goPage(1);$('#prevPage').onclick=()=>goPage(engine.currentPage-1);$('#nextPage').onclick=()=>goPage(engine.currentPage+1);$('#lastPage').onclick=()=>goPage(engine.pageCount);$('#pageNumberInput').addEventListener('change',()=>goPage(Number($('#pageNumberInput').value)||1));
-$('#zoomOut').onclick=async()=>{viewer.setPagesPerRow(1);viewer.setZoom(viewer.zoom-.1);await viewer.renderMain();syncViewerMeta()};$('#zoomIn').onclick=async()=>{viewer.setPagesPerRow(1);viewer.setZoom(viewer.zoom+.1);await viewer.renderMain();syncViewerMeta()};$('#zoomInput').addEventListener('change',async()=>{viewer.setPagesPerRow(1);viewer.setZoom(Number($('#zoomInput').value)/100);await viewer.renderMain();syncViewerMeta()});$('#fitWidth').onclick=async()=>{viewer.setPagesPerRow(1);viewer.setZoom(viewer.fitScale($('#canvasStage'),1));await viewer.renderMain();syncViewerMeta()};$('#pagesPerRow').addEventListener('change',async()=>{viewer.setPagesPerRow($('#pagesPerRow').value);await viewer.renderMain();syncViewerMeta()});
+$('#zoomOut').onclick=async()=>{viewer.setPagesPerRow(1);viewer.setZoom(viewer.zoom-.1);await viewer.renderMain();objectLayer?.render();syncViewerMeta()};$('#zoomIn').onclick=async()=>{viewer.setPagesPerRow(1);viewer.setZoom(viewer.zoom+.1);await viewer.renderMain();objectLayer?.render();syncViewerMeta()};$('#zoomInput').addEventListener('change',async()=>{viewer.setPagesPerRow(1);viewer.setZoom(Number($('#zoomInput').value)/100);await viewer.renderMain();objectLayer?.render();syncViewerMeta()});$('#fitWidth').onclick=async()=>{viewer.setPagesPerRow(1);viewer.setZoom(viewer.fitScale($('#canvasStage'),1));await viewer.renderMain();objectLayer?.render();syncViewerMeta()};$('#pagesPerRow').addEventListener('change',async()=>{viewer.setPagesPerRow($('#pagesPerRow').value);await viewer.renderMain();objectLayer?.render();syncViewerMeta()});
 $('#previewColumns').addEventListener('change',async()=>{viewer.setPreviewColumns($('#previewColumns').value);await viewer.renderPreview();syncViewerMeta()});
 const setPreviewZoom=async v=>{viewer.setPreviewScale(v);await viewer.renderPreview();syncViewerMeta()};$('#previewZoom').addEventListener('input',()=>setPreviewZoom(Number($('#previewZoom').value)/100));$('#previewZoomOut').onclick=()=>setPreviewZoom(viewer.previewScale-.02);$('#previewZoomIn').onclick=()=>setPreviewZoom(viewer.previewScale+.02);
 $('#previewSelectAll').onclick=async()=>{engine.selectAll();session.selectedPages=new Set(engine.selected);await viewer.renderPreview();syncViewerMeta()};$('#previewSelectNone').onclick=async()=>{engine.selectNone();session.selectedPages.clear();await viewer.renderPreview();syncViewerMeta()};$('#previewAddPage').onclick=addPage;$('#previewDeleteSelected').onclick=deleteSelected;$('#previewRotateLeft').onclick=()=>rotate(-90);$('#previewRotateRight').onclick=()=>rotate(90);
