@@ -31,7 +31,7 @@ export function getPersonalProfileSecurityMode(){
 export function createDefaultPersonalProfile(){
  return{
   schema:SCHEMA,
-  profileVersion:'1.2.0',
+  profileVersion:'1.3.0',
   createdAt:now(),
   updatedAt:now(),
   identity:{displayName:'',firstName:'',lastName:'',initials:'',displayFormat:'first-last'},
@@ -64,6 +64,9 @@ export function createDefaultPersonalProfile(){
    defaultInitialsImageId:null,
    signature:null,
    initialsImage:null,
+   logos:[],
+   stampImages:[],
+   personalImages:[],
    stamps:[]
   }
  };
@@ -91,6 +94,9 @@ function normalizeAssetCollections(raw={},defaults={}){
  const legacyInitials=normalizeAssetRef(raw?.initialsImage,'Paraphe principal');
  const signatures=uniqueAssetRefs([...(Array.isArray(raw?.signatures)?raw.signatures:[]),...(legacySignature?[legacySignature]:[])]);
  const initialsImages=uniqueAssetRefs([...(Array.isArray(raw?.initialsImages)?raw.initialsImages:[]),...(legacyInitials?[legacyInitials]:[])]);
+ const logos=uniqueAssetRefs(Array.isArray(raw?.logos)?raw.logos:[]);
+ const stampImages=uniqueAssetRefs(Array.isArray(raw?.stampImages)?raw.stampImages:[]);
+ const personalImages=uniqueAssetRefs(Array.isArray(raw?.personalImages)?raw.personalImages:[]);
  const wantedSignature=String(raw?.defaultSignatureId||legacySignature?.assetId||signatures[0]?.assetId||'');
  const wantedInitials=String(raw?.defaultInitialsImageId||legacyInitials?.assetId||initialsImages[0]?.assetId||'');
  const signature=signatures.find(x=>x.assetId===wantedSignature)||signatures[0]||null;
@@ -101,6 +107,7 @@ function normalizeAssetCollections(raw={},defaults={}){
   defaultSignatureId:signature?.assetId||null,
   defaultInitialsImageId:initialsImage?.assetId||null,
   signature,initialsImage,
+  logos,stampImages,personalImages,
   stamps:Array.isArray(raw?.stamps)?raw.stamps:[]
  }
 }
@@ -162,15 +169,30 @@ export function rememberRecentLocation(kind,entry={}){
  if(!['input','output'].includes(kind))throw new Error('Type de dossier récent inconnu');
  return updatePersonalProfile(p=>{p.recentLocations=p.recentLocations||{input:[],output:[]};const key=String(entry.id||entry.path||entry.name||'').trim();const list=Array.isArray(p.recentLocations[kind])?p.recentLocations[kind]:[];p.recentLocations[kind]=[{...entry,id:key||uid(),updatedAt:now()},...list.filter(x=>String(x.id||x.path||x.name)!==key)].slice(0,20);return p})
 }
+const ASSET_COLLECTIONS=Object.freeze({
+ signature:{list:'signatures',key:'defaultSignatureId',legacy:'signature'},
+ initials:{list:'initialsImages',key:'defaultInitialsImageId',legacy:'initialsImage'},
+ logo:{list:'logos'},
+ 'stamp-image':{list:'stampImages'},
+ 'personal-image':{list:'personalImages'}
+});
+function assetCollection(kind){return ASSET_COLLECTIONS[kind]||null}
+export function listPersonalAssetRefs(kind){
+ const cfg=assetCollection(kind);if(!cfg)throw new Error('Type d’asset personnel inconnu');
+ return clone(loadPersonalProfile().assets?.[cfg.list]||[])
+}
+export function addPersonalAssetRef(kind,ref){
+ const cfg=assetCollection(kind);if(!cfg)throw new Error('Type d’asset personnel inconnu');
+ const clean=normalizeAssetRef(ref);if(!clean)throw new Error('Référence d’asset invalide');
+ return updatePersonalProfile(p=>{const list=p.assets?.[cfg.list]||[];p.assets[cfg.list]=[...list.filter(x=>x.assetId!==clean.assetId),clean];if(cfg.key&&!p.assets[cfg.key])p.assets[cfg.key]=clean.assetId;if(cfg.legacy)p.assets[cfg.legacy]=p.assets[cfg.list].find(x=>x.assetId===p.assets[cfg.key])||clean;return p})
+}
 export function setDefaultPersonalAsset(kind,assetId){
- const cfg=kind==='signature'?{list:'signatures',key:'defaultSignatureId',legacy:'signature'}:kind==='initials'?{list:'initialsImages',key:'defaultInitialsImageId',legacy:'initialsImage'}:null;
- if(!cfg)throw new Error('Type d’asset personnel inconnu');
- return updatePersonalProfile(p=>{const list=p.assets?.[cfg.list]||[];const ref=list.find(x=>x.assetId===assetId)||null;p.assets[cfg.key]=ref?.assetId||null;p.assets[cfg.legacy]=ref;return p})
+ const cfg=assetCollection(kind);if(!cfg?.key)throw new Error('Ce type d’asset n’a pas de valeur par défaut');
+ return updatePersonalProfile(p=>{const list=p.assets?.[cfg.list]||[];const ref=list.find(x=>x.assetId===assetId)||null;p.assets[cfg.key]=ref?.assetId||null;if(cfg.legacy)p.assets[cfg.legacy]=ref;return p})
 }
 export function removePersonalAssetRef(kind,assetId){
- const cfg=kind==='signature'?{list:'signatures',key:'defaultSignatureId',legacy:'signature'}:kind==='initials'?{list:'initialsImages',key:'defaultInitialsImageId',legacy:'initialsImage'}:null;
- if(!cfg)throw new Error('Type d’asset personnel inconnu');
- return updatePersonalProfile(p=>{p.assets[cfg.list]=(p.assets?.[cfg.list]||[]).filter(x=>x.assetId!==assetId);if(p.assets[cfg.key]===assetId)p.assets[cfg.key]=p.assets[cfg.list][0]?.assetId||null;p.assets[cfg.legacy]=p.assets[cfg.list].find(x=>x.assetId===p.assets[cfg.key])||p.assets[cfg.list][0]||null;return p})
+ const cfg=assetCollection(kind);if(!cfg)throw new Error('Type d’asset personnel inconnu');
+ return updatePersonalProfile(p=>{p.assets[cfg.list]=(p.assets?.[cfg.list]||[]).filter(x=>x.assetId!==assetId);if(cfg.key&&p.assets[cfg.key]===assetId)p.assets[cfg.key]=p.assets[cfg.list][0]?.assetId||null;if(cfg.legacy)p.assets[cfg.legacy]=p.assets[cfg.list].find(x=>x.assetId===p.assets[cfg.key])||p.assets[cfg.list][0]||null;return p})
 }
 export function profileTemplateValues(profile=loadPersonalProfile()){
  const first=String(profile.identity?.firstName||profile.variables?.FIRST_NAME||'').trim(),last=String(profile.identity?.lastName||profile.variables?.LAST_NAME||'').trim();
@@ -224,9 +246,18 @@ async function decryptRecord(record){
   return{...record,blob:new Blob([plain],{type:record.type||'application/octet-stream'}),cipher:undefined,iv:undefined,encrypted:false}
  }catch{return null}
 }
+async function sanitizeSvgBlob(blob){
+ const text=await blob.text(),doc=new DOMParser().parseFromString(text,'image/svg+xml');
+ if(doc.querySelector('parsererror'))throw new Error('SVG invalide');
+ doc.querySelectorAll('script,foreignObject,iframe,object,embed').forEach(x=>x.remove());
+ doc.querySelectorAll('*').forEach(el=>{for(const a of [...el.attributes]){const n=a.name.toLowerCase(),v=String(a.value||'').trim();if(n.startsWith('on'))el.removeAttribute(a.name);else if((n==='href'||n==='xlink:href'||n==='src')&&!v.startsWith('#')&&!v.startsWith('data:image/'))el.removeAttribute(a.name);else if(n==='style'&&/url\s*\(|expression\s*\(/i.test(v))el.removeAttribute(a.name)}});
+ const root=doc.documentElement;if(!root||root.localName!=='svg')throw new Error('SVG invalide');
+ return new Blob([new XMLSerializer().serializeToString(root)],{type:'image/svg+xml'})
+}
 export async function putPersonalAsset(kind,file,{id=null,name=null,meta={}}={}){
  if(!(file instanceof Blob))throw new Error('Asset invalide');
  if(file.size>MAX_ASSET_BYTES)throw new Error('Fichier trop volumineux (10 Mo max)');
+ if(String(file.type||'').toLowerCase()==='image/svg+xml')file=await sanitizeSvgBlob(file);
  const asset={id:id||uid(),kind:String(kind||'asset'),name:safeName(name||file.name||'asset'),type:file.type||'application/octet-stream',size:file.size,updatedAt:now(),meta:{...meta}};
  const stored=getPersonalProfileSecurityMode()==='session'?{...asset,...await encryptBlobForSession(file)}:{...asset,blob:file,encrypted:false};
  const db=await openDb(),tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(stored);await txDone(tx);db.close();return asset
@@ -288,7 +319,7 @@ async function sha256(blob){
  const b=blob instanceof Blob?await blob.arrayBuffer():new TextEncoder().encode(String(blob)).buffer;
  const h=await crypto.subtle.digest('SHA-256',b);return[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('')
 }
-function assetFolder(kind){if(kind==='signature'||kind==='initials')return'signatures';if(kind==='stamp')return'stamps';return'assets'}
+function assetFolder(kind){if(kind==='signature'||kind==='initials')return'signatures';if(kind==='logo')return'logos';if(kind==='stamp'||kind==='stamp-image')return'stamps';if(kind==='personal-image')return'images';return'assets'}
 function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
 
 export async function exportPersonalProfileZip({download=true,fileName=null}={}){
@@ -299,7 +330,7 @@ export async function exportPersonalProfileZip({download=true,fileName=null}={})
   manifestAssets.push({id:a.id,kind:a.kind,name:a.name,type:a.type,size:a.size,path,sha256:await sha256(a.blob),meta:a.meta||{}});
   zip.file(path,a.blob,{binary:true})
  }
- const exportedAt=now(),manifest={schema:SCHEMA,profileVersion:profile.profileVersion||'1.2.0',exportedAt,assetCount:manifestAssets.length,assets:manifestAssets};
+ const exportedAt=now(),manifest={schema:SCHEMA,profileVersion:profile.profileVersion||'1.3.0',exportedAt,assetCount:manifestAssets.length,assets:manifestAssets};
  zip.file('manifest.json',JSON.stringify(manifest,null,2));
  zip.file('profile.json',JSON.stringify({...profile,updatedAt:exportedAt},null,2));
  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
@@ -312,6 +343,9 @@ function validAssetRef(ref,ids){return !ref||typeof ref!=='object'||!ref.assetId
 function validateProfileAssets(profile,ids){
  for(const x of profile.assets?.signatures||[])if(!validAssetRef(x,ids))throw new Error('Référence de signature absente de l’archive');
  for(const x of profile.assets?.initialsImages||[])if(!validAssetRef(x,ids))throw new Error('Référence de paraphe absente de l’archive');
+ for(const x of profile.assets?.logos||[])if(!validAssetRef(x,ids))throw new Error('Référence de logo absente de l’archive');
+ for(const x of profile.assets?.stampImages||[])if(!validAssetRef(x,ids))throw new Error('Référence d’image de tampon absente de l’archive');
+ for(const x of profile.assets?.personalImages||[])if(!validAssetRef(x,ids))throw new Error('Référence d’image personnelle absente de l’archive');
  if(!validAssetRef(profile.assets?.signature,ids))throw new Error('Signature par défaut absente de l’archive');
  if(!validAssetRef(profile.assets?.initialsImage,ids))throw new Error('Paraphe par défaut absent de l’archive');
  for(const x of profile.assets?.stamps||[])if(!validAssetRef(x,ids))throw new Error('Référence de tampon absente de l’archive')
@@ -341,7 +375,7 @@ export async function inspectPersonalProfileZip(file){
   variables:Object.values(profile.variables||{}).filter(Boolean).length,
   namingTemplates:profile.templates?.naming?.length||0,classificationTemplates:profile.templates?.classification?.length||0,
   stampTemplates:profile.templates?.stamps?.length||0,signatures:profile.assets?.signatures?.length||0,
-  initialsImages:profile.assets?.initialsImages?.length||0,assets:assets.length
+  initialsImages:profile.assets?.initialsImages?.length||0,logos:profile.assets?.logos?.length||0,stampImages:profile.assets?.stampImages?.length||0,personalImages:profile.assets?.personalImages?.length||0,assets:assets.length
  }}
 }
 export async function importPersonalProfileZip(file,{mode='replace'}={}){
@@ -364,6 +398,9 @@ export async function importPersonalProfileZip(file,{mode='replace'}={}){
    ...current.assets,...profile.assets,
    signatures:mergeById(current.assets?.signatures,profile.assets?.signatures),
    initialsImages:mergeById(current.assets?.initialsImages,profile.assets?.initialsImages),
+   logos:mergeById(current.assets?.logos,profile.assets?.logos),
+   stampImages:mergeById(current.assets?.stampImages,profile.assets?.stampImages),
+   personalImages:mergeById(current.assets?.personalImages,profile.assets?.personalImages),
    stamps:mergeById(current.assets?.stamps,profile.assets?.stamps),
    defaultSignatureId:profile.assets?.defaultSignatureId||current.assets?.defaultSignatureId||null,
    defaultInitialsImageId:profile.assets?.defaultInitialsImageId||current.assets?.defaultInitialsImageId||null
