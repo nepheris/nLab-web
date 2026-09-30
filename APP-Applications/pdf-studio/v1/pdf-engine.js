@@ -48,7 +48,7 @@ export class PDFEngine extends EventTarget{
   else if(/jpe?g/i.test(blob.type))img=await this.pdfDoc.embedJpg(bytes);
   else{bytes=await rasterImageBytes(blob);img=await this.pdfDoc.embedPng(bytes)}
   for(const n of targets){
-   const page=this.pdfDoc.getPage(n-1),size=page.getSize(),w=Math.max(24,size.width*Math.max(.03,Math.min(.8,Number(widthPct)||.24))/100*100),ratio=img.height/img.width,h=w*ratio;
+   const page=this.pdfDoc.getPage(n-1),size=page.getSize(),pct=Math.max(3,Math.min(80,Number(widthPct)||24))/100,w=Math.max(24,size.width*pct),ratio=img.height/img.width,h=w*ratio;
    let x=margin,y=margin;
    if(position==='bottom-center')x=(size.width-w)/2;
    else if(position==='bottom-right')x=size.width-w-margin;
