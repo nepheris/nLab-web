@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.1.3",
+  "test": "2.1.4",
   "versions": [
+    {
+      "version": "2.1.4",
+      "label": "PDF Studio 2.1.4 TEST",
+      "date": "2026-09-30",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Ajout d’Assembler/Fusionner : fusion ordonnée de plusieurs PDF sélectionnés, prise en compte de la version modifiée du document courant, insertion d’un PDF avant/après la page active ou au début/à la fin, extraction des pages sélectionnées, ordre manuel Monter/Descendre/Retirer et avertissement sur les signatures cryptographiques lors de la création d’un nouveau PDF."
+    },
     {
       "version": "2.1.3",
       "label": "PDF Studio 2.1.3 TEST",
       "date": "2026-09-30",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Profil personnel 1.3 avec prénom/nom/initiales et format d’identité, bibliothèques multi-signatures, paraphes, logos, images de tampons et images personnelles exportables en ZIP. Ajout des trois modes PDF Signature visuelle / digitale / certifiée, preview de signature, moteur d’incrustation visuelle, passerelle DSS/PAdES, suivi des modifications post-signature, et affichage dynamique des versions PDF Studio/Studio Core."
     },
