@@ -94,7 +94,7 @@ async function refreshStampPreview(){
 function activateObjectTool(tool){
  assertPdfMutationAllowed();if(!engine.pageCount){setStatus('Chargez un PDF.');return}
  objectLayer.setText($('#objectText')?.value||'Texte');objectLayer.setStyle({color:$('#objectColor')?.value||'#316D9A',fontSize:Number($('#objectFontSize')?.value)||12,opacity:(Number($('#objectOpacity')?.value)||100)/100,penWidth:Number($('#objectPenWidth')?.value)||2});
- objectLayer.setTool(tool);$('[data-object-tool]').forEach(b=>b.classList.toggle('active',b.dataset.objectTool===tool));setStatus(tool==='select'?'Mode sélection des objets.':'Cliquez dans la page pour placer/utiliser : '+tool)
+ objectLayer.setTool(tool);$$('[data-object-tool]').forEach(b=>b.classList.toggle('active',b.dataset.objectTool===tool));setStatus(tool==='select'?'Mode sélection des objets.':'Cliquez dans la page pour placer/utiliser : '+tool)
 }
 
 
@@ -169,10 +169,10 @@ $('#deleteStampPreset')?.addEventListener('click',()=>{const id=$('#stampPresetS
 $('#activateStampTool')?.addEventListener('click',async()=>{try{syncStampDates();objectLayer.setStamp({template:$('#stampTemplate').value||'',imageData:await stampImageData()});openToolSection('#sectionAnnotations');activateObjectTool('stamp')}catch(e){setStatus(e.message)}});
 $('#applyStampScope')?.addEventListener('click',async()=>{try{
  assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');syncStampDates();objectLayer.setStamp({template:$('#stampTemplate').value||'',imageData:await stampImageData()});
- const pages=toolPages('stampScope'),pos=$('#stampPosition').value;const xy={ 'top-left':[6,7],'top-right':[65,7],'bottom-left':[6,82],'bottom-right':[65,82],center:[35,45]}[pos]||[65,82];
+ const pages=toolPages('stampScope'),pos=$('#stampPosition').value;if(pos==='manual')throw new Error('Pour appliquer le tampon à une portée, choisissez une position prédéfinie. Utilisez « Placer manuellement » pour le placement libre.');const xy={ 'top-left':[6,7],'top-right':[65,7],'bottom-left':[6,82],'bottom-right':[65,82],center:[35,45]}[pos];
  for(const p of pages)objectLayer.addAt(p,xy[0],xy[1],'stamp');objectLayer.setTool('select');objectLayer.render();setStatus('Tampon ajouté sur '+pages.length+' page(s).')
 }catch(e){setStatus(e.message)}});
-$('[data-object-tool]').forEach(b=>b.addEventListener('click',()=>activateObjectTool(b.dataset.objectTool)));
+$$('[data-object-tool]').forEach(b=>b.addEventListener('click',()=>activateObjectTool(b.dataset.objectTool)));
 for(const id of ['objectText','objectColor','objectFontSize','objectOpacity','objectPenWidth'])$('#'+id)?.addEventListener('input',()=>{objectLayer.setText($('#objectText').value);objectLayer.setStyle({color:$('#objectColor').value,fontSize:Number($('#objectFontSize').value)||12,opacity:(Number($('#objectOpacity').value)||100)/100,penWidth:Number($('#objectPenWidth').value)||2})});
 $('#pickObjectImage')?.addEventListener('click',()=>$('#objectImageInput').click());
 $('#objectImageInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{await objectLayer.setImageBlob(file,'image');$('#objectImageName').textContent=file.name;activateObjectTool('image')}catch(err){setStatus(err.message)}});
