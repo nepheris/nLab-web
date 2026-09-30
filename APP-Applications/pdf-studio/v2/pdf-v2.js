@@ -25,6 +25,7 @@ import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-
 import{PdfSignatureService}from'./signature-service.js';
 import{PDFTools}from'../v1/pdf-tools.js';
 import{AdvancedPDFTools}from'../v1/advanced-tools.js';
+import{PdfObjectLayer}from'./object-layer.js';
 
 const runtimeVersion=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
 applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:runtimeVersion.studioVersion,studioStatus:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion});
@@ -32,7 +33,8 @@ await mountStudioV2({manifest:studioManifest,versionInfo:{version:runtimeVersion
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let personalProfile=loadPersonalProfile();
 const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService(),signatureService=new PdfSignatureService();
-const annotationBridge={exportBytes:()=>engine.baseBytes()};const pdfTools=new PDFTools({engine,annotations:annotationBridge,variables:templates}),advancedTools=new AdvancedPDFTools({engine,annotations:annotationBridge,variables:templates});
+let objectLayer=null;
+const annotationBridge={exportBytes:()=>objectLayer?.hasObjects()?objectLayer.exportBytes():engine.baseBytes()};const pdfTools=new PDFTools({engine,annotations:annotationBridge,variables:templates}),advancedTools=new AdvancedPDFTools({engine,annotations:annotationBridge,variables:templates});
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null,assemblyItems=[],assemblySelectedIndex=-1,assemblyInsertFile=null;
 let activeInputLocation=null,activeOutputLocation=null,assemblySortUnmount=null;
 function setValidatedButton(el,on,label=''){if(!el)return;el.classList.toggle('validatedChoice',!!on);el.setAttribute('aria-pressed',on?'true':'false');if(label)el.title=label}
@@ -70,10 +72,16 @@ const viewer=new StudioPageViewer({
  onSelection:pages=>{session.selectedPages=new Set(pages);session.dispatchEvent(new Event('selection'));syncViewerMeta()},
  onDelete:page=>deletePageNumber(page),onAdd:()=>addPage(),onRotate:(page,delta)=>rotate(delta,[page])
 });
+objectLayer=new PdfObjectLayer({engine,mainHost:$('#mainPageGrid'),templates});
+objectLayer.addEventListener('error',e=>setStatus(e.detail?.error?.message||'Erreur objet PDF'));
+engine.addEventListener('annotations',()=>objectLayer?.render());
+
+async function exportBytesWithObjects(){return objectLayer?.hasObjects()?objectLayer.exportBytes():engine.baseBytes()}
+async function commitObjectsIfNeeded(){if(!objectLayer?.hasObjects())return false;await objectLayer.commitToEngine();return true}
 
 function syncSession(){session.patch({file:engine.sourceFile,fileName:engine.fileName,page:engine.currentPage,pageCount:engine.pageCount,selectedPages:new Set(engine.selected),dirty:engine.dirty,meta:{sourceCapabilities:activeFileCapabilities}})}
 function syncUndoRedo(){const u=$('#history-undo'),r=$('#history-redo');if(u)u.disabled=!undoStack.length;if(r)r.disabled=!redoStack.length}
-async function checkpoint(){if(!engine.pageCount)return;undoStack.push(await engine.baseBytes());if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo()}
+async function checkpoint(){if(!engine.pageCount)return;await commitObjectsIfNeeded();undoStack.push(await engine.baseBytes());if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo()}
 async function undo(){if(!undoStack.length||!engine.pageCount)return;redoStack.push(await engine.baseBytes());await engine.setBytes(undoStack.pop());cryptoSignatureState=null;syncSession();await renderAll();syncUndoRedo();setStatus('Modification annulée');recordHistory({studio:'pdf-studio',type:'action',label:'Annulation',target:engine.fileName})}
 async function redo(){if(!redoStack.length||!engine.pageCount)return;undoStack.push(await engine.baseBytes());await engine.setBytes(redoStack.pop());cryptoSignatureState=null;syncSession();await renderAll();syncUndoRedo();setStatus('Modification rétablie');recordHistory({studio:'pdf-studio',type:'action',label:'Rétablissement',target:engine.fileName})}
 
@@ -292,7 +300,7 @@ function syncViewerMeta(){
  $('#sourceStatus').textContent=engine.pageCount?engine.fileName+' · '+engine.pageCount+' page(s) · '+engine.selected.size+' page(s) sélectionnée(s)'+capInfo+selectedFiles:'Aucun document chargé.';
  syncSession();viewer.refreshActive();updateNamingPreview();updateOutputPreview();
 }
-async function renderAll(){if(!engine.pageCount){$('#mainPageGrid').innerHTML='';$('#previewGrid').innerHTML='';syncViewerMeta();return}await viewer.renderMain();await viewer.renderPreview();syncViewerMeta()}
+async function renderAll(){if(!engine.pageCount){$('#mainPageGrid').innerHTML='';$('#previewGrid').innerHTML='';syncViewerMeta();return}await viewer.renderMain();objectLayer?.render();await viewer.renderPreview();syncViewerMeta()}
 
 async function load(file){
  if(!file)return;setStatus('Chargement…');activeFileCapabilities=detectFileCapabilities(file);
@@ -363,7 +371,7 @@ async function extractSelectedPages(){
  const name=stem+'_extrait_'+pages.join('-')+'.pdf';await output.saveBlob(new Blob([bytes],{type:'application/pdf'}),name,{parts:[]});setStatus('Pages extraites : '+name);
  recordHistory({studio:'pdf-studio',type:'action',label:'Pages extraites',detail:pages.join(', '),target:name,action:'extractPages',repeatable:false})
 }
-async function currentBlob(){return new Blob([await engine.baseBytes()],{type:'application/pdf'})}
+async function currentBlob(){return new Blob([await exportBytesWithObjects()],{type:'application/pdf'})}
 async function saveCurrent({classify=false,forcePicker=false}={}){
  if(!engine.pageCount)return;const format=$('#outputFormat').value;if(format==='zip')return saveZip({classify});
  let blob,name;if(format==='same'&&engine.sourceFile){blob=engine.sourceFile;name=outputName('.'+(formatInfo(engine.sourceFile).extension||'bin'))}else{blob=await currentBlob();name=outputName('.pdf')}
@@ -371,7 +379,7 @@ async function saveCurrent({classify=false,forcePicker=false}={}){
  else{if($('#outputProvider').value==='local'&&!output.handle)await output.chooseDirectory();await output.saveBlob(blob,name,{parts:classify?outputParts():[]})}
  setStatus('Enregistré : '+name);recordHistory({studio:'pdf-studio',type:'action',label:classify?'Enregistrer + classer':'Enregistrer',detail:(classify?outputParts().join('/'):'')||'racine',target:name,action:'savePdf',repeatable:true})
 }
-async function saveZip({classify=false}={}){if(!engine.pageCount)return;const pdf=await engine.baseBytes(),pdfName=outputName('.pdf'),zipName=outputName('.zip');if($('#outputProvider').value==='local'&&!output.handle)await output.chooseDirectory();const old=output.handle;if($('#outputProvider').value!=='local')output.handle=null;await output.saveZip([{name:pdfName,data:pdf}],zipName,{parts:classify?outputParts():[]});output.handle=old;setStatus('ZIP enregistré : '+zipName);recordHistory({studio:'pdf-studio',type:'action',label:classify?'ZIP enregistré + classé':'ZIP enregistré',detail:classify?outputParts().join('/'):'',target:zipName})}
+async function saveZip({classify=false}={}){if(!engine.pageCount)return;const pdf=await exportBytesWithObjects(),pdfName=outputName('.pdf'),zipName=outputName('.zip');if($('#outputProvider').value==='local'&&!output.handle)await output.chooseDirectory();const old=output.handle;if($('#outputProvider').value!=='local')output.handle=null;await output.saveZip([{name:pdfName,data:pdf}],zipName,{parts:classify?outputParts():[]});output.handle=old;setStatus('ZIP enregistré : '+zipName);recordHistory({studio:'pdf-studio',type:'action',label:classify?'ZIP enregistré + classé':'ZIP enregistré',detail:classify?outputParts().join('/'):'',target:zipName})}
 
 $('#pickFile').onclick=()=>$('#fileInput').click();
 $('#fileInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputLocation={kind:'files',label:files.length===1?files[0].name:files.length+' fichiers'};setValidatedButton($('#pickFile'),true,activeInputLocation.label);setValidatedButton($('#pickFolder'),false);await loadFiles(files)}};
