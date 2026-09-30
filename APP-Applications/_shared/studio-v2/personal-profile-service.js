@@ -200,5 +200,6 @@ export async function importPersonalProfileZip(file,{mode='replace'}={}){
  }
  profile=savePersonalProfile(profile);
  applyPortableLocalSettings(profile.preferences?.portableLocalSettings||{});
+ document.dispatchEvent(new CustomEvent('nlab:personal-profile-imported',{detail:{profile:clone(profile),mode,importedAssets:importedIds.size}}));
  return{profile,manifest,importedAssets:importedIds.size}
 }
