@@ -260,7 +260,7 @@ async function mergeAssemblySelection(){
  if(previous){undoStack.push(previous);if(undoStack.length>30)undoStack.shift();redoStack=[];syncUndoRedo()}
  const name=($('#assemblyOutputName').value||'fusion.pdf').trim().replace(/[^a-zA-Z0-9._ -]+/g,'_');
  const sources=await engine.mergePdfBytes(entries,{fileName:/\.pdf$/i.test(name)?name:name+'.pdf'});
- cryptoSignatureState=null;activeFileCapabilities={family:'pdf',extension:'pdf'};await renderAll();
+ cryptoSignatureState=null;activeFileCapabilities={family:'pdf',extension:'pdf'};fileBrowser.activeId=null;fileBrowser.render();await renderAll();
  setStatus('Fusion créée : '+engine.fileName+' · '+engine.pageCount+' pages');
  recordHistory({studio:'pdf-studio',type:'action',label:'Fusion PDF',detail:sources.map(x=>x.name+' ('+x.pages+' p.)').join(' + '),target:engine.fileName,action:'assemblePdf',repeatable:false})
 }
