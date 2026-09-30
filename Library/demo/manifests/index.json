@@ -1,20 +1,20 @@
 {
   "schema": "nlab-demo-manifests-index/v1",
-  "updated": "2026-09-29",
-  "sourceReference": "Google Drive corpus reference supplied by HUMAN-00",
+  "updated": "2026-09-30",
+  "sourceReference": "Google Drive reference supplied by HUMAN-00 + synthetic local regression fixtures",
   "studios": [
     {
       "id": "pdf-studio",
       "label": "PDF Studio",
       "manifest": "./pdf.json",
-      "fileCount": 6,
+      "fileCount": 17,
       "pack": null
     },
     {
       "id": "image-studio",
       "label": "Image Studio",
       "manifest": "./image.json",
-      "fileCount": 6,
+      "fileCount": 10,
       "pack": null
     },
     {
@@ -35,7 +35,7 @@
       "id": "data-studio",
       "label": "Data Studio",
       "manifest": "./data.json",
-      "fileCount": 10,
+      "fileCount": 17,
       "pack": null
     },
     {
@@ -49,14 +49,14 @@
       "id": "file-studio",
       "label": "File Studio",
       "manifest": "./file.json",
-      "fileCount": 3,
+      "fileCount": 7,
       "pack": null
     },
     {
       "id": "markdown-studio",
       "label": "Markdown Studio",
       "manifest": "./markdown.json",
-      "fileCount": 14,
+      "fileCount": 15,
       "pack": null
     }
   ]
