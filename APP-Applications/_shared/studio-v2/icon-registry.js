@@ -7,6 +7,8 @@ delete:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M8 7l1 13h6l1-13"/></
 rotateLeft:'<svg viewBox="0 0 24 24"><path d="M7 8H3V4"/><path d="M4 8a8 8 0 1 1-1 7"/></svg>',
 rotateRight:'<svg viewBox="0 0 24 24"><path d="M17 8h4V4"/><path d="M20 8a8 8 0 1 0 1 7"/></svg>',
 history:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2M4 4v5h5"/></svg>',
+undo:'<svg viewBox="0 0 24 24"><path d="M9 7H4v-5"/><path d="M4 7c3-3 6-4 9-3 4 1 7 4 7 8s-3 7-7 8c-3 1-6 0-8-2"/></svg>',
+redo:'<svg viewBox="0 0 24 24"><path d="M15 7h5v-5"/><path d="M20 7c-3-3-6-4-9-3-4 1-7 4-7 8s3 7 7 8c3 1 6 0 8-2"/></svg>',
 help:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.4 2.4 0 1 1 3.3 2.2c-.8.4-1.1.9-1.1 1.8M12 17h.01"/></svg>',
 preview:'<svg viewBox="0 0 24 24"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg>',
 ocr:'<svg viewBox="0 0 24 24"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M7 12h10M7 9h10M7 15h7"/></svg>',
