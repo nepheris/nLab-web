@@ -31,18 +31,27 @@ export function getPersonalProfileSecurityMode(){
 export function createDefaultPersonalProfile(){
  return{
   schema:SCHEMA,
-  profileVersion:'1.3.0',
+  profileVersion:'1.4.0',
   createdAt:now(),
   updatedAt:now(),
   identity:{displayName:'',firstName:'',lastName:'',initials:'',displayFormat:'first-last'},
   variables:{FIRST_NAME:'',LAST_NAME:'',FULL_NAME:'',LAST_FIRST:'',DISPLAY_NAME:'',INITIALS:'',CLIENT:'',PROJECT:'',REFERENCE:'',SITE:'',SERVICE:'',CATEGORY:'',TAG:'',TREATMENT:'TRAITEMENT'},
   templates:{
    naming:[
-    {id:'original',label:'Nom original',template:'{FILENAME}',prefix:'',suffix:''},
-    {id:'date-name',label:'Date + nom',template:'{DATE:YYYY-MM-DD}_{FILENAME}',prefix:'',suffix:''},
-    {id:'name-date',label:'Nom + date',template:'{FILENAME}_{DATE:YYYY-MM-DD}',prefix:'',suffix:''},
-    {id:'ocr-name',label:'OCR + nom',template:'{FILENAME}',prefix:'OCR_',suffix:''},
-    {id:'name-ocr',label:'Nom + OCR',template:'{FILENAME}',prefix:'',suffix:'_OCR'}
+    {id:'original',label:'Nom original',template:'{FILENAME}',prefix:'',suffix:'',system:true},
+    {id:'date-name',label:'Date + nom',template:'{DATE:YYYY-MM-DD}_{FILENAME}',prefix:'',suffix:'',system:true},
+    {id:'name-date',label:'Nom + date',template:'{FILENAME}_{DATE:YYYY-MM-DD}',prefix:'',suffix:'',system:true},
+    {id:'ocr-name',label:'OCR + nom',template:'{FILENAME}',prefix:'OCR_',suffix:'',system:true},
+    {id:'name-ocr',label:'Nom + OCR',template:'{FILENAME}',prefix:'',suffix:'_OCR',system:true},
+    {id:'sys-prefix-date',label:'Préfixe · date',template:'{FILENAME}',prefix:'{DATE:YYYYMMDD}_',suffix:'',system:true},
+    {id:'sys-prefix-month',label:'Préfixe · année-mois',template:'{FILENAME}',prefix:'{YEAR}-{MONTH}_',suffix:'',system:true},
+    {id:'sys-prefix-initials',label:'Préfixe · initiales',template:'{FILENAME}',prefix:'{INITIALS}_',suffix:'',system:true},
+    {id:'sys-prefix-valid',label:'Préfixe · validé',template:'{FILENAME}',prefix:'VALIDE_{STAMP_DATE:YYYYMMDD}_',suffix:'',system:true},
+    {id:'sys-suffix-date',label:'Suffixe · date',template:'{FILENAME}',prefix:'',suffix:'_{DATE:YYYYMMDD}',system:true},
+    {id:'sys-suffix-month',label:'Suffixe · année-mois',template:'{FILENAME}',prefix:'',suffix:'_{YEAR}{MONTH}',system:true},
+    {id:'sys-suffix-initials',label:'Suffixe · initiales',template:'{FILENAME}',prefix:'',suffix:'_{INITIALS}',system:true},
+    {id:'sys-suffix-treated',label:'Suffixe · traité',template:'{FILENAME}',prefix:'',suffix:'_TRAITE',system:true},
+    {id:'sys-suffix-review-d',label:'Suffixe · réévaluation D',template:'{FILENAME}',prefix:'',suffix:'_REV_{DATE_D:YYYYMMDD}',system:true}
    ],
    classification:[
     {id:'root',label:'Racine',template:''},
@@ -120,7 +129,7 @@ function normalizeProfile(raw){
   identity:{...d.identity,...(p.identity||{})},
   variables:{...d.variables,...(p.variables||{})},
   templates:{
-   naming:Array.isArray(p.templates?.naming)?p.templates.naming:d.templates.naming,
+   naming:(()=>{const m=new Map();for(const x of [...d.templates.naming,...(Array.isArray(p.templates?.naming)?p.templates.naming:[])])m.set(x.id||JSON.stringify(x),x);return[...m.values()]})(),
    classification:Array.isArray(p.templates?.classification)?p.templates.classification:d.templates.classification,
    stamps:Array.isArray(p.templates?.stamps)?p.templates.stamps:[],
    output:Array.isArray(p.templates?.output)?p.templates.output:[],
@@ -330,7 +339,7 @@ export async function exportPersonalProfileZip({download=true,fileName=null}={})
   manifestAssets.push({id:a.id,kind:a.kind,name:a.name,type:a.type,size:a.size,path,sha256:await sha256(a.blob),meta:a.meta||{}});
   zip.file(path,a.blob,{binary:true})
  }
- const exportedAt=now(),manifest={schema:SCHEMA,profileVersion:profile.profileVersion||'1.3.0',exportedAt,assetCount:manifestAssets.length,assets:manifestAssets};
+ const exportedAt=now(),manifest={schema:SCHEMA,profileVersion:profile.profileVersion||'1.4.0',exportedAt,assetCount:manifestAssets.length,assets:manifestAssets};
  zip.file('manifest.json',JSON.stringify(manifest,null,2));
  zip.file('profile.json',JSON.stringify({...profile,updatedAt:exportedAt},null,2));
  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
