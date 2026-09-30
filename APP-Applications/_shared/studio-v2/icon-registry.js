@@ -37,6 +37,7 @@ security:'<svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-1
 metadata:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10v7M12 7h.01"/></svg>',
 crop:'<svg viewBox="0 0 24 24"><path d="M7 3v14a2 2 0 0 0 2 2h12M3 7h14a2 2 0 0 1 2 2v12"/></svg>',
 extract:'<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM15 3v5h5"/><path d="M9 13h6M12 10v6"/><path d="m17 16 3 3 3-3"/></svg>',
+merge:'<svg viewBox="0 0 24 24"><path d="M4 3h7v7H4zM13 14h7v7h-7z"/><path d="M11 6h3a4 4 0 0 1 4 4v4M13 18h-3a4 4 0 0 1-4-4v-4"/></svg>',
 classify:'<svg viewBox="0 0 24 24"><path d="M4 6h6l2 2h8v11H4z"/><path d="M8 12h8M8 15h5"/><path d="M17 4v5M14.5 6.5H19.5"/></svg>',
 settings:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a8 8 0 0 0-1.8-1L14.4 3h-4.8l-.3 3.1a8 8 0 0 0-1.8 1l-2.4-1-2 3.4 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.4-1a8 8 0 0 0 1.8 1l.3 3.1h4.8l.3-3.1a8 8 0 0 0 1.8-1l2.4 1 2-3.4-2-1.5a7 7 0 0 0 .1-1z"/></svg>',
 command:'<svg viewBox="0 0 24 24"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"/></svg>',
