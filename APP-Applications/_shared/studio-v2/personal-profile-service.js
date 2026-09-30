@@ -175,7 +175,7 @@ export function removePersonalAssetRef(kind,assetId){
 export function profileTemplateValues(profile=loadPersonalProfile()){
  const first=String(profile.identity?.firstName||profile.variables?.FIRST_NAME||'').trim(),last=String(profile.identity?.lastName||profile.variables?.LAST_NAME||'').trim();
  const initials=String(profile.identity?.initials||profile.variables?.INITIALS||([first,last].filter(Boolean).map(x=>x[0]?.toUpperCase()||'').join(''))).trim(),format=profile.identity?.displayFormat||'first-last';
- const choices={'first-last':[first,last].filter(Boolean).join(' '),'last-first':[last,first].filter(Boolean).join(' '),last,last,first,initials};
+ const choices={'first-last':[first,last].filter(Boolean).join(' '),'last-first':[last,first].filter(Boolean).join(' '),last:last,first:first,initials:initials};
  const display=choices[format]||choices['first-last'];
  return{...(profile.variables||{}),FIRST_NAME:first,LAST_NAME:last,FULL_NAME:[first,last].filter(Boolean).join(' '),LAST_FIRST:[last,first].filter(Boolean).join(' '),DISPLAY_NAME:display,INITIALS:initials};
 }
