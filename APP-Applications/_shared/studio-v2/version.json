@@ -1,0 +1,7 @@
+{
+  "schema": "nlab-studio-core-version/v1",
+  "version": "2.2.0",
+  "date": "2026-09-30",
+  "channel": "test",
+  "notes": "Studio Core V2 partagé : profils personnels portables/sécurisés, fenêtres, historique, templates, personnalisation et services communs."
+}
