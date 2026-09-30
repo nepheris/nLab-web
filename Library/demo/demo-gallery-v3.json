@@ -1,6 +1,6 @@
 {
   "schema": "nlab-demo-gallery/v3",
-  "updated": "2026-09-29",
+  "updated": "2026-09-30",
   "files": [
     {
       "category": "MD",
@@ -67,6 +67,110 @@
       "path": "QR-Barcode/payloads.json",
       "href": "./files/demo-input/QR-Barcode/payloads.json",
       "preview": "text"
+    },
+    {
+      "category": "Documents",
+      "path": "Documents/demo-word-1page.docx",
+      "href": "./files/demo-input/Documents/demo-word-1page.docx",
+      "preview": "file"
+    },
+    {
+      "category": "Documents",
+      "path": "Documents/demo-word-1page.odt",
+      "href": "./files/demo-input/Documents/demo-word-1page.odt",
+      "preview": "file"
+    },
+    {
+      "category": "Documents",
+      "path": "Documents/demo-word-3pages-layout.doc",
+      "href": "./files/demo-input/Documents/demo-word-3pages-layout.doc",
+      "preview": "file"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-tableur-multifeuilles.xlsx",
+      "href": "./files/demo-input/Data/demo-tableur-multifeuilles.xlsx",
+      "preview": "file"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-tableur-multifeuilles.xls",
+      "href": "./files/demo-input/Data/demo-tableur-multifeuilles.xls",
+      "preview": "file"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-csv-virgule.csv",
+      "href": "./files/demo-input/Data/demo-csv-virgule.csv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-csv-point-virgule.csv",
+      "href": "./files/demo-input/Data/demo-csv-point-virgule.csv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-tsv-tabulation.tsv",
+      "href": "./files/demo-input/Data/demo-tsv-tabulation.tsv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-csv-pipe.csv",
+      "href": "./files/demo-input/Data/demo-csv-pipe.csv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/demo-texte-long.txt",
+      "href": "./files/demo-input/Data/demo-texte-long.txt",
+      "preview": "text"
+    },
+    {
+      "category": "MD",
+      "path": "MD/demo-markdown-conversion.md",
+      "href": "./files/demo-input/MD/demo-markdown-conversion.md",
+      "preview": "text"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-document-illustration.png",
+      "href": "./files/demo-input/Images/demo-document-illustration.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-format-bmp.bmp",
+      "href": "./files/demo-input/Images/demo-format-bmp.bmp",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-format-tiff.tiff",
+      "href": "./files/demo-input/Images/demo-format-tiff.tiff",
+      "preview": "file"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-format-svg.svg",
+      "href": "./files/demo-input/Images/demo-format-svg.svg",
+      "preview": "image"
+    },
+    {
+      "category": "Security",
+      "path": "Security/demo-redaction-secrets.pdf",
+      "href": "./files/demo-input/Security/demo-redaction-secrets.pdf",
+      "preview": "pdf",
+      "synthetic": true
+    },
+    {
+      "category": "Security",
+      "path": "Security/demo-redaction-secrets.txt",
+      "href": "./files/demo-input/Security/demo-redaction-secrets.txt",
+      "preview": "text",
+      "synthetic": true
     }
   ]
 }
