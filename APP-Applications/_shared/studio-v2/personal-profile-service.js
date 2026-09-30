@@ -109,7 +109,7 @@ function normalizeProfile(raw){
  return{
   ...d,...p,
   schema:SCHEMA,
-  profileVersion:p.profileVersion||d.profileVersion,
+  profileVersion:d.profileVersion,
   identity:{...d.identity,...(p.identity||{})},
   variables:{...d.variables,...(p.variables||{})},
   templates:{
