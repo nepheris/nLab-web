@@ -96,7 +96,9 @@
   <label>Date tampon<input id="stampDate" type="date"></label><label>Date A<input id="stampDateA" type="date"></label><label>Date B<input id="stampDateB" type="date"></label><label>Date C<input id="stampDateC" type="date"></label><label>Date D<input id="stampDateD" type="date"></label>
  </div>
  <div id="stampPreview" class="statusBox mono">Aperçu du tampon</div>
- <div class="compactInputRow"><button id="activateStampTool" type="button" data-icon="stamp">Placer le tampon</button><button id="saveStampPreset" type="button">Enregistrer modèle</button><button id="deleteStampPreset" type="button">Supprimer modèle</button></div>
+ <div class="grid2"><label>Portée<select id="stampScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label><label>Position<select id="stampPosition"><option value="manual">Placement manuel</option><option value="top-left">Haut gauche</option><option value="top-right">Haut droite</option><option value="bottom-left">Bas gauche</option><option value="bottom-right">Bas droite</option><option value="center">Centre</option></select></label></div>
+ <div class="compactInputRow"><button id="activateStampTool" type="button" data-icon="stamp">Placer manuellement</button><button id="applyStampScope" type="button">Appliquer à la portée</button></div>
+ <div class="compactInputRow"><button id="saveStampPreset" type="button">Enregistrer modèle</button><button id="deleteStampPreset" type="button">Supprimer modèle</button></div>
  <input id="stampPresetLabel" placeholder="Nom du modèle de tampon">
  <details class="inlineHelp"><summary>Variables disponibles</summary><div id="stampVariables" class="variableHelp"></div></details>
 </div></details>
@@ -107,7 +109,9 @@
  <div class="grid2"><label>Opacité %<input id="objectOpacity" type="number" min="5" max="100" value="100"></label><label>Épaisseur stylo<input id="objectPenWidth" type="number" min="1" max="20" value="2"></label></div>
  <label>Image personnelle<select id="objectImageAsset"><option value="">Choisir dans la bibliothèque…</option></select></label>
  <div class="compactInputRow"><button id="pickObjectImage" type="button">Choisir un fichier image</button><span id="objectImageName" class="grow">Aucune image</span></div><input id="objectImageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
- <div class="compactInputRow"><button id="deleteSelectedObject" type="button" data-icon="delete">Supprimer objet</button><button id="commitObjects" type="button">Intégrer au PDF</button></div>
+ <div class="grid2"><label>Rotation °<input id="objectRotation" type="number" min="-360" max="360" step="1" value="0"></label><label>Objet sélectionné<span id="selectedObjectInfo" class="statusBox">Aucun</span></label></div>
+ <div class="compactInputRow"><button id="rotateObjectLeft" type="button">↶ −90°</button><button id="applyObjectRotation" type="button">Appliquer angle</button><button id="rotateObjectRight" type="button">↷ +90°</button></div>
+ <div class="compactInputRow"><button id="lockSelectedObject" type="button">Verrouiller / déverrouiller</button><button id="deleteSelectedObject" type="button" data-icon="delete">Supprimer objet</button><button id="commitObjects" type="button">Intégrer au PDF</button></div>
  <div class="statusBox">Choisissez un outil puis cliquez dans une page. En mode Sélection, les objets peuvent être déplacés et redimensionnés.</div>
 </div></details>
   <details id="sectionOcr" class="toolSection scope-studio" data-scope="pdf"><summary>7. OCR · reconnaissance de texte <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
