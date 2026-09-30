@@ -19,9 +19,11 @@ async function previewAsset(img,ref){
 function saveInputs(host){
  const p=loadPersonalProfile();
  p.identity.displayName=host.querySelector('[data-profile-identity="displayName"]')?.value||'';
+ p.identity.firstName=host.querySelector('[data-profile-identity="firstName"]')?.value||'';
+ p.identity.lastName=host.querySelector('[data-profile-identity="lastName"]')?.value||'';
  p.identity.initials=host.querySelector('[data-profile-identity="initials"]')?.value||'';
  for(const [k]of PERSONAL_VARIABLES){const el=host.querySelector('[data-profile-var="'+k+'"]');if(el)p.variables[k]=el.value}
- p.variables.INITIALS=p.identity.initials||p.variables.INITIALS||'';
+ p.variables.FIRST_NAME=p.identity.firstName||'';p.variables.LAST_NAME=p.identity.lastName||'';p.variables.FULL_NAME=[p.identity.firstName,p.identity.lastName].filter(Boolean).join(' ');p.variables.LAST_FIRST=[p.identity.lastName,p.identity.firstName].filter(Boolean).join(' ');p.variables.INITIALS=p.identity.initials||[p.identity.firstName,p.identity.lastName].filter(Boolean).map(x=>x[0]?.toUpperCase()||'').join('')||p.variables.INITIALS||'';
  savePersonalProfile(p);return p
 }
 function status(host,msg,kind='info'){const el=host.querySelector('[data-profile-status]');if(el){el.textContent=msg;el.dataset.kind=kind}}
@@ -41,8 +43,8 @@ export function mountPersonalProfileUI(host){
   host.innerHTML='<div class="personalProfileCard">'+
   '<div class="personalProfileHead"><div><strong>Profil personnel nLab</strong><small>'+(securityMode==='session'?'Session privée · données sensibles verrouillées hors session':'Appareil local · portable par ZIP')+'</small></div><span class="personalProfileBadge">v'+esc(p.profileVersion||'1.2')+'</span></div>'+
   '<details class="profileSecurity" open><summary>Sécurité du profil</summary><div class="profileSecurityGrid"><label>Stockage<select data-profile-security-mode><option value="device">Appareil local</option><option value="session">Session privée</option></select></label><div class="profileSecurityExplain" data-security-explain></div></div><div class="profileActions"><button type="button" data-security-apply>Appliquer le mode</button>'+(securityMode==='session'?'<button type="button" data-security-clear-session>Effacer et verrouiller cette session</button>':'')+'</div></details>'+
-  '<div class="profileGrid2"><label>Nom / profil<input data-profile-identity="displayName" value="'+esc(p.identity?.displayName||'')+'" placeholder="Ex. Vincent"></label><label>Initiales<input data-profile-identity="initials" value="'+esc(p.identity?.initials||'')+'" placeholder="Ex. VA"></label></div>'+
-  '<details class="profileVariables" open><summary>Variables personnelles</summary><div class="profileVariableGrid">'+PERSONAL_VARIABLES.filter(([k])=>k!=='INITIALS').map(([k,l])=>'<label><span><code>{'+k+'}</code> '+esc(l)+'</span><input data-profile-var="'+k+'" value="'+esc(p.variables?.[k]||'')+'" placeholder="'+esc(l)+'"></label>').join('')+'</div></details>'+
+  '<div class="profileGrid2"><label>Nom du profil<input data-profile-identity="displayName" value="'+esc(p.identity?.displayName||'')+'" placeholder="Ex. Profil personnel"></label><label><span><code>{FIRST_NAME}</code> Prénom</span><input data-profile-identity="firstName" value="'+esc(p.identity?.firstName||'')+'" placeholder="Ex. Vincent"></label><label><span><code>{LAST_NAME}</code> Nom</span><input data-profile-identity="lastName" value="'+esc(p.identity?.lastName||'')+'" placeholder="Ex. Arese"></label><label><span><code>{INITIALS}</code> Initiales</span><input data-profile-identity="initials" value="'+esc(p.identity?.initials||'')+'" placeholder="Ex. VA"></label></div><div class="profileDerivedVars"><code>{FULL_NAME}</code> Prénom Nom · <code>{LAST_FIRST}</code> Nom Prénom</div>'+
+  '<details class="profileVariables" open><summary>Variables personnelles</summary><div class="profileVariableGrid">'+PERSONAL_VARIABLES.filter(([k])=>!['FIRST_NAME','LAST_NAME','FULL_NAME','LAST_FIRST','INITIALS'].includes(k)).map(([k,l])=>'<label><span><code>{'+k+'}</code> '+esc(l)+'</span><input data-profile-var="'+k+'" value="'+esc(p.variables?.[k]||'')+'" placeholder="'+esc(l)+'"></label>').join('')+'</div></details>'+
   '<div class="profileAssets"><strong>Bibliothèque personnelle</strong>'+
    libraryMarkup('signature',p.assets?.signatures||[],p.assets?.defaultSignatureId)+
    libraryMarkup('initials',p.assets?.initialsImages||[],p.assets?.defaultInitialsImageId)+
