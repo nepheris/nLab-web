@@ -211,7 +211,7 @@
 </div></details>
   <details id="sectionBatch" class="toolSection scope-studio" data-scope="pdf"><summary>17. Traitements batch <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Traitements en lot et PipelineService.</div></details>
   <details id="sectionSecurity" class="toolSection scope-studio" data-scope="pdf"><summary>18. Sécurité & métadonnées <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
- <div class="statusBox">Inspection de sécurité, signatures et métadonnées. La protection par mot de passe ne sera appliquée que lorsqu’un moteur de chiffrement compatible est configuré ; aucune fausse protection n’est simulée.</div>
+ <div class="statusBox">Inspection de sécurité, signatures et métadonnées. Protection/déverrouillage AES-256 assurés localement par qpdf WebAssembly, chargé à la demande.</div>
  <details open><summary>Protection AES-256 locale</summary>
   <div class="statusBox">Le moteur qpdf WebAssembly est chargé uniquement à la demande. Le document reste dans le navigateur. Le mot de passe utilisateur impose l’ouverture ; le mot de passe propriétaire contrôle les permissions.</div>
   <div class="grid2"><label>Mot de passe d’ouverture<input id="pdfOpenPassword" type="password" autocomplete="new-password"></label><label>Mot de passe propriétaire<input id="pdfOwnerPassword" type="password" autocomplete="new-password"></label></div>
