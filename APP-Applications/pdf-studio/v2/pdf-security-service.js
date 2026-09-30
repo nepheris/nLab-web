@@ -9,7 +9,7 @@ export class PdfSecurityService{
   return this.loading
  }
  async protect(pdfBytes,{userPassword='',ownerPassword='',print='full',modify='all',extract=true}={}){
-  const pdf=await this.toolkit();if(!ownerPassword&&!userPassword)throw new Error('Saisissez au moins un mot de passe.');
+  const pdf=await this.toolkit();if(!ownerPassword&&!userPassword)throw new Error('Saisissez au moins un mot de passe.');const restricted=print!=='full'||modify!=='all'||!extract;if(restricted&&(!ownerPassword||ownerPassword===userPassword))throw new Error('Pour appliquer des restrictions, utilisez un mot de passe propriétaire distinct du mot de passe d’ouverture.');
   return pdf.lock(pdfBytes,{userPassword,ownerPassword:ownerPassword||userPassword,keyLength:256,permissions:{print,modify,extract:!!extract,accessibility:true}})
  }
  async unlock(pdfInput,password=''){const pdf=await this.toolkit();return pdf.unlock(pdfInput,{password})}
