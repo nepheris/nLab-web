@@ -92,13 +92,13 @@ async function deletePages(){if(!engine.pageCount)return;const pages=engine.targ
 async function deleteSelected(){if(!engine.selected.size)return;await checkpoint();try{await engine.deletePages([...engine.selected]);await renderAll();setStatus('Sélection supprimée')}catch(e){setStatus(e.message)}}
 async function currentBlob(){return new Blob([await engine.baseBytes()],{type:'application/pdf'})}
 async function saveCurrent({classify=false,forcePicker=false}={}){
- if(!engine.pageCount)return;const format=$('#outputFormat').value;if(format==='zip')return saveZip();
+ if(!engine.pageCount)return;const format=$('#outputFormat').value;if(format==='zip')return saveZip({classify});
  let blob,name;if(format==='same'&&engine.sourceFile){blob=engine.sourceFile;name=outputName('.'+(formatInfo(engine.sourceFile).extension||'bin'))}else{blob=await currentBlob();name=outputName('.pdf')}
  if(forcePicker&&window.showSaveFilePicker){const h=await showSaveFilePicker({suggestedName:name,types:[{description:'Document',accept:{[blob.type||'application/octet-stream']:['.'+(name.split('.').pop()||'pdf')]}}]}),w=await h.createWritable();await w.write(blob);await w.close()}
  else{if($('#outputProvider').value==='local'&&!output.handle)await output.chooseDirectory();await output.saveBlob(blob,name,{parts:classify?outputParts():[]})}
  setStatus('Enregistré : '+name);recordHistory({studio:'pdf-studio',type:'action',label:classify?'Enregistrer + classer':'Enregistrer',detail:(classify?outputParts().join('/'):'')||'racine',target:name,action:'savePdf',repeatable:true})
 }
-async function saveZip(){if(!engine.pageCount)return;const pdf=await engine.baseBytes(),pdfName=outputName('.pdf'),zipName=outputName('.zip');if($('#outputProvider').value==='local'&&!output.handle)await output.chooseDirectory();const old=output.handle;if($('#outputProvider').value!=='local')output.handle=null;await output.saveZip([{name:pdfName,data:pdf}],zipName);output.handle=old;setStatus('ZIP enregistré : '+zipName);recordHistory({studio:'pdf-studio',type:'action',label:'ZIP enregistré',target:zipName})}
+async function saveZip({classify=false}={}){if(!engine.pageCount)return;const pdf=await engine.baseBytes(),pdfName=outputName('.pdf'),zipName=outputName('.zip');if($('#outputProvider').value==='local'&&!output.handle)await output.chooseDirectory();const old=output.handle;if($('#outputProvider').value!=='local')output.handle=null;await output.saveZip([{name:pdfName,data:pdf}],zipName,{parts:classify?outputParts():[]});output.handle=old;setStatus('ZIP enregistré : '+zipName);recordHistory({studio:'pdf-studio',type:'action',label:classify?'ZIP enregistré + classé':'ZIP enregistré',detail:classify?outputParts().join('/'):'',target:zipName})}
 
 $('#pickFile').onclick=()=>$('#fileInput').click();$('#fileInput').onchange=e=>loadFiles(e.target.files||[]);
 $('#pickFolder').onclick=()=>$('#folderInput').click();$('#folderInput').onchange=e=>loadFiles(e.target.files||[]);
