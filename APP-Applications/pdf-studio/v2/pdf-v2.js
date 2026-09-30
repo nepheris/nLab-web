@@ -310,7 +310,7 @@ $('#runTranslateQuick')?.addEventListener('click',()=>runTranslateQuick().catch(
 $('#generateQrPreview')?.addEventListener('click',refreshQrPreview);$('#applyQrQuick')?.addEventListener('click',()=>applyQrQuick().catch(e=>setStatus(e.message)));
 $('#runQuickConversion')?.addEventListener('click',()=>runQuickConversion().catch(e=>setStatus(e.message)));
 $('#pdfSecurityMode')?.addEventListener('change',()=>{const mode=$('#pdfSecurityMode').value;if(mode==='open-password'||mode==='permissions')$('#pdfSecurityStatus').textContent='Protection par mot de passe : moteur de chiffrement PDF externe non configuré. Aucun faux verrouillage ne sera appliqué.'});
-$('#inspectPdfSecurity')?.addEventListener('click',()=>inspectSecurityAndMetadata().catch(e=>setStatus(e.message)));$('#cleanPdfMetadata')?.addEventListener('click',()=>cleanPdfMetadata().catch(e=>setStatus(e.message)));
+$('#inspectPdfSecurity')?.addEventListener('click',()=>inspectSecurityAndMetadata().catch(e=>setStatus(e.message)));$('#loadPdfMetadata')?.addEventListener('click',()=>{try{loadPdfMetadataFields()}catch(e){setStatus(e.message)}});$('#savePdfMetadata')?.addEventListener('click',()=>savePdfMetadataFields().catch(e=>setStatus(e.message)));$('#cleanPdfMetadata')?.addEventListener('click',()=>cleanPdfMetadata().catch(e=>setStatus(e.message)));
 $('#pickComparePdf')?.addEventListener('click',()=>$('#comparePdfInput').click());$('#comparePdfInput')?.addEventListener('change',e=>{compareFile=e.target.files?.[0]||null;$('#comparePdfName').textContent=compareFile?.name||''});$('#runComparePdf')?.addEventListener('click',()=>runCompare().catch(e=>setStatus(e.message)));
 $('#inspectForms')?.addEventListener('click',()=>inspectFormsQuick().catch(e=>setStatus(e.message)));$('#flattenForms')?.addEventListener('click',()=>flattenFormsQuick().catch(e=>setStatus(e.message)));
 $('#applyHeaderFooter')?.addEventListener('click',async()=>{try{assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const pages=toolPages('headerFooterScope');await checkpoint();await advancedTools.headerFooter(pages,{headerLeft:$('#headerLeft').value,header:$('#headerCenter').value,headerRight:$('#headerRight').value,footerLeft:$('#footerLeft').value,footer:$('#footerCenter').value,footerRight:$('#footerRight').value,fontSize:Number($('#headerFooterFontSize').value)||9});markPdfModifiedAfterSignature();await renderAll();setStatus('En-tête / pied appliqué sur '+pages.length+' page(s).')}catch(e){setStatus(e.message)}});
@@ -362,6 +362,15 @@ async function inspectSecurityAndMetadata(){
  if(!engine.pageCount)throw new Error('Chargez un PDF.');const sig=advancedTools.signatureStructure(),d=engine.pdfDoc;
  const info={signatures:sig,title:d.getTitle?.()||'',author:d.getAuthor?.()||'',subject:d.getSubject?.()||'',keywords:d.getKeywords?.()||'',creator:d.getCreator?.()||'',producer:d.getProducer?.()||'',creationDate:d.getCreationDate?.()?.toISOString?.()||'',modificationDate:d.getModificationDate?.()?.toISOString?.()||'',encryptionNote:'Inspection structurelle. Le moteur pdf-lib ne chiffre pas les sorties V2.'};
  $('#pdfSecurityStatus').textContent=JSON.stringify(info,null,2);return info
+}
+function loadPdfMetadataFields(){
+ if(!engine.pageCount)throw new Error('Chargez un PDF.');const d=engine.pdfDoc;
+ $('#pdfMetaTitle').value=d.getTitle?.()||'';$('#pdfMetaAuthor').value=d.getAuthor?.()||'';$('#pdfMetaSubject').value=d.getSubject?.()||'';const kw=d.getKeywords?.();$('#pdfMetaKeywords').value=Array.isArray(kw)?kw.join(', '):(kw||'');setStatus('Métadonnées chargées.')
+}
+async function savePdfMetadataFields(){
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');await checkpoint();const d=engine.pdfDoc;
+ d.setTitle($('#pdfMetaTitle').value||'');d.setAuthor($('#pdfMetaAuthor').value||'');d.setSubject($('#pdfMetaSubject').value||'');d.setKeywords(($('#pdfMetaKeywords').value||'').split(',').map(x=>x.trim()).filter(Boolean));d.setModificationDate?.(new Date());
+ await engine.setBytes(new Uint8Array(await d.save()));markPdfModifiedAfterSignature();await renderAll();setStatus('Métadonnées PDF enregistrées.')
 }
 async function cleanPdfMetadata(){
  assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');await checkpoint();await advancedTools.cleanMetadata();markPdfModifiedAfterSignature();await renderAll();setStatus('Métadonnées PDF nettoyées.')
