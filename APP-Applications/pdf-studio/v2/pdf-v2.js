@@ -18,13 +18,17 @@ import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template
 import{OutputService}from'../../_shared/studio-v2/output-service.js';
 import{acceptAttribute,isSupportedFile,formatInfo}from'../../_shared/studio-v2/format-registry.js';
 import{enhanceStudioWindow}from'../../_shared/studio-v2/window-system.js';
+import{mountPersonalProfileUI}from'../../_shared/studio-v2/personal-profile-ui.js';
+import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues}from'../../_shared/studio-v2/personal-profile-service.js';
 
-const VERSION='2.1.0';
+const VERSION='2.1.1';
 await mountStudioV2({manifest:studioManifest,versionInfo:{version:VERSION,status:'TEST'}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(),output=new OutputService();
+let personalProfile=loadPersonalProfile();
+const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService();
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null;
 
+mountPersonalProfileUI($('#personalProfileHost'));
 $('#fileInput').accept=acceptAttribute();
 const fileBrowser=new CollectionBrowser({host:$('#fileCollection'),view:'list',key:'pdf-files',getThumbnail:item=>lightweightThumbnail(item.data)});
 fileBrowser.addEventListener('activate',e=>{const file=e.detail?.data;if(file)load(file)});
@@ -51,15 +55,30 @@ async function checkpoint(){if(!engine.pageCount)return;undoStack.push(await eng
 async function undo(){if(!undoStack.length||!engine.pageCount)return;redoStack.push(await engine.baseBytes());await engine.setBytes(undoStack.pop());syncSession();await renderAll();syncUndoRedo();setStatus('Modification annulée');recordHistory({studio:'pdf-studio',type:'action',label:'Annulation',target:engine.fileName})}
 async function redo(){if(!redoStack.length||!engine.pageCount)return;undoStack.push(await engine.baseBytes());await engine.setBytes(redoStack.pop());syncSession();await renderAll();syncUndoRedo();setStatus('Modification rétablie');recordHistory({studio:'pdf-studio',type:'action',label:'Rétablissement',target:engine.fileName})}
 
+function loadPdfProfilePreferences(){
+ personalProfile=loadPersonalProfile();templates.setValues(profileTemplateValues(personalProfile));
+ const pref=personalProfile.preferences?.studios?.['pdf-studio']||{};
+ if(pref.naming){if(pref.naming.template!=null)$('#namingTemplate').value=pref.naming.template;if(pref.naming.prefix!=null)$('#namingPrefix').value=pref.naming.prefix;if(pref.naming.suffix!=null)$('#namingSuffix').value=pref.naming.suffix}
+ if(pref.output){if(pref.output.structure)$('#outputStructure').value=pref.output.structure;if(pref.output.pathTemplate!=null)$('#outputPathTemplate').value=pref.output.pathTemplate;if(pref.output.format)$('#outputFormat').value=pref.output.format}
+}
+function savePdfProfilePreferences(){
+ const naming={template:$('#namingTemplate').value||'{FILENAME}',prefix:$('#namingPrefix').value||'',suffix:$('#namingSuffix').value||''};
+ const outputPref={structure:$('#outputStructure').value||'root',pathTemplate:$('#outputPathTemplate').value||'',format:$('#outputFormat').value||'pdf'};
+ personalProfile=updatePersonalProfile(p=>{p.preferences=p.preferences||{};p.preferences.studios=p.preferences.studios||{};p.preferences.studios['pdf-studio']={...(p.preferences.studios['pdf-studio']||{}),naming,output:outputPref};return p});
+}
+
 function namingExtra(){const item=fileBrowser.active();return{RELATIVE_PATH:item?.relativePath||engine.sourceFile?.webkitRelativePath||engine.fileName,PATH:item?.relativePath||engine.fileName,FILESIZE:String(engine.sourceFile?.size||0),PAGES:String(engine.pageCount||1),PAGE:String(engine.currentPage||1),SELECTED_COUNT:String(engine.selected.size),INDEX:String(Math.max(1,fileBrowser.items.findIndex(x=>x.id===fileBrowser.activeId)+1))}}
 function outputName(extension='.pdf'){return templates.buildName(engine.sourceFile?.name||engine.fileName,{prefix:$('#namingPrefix').value,template:$('#namingTemplate').value||'{FILENAME}',suffix:$('#namingSuffix').value,extension,extra:namingExtra()})}
 function updateNamingPreview(){const ext=$('#outputFormat').value==='same'?('.'+(formatInfo(engine.sourceFile).extension||'pdf')):'.pdf';$('#namingPreview').textContent=outputName(ext)}
 function outputContext(){return templates.context(engine.sourceFile?.name||engine.fileName,namingExtra())}
 function outputParts(){const mode=$('#outputStructure').value,custom=templates.resolve($('#outputPathTemplate').value,engine.fileName,outputContext());return output.structureParts(mode,outputContext(),custom)}
 function updateOutputPreview(){const provider=$('#outputProvider').value==='local'?(output.handle?'Dossier : '+output.handle.name:'Dossier local non choisi'):'Téléchargement navigateur',parts=outputParts();$('#outputPathPreview').textContent=provider+(parts.length?' / '+parts.join(' / '):' / racine')}
-['namingTemplate','namingPrefix','namingSuffix'].forEach(id=>$('#'+id).addEventListener('input',updateNamingPreview));
-['outputFormat','outputProvider','outputStructure','outputPathTemplate'].forEach(id=>$('#'+id).addEventListener('input',()=>{updateNamingPreview();updateOutputPreview()}));
+['namingTemplate','namingPrefix','namingSuffix'].forEach(id=>$('#'+id).addEventListener('input',()=>{updateNamingPreview();savePdfProfilePreferences()}));
+['outputFormat','outputProvider','outputStructure','outputPathTemplate'].forEach(id=>$('#'+id).addEventListener('input',()=>{updateNamingPreview();updateOutputPreview();if(id!=='outputProvider')savePdfProfilePreferences()}));
+loadPdfProfilePreferences();
 $('#namingVariables').innerHTML=templateVariableHelp().map(x=>'<code>{'+x.name+'}</code><span>'+x.description+'</span>').join('');
+document.addEventListener('nlab:personal-profile-changed',e=>{personalProfile=e.detail?.profile||loadPersonalProfile();templates.setValues(profileTemplateValues(personalProfile));updateNamingPreview();updateOutputPreview()});
+document.addEventListener('nlab:personal-profile-imported',()=>{loadPdfProfilePreferences();updateNamingPreview();updateOutputPreview();setStatus('Profil personnel importé et appliqué au PDF Studio.')});
 
 function syncViewerMeta(){
  $('#pageNumberInput').value=engine.currentPage||1;$('#pageNumberInput').max=Math.max(1,engine.pageCount);$('#pageInfo').textContent='/ '+engine.pageCount;$('#zoomInput').value=Math.round(viewer.zoom*100);$('#pagesPerRow').value=viewer.pagesPerRow;$('#previewColumns').value=viewer.previewColumns;$('#previewZoom').value=Math.round(viewer.previewScale*100);

@@ -322,3 +322,17 @@ body.studioRibbonCollapsed .ribbonContext{
 @media(max-width:850px){.visibilityGrid{grid-template-columns:1fr}.collectionToolbar{flex-wrap:wrap}.compactInputRow{flex-wrap:wrap}.grid2{grid-template-columns:1fr}.historyFullControls{grid-template-columns:1fr 1fr}.previewToolbar input[type="range"]{width:80px}}
 
 .studioMain.sidebarCompact [data-sidebar-tab="tasks"]:before{content:"Tâches"}
+
+
+/* Studio Core — personal portable profile */
+.personalProfileCard{display:grid;gap:8px;border:1px solid #dce4ea;border-radius:8px;padding:8px;background:#f8fafc}
+.personalProfileHead{display:flex;align-items:center;justify-content:space-between;gap:8px}.personalProfileHead>div{display:grid;gap:1px}.personalProfileHead strong{font-size:10px}.personalProfileHead small{font-size:8px;color:var(--nlab-muted)}
+.personalProfileBadge{font-size:8px;font-weight:800;padding:3px 6px;border-radius:999px;background:#e8f2f8;color:#236182}
+.profileGrid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}.profileVariables>summary{cursor:pointer;font-size:9px;font-weight:800}.profileVariableGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}.profileVariableGrid label{display:grid;gap:3px}.profileVariableGrid span{font-size:8px;color:var(--nlab-muted)}.profileVariableGrid code{font-size:8px;color:#0d5d8f}
+.profileAssets{display:grid;gap:5px}.profileAssets>strong{font-size:9px}.profileAssetRow{display:grid;grid-template-columns:42px minmax(0,1fr) auto auto;gap:5px;align-items:center;border:1px solid #e0e6eb;border-radius:6px;padding:5px;background:#fff}.profileAssetRow img{width:40px;height:32px;object-fit:contain;border:1px solid #dce4ea;border-radius:4px;background:#fff}.profileAssetRow>div{min-width:0;display:grid}.profileAssetRow b{font-size:9px}.profileAssetRow small{font-size:8px;color:var(--nlab-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profileAssetRow button{padding:4px 6px;font-size:8px}
+.profileTemplateSummary{display:flex;gap:4px;flex-wrap:wrap}.profileTemplateSummary span{font-size:8px;padding:3px 5px;border-radius:999px;background:#eef3f7;color:#516675}
+.profileActions{display:flex;gap:5px;flex-wrap:wrap}.profileActions button{font-size:8px;padding:5px 7px}
+.profileImportPreview{display:grid;gap:6px;border:1px solid #a9c7dc;border-radius:7px;padding:7px;background:#f1f8fc}.profileImportPreview[hidden]{display:none}.profileImportStats{display:flex;gap:4px;flex-wrap:wrap}.profileImportStats span{font-size:8px;padding:3px 5px;border-radius:999px;background:#fff;border:1px solid #d5e1e8}
+[data-profile-status][data-kind="ok"]{border-color:#9bc7a5;background:#f2faf4}[data-profile-status][data-kind="error"]{border-color:#dca7a7;background:#fff4f4;color:#8b1e1e}
+.themeDark .personalProfileCard,.themeDark .profileAssetRow,.themeDark .profileImportPreview{background:#20262c;border-color:#39434c}.themeDark .profileImportStats span{background:#252c33;border-color:#39434c}
+@media(max-width:520px){.profileGrid2,.profileVariableGrid{grid-template-columns:1fr}.profileAssetRow{grid-template-columns:38px minmax(0,1fr) auto}.profileAssetRow button:last-of-type{grid-column:2/-1}}
