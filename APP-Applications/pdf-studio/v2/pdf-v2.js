@@ -23,6 +23,8 @@ import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues,getPerson
 import{listRecentLocations,rememberLocation,resolveRecentLocation}from'../../_shared/studio-v2/recent-locations-service.js';
 import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
 import{PdfSignatureService}from'./signature-service.js';
+import{PDFTools}from'../v1/pdf-tools.js';
+import{AdvancedPDFTools}from'../v1/advanced-tools.js';
 
 const runtimeVersion=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
 applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:runtimeVersion.studioVersion,studioStatus:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion});
@@ -30,6 +32,7 @@ await mountStudioV2({manifest:studioManifest,versionInfo:{version:runtimeVersion
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let personalProfile=loadPersonalProfile();
 const engine=new PDFEngine(),session=new DocumentSession(),templates=new TemplateEngine(profileTemplateValues(personalProfile)),output=new OutputService(),signatureService=new PdfSignatureService();
+const annotationBridge={exportBytes:()=>engine.baseBytes()};const pdfTools=new PDFTools({engine,annotations:annotationBridge,variables:templates}),advancedTools=new AdvancedPDFTools({engine,annotations:annotationBridge,variables:templates});
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null,assemblyItems=[],assemblySelectedIndex=-1,assemblyInsertFile=null;
 let activeInputLocation=null,activeOutputLocation=null,assemblySortUnmount=null;
 function setValidatedButton(el,on,label=''){if(!el)return;el.classList.toggle('validatedChoice',!!on);el.setAttribute('aria-pressed',on?'true':'false');if(label)el.title=label}
@@ -217,8 +220,72 @@ $('#signatureDssUrl').value=signatureService.baseUrl||'';
 $('#signatureSignerName').value='{DISPLAY_NAME}';$('#signatureLocation').value='{SITE}';
 setSignatureMode('visual');refreshSignatureAssets();
 document.addEventListener('nlab:personal-profile-changed',()=>refreshSignatureAssets());
+$('#runOcrQuick')?.addEventListener('click',()=>runOcrQuick().catch(e=>setStatus(e.message)));$('#copyOcrResult')?.addEventListener('click',async()=>{await navigator.clipboard?.writeText($('#ocrResult').value||'');setStatus('Texte OCR copié.')});
+refreshOptimizeLabels();$('#optDpi')?.addEventListener('input',refreshOptimizeLabels);$('#optJpeg')?.addEventListener('input',refreshOptimizeLabels);
+$('[data-opt-preset]').forEach(b=>b.onclick=()=>{const p={screen:[96,65],balanced:[200,82],scan:[300,88],print:[400,94]}[b.dataset.optPreset]||[200,82];$('#optDpi').value=p[0];$('#optJpeg').value=p[1];$('[data-opt-preset]').forEach(x=>x.classList.toggle('active',x===b));refreshOptimizeLabels()});
+$('#runOptimizeQuick')?.addEventListener('click',()=>runOptimizeQuick().catch(e=>setStatus(e.message)));
+$('#runTranslateQuick')?.addEventListener('click',()=>runTranslateQuick().catch(e=>setStatus(e.message)));
+$('#generateQrPreview')?.addEventListener('click',refreshQrPreview);$('#applyQrQuick')?.addEventListener('click',()=>applyQrQuick().catch(e=>setStatus(e.message)));
+$('#runQuickConversion')?.addEventListener('click',()=>runQuickConversion().catch(e=>setStatus(e.message)));
+$('#inspectPdfSecurity')?.addEventListener('click',()=>inspectSecurityAndMetadata().catch(e=>setStatus(e.message)));$('#cleanPdfMetadata')?.addEventListener('click',()=>cleanPdfMetadata().catch(e=>setStatus(e.message)));
+$('#pickComparePdf')?.addEventListener('click',()=>$('#comparePdfInput').click());$('#comparePdfInput')?.addEventListener('change',e=>{compareFile=e.target.files?.[0]||null;$('#comparePdfName').textContent=compareFile?.name||''});$('#runComparePdf')?.addEventListener('click',()=>runCompare().catch(e=>setStatus(e.message)));
+$('#inspectForms')?.addEventListener('click',()=>inspectFormsQuick().catch(e=>setStatus(e.message)));$('#flattenForms')?.addEventListener('click',()=>flattenFormsQuick().catch(e=>setStatus(e.message)));
 
 
+
+function toolPages(scopeId){
+ const scope=$('#'+scopeId)?.value||'current';if(scope==='all')return engine.targetPages('all');if(scope==='selected')return engine.selected.size?[...engine.selected]:[engine.currentPage];return[engine.currentPage]
+}
+function dpiMeaning(v){v=Number(v);return v<=110?'Écran':v<=170?'Document léger':v<=240?'Scan standard':v<=360?'Impression':'Haute définition'}
+function jpegMeaning(v){v=Number(v);return v>=90?'haute qualité · compression faible':v>=75?'bonne qualité · compression moyenne':v>=55?'qualité moyenne · compression forte':'petit fichier · compression très forte'}
+function refreshOptimizeLabels(){if($('#optDpiLabel'))$('#optDpiLabel').textContent=$('#optDpi').value+' · '+dpiMeaning($('#optDpi').value);if($('#optJpegLabel'))$('#optJpegLabel').textContent=$('#optJpeg').value+' % · '+jpegMeaning($('#optJpeg').value)}
+async function runOcrQuick(){
+ if(!engine.pageCount)throw new Error('Chargez un PDF.');const pages=toolPages('ocrScope');$('#ocrResult').value='OCR en cours…';
+ const text=await pdfTools.ocr(pages,{lang:$('#ocrLang').value,dpi:Number($('#ocrDpiPreset').value)||200});$('#ocrResult').value=text;
+ recordHistory({studio:'pdf-studio',type:'action',label:'OCR rapide',detail:pages.length+' page(s) · '+$('#ocrLang').value+' · '+$('#ocrDpiPreset').value+' DPI',target:engine.fileName,action:'ocr',repeatable:false})
+}
+async function runOptimizeQuick(){
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const pages=toolPages('optScope');await checkpoint();
+ await pdfTools.optimize(pages,{dpi:Number($('#optDpi').value)||200,jpeg:Number($('#optJpeg').value)||82,gray:$('#optGray').checked});markPdfModifiedAfterSignature();await renderAll();
+ recordHistory({studio:'pdf-studio',type:'action',label:'Optimisation PDF',detail:pages.length+' page(s) · '+$('#optDpi').value+' DPI · JPEG '+$('#optJpeg').value+'%',target:engine.fileName,action:'optimize',repeatable:false})
+}
+async function runTranslateQuick(){
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const pages=toolPages('translateScope');await checkpoint();
+ const bytes=await pdfTools.bilingual({source:$('#translateSource').value,target:$('#translateTarget').value,layout:$('#translateLayout').value,endpoint:$('#translateEndpoint').value.trim(),pages});
+ await engine.setBytes(bytes);cryptoSignatureState=null;await renderAll();setStatus('PDF bilingue généré.');
+ recordHistory({studio:'pdf-studio',type:'action',label:'Traduction bilingue',detail:$('#translateSource').value+' → '+$('#translateTarget').value+' · '+pages.length+' page(s)',target:engine.fileName,action:'translate',repeatable:false})
+}
+async function qrBlob(){
+ if(!window.QRCode?.toDataURL)throw new Error('Moteur QR indisponible');const raw=$('#qrValue').value.trim();if(!raw)throw new Error('Saisissez un contenu QR.');
+ const value=templates.resolve(raw,engine.fileName,outputContext()),url=await QRCode.toDataURL(value,{width:720,margin:2,errorCorrectionLevel:'M'}),r=await fetch(url);return{blob:await r.blob(),url,value}
+}
+async function refreshQrPreview(){
+ const p=$('#qrPreview');try{const q=await qrBlob();p.innerHTML='<img src="'+q.url+'" alt="Aperçu QR"><small>'+q.value.replace(/[<>]/g,'')+'</small>'}catch(e){p.innerHTML='<span>'+e.message+'</span>'}
+}
+async function applyQrQuick(){
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const q=await qrBlob(),pages=toolPages('qrScope');await checkpoint();
+ await engine.applyImageOverlay(q.blob,pages,{position:$('#qrPosition').value,widthPct:Number($('#qrWidthPct').value)||12,opacity:1});markPdfModifiedAfterSignature();await renderAll();setStatus('QR placé sur '+pages.length+' page(s).');
+ recordHistory({studio:'pdf-studio',type:'action',label:'QR placé',detail:pages.length+' page(s)',target:engine.fileName,action:'qr',repeatable:false})
+}
+async function runQuickConversion(){
+ if(!engine.pageCount)throw new Error('Chargez un PDF.');const type=$('#quickConversion').value,pages=toolPages('convertScope'),stem=(engine.fileName||'document').replace(/\.pdf$/i,'');
+ if(type==='txt'){const chunks=[];for(const p of pages)chunks.push('--- Page '+p+' ---\n'+await engine.pageText(p));await output.saveBlob(new Blob([chunks.join('\n\n')],{type:'text/plain;charset=utf-8'}),stem+'.txt',{parts:[]});setStatus('Texte exporté.');return}
+ const blob=await advancedTools.allImagesZip({type:type==='jpg'?'jpg':'png',scale:2,quality:.9,pages});await output.saveBlob(blob,stem+'_'+type+'.zip',{parts:[]});setStatus('Images '+type.toUpperCase()+' exportées en ZIP.')
+}
+async function inspectSecurityAndMetadata(){
+ if(!engine.pageCount)throw new Error('Chargez un PDF.');const sig=advancedTools.signatureStructure(),d=engine.pdfDoc;
+ const info={signatures:sig,title:d.getTitle?.()||'',author:d.getAuthor?.()||'',subject:d.getSubject?.()||'',keywords:d.getKeywords?.()||'',creator:d.getCreator?.()||'',producer:d.getProducer?.()||'',creationDate:d.getCreationDate?.()?.toISOString?.()||'',modificationDate:d.getModificationDate?.()?.toISOString?.()||'',encryptionNote:'Inspection structurelle. Le moteur pdf-lib ne chiffre pas les sorties V2.'};
+ $('#pdfSecurityStatus').textContent=JSON.stringify(info,null,2);return info
+}
+async function cleanPdfMetadata(){
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');await checkpoint();await advancedTools.cleanMetadata();markPdfModifiedAfterSignature();await renderAll();setStatus('Métadonnées PDF nettoyées.')
+}
+let compareFile=null;
+async function runCompare(){
+ if(!engine.pageCount||!compareFile)throw new Error('Chargez le PDF courant et choisissez un PDF à comparer.');const r=await advancedTools.compare(compareFile);$('#compareResult').textContent=JSON.stringify(r,null,2);setStatus('Comparaison terminée.')
+}
+async function inspectFormsQuick(){if(!engine.pageCount)throw new Error('Chargez un PDF.');$('#formsResult').textContent=JSON.stringify(advancedTools.inspectForms(),null,2)}
+async function flattenFormsQuick(){assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');await checkpoint();await advancedTools.flattenForms();markPdfModifiedAfterSignature();await renderAll();setStatus('Formulaires aplatis.')}
 function syncViewerMeta(){
  $('#pageNumberInput').value=engine.currentPage||1;$('#pageNumberInput').max=Math.max(1,engine.pageCount);$('#pageInfo').textContent='/ '+engine.pageCount;$('#zoomInput').value=Math.round(viewer.zoom*100);$('#pagesPerRow').value=viewer.pagesPerRow;$('#previewColumns').value=viewer.previewColumns;$('#previewZoom').value=Math.round(viewer.previewScale*100);
  const capInfo=activeFileCapabilities?.extension?(' · '+activeFileCapabilities.extension.toUpperCase()):'',selectedFiles=fileBrowser.selected.size?(' · '+fileBrowser.selected.size+' fichier(s) sélectionné(s)'):'';
@@ -350,7 +417,8 @@ $('#detachHelp').onclick=()=>{let p=$('#floatingHelpWindow');if(!p){p=document.c
 function openAdvancedStudio(id){createStudioContext({sourceStudio:'pdf-studio',targetStudio:id,capability:id,fileName:engine.fileName,page:engine.currentPage,selectedPages:[...engine.selected],returnTarget:location.href});const u=new URL(studioManifest.studiosHref,location.href);u.searchParams.set('target',id);u.searchParams.set('return','pdf-studio');location.href=u.href}
 $$('[data-advanced-studio]').forEach(b=>b.onclick=()=>openAdvancedStudio(b.dataset.advancedStudio));document.addEventListener('click',e=>{const b=e.target.closest('[data-studio-action]');if(b&&!b.closest('.studioRibbon'))document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,source:'sidebar',element:b}}))});
 
-document.addEventListener('studio-v2:action',e=>{const a=e.detail.action;if(a==='openPdf')$('#pickFile').click();else if(a==='openFolder')$('#pickFolder').click();else if(a==='prevFile')$('#filePrev').click();else if(a==='nextFile')$('#fileNext').click();else if(a==='savePdf')saveCurrent();else if(a==='saveZip')saveZip();else if(a==='classifyPdf'){activateSidebarTab('tools');$('#sectionOutput').open=true;$('#sectionOutput').scrollIntoView({block:'nearest'})}else if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='deletePage')deletePages();else if(a==='extractPages')extractSelectedPages();else if(a==='assemblePdf'){activateSidebarTab('tools');$('#sectionAssembly').open=true;$('#sectionAssembly').scrollIntoView({block:'nearest'});fillAssemblyFromSelection();}else if(a==='undo')undo();else if(a==='redo')redo();else if(a==='signature'){activateSidebarTab('tools');$('#sectionSignature').open=true;$('#sectionSignature').scrollIntoView({block:'nearest'});setSignatureMode('visual')}else if(a==='history')activateSidebarTab('history');else if(a==='commands')document.dispatchEvent(new Event('studio-v2:open-command-palette'));else if(a==='workflows')document.dispatchEvent(new Event('studio-v2:open-workflows'));else showHelp(a,e.detail.element||null)});
+function openToolSection(id){activateSidebarTab('tools');const x=$(id);if(x){x.open=true;x.scrollIntoView({block:'nearest'})}}
+document.addEventListener('studio-v2:action',e=>{const a=e.detail.action;if(a==='openPdf')$('#pickFile').click();else if(a==='openFolder')$('#pickFolder').click();else if(a==='prevFile')$('#filePrev').click();else if(a==='nextFile')$('#fileNext').click();else if(a==='savePdf')saveCurrent();else if(a==='saveZip')saveZip();else if(a==='classifyPdf'){activateSidebarTab('tools');$('#sectionOutput').open=true;$('#sectionOutput').scrollIntoView({block:'nearest'})}else if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='deletePage')deletePages();else if(a==='extractPages')extractSelectedPages();else if(a==='assemblePdf'){activateSidebarTab('tools');$('#sectionAssembly').open=true;$('#sectionAssembly').scrollIntoView({block:'nearest'});fillAssemblyFromSelection();}else if(a==='undo')undo();else if(a==='redo')redo();else if(a==='signature'){openToolSection('#sectionSignature');setSignatureMode('visual')}else if(a==='ocr')openToolSection('#sectionOcr');else if(a==='optimize')openToolSection('#sectionOptimize');else if(a==='translate')openToolSection('#sectionTranslate');else if(a==='qr')openToolSection('#sectionCodes');else if(a==='convert')openToolSection('#sectionConversion');else if(a==='forms')openToolSection('#sectionForms');else if(a==='compare')openToolSection('#sectionCompare');else if(a==='security'||a==='metadata')openToolSection('#sectionSecurity');else if(a==='history')activateSidebarTab('history');else if(a==='commands')document.dispatchEvent(new Event('studio-v2:open-command-palette'));else if(a==='workflows')document.dispatchEvent(new Event('studio-v2:open-workflows'));else showHelp(a,e.detail.element||null)});
 document.addEventListener('studio-v2:menu',e=>{if(e.detail.tab==='help')activateSidebarTab('properties');if(e.detail.tab==='history')activateSidebarTab('history');if(e.detail.tab==='view')$('#studioVisibilityOpen')?.click();if(e.detail.tab==='file')$('#sectionInput').open=true});
 document.addEventListener('studio-v2:repeat-action',e=>{const a=e.detail?.action;if(a==='rotateLeft')rotate(-90);else if(a==='rotateRight')rotate(90);else if(a==='addPage')addPage();else if(a==='duplicatePage')duplicatePage();else if(a==='savePdf')saveCurrent();else showHelp(a||'history')});
 registerPipelineHandler('rotateLeft',async()=>{await rotate(-90);return engine});registerPipelineHandler('rotateRight',async()=>{await rotate(90);return engine});registerPipelineHandler('addPage',async()=>{await addPage();return engine});registerPipelineHandler('duplicatePage',async()=>{await duplicatePage();return engine});registerPipelineHandler('savePdf',async()=>{await saveCurrent();return engine});
