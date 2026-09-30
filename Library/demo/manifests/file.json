@@ -2,22 +2,14 @@
   "schema": "nlab-demo-manifest/v1",
   "studio": "file-studio",
   "label": "File Studio",
-  "source": "Google Drive reference 2026-09-29",
+  "source": "Google Drive reference + synthetic local fixtures 2026-09-30",
   "files": [
-    {
-      "name": "lot-A",
-      "storage": "reference-only",
-      "kind": "folder"
-    },
-    {
-      "name": "lot-B",
-      "storage": "reference-only",
-      "kind": "folder"
-    },
-    {
-      "name": "archive-imbriquee-demo.zip",
-      "storage": "reference-only",
-      "kind": "zip"
-    }
+    {"name":"lot-A","storage":"reference-only","kind":"folder"},
+    {"name":"lot-B","storage":"reference-only","kind":"folder"},
+    {"name":"archive-imbriquee-demo.zip","storage":"reference-only","kind":"zip"},
+    {"name":"Documents","path":"../files/demo-input/Documents/","storage":"local","kind":"folder"},
+    {"name":"Data","path":"../files/demo-input/Data/","storage":"local","kind":"folder"},
+    {"name":"Images","path":"../files/demo-input/Images/","storage":"local","kind":"folder"},
+    {"name":"Security","path":"../files/demo-input/Security/","storage":"local","kind":"folder"}
   ]
 }
