@@ -40,7 +40,7 @@ try{
  });
  await studio('file-studio',async p=>{
   await p.locator('#files').setInputFiles(['Library/demo/files/demo-input/Code/demo-script.js','Library/demo/files/demo-input/JSON/recettes.json']);await p.waitForFunction(()=>/2 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
-  await p.locator('#folder').setInputFiles(['Library/demo/files/demo-input/Code/demo-script.js','Library/demo/files/demo-input/JSON/recettes.json']);await p.waitForFunction(()=>/2 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
+  await p.locator('#folder').setInputFiles('Library/demo/files/demo-input/Code');await p.waitForFunction(()=>/[1-9]\d* élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
   await p.locator('#demo').click();await p.waitForFunction(()=>/[1-9]\d* élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
   await p.locator('#prefix').fill('TEST_{COUNTER}_');const dl=p.waitForEvent('download');await p.locator('#export').click();if(!/\.csv$/i.test((await dl).suggestedFilename()))throw new Error('File manifest export invalide');
  });
