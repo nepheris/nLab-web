@@ -351,7 +351,11 @@
         "pickDriveOutputFolder",
         "importLegacyConfig",
         "legacyConfigInput",
-        "legacyConfigStatus"
+        "legacyConfigStatus",
+        "archiveWorkspaceControls",
+        "updateArchiveEntry",
+        "exportArchiveWorkspace",
+        "extractArchiveWorkspace"
       ],
       "required_runtime_strings": [
         "mountStudioV2",
@@ -382,7 +386,10 @@
         "migrateLegacyPdfConfig",
         "pickManyAndDownload",
         "pickDriveOutputFolder",
-        "same-source"
+        "same-source",
+        "loadArchiveWorkspace",
+        "NLAB_ARCHIVE_WORKSPACE",
+        "updateArchiveEntry"
       ]
     }
   }
