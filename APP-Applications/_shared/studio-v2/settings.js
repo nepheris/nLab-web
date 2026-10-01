@@ -22,7 +22,10 @@ const DEFAULTS={
   historyGroupBy:'date',
   historyRetention:'keep',
   ribbonRows:'auto',
-  thumbnailQuality:'light'
+  thumbnailQuality:'light',
+  collectionThumbnailSize:104,
+  specializedStudioPolicy:'latest',
+  specializedStudioOverrides:{}
 };
 
 export function loadStudioSettings(){
@@ -56,6 +59,7 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.dataset.headerMode=settings.headerMode||'sticky';
   b.dataset.ribbonRows=settings.ribbonRows||'auto';
   b.dataset.thumbnailQuality=settings.thumbnailQuality||'light';
+  b.style.setProperty('--collection-thumb-size',(Number(settings.collectionThumbnailSize)||104)+'px');
   const main=qs('#studioMain');if(main){main.classList.toggle('sidebarCompact',settings.sidebarMode==='compact');main.classList.toggle('sidebarWide',settings.sidebarMode==='wide');main.classList.toggle('sidebarHidden',settings.sidebarMode==='hidden')}
   return settings;
 }
@@ -146,6 +150,18 @@ export function renderStudioSettingsPanel(host){
       <button id="history-settings-view-all" type="button" data-open-full-history>Voir tout l’historique</button>
     </section>
     <section>
+      <h3>Studios spécialisés</h3>
+      <label class="field"><span>Version par défaut</span>
+        <select data-setting="specializedStudioPolicy">
+          <option value="latest">Dernière version disponible</option>
+          <option value="current">CURRENT</option>
+          <option value="test">TEST</option>
+        </select>
+      </label>
+      <p class="settingsHint">« Dernière version disponible » compare CURRENT et TEST et ouvre la version sémantiquement la plus récente. Les versions historiques sont exclues.</p>
+      <details><summary>Overrides par Studio</summary><div id="specialized-studio-overrides" class="studioOverrideList"><span class="muted">Chargement du catalogue…</span></div></details>
+    </section>
+    <section>
       <h3>Interface & panneaux</h3>
       <label class="field"><span>Volet détaillé</span>
         <select data-setting="sidebarMode">
@@ -159,6 +175,8 @@ export function renderStudioSettingsPanel(host){
       <label class="checkboxField"><input type="checkbox" data-setting="floatingWindows"><span>Fenêtres flottantes / ancrables</span></label>
       <label class="field"><span>Ruban</span><select data-setting="ribbonRows"><option value="auto">Auto</option><option value="one">1 ligne</option><option value="two">2 lignes</option></select></label>
       <label class="field"><span>Miniatures collections</span><select data-setting="thumbnailQuality"><option value="light">Légères / rapides</option><option value="standard">Standard</option></select></label>
+      <label class="field"><span>Taille des vignettes</span><input type="range" min="64" max="220" step="8" data-setting="collectionThumbnailSize"></label>
+      <div class="settingsScaleValue" data-thumbnail-size-value></div>
       <button data-core-pref="expand-ribbon">Déplier le ruban</button>
       <button data-core-pref="collapse-ribbon">Replier le ruban</button>
       <div id="ribbon-group-settings"></div>
@@ -166,13 +184,16 @@ export function renderStudioSettingsPanel(host){
     </section>
   </div>`;
   host.querySelector('[data-setting="theme"]').value=s.theme;
-  for(const k of ['fontFamily','density','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
+  for(const k of ['fontFamily','density','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality','specializedStudioPolicy'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
-  const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';
+  host.querySelector('[data-setting="collectionThumbnailSize"]').value=s.collectionThumbnailSize;
+  const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';const thumbOut=host.querySelector('[data-thumbnail-size-value]');if(thumbOut)thumbOut.textContent=Math.round(Number(s.collectionThumbnailSize||104))+' px';
   for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','floatingWindows','headerVisible','headerShadow','headerBlur']){
     host.querySelector('[data-setting="'+k+'"]').checked=!!s[k];
   }
+  const overrideHost=host.querySelector('#specialized-studio-overrides');
+  if(overrideHost){(async()=>{try{const catalogUrl=new URL('../../studios/catalog.json',import.meta.url),r=await fetch(catalogUrl,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const data=await r.json(),current=loadStudioSettings().specializedStudioOverrides||{};overrideHost.innerHTML=(data.studios||[]).filter(x=>x.id!=='pdf-studio').map(x=>'<label class="field studioOverrideRow"><span>'+x.name+'</span><select data-studio-override="'+x.id+'"><option value="inherit">Hériter</option><option value="latest">Dernière version</option><option value="current">CURRENT</option><option value="test">TEST</option></select></label>').join('')||'<span class="muted">Aucun Studio spécialisé.</span>';overrideHost.querySelectorAll('[data-studio-override]').forEach(el=>{el.value=current[el.dataset.studioOverride]||'inherit';el.onchange=()=>{const s=loadStudioSettings(),next={...(s.specializedStudioOverrides||{}),[el.dataset.studioOverride]:el.value};saveStudioSettings({specializedStudioOverrides:next})}})}catch(e){overrideHost.textContent='Catalogue indisponible : '+e.message}})()}
   const ribbonHost=host.querySelector('#ribbon-group-settings');
   if(ribbonHost){
     const groups=qsa('[data-ribbon-group]').map(g=>({id:g.dataset.ribbonGroup,label:g.querySelector('.ribbonLabel')?.textContent?.trim()||g.dataset.ribbonGroup}));
@@ -180,7 +201,7 @@ export function renderStudioSettingsPanel(host){
     ribbonHost.querySelectorAll('[data-ribbon-setting]').forEach(el=>el.addEventListener('change',()=>{setRibbonGroupVisible(el.dataset.ribbonSetting,el.checked);applyRibbonGroups()}));
   }
   host.querySelectorAll('[data-setting]').forEach(el=>{
-    const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth','historyLimit'].includes(k))v=Number(v);saveStudioSettings({[k]:v});if(k==='historyGroupBy'){try{localStorage.setItem('nlab-studio-v2-history-filter',JSON.stringify({...JSON.parse(localStorage.getItem('nlab-studio-v2-history-filter')||'{}'),groupBy:v}))}catch{}}document.dispatchEvent(new CustomEvent('studio-v2:history-changed'));const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %'};
+    const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth','historyLimit','collectionThumbnailSize'].includes(k))v=Number(v);saveStudioSettings({[k]:v});if(k==='historyGroupBy'){try{localStorage.setItem('nlab-studio-v2-history-filter',JSON.stringify({...JSON.parse(localStorage.getItem('nlab-studio-v2-history-filter')||'{}'),groupBy:v}))}catch{}}document.dispatchEvent(new CustomEvent('studio-v2:history-changed'));const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %';const t=host.querySelector('[data-thumbnail-size-value]');if(t)t.textContent=Math.round(Number(loadStudioSettings().collectionThumbnailSize||104))+' px'};
     el.addEventListener('change',handler);if(el.type==='range')el.addEventListener('input',handler);
   });
   host.querySelector('[data-core-pref="expand-ribbon"]')?.addEventListener('click',()=>{localStorage.setItem('nlab-studio-v2-ribbon-collapsed','0');location.reload()});

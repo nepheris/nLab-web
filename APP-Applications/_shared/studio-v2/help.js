@@ -49,3 +49,18 @@ export function findFeature(manifest,action){
   }
   return null;
 }
+
+
+export function listManifestFeatures(manifest){
+ const out=[];for(const group of manifest?.ribbon||[])for(const item of group.items||[])out.push({...item,groupId:group.id,groupLabel:group.label||group.id});return out
+}
+export function searchManifestFeatures(manifest,query=''){
+ const q=String(query||'').trim().toLowerCase(),all=listManifestFeatures(manifest);if(!q)return all;
+ return all.filter(f=>[f.label,f.action,f.featureId,f.capability,f.help?.summary,f.help?.details,f.groupLabel].filter(Boolean).join(' ').toLowerCase().includes(q))
+}
+export function renderHelpCatalog(host,manifest,{activeAction=null,query=''}={}){
+ if(!host)return[];const items=searchManifestFeatures(manifest,query),groups=new Map();for(const f of items){if(!groups.has(f.groupLabel))groups.set(f.groupLabel,[]);groups.get(f.groupLabel).push(f)}
+ host.classList.add('helpCatalog');
+ host.innerHTML=[...groups].map(([g,list])=>'<section class="helpCatalogGroup"><strong>'+esc(g)+'</strong>'+list.map(f=>{const m=featureMeta(f),active=f.action===activeAction;return'<details class="'+(active?'active':'')+'" data-help-action="'+esc(f.action||'')+'" '+(active?'open':'')+'><summary>'+esc(m.label)+' <small>'+esc(String(m.status||'').toUpperCase())+'</small></summary><div class="helpCatalogBody">'+(m.summary?'<p>'+esc(m.summary)+'</p>':'')+(m.details?'<p>'+esc(m.details)+'</p>':'')+'<div><code>'+esc(m.id)+'</code></div><button type="button" data-help-open="'+esc(f.action||'')+'">Ouvrir l’outil</button></div></details>'}).join('')+'</section>').join('')||'<div class="statusBox">Aucune fonction correspondante.</div>';
+ return items
+}

@@ -8,7 +8,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bwip-js@4.11.4/dist/bwip-js-min.js"></script>
 </head><body>
 <main id="studioMain" class="studioMain">
 <aside id="studioSidebar" class="studioSidebar pdfV2Sidebar scope-core" data-scope="core">
@@ -18,9 +19,10 @@
   <button id="sidebar-tab-properties" data-sidebar-tab="properties">Propriétés & aide</button>
   <button id="sidebar-tab-history" data-sidebar-tab="history">Historique</button>
   <button id="sidebar-tab-tasks" data-sidebar-tab="tasks">Tâches</button>
+  <button id="sidebar-tab-search" data-sidebar-tab="search">Recherche</button>
  </div>
  <div class="sidebarGlobalControls">
-  <button id="sidebar-collapse-all" type="button">▸ Tout plier</button><button id="sidebar-expand-all" type="button">▾ Tout déplier</button>
+  <button id="sidebar-collapse-all" type="button">▸ Tout plier</button><button id="sidebar-expand-all" type="button">▾ Tout déplier</button><button id="sidebarDetach" type="button" title="Détacher / déplacer la sidebar">↗ Détacher</button>
   <select id="sidebarModeQuick" title="Mode du volet"><option value="normal">Normal</option><option value="compact">Compact</option><option value="wide">Large</option><option value="hidden">Masqué</option></select>
  </div>
 
@@ -36,22 +38,33 @@
     <select id="fileSort" title="Trier"><option value="name">Nom</option><option value="path">Chemin</option><option value="type">Type</option><option value="size">Taille</option><option value="pages">Pages</option><option value="selected">Sélection</option></select>
     <button id="fileSortDirection" type="button" title="Tri croissant / décroissant">↑</button>
     <select id="fileGroupBy" title="Grouper"><option value="none">Sans groupe</option><option value="path">Dossier</option><option value="type">Type</option><option value="pages">Pages</option><option value="selected">Sélection</option></select>
+    <button id="fileGroupsCollapse" type="button" title="Replier les groupes">▸ Groupes</button><button id="fileGroupsExpand" type="button" title="Déplier les groupes">▾ Groupes</button>
    </div>
    <div class="collectionToolbar collectionToolbarNav">
     <button id="filePrev" type="button" data-icon="previous" title="Fichier précédent"></button><button id="fileNext" type="button" data-icon="next" title="Fichier suivant"></button>
-    <label class="inlineCheck"><input id="navigateSelectedOnly" type="checkbox"> Navigation sélection</label><span class="grow"></span>
+    <label class="inlineCheck"><input id="navigateSelectedOnly" type="checkbox"> Navigation sélection</label>
+    <label class="collectionThumbSizer">Vignettes <input id="fileThumbnailSize" type="range" min="64" max="220" step="8" value="104"><output id="fileThumbnailSizeValue">104 px</output></label><span class="grow"></span>
     <button id="fileSelectAll" type="button">Tout</button><button id="fileSelectNone" type="button">Aucun</button>
    </div>
    <div id="fileCollection" class="collectionBrowser"></div><div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
   </div></details>
 
   <details id="sectionOutput" class="toolSection scope-core" data-scope="core"><summary>2. Sortie & classement <small class="scopeBadge">CORE</small></summary><div class="body">
-   <div class="grid2"><label>Format<select id="outputFormat"><option value="pdf">PDF</option><option value="zip">ZIP</option><option value="same">Format d’origine</option></select></label><label>Destination<select id="outputProvider"><option value="download">Téléchargement navigateur</option><option value="local">Dossier local</option></select></label></div>
+   <div class="outputModeTabs"><button type="button" class="active" data-output-mode="classic">Fichiers / dossiers</button><button type="button" data-output-mode="zip">Archive ZIP</button></div>
+   <input id="outputMode" type="hidden" value="classic">
+   <div id="outputClassicPanel">
+    <div class="grid2"><label>Format<select id="outputFormat"><option value="pdf">PDF</option><option value="same">Format d’origine</option></select></label><label>Destination<select id="outputProvider"><option value="download">Téléchargement navigateur</option><option value="local">Dossier local</option></select></label></div>
+   </div>
+   <div id="outputZipPanel" hidden>
+    <div class="statusBox">Le ZIP regroupe les sorties dans une archive DEFLATE. Le niveau agit sur le temps de compression et la taille de l’archive, pas sur la qualité visuelle du PDF.</div>
+    <div id="zipCompressionControl"></div>
+    <details><summary>Options ZIP avancées</summary><div class="profileSecurityNote">Niveau 1 = rapide et archive plus grosse ; niveau 9 = compression maximale et traitement plus long. Défaut : 6.</div></details>
+   </div>
    <div class="compactInputRow"><button id="pickOutputFolder" data-icon="folder">Dossier sortie</button><select id="recentOutputSelect" title="Sorties récentes"><option value="">Sorties récentes…</option></select><button id="loadRecentOutput">Charger</button></div>
    <label>Classement<select id="outputStructure"><option value="root">Racine</option><option value="treatment">Traitement</option><option value="year-month">Année / mois</option><option value="year-month-week">Année / mois / semaine</option><option value="treatment-date">Traitement / année / mois</option><option value="custom">Template personnalisé</option></select></label>
-   <input id="outputPathTemplate" value="{TREATMENT}/{YEAR}/{MONTH}" placeholder="{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}">
+   <input id="outputPathTemplate" value="{TREATMENT}/{YEAR}/{MONTH}" placeholder="{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}"><details class="inlineHelp"><summary>Variables disponibles</summary><div id="outputVariables" class="variableHelp"></div></details>
    <div id="outputPathPreview" class="statusBox mono">Téléchargement navigateur · racine</div>
-   <div class="grid2"><button id="savePdfSide" data-icon="save">Enregistrer</button><button id="saveZipSide" data-icon="zip">ZIP</button><button id="saveAndClassify" data-icon="classify">Enregistrer + classer</button><button id="saveAs" data-icon="save">Enregistrer sous</button></div>
+   <div class="grid2"><button id="savePdfSide" data-icon="save">Enregistrer</button><button id="saveZipSide" data-icon="zip">Enregistrer ZIP</button><button id="saveAndClassify" data-icon="classify">Enregistrer + classer</button><button id="saveAs" data-icon="save">Enregistrer sous</button></div>
   </div></details>
 
   <details id="sectionNaming" class="toolSection scope-core" data-scope="core"><summary>3. Nommage · préfixes & suffixes <small class="scopeBadge">CORE</small></summary><div class="body">
@@ -63,7 +76,9 @@
    <details class="inlineHelp"><summary>Variables disponibles</summary><div id="namingVariables" class="variableHelp"></div></details>
   </div></details>
 
-  <details id="sectionPages" class="toolSection scope-studio" data-scope="pdf" open><summary>4. Pages & portée <small class="scopeBadge">PDF</small></summary><div class="body"><label>Portée<select id="pageScope"><option value="current">Page courante</option><option value="selected">Pages sélectionnées</option><option value="all">Toutes les pages</option></select></label><div class="statusBox">Les opérations courantes de page sont également disponibles directement dans « Aperçu / organisation ».</div></div></details>
+  <details id="sectionPages" class="toolSection scope-studio" data-scope="pdf" open><summary>4. Pages & mise en page <small class="scopeBadge">PDF</small></summary><div class="body"><label>Portée<select id="pageScope"><option value="current">Page courante</option><option value="selected">Pages sélectionnées</option><option value="all">Toutes les pages</option></select></label><div class="statusBox">Les opérations courantes de page sont également disponibles directement dans « Aperçu / organisation ».</div>
+   <details><summary>Recadrage PDF / zone visible</summary><div class="profileSecurityNote">Le recadrage modifie la CropBox visible. Il ne supprime pas de manière sécurisée le contenu situé hors de la zone visible.</div><div class="grid2"><label>Gauche %<input id="cropLeft" type="number" min="0" max="45" value="0"></label><label>Droite %<input id="cropRight" type="number" min="0" max="45" value="0"></label><label>Haut %<input id="cropTop" type="number" min="0" max="45" value="0"></label><label>Bas %<input id="cropBottom" type="number" min="0" max="45" value="0"></label></div><label>Portée<select id="cropScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label><button id="applyCrop" type="button" data-icon="crop">Recadrer la zone visible</button></details>
+  </div></details>
   <details id="sectionAssembly" class="toolSection scope-studio" data-scope="pdf"><summary>4 bis. Assembler & fusionner <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
    <div class="statusBox">Fusionner plusieurs PDF sélectionnés en un nouveau document, ou insérer un PDF dans le document courant.</div><div class="profileSecurityNote">Une fusion crée un nouveau PDF. Les signatures cryptographiques des PDF sources ne doivent pas être considérées comme conservées sur le document assemblé ; validez ou re-signez le résultat si nécessaire.</div>
    <div class="assemblyModeTabs">
@@ -90,12 +105,12 @@
  <label>Texte du tampon<textarea id="stampTemplate" rows="4">VALIDÉ
 {DISPLAY_NAME}
 {STAMP_DATE:DD/MM/YYYY}</textarea></label>
- <label>Image / logo<select id="stampImageAsset"><option value="">Aucune image</option></select></label>
+ <label>Image / logo<select id="stampImageAsset"><option value="">Aucune image</option></select></label><details><summary>Galerie personnelle</summary><div id="stampAssetPickerHost"></div></details>
  <div class="compactInputRow"><button id="importStampImage" type="button">Importer une image</button><span class="grow">PNG/JPEG/WebP/SVG…</span></div><input id="stampImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp,image/svg+xml,.svg,.bmp" hidden>
  <div id="stampImagePreview" class="signatureAssetPreview"><span>Aucune image</span></div>
- <div class="stampDateGrid">
+ <details class="stampDatesDetails"><summary>Dates du tampon · aujourd’hui par défaut</summary><div class="stampDateGrid">
   <label>Date tampon<input id="stampDate" type="date"></label><label>Date A<input id="stampDateA" type="date"></label><label>Date B<input id="stampDateB" type="date"></label><label>Date C<input id="stampDateC" type="date"></label><label>Date D<input id="stampDateD" type="date"></label>
- </div>
+ </div><div class="profileSecurityNote">Toutes les dates sont initialisées à aujourd’hui. Utilisez {TIMESTAMP} ou {STAMP_DATETIME} pour l’horodatage courant.</div></details>
  <div id="stampPreview" class="statusBox mono">Aperçu du tampon</div>
  <div class="grid2"><label>Portée<select id="stampScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label><label>Position<select id="stampPosition"><option value="manual">Placement manuel</option><option value="top-left">Haut gauche</option><option value="top-right">Haut droite</option><option value="bottom-left">Bas gauche</option><option value="bottom-right">Bas droite</option><option value="center">Centre</option></select></label></div>
  <div class="compactInputRow"><button id="activateStampTool" type="button" data-icon="stamp">Placer manuellement</button><button id="applyStampScope" type="button">Appliquer à la portée</button></div>
@@ -106,9 +121,9 @@
   <details id="sectionAnnotations" class="toolSection scope-studio" data-scope="pdf"><summary>6. Annotations & objets <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
  <div class="objectToolButtons"><button type="button" data-object-tool="select">Sélection</button><button type="button" data-object-tool="text" data-icon="text">Texte</button><button type="button" data-object-tool="highlight" data-icon="highlight">Surligner</button><button type="button" data-object-tool="pen" data-icon="pen">Stylo</button><button type="button" data-object-tool="image" data-icon="image">Image</button></div>
  <label>Texte<input id="objectText" value="Texte"></label>
- <div class="grid2"><label>Couleur<input id="objectColor" type="color" value="#316D9A"></label><label>Taille<input id="objectFontSize" type="number" min="6" max="72" value="12"></label></div>
- <div class="grid2"><label>Opacité %<input id="objectOpacity" type="number" min="5" max="100" value="100"></label><label>Épaisseur stylo<input id="objectPenWidth" type="number" min="1" max="20" value="2"></label></div>
- <label>Image personnelle<select id="objectImageAsset"><option value="">Choisir dans la bibliothèque…</option></select></label>
+ <div class="grid2"><label>Couleur<div class="colorHexControl"><input id="objectColor" type="color" value="#316D9A"><input id="objectColorHex" value="#316D9A" maxlength="7"></div></label><label>Taille<input id="objectFontSize" type="number" min="6" max="72" value="12"></label></div>
+ <div class="grid2"><label>Opacité<input id="objectOpacity" type="hidden" value="100"><div id="objectOpacityControl"></div></label><label>Épaisseur stylo<input id="objectPenWidth" type="hidden" value="2"><div id="objectPenWidthControl"></div></label></div>
+ <label>Image personnelle<select id="objectImageAsset"><option value="">Choisir dans la bibliothèque…</option></select></label><details><summary>Galerie personnelle</summary><div id="objectAssetPickerHost"></div></details>
  <div class="compactInputRow"><button id="pickObjectImage" type="button">Choisir un fichier image</button><span id="objectImageName" class="grow">Aucune image</span></div><input id="objectImageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
  <div class="grid2"><label>Rotation °<input id="objectRotation" type="number" min="-360" max="360" step="1" value="0"></label><label>Objet sélectionné<span id="selectedObjectInfo" class="statusBox">Aucun</span></label></div>
  <div class="compactInputRow"><button id="rotateObjectLeft" type="button">↶ −90°</button><button id="applyObjectRotation" type="button">Appliquer angle</button><button id="rotateObjectRight" type="button">↷ +90°</button></div>
@@ -122,11 +137,11 @@
  <textarea id="ocrResult" rows="7" placeholder="Texte OCR…" readonly></textarea><button id="copyOcrResult" type="button">Copier le texte</button>
 </div></details>
   <details id="sectionOptimize" class="toolSection scope-studio" data-scope="pdf"><summary>8. Optimisation & compression <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
- <div class="presetButtons"><button type="button" data-opt-preset="screen">Écran</button><button type="button" data-opt-preset="balanced" class="active">Équilibré</button><button type="button" data-opt-preset="scan">Scan</button><button type="button" data-opt-preset="print">Impression</button></div>
- <label>DPI <span id="optDpiLabel">200 · Scan standard</span><input id="optDpi" type="range" min="72" max="600" step="1" value="200"></label>
- <label>Qualité JPEG <span id="optJpegLabel">82 % · compression moyenne</span><input id="optJpeg" type="range" min="20" max="100" step="1" value="82"></label>
+ <label>Résolution / rasterisation</label><div id="optDpiControl"></div>
+ <label>Qualité JPEG / compression</label><div id="optJpegControl"></div>
  <label class="inlineCheck"><input id="optGray" type="checkbox"> Niveaux de gris</label>
- <label>Portée<select id="optScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
+ <label>Portée<select id="optScope"><option value="current">Page courante</option><option value="selected" selected>Sélection</option><option value="all">Tout le document</option></select></label>
+ <div class="profileSecurityNote">L’optimisation rasterise uniquement les pages ciblées. Une résolution basse réduit fortement la taille mais peut dégrader les petits caractères.</div>
  <button id="runOptimizeQuick" type="button" data-icon="optimize">Optimiser</button>
 </div></details>
   <details id="sectionTranslate" class="toolSection scope-studio" data-scope="pdf"><summary>9. Traduction bilingue <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
@@ -134,7 +149,7 @@
  <label>Mise en page<select id="translateLayout"><option value="side-by-side">Côte à côte 50/50</option><option value="side-13">Original 1/3 · traduction 2/3</option><option value="side-23">Original 2/3 · traduction 1/3</option><option value="facing">Pages en vis-à-vis</option></select></label>
  <label>Endpoint optionnel<input id="translateEndpoint" type="url" placeholder="https://…/translate"></label>
  <label>Portée<select id="translateScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
- <div class="compactInputRow"><button id="runTranslateQuick" type="button" data-icon="translate">Créer PDF bilingue</button><button type="button" data-advanced-studio="translation-studio">Studio avancé</button></div>
+ <div class="compactInputRow"><button id="runTranslateQuick" type="button" data-icon="translate">Créer PDF bilingue</button><button type="button" disabled title="Translation Studio n’est pas encore publié dans le registre">Studio avancé · à venir</button></div>
 </div></details>
   <details id="sectionSignature" class="toolSection scope-studio" data-scope="pdf"><summary>10. Signature & paraphe <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
    <div class="signatureModeTabs" role="tablist">
@@ -143,18 +158,21 @@
     <button type="button" data-signature-mode="certified">PDF Signature certifiée</button>
    </div>
    <div id="signatureModeHelp" class="statusBox">Signature visuelle — image uniquement, non cryptographique.</div>
-   <div class="signatureCommonGrid">
+   <details open><summary>Apparence existante</summary><div class="signatureCommonGrid">
     <label>Apparence<select id="signatureAppearanceType"><option value="signature">Signature</option><option value="initials">Paraphe</option><option value="none">Aucune apparence</option></select></label>
     <label>Modèle<select id="signatureAssetSelect"></select></label>
-   </div>
-   <div id="signatureAssetPreview" class="signatureAssetPreview"><span>Aucune image sélectionnée.</span></div>
-   <div id="signatureVisualControls">
+   </div><details><summary>Galerie signatures / paraphes</summary><div id="signatureAssetPickerHost"></div></details><div id="signatureAssetPreview" class="signatureAssetPreview"><span>Aucune image sélectionnée.</span></div></details>
+   <details><summary>Ajouter une signature / un paraphe</summary>
+    <div class="grid2"><label>Type<select id="newSignatureKind"><option value="signature">Signature</option><option value="initials">Paraphe</option></select></label><label>Nom<input id="newSignatureLabel" placeholder="Ex. Signature simple"></label></div>
+    <input id="newSignatureFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="pickNewSignatureFile" type="button">Choisir une image et l’ajouter au profil</button>
+   </details>
+   <details open><summary>Placement</summary><div id="signatureVisualControls">
     <div class="grid2"><label>Portée<select id="signaturePageScope"><option value="current">Page active</option><option value="selected">Sélection sinon page active</option><option value="all">Toutes les pages</option></select></label><label>Position<select id="signaturePosition"><option value="bottom-right">Bas droite</option><option value="bottom-center">Bas centre</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-center">Haut centre</option><option value="top-left">Haut gauche</option><option value="custom">Personnalisée</option></select></label></div>
-    <div class="grid2"><label>Largeur %<input id="signatureWidthPct" type="number" min="3" max="80" value="24"></label><label>Opacité %<input id="signatureOpacityPct" type="number" min="5" max="100" value="100"></label></div>
+    <div class="grid2"><label>Largeur<input id="signatureWidthPct" type="hidden" value="24"><div id="signatureWidthControl"></div></label><label>Opacité<input id="signatureOpacityPct" type="hidden" value="100"><div id="signatureOpacityControl"></div></label></div>
     <div id="signatureCustomPosition" class="grid2" hidden><label>X %<input id="signatureXPct" type="number" min="0" max="100" value="70"></label><label>Y %<input id="signatureYPct" type="number" min="0" max="100" value="6"></label></div>
     <div class="compactInputRow"><button id="placeVisualSignature" type="button" data-icon="signature">Positionner puis déplacer</button><button id="applyVisualSignature" type="button" data-icon="signature">Appliquer directement</button></div>
-   </div>
-   <div id="signatureCryptoControls" hidden>
+   </div></details>
+   <details id="signatureCryptoControls" hidden><summary>Certificat & signature numérique</summary>
     <div class="statusBox warningBox">Signature cryptographique réelle via service privé DSS/PAdES. Le mot de passe P12/PFX reste uniquement en mémoire pendant l’opération et n’est pas enregistré dans le profil.</div>
     <label>Service DSS/PAdES<input id="signatureDssUrl" type="url" placeholder="https://signature.example.net"></label>
     <div class="compactInputRow"><button id="saveSignatureDssUrl" type="button">Enregistrer URL</button><button id="testSignatureDss" type="button">Tester DSS</button><button id="validateSignaturePdf" type="button">Valider le PDF</button></div>
@@ -163,56 +181,60 @@
     <div class="grid2"><label>Niveau PAdES<select id="signaturePadesLevel"><option value="PAdES_BASELINE_B">PAdES-B</option><option value="PAdES_BASELINE_T">PAdES-T</option><option value="PAdES_BASELINE_LT">PAdES-LT</option><option value="PAdES_BASELINE_LTA">PAdES-LTA</option></select></label><label id="signatureCertificationField">Certification<select id="signatureCertificationLevel"><option value="CERTIFIED_NO_CHANGES_ALLOWED">Aucune modification autorisée</option><option value="CERTIFIED_FORM_FILLING">Remplissage formulaires</option><option value="CERTIFIED_FORM_FILLING_AND_ANNOTATIONS">Formulaires + annotations</option></select></label></div>
     <label>Nom du signataire<input id="signatureSignerName" placeholder="{FULL_NAME}"></label>
     <div class="grid2"><label>Motif<input id="signatureReason" placeholder="Approbation"></label><label>Lieu<input id="signatureLocation" placeholder="{SITE}"></label></div>
-    <label>Contact<input id="signatureContact" placeholder=""></label>
+    <label>Contact<input id="signatureContact" placeholder=""></label><details class="inlineHelp"><summary>Variables disponibles</summary><div id="signatureVariables" class="variableHelp"></div></details>
     <button id="applyCryptographicSignature" type="button" data-icon="security">Signer cryptographiquement</button>
     <pre id="signatureCryptoStatus" class="signatureCryptoStatus">Service DSS non testé.</pre>
-   </div>
+   </details>
   </div></details>
   <details id="sectionCodes" class="toolSection scope-studio" data-scope="pdf"><summary>11. QR & code-barres <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
- <label>Contenu QR<input id="qrValue" placeholder="Texte, URL ou {VARIABLE}"></label>
- <div class="grid2"><label>Position<select id="qrPosition"><option value="bottom-right">Bas droite</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-left">Haut gauche</option></select></label><label>Largeur %<input id="qrWidthPct" type="number" min="4" max="40" value="12"></label></div>
- <label>Portée<select id="qrScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
- <div id="qrPreview" class="signatureAssetPreview"><span>Aperçu QR</span></div>
- <div class="compactInputRow"><button id="generateQrPreview" type="button">Aperçu</button><button id="applyQrQuick" type="button" data-icon="qr">Placer dans le PDF</button><button type="button" data-advanced-studio="code-studio">Code Studio</button></div>
+ <div class="signatureModeTabs" role="tablist"><button type="button" class="active" data-code-type="qrcode">QR</button><button type="button" data-code-type="datamatrix">Data Matrix</button><button type="button" data-code-type="code128">Code 128</button><button type="button" data-code-type="gs1-128">GS1-128</button><button type="button" data-code-type="ean13">EAN-13</button><button type="button" data-code-type="ean8">EAN-8</button></div>
+ <input id="codeType" type="hidden" value="qrcode">
+ <label>Contenu<input id="qrValue" placeholder="Texte, URL ou {VARIABLE}"></label>
+ <div class="grid2"><label>Position<select id="qrPosition"><option value="bottom-right">Bas droite</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-left">Haut gauche</option></select></label><label>Taille<input id="qrWidthPct" type="hidden" value="12"><div id="codeSizeControl"></div></label></div>
+ <label>Portée<select id="qrScope"><option value="current">Page courante</option><option value="selected" selected>Sélection</option><option value="all">Tout le document</option></select></label>
+ <div id="qrPreview" class="signatureAssetPreview"><span>Aperçu du code</span></div>
+ <details class="inlineHelp"><summary>Variables disponibles</summary><div id="codeVariables" class="variableHelp"></div></details>
+ <div class="compactInputRow"><button id="generateQrPreview" type="button">Aperçu</button><button id="applyQrQuick" type="button" data-icon="qr">Placer dans le PDF</button><button type="button" data-advanced-studio="qr-barcode-studio">QR & Barcode Studio</button></div>
 </div></details>
-  <details id="sectionPageOutput" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête · pied · recadrage <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+  <details id="sectionPageOutput" class="toolSection scope-studio" data-scope="pdf"><summary>12. En-tête & pied de page <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
  <details open><summary>En-tête / pied</summary>
   <div class="grid3"><label>En-tête gauche<input id="headerLeft" placeholder="{DISPLAY_NAME}"></label><label>Centre<input id="headerCenter" placeholder=""></label><label>Droite<input id="headerRight" placeholder="{DATE}"></label></div>
   <div class="grid3"><label>Pied gauche<input id="footerLeft" placeholder=""></label><label>Centre<input id="footerCenter" placeholder="Page {PAGE}/{PAGES}"></label><label>Droite<input id="footerRight" placeholder="{FILENAME}"></label></div>
   <div class="grid2"><label>Taille<input id="headerFooterFontSize" type="number" min="6" max="24" value="9"></label><label>Portée<select id="headerFooterScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label></div>
   <button id="applyHeaderFooter" type="button" data-icon="headerFooter">Appliquer en-tête / pied</button>
  </details>
- <details><summary>Recadrage</summary>
-  <div class="grid2"><label>Gauche %<input id="cropLeft" type="number" min="0" max="45" value="0"></label><label>Droite %<input id="cropRight" type="number" min="0" max="45" value="0"></label><label>Haut %<input id="cropTop" type="number" min="0" max="45" value="0"></label><label>Bas %<input id="cropBottom" type="number" min="0" max="45" value="0"></label></div>
-  <label>Portée<select id="cropScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
-  <button id="applyCrop" type="button" data-icon="crop">Recadrer</button>
- </details>
+
  <details class="inlineHelp"><summary>Variables disponibles</summary><div id="headerFooterVariables" class="variableHelp"></div></details>
 </div></details>
   <details id="sectionConversion" class="toolSection scope-studio" data-scope="pdf"><summary>13. Conversions <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
- <label>Conversion rapide<select id="quickConversion"><option value="txt">PDF → texte</option><option value="png">PDF → PNG</option><option value="jpg">PDF → JPEG</option></select></label>
- <label>Portée<select id="convertScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
- <div class="compactInputRow"><button id="runQuickConversion" type="button" data-icon="convert">Convertir</button><button type="button" data-advanced-studio="conversion-studio">Conversion Studio</button></div>
+ <div class="signatureModeTabs"><button type="button" class="active" data-convert-direction="from-pdf">Depuis PDF</button><button type="button" data-convert-direction="to-pdf">Vers PDF</button></div><input id="convertDirection" type="hidden" value="from-pdf">
+ <div id="convertFromPdfPanel"><label>Format cible<select id="quickConversion"><option value="txt">Texte brut (.txt)</option><option value="png">Images PNG</option><option value="jpg">Images JPEG</option></select></label></div>
+ <div id="convertToPdfPanel" hidden><div class="statusBox">La conversion rapide vers PDF utilise le fichier actuellement chargé : images, TXT/Markdown/CSV/JSON/YAML/XML/HTML, DOCX, ODT et tableurs compatibles. Le résultat correspond à l’aperçu PDF courant.</div></div>
+ <label>Portée<select id="convertScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all" selected>Tout le document</option></select></label>
+ <div class="compactInputRow"><button id="runQuickConversion" type="button" data-icon="convert">Convertir</button><button type="button" data-advanced-studio="file-studio">Studio spécialisé</button></div>
 </div></details>
-  <details id="sectionForms" class="toolSection scope-studio" data-scope="pdf"><summary>14. Formulaires PDF <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
+  <details id="sectionForms" class="toolSection scope-studio devBox" data-scope="pdf"><summary>14. Formulaires PDF <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body">
  <div class="compactInputRow"><button id="inspectForms" type="button">Inspecter</button><button id="flattenForms" type="button">Aplatir</button></div>
  <details><summary>Ajouter un champ texte</summary><div class="grid2"><label>Nom<input id="formFieldName" value="champ_1"></label><label>Page<input id="formFieldPage" type="number" min="1" value="1"></label><label>X %<input id="formFieldX" type="number" min="0" max="95" value="20"></label><label>Y %<input id="formFieldY" type="number" min="0" max="95" value="20"></label><label>Largeur %<input id="formFieldW" type="number" min="5" max="95" value="45"></label><label>Hauteur pt<input id="formFieldH" type="number" min="12" max="100" value="26"></label></div><button id="addFormTextField" type="button">Ajouter le champ</button></details>
  <details><summary>Remplir des champs</summary><textarea id="formFillJson" rows="5" placeholder='{"nom_du_champ":"Valeur"}'></textarea><button id="fillFormsJson" type="button">Appliquer les valeurs JSON</button></details>
  <pre id="formsResult" class="signatureCryptoStatus">Aucune inspection.</pre>
 </div></details>
   <details id="sectionRedaction" class="toolSection scope-studio" data-scope="pdf"><summary>15. Caviardage <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
- <div class="statusBox warningBox">Le marquage est réversible tant qu’il n’est pas appliqué. « Appliquer le caviardage » rasterise les pages concernées et rend le masquage irréversible dans le document produit.</div>
- <label>DPI<select id="redactionDpi"><option value="150">150 DPI</option><option value="200" selected>200 DPI</option><option value="300">300 DPI</option></select></label>
- <label>Portée<select id="redactionScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label>
+ <div class="statusBox warningBox">Le marquage est réversible tant qu’il n’est pas appliqué. Les zones utilisent le même moteur de rectangles que le surlignage ; l’application finale rasterise les pages concernées.</div>
+ <div class="presetButtons"><button type="button" data-redaction-color="#000000" class="active">Noir</button><button type="button" data-redaction-color="#FFFFFF">Blanc</button><button type="button" data-redaction-color="#D32F2F">Rouge</button></div>
+ <label>Couleur personnalisée<div class="colorHexControl"><input id="redactionColor" type="color" value="#000000"><input id="redactionColorHex" value="#000000" maxlength="7"></div></label>
+ <div id="redactionRasterControl"></div>
+ <label>Portée<select id="redactionScope"><option value="current">Page courante</option><option value="selected" selected>Sélection</option><option value="all">Tout le document</option></select></label>
  <div class="compactInputRow"><button id="markRedaction" type="button" data-icon="redaction">Marquer une zone</button><button id="applyRedactions" type="button">Appliquer le caviardage</button></div>
 </div></details>
   <details id="sectionCompare" class="toolSection scope-studio" data-scope="pdf"><summary>16. Comparaison PDF <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
- <input id="comparePdfInput" type="file" accept=".pdf,application/pdf" hidden><button id="pickComparePdf" type="button" data-icon="compare">Choisir le PDF à comparer</button><span id="comparePdfName"></span><button id="runComparePdf" type="button">Comparer le texte par page</button><pre id="compareResult" class="signatureCryptoStatus">Aucune comparaison.</pre>
+ <div class="grid2"><div><input id="comparePdfAInput" type="file" accept=".pdf,application/pdf" hidden><button id="pickComparePdfA" type="button">PDF A</button><span id="comparePdfAName">Document courant</span></div><div><input id="comparePdfBInput" type="file" accept=".pdf,application/pdf" hidden><button id="pickComparePdfB" type="button">PDF B</button><span id="comparePdfBName">Aucun</span></div></div>
+ <div class="grid2"><label>Mode<select id="compareMode"><option value="text">Texte</option><option value="visual" disabled>Visuel · à venir</option></select></label><label>Portée<select id="compareScope"><option value="all">Document complet</option><option value="page">Page courante</option></select></label></div><button id="runComparePdf" type="button">Comparer A / B</button><pre id="compareResult" class="signatureCryptoStatus">Aucune comparaison.</pre>
 </div></details>
   <details id="sectionBatch" class="toolSection scope-studio" data-scope="pdf"><summary>17. Traitements batch <small class="scopeBadge">PDF</small> <small class="devBadge">DEV</small></summary><div class="body devBox">Traitements en lot et PipelineService.</div></details>
   <details id="sectionSecurity" class="toolSection scope-studio" data-scope="pdf"><summary>18. Sécurité & métadonnées <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
  <div class="statusBox">Inspection de sécurité, signatures et métadonnées. Protection/déverrouillage AES-256 assurés localement par qpdf WebAssembly, chargé à la demande.</div>
- <details open><summary>Protection AES-256 locale</summary>
+ <details><summary>Protection AES-256 locale</summary>
   <div class="statusBox">Le moteur qpdf WebAssembly est chargé uniquement à la demande. Le document reste dans le navigateur. Le mot de passe utilisateur impose l’ouverture ; le mot de passe propriétaire contrôle les permissions.</div>
   <div class="grid2"><label>Mot de passe d’ouverture<input id="pdfOpenPassword" type="password" autocomplete="new-password"></label><label>Mot de passe propriétaire<input id="pdfOwnerPassword" type="password" autocomplete="new-password"></label></div>
   <div class="grid2"><label>Impression<select id="pdfPermissionPrint"><option value="full">Autorisée</option><option value="low">Basse résolution</option><option value="none">Interdite</option></select></label><label>Modification<select id="pdfPermissionModify"><option value="all">Toutes</option><option value="annotate">Annotations/formulaires</option><option value="form">Formulaires uniquement</option><option value="assembly">Assemblage uniquement</option><option value="none">Interdite</option></select></label></div>
@@ -224,12 +246,11 @@
   <input id="unlockPdfInput" type="file" accept=".pdf,application/pdf" hidden><div class="compactInputRow"><button id="pickUnlockPdf" type="button">Choisir un PDF protégé</button><span id="unlockPdfName" class="grow">Aucun fichier</span></div>
   <label>Mot de passe<input id="unlockPdfPassword" type="password" autocomplete="current-password"></label><button id="unlockPdfNow" type="button">Créer une copie déverrouillée</button>
  </details>
- <details open><summary>Métadonnées du document</summary>
+ <details><summary>Métadonnées du document</summary>
   <label>Titre<input id="pdfMetaTitle"></label><label>Auteur<input id="pdfMetaAuthor"></label><label>Sujet<input id="pdfMetaSubject"></label><label>Mots-clés<input id="pdfMetaKeywords" placeholder="mot1, mot2, mot3"></label>
   <div class="compactInputRow"><button id="loadPdfMetadata" type="button" data-icon="metadata">Lire</button><button id="savePdfMetadata" type="button">Enregistrer les métadonnées</button><button id="cleanPdfMetadata" type="button">Nettoyer</button></div>
  </details>
- <div class="compactInputRow"><button id="inspectPdfSecurity" type="button" data-icon="security">Inspecter sécurité / signatures</button></div>
- <div id="pdfSecurityStatus" class="statusBox">Aucune inspection.</div>
+ <details><summary>Signatures & inspection</summary><div class="compactInputRow"><button id="inspectPdfSecurity" type="button" data-icon="security">Inspecter sécurité / signatures</button></div><div id="pdfSecurityStatus" class="statusBox">Aucune inspection.</div></details>
 </div></details>
   <details id="sectionDiagnostics" class="toolSection scope-core" data-scope="core"><summary>19. Historique & diagnostics <small class="scopeBadge">CORE</small></summary><div class="body"><button id="history-view-all-inline" data-icon="history">Ouvrir l’onglet Historique</button><button id="copyDiagnostics">Copier le diagnostic</button></div></details>
  </section>
@@ -237,10 +258,11 @@
  <section id="sidebar-pane-properties" class="sidebarPane" data-sidebar-pane="properties" hidden><div class="paneTitle">Propriétés & aide</div><div id="activeToolProperties" class="statusBox">Sélectionnez un outil pour afficher ses propriétés et son aide.</div><div id="helpContent" class="helpList"><div><b>PDF Studio</b>Sélectionnez une commande pour afficher son aide, ses propriétés et ses IDs.</div></div><button id="detachHelp" type="button">Détacher l’aide</button></section>
  <section id="sidebar-pane-history" class="sidebarPane" data-sidebar-pane="history" hidden>
   <div class="paneTitle">Historique & récents</div><div class="historyUndoRow"><button id="history-undo" type="button" data-icon="undo" disabled>Annuler</button><button id="history-redo" type="button" data-icon="redo" disabled>Rétablir</button><button id="history-view-all" type="button" data-icon="history" title="Historique complet"></button></div>
-  <div class="historyQuickHead"><strong>Historique rapide</strong><span id="history-recent-count">0</span></div><div id="history-recent-list" class="historyRecentList"></div><button id="history-open-full-from-tab" type="button" data-open-full-history>Ouvrir l’historique complet</button>
-  <div class="historyQuickHead"><strong>Fichiers récents</strong><span>accès rapide</span></div><div id="recent-items-list" class="recentItemsList"></div>
+  <details open><summary>Historique rapide <small id="history-recent-count">0</small></summary><div id="history-recent-list" class="historyRecentList"></div><button id="history-open-full-from-tab" type="button" data-open-full-history>Ouvrir l’historique complet</button></details>
+  <details open><summary>Fichiers récents</summary><div id="recent-items-list" class="recentItemsList"></div></details>
  </section>
- <section id="sidebar-pane-tasks" class="sidebarPane" data-sidebar-pane="tasks" hidden><div class="paneTitle">Tâches & pipelines <small class="devBadge">DEV</small></div><div class="statusBox">Réservé aux workflows/pipelines et futurs traitements longs.</div><button id="sidebar-open-workflows" type="button">Ouvrir les workflows</button></section>
+ <section id="sidebar-pane-tasks" class="sidebarPane" data-sidebar-pane="tasks" hidden><div class="paneTitle">Tâches & pipelines <small class="devBadge">DEV</small></div><details open><summary>Workflows / pipelines</summary><div class="statusBox">Réservé aux workflows/pipelines et futurs traitements longs.</div><button id="sidebar-open-workflows" type="button">Ouvrir les workflows</button></details></section>
+ <section id="sidebar-pane-search" class="sidebarPane" data-sidebar-pane="search" hidden><div class="paneTitle">Recherche dans les fonctions</div><input id="functionSearchInput" type="search" placeholder="Rechercher : tampon, OCR, sécurité…"><div class="sidebarGlobalControls"><button id="functionSearchCollapse" type="button">▸ Tout plier</button><button id="functionSearchExpand" type="button">▾ Tout déplier</button></div><div id="functionSearchResults" class="functionSearchResults"></div></section>
 </aside>
 
 <section class="viewer scope-core" data-scope="core">

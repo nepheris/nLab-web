@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.3.0",
-  "date": "2026-09-30",
+  "version": "2.4.0",
+  "date": "2026-10-01",
   "channel": "test",
-  "notes": "Studio Core V2 : profil personnel 1.4, récents entrée/sortie portables avec handles locaux ou éphémères en session privée, drag-and-drop fichiers/dossiers/listes triables, presets historiques de nommage/tampons, registre de variables date/heure enrichi et styles d’objets interactifs."
+  "notes": "Studio Core 2.4 : SteppedPresetControl partagé, AssetPicker personnel, color picker + HEX, CollectionBrowser à groupes repliables et vignettes réglables, bibliothèque personnelle éditable/drag-drop, recherche/aide contextuelle, fenêtres ancrables, sidebar flottante, aperçu Markdown isolé, et StudioLinkResolver global Dernière/CURRENT/TEST avec overrides par Studio."
 }

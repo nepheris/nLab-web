@@ -51,9 +51,9 @@ function bind(panel,key,title){
  grip?.addEventListener('pointerup',finish);grip?.addEventListener('pointercancel',finish);
  panel.querySelector('[data-win-collapse]')?.addEventListener('click',()=>{c.collapsed=!c.collapsed;save();sync(panel,key)});
  panel.querySelector('[data-win-lock]')?.addEventListener('click',()=>{c.locked=!c.locked;save();sync(panel,key)});
- panel.querySelector('[data-win-dock]')?.addEventListener('click',()=>{c.docked=!c.docked;save();sync(panel,key)});
+ panel.querySelector('[data-win-dock]')?.addEventListener('click',()=>{c.docked=!c.docked;save();sync(panel,key);panel.dispatchEvent(new CustomEvent('studio-window-dock',{detail:{key,docked:c.docked}}))});
  panel.querySelector('[data-win-scroll]')?.addEventListener('click',()=>{c.scrollbars=c.scrollbars===false;save();sync(panel,key)});
- panel.querySelector('[data-win-close]')?.addEventListener('click',()=>{panel.hidden=true});
+ panel.querySelector('[data-win-close]')?.addEventListener('click',()=>{panel.hidden=true;panel.dispatchEvent(new CustomEvent('studio-window-close',{detail:{key}}))});
  panel.addEventListener('pointerup',()=>{if(!c.locked&&!c.collapsed&&!c.docked){c.width=panel.offsetWidth+'px';c.height=panel.offsetHeight+'px';save()}});
  sync(panel,key);return panel;
 }

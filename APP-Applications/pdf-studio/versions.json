@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.2.0",
+  "test": "2.3.0",
   "versions": [
+    {
+      "version": "2.3.0",
+      "label": "PDF Studio 2.3.0 TEST",
+      "date": "2026-10-01",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe UX/architecture complète : contrôles Core Preset+slider bidirectionnels (ZIP, DPI, JPEG, opacité, épaisseur, taille), sortie classique/ZIP avec DEFLATE 1–9, paramètres Core de résolution des Studios spécialisés (Dernière/CURRENT/TEST + overrides), galerie d’assets hiérarchisée avec previews/édition/drag-drop, objets PDF manipulables avec mini-barre, ruban contextuel, color picker + HEX, dates de tampon regroupées, QR/Data Matrix/Code128/GS1/EAN via moteur partagé, conversion vers/depuis PDF, recadrage replacé dans Pages, caviardage partagé avec le moteur de rectangles + rasterisation commune, comparaison PDF A/B, sécurité en sous-rubriques, aide contextuelle/catalogue complet, recherche de fonctions, sidebar détachable/redimensionnable, groupes et tailles de vignettes, et preview Markdown isolée avec fallback sans crash. Formulaires avancés et Batch restent en DÉVELOPPEMENT ; signature PAdES digitale/certifiée dépend toujours du service DSS configuré."
+    },
     {
       "version": "2.2.0",
       "label": "PDF Studio 2.2.0 TEST",
       "date": "2026-09-30",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Remise en état fonctionnelle V2 : sélecteurs entrée/sortie et dossiers récents portables, états validés, drag-and-drop Core et fusion réordonnable, presets historiques de nommage et tampons, variables communes enrichies, objets interactifs Texte/Surlignage/Stylo/Image/Tampon/Signature avec déplacement-redimensionnement-rotation-verrouillage, tampons composites avec images/logos, OCR, optimisation, traduction, QR, conversion, en-têtes/pieds, recadrage, formulaires, caviardage, comparaison, métadonnées éditables, trois modes de signature, protection/déverrouillage AES-256 local via qpdf WASM, historique/propriétés rationalisés. Batch et rotation libre de page restent volontairement en développement."
     },
