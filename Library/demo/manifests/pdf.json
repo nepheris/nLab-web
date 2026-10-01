@@ -1,25 +1,65 @@
 {
-  "schema": "nlab-demo-manifest/v1",
-  "studio": "pdf-studio",
+  "schema": "nlab-studio-demo-manifest/v1",
+  "version": "3.0",
+  "studio": "pdf",
   "label": "PDF Studio",
-  "source": "Google Drive reference + synthetic local fixtures 2026-09-30",
+  "privacy": "synthetic-only",
+  "pack": "../packs/nLab-DEMO-pdf-v3.zip",
   "files": [
-    {"name":"pdf-formulaire-acroform.pdf","storage":"reference-only","kind":"pdf"},
-    {"name":"pdf-multipage-orientations.pdf","storage":"reference-only","kind":"pdf"},
-    {"name":"pdf-scan-image-only-incline-bruite.pdf","storage":"reference-only","kind":"pdf"},
-    {"name":"pdf-scan-image-only-propre.pdf","storage":"reference-only","kind":"pdf"},
-    {"name":"pdf-scan-pseudo-manuscrit.pdf","storage":"reference-only","kind":"pdf"},
-    {"name":"pdf-texte-actif.pdf","storage":"reference-only","kind":"pdf"},
-    {"name":"demo-word-1page.docx","path":"../files/demo-input/Documents/demo-word-1page.docx","storage":"local","kind":"docx","purpose":"conversion-quick"},
-    {"name":"demo-word-1page.odt","path":"../files/demo-input/Documents/demo-word-1page.odt","storage":"local","kind":"odt","purpose":"conversion-quick"},
-    {"name":"demo-word-3pages-layout.doc","path":"../files/demo-input/Documents/demo-word-3pages-layout.doc","storage":"local","kind":"doc","purpose":"conversion-advanced"},
-    {"name":"demo-tableur-multifeuilles.xlsx","path":"../files/demo-input/Data/demo-tableur-multifeuilles.xlsx","storage":"local","kind":"xlsx","purpose":"spreadsheet-preview"},
-    {"name":"demo-tableur-multifeuilles.xls","path":"../files/demo-input/Data/demo-tableur-multifeuilles.xls","storage":"local","kind":"xls","purpose":"spreadsheet-preview"},
-    {"name":"demo-markdown-conversion.md","path":"../files/demo-input/MD/demo-markdown-conversion.md","storage":"local","kind":"markdown","purpose":"text-conversion"},
-    {"name":"demo-csv-point-virgule.csv","path":"../files/demo-input/Data/demo-csv-point-virgule.csv","storage":"local","kind":"csv","purpose":"text-conversion"},
-    {"name":"demo-format-bmp.bmp","path":"../files/demo-input/Images/demo-format-bmp.bmp","storage":"local","kind":"bmp","purpose":"image-conversion"},
-    {"name":"demo-format-tiff.tiff","path":"../files/demo-input/Images/demo-format-tiff.tiff","storage":"local","kind":"tiff","purpose":"advanced-image-conversion"},
-    {"name":"demo-redaction-secrets.pdf","path":"../files/demo-input/Security/demo-redaction-secrets.pdf","storage":"local","kind":"pdf","purpose":"redaction-regression","synthetic":true},
-    {"name":"demo-redaction-secrets.txt","path":"../files/demo-input/Security/demo-redaction-secrets.txt","storage":"local","kind":"text","purpose":"redaction-regression","synthetic":true}
+    {
+      "path": "../files/demo-input/OCR/ocr-imprime-faible-contraste.jpg",
+      "size": 80713,
+      "sha256": "7dd30de08d15a74137a008adf3efbf338ed27328d91dd71363b20cb1788a0688"
+    },
+    {
+      "path": "../files/demo-input/OCR/ocr-imprime-propre.png",
+      "size": 41650,
+      "sha256": "742b132282335d6a57b087a5bb6239e71b40226da0ffb65931e38f85b6042f96"
+    },
+    {
+      "path": "../files/demo-input/OCR/ocr-pseudo-manuscrit.png",
+      "size": 51896,
+      "sha256": "4a0d651ed72d286f111898f6401cf9687bc6edd299df8fe0dbb5f28b2c53d253"
+    },
+    {
+      "path": "../files/demo-input/OCR/ocr-scan-incline-bruite.jpg",
+      "size": 129595,
+      "sha256": "3d549ee3c5554804ff3218e88fdd3b2632d6de30354f2fb8cfc10f1c0a7302f4"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-formulaire-acroform.pdf",
+      "size": 8752,
+      "sha256": "8b69f3453c343c8dd4d612ee742b5a729d3391462da1c45623fa046b6e36636b"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-multipage-orientations.pdf",
+      "size": 2439,
+      "sha256": "f262e12ebe6cc6f534d385d500b87423002f2e73d9e7199b7a4a83a69e8c08ac"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
+      "size": 149500,
+      "sha256": "55d40904e2d94585d944843a61da92dc09cf208cb08449b277558f3cb5e2c871"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
+      "size": 116805,
+      "sha256": "53f11c722c8df7c17ada47d85d25b8f2c4261891fe678ee8c2263268b3b3f4e6"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
+      "size": 116698,
+      "sha256": "5d93aa6a39bec312c700f1427a180d3d607526edcac92ddcda40605ab0851e6d"
+    },
+    {
+      "path": "../files/demo-input/PDF/pdf-texte-actif.pdf",
+      "size": 3377,
+      "sha256": "7d1e09684ffa5cbe3bc800bae10e6819e1db1c6f7c509e846d775dad56a75771"
+    },
+    {
+      "path": "../files/demo-input/Zip/archive-imbriquee-demo.zip",
+      "size": 715,
+      "sha256": "80e4e42e8c27a74ecd94f8b53f7f53736d8725278ea710c47d9daac1760b706a"
+    }
   ]
 }
