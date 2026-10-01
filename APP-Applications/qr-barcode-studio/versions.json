@@ -1,14 +1,23 @@
 {
   "name": "QR & Barcode Studio",
   "current": "0.2.0",
-  "test": "0.3.0",
+  "test": "2.0.0",
   "versions": [
+    {
+      "version": "2.0.0",
+      "label": "QR & Barcode Studio 2.0.0 TEST",
+      "date": "2026-10-01",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion."
+    },
     {
       "version": "0.3.0",
       "label": "QR & Barcode Studio 0.3.0 TEST",
       "date": "2026-09-29",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./",
       "notes": "Migration Studio Core V1. Aperçu unique avec rafraîchissement, outils contextuels QR/Data Matrix/Code128/GS1-128/EAN-13/EAN-8, couleurs en lignes séparées avec HEX par défaut et affichage RGB/HSL, scan HID et lecture d’images par sélection ou glisser-déposer."
     },
