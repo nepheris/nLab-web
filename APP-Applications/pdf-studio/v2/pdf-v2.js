@@ -613,7 +613,7 @@ async function openAdvancedStudio(id){
  createStudioContext({sourceStudio:'pdf-studio',targetStudio:id,capability:id,fileName:engine.fileName,page:engine.currentPage,selectedPages:[...engine.selected],returnTarget:location.href});
  try{await openResolvedStudio(id,{query:{from:'pdf-studio',return:'pdf-studio'}})}catch(e){setStatus('Studio spécialisé indisponible : '+e.message)}
 }
-$$$('[data-advanced-studio]').forEach(b=>b.onclick=()=>openAdvancedStudio(b.dataset.advancedStudio));
+$$('[data-advanced-studio]').forEach(b=>b.onclick=()=>openAdvancedStudio(b.dataset.advancedStudio));
 document.addEventListener('click',e=>{const b=e.target.closest('[data-studio-action]');if(b&&!b.closest('.studioRibbon'))document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,source:'sidebar',element:b}}))});
 
 function openToolSection(id){activateSidebarTab('tools');const x=$(id);if(x){x.open=true;x.scrollIntoView({block:'nearest'})}}
