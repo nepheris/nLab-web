@@ -17,6 +17,7 @@ import{mountSteppedPresetControl}from'../../_shared/studio-v2/stepped-preset-con
 import{mountAssetPicker}from'../../_shared/studio-v2/asset-picker.js';
 import{bindColorHexControl}from'../../_shared/studio-v2/color-control.js';
 import{lightweightThumbnail}from'../../_shared/studio-v2/thumbnail-service.js';
+import{renderMarkdownFilePreview,renderPlainTextPreview}from'../../_shared/studio-v2/file-preview-service.js';
 import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../../_shared/studio-v2/output-service.js';
 import{acceptAttribute,isSupportedFile,formatInfo}from'../../_shared/studio-v2/format-registry.js';
@@ -457,15 +458,23 @@ function syncViewerMeta(){
 async function renderAll(){if(!engine.pageCount){$('#mainPageGrid').innerHTML='';$('#previewGrid').innerHTML='';syncViewerMeta();return}await viewer.renderMain();objectLayer?.render();await viewer.renderPreview();syncViewerMeta()}
 
 async function load(file){
- if(!file)return;setStatus('Chargement…');activeFileCapabilities=detectFileCapabilities(file);
+ if(!file)return;setStatus('Chargement…');activeFileCapabilities=detectFileCapabilities(file);const info=formatInfo(file),isMarkdown=['md','markdown'].includes(info.extension);
+ if(isMarkdown){
+  let convertedPages=0;try{await engine.loadFile(file);convertedPages=engine.pageCount}catch{engine.clear()}
+  undoStack=[];redoStack=[];cryptoSignatureState=null;syncUndoRedo();$('#previewGrid').innerHTML='';
+  try{await renderMarkdownFilePreview(file,$('#mainPageGrid'));setStatus('Aperçu Markdown affiché'+(convertedPages?' · copie PDF interne prête pour conversion':''));}
+  catch(e){engine.clear();try{await renderPlainTextPreview(file,$('#mainPageGrid'));setStatus('Markdown rendu en texte brut après erreur isolée : '+e.message)}catch{$('#mainPageGrid').innerHTML='<div class="statusBox">Aperçu Markdown indisponible. La navigation reste utilisable.</div>'}}
+  const item=fileBrowser.items.find(x=>x.data===file);if(item){item.pages=convertedPages||null;item.subtitle=item.relativePath||'Markdown';fileBrowser.render()}
+  recordHistory({studio:'pdf-studio',type:'file',label:'Markdown chargé',detail:(convertedPages?convertedPages+' page(s) PDF interne · ':'')+'aperçu Markdown isolé',target:file.name});return
+ }
  try{
   await engine.loadFile(file);undoStack=[];redoStack=[];cryptoSignatureState=null;syncUndoRedo();viewer.setZoom(1);viewer.setPagesPerRow(1);syncSession();await renderAll();
   const item=fileBrowser.items.find(x=>x.data===file);if(item){item.pages=engine.pageCount;item.subtitle=item.relativePath||activeFileCapabilities.family;fileBrowser.render()}
   const converted=activeFileCapabilities.family!=='pdf'?' · aperçu PDF rapide':'';
   setStatus('Document chargé'+converted);recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s) · '+activeFileCapabilities.family,target:file.name});
  }catch(e){
-  const info=formatInfo(file);setStatus('Aperçu indisponible : '+e.message);
-  if(info.family==='text'||['md','markdown','txt','csv','json','yaml','yml','xml','html','htm'].includes(info.extension)){try{const raw=await file.text();$('#mainPageGrid').innerHTML='<div class="statusBox rawTextFallback"><b>Aperçu texte brut sécurisé · '+escHtml(file.name)+'</b><pre>'+escHtml(raw.slice(0,250000))+'</pre></div>';$('#previewGrid').innerHTML='';setStatus('Aperçu texte brut affiché après échec du renderer.');return}catch{}}
+  engine.clear();setStatus('Aperçu indisponible : '+e.message);
+  if(info.family==='text'||['txt','csv','json','yaml','yml','xml','html','htm'].includes(info.extension)){try{await renderPlainTextPreview(file,$('#mainPageGrid'));$('#previewGrid').innerHTML='';setStatus('Aperçu texte brut affiché après échec du renderer.');return}catch{}}
   $('#mainPageGrid').innerHTML='<div class="statusBox">Aperçu rapide indisponible pour <b>'+escHtml(file.name)+'</b>.<br>Le renderer a été isolé : la navigation reste utilisable. Utilisez un Studio spécialisé si une conversion avancée est nécessaire.</div>';$('#previewGrid').innerHTML=''
  }
 }
