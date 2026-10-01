@@ -34,6 +34,12 @@ jobs:
           set -euo pipefail
           python tests/validate_studio_registries.py
 
+      - name: Validate Studio feature contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tests/validate_studio_features.py
+
       - name: Verify PDF Studio public runtime
         shell: bash
         run: |
