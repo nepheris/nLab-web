@@ -295,6 +295,7 @@ jobs:
       - name: Install Chromium for PDF Studio 1.0
         shell: bash
         run: |
+          node --check tests/pdf-studio-v2-ui.mjs
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
 
