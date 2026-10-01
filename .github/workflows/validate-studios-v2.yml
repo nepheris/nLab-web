@@ -1,0 +1,51 @@
+name: Validate specialized Studios V2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'APP-Applications/image-studio/**'
+      - 'APP-Applications/ocr-studio/**'
+      - 'APP-Applications/code-studio/**'
+      - 'APP-Applications/json-studio/**'
+      - 'APP-Applications/data-studio/**'
+      - 'APP-Applications/file-studio/**'
+      - 'APP-Applications/qr-barcode-studio/**'
+      - 'APP-Applications/markdown-studio/**'
+      - 'APP-Applications/dataset-generator-studio/**'
+      - 'APP-Applications/_shared/studio-v2/**'
+      - 'tests/studios-v2-ui.mjs'
+      - '.github/workflows/validate-studios-v2.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'APP-Applications/**'
+      - 'tests/studios-v2-ui.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static Studio contracts
+        run: |
+          python tests/validate_studio_registries.py
+          python tests/validate_studio_features.py
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Browser smoke specialized V2
+        run: |
+          python -m http.server 8770 --bind 127.0.0.1 >/tmp/nlab-studios-v2-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8770/APP-Applications/studios/ >/dev/null && break
+            sleep 1
+          done
+          NLAB_BASE_URL=http://127.0.0.1:8770/ node tests/studios-v2-ui.mjs
