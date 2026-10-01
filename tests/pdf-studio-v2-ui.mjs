@@ -13,6 +13,15 @@ try{
  for(const id of ['sectionInput','sectionOutput','sectionPages','sectionAssembly','sectionStamps','sectionAnnotations','sectionOcr','sectionOptimize','sectionTranslate','sectionSignature','sectionCodes','sectionPageOutput','sectionConversion','sectionForms','sectionRedaction','sectionCompare','sectionBatch','sectionSecurity','sectionDiagnostics'])if(!await page.locator('#'+id).count())fail('Section V2 absente: '+id);
  await page.locator('#fileInput').setInputFiles(fixture);
  await page.waitForFunction(()=>/\/\s*12/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000});
+ // Source distante : même moteur, via une URL HTTP/CORS accessible.
+ const remoteUrl=new URL('/Library/demo/files/demo-input/PDF/pdf-texte-actif.pdf',url).href;
+ await page.locator('#remoteFileUrl').fill(remoteUrl);await page.locator('#openRemoteUrl').click();
+ await page.waitForFunction(()=>/Fichier distant chargé/.test(document.querySelector('#studioStatusText')?.textContent||''),null,{timeout:30000});
+ // Configuration Drive : test local sans déclencher OAuth réel.
+ await page.locator('#googleClientId').fill('1234567890-test.apps.googleusercontent.com');await page.locator('#googleApiKey').fill('AIzaTESTKEY');await page.locator('#googleAppId').fill('1234567890');await page.locator('#saveGoogleConfig').click();
+ const driveCfg=await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab-pdf-studio-v2-google')||'{}'));if(!driveCfg.clientId||!driveCfg.apiKey)fail('Configuration Drive V2 non persistée');
+ // Recharger le fixture local pour la suite des tests de modification.
+ await page.locator('#fileInput').setInputFiles(fixture);await page.waitForFunction(()=>/\/\s*12/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000});
  const z0=Number(await page.locator('#zoomInput').inputValue());await page.locator('#fitPage').click();await page.waitForTimeout(300);const z1=Number(await page.locator('#zoomInput').inputValue());if(!z1||z1===z0)fail('Fit page sans effet');
  await page.locator('#sectionConversion').evaluate(e=>e.open=true);
  await page.locator('#quickConversion').selectOption('docx');{const dl=page.waitForEvent('download');await page.locator('#runQuickConversion').click();const d=await dl;if(!/\.docx$/i.test(d.suggestedFilename()))fail('PDF→DOCX V2 invalide: '+d.suggestedFilename())}
@@ -22,5 +31,5 @@ try{
  {const dl=page.waitForEvent('download');await page.locator('#exportHistoryJson').click();const d=await dl;if(!/\.json$/i.test(d.suggestedFilename()))fail('Export historique JSON V2 invalide')}
  await page.locator('#fileInput').setInputFiles([fixture,fixture2]);await page.waitForTimeout(800);await page.locator('#fileSelectAll').click();await page.locator('#sectionBatch').evaluate(e=>e.open=true);{const dl=page.waitForEvent('download',{timeout:30000});await page.locator('#batchCleanMetadata').click();const d=await dl;if(!/\.zip$/i.test(d.suggestedFilename()))fail('Batch métadonnées V2 sans ZIP')}
  if(errors.length)fail('Erreurs navigateur V2: '+errors.join(' | '));
- console.log(JSON.stringify({ok:true,fitPage:[z0,z1],conversion:['docx','odt'],batch:true,historyExport:true,headerQr:true},null,2));
+ console.log(JSON.stringify({ok:true,remoteUrl:true,driveConfig:true,fitPage:[z0,z1],conversion:['docx','odt'],batch:true,historyExport:true,headerQr:true},null,2));
 }finally{await browser.close()}
