@@ -35,51 +35,48 @@
       "kind": "code"
     },
     {
-      "name": "recettes_categories.json",
-      "path": "../files/demo-input/JSON/recettes_categories.json",
+      "name": "rdc-categories-recettes-demo.json",
+      "path": "../source-drive/json/rdc-categories-recettes-demo.json",
       "storage": "local",
       "kind": "json"
     },
     {
-      "name": "recettes.json",
-      "path": "../files/demo-input/JSON/recettes.json",
+      "name": "rdc-recettes-complexes-demo.json",
+      "path": "../source-drive/json/rdc-recettes-complexes-demo.json",
       "storage": "local",
       "kind": "json"
     },
     {
-      "name": "relations_contenus.json",
-      "path": "../files/demo-input/JSON/relations_contenus.json",
+      "name": "rdc-relations-contenus-demo.json",
+      "path": "../source-drive/json/rdc-relations-contenus-demo.json",
       "storage": "local",
       "kind": "json"
     },
     {
-      "name": "saisonnalite.json",
-      "path": "../files/demo-input/JSON/saisonnalite.json",
+      "name": "rdc-saisonnalite-demo.json",
+      "path": "../source-drive/json/rdc-saisonnalite-demo.json",
       "storage": "local",
       "kind": "json"
     },
     {
       "name": "ciqual_taxonomie_correspondances.json",
-      "path": "../files/demo-input/JSON/ciqual_taxonomie_correspondances.json",
-      "storage": "local",
+      "storage": "reference-only",
       "kind": "json"
     },
     {
-      "name": "allergenes.json",
-      "path": "../files/demo-input/JSON/allergenes.json",
+      "name": "rdc-allergenes-demo.json",
+      "path": "../source-drive/json/rdc-allergenes-demo.json",
       "storage": "local",
       "kind": "json"
     },
     {
       "name": "astuces_categories.json",
-      "path": "../files/demo-input/JSON/astuces_categories.json",
-      "storage": "local",
+      "storage": "reference-only",
       "kind": "json"
     },
     {
       "name": "ciqual_import_config.json",
-      "path": "../files/demo-input/JSON/ciqual_import_config.json",
-      "storage": "local",
+      "storage": "reference-only",
       "kind": "json"
     }
   ]
