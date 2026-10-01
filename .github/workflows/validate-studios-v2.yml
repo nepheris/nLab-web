@@ -15,6 +15,9 @@ on:
       - 'APP-Applications/dataset-generator-studio/**'
       - 'APP-Applications/_shared/studio-v2/**'
       - 'tests/studios-v2-ui.mjs'
+      - 'tests/studio_feature_contracts.json'
+      - 'tests/validate_studio_features.py'
+      - 'tests/validate_studio_registries.py'
       - '.github/workflows/validate-studios-v2.yml'
   pull_request:
     branches: [main]
