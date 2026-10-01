@@ -13,6 +13,9 @@ import{DocumentSession}from'../../_shared/studio-v2/document-session.js';
 import{CollectionBrowser}from'../../_shared/studio-v2/collection-browser.js';
 import{mountDropZone,collectDirectoryHandle,mountSortableList}from'../../_shared/studio-v2/drop-zone.js';
 import{loadStudioSettings,saveStudioSettings}from'../../_shared/studio-v2/settings.js';
+import{mountSteppedPresetControl}from'../../_shared/studio-v2/stepped-preset-control.js';
+import{openStudio as openResolvedStudio}from'../../_shared/studio-v2/studio-link-resolver.js';
+import{mountAssetPicker}from'../../_shared/studio-v2/asset-picker.js';
 import{lightweightThumbnail}from'../../_shared/studio-v2/thumbnail-service.js';
 import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../../_shared/studio-v2/output-service.js';
@@ -37,7 +40,7 @@ const engine=new PDFEngine(),session=new DocumentSession(),templates=new Templat
 let objectLayer=null;
 const annotationBridge={exportBytes:()=>objectLayer?.hasObjects()?objectLayer.exportBytes():engine.baseBytes()};const pdfTools=new PDFTools({engine,annotations:annotationBridge,variables:templates}),advancedTools=new AdvancedPDFTools({engine,annotations:annotationBridge,variables:templates});
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null,assemblyItems=[],assemblySelectedIndex=-1,assemblyInsertFile=null;
-let activeInputLocation=null,activeOutputLocation=null,assemblySortUnmount=null;
+let activeInputLocation=null,activeOutputLocation=null,assemblySortUnmount=null,zipCompressionControl=null,redactionRasterControl=null,optDpiControl=null,optJpegControl=null,objectAssetPicker=null,stampAssetPicker=null;
 function setValidatedButton(el,on,label=''){if(!el)return;el.classList.toggle('validatedChoice',!!on);el.setAttribute('aria-pressed',on?'true':'false');if(label)el.title=label}
 function renderRecentLocationSelects(){
  personalProfile=loadPersonalProfile();
@@ -109,6 +112,9 @@ $('#fileCollectionView').addEventListener('change',()=>fileBrowser.setView($('#f
 $('#fileSort').addEventListener('change',()=>fileBrowser.setSort($('#fileSort').value,fileBrowser.sortDirection));
 $('#fileSortDirection').onclick=()=>{fileBrowser.setSort(fileBrowser.sortMode,-fileBrowser.sortDirection);$('#fileSortDirection').textContent=fileBrowser.sortDirection>0?'↑':'↓'};
 $('#fileGroupBy').addEventListener('change',()=>fileBrowser.setGroupBy($('#fileGroupBy').value));
+$('#fileGroupsCollapse').onclick=()=>fileBrowser.collapseGroups();$('#fileGroupsExpand').onclick=()=>fileBrowser.expandGroups();
+const thumbSize=loadStudioSettings().collectionThumbnailSize||104;$('#fileThumbnailSize').value=thumbSize;$('#fileThumbnailSizeValue').textContent=thumbSize+' px';
+$('#fileThumbnailSize').addEventListener('input',()=>{const v=Number($('#fileThumbnailSize').value)||104;document.body.style.setProperty('--collection-thumb-size',v+'px');$('#fileThumbnailSizeValue').textContent=v+' px';saveStudioSettings({collectionThumbnailSize:v})});
 $('#fileSelectAll').onclick=()=>fileBrowser.selectAll();$('#fileSelectNone').onclick=()=>fileBrowser.clearSelection();
 $('#filePrev').onclick=()=>fileBrowser.previous({selectedOnly:$('#navigateSelectedOnly').checked});
 $('#fileNext').onclick=()=>fileBrowser.next({selectedOnly:$('#navigateSelectedOnly').checked});
@@ -137,23 +143,28 @@ function loadPdfProfilePreferences(){
  personalProfile=loadPersonalProfile();templates.setValues(profileTemplateValues(personalProfile));
  const pref=personalProfile.preferences?.studios?.['pdf-studio']||{};
  if(pref.naming){if(pref.naming.template!=null)$('#namingTemplate').value=pref.naming.template;if(pref.naming.prefix!=null)$('#namingPrefix').value=pref.naming.prefix;if(pref.naming.suffix!=null)$('#namingSuffix').value=pref.naming.suffix}
- if(pref.output){if(pref.output.structure)$('#outputStructure').value=pref.output.structure;if(pref.output.pathTemplate!=null)$('#outputPathTemplate').value=pref.output.pathTemplate;if(pref.output.format)$('#outputFormat').value=pref.output.format}
+ if(pref.output){if(pref.output.structure)$('#outputStructure').value=pref.output.structure;if(pref.output.pathTemplate!=null)$('#outputPathTemplate').value=pref.output.pathTemplate;if(pref.output.format)$('#outputFormat').value=pref.output.format;if(pref.output.mode)$('#outputMode').value=pref.output.mode;if(zipCompressionControl&&pref.output.zipLevel)zipCompressionControl.setValue(pref.output.zipLevel,{emit:false})}
 }
 function savePdfProfilePreferences(){
  const naming={template:$('#namingTemplate').value||'{FILENAME}',prefix:$('#namingPrefix').value||'',suffix:$('#namingSuffix').value||''};
- const outputPref={structure:$('#outputStructure').value||'root',pathTemplate:$('#outputPathTemplate').value||'',format:$('#outputFormat').value||'pdf'};
+ const outputPref={structure:$('#outputStructure').value||'root',pathTemplate:$('#outputPathTemplate').value||'',format:$('#outputFormat').value||'pdf',mode:$('#outputMode').value||'classic',zipLevel:zipCompressionControl?.value||6};
  personalProfile=updatePersonalProfile(p=>{p.preferences=p.preferences||{};p.preferences.studios=p.preferences.studios||{};p.preferences.studios['pdf-studio']={...(p.preferences.studios['pdf-studio']||{}),naming,output:outputPref};return p});
 }
 
 function namingExtra(){const item=fileBrowser.active();return{RELATIVE_PATH:item?.relativePath||engine.sourceFile?.webkitRelativePath||engine.fileName,PATH:item?.relativePath||engine.fileName,FILESIZE:String(engine.sourceFile?.size||0),PAGES:String(engine.pageCount||1),PAGE:String(engine.currentPage||1),SELECTED_COUNT:String(engine.selected.size),INDEX:String(Math.max(1,fileBrowser.items.findIndex(x=>x.id===fileBrowser.activeId)+1))}}
 function outputName(extension='.pdf'){return templates.buildName(engine.sourceFile?.name||engine.fileName,{prefix:$('#namingPrefix').value,template:$('#namingTemplate').value||'{FILENAME}',suffix:$('#namingSuffix').value,extension,extra:namingExtra()})}
-function updateNamingPreview(){const ext=$('#outputFormat').value==='same'?('.'+(formatInfo(engine.sourceFile).extension||'pdf')):'.pdf';$('#namingPreview').textContent=outputName(ext)}
+function updateNamingPreview(){const mode=$('#outputMode')?.value||'classic',ext=mode==='zip'?'.zip':($('#outputFormat').value==='same'?('.'+(formatInfo(engine.sourceFile).extension||'pdf')):'.pdf');$('#namingPreview').textContent=outputName(ext)}
 function outputContext(){return templates.context(engine.sourceFile?.name||engine.fileName,namingExtra())}
 function outputParts(){const mode=$('#outputStructure').value,custom=templates.resolve($('#outputPathTemplate').value,engine.fileName,outputContext());return output.structureParts(mode,outputContext(),custom)}
 function updateOutputPreview(){const label=activeOutputLocation?.label||activeOutputLocation?.name||output.handle?.name||'',provider=$('#outputProvider').value==='local'?(output.handle?'Dossier : '+label:'Dossier local non choisi'):'Téléchargement navigateur',parts=outputParts();$('#outputPathPreview').textContent=provider+(parts.length?' / '+parts.join(' / '):' / racine')}
 ['namingTemplate','namingPrefix','namingSuffix'].forEach(id=>$('#'+id).addEventListener('input',()=>{updateNamingPreview();savePdfProfilePreferences()}));
 ['outputFormat','outputProvider','outputStructure','outputPathTemplate'].forEach(id=>$('#'+id).addEventListener('input',()=>{updateNamingPreview();updateOutputPreview();if(id!=='outputProvider')savePdfProfilePreferences()}));
+zipCompressionControl=mountSteppedPresetControl($('#zipCompressionControl'),{min:1,max:9,step:1,value:6,unit:'/ 9',name:'Compression ZIP',presets:[{id:'fast',label:'Rapide',value:2,min:1,max:3},{id:'balanced',label:'Équilibrée',value:6,min:4,max:7},{id:'max',label:'Maximum',value:9,min:8,max:9}],describe:(v,p)=>'Niveau '+v+'/9 · '+(p?.label||'Personnalisée')});
+zipCompressionControl.addEventListener('change',()=>{savePdfProfilePreferences();updateOutputPreview()});
+function setOutputMode(mode,{save=true}={}){mode=mode==='zip'?'zip':'classic';$('#outputMode').value=mode;$('[data-output-mode]').forEach(b=>b.classList.toggle('active',b.dataset.outputMode===mode));$('#outputClassicPanel').hidden=mode==='zip';$('#outputZipPanel').hidden=mode!=='zip';updateNamingPreview();updateOutputPreview();if(save)savePdfProfilePreferences()}
+$('[data-output-mode]').forEach(b=>b.onclick=()=>setOutputMode(b.dataset.outputMode));
 loadPdfProfilePreferences();renderRecentLocationSelects();renderNamingPresets();renderStampPresets();renderObjectAssetSelectors();
+setOutputMode($('#outputMode').value||'classic',{save:false});
 const variableHelpHtml=templateVariableHelp().map(x=>'<code>{'+x.name+'}</code><span>'+x.description+'</span>').join('');$('#namingVariables').innerHTML=variableHelpHtml;if($('#stampVariables'))$('#stampVariables').innerHTML=variableHelpHtml;if($('#headerFooterVariables'))$('#headerFooterVariables').innerHTML=variableHelpHtml;
 document.addEventListener('nlab:personal-profile-changed',e=>{personalProfile=e.detail?.profile||loadPersonalProfile();templates.setValues(profileTemplateValues(personalProfile));renderStampPresets();renderObjectAssetSelectors();updateNamingPreview();updateOutputPreview();refreshStampPreview().catch(()=>{})});
 document.addEventListener('nlab:personal-profile-imported',()=>{loadPdfProfilePreferences();renderRecentLocationSelects();renderNamingPresets();renderStampPresets();renderObjectAssetSelectors();updateNamingPreview();updateOutputPreview();refreshStampPreview().catch(()=>{});setStatus('Profil personnel importé et appliqué au PDF Studio.')});
@@ -494,13 +505,13 @@ async function saveOutputBlob(blob,name,{parts=[]}={}){
 }
 
 async function saveCurrent({classify=false,forcePicker=false}={}){
- if(!engine.pageCount)return;const format=$('#outputFormat').value;if(format==='zip')return saveZip({classify});
+ if(!engine.pageCount)return;if($('#outputMode').value==='zip')return saveZip({classify});const format=$('#outputFormat').value;
  let blob,name;if(format==='same'&&engine.sourceFile&&activeFileCapabilities?.family!=='pdf'){blob=engine.sourceFile;name=outputName('.'+(formatInfo(engine.sourceFile).extension||'bin'))}else{blob=await currentBlob();name=outputName('.pdf')}
  if(forcePicker&&window.showSaveFilePicker){const h=await showSaveFilePicker({suggestedName:name,types:[{description:'Document',accept:{[blob.type||'application/octet-stream']:['.'+(name.split('.').pop()||'pdf')]}}]}),w=await h.createWritable();await w.write(blob);await w.close()}
  else{if($('#outputProvider').value==='local'&&!output.handle)await ensureOutputDirectory();await output.saveBlob(blob,name,{parts:classify?outputParts():[]})}
  setStatus('Enregistré : '+name);recordHistory({studio:'pdf-studio',type:'action',label:classify?'Enregistrer + classer':'Enregistrer',detail:(classify?outputParts().join('/'):'')||'racine',target:name,action:'savePdf',repeatable:true})
 }
-async function saveZip({classify=false}={}){if(!engine.pageCount)return;const pdf=await exportBytesWithObjects(),pdfName=outputName('.pdf'),zipName=outputName('.zip');if($('#outputProvider').value==='local'&&!output.handle)await ensureOutputDirectory();const old=output.handle;if($('#outputProvider').value!=='local')output.handle=null;await output.saveZip([{name:pdfName,data:pdf}],zipName,{parts:classify?outputParts():[]});output.handle=old;setStatus('ZIP enregistré : '+zipName);recordHistory({studio:'pdf-studio',type:'action',label:classify?'ZIP enregistré + classé':'ZIP enregistré',detail:classify?outputParts().join('/'):'',target:zipName})}
+async function saveZip({classify=false}={}){if(!engine.pageCount)return;const pdf=await exportBytesWithObjects(),pdfName=outputName('.pdf'),zipName=outputName('.zip');if($('#outputProvider').value==='local'&&!output.handle)await ensureOutputDirectory();const old=output.handle;if($('#outputProvider').value!=='local')output.handle=null;await output.saveZip([{name:pdfName,data:pdf}],zipName,{parts:classify?outputParts():[],level:zipCompressionControl?.value||6});output.handle=old;setStatus('ZIP enregistré : '+zipName);recordHistory({studio:'pdf-studio',type:'action',label:classify?'ZIP enregistré + classé':'ZIP enregistré',detail:classify?outputParts().join('/'):'',target:zipName})}
 
 $('#pickFile').onclick=()=>$('#fileInput').click();
 $('#fileInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputLocation={kind:'files',label:files.length===1?files[0].name:files.length+' fichiers'};setValidatedButton($('#pickFile'),true,activeInputLocation.label);setValidatedButton($('#pickFolder'),false);await loadFiles(files)}};
