@@ -26,6 +26,7 @@ export default {
    {id:'rotateLeft',featureId:'pdf.pages.rotate.left',action:'rotateLeft',label:'−90°',icon:'rotateLeft',scope:'pdf',plugin:'pdf-studio',status:'stable',capability:'pdf.pages.rotate'},
    {id:'rotateRight',featureId:'pdf.pages.rotate.right',action:'rotateRight',label:'+90°',icon:'rotateRight',scope:'pdf',plugin:'pdf-studio',status:'stable',capability:'pdf.pages.rotate'},
    {featureId:'pdf.pages.rotate.free',action:'rotateFree',label:'Rotation libre',icon:'rotateFree',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.pages.rotate.free'},
+   {featureId:'pdf.crop',action:'crop',label:'Recadrer',icon:'crop',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.crop',help:{summary:'Modifier la zone visible de la page PDF.',details:'Le recadrage agit sur la CropBox et peut s’appliquer à la page, à la sélection ou à tout le document. Il ne supprime pas de manière sécurisée le contenu masqué.'}},
    {id:'addPage',featureId:'pdf.pages.add',action:'addPage',label:'Ajouter',icon:'addPage',scope:'pdf',plugin:'pdf-studio',status:'stable',capability:'pdf.pages.add'},
    {featureId:'pdf.pages.duplicate',action:'duplicatePage',label:'Dupliquer',icon:'duplicate',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.pages.duplicate'},
    {id:'deletePage',featureId:'pdf.pages.delete',action:'deletePage',label:'Supprimer',icon:'delete',scope:'pdf',plugin:'pdf-studio',status:'stable',capability:'pdf.pages.delete'},
@@ -49,7 +50,6 @@ export default {
   ]},
   {id:'document',label:'Document',scope:'pdf',items:[
    {featureId:'pdf.headerFooter',action:'headerFooter',label:'En-tête / pied',icon:'headerFooter',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.header-footer'},
-   {featureId:'pdf.crop',action:'crop',label:'Recadrer',icon:'crop',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.crop',help:{summary:'Modifier la zone visible de la page PDF.',details:'Le recadrage agit sur la CropBox et peut s’appliquer à la page, à la sélection ou à tout le document. Il ne supprime pas de manière sécurisée le contenu masqué.'}},
    {featureId:'pdf.forms',action:'forms',label:'Formulaires',icon:'forms',scope:'pdf',plugin:'pdf-studio',status:'development',capability:'pdf.forms',help:{summary:'Inspecter ou aplatir les champs de formulaire PDF.',details:'L’ajout/édition avancée de champs reste à approfondir.'}},
    {featureId:'pdf.redaction',action:'redaction',label:'Caviardage',icon:'redaction',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.redaction',help:{summary:'Marquer puis appliquer un caviardage irréversible.',details:'L’application rasterise les pages concernées afin d’éviter de laisser le texte masqué récupérable.'}},
    {featureId:'pdf.compare',action:'compare',label:'Comparer',icon:'compare',scope:'pdf',plugin:'pdf-studio',status:'test',capability:'pdf.compare'},
