@@ -48,6 +48,42 @@ for studio_id,c in CONTRACTS["studios"].items():
         if "studio-shell.js" in html:
             fail(f"{studio_id}: V2 page still imports legacy studio-shell.js")
 
+# Validate demo/library references used by Studio V2 pages and runtimes.
+demo_ref_re=re.compile(r"""["'](\.\./\.\./Library/demo/[^"']*)["']""")
+for studio_id in CONTRACTS["studios"]:
+    if studio_id=="pdf-studio":
+        files=[ROOT/"APP-Applications/pdf-studio/v2/index.html",ROOT/"APP-Applications/pdf-studio/v2/pdf-v2.js"]
+    else:
+        base=ROOT/"APP-Applications"/studio_id/"v2"
+        files=[base/"index.html",base/"v2-app.js"]
+    for src in files:
+        if not src.exists(): continue
+        text=src.read_text(encoding="utf-8")
+        for ref in demo_ref_re.findall(text):
+            # Studio references use ../../ from APP-Applications/<studio>/ after <base href="../">.
+            rel=ref[len("../../"):]
+            target=ROOT/rel
+            if ref.endswith("/"):
+                if not target.is_dir(): fail(f"{studio_id}: broken demo directory reference {ref}")
+            elif not target.exists():
+                fail(f"{studio_id}: broken demo file reference {ref}")
+
+# Validate local paths declared by demo manifests.
+manifest_dir=ROOT/"Library/demo/manifests"
+if manifest_dir.exists():
+    for manifest in manifest_dir.glob("*.json"):
+        try: data=json.loads(manifest.read_text(encoding="utf-8"))
+        except Exception as exc:
+            fail(f"demo manifest {manifest.name}: invalid JSON: {exc}"); continue
+        for item in data.get("files",[]):
+            if item.get("storage")!="local" or not item.get("path"): continue
+            target=(manifest.parent/item["path"]).resolve()
+            try: target.relative_to(ROOT.resolve())
+            except ValueError:
+                fail(f"demo manifest {manifest.name}: path escapes repository: {item['path']}"); continue
+            if not target.exists():
+                fail(f"demo manifest {manifest.name}: missing local file {item['path']}")
+
 if errors:
     print("Studio feature contracts: FAIL",file=sys.stderr)
     for e in errors: print(" - "+e,file=sys.stderr)
