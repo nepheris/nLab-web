@@ -77,8 +77,9 @@ function renderObjectAssetSelectors(){
  }
 }
 function renderStampPresets(){
- const sel=$('#stampPresetSelect');if(!sel)return;const items=listPersonalTemplates('stamps'),current=sel.value;
- sel.innerHTML='<option value="">Personnalisé</option>'+items.map(x=>'<option value="'+x.id+'">'+escHtml((x.category?x.category+' · ':'')+(x.label||x.id))+'</option>').join('');
+ const sel=$('#stampPresetSelect');if(!sel)return;const items=listPersonalTemplates('stamps'),current=sel.value,groups=new Map();
+ for(const x of items){const g=x.category||'Autres';if(!groups.has(g))groups.set(g,[]);groups.get(g).push(x)}
+ sel.innerHTML='<option value="">Personnalisé</option>'+[...groups].map(([g,list])=>'<optgroup label="'+escHtml(g)+'">'+list.map(x=>'<option value="'+escHtml(x.id)+'">'+escHtml(x.label||x.id)+'</option>').join('')+'</optgroup>').join('');
  if(items.some(x=>x.id===current))sel.value=current
 }
 function syncStampDates(){
