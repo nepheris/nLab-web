@@ -11,6 +11,7 @@ try{
  await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
  await page.waitForSelector('#sectionConfig',{timeout:30000});
  await page.waitForSelector('#fileInput',{state:'attached',timeout:30000});
+ await page.waitForTimeout(1200);if(errors.length)fail('Démarrage PDF V2 en erreur: '+errors.join(' | '));
  for(const id of ['sectionInput','sectionOutput','sectionPages','sectionAssembly','sectionStamps','sectionAnnotations','sectionOcr','sectionOptimize','sectionTranslate','sectionSignature','sectionCodes','sectionPageOutput','sectionConversion','sectionForms','sectionRedaction','sectionCompare','sectionBatch','sectionSecurity','sectionDiagnostics'])if(!await page.locator('#'+id).count())fail('Section V2 absente: '+id);
  // Fichier local : le contrôle est volontairement caché, mais doit accepter un fichier et déclencher le moteur.
  const fileChooserPromise=page.waitForEvent('filechooser');await page.locator('#pickFile').click();const fileChooser=await fileChooserPromise;await fileChooser.setFiles(fixture);
