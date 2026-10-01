@@ -12,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bwip-js@4.11.4/dist/bwip-js-min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://apis.google.com/js/api.js" async defer></script>
+<script src="../../_shared/archive-workspace.js"></script>
 </head><body>
 <main id="studioMain" class="studioMain">
 <aside id="studioSidebar" class="studioSidebar pdfV2Sidebar scope-core" data-scope="core">
@@ -59,7 +60,9 @@
     <label class="collectionThumbSizer">Vignettes <input id="fileThumbnailSize" type="range" min="64" max="220" step="8" value="104"><output id="fileThumbnailSizeValue">104 px</output></label><span class="grow"></span>
     <button id="fileSelectAll" type="button">Tout</button><button id="fileSelectNone" type="button">Aucun</button>
    </div>
-   <div id="fileCollection" class="collectionBrowser"></div><div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
+   <div id="fileCollection" class="collectionBrowser"></div>
+   <div id="archiveWorkspaceControls" hidden><div class="statusBox">Workspace ZIP actif : modifiez un fichier puis réinjectez la version courante avant d’exporter l’archive.</div><div class="compactInputRow"><button id="updateArchiveEntry" type="button">Mettre à jour l’entrée ZIP</button><button id="exportArchiveWorkspace" type="button">Exporter le ZIP modifié</button><button id="extractArchiveWorkspace" type="button">Extraire vers un dossier</button></div></div>
+   <div id="sourceStatus" class="statusBox">Aucun document chargé.</div>
   </div></details>
 
   <details id="sectionOutput" class="toolSection scope-core" data-scope="core"><summary>2. Sortie & classement <small class="scopeBadge">CORE</small></summary><div class="body">
