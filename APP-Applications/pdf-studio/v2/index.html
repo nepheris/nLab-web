@@ -162,6 +162,10 @@
     <label>Apparence<select id="signatureAppearanceType"><option value="signature">Signature</option><option value="initials">Paraphe</option><option value="none">Aucune apparence</option></select></label>
     <label>Modèle<select id="signatureAssetSelect"></select></label>
    </div><details><summary>Galerie signatures / paraphes</summary><div id="signatureAssetPickerHost"></div></details><div id="signatureAssetPreview" class="signatureAssetPreview"><span>Aucune image sélectionnée.</span></div></details>
+   <details><summary>Ajouter une signature / un paraphe</summary>
+    <div class="grid2"><label>Type<select id="newSignatureKind"><option value="signature">Signature</option><option value="initials">Paraphe</option></select></label><label>Nom<input id="newSignatureLabel" placeholder="Ex. Signature simple"></label></div>
+    <input id="newSignatureFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="pickNewSignatureFile" type="button">Choisir une image et l’ajouter au profil</button>
+   </details>
    <details open><summary>Placement</summary><div id="signatureVisualControls">
     <div class="grid2"><label>Portée<select id="signaturePageScope"><option value="current">Page active</option><option value="selected">Sélection sinon page active</option><option value="all">Toutes les pages</option></select></label><label>Position<select id="signaturePosition"><option value="bottom-right">Bas droite</option><option value="bottom-center">Bas centre</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-center">Haut centre</option><option value="top-left">Haut gauche</option><option value="custom">Personnalisée</option></select></label></div>
     <div class="grid2"><label>Largeur %<input id="signatureWidthPct" type="number" min="3" max="80" value="24"></label><label>Opacité %<input id="signatureOpacityPct" type="number" min="5" max="100" value="100"></label></div>
