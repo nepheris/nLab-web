@@ -9,7 +9,7 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Seconde passe de convergence : ouverture depuis URL HTTPS/CORS vers le moteur commun, Google Drive optionnel via OAuth drive.file + Picker multi-fichiers, choix d’un dossier Drive de sortie et upload, destination même dossier source lorsque le navigateur fournit un handle de dossier, migration/fusion des anciens JSON 0.9.x/1.x vers le profil V2 (identité, nommage, classement, tampons, OAuth). Conserve les restaurations 2.4.0 : DOCX/ODT, batch métadonnées, Fit page, historique JSON, signature dessinée, QR en-tête/pied et éditeur avancé de tampons. Drive live reste dépendant d’un Client ID/API Key valides et des origines OAuth autorisées."
+      "notes": "Seconde passe de convergence : ouverture depuis URL HTTPS/CORS vers le moteur commun, Google Drive optionnel via OAuth drive.file + Picker multi-fichiers, choix d’un dossier Drive de sortie et upload, destination même dossier source lorsque le navigateur fournit un handle de dossier, workspace ZIP éditable restauré (réinjection, export ZIP modifié, extraction dossier), migration/fusion des anciens JSON 0.9.x/1.x vers le profil V2 (identité, nommage, classement, tampons, OAuth). Conserve les restaurations 2.4.0 : DOCX/ODT, batch métadonnées, Fit page, historique JSON, signature dessinée, QR en-tête/pied et éditeur avancé de tampons. Drive live reste dépendant d’un Client ID/API Key valides et des origines OAuth autorisées."
     },
     {
       "version": "2.4.0",
