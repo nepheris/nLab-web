@@ -28,6 +28,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Validate Studio version registries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tests/validate_studio_registries.py
+
       - name: Verify PDF Studio public runtime
         shell: bash
         run: |
@@ -178,7 +184,6 @@ jobs:
           grep -q 'sidebarGrip0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q 'nLab Web' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q '../studios/' APP-Applications/pdf-studio/runtime0925/visible-controls.js
-          grep -q '"test": "2.0.0"' APP-Applications/pdf-studio/versions.json
           grep -q 'PDF Studio 1.0.0 TEST' APP-Applications/pdf-studio/versions.json
 
           # PDF Studio 1.0 standalone rewrite
@@ -248,7 +253,6 @@ jobs:
           done
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "2.0.0"' APP-Applications/pdf-studio/versions.json
 
       - name: Build PDF Studio 1.0 portable package
         shell: bash
