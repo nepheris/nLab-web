@@ -15,6 +15,7 @@ on:
       - 'APP-Applications/dataset-generator-studio/**'
       - 'APP-Applications/_shared/studio-v2/**'
       - 'tests/studios-v2-ui.mjs'
+      - 'tests/studios-v2-functional.mjs'
       - 'tests/studio_feature_contracts.json'
       - 'tests/validate_studio_features.py'
       - 'tests/validate_studio_registries.py'
@@ -52,3 +53,14 @@ jobs:
             sleep 1
           done
           NLAB_BASE_URL=http://127.0.0.1:8770/ node tests/studios-v2-ui.mjs
+
+      - name: Functional acceptance specialized V2
+        run: |
+          python -m http.server 8771 --bind 127.0.0.1 >/tmp/nlab-studios-v2-functional-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8771/APP-Applications/studios/ >/dev/null && break
+            sleep 1
+          done
+          NLAB_BASE_URL=http://127.0.0.1:8771/ node tests/studios-v2-functional.mjs
