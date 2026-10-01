@@ -2,6 +2,7 @@ import{chromium}from'playwright';
 const url=process.env.PDF_STUDIO_V2_URL||'http://127.0.0.1:8765/APP-Applications/pdf-studio/v2/';
 const fixture=process.env.PDF_STUDIO_FIXTURE||'/tmp/pdf-studio-v1.pdf';
 const fixture2=process.env.PDF_STUDIO_FIXTURE2||'/tmp/pdf-studio-v1-b.pdf';
+const folderFixture=process.env.PDF_STUDIO_FOLDER||'/tmp/pdf-studio-v2-folder';
 const fail=m=>{throw new Error(m)};
 const browser=await chromium.launch({headless:true});
 const page=await browser.newPage({viewport:{width:1500,height:1000},acceptDownloads:true});
@@ -18,7 +19,7 @@ try{
  await page.waitForFunction(()=>/\/\s*12/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000});
  if(!/pdf-studio-v1\.pdf/i.test(await page.locator('#sourceStatus').textContent()))fail('Ouverture fichier local non reflétée dans l’état');
  // Dossier : simule le fallback input webkitdirectory en injectant plusieurs fichiers.
- const folderChooserPromise=page.waitForEvent('filechooser');await page.locator('#pickFolder').click();const folderChooser=await folderChooserPromise;await folderChooser.setFiles([fixture,fixture2]);
+ const folderChooserPromise=page.waitForEvent('filechooser');await page.locator('#pickFolder').click();const folderChooser=await folderChooserPromise;await folderChooser.setFiles(folderFixture);
  await page.waitForFunction(()=>/fichier/i.test(document.querySelector('#sourceStatus')?.textContent||'')||document.querySelectorAll('#fileCollection [data-collection-id]').length>=1,null,{timeout:30000});
  // Source distante : même moteur, via une URL HTTP/CORS accessible.
  const remoteUrl=new URL('/Library/demo/files/demo-input/Security/demo-redaction-secrets.pdf',url).href;
