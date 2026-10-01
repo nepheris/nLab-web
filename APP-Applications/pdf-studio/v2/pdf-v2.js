@@ -617,6 +617,9 @@ $$$('[data-advanced-studio]').forEach(b=>b.onclick=()=>openAdvancedStudio(b.data
 document.addEventListener('click',e=>{const b=e.target.closest('[data-studio-action]');if(b&&!b.closest('.studioRibbon'))document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,source:'sidebar',element:b}}))});
 
 function openToolSection(id){activateSidebarTab('tools');const x=$(id);if(x){x.open=true;x.scrollIntoView({block:'nearest'})}}
+const sectionHelpActions={sectionInput:'openPdf',sectionOutput:'savePdf',sectionNaming:'savePdf',sectionPages:'crop',sectionAssembly:'assemblePdf',sectionStamps:'stamp',sectionAnnotations:'text',sectionOcr:'ocr',sectionOptimize:'optimize',sectionTranslate:'translate',sectionSignature:'signature',sectionCodes:'qr',sectionPageOutput:'headerFooter',sectionConversion:'convert',sectionForms:'forms',sectionRedaction:'redaction',sectionCompare:'compare',sectionBatch:'batch',sectionSecurity:'security',sectionDiagnostics:'history'};
+for(const [id,action] of Object.entries(sectionHelpActions)){const s=$('#'+id+'>summary');if(!s||s.querySelector('.sectionHelpButton'))continue;const b=document.createElement('button');b.type='button';b.className='sectionHelpButton';b.textContent='?';b.title='Aide contextuelle';b.onclick=e=>{e.preventDefault();e.stopPropagation();showHelp(action,b)};s.append(b)}
+
 const contextSections={stamp:'#sectionStamps',text:'#sectionAnnotations',highlight:'#sectionAnnotations',pen:'#sectionAnnotations',image:'#sectionAnnotations',signature:'#sectionSignature',redaction:'#sectionRedaction',optimize:'#sectionOptimize',qr:'#sectionCodes',ocr:'#sectionOcr',convert:'#sectionConversion'};
 function showRibbonContext(action){
  const host=$('#ribbonContext'),body=$('#ribbonContextBody'),title=$('#ribbonContextTitle');if(!host||!body)return;
