@@ -29,7 +29,7 @@ try{
   await p.locator('#theme').selectOption('monokai');const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.js$/i.test((await dl).suggestedFilename()))throw new Error('Code export invalide');
  });
  await studio('json-studio',async p=>{
-  await p.locator('#file').setInputFiles('Library/demo/files/demo-input/JSON/recettes.json');await p.waitForFunction(()=>/JSON valide/.test(document.querySelector('#validity')?.textContent||''),null,{timeout:15000});
+  await p.locator('#file').setInputFiles('Library/demo/source-drive/json/rdc-recettes-complexes-demo.json');await p.waitForFunction(()=>/JSON valide/.test(document.querySelector('#validity')?.textContent||''),null,{timeout:15000});
   await p.locator('#demo').selectOption({index:1});await p.locator('#loadDemo').click();await p.waitForFunction(()=>/JSON valide/.test(document.querySelector('#validity')?.textContent||''),null,{timeout:15000});
   await p.locator('#format').click();await p.locator('#sort').click();const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.json$/i.test((await dl).suggestedFilename()))throw new Error('JSON export invalide');
  });
