@@ -26,6 +26,7 @@ try{
  await page.locator('#remoteFileUrl').evaluate(e=>{const d=e.closest('details');if(d)d.open=true});await page.locator('#remoteFileUrl').fill(remoteUrl);await page.locator('#openRemoteUrl').click();
  await page.waitForFunction(()=>/Fichier distant chargé/.test(document.querySelector('#studioStatusText')?.textContent||''),null,{timeout:30000});
  // Configuration Drive : test local sans déclencher OAuth réel.
+ await page.locator('#googleClientId').evaluate(e=>{const d=e.closest('details');if(d)d.open=true});
  await page.locator('#googleClientId').fill('1234567890-test.apps.googleusercontent.com');await page.locator('#googleApiKey').fill('AIzaTESTKEY');await page.locator('#googleAppId').fill('1234567890');await page.locator('#saveGoogleConfig').click();
  const driveCfg=await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab-pdf-studio-v2-google')||'{}'));if(!driveCfg.clientId||!driveCfg.apiKey)fail('Configuration Drive V2 non persistée');
  // Recharger le fixture local pour la suite des tests de modification.
