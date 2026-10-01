@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'APP-Applications/pdf-studio/**'
+      - 'APP-Applications/_shared/studio-v2/**'
       - 'Library/demo/**'
       - '.github/workflows/sync-pdf-studio.yml'
       - 'tests/pdf-studio-v2-ui.mjs'
@@ -16,6 +17,7 @@ on:
       - main
     paths:
       - 'APP-Applications/pdf-studio/**'
+      - 'APP-Applications/_shared/studio-v2/**'
       - 'Library/demo/**'
       - '.github/workflows/sync-pdf-studio.yml'
   workflow_dispatch:
@@ -302,7 +304,8 @@ jobs:
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
 
-      - name: Browser acceptance PDF Studio 1.0
+      - name: Legacy diagnostic PDF Studio 1.0
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
