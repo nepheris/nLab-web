@@ -34,9 +34,10 @@ export async function resolveStudioLink(studioId,options={}){return resolveSpeci
 export async function openStudio(studioId,{query={},policy=null,context=null}={}){
  const resolved=await resolveSpecializedStudio(studioId,{policy}),u=new URL(resolved.url);
  for(const [k,v] of Object.entries(query||{}))if(v!=null)u.searchParams.set(k,String(v));
- if(context){
-  const {createStudioContext}=await import('./studio-context.js'),ctx=createStudioContext({...context,targetStudio:studioId,capability:context.capability||studioId});
-  u.searchParams.set('nlabSession',ctx.sessionId)
- }
+ const ctxApi=await import('./studio-context.js');let ctx=null;
+ if(context)ctx=ctxApi.createStudioContext({...context,targetStudio:studioId,capability:context.capability||studioId});
+ else{const existing=ctxApi.loadStudioContext?.();if(existing?.targetStudio===studioId)ctx=existing}
+ if(ctx?.sessionId)u.searchParams.set('nlabSession',ctx.sessionId);
+ u.searchParams.set('resolvedVersion',resolved.version);u.searchParams.set('resolvedChannel',resolved.status||resolved.policy);
  location.href=u.href;return resolved
 }
