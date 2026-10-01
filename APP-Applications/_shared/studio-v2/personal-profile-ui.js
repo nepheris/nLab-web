@@ -16,6 +16,21 @@ const ASSET_KIND_INFO=Object.freeze({
  'personal-image':{title:'Images personnelles',singular:'Image personnelle',icon:'▧',accept:imageAssetAccept}
 });
 const labelOf=(kind,ref)=>ref?.label||ref?.name||ASSET_KIND_INFO[kind]?.singular||'Image';
+async function normalizeAssetForKind(kind,id){
+ if(!['signature','initials'].includes(kind))return null;
+ const a=await getPersonalAsset(id);if(!a?.blob)throw new Error('Asset indisponible');
+ const type=String(a.blob.type||a.type||'').toLowerCase();if(['image/png','image/jpeg','image/webp'].includes(type))return a;
+ const url=URL.createObjectURL(a.blob);try{
+  const img=await new Promise((res,rej)=>{const x=new Image();x.onload=()=>res(x);x.onerror=()=>rej(new Error('Cette image ne peut pas être convertie en signature/paraphe.'));x.src=url});
+  const canvas=document.createElement('canvas');canvas.width=Math.max(1,img.naturalWidth||img.width);canvas.height=Math.max(1,img.naturalHeight||img.height);canvas.getContext('2d').drawImage(img,0,0);
+  const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error('Conversion PNG impossible')),'image/png'));
+  const name=String(a.name||'asset').replace(/\.[^.]+$/,'')+'.png';await putPersonalAsset(kind,blob,{id,name,meta:{...(a.meta||{}),convertedFor:kind,sourceType:type||'unknown'}});
+  return await getPersonalAsset(id)
+ }finally{URL.revokeObjectURL(url)}
+}
+async function moveAssetSafely(fromKind,toKind,id){
+ if(fromKind===toKind)return;await normalizeAssetForKind(toKind,id);movePersonalAssetRef(fromKind,toKind,id)
+}
 
 async function previewAsset(img,ref){
  if(!img)return;
@@ -93,10 +108,10 @@ export function mountPersonalProfileUI(host){
   const openDetail=async(kind,id)=>{try{const p=loadPersonalProfile(),cfg={signature:'signatures',initials:'initialsImages',logo:'logos','stamp-image':'stampImages','personal-image':'personalImages'}[kind],ref=(p.assets?.[cfg]||[]).find(x=>x.assetId===id),a=await getPersonalAsset(id);if(!ref)throw new Error('Asset introuvable');openedAsset={kind,id,ref};detail.hidden=false;detail.querySelector('[data-asset-detail-title]').textContent=ASSET_KIND_INFO[kind]?.singular||'Asset';detail.querySelector('[data-asset-detail-label]').value=ref.label||ref.name||'';detail.querySelector('[data-asset-detail-kind]').value=kind;const img=detail.querySelector('[data-asset-detail-image]');if(detailUrl){URL.revokeObjectURL(detailUrl);detailUrl=null}if(a?.blob){detailUrl=URL.createObjectURL(a.blob);img.src=detailUrl;img.hidden=false}else img.hidden=true;detail.scrollIntoView({block:'nearest'})}catch(e){status(host,e.message||String(e),'error')}};
   host.querySelectorAll('[data-asset-open]').forEach(b=>b.onclick=()=>openDetail(b.dataset.assetKind,b.dataset.assetOpen));
   detail?.querySelector('[data-asset-detail-close]')?.addEventListener('click',closeDetail);
-  detail?.querySelector('[data-asset-detail-save]')?.addEventListener('click',async()=>{if(!openedAsset)return;try{const nextKind=detail.querySelector('[data-asset-detail-kind]').value,label=detail.querySelector('[data-asset-detail-label]').value.trim()||openedAsset.ref.name;updatePersonalAssetRef(openedAsset.kind,openedAsset.id,{label});if(nextKind!==openedAsset.kind)movePersonalAssetRef(openedAsset.kind,nextKind,openedAsset.id);await render();status(host,'Asset modifié.','ok')}catch(e){status(host,e.message||String(e),'error')}});
+  detail?.querySelector('[data-asset-detail-save]')?.addEventListener('click',async()=>{if(!openedAsset)return;try{const nextKind=detail.querySelector('[data-asset-detail-kind]').value,label=detail.querySelector('[data-asset-detail-label]').value.trim()||openedAsset.ref.name;updatePersonalAssetRef(openedAsset.kind,openedAsset.id,{label});if(nextKind!==openedAsset.kind)await moveAssetSafely(openedAsset.kind,nextKind,openedAsset.id);await render();status(host,'Asset modifié.','ok')}catch(e){status(host,e.message||String(e),'error')}});
   detail?.querySelector('[data-asset-detail-delete]')?.addEventListener('click',async()=>{if(!openedAsset)return;if(!confirm('Supprimer cet asset personnel ?'))return;try{await deletePersonalAsset(openedAsset.id);removePersonalAssetRef(openedAsset.kind,openedAsset.id);await render();status(host,'Asset supprimé.','ok')}catch(e){status(host,e.message||String(e),'error')}});
   host.querySelectorAll('[data-lib-row]').forEach(row=>{row.addEventListener('dragstart',e=>{e.dataTransfer.setData('application/x-nlab-asset',JSON.stringify({kind:row.dataset.assetKind,id:row.dataset.assetId}));e.dataTransfer.effectAllowed='move'})});
-  host.querySelectorAll('[data-asset-drop-kind]').forEach(zone=>{zone.addEventListener('dragover',e=>{if(e.dataTransfer.types.includes('application/x-nlab-asset')){e.preventDefault();zone.classList.add('assetDropTarget')}});zone.addEventListener('dragleave',()=>zone.classList.remove('assetDropTarget'));zone.addEventListener('drop',async e=>{e.preventDefault();zone.classList.remove('assetDropTarget');try{const x=JSON.parse(e.dataTransfer.getData('application/x-nlab-asset')||'{}'),to=zone.dataset.assetDropKind;if(x.id&&x.kind&&to&&to!==x.kind){movePersonalAssetRef(x.kind,to,x.id);await render();status(host,'Asset déplacé vers '+(ASSET_KIND_INFO[to]?.title||to)+'.','ok')}}catch(err){status(host,err.message||String(err),'error')}})});
+  host.querySelectorAll('[data-asset-drop-kind]').forEach(zone=>{zone.addEventListener('dragover',e=>{if(e.dataTransfer.types.includes('application/x-nlab-asset')){e.preventDefault();zone.classList.add('assetDropTarget')}});zone.addEventListener('dragleave',()=>zone.classList.remove('assetDropTarget'));zone.addEventListener('drop',async e=>{e.preventDefault();zone.classList.remove('assetDropTarget');try{const x=JSON.parse(e.dataTransfer.getData('application/x-nlab-asset')||'{}'),to=zone.dataset.assetDropKind;if(x.id&&x.kind&&to&&to!==x.kind){await moveAssetSafely(x.kind,to,x.id);await render();status(host,'Asset déplacé vers '+(ASSET_KIND_INFO[to]?.title||to)+'.','ok')}}catch(err){status(host,err.message||String(err),'error')}})});
   for(const kind of ['signature','initials','logo','stamp-image','personal-image']){
    const info=ASSET_KIND_INFO[kind];
    host.querySelectorAll('[data-asset-default="'+kind+'"]').forEach(r=>r.onchange=()=>{setDefaultPersonalAsset(kind,r.value);status(host,info.singular+' par défaut mis à jour.','ok')});
