@@ -29,4 +29,6 @@ function build(){
  ribbon.addEventListener('click',e=>{const el=e.target.closest('[data-shell-action]');if(!el)return;const a=el.dataset.shellAction;if(a==='open'){const input=b.querySelector('input[type=file]');input?.click()}else if(a==='demo'){const candidates=[...b.querySelectorAll('button')].filter(x=>/demo/i.test(x.id+' '+x.textContent));candidates[0]?.click()}else if(a==='save'){const candidates=[...b.querySelectorAll('button')].filter(x=>/save|export|download/i.test(x.id+' '+x.textContent));candidates[0]?.click()}else if(a==='help'){alert(title+'\n\nInterface nLab Studio : utilisez le ruban pour ouvrir un fichier, charger une démo, exporter et accéder au corpus de test. Les traitements publics restent local-first autant que possible.')}});
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
+const mountCoreV2=()=>import('./studio-v2/legacy-bridge.js').then(m=>m.mountStudioCoreV2Bridge()).catch(err=>console.error('Studio Core V2 bridge',err));
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountCoreV2);else mountCoreV2();
 })();
