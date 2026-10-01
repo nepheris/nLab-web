@@ -212,14 +212,14 @@ jobs:
           grep -q 'sidebarGrip0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q 'nLab Web' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q '../studios/' APP-Applications/pdf-studio/runtime0925/visible-controls.js
-          grep -q '"test": "2.4.0"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "2.5.0"' APP-Applications/pdf-studio/versions.json
 
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "2.4.0"' APP-Applications/pdf-studio/versions.json
+          grep -q '"test": "2.5.0"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -239,7 +239,7 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 2.4.0 + DEMO v2: OK'
+          echo 'PDF Studio CURRENT 0.9.10 + TEST 2.5.0 + DEMO v2: OK'
 
           # PDF Studio 2.0 architecture contract
           test -s APP-Applications/pdf-studio/v2/index.html
