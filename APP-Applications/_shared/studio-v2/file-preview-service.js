@@ -2,9 +2,9 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 function inline(s){
  s=esc(s);
  s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
- s=s.replace(/**([^*]+)**/g,'<strong>$1</strong>').replace(/__([^_]+)__/g,'<strong>$1</strong>');
- s=s.replace(/*([^*]+)*/g,'<em>$1</em>').replace(/_([^_]+)_/g,'<em>$1</em>');
- s=s.replace(/[([^]]+)]((https?:\/\/[^)\s]+))/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+ s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/__([^_]+)__/g,'<strong>$1</strong>');
+ s=s.replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/_([^_]+)_/g,'<em>$1</em>');
+ s=s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
  return s
 }
 export function markdownToSafeHtml(markdown=''){
