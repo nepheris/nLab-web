@@ -149,7 +149,7 @@ function loadPdfProfilePreferences(){
  personalProfile=loadPersonalProfile();templates.setValues(profileTemplateValues(personalProfile));
  const pref=personalProfile.preferences?.studios?.['pdf-studio']||{};
  if(pref.naming){if(pref.naming.template!=null)$('#namingTemplate').value=pref.naming.template;if(pref.naming.prefix!=null)$('#namingPrefix').value=pref.naming.prefix;if(pref.naming.suffix!=null)$('#namingSuffix').value=pref.naming.suffix}
- if(pref.output){if(pref.output.structure)$('#outputStructure').value=pref.output.structure;if(pref.output.pathTemplate!=null)$('#outputPathTemplate').value=pref.output.pathTemplate;if(pref.output.format)$('#outputFormat').value=pref.output.format;if(pref.output.mode)$('#outputMode').value=pref.output.mode;if(zipCompressionControl&&pref.output.zipLevel)zipCompressionControl.setValue(pref.output.zipLevel,{emit:false})}
+ if(pref.output){if(pref.output.structure)$('#outputStructure').value=pref.output.structure;if(pref.output.pathTemplate!=null)$('#outputPathTemplate').value=pref.output.pathTemplate;const legacyZip=pref.output.format==='zip';if(pref.output.format&&!legacyZip)$('#outputFormat').value=pref.output.format;if(pref.output.mode||legacyZip)$('#outputMode').value=pref.output.mode||(legacyZip?'zip':'classic');if(zipCompressionControl&&pref.output.zipLevel)zipCompressionControl.setValue(pref.output.zipLevel,{emit:false})}
 }
 function savePdfProfilePreferences(){
  const naming={template:$('#namingTemplate').value||'{FILENAME}',prefix:$('#namingPrefix').value||'',suffix:$('#namingSuffix').value||''};
@@ -455,7 +455,11 @@ async function load(file){
   const item=fileBrowser.items.find(x=>x.data===file);if(item){item.pages=engine.pageCount;item.subtitle=item.relativePath||activeFileCapabilities.family;fileBrowser.render()}
   const converted=activeFileCapabilities.family!=='pdf'?' · aperçu PDF rapide':'';
   setStatus('Document chargé'+converted);recordHistory({studio:'pdf-studio',type:'file',label:'Fichier chargé',detail:engine.pageCount+' page(s) · '+activeFileCapabilities.family,target:file.name});
- }catch(e){setStatus('Aperçu indisponible : '+e.message);$('#mainPageGrid').innerHTML='<div class="statusBox">Aperçu rapide indisponible pour <b>'+file.name+'</b>.<br>Le format est détecté par le Core ; utiliser Conversion Studio lorsqu’une conversion avancée est requise.</div>';$('#previewGrid').innerHTML=''}
+ }catch(e){
+  const info=formatInfo(file);setStatus('Aperçu indisponible : '+e.message);
+  if(info.family==='text'||['md','markdown','txt','csv','json','yaml','yml','xml','html','htm'].includes(info.extension)){try{const raw=await file.text();$('#mainPageGrid').innerHTML='<div class="statusBox rawTextFallback"><b>Aperçu texte brut sécurisé · '+escHtml(file.name)+'</b><pre>'+escHtml(raw.slice(0,250000))+'</pre></div>';$('#previewGrid').innerHTML='';setStatus('Aperçu texte brut affiché après échec du renderer.');return}catch{}}
+  $('#mainPageGrid').innerHTML='<div class="statusBox">Aperçu rapide indisponible pour <b>'+escHtml(file.name)+'</b>.<br>Le renderer a été isolé : la navigation reste utilisable. Utilisez un Studio spécialisé si une conversion avancée est nécessaire.</div>';$('#previewGrid').innerHTML=''
+ }
 }
 async function loadFiles(files){
  const recursive=$('#recursiveFolders').checked;
