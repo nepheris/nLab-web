@@ -59,6 +59,7 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.dataset.headerMode=settings.headerMode||'sticky';
   b.dataset.ribbonRows=settings.ribbonRows||'auto';
   b.dataset.thumbnailQuality=settings.thumbnailQuality||'light';
+  b.style.setProperty('--collection-thumb-size',(Number(settings.collectionThumbnailSize)||104)+'px');
   const main=qs('#studioMain');if(main){main.classList.toggle('sidebarCompact',settings.sidebarMode==='compact');main.classList.toggle('sidebarWide',settings.sidebarMode==='wide');main.classList.toggle('sidebarHidden',settings.sidebarMode==='hidden')}
   return settings;
 }
