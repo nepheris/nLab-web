@@ -1,16 +1,16 @@
 {
   "schema": "nlab-studios-v2-catalog/v1",
   "core": "../_shared/studio-v2/",
-  "version": "2.2.0",
-  "updated": "2026-09-30",
+  "version": "2.3.0",
+  "updated": "2026-10-01",
   "studios": [
     {
       "id": "pdf-studio",
       "name": "PDF Studio V2",
       "status": "test",
-      "version": "2.2.0",
+      "version": "2.3.0",
       "href": "../pdf-studio/v2/",
-      "note": "PDF Studio 2.2.0 TEST. Remise en état fonctionnelle des entrées/sorties, objets, moteurs, sécurité, profil et assemblage."
+      "note": "PDF Studio 2.3.0 TEST · passe UX/Core 2.4, moteurs factorisés, aide/recherche, assets, ZIP, QR, caviardage et résolution des Studios spécialisés."
     },
     {
       "id": "markdown-studio",
