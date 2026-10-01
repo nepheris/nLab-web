@@ -15,7 +15,7 @@ const browser=await chromium.launch({headless:true});
 const results=[];
 try{
  for(const [id,controls] of studios){
-  const page=await browser.newPage({viewport:{width:1360,height:900});
+  const page=await browser.newPage({viewport:{width:1360,height:900}});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon/i.test(m.text()))errors.push(m.text())});
   await page.goto(base+'APP-Applications/'+id+'/v2/',{waitUntil:'domcontentloaded',timeout:60000});
   await page.waitForSelector('#nlabStudioV2Chrome',{timeout:30000});
