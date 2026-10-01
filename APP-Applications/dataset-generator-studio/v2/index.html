@@ -1,0 +1,26 @@
+<!doctype html><html lang="fr"><head><base href="../"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nLab Dataset Generator Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/branding/nlab-favicon.svg">
+<link rel="stylesheet" href="../_shared/studio-v2/studio.css">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head><body>
+
+
+<main class="studioMain">
+<aside class="studioSidebar"><div class="sidebarTop"><strong>Configuration</strong></div><div class="studioSidebarBody">
+<label class="field"><span>Preset</span><select id="preset"><option value="generic">Dataset générique</option><option value="people">Personnes synthétiques</option><option value="finance">Valeurs financières</option><option value="catalog">Catalogue produits</option></select></label>
+<label class="field"><span>Nombre de lignes</span><input id="rows" type="number" min="1" max="5000" value="40"></label>
+<label class="field"><span>Seed</span><input id="seed" type="number" value="20260929"></label>
+<div class="statusBox">Données synthétiques uniquement. Aucun identifiant réel n'est généré.</div>
+<div class="sectionSubhead">Colonnes</div>
+<label class="checkboxField"><input type="checkbox" data-col="id" checked><span>ID synthétique</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="name" checked><span>Nom de test</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="category" checked><span>Catégorie</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="number" checked><span>Valeur numérique</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="date" checked><span>Date</span></label>
+<label class="checkboxField"><input type="checkbox" data-col="url" checked><span>URL publique</span></label>
+<div class="sectionSubhead">État</div><div id="status" class="statusBox">Prêt.</div>
+</div></aside>
+<section class="viewer"><div class="viewerCard"><div class="viewerToolbar"><strong>Aperçu</strong><span class="spacer"></span><span id="count">0 ligne</span></div><div style="overflow:auto"><table id="table" style="width:100%;border-collapse:collapse;font-size:12px"></table></div></div></section>
+</main>
+<script type="module" src="./v2/v2-app.js"></script></body></html>
