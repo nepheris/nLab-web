@@ -9,6 +9,7 @@ on:
       - 'Info/**'
       - 'APP-Applications/**'
       - 'Library/demo/**'
+      - 'tests/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
