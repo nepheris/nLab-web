@@ -30,6 +30,7 @@
 
  <section id="sidebar-pane-tools" class="sidebarPane active" data-sidebar-pane="tools">
   <details id="sectionConfig" class="toolSection scope-core" data-scope="core"><summary>0. Configuration & espace personnel <small class="scopeBadge">CORE</small></summary><div class="body"><div class="statusBox">Profil local nLab : variables, modèles, signature/paraphe et préférences exportables dans un ZIP portable.</div><div id="personalProfileHost"></div>
+ <details><summary>Migration ancienne configuration</summary><div class="profileSecurityNote">Importe les réglages utiles des configurations PDF Studio 0.9.x / 1.x : identité, nommage, classement, tampons et configuration Google lorsque présents. L’import fusionne avec le profil V2 et ne supprime pas les réglages actuels.</div><div class="compactInputRow"><button id="importLegacyConfig" type="button">Importer JSON 0.9.x / 1.x</button><input id="legacyConfigInput" type="file" accept=".json,application/json" hidden></div><div id="legacyConfigStatus" class="statusBox">Aucune migration effectuée.</div></details>
  <details><summary>Google Drive <small class="devBadge">TEST</small></summary>
   <div class="profileSecurityNote">Optionnel. Les identifiants OAuth restent stockés localement dans ce navigateur ; aucun secret client n’est requis. Drive est une source/destination supplémentaire, le profil ZIP portable reste indépendant.</div>
   <label>Client ID OAuth Web<input id="googleClientId" placeholder="xxxxxxxx.apps.googleusercontent.com"></label>
