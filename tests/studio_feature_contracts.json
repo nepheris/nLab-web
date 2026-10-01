@@ -33,7 +33,7 @@
         "msg"
       ],
       "required_strings": [
-        "Studio Core V2",
+        "studio-v2/studio.css",
         "bootstrap-specialized.js"
       ]
     },
@@ -51,8 +51,9 @@
         "out"
       ],
       "required_strings": [
-        "Tesseract.createWorker",
-        "bootstrap-specialized.js"
+        "studio-v2/studio.css",
+        "bootstrap-specialized.js",
+        "Tesseract.createWorker"
       ]
     },
     "code-studio": {
@@ -72,8 +73,9 @@
         "editor"
       ],
       "required_strings": [
-        "ace.edit",
-        "bootstrap-specialized.js"
+        "studio-v2/studio.css",
+        "bootstrap-specialized.js",
+        "ace.edit"
       ]
     },
     "json-studio": {
@@ -101,6 +103,7 @@
         "result"
       ],
       "required_strings": [
+        "studio-v2/studio.css",
         "bootstrap-specialized.js"
       ]
     },
@@ -118,8 +121,9 @@
         "types"
       ],
       "required_strings": [
-        "Papa.parse",
-        "bootstrap-specialized.js"
+        "studio-v2/studio.css",
+        "bootstrap-specialized.js",
+        "Papa.parse"
       ]
     },
     "file-studio": {
@@ -138,6 +142,7 @@
         "status"
       ],
       "required_strings": [
+        "studio-v2/studio.css",
         "bootstrap-specialized.js"
       ]
     },
@@ -175,9 +180,9 @@
         "history"
       ],
       "required_strings": [
-        "QRCodeStyling",
-        "bwipjs",
-        "Html5Qrcode"
+        "qr-code-styling",
+        "bwip-js",
+        "html5-qrcode"
       ],
       "required_runtime_strings": [
         "mountStudioV2",
