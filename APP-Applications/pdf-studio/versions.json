@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.4.0",
+  "test": "2.5.0",
   "versions": [
+    {
+      "version": "2.5.0",
+      "label": "PDF Studio 2.5.0 TEST",
+      "date": "2026-10-01",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Seconde passe de convergence : ouverture depuis URL HTTPS/CORS vers le moteur commun, Google Drive optionnel via OAuth drive.file + Picker multi-fichiers, choix d’un dossier Drive de sortie et upload, destination même dossier source lorsque le navigateur fournit un handle de dossier, migration/fusion des anciens JSON 0.9.x/1.x vers le profil V2 (identité, nommage, classement, tampons, OAuth). Conserve les restaurations 2.4.0 : DOCX/ODT, batch métadonnées, Fit page, historique JSON, signature dessinée, QR en-tête/pied et éditeur avancé de tampons. Drive live reste dépendant d’un Client ID/API Key valides et des origines OAuth autorisées."
+    },
     {
       "version": "2.4.0",
       "label": "PDF Studio 2.4.0 TEST",
       "date": "2026-10-01",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe de récupération fonctionnelle historique 0.9.x/1.x : conversions DOCX/ODT restaurées, batch de nettoyage métadonnées, Fit page, export JSON de l’historique, signature dessinée, QR variable en en-tête/pied, formulaires et batch promus en TEST. Tampons restructurés en Utiliser / Éditeur avec catégories, exemples, préfixe/suffixe de nommage, copie/édition/suppression, import/export JSON compatible avec les champs historiques et aperçu du nom de sortie. Google Drive/OAuth, sortie même dossier source et comparaison visuelle restent à converger."
     },
