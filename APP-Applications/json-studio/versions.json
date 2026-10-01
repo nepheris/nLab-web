@@ -1,8 +1,17 @@
 {
   "name": "JSON Studio",
   "current": "0.2.0",
-  "test": null,
+  "test": "2.0.0",
   "versions": [
+    {
+      "version": "2.0.0",
+      "label": "JSON Studio 2.0.0 TEST",
+      "date": "2026-10-01",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Réécriture TEST sur Studio Core V2. Fonctionnalités métier de la version précédente conservées, chrome commun V2, paramètres Core, historique partagé et routage inter-Studio. CURRENT précédent conservé pour validation de non-régression avant bascule."
+    },
     {
       "version": "0.2.0",
       "label": "JSON Studio Alpha 0.2",
