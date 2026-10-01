@@ -14,7 +14,7 @@ try{
  await page.locator('#fileInput').setInputFiles(fixture);
  await page.waitForFunction(()=>/\/\s*12/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000});
  // Source distante : même moteur, via une URL HTTP/CORS accessible.
- const remoteUrl=new URL('/Library/demo/files/demo-input/PDF/pdf-texte-actif.pdf',url).href;
+ const remoteUrl=new URL('/Library/demo/files/demo-input/Security/demo-redaction-secrets.pdf',url).href;
  await page.locator('#remoteFileUrl').fill(remoteUrl);await page.locator('#openRemoteUrl').click();
  await page.waitForFunction(()=>/Fichier distant chargé/.test(document.querySelector('#studioStatusText')?.textContent||''),null,{timeout:30000});
  // Configuration Drive : test local sans déclencher OAuth réel.
