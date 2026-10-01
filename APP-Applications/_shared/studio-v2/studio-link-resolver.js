@@ -29,3 +29,14 @@ export async function openSpecializedStudio(studioId,{capability=null,context={}
  const u=new URL(resolved.url);u.searchParams.set('nlabSession',ctx.sessionId);u.searchParams.set('sourceStudio',context.sourceStudio||document.body.dataset.studio||'studio');location.href=u.href;return resolved
 }
 export const StudioLinkResolver=Object.freeze({resolve:resolveSpecializedStudio,open:openSpecializedStudio});
+
+export async function resolveStudioLink(studioId,options={}){return resolveSpecializedStudio(studioId,options)}
+export async function openStudio(studioId,{query={},policy=null,context=null}={}){
+ const resolved=await resolveSpecializedStudio(studioId,{policy}),u=new URL(resolved.url);
+ for(const [k,v] of Object.entries(query||{}))if(v!=null)u.searchParams.set(k,String(v));
+ if(context){
+  const {createStudioContext}=await import('./studio-context.js'),ctx=createStudioContext({...context,targetStudio:studioId,capability:context.capability||studioId});
+  u.searchParams.set('nlabSession',ctx.sessionId)
+ }
+ location.href=u.href;return resolved
+}
