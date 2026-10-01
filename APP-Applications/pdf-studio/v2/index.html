@@ -22,7 +22,7 @@
   <button id="sidebar-tab-search" data-sidebar-tab="search">Recherche</button>
  </div>
  <div class="sidebarGlobalControls">
-  <button id="sidebar-collapse-all" type="button">▸ Tout plier</button><button id="sidebar-expand-all" type="button">▾ Tout déplier</button>
+  <button id="sidebar-collapse-all" type="button">▸ Tout plier</button><button id="sidebar-expand-all" type="button">▾ Tout déplier</button><button id="sidebarDetach" type="button" title="Détacher / déplacer la sidebar">↗ Détacher</button>
   <select id="sidebarModeQuick" title="Mode du volet"><option value="normal">Normal</option><option value="compact">Compact</option><option value="wide">Large</option><option value="hidden">Masqué</option></select>
  </div>
 
@@ -62,7 +62,7 @@
    </div>
    <div class="compactInputRow"><button id="pickOutputFolder" data-icon="folder">Dossier sortie</button><select id="recentOutputSelect" title="Sorties récentes"><option value="">Sorties récentes…</option></select><button id="loadRecentOutput">Charger</button></div>
    <label>Classement<select id="outputStructure"><option value="root">Racine</option><option value="treatment">Traitement</option><option value="year-month">Année / mois</option><option value="year-month-week">Année / mois / semaine</option><option value="treatment-date">Traitement / année / mois</option><option value="custom">Template personnalisé</option></select></label>
-   <input id="outputPathTemplate" value="{TREATMENT}/{YEAR}/{MONTH}" placeholder="{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}">
+   <input id="outputPathTemplate" value="{TREATMENT}/{YEAR}/{MONTH}" placeholder="{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}"><details class="inlineHelp"><summary>Variables disponibles</summary><div id="outputVariables" class="variableHelp"></div></details>
    <div id="outputPathPreview" class="statusBox mono">Téléchargement navigateur · racine</div>
    <div class="grid2"><button id="savePdfSide" data-icon="save">Enregistrer</button><button id="saveZipSide" data-icon="zip">Enregistrer ZIP</button><button id="saveAndClassify" data-icon="classify">Enregistrer + classer</button><button id="saveAs" data-icon="save">Enregistrer sous</button></div>
   </div></details>
@@ -177,7 +177,7 @@
     <div class="grid2"><label>Niveau PAdES<select id="signaturePadesLevel"><option value="PAdES_BASELINE_B">PAdES-B</option><option value="PAdES_BASELINE_T">PAdES-T</option><option value="PAdES_BASELINE_LT">PAdES-LT</option><option value="PAdES_BASELINE_LTA">PAdES-LTA</option></select></label><label id="signatureCertificationField">Certification<select id="signatureCertificationLevel"><option value="CERTIFIED_NO_CHANGES_ALLOWED">Aucune modification autorisée</option><option value="CERTIFIED_FORM_FILLING">Remplissage formulaires</option><option value="CERTIFIED_FORM_FILLING_AND_ANNOTATIONS">Formulaires + annotations</option></select></label></div>
     <label>Nom du signataire<input id="signatureSignerName" placeholder="{FULL_NAME}"></label>
     <div class="grid2"><label>Motif<input id="signatureReason" placeholder="Approbation"></label><label>Lieu<input id="signatureLocation" placeholder="{SITE}"></label></div>
-    <label>Contact<input id="signatureContact" placeholder=""></label>
+    <label>Contact<input id="signatureContact" placeholder=""></label><details class="inlineHelp"><summary>Variables disponibles</summary><div id="signatureVariables" class="variableHelp"></div></details>
     <button id="applyCryptographicSignature" type="button" data-icon="security">Signer cryptographiquement</button>
     <pre id="signatureCryptoStatus" class="signatureCryptoStatus">Service DSS non testé.</pre>
    </details>
