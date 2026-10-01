@@ -329,6 +329,10 @@ jobs:
         run: |
           set -euo pipefail
           python tests/generate_pdf_studio_v1_fixtures.py
+          rm -rf /tmp/pdf-studio-v2-folder
+          mkdir -p /tmp/pdf-studio-v2-folder
+          cp /tmp/pdf-studio-v1.pdf /tmp/pdf-studio-v2-folder/a.pdf
+          cp /tmp/pdf-studio-v1-b.pdf /tmp/pdf-studio-v2-folder/b.pdf
           python -m http.server 8766 --bind 127.0.0.1 >/tmp/nlab-v2-http.log 2>&1 &
           SERVER_PID=$!
           trap 'kill $SERVER_PID || true' EXIT
@@ -339,6 +343,7 @@ jobs:
           PDF_STUDIO_V2_URL=http://127.0.0.1:8766/APP-Applications/pdf-studio/v2/ \
           PDF_STUDIO_FIXTURE=/tmp/pdf-studio-v1.pdf \
           PDF_STUDIO_FIXTURE2=/tmp/pdf-studio-v1-b.pdf \
+          PDF_STUDIO_FOLDER=/tmp/pdf-studio-v2-folder \
           node tests/pdf-studio-v2-ui.mjs
 
       - name: Build PDF Studio 1.0 portable package
