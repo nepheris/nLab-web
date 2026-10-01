@@ -374,6 +374,7 @@ jobs:
           grep -q 'data-version' /tmp/nlab-pdf-studio-v1.html
           grep -q 'Studios V2' /tmp/nlab-studios-v2.html
           grep -q 'STUDIO_V2' /tmp/nlab-studio-core-v2.js
-          grep -q 'PDF Studio V2' /tmp/nlab-pdf-studio-v2.html
+          grep -q 'nLab PDF Studio' /tmp/nlab-pdf-studio-v2.html
+          grep -q 'id="sectionConfig"' /tmp/nlab-pdf-studio-v2.html
           test -s /tmp/nlab-pdf-studio-v1.zip
           python -m zipfile -t /tmp/nlab-pdf-studio-v1.zip
