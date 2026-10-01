@@ -392,9 +392,9 @@ async function refreshQrPreview(){
  const p=$('#qrPreview');try{const q=await codeBlob(),url=URL.createObjectURL(q.blob);p.innerHTML='<img src="'+url+'" alt="Aperçu du code"><small>'+escHtml(q.value)+'</small>';p.querySelector('img').onload=()=>setTimeout(()=>URL.revokeObjectURL(url),500)}catch(e){p.innerHTML='<span>'+escHtml(e.message)+'</span>'}
 }
 async function applyQrQuick(){
- assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const q=await codeBlob(),pages=toolPages('qrScope');await checkpoint();
- await engine.applyImageOverlay(q.blob,pages,{position:$('#qrPosition').value,widthPct:Number($('#qrWidthPct').value)||12,opacity:1});markPdfModifiedAfterSignature();await renderAll();setStatus('Code '+q.type+' placé sur '+pages.length+' page(s).');
- recordHistory({studio:'pdf-studio',type:'action',label:'Code placé',detail:q.type+' · '+pages.length+' page(s)',target:engine.fileName,action:'qr',repeatable:false})
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const q=await codeBlob(),pages=toolPages('qrScope'),widthPct=Number($('#qrWidthPct').value)||12,pos=$('#qrPosition').value,map={'top-left':[6,7],'top-right':[82,7],'bottom-left':[6,82],'bottom-right':[82,82]},xy=map[pos]||[82,82];
+ await objectLayer.setImageBlob(q.blob,'image');for(const p of pages){const o=objectLayer.addAt(p,xy[0],xy[1],'image');if(o){o.wPct=widthPct;o.subtype='code';o.codeType=q.type;o.codeValue=q.value}}objectLayer.setTool('select');objectLayer.render();openToolSection('#sectionAnnotations');setStatus('Code '+q.type+' placé comme objet sur '+pages.length+' page(s) · déplaçable/redimensionnable.');
+ recordHistory({studio:'pdf-studio',type:'action',label:'Code placé',detail:q.type+' · '+pages.length+' page(s) · objet éditable',target:engine.fileName,action:'qr',repeatable:false})
 }
 async function runQuickConversion(){
  if(!engine.pageCount)throw new Error('Chargez un document.');const direction=$('#convertDirection').value||'from-pdf',stem=(engine.fileName||'document').replace(/\.pdf$/i,'');
