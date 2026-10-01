@@ -49,6 +49,27 @@ function renderDriveState(){
  const st=drive.state(),box=$('#googleDriveStatus');if(box)box.textContent=st.connected?'Google Drive connecté'+(st.user?.email?' · '+st.user.email:'')+(driveOutputFolder?.name?' · sortie : '+driveOutputFolder.name:''):'Google Drive non connecté.';
  if($('#googleClientId'))$('#googleClientId').value=st.config?.clientId||'';if($('#googleApiKey'))$('#googleApiKey').value=st.config?.apiKey||'';if($('#googleAppId'))$('#googleAppId').value=st.config?.appId||''
 }
+function migrateLegacyPdfConfig(raw){
+ const src=raw&&typeof raw==='object'?raw:{},report=[];
+ const legacyStamps=Array.isArray(src.stamps)?src.stamps:(Array.isArray(src.stamps?.stamps)?src.stamps.stamps:(Array.isArray(src.stamps?.library)?src.stamps.library:[]));
+ personalProfile=updatePersonalProfile(p=>{
+  const op=src.operator||src.profile||src.identity||{};p.identity=p.identity||{};p.variables=p.variables||{};
+  if(op.initials){p.identity.initials=String(op.initials);p.variables.INITIALS=String(op.initials);report.push('initiales')}
+  if(op.name||op.displayName){p.identity.displayName=String(op.displayName||op.name);p.variables.DISPLAY_NAME=p.identity.displayName;report.push('identité')}
+  p.preferences=p.preferences||{};p.preferences.studios=p.preferences.studios||{};const pref=p.preferences.studios['pdf-studio']||{},out=src.output||src.workspaceDefaults?.output||{};
+  pref.naming=pref.naming||{};pref.output=pref.output||{};
+  if(out.filenameTemplate){pref.naming.template=String(out.filenameTemplate).replace(/\{YYYY\}/g,'{YEAR}').replace(/\{MM\}/g,'{MONTH}');report.push('nommage')}
+  if(out.archivePattern){pref.output.structure='custom';pref.output.pathTemplate=String(out.archivePattern).replace(/\{YYYY\}/g,'{YEAR}').replace(/\{MM\}/g,'{MONTH}').replace(/\{WW\}/g,'{WEEK}');report.push('classement')}
+  if(out.operationFolder)p.variables.TREATMENT=String(out.operationFolder);
+  p.preferences.studios['pdf-studio']=pref;
+  p.templates=p.templates||{};p.templates.stamps=Array.isArray(p.templates.stamps)?p.templates.stamps:[];
+  for(const x of legacyStamps){const item=normalizeStampItem({...x,id:String(x.id||'').startsWith('user-stamp-')?x.id:'user-stamp-legacy-'+(x.id||Math.random().toString(16).slice(2)),system:false});const i=p.templates.stamps.findIndex(y=>y.id===item.id);if(i>=0)p.templates.stamps[i]=item;else p.templates.stamps.push(item)}
+  if(legacyStamps.length)report.push(legacyStamps.length+' tampon(s)');
+  return p
+ });
+ const google=src.auth?.google||src.google||{};if(google.clientId){drive.configure({clientId:String(google.clientId)});report.push('Google OAuth')}
+ return report
+}
 function saveDriveConfig(){
  drive.configure({clientId:$('#googleClientId')?.value.trim()||'',apiKey:$('#googleApiKey')?.value.trim()||'',appId:$('#googleAppId')?.value.trim()||''});renderDriveState();setStatus('Configuration Google Drive enregistrée localement.')
 }
@@ -649,6 +670,8 @@ $('#pickFolder').onclick=()=>chooseInputDirectory().catch(e=>setStatus(e.message
 $('#folderInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputHandle=null;const root=files[0].webkitRelativePath?.split('/')[0]||'Dossier';activeInputLocation={kind:'folder',label:root};setValidatedButton($('#pickFolder'),true,'Dossier validé : '+root);setValidatedButton($('#pickFile'),false);await loadFiles(files)}};
 mountDropZone($('#inputDropZone'),{onFiles:async files=>{if(files.length){activeInputHandle=null;activeInputLocation={kind:'drop',label:files.length+' élément(s) déposé(s)'};$('#inputDropZone').classList.add('validatedDropZone');await loadFiles(files)}}});
 $('#loadRecentInput').onclick=async()=>{const id=$('#recentInputSelect').value;if(!id)return;try{const {item,handle}=await resolveRecentLocation('input',id,{mode:'read'}),files=await collectDirectoryHandle(handle,{recursive:$('#recursiveFolders').checked});activeInputHandle=handle;activeInputLocation=item;setValidatedButton($('#pickFolder'),true,'Entrée récente : '+item.label);setValidatedButton($('#pickFile'),false);$('#recentInputSelect').classList.add('validatedChoice');await loadFiles(files);setStatus('Entrée récente chargée : '+item.label)}catch(e){setStatus(e.message)}};
+$('#importLegacyConfig')?.addEventListener('click',()=>$('#legacyConfigInput').click());
+$('#legacyConfigInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const raw=JSON.parse(await file.text()),report=migrateLegacyPdfConfig(raw);loadPdfProfilePreferences();renderNamingPresets();renderStampPresets();renderObjectAssetSelectors();renderDriveState();updateNamingPreview();updateOutputPreview();$('#legacyConfigStatus').textContent=report.length?'Migration : '+report.join(' · '):'JSON reconnu mais aucun réglage migrable détecté.';setStatus('Ancienne configuration importée / fusionnée.')}catch(err){$('#legacyConfigStatus').textContent='Erreur : '+err.message;setStatus('Migration configuration : '+err.message)}finally{e.target.value=''}});
 $('#saveGoogleConfig')?.addEventListener('click',saveDriveConfig);$('#connectGoogleDrive')?.addEventListener('click',()=>connectDrive().catch(e=>setStatus(e.message)));$('#disconnectGoogleDrive')?.addEventListener('click',()=>{drive.disconnect();driveOutputFolder=null;renderDriveState();setStatus('Google Drive déconnecté.')});drive.addEventListener('state',renderDriveState);renderDriveState();
 $('#openRemoteUrl')?.addEventListener('click',async()=>{try{const url=$('#remoteFileUrl').value.trim();if(!url)throw new Error('Saisissez une URL.');setStatus('Chargement distant…');const file=await fetchRemoteFile(url);activeInputHandle=null;activeInputLocation={kind:'url',label:url};await loadFiles([file]);setValidatedButton($('#openRemoteUrl'),true,'URL chargée : '+url);setStatus('Fichier distant chargé : '+file.name)}catch(e){setStatus('URL : '+e.message)}});
 $('#remoteFileUrl')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#openRemoteUrl').click()}});
