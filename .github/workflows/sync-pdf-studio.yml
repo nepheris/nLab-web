@@ -8,6 +8,9 @@ on:
       - 'APP-Applications/pdf-studio/**'
       - 'Library/demo/**'
       - '.github/workflows/sync-pdf-studio.yml'
+      - 'tests/pdf-studio-v2-ui.mjs'
+      - 'tests/studio_feature_contracts.json'
+      - 'tests/validate_studio_features.py'
   pull_request:
     branches:
       - main
@@ -321,6 +324,7 @@ jobs:
           node tests/pdf-studio-v1-ui.mjs
 
       - name: Browser acceptance PDF Studio V2
+        if: ${{ always() }}
         shell: bash
         run: |
           set -euo pipefail
