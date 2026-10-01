@@ -14,7 +14,6 @@ import{CollectionBrowser}from'../../_shared/studio-v2/collection-browser.js';
 import{mountDropZone,collectDirectoryHandle,mountSortableList}from'../../_shared/studio-v2/drop-zone.js';
 import{loadStudioSettings,saveStudioSettings}from'../../_shared/studio-v2/settings.js';
 import{mountSteppedPresetControl}from'../../_shared/studio-v2/stepped-preset-control.js';
-import{openStudio as openResolvedStudio}from'../../_shared/studio-v2/studio-link-resolver.js';
 import{mountAssetPicker}from'../../_shared/studio-v2/asset-picker.js';
 import{lightweightThumbnail}from'../../_shared/studio-v2/thumbnail-service.js';
 import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template-engine.js';
@@ -609,11 +608,8 @@ $('#detachHelp').onclick=()=>{
  let p=$('#floatingHelpWindow');if(!p){p=document.createElement('div');p.id='floatingHelpWindow';p.className='studioWindow floatingHelpWindow';p.hidden=true;p.innerHTML='<div class="studioWindowContent"></div>';document.body.append(p);enhanceStudioWindow(p,{key:'help',title:'Aide contextuelle'});p.addEventListener('studio-window-close',()=>{activateSidebarTab('properties');renderAllHelp(lastFeature?.action||null)})}
  p.hidden=false;const content=p.querySelector('.studioWindowContent');renderHelpCatalog(content,studioManifest,{activeAction:lastFeature?.action||null});bindHelpCatalogActions(content)
 };
-async function openAdvancedStudio(id){
- createStudioContext({sourceStudio:'pdf-studio',targetStudio:id,capability:id,fileName:engine.fileName,page:engine.currentPage,selectedPages:[...engine.selected],returnTarget:location.href});
- try{await openResolvedStudio(id,{query:{from:'pdf-studio',return:'pdf-studio'}})}catch(e){setStatus('Studio spécialisé indisponible : '+e.message)}
-}
-$$('[data-advanced-studio]').forEach(b=>b.onclick=()=>openAdvancedStudio(b.dataset.advancedStudio));
+document.addEventListener('studio-v2:before-specialized-open',e=>{const id=e.detail?.target;if(!id)return;createStudioContext({sourceStudio:'pdf-studio',targetStudio:id,capability:id,fileName:engine.fileName,page:engine.currentPage,selectedPages:[...engine.selected],returnTarget:location.href})});
+document.addEventListener('studio-v2:specialized-open-error',e=>setStatus('Studio spécialisé indisponible : '+(e.detail?.error?.message||e.detail?.target||'inconnu')));
 document.addEventListener('click',e=>{const b=e.target.closest('[data-studio-action]');if(b&&!b.closest('.studioRibbon'))document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.studioAction,source:'sidebar',element:b}}))});
 
 function openToolSection(id){activateSidebarTab('tools');const x=$(id);if(x){x.open=true;x.scrollIntoView({block:'nearest'})}}
