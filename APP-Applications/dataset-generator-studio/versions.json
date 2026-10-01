@@ -1,14 +1,23 @@
 {
   "name": "Dataset Generator Studio",
   "current": null,
-  "test": "0.2.0",
+  "test": "2.0.0",
   "versions": [
+    {
+      "version": "2.0.0",
+      "label": "Dataset Generator Studio 2.0.0 TEST",
+      "date": "2026-10-01",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion."
+    },
     {
       "version": "0.2.0",
       "label": "Dataset Generator Studio 0.2.0 TEST",
       "date": "2026-09-29",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./",
       "notes": "Premier générateur navigateur opérationnel sur Studio Core V1 : presets synthétiques, seed reproductible, choix de colonnes, aperçu tabulaire et exports JSON, CSV, XLSX et Markdown. Les générateurs avancés existants côté scripts restent à intégrer à l’interface."
     },
