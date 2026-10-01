@@ -37,7 +37,7 @@ jobs:
       - name: Verify PDF Studio public runtime
         shell: bash
         run: |
-          set -euo pipefail
+          set -euxo pipefail
           test -s APP-Applications/pdf-studio/app.html
           test -s APP-Applications/pdf-studio/app-0.9.10.html
           grep -q 'app-0.9.10.html' APP-Applications/pdf-studio/app.html
