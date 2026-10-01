@@ -15,6 +15,7 @@ import{mountDropZone,collectDirectoryHandle,mountSortableList}from'../../_shared
 import{loadStudioSettings,saveStudioSettings}from'../../_shared/studio-v2/settings.js';
 import{mountSteppedPresetControl}from'../../_shared/studio-v2/stepped-preset-control.js';
 import{mountAssetPicker}from'../../_shared/studio-v2/asset-picker.js';
+import{bindColorHexControl}from'../../_shared/studio-v2/color-control.js';
 import{lightweightThumbnail}from'../../_shared/studio-v2/thumbnail-service.js';
 import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../../_shared/studio-v2/output-service.js';
@@ -204,11 +205,8 @@ codeSizeControl=mountSteppedPresetControl($('#codeSizeControl'),{min:4,max:40,st
 objectOpacityControl?.addEventListener('change',e=>{$('#objectOpacity').value=e.detail.value;objectLayer.setStyle({opacity:e.detail.value/100});if(objectLayer.selected())objectLayer.updateSelected({opacity:e.detail.value/100})});
 objectPenWidthControl?.addEventListener('change',e=>{$('#objectPenWidth').value=e.detail.value;objectLayer.setStyle({penWidth:e.detail.value});if(objectLayer.selected()?.type==='pen')objectLayer.updateSelected({width:e.detail.value})});
 signatureWidthControl?.addEventListener('change',e=>$('#signatureWidthPct').value=e.detail.value);signatureOpacityControl?.addEventListener('change',e=>$('#signatureOpacityPct').value=e.detail.value);codeSizeControl?.addEventListener('change',e=>$('#qrWidthPct').value=e.detail.value);
-function bindHexColor(colorId,textId,onChange){
- const color=$('#'+colorId),text=$('#'+textId);if(!color||!text)return;const sync=()=>{text.value=color.value.toUpperCase();onChange?.(color.value)};color.addEventListener('input',sync);text.addEventListener('change',()=>{const v=text.value.trim();if(/^#[0-9a-f]{6}$/i.test(v)){color.value=v;text.value=v.toUpperCase();onChange?.(v)}else text.value=color.value.toUpperCase()});sync()
-}
-bindHexColor('objectColor','objectColorHex',()=>{objectLayer.setStyle({color:$('#objectColor').value})});
-bindHexColor('redactionColor','redactionColorHex',v=>{objectLayer.setStyle({redactionColor:v})});
+bindColorHexControl({colorInput:$('#objectColor'),hexInput:$('#objectColorHex'),onChange:()=>{objectLayer.setStyle({color:$('#objectColor').value})}});
+bindColorHexControl({colorInput:$('#redactionColor'),hexInput:$('#redactionColorHex'),onChange:v=>{objectLayer.setStyle({redactionColor:v})}});
 $$('[data-redaction-color]').forEach(b=>b.onclick=()=>{const v=b.dataset.redactionColor;$('#redactionColor').value=v;$('#redactionColorHex').value=v.toUpperCase();$$('[data-redaction-color]').forEach(x=>x.classList.toggle('active',x===b));objectLayer.setStyle({redactionColor:v})});
 redactionRasterControl=mountSteppedPresetControl($('#redactionRasterControl'),{min:75,max:300,step:1,value:150,unit:'DPI',presets:[{id:'very-light',label:'Très léger',value:75,min:75,max:85},{id:'screen',label:'Écran',value:96,min:86,max:120},{id:'standard',label:'Standard',value:150,min:121,max:174},{id:'good',label:'Bonne qualité',value:200,min:175,max:249},{id:'high',label:'Haute qualité',value:300,min:250,max:300}],describe:(v,p)=>v+' DPI · '+(p?.label||dpiMeaning(v))+(v<100?' · attention aux petits caractères':'')});
 for(const id of ['objectText','objectColor','objectFontSize','objectOpacity','objectPenWidth'])$('#'+id)?.addEventListener('input',()=>{const style={color:$('#objectColor').value,fontSize:Number($('#objectFontSize').value)||12,opacity:(Number($('#objectOpacity').value)||100)/100,penWidth:Number($('#objectPenWidth').value)||2};objectLayer.setText($('#objectText').value);objectLayer.setStyle(style);const sel=objectLayer.selected();if(sel){const patch={};if(sel.type==='text'||sel.type==='stamp')patch.text=$('#objectText').value;if(['text','stamp','highlight','redaction','pen'].includes(sel.type))patch.color=style.color;if(sel.type==='text'||sel.type==='stamp')patch.fontSize=style.fontSize;patch.opacity=style.opacity;if(sel.type==='pen')patch.width=style.penWidth;objectLayer.updateSelected(patch)}});
