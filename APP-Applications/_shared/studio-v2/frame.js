@@ -1,4 +1,4 @@
-import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible}from'./core.js';
+import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible,setStatus}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings,loadStudioSettings}from'./settings.js';
 import{enhanceStudioWindow}from'./window-system.js';
 import{mountHistoryUI,recordHistory}from'./history.js';
@@ -129,7 +129,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
     const b=e.target.closest('[data-specialized-studio],[data-advanced-studio]');if(!b)return;
     e.preventDefault();const target=b.dataset.specializedStudio||b.dataset.advancedStudio;if(!target)return;
     const detail={target,sourceStudio:manifest.id,element:b};document.dispatchEvent(new CustomEvent('studio-v2:before-specialized-open',{detail}));
-    try{await openResolvedStudio(target,{query:{from:manifest.id,return:manifest.id}})}catch(err){document.dispatchEvent(new CustomEvent('studio-v2:specialized-open-error',{detail:{...detail,error:err}}))}
+    try{await openResolvedStudio(target,{query:{from:manifest.id,return:manifest.id}})}catch(err){setStatus('Studio spécialisé indisponible : '+(err.message||target));document.dispatchEvent(new CustomEvent('studio-v2:specialized-open-error',{detail:{...detail,error:err}}))}
   });
   const menu=qs('.studioMenu');
   menu?.addEventListener('click',e=>{
