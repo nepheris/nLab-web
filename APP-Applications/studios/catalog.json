@@ -16,7 +16,7 @@
     {
       "id": "image-studio",
       "name": "Image Studio",
-      "status": "alpha-poc",
+      "status": "current+test",
       "path": "../image-studio/",
       "demo": "../../Library/demo/manifests/image.json",
       "versions": "./image",
@@ -26,7 +26,7 @@
     {
       "id": "ocr-studio",
       "name": "OCR Studio",
-      "status": "alpha-poc",
+      "status": "current+test",
       "path": "../ocr-studio/",
       "demo": "../../Library/demo/manifests/ocr.json",
       "versions": "./ocr",
@@ -36,7 +36,7 @@
     {
       "id": "code-studio",
       "name": "Code Studio",
-      "status": "alpha-poc",
+      "status": "current+test",
       "path": "../code-studio/",
       "demo": "../../Library/demo/manifests/code-json.json",
       "versions": "./code",
@@ -46,7 +46,7 @@
     {
       "id": "json-studio",
       "name": "JSON Studio",
-      "status": "alpha-poc",
+      "status": "current+test",
       "path": "../json-studio/",
       "demo": "../../Library/demo/manifests/code-json.json",
       "versions": "./json",
@@ -56,7 +56,7 @@
     {
       "id": "data-studio",
       "name": "Data Studio",
-      "status": "alpha-poc",
+      "status": "current+test",
       "path": "../data-studio/",
       "demo": "../../Library/demo/manifests/data.json",
       "versions": "./data",
@@ -76,7 +76,7 @@
     {
       "id": "file-studio",
       "name": "File Studio",
-      "status": "alpha-poc",
+      "status": "current+test",
       "path": "../file-studio/",
       "demo": "../../Library/demo/manifests/file.json",
       "versions": "./file",
@@ -86,7 +86,7 @@
     {
       "id": "markdown-studio",
       "name": "Markdown Studio",
-      "status": "test-1.0.0",
+      "status": "test-2.0.0",
       "path": "../markdown-studio/",
       "purpose": "Éditeur Markdown transversal V1 : source, aperçu HTML, sommaire, YAML/front matter et exports.",
       "versions": "./markdown",
@@ -96,7 +96,7 @@
     {
       "id": "demo-studio",
       "name": "Demo Studio",
-      "status": "current",
+      "status": "current-1.0.0",
       "path": "../demo-studio/",
       "purpose": "Galerie publique et corpus de démonstration nLab, avec manifests et jeux de test par Studio.",
       "versions_path": "../demo-studio/versions.html",
@@ -106,7 +106,7 @@
     {
       "id": "dataset-generator-studio",
       "name": "Dataset Generator Studio",
-      "status": "test-0.2.0",
+      "status": "test-2.0.0",
       "path": "../dataset-generator-studio/",
       "purpose": "Génération de datasets, images, QR/Data Matrix/Code128, fichiers de test, manifests et packs. Interface Studio en développement.",
       "versions_path": "../dataset-generator-studio/versions.html",
