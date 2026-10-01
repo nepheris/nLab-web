@@ -10,6 +10,8 @@
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bwip-js@4.11.4/dist/bwip-js-min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://apis.google.com/js/api.js" async defer></script>
 </head><body>
 <main id="studioMain" class="studioMain">
 <aside id="studioSidebar" class="studioSidebar pdfV2Sidebar scope-core" data-scope="core">
@@ -27,10 +29,20 @@
  </div>
 
  <section id="sidebar-pane-tools" class="sidebarPane active" data-sidebar-pane="tools">
-  <details id="sectionConfig" class="toolSection scope-core" data-scope="core"><summary>0. Configuration & espace personnel <small class="scopeBadge">CORE</small></summary><div class="body"><div class="statusBox">Profil local nLab : variables, modèles, signature/paraphe et préférences exportables dans un ZIP portable.</div><div id="personalProfileHost"></div><button type="button" data-open-core-settings>Paramètres Core</button></div></details>
+  <details id="sectionConfig" class="toolSection scope-core" data-scope="core"><summary>0. Configuration & espace personnel <small class="scopeBadge">CORE</small></summary><div class="body"><div class="statusBox">Profil local nLab : variables, modèles, signature/paraphe et préférences exportables dans un ZIP portable.</div><div id="personalProfileHost"></div>
+ <details><summary>Google Drive <small class="devBadge">TEST</small></summary>
+  <div class="profileSecurityNote">Optionnel. Les identifiants OAuth restent stockés localement dans ce navigateur ; aucun secret client n’est requis. Drive est une source/destination supplémentaire, le profil ZIP portable reste indépendant.</div>
+  <label>Client ID OAuth Web<input id="googleClientId" placeholder="xxxxxxxx.apps.googleusercontent.com"></label>
+  <label>API Key Google Picker<input id="googleApiKey" placeholder="AIza..."></label>
+  <label>App ID / Project number<input id="googleAppId" placeholder="1234567890"></label>
+  <div class="compactInputRow"><button id="saveGoogleConfig" type="button">Enregistrer configuration</button><button id="connectGoogleDrive" type="button">Connexion Google</button><button id="disconnectGoogleDrive" type="button">Déconnexion</button></div>
+  <div id="googleDriveStatus" class="statusBox">Google Drive non connecté.</div>
+ </details>
+ <button type="button" data-open-core-settings>Paramètres Core</button></div></details>
 
   <details id="sectionInput" class="toolSection scope-core" data-scope="core" open><summary>1. Entrée <small class="scopeBadge">CORE</small></summary><div class="body">
-   <div class="compactInputRow"><button id="pickFile" type="button" data-icon="file">Fichier</button><button id="pickFolder" type="button" data-icon="folder">Dossier</button><select id="recentInputSelect" title="Entrées récentes"><option value="">Entrées récentes…</option></select><button id="loadRecentInput" type="button">Charger</button><label class="inlineCheck"><input id="recursiveFolders" type="checkbox" checked> Sous-dossiers</label></div>
+   <div class="compactInputRow"><button id="pickFile" type="button" data-icon="file">Fichier</button><button id="pickFolder" type="button" data-icon="folder">Dossier</button><button id="pickDriveFile" type="button">Google Drive</button><select id="recentInputSelect" title="Entrées récentes"><option value="">Entrées récentes…</option></select><button id="loadRecentInput" type="button">Charger</button><label class="inlineCheck"><input id="recursiveFolders" type="checkbox" checked> Sous-dossiers</label></div>
+   <details><summary>Ouvrir depuis une URL / page web</summary><div class="compactInputRow"><input id="remoteFileUrl" class="grow" type="url" placeholder="https://exemple.org/document.pdf"><button id="openRemoteUrl" type="button">Ouvrir l’URL</button></div><div class="profileSecurityNote">Fonctionne pour les ressources accessibles directement par HTTPS et autorisant le chargement navigateur (CORS). Les pages nécessitant une connexion ou bloquant CORS ne peuvent pas être lues directement.</div></details>
    <div id="inputDropZone" class="inputDropZone" tabindex="0"><strong>Glisser-déposer</strong><span>Fichiers ou dossier compatible</span></div>
    <input id="fileInput" type="file" multiple hidden><input id="folderInput" type="file" webkitdirectory multiple hidden>
    <div class="collectionToolbar collectionToolbarPrimary">
@@ -53,14 +65,14 @@
    <div class="outputModeTabs"><button type="button" class="active" data-output-mode="classic">Fichiers / dossiers</button><button type="button" data-output-mode="zip">Archive ZIP</button></div>
    <input id="outputMode" type="hidden" value="classic">
    <div id="outputClassicPanel">
-    <div class="grid2"><label>Format<select id="outputFormat"><option value="pdf">PDF</option><option value="same">Format d’origine</option></select></label><label>Destination<select id="outputProvider"><option value="download">Téléchargement navigateur</option><option value="local">Dossier local</option></select></label></div>
+    <div class="grid2"><label>Format<select id="outputFormat"><option value="pdf">PDF</option><option value="same">Format d’origine</option></select></label><label>Destination<select id="outputProvider"><option value="download">Téléchargement navigateur</option><option value="local">Dossier local</option><option value="same-source">Même dossier que la source</option><option value="drive">Google Drive</option></select></label></div>
    </div>
    <div id="outputZipPanel" hidden>
     <div class="statusBox">Le ZIP regroupe les sorties dans une archive DEFLATE. Le niveau agit sur le temps de compression et la taille de l’archive, pas sur la qualité visuelle du PDF.</div>
     <div id="zipCompressionControl"></div>
     <details><summary>Options ZIP avancées</summary><div class="profileSecurityNote">Niveau 1 = rapide et archive plus grosse ; niveau 9 = compression maximale et traitement plus long. Défaut : 6.</div></details>
    </div>
-   <div class="compactInputRow"><button id="pickOutputFolder" data-icon="folder">Dossier sortie</button><select id="recentOutputSelect" title="Sorties récentes"><option value="">Sorties récentes…</option></select><button id="loadRecentOutput">Charger</button></div>
+   <div class="compactInputRow"><button id="pickOutputFolder" data-icon="folder">Dossier sortie</button><button id="pickDriveOutputFolder" type="button">Dossier Drive</button><select id="recentOutputSelect" title="Sorties récentes"><option value="">Sorties récentes…</option></select><button id="loadRecentOutput">Charger</button></div>
    <label>Classement<select id="outputStructure"><option value="root">Racine</option><option value="treatment">Traitement</option><option value="year-month">Année / mois</option><option value="year-month-week">Année / mois / semaine</option><option value="treatment-date">Traitement / année / mois</option><option value="custom">Template personnalisé</option></select></label>
    <input id="outputPathTemplate" value="{TREATMENT}/{YEAR}/{MONTH}" placeholder="{TREATMENT}/{YEAR}/{MONTH}/S{WEEK}"><details class="inlineHelp"><summary>Variables disponibles</summary><div id="outputVariables" class="variableHelp"></div></details>
    <div id="outputPathPreview" class="statusBox mono">Téléchargement navigateur · racine</div>
