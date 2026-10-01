@@ -215,6 +215,14 @@ export function removePersonalAssetRef(kind,assetId){
  const cfg=assetCollection(kind);if(!cfg)throw new Error('Type d’asset personnel inconnu');
  return updatePersonalProfile(p=>{p.assets[cfg.list]=(p.assets?.[cfg.list]||[]).filter(x=>x.assetId!==assetId);if(cfg.key&&p.assets[cfg.key]===assetId)p.assets[cfg.key]=p.assets[cfg.list][0]?.assetId||null;if(cfg.legacy)p.assets[cfg.legacy]=p.assets[cfg.list].find(x=>x.assetId===p.assets[cfg.key])||p.assets[cfg.list][0]||null;return p})
 }
+export function updatePersonalAssetRef(kind,assetId,patch={}){
+ const cfg=assetCollection(kind);if(!cfg)throw new Error('Type d’asset personnel inconnu');
+ return updatePersonalProfile(p=>{const list=p.assets?.[cfg.list]||[],i=list.findIndex(x=>x.assetId===assetId);if(i<0)throw new Error('Asset introuvable');list[i]=normalizeAssetRef({...list[i],...patch});p.assets[cfg.list]=list;if(cfg.legacy&&p.assets[cfg.key]===assetId)p.assets[cfg.legacy]=list[i];return p})
+}
+export function movePersonalAssetRef(fromKind,toKind,assetId,{copy=false}={}){
+ const from=assetCollection(fromKind),to=assetCollection(toKind);if(!from||!to)throw new Error('Type d’asset personnel inconnu');
+ return updatePersonalProfile(p=>{const src=p.assets?.[from.list]||[],ref=src.find(x=>x.assetId===assetId);if(!ref)throw new Error('Asset introuvable');const dst=p.assets?.[to.list]||[];p.assets[to.list]=[...dst.filter(x=>x.assetId!==assetId),{...ref}];if(!copy){p.assets[from.list]=src.filter(x=>x.assetId!==assetId);if(from.key&&p.assets[from.key]===assetId)p.assets[from.key]=p.assets[from.list][0]?.assetId||null;if(from.legacy)p.assets[from.legacy]=p.assets[from.list].find(x=>x.assetId===p.assets[from.key])||p.assets[from.list][0]||null}if(to.key&&!p.assets[to.key])p.assets[to.key]=assetId;if(to.legacy&&p.assets[to.key]===assetId)p.assets[to.legacy]=ref;return p})
+}
 export function profileTemplateValues(profile=loadPersonalProfile()){
  const first=String(profile.identity?.firstName||profile.variables?.FIRST_NAME||'').trim(),last=String(profile.identity?.lastName||profile.variables?.LAST_NAME||'').trim();
  const initials=String(profile.identity?.initials||profile.variables?.INITIALS||([first,last].filter(Boolean).map(x=>x[0]?.toUpperCase()||'').join(''))).trim(),format=profile.identity?.displayFormat||'first-last';
