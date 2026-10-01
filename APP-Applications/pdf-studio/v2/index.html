@@ -101,22 +101,37 @@
   </div></details>
 
   <details id="sectionStamps" class="toolSection scope-studio" data-scope="pdf"><summary>5. Tampons & 5 dates <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
- <label>Modèle enregistré<select id="stampPresetSelect"><option value="">Personnalisé</option></select></label>
- <label>Texte du tampon<textarea id="stampTemplate" rows="4">VALIDÉ
+ <div class="signatureModeTabs" role="tablist"><button type="button" class="active" data-stamp-mode="use">Utiliser un tampon</button><button type="button" data-stamp-mode="editor">Éditeur de tampons</button></div>
+ <div id="stampUsePanel">
+  <label>Modèle enregistré<select id="stampPresetSelect"><option value="">Personnalisé</option></select></label>
+  <label>Texte du tampon<textarea id="stampTemplate" rows="4">VALIDÉ
 {DISPLAY_NAME}
 {STAMP_DATE:DD/MM/YYYY}</textarea></label>
- <label>Image / logo<select id="stampImageAsset"><option value="">Aucune image</option></select></label><details><summary>Galerie personnelle</summary><div id="stampAssetPickerHost"></div></details>
- <div class="compactInputRow"><button id="importStampImage" type="button">Importer une image</button><span class="grow">PNG/JPEG/WebP/SVG…</span></div><input id="stampImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp,image/svg+xml,.svg,.bmp" hidden>
- <div id="stampImagePreview" class="signatureAssetPreview"><span>Aucune image</span></div>
- <details class="stampDatesDetails"><summary>Dates du tampon · aujourd’hui par défaut</summary><div class="stampDateGrid">
-  <label>Date tampon<input id="stampDate" type="date"></label><label>Date A<input id="stampDateA" type="date"></label><label>Date B<input id="stampDateB" type="date"></label><label>Date C<input id="stampDateC" type="date"></label><label>Date D<input id="stampDateD" type="date"></label>
- </div><div class="profileSecurityNote">Toutes les dates sont initialisées à aujourd’hui. Utilisez {TIMESTAMP} ou {STAMP_DATETIME} pour l’horodatage courant.</div></details>
- <div id="stampPreview" class="statusBox mono">Aperçu du tampon</div>
- <div class="grid2"><label>Portée<select id="stampScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label><label>Position<select id="stampPosition"><option value="manual">Placement manuel</option><option value="top-left">Haut gauche</option><option value="top-right">Haut droite</option><option value="bottom-left">Bas gauche</option><option value="bottom-right">Bas droite</option><option value="center">Centre</option></select></label></div>
- <div class="compactInputRow"><button id="activateStampTool" type="button" data-icon="stamp">Placer manuellement</button><button id="applyStampScope" type="button">Appliquer à la portée</button></div>
- <div class="compactInputRow"><button id="saveStampPreset" type="button">Enregistrer modèle</button><button id="deleteStampPreset" type="button">Supprimer modèle</button></div>
- <input id="stampPresetLabel" placeholder="Nom du modèle de tampon">
- <details class="inlineHelp"><summary>Variables disponibles</summary><div id="stampVariables" class="variableHelp"></div></details>
+  <label>Image / logo<select id="stampImageAsset"><option value="">Aucune image</option></select></label><details><summary>Galerie personnelle</summary><div id="stampAssetPickerHost"></div></details>
+  <div class="compactInputRow"><button id="importStampImage" type="button">Importer une image</button><span class="grow">PNG/JPEG/WebP/SVG…</span></div><input id="stampImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp,image/svg+xml,.svg,.bmp" hidden>
+  <div id="stampImagePreview" class="signatureAssetPreview"><span>Aucune image</span></div>
+  <details class="stampDatesDetails"><summary>Dates du tampon · aujourd’hui par défaut</summary><div class="stampDateGrid">
+   <label>Date tampon<input id="stampDate" type="date"></label><label>Date A<input id="stampDateA" type="date"></label><label>Date B<input id="stampDateB" type="date"></label><label>Date C<input id="stampDateC" type="date"></label><label>Date D<input id="stampDateD" type="date"></label>
+  </div><div class="profileSecurityNote">Toutes les dates sont initialisées à aujourd’hui. Utilisez {TIMESTAMP} ou {STAMP_DATETIME} pour l’horodatage courant.</div></details>
+  <div id="stampPreview" class="statusBox mono">Aperçu du tampon</div>
+  <div class="grid2"><label>Portée<select id="stampScope"><option value="current">Page courante</option><option value="selected">Sélection</option><option value="all">Tout le document</option></select></label><label>Position<select id="stampPosition"><option value="manual">Placement manuel</option><option value="top-left">Haut gauche</option><option value="top-right">Haut droite</option><option value="bottom-left">Bas gauche</option><option value="bottom-right">Bas droite</option><option value="center">Centre</option></select></label></div>
+  <label class="inlineCheck"><input id="applyStampNamingRules" type="checkbox"> Appliquer au nom de sortie les règles préfixe/suffixe du tampon</label>
+  <div class="compactInputRow"><button id="activateStampTool" type="button" data-icon="stamp">Placer manuellement</button><button id="applyStampScope" type="button">Appliquer à la portée</button></div>
+ </div>
+ <div id="stampEditorPanel" hidden>
+  <div class="statusBox">Créer ou modifier un tampon personnel. Les modèles système restent protégés ; « Enregistrer une copie » permet de les personnaliser.</div>
+  <div class="grid2"><label>Nom<input id="stampEditorLabel" placeholder="Ex. VALIDÉ fournisseur"></label><label>Catégorie<input id="stampEditorCategory" value="Personnalisés" placeholder="Ex. Validation"></label></div>
+  <label>Texte / modèle<textarea id="stampEditorTemplate" rows="5" placeholder="VALIDÉ - {INITIALS}
+Le {STAMP_DATE:DD/MM/YYYY}"></textarea></label>
+  <div class="presetButtons" id="stampEditorExamples"><button type="button" data-stamp-example="valid">VALIDÉ</button><button type="button" data-stamp-example="period">Période B → C</button><button type="button" data-stamp-example="review">Réévaluation D</button><button type="button" data-stamp-example="full">Complet</button></div>
+  <div class="grid2"><label><span><input id="stampEditorPrefixEnabled" type="checkbox"> Préfixe du fichier</span><input id="stampEditorPrefix" placeholder="VALIDE_{STAMP_DATE:YYYYMMDD}_"></label><label><span><input id="stampEditorSuffixEnabled" type="checkbox"> Suffixe du fichier</span><input id="stampEditorSuffix" placeholder="_REV_{DATE_D:YYYYMMDD}"></label></div>
+  <label>Image / logo<select id="stampEditorImageAsset"><option value="">Aucune image</option></select></label>
+  <div id="stampEditorPreview" class="statusBox mono">Aperçu du modèle</div>
+  <div id="stampEditorFilenamePreview" class="statusBox mono">Nom de sortie simulé</div>
+  <div class="compactInputRow"><button id="newStampPreset" type="button">Nouveau</button><button id="loadStampPresetEditor" type="button">Charger le modèle sélectionné</button><button id="saveStampPreset" type="button">Enregistrer</button><button id="saveStampPresetCopy" type="button">Enregistrer une copie</button><button id="deleteStampPreset" type="button">Supprimer</button></div>
+  <details><summary>Import / export JSON</summary><div class="compactInputRow"><button id="exportStampJson" type="button">Exporter la bibliothèque</button><button id="importStampJson" type="button">Importer / fusionner</button><input id="stampJsonInput" type="file" accept=".json,application/json" hidden></div><div class="profileSecurityNote">Compatible avec les champs historiques id, label, category, template, prefix, suffix, prefixEnabled et suffixEnabled.</div></details>
+  <details class="inlineHelp"><summary>Variables disponibles</summary><div id="stampVariables" class="variableHelp"></div></details>
+ </div>
 </div></details>
   <details id="sectionAnnotations" class="toolSection scope-studio" data-scope="pdf"><summary>6. Annotations & objets <small class="scopeBadge">PDF</small> <small class="devBadge">TEST</small></summary><div class="body">
  <div class="objectToolButtons"><button type="button" data-object-tool="select">Sélection</button><button type="button" data-object-tool="text" data-icon="text">Texte</button><button type="button" data-object-tool="highlight" data-icon="highlight">Surligner</button><button type="button" data-object-tool="pen" data-icon="pen">Stylo</button><button type="button" data-object-tool="image" data-icon="image">Image</button></div>
