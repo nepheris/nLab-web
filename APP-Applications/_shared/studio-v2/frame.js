@@ -6,6 +6,7 @@ import{icon}from'./icon-registry.js';
 import{registerCapabilities}from'./capability-registry.js';
 import{mountCommandPalette}from'./command-palette.js';
 import{mountWorkflowUI}from'./workflow-ui.js';
+import{openStudio as openResolvedStudio}from'./studio-link-resolver.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
@@ -123,6 +124,12 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
     const detail={action:b.dataset.studioAction,element:b,scope:b.dataset.scope,plugin:b.dataset.plugin,featureId:b.dataset.featureId,status:b.dataset.featureStatus,capability:b.dataset.capability,studio:manifest.id};
     recordHistory({studio:manifest.id,type:'action',label:b.textContent.trim().replace(/\\s+/g,' '),detail:b.title||b.dataset.featureId||'',action:b.dataset.studioAction,repeatable:!['openPdf','openFolder','openDemo'].includes(b.dataset.studioAction)});
     document.dispatchEvent(new CustomEvent('studio-v2:action',{detail}));
+  });
+  root.addEventListener('click',async e=>{
+    const b=e.target.closest('[data-specialized-studio],[data-advanced-studio]');if(!b)return;
+    e.preventDefault();const target=b.dataset.specializedStudio||b.dataset.advancedStudio;if(!target)return;
+    const detail={target,sourceStudio:manifest.id,element:b};document.dispatchEvent(new CustomEvent('studio-v2:before-specialized-open',{detail}));
+    try{await openResolvedStudio(target,{query:{from:manifest.id,return:manifest.id}})}catch(err){document.dispatchEvent(new CustomEvent('studio-v2:specialized-open-error',{detail:{...detail,error:err}}))}
   });
   const menu=qs('.studioMenu');
   menu?.addEventListener('click',e=>{
