@@ -314,7 +314,16 @@
         "savePdfMetadata",
         "cleanPdfMetadata",
         "inspectPdfSecurity",
-        "copyDiagnostics"
+        "copyDiagnostics",
+        "fitPage",
+        "exportHistoryJson",
+        "batchCleanMetadata",
+        "signatureDrawCanvas",
+        "clearSignatureDraw",
+        "saveDrawnSignature",
+        "headerFooterQr",
+        "headerFooterQrPos",
+        "headerFooterQrSize"
       ],
       "required_runtime_strings": [
         "mountStudioV2",
@@ -330,7 +339,11 @@
         "redact",
         "compare",
         "metadata",
-        "security"
+        "security",
+        "DocumentConversion",
+        "batchCleanMetadata",
+        "qrDataUrl",
+        "loadHistory"
       ]
     }
   }
