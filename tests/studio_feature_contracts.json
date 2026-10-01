@@ -1,0 +1,332 @@
+{
+  "schema": "nlab-studio-feature-contracts/v1",
+  "updated": "2026-10-01",
+  "studios": {
+    "image-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "file",
+        "demoSynthetic",
+        "demoReal1",
+        "demoReal2",
+        "left",
+        "right",
+        "flipX",
+        "flipY",
+        "w",
+        "h",
+        "ratio",
+        "resize",
+        "fmt",
+        "export",
+        "axis",
+        "mm",
+        "measure",
+        "undoMeasure",
+        "kx",
+        "ky",
+        "dx",
+        "dy",
+        "measureRows",
+        "cal",
+        "cv",
+        "msg"
+      ],
+      "required_strings": [
+        "Studio Core V2",
+        "bootstrap-specialized.js"
+      ]
+    },
+    "ocr-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "file",
+        "lang",
+        "run",
+        "demo",
+        "noisy",
+        "save",
+        "status",
+        "preview",
+        "out"
+      ],
+      "required_strings": [
+        "Tesseract.createWorker",
+        "bootstrap-specialized.js"
+      ]
+    },
+    "code-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "file",
+        "demo",
+        "find",
+        "formatJson",
+        "theme",
+        "save",
+        "langs",
+        "stats",
+        "tab",
+        "mode",
+        "cursor",
+        "editor"
+      ],
+      "required_strings": [
+        "ace.edit",
+        "bootstrap-specialized.js"
+      ]
+    },
+    "json-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "file",
+        "demo",
+        "loadDemo",
+        "format",
+        "min",
+        "sort",
+        "copy",
+        "save",
+        "validity",
+        "editor",
+        "status",
+        "treePane",
+        "tree",
+        "statsPane",
+        "stats",
+        "topKeys",
+        "queryPane",
+        "path",
+        "query",
+        "result"
+      ],
+      "required_strings": [
+        "bootstrap-specialized.js"
+      ]
+    },
+    "data-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "file",
+        "demoCsv",
+        "demoJson",
+        "save",
+        "summary",
+        "shown",
+        "head",
+        "body",
+        "types"
+      ],
+      "required_strings": [
+        "Papa.parse",
+        "bootstrap-specialized.js"
+      ]
+    },
+    "file-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "files",
+        "folder",
+        "prefix",
+        "suffix",
+        "find",
+        "repl",
+        "start",
+        "demo",
+        "export",
+        "body",
+        "status"
+      ],
+      "required_strings": [
+        "bootstrap-specialized.js"
+      ]
+    },
+    "qr-barcode-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "symTabs",
+        "value",
+        "qrOptions",
+        "dots",
+        "corners",
+        "cornerDots",
+        "ecc",
+        "gradient",
+        "logo",
+        "size",
+        "margin",
+        "colorMode",
+        "fg",
+        "fgText",
+        "fg2",
+        "fg2Text",
+        "bg",
+        "bgText",
+        "transparent",
+        "status",
+        "previewType",
+        "preview",
+        "scan",
+        "dropZone",
+        "pickImage",
+        "scanFile",
+        "scanStatus",
+        "clearHistory",
+        "history"
+      ],
+      "required_strings": [
+        "QRCodeStyling",
+        "bwipjs",
+        "Html5Qrcode"
+      ],
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "refreshPreview",
+        "downloadPng",
+        "downloadSvg",
+        "scanImage"
+      ]
+    },
+    "markdown-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "metaTitle",
+        "metaLang",
+        "metaAuthor",
+        "syncMeta",
+        "refreshToc",
+        "toc",
+        "yamlEditor",
+        "yamlStatus",
+        "applyYaml",
+        "exportYaml",
+        "addTable2x3",
+        "addQuote",
+        "addCode",
+        "docName",
+        "dirtyState",
+        "stats",
+        "editorGrid",
+        "editorPane",
+        "mdEditor",
+        "previewPane",
+        "preview",
+        "yamlPane",
+        "yamlBig",
+        "fileInput",
+        "imageInput"
+      ],
+      "required_strings": [
+        "marked",
+        "DOMPurify",
+        "js-yaml"
+      ],
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "MarkdownEngine",
+        "DemoCorpus",
+        "saveMarkdown",
+        "exportHtml",
+        "switchMode",
+        "studio-v2:action"
+      ]
+    },
+    "dataset-generator-studio": {
+      "test": "2.0.0",
+      "required_ids": [
+        "preset",
+        "rows",
+        "seed",
+        "status",
+        "count",
+        "table"
+      ],
+      "required_strings": [
+        "xlsx"
+      ],
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "generate",
+        "exportJson",
+        "exportCsv",
+        "exportXlsx",
+        "exportMd",
+        "advanced"
+      ]
+    },
+    "pdf-studio": {
+      "test": "2.3.0",
+      "path": "APP-Applications/pdf-studio/v2/index.html",
+      "runtime": "APP-Applications/pdf-studio/v2/pdf-v2.js",
+      "required_ids": [
+        "sectionConfig",
+        "sectionInput",
+        "sectionOutput",
+        "sectionNaming",
+        "sectionPages",
+        "sectionAssembly",
+        "sectionStamps",
+        "sectionAnnotations",
+        "sectionOcr",
+        "sectionOptimize",
+        "sectionTranslate",
+        "sectionSignature",
+        "sectionCodes",
+        "sectionPageOutput",
+        "sectionConversion",
+        "sectionForms",
+        "sectionRedaction",
+        "sectionCompare",
+        "sectionBatch",
+        "sectionSecurity",
+        "sectionDiagnostics",
+        "pickFile",
+        "pickFolder",
+        "savePdfSide",
+        "saveZipSide",
+        "saveAndClassify",
+        "applyCrop",
+        "assemblyMergeNow",
+        "assemblyInsertNow",
+        "applyStampScope",
+        "commitObjects",
+        "runOcrQuick",
+        "runOptimizeQuick",
+        "runTranslateQuick",
+        "applyVisualSignature",
+        "applyCryptographicSignature",
+        "applyQrQuick",
+        "applyHeaderFooter",
+        "runQuickConversion",
+        "inspectForms",
+        "flattenForms",
+        "markRedaction",
+        "applyRedactions",
+        "runComparePdf",
+        "protectCurrentPdf",
+        "unlockPdfNow",
+        "loadPdfMetadata",
+        "savePdfMetadata",
+        "cleanPdfMetadata",
+        "inspectPdfSecurity",
+        "copyDiagnostics"
+      ],
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "openPdf",
+        "savePdf",
+        "saveZip",
+        "merge",
+        "insert",
+        "ocr",
+        "optimiz",
+        "translate",
+        "signature",
+        "redact",
+        "compare",
+        "metadata",
+        "security"
+      ]
+    }
+  }
+}
