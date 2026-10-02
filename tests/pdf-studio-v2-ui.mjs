@@ -30,7 +30,7 @@ try{
  await page.locator('#googleClientId').fill('1234567890-test.apps.googleusercontent.com');await page.locator('#googleApiKey').fill('AIzaTESTKEY');await page.locator('#googleAppId').fill('1234567890');await page.locator('#saveGoogleConfig').click();
  const driveCfg=await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab-pdf-studio-v2-google')||'{}'));if(!driveCfg.clientId||!driveCfg.apiKey)fail('Configuration Drive V2 non persistée');
  // Recharger le fixture local pour la suite des tests de modification.
- await page.locator('#fileInput').setInputFiles(fixture);await page.waitForFunction(()=>/\/\s*12/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000});
+ await page.locator('#fileInput').setInputFiles([]);await page.locator('#fileInput').setInputFiles(fixture);await page.waitForFunction(()=>/\/\s*12/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000});
  const z0=Number(await page.locator('#zoomInput').inputValue());await page.locator('#fitPage').click();await page.waitForTimeout(300);const z1=Number(await page.locator('#zoomInput').inputValue());if(!z1||z1===z0)fail('Fit page sans effet');
  await page.locator('#sectionConversion').evaluate(e=>e.open=true);
  await page.locator('#quickConversion').selectOption('docx');{const dl=page.waitForEvent('download');await page.locator('#runQuickConversion').click();const d=await dl;if(!/\.docx$/i.test(d.suggestedFilename()))fail('PDF→DOCX V2 invalide: '+d.suggestedFilename())}
