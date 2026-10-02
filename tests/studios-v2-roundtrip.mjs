@@ -38,7 +38,7 @@ try{
  await studio('dataset-generator-studio',async p=>{
   await p.locator('#rows').fill('25');await p.locator('#seed').fill('424242');await p.locator('#generate').click();await p.waitForFunction(()=>/25 ligne/.test(document.querySelector('#count')?.textContent||''),null,{timeout:10000});
   const first=await p.locator('#table').textContent();await p.locator('#generate').click();const second=await p.locator('#table').textContent();if(first!==second)throw new Error('Dataset non déterministe avec seed identique');
-  const dl=p.waitForEvent('download');await p.locator('#exportJson').click();const rows=JSON.parse((await readDownload(await dl)).toString('utf8'));if(!Array.isArray(rows)||rows.length!==25)throw new Error('Dataset JSON n’a pas 25 lignes');
+  const dl=p.waitForEvent('download');await p.locator('#exportJson').click();const payload=JSON.parse((await readDownload(await dl)).toString('utf8')),rows=payload.records;if(payload.schema!=='nlab-demo-dataset/v1'||payload.synthetic!==true||!Array.isArray(rows)||rows.length!==25)throw new Error('Dataset JSON incohérent ou incomplet');
  });
  await studio('qr-barcode-studio',async p=>{
   await p.locator('#symTabs [data-type="code128"]').click();await p.waitForFunction(()=>document.querySelector('#preview canvas'),null,{timeout:15000});const dl=p.waitForEvent('download');await p.locator('#downloadPng').click();const b=await readDownload(await dl);if(b.length<200)throw new Error('PNG code-barres anormalement petit');
