@@ -10,6 +10,7 @@ on:
       - 'Library/demo/**'
       - '.github/workflows/sync-pdf-studio.yml'
       - 'tests/pdf-studio-v2-ui.mjs'
+      - 'tests/pdf-studio-v2-deep.mjs'
       - 'tests/studio_feature_contracts.json'
       - 'tests/validate_studio_features.py'
   pull_request:
@@ -349,6 +350,30 @@ jobs:
           PDF_STUDIO_FOLDER=/tmp/pdf-studio-v2-folder \
           node tests/pdf-studio-v2-ui.mjs
 
+      - name: Deep mutation acceptance PDF Studio V2
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tests/generate_pdf_studio_v1_fixtures.py
+          python - <<'PY'
+          import zipfile
+          with zipfile.ZipFile('/tmp/pdf-studio-v2-workspace.zip','w',zipfile.ZIP_DEFLATED) as z:
+              z.write('/tmp/pdf-studio-v1.pdf','docs/a.pdf')
+              z.write('/tmp/pdf-studio-v1-b.pdf','docs/b.pdf')
+          PY
+          python -m http.server 8767 --bind 127.0.0.1 >/tmp/nlab-v2-deep-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8767/APP-Applications/pdf-studio/v2/ >/dev/null && break
+            sleep 1
+          done
+          PDF_STUDIO_V2_URL=http://127.0.0.1:8767/APP-Applications/pdf-studio/v2/ \
+          PDF_STUDIO_FIXTURE=/tmp/pdf-studio-v1.pdf \
+          PDF_STUDIO_FIXTURE2=/tmp/pdf-studio-v1-b.pdf \
+          PDF_STUDIO_ZIP=/tmp/pdf-studio-v2-workspace.zip \
+          node tests/pdf-studio-v2-deep.mjs
       - name: Build PDF Studio 1.0 portable package
         shell: bash
         run: |
