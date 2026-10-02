@@ -26,7 +26,7 @@ try{
  });
  await studio('file-studio',async p=>{
   await p.locator('#demo').click();await p.waitForFunction(()=>/[1-9]\d* élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
-  await p.locator('#prefix').fill('TEST_{COUNTER}_');const dl=p.waitForEvent('download');await p.locator('#export').click();const csv=(await readDownload(await dl)).toString('utf8');if(!/TEST_1_/i.test(csv)||csv.split(/\r?\n/).length<2)throw new Error('Manifest File Studio incohérent');
+  await p.locator('#prefix').fill('TEST_{COUNTER}_');const dl=p.waitForEvent('download');await p.locator('#export').click();const csv=(await readDownload(await dl)).toString('utf8');if(!/TEST_001_/i.test(csv)||csv.split(/\r?\n/).length<2)throw new Error('Manifest File Studio incohérent');
  });
  await studio('markdown-studio',async p=>{
   await p.locator('#insertTable').click();const expected=await p.locator('#mdEditor').inputValue();const dl=p.waitForEvent('download');await p.locator('#saveMd').click();const md=(await readDownload(await dl)).toString('utf8');if(!md.includes('| Colonne 1 |')||md.length<expected.length-20)throw new Error('Round-trip Markdown incomplet');
