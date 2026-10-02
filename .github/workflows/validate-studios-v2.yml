@@ -16,6 +16,7 @@ on:
       - 'APP-Applications/_shared/studio-v2/**'
       - 'tests/studios-v2-ui.mjs'
       - 'tests/studios-v2-functional.mjs'
+      - 'tests/studios-v2-roundtrip.mjs'
       - 'tests/studio_feature_contracts.json'
       - 'tests/validate_studio_features.py'
       - 'tests/validate_studio_registries.py'
@@ -53,6 +54,17 @@ jobs:
             sleep 1
           done
           NLAB_BASE_URL=http://127.0.0.1:8770/ node tests/studios-v2-ui.mjs
+
+      - name: Result integrity specialized V2
+        run: |
+          python -m http.server 8772 --bind 127.0.0.1 >/tmp/nlab-studios-v2-roundtrip-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8772/APP-Applications/studios/ >/dev/null && break
+            sleep 1
+          done
+          NLAB_BASE_URL=http://127.0.0.1:8772/ node tests/studios-v2-roundtrip.mjs
 
       - name: Functional acceptance specialized V2
         run: |
