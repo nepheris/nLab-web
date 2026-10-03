@@ -96,7 +96,7 @@ async function parseClone(file){
  if(!file)throw new Error('Aucun fichier sélectionné.');
  const ext=(file.name.split('.').pop()||'').toLowerCase();cloneSourceName=file.name;
  if(ext==='csv'||file.type.includes('csv')||ext==='json'||file.type.includes('json')||['xlsx','xls'].includes(ext)){
-  let records=[];
+  let records=[];cloneWorkbookProfile=null;
   if(ext==='csv'||file.type.includes('csv'))records=parseCsv(await file.text(),{header:true,dynamicTyping:true});
   else if(ext==='json'||file.type.includes('json')){const j=JSON.parse(await file.text());records=Array.isArray(j)?j:(j.records||j.data||[j])}
   else {const wb=await readWorkbook(file);records=workbookToObjects(wb);cloneWorkbookProfile=workbookStructureProfile(wb)}
@@ -124,6 +124,6 @@ for(const ev of ['dragenter','dragover'])$('#cloneDrop').addEventListener(ev,e=>
 for(const ev of ['dragleave','drop'])$('#cloneDrop').addEventListener(ev,e=>{e.preventDefault();e.currentTarget.classList.remove('drag')});
 $('#cloneDrop').addEventListener('drop',e=>parseClone(e.dataTransfer.files?.[0]).catch(x=>status(x.message)));
 
-const actions={generate:generateCurrent,randomize:()=>{$('#seed').value=Math.floor(Math.random()*2147483647);generateCurrent()},exportJson,exportCsv,exportXlsx,exportMd,exportHtml,exportDocx,exportPdf,advanced:()=>status('Dataset Generator 2.2 : clone riche actif. Étape suivante : packs multi-fichiers, manifests et rendu de symbologies via QR & Barcode Studio.')};
+const actions={generate:generateCurrent,randomize:()=>{$('#seed').value=Math.floor(Math.random()*2147483647);generateCurrent()},cloneRich:()=>setMode('clone'),ocrStudio:()=>{location.href='../../ocr-studio/v2/?from=dataset-generator'},exportJson,exportCsv,exportXlsx,exportMd,exportHtml,exportDocx,exportPdf,advanced:()=>status('Dataset Generator 2.2 : clone riche actif. Étape suivante : packs multi-fichiers, manifests et rendu de symbologies via QR & Barcode Studio.')};
 document.addEventListener('studio-v2:action',e=>{const a=actions[e.detail?.action];if(a)Promise.resolve().then(a).catch(x=>status(x.message))});
 setSchema(presets.generic.map(([name,type])=>({name,type})));generateTable();
