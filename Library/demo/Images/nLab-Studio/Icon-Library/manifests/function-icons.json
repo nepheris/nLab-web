@@ -1912,6 +1912,31 @@
       ]
     },
     {
+      "id": "sortAZ",
+      "label": "Sort A → Z",
+      "file": "../function-icons/sort-az.svg",
+      "family": "function-icons",
+      "description": "Icône partagée Sort A → Z.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "sort",
+        "ascending",
+        "az"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "sort-az",
+        "sort_az"
+      ]
+    },
+    {
       "id": "sortDesc",
       "label": "Sort Desc",
       "file": "../function-icons/sort-desc.svg",
@@ -1930,6 +1955,31 @@
       "planned": false,
       "aliases": [
         "sort-desc"
+      ]
+    },
+    {
+      "id": "sortZA",
+      "label": "Sort Z → A",
+      "file": "../function-icons/sort-za.svg",
+      "family": "function-icons",
+      "description": "Icône partagée Sort Z → A.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "sort",
+        "descending",
+        "za"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "sort-za",
+        "sort_za"
       ]
     },
     {
@@ -2244,6 +2294,152 @@
       "status": "active",
       "planned": false,
       "aliases": []
+    },
+    {
+      "id": "viewCalendar",
+      "label": "View Calendar",
+      "file": "../function-icons/view-calendar.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Calendar.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "calendar"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-calendar",
+        "view_calendar"
+      ]
+    },
+    {
+      "id": "viewDependency",
+      "label": "View Dependency",
+      "file": "../function-icons/view-dependency.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Dependency.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "dependency",
+        "graph"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-dependency",
+        "view_dependency"
+      ]
+    },
+    {
+      "id": "viewGantt",
+      "label": "View Gantt",
+      "file": "../function-icons/view-gantt.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Gantt.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "gantt"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-gantt",
+        "view_gantt"
+      ]
+    },
+    {
+      "id": "viewGanttHierarchy",
+      "label": "View Gantt Hierarchy",
+      "file": "../function-icons/view-gantt-hierarchy.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Gantt Hierarchy.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "gantt",
+        "hierarchy"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-gantt-hierarchy",
+        "view_gantt_hierarchy"
+      ]
+    },
+    {
+      "id": "viewKanban",
+      "label": "View Kanban",
+      "file": "../function-icons/view-kanban.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Kanban.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "kanban"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-kanban",
+        "view_kanban"
+      ]
+    },
+    {
+      "id": "viewTimeline",
+      "label": "View Timeline",
+      "file": "../function-icons/view-timeline.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Timeline.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "timeline"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-timeline",
+        "view_timeline"
+      ]
     },
     {
       "id": "volume",

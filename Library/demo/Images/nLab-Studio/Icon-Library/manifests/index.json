@@ -23,7 +23,7 @@
       "id": "function-icons",
       "label": "Function Icons",
       "manifest": "./function-icons.json",
-      "count": 138,
+      "count": 146,
       "description": "Actions métier partagées et futures."
     },
     {
@@ -49,9 +49,9 @@
     }
   ],
   "counts": {
-    "total": 247,
+    "total": 255,
     "studio-icons": 22,
-    "function-icons": 138,
+    "function-icons": 146,
     "filetype-icons": 51,
     "ui-icons": 26,
     "symbology-icons": 10
