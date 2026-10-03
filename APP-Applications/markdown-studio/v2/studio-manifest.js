@@ -1,6 +1,7 @@
 export default {
  homeHref:'../../',studiosHref:'../studios/',
- id:'markdown-studio',name:'Markdown Studio',subtitle:'Éditeur texte structuré transversal',
+ id:'markdown-studio',
+ sourcePath:'APP-Applications/markdown-studio/v2/index.html',name:'Markdown Studio',subtitle:'Éditeur texte structuré transversal',
  menus:[{id:'edit',label:'Édition'},{id:'split',label:'Édition + aperçu'},{id:'preview',label:'Lecture'},{id:'yaml',label:'YAML'},{id:'help',label:'Aide'}],
  ribbon:[
   {id:'file',label:'Fichier',items:[{id:'openMd',action:'openMd',label:'Ouvrir',icon:'command',primary:true},{id:'openDemoCorpus',action:'openDemoCorpus',label:'Corpus démo',icon:'command'},{id:'saveMd',action:'saveMd',label:'MD',icon:'command'},{id:'exportHtml',action:'exportHtml',label:'HTML',icon:'command'},{id:'printPdf',action:'printPdf',label:'PDF navigateur',icon:'command'}]},
