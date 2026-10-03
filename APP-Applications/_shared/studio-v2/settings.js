@@ -5,8 +5,8 @@ const KEY='nlab-studio-v2-settings';
 const DEFAULTS={
   theme:'system',
   iconTheme:'nlab-line',
-  architectureMarkers:true,
-  showUiIds:true,
+  architectureMarkers:false,
+  showUiIds:false,
   showDevelopment:true,
   showScopeBadges:true,
   showDevBadges:true,
@@ -24,6 +24,9 @@ const DEFAULTS={
   historyGroupBy:'date',
   historyRetention:'keep',
   ribbonRows:'auto',
+  navPlacement:'header',
+  contextualHelpMode:'explicit',
+  sidebarLocked:false,
   thumbnailQuality:'light',
   collectionThumbnailSize:104,
   specializedStudioPolicy:'latest',
@@ -61,6 +64,9 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.classList.toggle('headerBlur',!!settings.headerBlur);
   b.dataset.headerMode=settings.headerMode||'sticky';
   b.dataset.ribbonRows=settings.ribbonRows||'auto';
+  b.dataset.navPlacement=settings.navPlacement||'header';
+  b.dataset.contextualHelpMode=settings.contextualHelpMode||'explicit';
+  b.classList.toggle('sidebarLocked',!!settings.sidebarLocked);
   b.dataset.thumbnailQuality=settings.thumbnailQuality||'light';
   b.style.setProperty('--collection-thumb-size',(Number(settings.collectionThumbnailSize)||104)+'px');
   const main=qs('#studioMain');if(main){main.classList.toggle('sidebarCompact',settings.sidebarMode==='compact');main.classList.toggle('sidebarWide',settings.sidebarMode==='wide');main.classList.toggle('sidebarHidden',settings.sidebarMode==='hidden')}
@@ -106,6 +112,7 @@ export function renderStudioSettingsPanel(host){
           <option value="compact">Compacte</option>
           <option value="normal">Normale</option>
           <option value="comfortable">Confortable</option>
+          <option value="mobile">Mobile / tactile</option>
         </select>
       </label>
     </section>
@@ -179,8 +186,11 @@ export function renderStudioSettingsPanel(host){
           <option value="hidden">Masqué</option>
         </select>
       </label>
-      <label class="field"><span>Largeur du volet</span><input type="range" min="220" max="620" step="10" data-setting="sidebarWidth"></label>
+      <label class="field"><span>Largeur du volet</span><div class="settingsDualInput"><input type="range" min="220" max="720" step="10" data-setting="sidebarWidth"><input type="number" min="220" max="720" step="10" data-setting-number="sidebarWidth"></div></label>
+      <label class="checkboxField"><input type="checkbox" data-setting="sidebarLocked"><span>Figer la largeur du volet</span></label>
       <label class="checkboxField"><input type="checkbox" data-setting="floatingWindows"><span>Fenêtres flottantes / ancrables</span></label>
+      <label class="field"><span>Menus Studio</span><select data-setting="navPlacement"><option value="header">Dans la bande haute</option><option value="separate">Bande séparée</option><option value="hidden">Masqués</option></select></label>
+      <label class="field"><span>Aide contextuelle</span><select data-setting="contextualHelpMode"><option value="explicit">À la demande</option><option value="auto">Automatique</option></select></label>
       <label class="field"><span>Ruban</span><select data-setting="ribbonRows"><option value="auto">Auto</option><option value="one">1 ligne</option><option value="two">2 lignes</option></select></label>
       <label class="field"><span>Miniatures collections</span><select data-setting="thumbnailQuality"><option value="light">Légères / rapides</option><option value="standard">Standard</option></select></label>
       <label class="field"><span>Taille des vignettes</span><input type="range" min="64" max="220" step="8" data-setting="collectionThumbnailSize"></label>
@@ -192,12 +202,13 @@ export function renderStudioSettingsPanel(host){
     </section>
   </div>`;
   host.querySelector('[data-setting="theme"]').value=s.theme;
-  for(const k of ['fontFamily','density','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality','specializedStudioPolicy'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
+  for(const k of ['fontFamily','density','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality','specializedStudioPolicy','navPlacement','contextualHelpMode'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
+  const sidebarNumber=host.querySelector('[data-setting-number="sidebarWidth"]');if(sidebarNumber)sidebarNumber.value=s.sidebarWidth;
   host.querySelector('[data-setting="collectionThumbnailSize"]').value=s.collectionThumbnailSize;
   const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';const thumbOut=host.querySelector('[data-thumbnail-size-value]');if(thumbOut)thumbOut.textContent=Math.round(Number(s.collectionThumbnailSize||104))+' px';
-  for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','floatingWindows','headerVisible','headerShadow','headerBlur']){
+  for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','floatingWindows','headerVisible','headerShadow','headerBlur','sidebarLocked']){
     host.querySelector('[data-setting="'+k+'"]').checked=!!s[k];
   }
   const overrideHost=host.querySelector('#specialized-studio-overrides');
@@ -208,6 +219,7 @@ export function renderStudioSettingsPanel(host){
     ribbonHost.innerHTML='<h4>Groupes du ruban</h4>'+groups.map(g=>'<label class="checkboxField"><input type="checkbox" data-ribbon-setting="'+g.id+'" '+(localStorage.getItem('nlab-studio-v2-ribbon-'+g.id)==='0'?'':'checked')+'><span>'+g.label+'</span></label>').join('');
     ribbonHost.querySelectorAll('[data-ribbon-setting]').forEach(el=>el.addEventListener('change',()=>{setRibbonGroupVisible(el.dataset.ribbonSetting,el.checked);applyRibbonGroups()}));
   }
+  host.querySelectorAll('[data-setting-number]').forEach(el=>el.addEventListener('change',()=>{const k=el.dataset.settingNumber,v=Math.max(220,Math.min(720,Number(el.value)||360));const range=host.querySelector('[data-setting="'+k+'"]');if(range)range.value=v;saveStudioSettings({[k]:v})}));
   host.querySelectorAll('[data-setting]').forEach(el=>{
     const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth','historyLimit','collectionThumbnailSize'].includes(k))v=Number(v);saveStudioSettings({[k]:v});if(k==='historyGroupBy'){try{localStorage.setItem('nlab-studio-v2-history-filter',JSON.stringify({...JSON.parse(localStorage.getItem('nlab-studio-v2-history-filter')||'{}'),groupBy:v}))}catch{}}document.dispatchEvent(new CustomEvent('studio-v2:history-changed'));const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %';const t=host.querySelector('[data-thumbnail-size-value]');if(t)t.textContent=Math.round(Number(loadStudioSettings().collectionThumbnailSize||104))+' px'};
     el.addEventListener('change',handler);if(el.type==='range')el.addEventListener('input',handler);

@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "channel": "test",
-  "notes": "Studio Core 2.7 : contrat responsive/tactile commun, registre OCR multi-engine, registre symbologies partagé, support Scan Studio et propagation metadata/version commune.",
+  "notes": "Studio Core 2.8 : Input Picker Fichier/Dossier/Drag&Drop partagé, aide contextuelle flottante à la demande, navigation Studio intégrée au header, fenêtres contraintes au viewport, densité mobile, largeur de volet manuelle/verrouillable, HEX par défaut conservé pour le color control.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
