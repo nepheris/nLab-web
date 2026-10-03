@@ -81,8 +81,7 @@
       ],
       "required_strings": [
         "studio-v2/studio.css",
-        "bootstrap-specialized.js",
-        "Tesseract.createWorker"
+        "tesseract.min.js"
       ],
       "runtime": "APP-Applications/ocr-studio/v2/v2-app.js",
       "required_runtime_strings": [
@@ -594,6 +593,54 @@
         "workbookBlob",
         "tabular-service.js",
         "download-service.js"
+      ]
+    },
+    "scan-studio": {
+      "test": "0.1.0",
+      "runtime": "APP-Applications/scan-studio/v2/v2-app.js",
+      "required_ids": [
+        "drop",
+        "fileInput",
+        "cameraInput",
+        "pickFiles",
+        "takePhoto",
+        "pageList",
+        "moveUp",
+        "moveDown",
+        "removePage",
+        "rotateLeft",
+        "rotateRight",
+        "deskew",
+        "cleanupMode",
+        "applyCleanup",
+        "runOcr",
+        "exportPdf",
+        "ocrLang",
+        "status",
+        "ocrOut",
+        "canvas",
+        "downloadPage"
+      ],
+      "required_strings": [
+        "studio-v2/studio.css",
+        "jspdf",
+        "tesseract"
+      ],
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "runOcr",
+        "scan.capture.camera",
+        "scan.image.cleanup",
+        "scan.export.pdf"
+      ],
+      "required_capabilities": [
+        "scan.capture.camera",
+        "scan.capture.files",
+        "scan.pages.organize",
+        "scan.image.cleanup",
+        "scan.image.deskew",
+        "scan.ocr",
+        "scan.export.pdf"
       ]
     }
   }
