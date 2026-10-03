@@ -659,7 +659,7 @@ async function saveCurrent({classify=false,forcePicker=false}={}){
  if(!engine.pageCount)return;if($('#outputMode').value==='zip')return saveZip({classify});const format=$('#outputFormat').value;
  let blob,name;if(format==='same'&&engine.sourceFile&&activeFileCapabilities?.family!=='pdf'){blob=engine.sourceFile;name=outputName('.'+(formatInfo(engine.sourceFile).extension||'bin'))}else{blob=await currentBlob();name=outputName('.pdf')}
  if(forcePicker&&window.showSaveFilePicker){const h=await showSaveFilePicker({suggestedName:name,types:[{description:'Document',accept:{[blob.type||'application/octet-stream']:['.'+(name.split('.').pop()||'pdf')]}}]}),w=await h.createWritable();await w.write(blob);await w.close()}
- else{if($('#outputProvider').value==='local'&&!output.handle)await ensureOutputDirectory();await output.saveBlob(blob,name,{parts:classify?outputParts():[]})}
+ else{await saveOutputBlob(blob,name,{parts:classify?outputParts():[]})}
  setStatus('Enregistré : '+name);recordHistory({studio:'pdf-studio',type:'action',label:classify?'Enregistrer + classer':'Enregistrer',detail:(classify?outputParts().join('/'):'')||'racine',target:name,action:'savePdf',repeatable:true})
 }
 async function saveZip({classify=false}={}){if(!engine.pageCount)return;const pdf=await exportBytesWithObjects(),pdfName=outputName('.pdf'),zipName=outputName('.zip'),provider=$('#outputProvider').value,parts=classify?outputParts():[];
