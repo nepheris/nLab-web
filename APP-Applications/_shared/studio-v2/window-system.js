@@ -39,8 +39,15 @@ function sync(panel,key){
 function addBar(panel,key,title){
  if(panel.querySelector(':scope > .studioWindowBar'))return;
  const bar=document.createElement('div');bar.className='studioWindowBar';
- bar.innerHTML='<span class="studioWindowGrip" data-win-grip>'+svg('grip')+'</span><strong>'+String(title||key)+'</strong><span class="grow"></span><button data-win-collapse></button><button data-win-lock></button><button data-win-dock></button><button data-win-scroll>'+svg('scroll')+'</button><button data-win-close>'+svg('close')+'</button>';
+ bar.innerHTML='<span class="studioWindowGrip" data-win-grip title="Déplacer">'+svg('grip')+'</span><strong>'+String(title||key)+'</strong><span class="grow"></span><button data-win-collapse title="Réduire / restaurer" aria-label="Réduire ou restaurer"></button><button data-win-lock title="Verrouiller / déverrouiller" aria-label="Verrouiller ou déverrouiller"></button><button data-win-dock title="Ancrer / libérer" aria-label="Ancrer ou libérer"></button><button data-win-scroll title="Activer / désactiver le défilement" aria-label="Défilement">'+svg('scroll')+'</button><button data-win-close title="Fermer" aria-label="Fermer">'+svg('close')+'</button>';
  panel.insertBefore(bar,panel.firstChild);
+}
+function constrain(panel){
+ const r=panel.getBoundingClientRect(),pad=6,maxW=Math.max(220,innerWidth-pad*2),maxH=Math.max(120,innerHeight-pad*2);
+ if(r.width>maxW)panel.style.width=maxW+'px';if(r.height>maxH)panel.style.height=maxH+'px';
+ const rr=panel.getBoundingClientRect();if(rr.left<pad)panel.style.left=pad+'px';if(rr.top<pad)panel.style.top=pad+'px';
+ if(rr.right>innerWidth-pad)panel.style.left=Math.max(pad,innerWidth-pad-rr.width)+'px';
+ if(rr.bottom>innerHeight-pad)panel.style.top=Math.max(pad,innerHeight-pad-rr.height)+'px';
 }
 function bind(panel,key,title){
  addBar(panel,key,title); if(panel.dataset.studioWinBound)return panel;
@@ -55,7 +62,7 @@ function bind(panel,key,title){
  panel.querySelector('[data-win-scroll]')?.addEventListener('click',()=>{c.scrollbars=c.scrollbars===false;save();sync(panel,key)});
  panel.querySelector('[data-win-close]')?.addEventListener('click',()=>{panel.hidden=true;panel.dispatchEvent(new CustomEvent('studio-window-close',{detail:{key}}))});
  panel.addEventListener('pointerup',()=>{if(!c.locked&&!c.collapsed&&!c.docked){c.width=panel.offsetWidth+'px';c.height=panel.offsetHeight+'px';save()}});
- sync(panel,key);return panel;
+ sync(panel,key);constrain(panel);window.addEventListener('resize',()=>constrain(panel),{passive:true});return panel;
 }
 export function enhanceStudioWindow(panel,{key,title}={}){
  const el=typeof panel==='string'?document.querySelector(panel):panel;if(!el)return null;

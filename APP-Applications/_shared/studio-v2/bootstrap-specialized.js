@@ -1,5 +1,6 @@
 import{mountStudioV2}from'./frame.js';
 import{resolveStudioVersions}from'./version-service.js';
+import{openInputPicker}from'./input-picker.js';
 
 export async function bootstrapSpecializedStudioV2(config=window.NLAB_SPECIALIZED_V2||{}){
   const manifest=config.manifest||{};
@@ -15,8 +16,13 @@ export async function bootstrapSpecializedStudioV2(config=window.NLAB_SPECIALIZE
   });
   await mountStudioV2({manifest,versionInfo});
   const actions=config.actions||{};
-  document.addEventListener('studio-v2:action',e=>{
-    const sel=actions[e.detail?.action];if(!sel)return;
+  document.addEventListener('studio-v2:action',async e=>{
+    const action=e.detail?.action;
+    if(action==='open'&&manifest.inputPicker){
+      const files=await openInputPicker(manifest.inputPicker);if(!files?.length)return;
+      document.dispatchEvent(new CustomEvent('studio-v2:input-picked',{detail:{files,studio:manifest.id,source:'core-input-picker'}}));return
+    }
+    const sel=actions[action];if(!sel)return;
     const target=document.querySelector(sel);if(!target)return;
     if(target instanceof HTMLInputElement&&target.type==='file')target.click();else target.click?.();
   });

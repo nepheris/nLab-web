@@ -14,10 +14,13 @@ async function studio(id,fn){
 }
 try{
  await studio('image-studio',async p=>{
-  await chooseFile(p,'#image-studio-open','Library/demo/Images/demo-image-color.png');await p.waitForFunction(()=>!/Aucune image/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
-  await p.locator('#demoSynthetic').click();await p.waitForFunction(()=>!/Aucune image/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:20000});
-  await p.locator('#right').click();await p.locator('#w').fill('500');await p.locator('#resize').click();await p.waitForTimeout(300);
-  const dl=p.waitForEvent('download');await p.locator('#export').click();if(!/\.(png|jpg|webp)$/i.test((await dl).suggestedFilename()))throw new Error('Image export invalide');
+  await p.locator('#image-studio-open').click();await p.waitForSelector('#studioInputPicker:not([hidden])');await p.locator('#studioInputFilesNative').setInputFiles('Library/demo/Images/demo-image-color.png');await p.locator('#studioInputConfirm').click();
+  await p.waitForFunction(()=>!/Aucune image/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
+  await p.locator('#demoSynthetic').click();await p.waitForFunction(()=>document.querySelectorAll('#imageList .imageItem').length>=2,null,{timeout:20000});
+  await p.locator('#right').click();await p.locator('#dimensionUnit').selectOption('px');await p.locator('#w').fill('500');await p.locator('#resize').click();await p.waitForTimeout(300);
+  await p.locator('#cropMouseMode').click();const box=await p.locator('#cv').boundingBox();if(!box)throw new Error('Canvas Image Studio absent');await p.mouse.move(box.x+20,box.y+20);await p.mouse.down();await p.mouse.move(box.x+Math.max(80,box.width*.6),box.y+Math.max(80,box.height*.6));await p.mouse.up();await p.locator('#cropApplySelection').click();await p.waitForTimeout(200);
+  await p.locator('#undoEdit').click();await p.locator('#resetAll').click();
+  const dl=p.waitForEvent('download');await p.locator('#export').click();if(!/\.(png|jpg|jpeg|webp)$/i.test((await dl).suggestedFilename()))throw new Error('Image export invalide');
  });
  await studio('scan-studio',async p=>{
   await p.locator('#fileInput').setInputFiles(['Library/demo/files/demo-input/Images/demo-document-illustration.png','Library/demo/Images/demo-image-color.png']);

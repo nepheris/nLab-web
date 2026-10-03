@@ -55,7 +55,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
       <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Library/demo/')}">Démos</a>
       <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Info/')}">Info</a>
       <a class="scope-core" data-scope="core" href="https://github.com/nepheris/nLab-web">GitHub</a>
-      <button id="studioCommandOpen" class="studioNavAction scope-core" data-scope="core" title="Rechercher une commande (Ctrl+K)">⌕ Commandes</button><button id="studioWorkflowOpen" class="studioNavAction scope-core" data-scope="core" title="Workflows enregistrés">Workflows</button><button id="studioCoreSettings" class="studioNavAction scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
+      <button id="studioCommandOpen" class="studioNavAction scope-core" data-scope="core" title="Rechercher une commande (Ctrl+K)">⌕ Commandes</button><button id="studioWorkflowOpen" class="studioNavAction scope-core" data-scope="core" title="Workflows enregistrés">Workflows</button><button id="studioContextHelpOpen" class="studioNavAction scope-core" data-scope="core" title="Aide contextuelle">? Aide</button><button id="studioCoreSettings" class="studioNavAction scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
       <a class="studioNavAction scope-core" data-scope="core" href="${esc(manifest.versionsHref||'./versions.html')}">Versions</a>
     </nav>
   </div>
@@ -73,8 +73,11 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   <div id="ribbonContextBody"></div>
 </div>
 <div id="studioCoreSettingsPanel" class="coreSettingsPanel scope-core" data-scope="core" hidden>
- <div class="coreSettingsHead"><strong>Paramètres Studio Core</strong><button id="studioCoreSettingsClose">×</button></div>
+ <div class="coreSettingsHead"><strong>Paramètres Studio Core</strong><button id="studioCoreSettingsClose" aria-label="Fermer">×</button></div>
  <div id="studioCoreSettingsBody"></div>
+</div>
+<div id="studioContextHelpWindow" class="floatingHelpWindow scope-core" data-scope="core" hidden>
+ <div id="studioContextHelpBody"></div>
 </div>`;
   root.prepend(chrome);
   const visibility=document.createElement('div');visibility.id='studioVisibilityPanel';visibility.className='studioVisibilityPanel scope-core';visibility.dataset.scope='core';visibility.hidden=true;root.insertBefore(visibility,root.querySelector('#studioMain')||root.firstChild?.nextSibling);
@@ -118,35 +121,54 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   });
   const settingsPanel=qs('#studioCoreSettingsPanel');
   if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core'});
+  const helpWindow=qs('#studioContextHelpWindow');
+  if(helpWindow)enhanceStudioWindow(helpWindow,{key:'context-help',title:'Aide contextuelle'});
   qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;settingsPanel.hidden=!settingsPanel.hidden;if(!settingsPanel.hidden){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));settingsPanel.style.zIndex='230'}});
   qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)settingsPanel.hidden=true});
   qs('#studioCommandOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-command-palette')));
   qs('#studioWorkflowOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-workflows')));
 
   const ribbon=qs('.studioRibbon');
+  const studioMenu=qs('.studioMenu');
+  const headerInner=qs('.studioHeaderInner');
+  const syncMenuPlacement=()=>{
+    const mode=document.body.dataset.navPlacement||'header';
+    if(!studioMenu||!headerInner)return;
+    studioMenu.hidden=mode==='hidden';
+    if(mode==='header'){
+      studioMenu.classList.add('studioMenuIntegrated');
+      if(studioMenu.parentElement!==headerInner)headerInner.append(studioMenu);
+    }else{
+      studioMenu.classList.remove('studioMenuIntegrated');
+      if(studioMenu.parentElement!==chrome)chrome.insertBefore(studioMenu,qs('.studioRibbon'));
+    }
+  };
+  syncMenuPlacement();
+  const mo=new MutationObserver(syncMenuPlacement);mo.observe(document.body,{attributes:true,attributeFilter:['data-nav-placement']});
 
-  const showContextHelp=(el,feature=null)=>{
-    const panel=qs('#ribbonContext'),body=qs('#ribbonContextBody'),title=qs('#ribbonContextTitle');
+  let lastContextEl=null,lastContextFeature=null;
+  const rememberContext=(el,feature=null)=>{if(el){lastContextEl=el;lastContextFeature=feature}};
+  const showContextHelp=(el=lastContextEl,feature=lastContextFeature)=>{
+    const panel=helpWindow,body=qs('#studioContextHelpBody');
     if(!panel||!body||!el)return;
-    const m=renderContextualHelp(body,el,{manifest,versionInfo,feature});
-    if(title)title.textContent=m?.sectionLabel||m?.controlLabel||'Aide contextuelle';
-    panel.hidden=false;
-    panel.classList.remove('collapsed');
+    renderContextualHelp(body,el,{manifest,versionInfo,feature});
+    panel.hidden=false;panel.style.zIndex='240';
   };
   ribbon?.addEventListener('click',e=>{
     const b=e.target.closest('[data-studio-action]');if(!b)return;
-    showContextHelp(b,findFeature(manifest,b.dataset.studioAction)||null);
+    const feature=findFeature(manifest,b.dataset.studioAction)||null;rememberContext(b,feature);
+    if((document.body.dataset.contextualHelpMode||'explicit')==='auto')showContextHelp(b,feature);
   });
   root.addEventListener('click',e=>{
     const el=e.target.closest('button,input,select,textarea,[role="button"],a[data-ui-id]');
-    if(!el||el.closest('#nlabStudioV2Chrome')||el.closest('#ribbonContext'))return;
-    setTimeout(()=>showContextHelp(el,null),0);
+    if(!el||el.closest('#studioContextHelpWindow'))return;
+    const feature=el.dataset?.studioAction?findFeature(manifest,el.dataset.studioAction)||null:null;rememberContext(el,feature);
+    if((document.body.dataset.contextualHelpMode||'explicit')==='auto'&&!el.closest('#nlabStudioV2Chrome'))setTimeout(()=>showContextHelp(el,feature),0);
   },true);
   root.addEventListener('focusin',e=>{
-    const el=e.target.closest?.('input,select,textarea,button');
-    if(!el||el.closest('#nlabStudioV2Chrome')||el.closest('#ribbonContext'))return;
-    setTimeout(()=>showContextHelp(el,null),0);
+    const el=e.target.closest?.('input,select,textarea,button');if(el&&!el.closest('#studioContextHelpWindow'))rememberContext(el,null);
   });
+  qs('#studioContextHelpOpen')?.addEventListener('click',()=>showContextHelp(lastContextEl||document.activeElement,lastContextFeature));
 
   ribbon?.addEventListener('click',e=>{
     const b=e.target.closest('[data-studio-action]');if(!b)return;
