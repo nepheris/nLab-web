@@ -241,5 +241,37 @@
         "status": "development"
       }
     ]
+  },
+  "architecture": {
+    "principle": "Studio = reusable engine + reference UI; Framework Web = orchestration/theme/permissions/routing; Application = composition of capabilities + business logic.",
+    "initiatives": [
+      {
+        "id": "CX-NEXT-22",
+        "label": "Convergence Studios → Framework Web",
+        "status": "in-progress"
+      },
+      {
+        "id": "CX-NEXT-23",
+        "label": "Chaque Studio = ENGINE/CORE + STUDIO UI",
+        "status": "in-progress"
+      },
+      {
+        "id": "CX-NEXT-24",
+        "label": "Capability Registry du Framework",
+        "status": "implemented-base",
+        "ref": "FRMW-Frameworks/Web-Framework/capabilities.json"
+      },
+      {
+        "id": "CX-NEXT-25",
+        "label": "Passage inter-outils avec contexte portable",
+        "status": "implemented-base",
+        "ref": "APP-Applications/_shared/studio-v2/studio-context.js"
+      },
+      {
+        "id": "CX-NEXT-26",
+        "label": "Framework fournit le shell, Studio fournit la capacité",
+        "status": "adopted"
+      }
+    ]
   }
 }
