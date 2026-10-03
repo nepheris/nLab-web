@@ -52,7 +52,7 @@
       ]
     },
     "ocr-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "file",
         "lang",
@@ -62,12 +62,33 @@
         "save",
         "status",
         "preview",
-        "out"
+        "out",
+        "engine",
+        "engineList",
+        "diag",
+        "copy",
+        "drop",
+        "meta"
       ],
       "required_strings": [
         "studio-v2/studio.css",
         "bootstrap-specialized.js",
         "Tesseract.createWorker"
+      ],
+      "runtime": "APP-Applications/ocr-studio/v2/v2-app.js",
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "availableOcrEngines",
+        "runOcr",
+        "ocrDiagnostics",
+        "ocr.language.auto",
+        "ocr.engine.registry"
+      ],
+      "required_capabilities": [
+        "ocr.image.text",
+        "ocr.language.auto",
+        "ocr.engine.registry",
+        "ocr.export.text"
       ]
     },
     "code-studio": {
