@@ -15,7 +15,7 @@ try{
   for(const id of ['demoReal1','demoReal2']){await p.locator('#'+id).click();await p.waitForFunction(()=>!/Impossible|Aucune image/.test(document.querySelector('#imageMeta')?.textContent||'')&&/px/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000})}
   await p.locator('#demoSynthetic').click();await p.waitForFunction(()=>/px/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
   await p.locator('#left').click();await p.locator('#flipX').click();await p.locator('#flipY').click();
-  await p.locator('#axis').selectOption('X');await p.locator('#mm').fill('50');await p.locator('#measure').click();
+   await p.locator('#axis').evaluate(el=>{const d=el.closest('details');if(d)d.open=true});await p.locator('#axis').selectOption('X');await p.locator('#mm').fill('50');await p.locator('#measure').click();
   const box=await p.locator('#cv').boundingBox();if(!box)throw new Error('Canvas image sans bbox');await p.mouse.click(box.x+100,box.y+100);await p.mouse.click(box.x+300,box.y+100);
   await p.waitForFunction(()=>document.querySelector('#kx')?.textContent!=='—'&&document.querySelector('#dx')?.textContent!=='—',null,{timeout:10000});
   if(await p.locator('#measureRows tr').count()<1)throw new Error('Calibration non enregistrée');await p.locator('#undoMeasure').click();if(await p.locator('#measureRows tr').count()!==0)throw new Error('Undo calibration inactif');
