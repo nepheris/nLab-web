@@ -3,7 +3,7 @@
   "updated": "2026-10-03",
   "studios": {
     "image-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "file",
         "demoSynthetic",
@@ -49,10 +49,19 @@
       "required_strings": [
         "studio-v2/studio.css",
         "bootstrap-specialized.js"
+      ],
+      "required_capabilities": [
+        "image.transform.rotate",
+        "image.transform.flip",
+        "image.transform.resize",
+        "image.transform.crop",
+        "image.watermark.text",
+        "image.calibration.measure",
+        "image.identity.sha256"
       ]
     },
     "ocr-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "file",
         "lang",
@@ -62,12 +71,32 @@
         "save",
         "status",
         "preview",
-        "out"
+        "out",
+        "engine",
+        "engineList",
+        "diag",
+        "copy",
+        "drop",
+        "meta"
       ],
       "required_strings": [
         "studio-v2/studio.css",
-        "bootstrap-specialized.js",
-        "Tesseract.createWorker"
+        "tesseract.min.js"
+      ],
+      "runtime": "APP-Applications/ocr-studio/v2/v2-app.js",
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "availableOcrEngines",
+        "runOcr",
+        "ocrDiagnostics",
+        "ocr.language.auto",
+        "ocr.engine.registry"
+      ],
+      "required_capabilities": [
+        "ocr.image.text",
+        "ocr.language.auto",
+        "ocr.engine.registry",
+        "ocr.export.text"
       ]
     },
     "code-studio": {
@@ -179,7 +208,7 @@
       ]
     },
     "qr-barcode-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "symTabs",
         "value",
@@ -221,7 +250,19 @@
         "refreshPreview",
         "downloadPng",
         "downloadSvg",
-        "scanImage"
+        "scanImage",
+        "SYMBOLOGIES",
+        "symbologyInfo",
+        "bwipOptions",
+        "validatePayload",
+        "symbology-service.js"
+      ],
+      "required_capabilities": [
+        "symbology.generate",
+        "symbology.scan.image",
+        "symbology.scan.hid",
+        "symbology.export.png",
+        "symbology.export.svg"
       ]
     },
     "markdown-studio": {
@@ -331,7 +372,7 @@
       ]
     },
     "pdf-studio": {
-      "test": "2.7.0",
+      "test": "2.8.0",
       "path": "APP-Applications/pdf-studio/v2/index.html",
       "runtime": "APP-Applications/pdf-studio/v2/pdf-v2.js",
       "required_ids": [
@@ -481,7 +522,10 @@
         "watermarkText",
         "batesNumbering",
         "buildArtifactManifest",
-        "downloadManifest"
+        "downloadManifest",
+        "bwipOptions",
+        "validatePayload",
+        "symbology-service.js"
       ]
     },
     "document-studio": {
@@ -549,6 +593,52 @@
         "workbookBlob",
         "tabular-service.js",
         "download-service.js"
+      ]
+    },
+    "scan-studio": {
+      "test": "0.1.0",
+      "runtime": "APP-Applications/scan-studio/v2/v2-app.js",
+      "required_ids": [
+        "drop",
+        "fileInput",
+        "cameraInput",
+        "pickFiles",
+        "takePhoto",
+        "pageList",
+        "moveUp",
+        "moveDown",
+        "removePage",
+        "rotateLeft",
+        "rotateRight",
+        "deskew",
+        "cleanupMode",
+        "applyCleanup",
+        "runOcr",
+        "exportPdf",
+        "ocrLang",
+        "status",
+        "ocrOut",
+        "canvas",
+        "downloadPage"
+      ],
+      "required_strings": [
+        "studio-v2/studio.css",
+        "jspdf",
+        "tesseract"
+      ],
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "runOcr",
+        "downloadBlob"
+      ],
+      "required_capabilities": [
+        "scan.capture.camera",
+        "scan.capture.files",
+        "scan.pages.organize",
+        "scan.image.cleanup",
+        "scan.image.deskew",
+        "scan.ocr",
+        "scan.export.pdf"
       ]
     }
   }

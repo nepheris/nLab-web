@@ -436,3 +436,44 @@ body.studioRibbonCollapsed .ribbonContext{
 .contextualHelp{font-size:11px}.contextHelpPath{display:flex;gap:5px;align-items:center;color:var(--nlab-muted);font-size:9px;margin-bottom:5px}.contextualHelp h3{margin:0 0 5px;font-size:13px}.contextHelpSummary{margin:0 0 7px}.contextDevHelp{margin-top:8px;border-top:1px dashed #b8c6d1;padding-top:7px}.contextDevHelp>summary{cursor:pointer;font-weight:700;font-size:10px;color:#405160}.contextDevActions{display:flex;align-items:center;gap:7px;margin:7px 0;flex-wrap:wrap}.contextDevActions code{font-size:9px;overflow-wrap:anywhere}.contextTechnicalMeta{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:5px}.contextDevHelp:not([open]) .contextTechnicalMeta,.contextDevHelp:not([open]) .contextDevActions{display:none!important}.themeDark .contextDevHelp>summary{color:#c7d0d8}
 
 .ribbonContextHead button,.contextDevHelp summary,.contextDevHelp button{pointer-events:auto}
+
+
+/* Studio Core 2.7 — responsive contract */
+:root{
+  --studio-touch-target:40px;
+  --studio-mobile-gap:8px;
+}
+button,.btn,[role="button"],input,select,textarea{min-height:var(--studio-touch-target)}
+input[type="checkbox"],input[type="radio"]{min-height:0}
+.studioRibbon{-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.studioMain,.codeMain,.datasetMain{min-width:0}
+img,canvas,svg,video{max-width:100%}
+.studioWindow{overscroll-behavior:contain}
+@media(max-width:900px){
+  :root{--studio-touch-target:42px}
+  .studioMain{grid-template-columns:1fr!important}
+  .studioSidebar{position:relative;max-height:none!important}
+  .studioMain.sidebarCompact{grid-template-columns:1fr!important}
+  .studioMain.sidebarCompact .studioSidebar{display:block}
+  .studioRibbon{gap:2px;padding-left:8px;padding-right:8px}
+  .ribbonBtn{min-width:54px}
+  .studioWindow,.historyFullView{left:8px!important;right:8px!important;top:8px!important;width:auto!important;max-width:none!important;transform:none!important}
+}
+@media(max-width:620px){
+  :root{--studio-touch-target:44px;--studio-mobile-gap:6px}
+  .studioHeaderInner{width:calc(100% - 12px);gap:8px}
+  .studioHeader{--studio-header-h:66px}
+  .studioLogo{width:64px}.studioLogo img{width:64px}
+  .studioBrand b{font-size:15px}.studioBrand small{display:none}
+  .studioMenu{padding:0 6px;overflow-x:auto;align-items:stretch}.studioMenu button{min-width:max-content;padding:7px 9px}
+  .studioRibbon{padding:4px 6px;min-height:66px}.ribbonGroup{padding:0 5px}.ribbonBtn{height:56px;min-width:52px;padding:4px 5px}
+  .studioMain{padding:6px;gap:6px}
+  .coreSettingsPanel{left:6px;right:6px;top:72px;width:auto;max-height:calc(100vh - 84px)}
+  .studioWindow{min-width:0!important;min-height:72px}
+  .studioStatus{height:auto;min-height:28px;padding:5px 7px;gap:6px;flex-wrap:wrap}
+}
+@media(pointer:coarse){
+  .ribbonBtn,.studioMenu button,.studioNavAction,.btn,button{min-height:44px}
+  input,select,textarea{font-size:16px}
+  .studioWindowGrip{width:36px;height:36px}
+}

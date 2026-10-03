@@ -1,12 +1,20 @@
 {
   "current": "0.9.10",
-  "test": "2.7.0",
+  "test": "2.8.0",
   "versions": [
+    {
+      "version": "2.8.0",
+      "label": "PDF Studio 2.8.0 TEST",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Studio Core responsive 2.7 et première convergence Engine : génération des codes 1D/2D via le registre symbology partagé, gamme étendue QR/Data Matrix/Aztec/PDF417/Code128/GS1/Code39/EAN/UPC/ITF/Codabar. CURRENT reste inchangé."
+    },
     {
       "version": "2.7.0",
       "label": "PDF Studio 2.7.0 TEST",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe Studio Platform V3 : métadonnées version/build reliées au registre et au commit Git via Studio Core 2.5, source canonique déclarée dans le manifest, compatibilité avec le premier dérivé nLab PDF Sign. Les capacités PDF restent portées par le même moteur ; CURRENT 0.9.10 reste inchangé."
     },

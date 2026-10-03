@@ -26,6 +26,17 @@
       "icon": "../../assets/studios/image-studio.svg"
     },
     {
+      "id": "scan-studio",
+      "name": "Scan Studio",
+      "status": "test",
+      "path": "../scan-studio/",
+      "purpose": "Acquisition documentaire responsive : caméra/photo/fichiers, nettoyage, OCR partagé, organisation des pages et assemblage PDF.",
+      "versions_path": "../scan-studio/versions.html",
+      "version_registry": "../scan-studio/versions.json",
+      "card_kind": "development",
+      "icon": "../../assets/studios/scan-studio.svg"
+    },
+    {
       "id": "ocr-studio",
       "name": "OCR Studio",
       "status": "current+test",
@@ -116,7 +127,7 @@
     {
       "id": "dataset-generator-studio",
       "name": "Dataset Generator Studio",
-      "status": "test-2.0.0",
+      "status": "current+test",
       "path": "../dataset-generator-studio/",
       "purpose": "Génération de datasets, images, QR/Data Matrix/Code128, fichiers de test, manifests et packs. Interface Studio en développement.",
       "versions_path": "../dataset-generator-studio/versions.html",

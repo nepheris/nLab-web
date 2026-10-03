@@ -1,14 +1,22 @@
 {
   "name": "QR & Barcode Studio",
   "current": "0.2.0",
-  "test": "2.0.0",
+  "test": "2.1.0",
   "versions": [
+    {
+      "version": "2.1.0",
+      "label": "QR & Barcode Studio 2.1.0 TEST",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Studio Core responsive et registre de symbologies partagé. Ajoute Aztec, PDF417, Code39, UPC-A, ITF et Codabar aux QR/Data Matrix/Code128/GS1/EAN, avec validation de payload et metadata build communes."
+    },
     {
       "version": "2.0.0",
       "label": "QR & Barcode Studio 2.0.0 TEST",
       "date": "2026-10-01",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion."
     },

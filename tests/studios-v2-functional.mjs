@@ -19,8 +19,14 @@ try{
   await p.locator('#right').click();await p.locator('#w').fill('500');await p.locator('#resize').click();await p.waitForTimeout(300);
   const dl=p.waitForEvent('download');await p.locator('#export').click();if(!/\.(png|jpg|webp)$/i.test((await dl).suggestedFilename()))throw new Error('Image export invalide');
  });
+ await studio('scan-studio',async p=>{
+  await p.locator('#fileInput').setInputFiles(['Library/demo/files/demo-input/Images/demo-document-illustration.png','Library/demo/Images/demo-image-color.png']);
+  await p.waitForFunction(()=>document.querySelectorAll('#pageList .pageItem').length===2,null,{timeout:15000});
+  await p.locator('#rotateRight').click();await p.locator('#cleanupMode').selectOption('gray');await p.locator('#applyCleanup').click();
+  const dl=p.waitForEvent('download');await p.locator('#downloadPage').click();if(!/\.png$/i.test((await dl).suggestedFilename()))throw new Error('Scan page PNG invalide');
+ });
  await studio('ocr-studio',async p=>{
-  await chooseFile(p,'#ocr-studio-open','Library/demo/files/demo-input/Images/demo-document-illustration.png');await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
+  await chooseFile(p,'#ocr-open','Library/demo/files/demo-input/Images/demo-document-illustration.png');await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
   await p.locator('#demo').click();await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
   await p.locator('#out').fill('OCR TEST');const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.txt$/i.test((await dl).suggestedFilename()))throw new Error('OCR TXT export invalide');
  });

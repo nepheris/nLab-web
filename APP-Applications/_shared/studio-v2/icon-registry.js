@@ -20,6 +20,7 @@ eye:'<svg viewBox="0 0 24 24"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 
 text:'<svg viewBox="0 0 24 24"><path d="M5 5h14M12 5v14M8 19h8"/></svg>',
 stamp:'<svg viewBox="0 0 24 24"><path d="M7 20h10M8 16h8l-1-4c-.4-1.5-1.1-2.7-3-2.7S9.4 10.5 9 12zM9 9V5a3 3 0 0 1 6 0v4"/></svg>',
 highlight:'<svg viewBox="0 0 24 24"><path d="m5 15 9-9 4 4-9 9H5zM4 21h16"/></svg>',
+colorPicker:'<svg viewBox="0 0 24 24"><path d="m16.5 3.5 4 4-3 3-4-4 3-3Z"/><path d="m14.5 6.5-9 9L4 21l5.5-1.5 9-9"/><path d="M4 21h6"/></svg>',
 pen:'<svg viewBox="0 0 24 24"><path d="m4 20 4.5-1L19 8.5 15.5 5 5 15.5zM13.5 7l3.5 3.5"/></svg>',
 image:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/></svg>',
 signature:'<svg viewBox="0 0 24 24"><path d="M3 17c4-1 5-8 8-8 2 0 0 6 2 6 2 0 3-4 5-4 1.5 0 1.5 3 3 3"/><path d="M3 21h18"/></svg>',
@@ -150,6 +151,7 @@ viewDependency:'<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle 
 };
 
 const ALIASES={
+  color_picker:'colorPicker',eyedropper:'colorPicker',pipette:'colorPicker',
   sort_az:'sortAZ',sort_za:'sortZA',
   view_kanban:'viewKanban',view_gantt:'viewGantt',
   view_gantt_hierarchy:'viewGanttHierarchy',view_calendar:'viewCalendar',
