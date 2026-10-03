@@ -5,6 +5,9 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.min.js"></script>
+<script>window.addEventListener('DOMContentLoaded',()=>{if(window.pdfjsLib)window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'});</script>
 <style>
 .datasetMain{display:grid;grid-template-columns:minmax(300px,390px) minmax(0,1fr);gap:12px;padding:12px;min-height:calc(100vh - 180px)}
 .datasetSidebar,.datasetViewer{background:var(--studio-surface,#fff);border:1px solid var(--studio-line,#d6dde3);border-radius:14px;min-width:0}
@@ -53,11 +56,17 @@
 </section>
 
 <section class="modePanel" data-panel="clone" hidden>
-<div class="dropClone" id="cloneDrop" tabindex="0" role="button"><strong>Importer CSV, JSON ou XLSX</strong><br><span>La structure sera détectée et un nouveau jeu fictif sera généré.</span></div>
-<input id="cloneFile" type="file" accept=".csv,.json,.xlsx,.xls,application/json,text/csv" hidden>
-<label class="field"><span>Lignes à générer</span><input id="cloneRows" type="number" min="1" max="100000" value="100"></label>
+<div class="dropClone" id="cloneDrop" tabindex="0" role="button"><strong>Importer dataset ou document</strong><br><span>CSV · JSON · XLSX · DOCX · ODT · PDF · image</span></div>
+<input id="cloneFile" type="file" accept=".csv,.json,.xlsx,.xls,.docx,.odt,.pdf,image/*,application/json,text/csv,application/pdf" hidden>
+<label class="field"><span>Mode de conservation</span><select id="clonePolicy"><option value="structure">Structure uniquement — recommandé</option><option value="shape">Structure + forme grossière</option></select></label>
+<label class="checkboxField"><input id="cloneOcr" type="checkbox" checked><span>OCR automatique pour les images</span></label>
+<label class="field"><span>Langue OCR</span><select id="cloneOcrLang"><option value="fra">Français</option><option value="eng">English</option><option value="fra+eng">Français + English</option></select></label>
+<label class="field"><span>Lignes à générer (datasets)</span><input id="cloneRows" type="number" min="1" max="100000" value="100"></label>
 <div id="cloneSummary" class="statusBox">Aucune structure importée.</div>
-<div class="toolbarLine"><button class="miniBtn" id="editInTableMode" type="button" disabled>Modifier les types détectés</button></div>
+<div class="toolbarLine">
+<button class="miniBtn" id="editInTableMode" type="button" disabled>Modifier les types détectés</button>
+<button class="miniBtn" id="openOcrStudio" type="button">OCR Studio</button>
+</div>
 </section>
 
 <div class="sectionSubhead">État</div><div id="status" class="statusBox">Prêt.</div>
