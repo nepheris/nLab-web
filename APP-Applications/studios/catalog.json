@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studios-catalog/v1",
-  "updated": "2026-10-01",
+  "updated": "2026-10-03",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
     {
@@ -111,6 +111,26 @@
       "purpose": "Génération de datasets, images, QR/Data Matrix/Code128, fichiers de test, manifests et packs. Interface Studio en développement.",
       "versions_path": "../dataset-generator-studio/versions.html",
       "version_registry": "../dataset-generator-studio/versions.json",
+      "card_kind": "development"
+    },
+    {
+      "id": "document-studio",
+      "name": "Document Studio",
+      "status": "test-1.0.0",
+      "path": "../document-studio/",
+      "purpose": "Conversion et édition structurelle DOCX, ODT, TXT, Markdown, HTML et RTF simple, avec exports bureautiques locaux.",
+      "versions_path": "../document-studio/versions.html",
+      "version_registry": "../document-studio/versions.json",
+      "card_kind": "development"
+    },
+    {
+      "id": "spreadsheet-studio",
+      "name": "Spreadsheet Studio",
+      "status": "test-1.0.0",
+      "path": "../spreadsheet-studio/",
+      "purpose": "Lecture et conversion locale XLS/XLSX/ODS/CSV/TSV/JSON, sélection de feuille et exports tableur.",
+      "versions_path": "../spreadsheet-studio/versions.html",
+      "version_registry": "../spreadsheet-studio/versions.json",
       "card_kind": "development"
     }
   ],

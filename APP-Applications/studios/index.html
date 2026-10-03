@@ -18,7 +18,7 @@ footer{border-top:1px solid var(--line);background:#fff}.foot{padding:20px 0;dis
 <script>
 (async()=>{
  const grid=document.getElementById('studioGrid'),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),resolve=(base,href)=>{try{return new URL(href,base).href}catch{return href}};
- const icons={'pdf-studio':'PDF','image-studio':'IMG','ocr-studio':'OCR','code-studio':'CODE','json-studio':'JSON','data-studio':'DATA','qr-barcode-studio':'QR','file-studio':'FILE','markdown-studio':'MD','translation-studio':'TR','demo-studio':'DEMO','dataset-generator-studio':'DATASET'};
+ const icons={'pdf-studio':'PDF','image-studio':'IMG','ocr-studio':'OCR','code-studio':'CODE','json-studio':'JSON','data-studio':'DATA','qr-barcode-studio':'QR','file-studio':'FILE','markdown-studio':'MD','translation-studio':'TR','demo-studio':'DEMO','dataset-generator-studio':'DATASET','document-studio':'DOC','spreadsheet-studio':'SHEET'};
  try{
   const r=await fetch('./catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('catalog '+r.status);const data=await r.json();
   const cards=await Promise.all((data.studios||[]).map(async s=>{
