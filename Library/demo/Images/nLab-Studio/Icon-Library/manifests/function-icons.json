@@ -1,0 +1,1561 @@
+{
+  "schema": "nlab-icon-manifest/v1",
+  "family": "function-icons",
+  "label": "Function Icons",
+  "description": "Actions métier partagées entre les Studios.",
+  "updated": "2026-10-03",
+  "style": {
+    "colorMode": "currentColor",
+    "fill": "none",
+    "viewBox": "0 0 24 24",
+    "strokeWidth": 1.7,
+    "linecap": "round",
+    "linejoin": "round"
+  },
+  "icons": [
+    {
+      "id": "active",
+      "label": "Active",
+      "file": "../function-icons/active.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Active ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "active"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "add",
+      "label": "Add",
+      "file": "../function-icons/add.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Add ».",
+      "usage": [],
+      "tags": [
+        "function",
+        "add"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "addPage",
+      "label": "Add Page",
+      "file": "../function-icons/add-page.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Add Page ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "add",
+        "page"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "add-page"
+      ]
+    },
+    {
+      "id": "batch",
+      "label": "Batch",
+      "file": "../function-icons/batch.svg",
+      "family": "function-icons",
+      "description": "Traitement par lot.",
+      "usage": [
+        "pdf-studio",
+        "file-studio"
+      ],
+      "tags": [
+        "function",
+        "batch"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "certificate",
+      "label": "Certificate",
+      "file": "../function-icons/certificate.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Certificate ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "certificate"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "check",
+      "label": "Check",
+      "file": "../function-icons/check.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Check ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "check"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "classify",
+      "label": "Classify",
+      "file": "../function-icons/classify.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Classify ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "classify"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "close",
+      "label": "Close",
+      "file": "../function-icons/close.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Close ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "close"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "collapse",
+      "label": "Collapse",
+      "file": "../function-icons/collapse.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Collapse ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "collapse"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "command",
+      "label": "Command",
+      "file": "../function-icons/command.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Command ».",
+      "usage": [
+        "dataset-generator-studio",
+        "markdown-studio",
+        "pdf-studio",
+        "qr-barcode-studio"
+      ],
+      "tags": [
+        "function",
+        "command"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "compare",
+      "label": "Compare",
+      "file": "../function-icons/compare.svg",
+      "family": "function-icons",
+      "description": "Comparer deux artefacts.",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "compare"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "convert",
+      "label": "Convert",
+      "file": "../function-icons/convert.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Convert ».",
+      "usage": [
+        "document-studio",
+        "pdf-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "convert"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "copy",
+      "label": "Copy",
+      "file": "../function-icons/copy.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Copy ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "copy"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "crop",
+      "label": "Crop",
+      "file": "../function-icons/crop.svg",
+      "family": "function-icons",
+      "description": "Recadrer une image ou une page.",
+      "usage": [
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "crop"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "delete",
+      "label": "Delete",
+      "file": "../function-icons/delete.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Delete ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "delete"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "download",
+      "label": "Download",
+      "file": "../function-icons/download.svg",
+      "family": "function-icons",
+      "description": "Télécharger ou exporter une ressource.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "download"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "dragHandle",
+      "label": "Drag Handle",
+      "file": "../function-icons/drag-handle.svg",
+      "family": "function-icons",
+      "description": "Poignée de déplacement par glisser-déposer.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "drag",
+        "handle"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "drag-handle"
+      ]
+    },
+    {
+      "id": "duplicate",
+      "label": "Duplicate",
+      "file": "../function-icons/duplicate.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Duplicate ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "duplicate"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "file": "../function-icons/error.svg",
+      "family": "function-icons",
+      "description": "Erreur ou échec d’une opération.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "error"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "expand",
+      "label": "Expand",
+      "file": "../function-icons/expand.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Expand ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "expand"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "extract",
+      "label": "Extract",
+      "file": "../function-icons/extract.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Extract ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "extract"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "eye",
+      "label": "Eye",
+      "file": "../function-icons/eye.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Eye ».",
+      "usage": [],
+      "tags": [
+        "function",
+        "eye"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "eyeOff",
+      "label": "Eye Off",
+      "file": "../function-icons/eye-off.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Eye Off ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "eye",
+        "off"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "eye-off"
+      ]
+    },
+    {
+      "id": "file",
+      "label": "File",
+      "file": "../function-icons/file.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « File ».",
+      "usage": [
+        "document-studio",
+        "pdf-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "file"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "filter",
+      "label": "Filter",
+      "file": "../function-icons/filter.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Filter ».",
+      "usage": [
+        "data-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "filter"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "fingerprint",
+      "label": "Fingerprint",
+      "file": "../function-icons/fingerprint.svg",
+      "family": "function-icons",
+      "description": "Identité ou empreinte d’un artefact.",
+      "usage": [
+        "file-studio",
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "fingerprint"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "folder",
+      "label": "Folder",
+      "file": "../function-icons/folder.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Folder ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "folder"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "folderClosed",
+      "label": "Folder Closed",
+      "file": "../function-icons/folder-closed.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Folder Closed ».",
+      "usage": [
+        "file-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "folder",
+        "closed"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "folder-closed"
+      ]
+    },
+    {
+      "id": "folderOpen",
+      "label": "Folder Open",
+      "file": "../function-icons/folder-open.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Folder Open ».",
+      "usage": [
+        "file-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "folder",
+        "open"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "folder-open"
+      ]
+    },
+    {
+      "id": "forms",
+      "label": "Forms",
+      "file": "../function-icons/forms.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Forms ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "forms"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "hash",
+      "label": "Hash",
+      "file": "../function-icons/hash.svg",
+      "family": "function-icons",
+      "description": "Empreinte ou hachage cryptographique.",
+      "usage": [
+        "file-studio",
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "hash"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "headerFooter",
+      "label": "Header Footer",
+      "file": "../function-icons/header-footer.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Header Footer ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "header",
+        "footer"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "header-footer"
+      ]
+    },
+    {
+      "id": "help",
+      "label": "Help",
+      "file": "../function-icons/help.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Help ».",
+      "usage": [],
+      "tags": [
+        "function",
+        "help"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "highlight",
+      "label": "Highlight",
+      "file": "../function-icons/highlight.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Highlight ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "highlight"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "history",
+      "label": "History",
+      "file": "../function-icons/history.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « History ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "history"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "home",
+      "label": "Home",
+      "file": "../function-icons/home.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Home ».",
+      "usage": [],
+      "tags": [
+        "function",
+        "home"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "image",
+      "label": "Image",
+      "file": "../function-icons/image.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Image ».",
+      "usage": [
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "image"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "inactive",
+      "label": "Inactive",
+      "file": "../function-icons/inactive.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Inactive ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "inactive"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "info",
+      "label": "Info",
+      "file": "../function-icons/info.svg",
+      "family": "function-icons",
+      "description": "Information contextuelle.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "info"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "link",
+      "label": "Link",
+      "file": "../function-icons/link.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Link ».",
+      "usage": [
+        "markdown-studio",
+        "document-studio"
+      ],
+      "tags": [
+        "function",
+        "link"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "lock",
+      "label": "Lock",
+      "file": "../function-icons/lock.svg",
+      "family": "function-icons",
+      "description": "État verrouillé ou action de verrouillage.",
+      "usage": [
+        "pdf-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "lock"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "manifest",
+      "label": "Manifest",
+      "file": "../function-icons/manifest.svg",
+      "family": "function-icons",
+      "description": "Manifest décrivant un artefact ou un lot.",
+      "usage": [
+        "file-studio",
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "manifest"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "merge",
+      "label": "Merge",
+      "file": "../function-icons/merge.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Merge ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "merge"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "metadata",
+      "label": "Metadata",
+      "file": "../function-icons/metadata.svg",
+      "family": "function-icons",
+      "description": "Métadonnées d’un fichier ou document.",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "metadata"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "minus",
+      "label": "Minus",
+      "file": "../function-icons/minus.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Minus ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "minus"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "more",
+      "label": "More",
+      "file": "../function-icons/more.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « More ».",
+      "usage": [],
+      "tags": [
+        "function",
+        "more"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "move",
+      "label": "Move",
+      "file": "../function-icons/move.svg",
+      "family": "function-icons",
+      "description": "Déplacer un objet ou une sélection.",
+      "usage": [
+        "Studio Core V2",
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "move"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "next",
+      "label": "Next",
+      "file": "../function-icons/next.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Next ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "next"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "ocr",
+      "label": "Ocr",
+      "file": "../function-icons/ocr.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Ocr ».",
+      "usage": [
+        "pdf-studio",
+        "ocr-studio"
+      ],
+      "tags": [
+        "function",
+        "ocr"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "optimize",
+      "label": "Optimize",
+      "file": "../function-icons/optimize.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Optimize ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "optimize"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "paragraph",
+      "label": "Paragraph",
+      "file": "../function-icons/paragraph.svg",
+      "family": "function-icons",
+      "description": "Paragraphe ou bloc de texte structuré.",
+      "usage": [
+        "document-studio",
+        "markdown-studio"
+      ],
+      "tags": [
+        "function",
+        "paragraph"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "paragraphAdd",
+      "label": "Paragraph Add",
+      "file": "../function-icons/paragraph-add.svg",
+      "family": "function-icons",
+      "description": "Ajouter un paragraphe.",
+      "usage": [
+        "document-studio",
+        "markdown-studio"
+      ],
+      "tags": [
+        "function",
+        "paragraph",
+        "add"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "paragraph-add"
+      ]
+    },
+    {
+      "id": "paste",
+      "label": "Paste",
+      "file": "../function-icons/paste.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Paste ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "paste"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "pen",
+      "label": "Pen",
+      "file": "../function-icons/pen.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Pen ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "pen"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "pin",
+      "label": "Pin",
+      "file": "../function-icons/pin.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Pin ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "pin"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "plus",
+      "label": "Plus",
+      "file": "../function-icons/plus.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Plus ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "plus"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "preview",
+      "label": "Preview",
+      "file": "../function-icons/preview.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Preview ».",
+      "usage": [],
+      "tags": [
+        "function",
+        "preview"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "previous",
+      "label": "Previous",
+      "file": "../function-icons/previous.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Previous ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "previous"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "qr",
+      "label": "Qr",
+      "file": "../function-icons/qr.svg",
+      "family": "function-icons",
+      "description": "QR code.",
+      "usage": [
+        "pdf-studio",
+        "qr-barcode-studio"
+      ],
+      "tags": [
+        "function",
+        "qr"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "redaction",
+      "label": "Redaction",
+      "file": "../function-icons/redaction.svg",
+      "family": "function-icons",
+      "description": "Caviardage sécurisé.",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "redaction"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "redo",
+      "label": "Redo",
+      "file": "../function-icons/redo.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Redo ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "redo"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "refresh",
+      "label": "Refresh",
+      "file": "../function-icons/refresh.svg",
+      "family": "function-icons",
+      "description": "Rafraîchir les données ou la vue.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "refresh"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "rotateFree",
+      "label": "Rotate Free",
+      "file": "../function-icons/rotate-free.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Rotate Free ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "rotate",
+        "free"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "rotate-free"
+      ]
+    },
+    {
+      "id": "rotateLeft",
+      "label": "Rotate Left",
+      "file": "../function-icons/rotate-left.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Rotate Left ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "rotate",
+        "left"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "rotate-left"
+      ]
+    },
+    {
+      "id": "rotateRight",
+      "label": "Rotate Right",
+      "file": "../function-icons/rotate-right.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Rotate Right ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "rotate",
+        "right"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "rotate-right"
+      ]
+    },
+    {
+      "id": "save",
+      "label": "Save",
+      "file": "../function-icons/save.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Save ».",
+      "usage": [
+        "document-studio",
+        "pdf-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "save"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "search",
+      "label": "Search",
+      "file": "../function-icons/search.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Search ».",
+      "usage": [
+        "data-studio",
+        "document-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "search"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "file": "../function-icons/security.svg",
+      "family": "function-icons",
+      "description": "Sécurité, chiffrement ou permissions.",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "security"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "file": "../function-icons/settings.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Settings ».",
+      "usage": [],
+      "tags": [
+        "function",
+        "settings"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "signature",
+      "label": "Signature",
+      "file": "../function-icons/signature.svg",
+      "family": "function-icons",
+      "description": "Signature visuelle ou cryptographique.",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "signature"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "sortAsc",
+      "label": "Sort Asc",
+      "file": "../function-icons/sort-asc.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Sort Asc ».",
+      "usage": [
+        "data-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "sort",
+        "asc"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "sort-asc"
+      ]
+    },
+    {
+      "id": "sortDesc",
+      "label": "Sort Desc",
+      "file": "../function-icons/sort-desc.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Sort Desc ».",
+      "usage": [
+        "data-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "sort",
+        "desc"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "sort-desc"
+      ]
+    },
+    {
+      "id": "stamp",
+      "label": "Stamp",
+      "file": "../function-icons/stamp.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Stamp ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "stamp"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "success",
+      "label": "Success",
+      "file": "../function-icons/success.svg",
+      "family": "function-icons",
+      "description": "Action terminée avec succès.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "success"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "text",
+      "label": "Text",
+      "file": "../function-icons/text.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Text ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "text"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "toggleOff",
+      "label": "Toggle Off",
+      "file": "../function-icons/toggle-off.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Toggle Off ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "toggle",
+        "off"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "toggle-off"
+      ]
+    },
+    {
+      "id": "toggleOn",
+      "label": "Toggle On",
+      "file": "../function-icons/toggle-on.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Toggle On ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "toggle",
+        "on"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "toggle-on"
+      ]
+    },
+    {
+      "id": "translate",
+      "label": "Translate",
+      "file": "../function-icons/translate.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Translate ».",
+      "usage": [
+        "pdf-studio",
+        "translation-studio"
+      ],
+      "tags": [
+        "function",
+        "translate"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "undo",
+      "label": "Undo",
+      "file": "../function-icons/undo.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Undo ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "undo"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "unlink",
+      "label": "Unlink",
+      "file": "../function-icons/unlink.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Unlink ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "unlink"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "unlock",
+      "label": "Unlock",
+      "file": "../function-icons/unlock.svg",
+      "family": "function-icons",
+      "description": "État déverrouillé ou action de déverrouillage.",
+      "usage": [
+        "pdf-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "unlock"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "unpin",
+      "label": "Unpin",
+      "file": "../function-icons/unpin.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Unpin ».",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "unpin"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "update",
+      "label": "Update",
+      "file": "../function-icons/update.svg",
+      "family": "function-icons",
+      "description": "Mettre à jour ou synchroniser un élément.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "update"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "upload",
+      "label": "Upload",
+      "file": "../function-icons/upload.svg",
+      "family": "function-icons",
+      "description": "Importer ou téléverser un fichier ou une ressource.",
+      "usage": [
+        "Studio Core V2",
+        "google-workspace"
+      ],
+      "tags": [
+        "function",
+        "upload"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "warning",
+      "label": "Warning",
+      "file": "../function-icons/warning.svg",
+      "family": "function-icons",
+      "description": "Avertissement nécessitant l’attention de l’utilisateur.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "warning"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "workflow",
+      "label": "Workflow",
+      "file": "../function-icons/workflow.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Workflow ».",
+      "usage": [
+        "pdf-studio",
+        "automation-studio"
+      ],
+      "tags": [
+        "function",
+        "workflow"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "zip",
+      "label": "Zip",
+      "file": "../function-icons/zip.svg",
+      "family": "function-icons",
+      "description": "Icône nLab pour « Zip ».",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "zip"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    }
+  ]
+}

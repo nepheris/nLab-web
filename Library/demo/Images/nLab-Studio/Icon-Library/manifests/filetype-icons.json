@@ -1,0 +1,865 @@
+{
+  "schema": "nlab-icon-manifest/v1",
+  "family": "filetype-icons",
+  "label": "Filetype Icons",
+  "description": "Types et familles de fichiers.",
+  "updated": "2026-10-03",
+  "style": {
+    "colorMode": "currentColor",
+    "fill": "none",
+    "viewBox": "0 0 24 24",
+    "strokeWidth": 1.7,
+    "linecap": "round",
+    "linejoin": "round"
+  },
+  "icons": [
+    {
+      "id": "7z",
+      "label": "7z",
+      "file": "../filetype-icons/7z.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier 7z utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "7z"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "bmp",
+      "label": "Bmp",
+      "file": "../filetype-icons/bmp.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Bmp utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "bmp"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "csv",
+      "label": "Csv",
+      "file": "../filetype-icons/csv.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Csv utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "csv"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "doc",
+      "label": "Doc",
+      "file": "../filetype-icons/doc.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Doc utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "doc"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "docx",
+      "label": "Docx",
+      "file": "../filetype-icons/docx.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Docx utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "docx"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "flac",
+      "label": "Flac",
+      "file": "../filetype-icons/flac.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Flac utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "flac"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "generic-archive",
+      "label": "Generic Archive",
+      "file": "../filetype-icons/generic-archive.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier générique Archive utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "generic",
+        "archive"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "generic-audio",
+      "label": "Generic Audio",
+      "file": "../filetype-icons/generic-audio.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier générique Audio utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "generic",
+        "audio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "generic-code",
+      "label": "Generic Code",
+      "file": "../filetype-icons/generic-code.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier générique Code utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "generic",
+        "code"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "generic-document",
+      "label": "Generic Document",
+      "file": "../filetype-icons/generic-document.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier générique Document utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "generic",
+        "document"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "generic-image",
+      "label": "Generic Image",
+      "file": "../filetype-icons/generic-image.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier générique Image utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "generic",
+        "image"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "generic-presentation",
+      "label": "Generic Presentation",
+      "file": "../filetype-icons/generic-presentation.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier générique Presentation utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "generic",
+        "presentation"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "generic-spreadsheet",
+      "label": "Generic Spreadsheet",
+      "file": "../filetype-icons/generic-spreadsheet.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier générique Spreadsheet utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "generic",
+        "spreadsheet"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "generic-video",
+      "label": "Generic Video",
+      "file": "../filetype-icons/generic-video.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier générique Video utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "generic",
+        "video"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "gif",
+      "label": "Gif",
+      "file": "../filetype-icons/gif.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Gif utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "gif"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "html",
+      "label": "Html",
+      "file": "../filetype-icons/html.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Html utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "html"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "jpeg",
+      "label": "Jpeg",
+      "file": "../filetype-icons/jpeg.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Jpeg utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "jpeg"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "jpg",
+      "label": "Jpg",
+      "file": "../filetype-icons/jpg.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Jpg utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "jpg"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "json",
+      "label": "Json",
+      "file": "../filetype-icons/json.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Json utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "json"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "markdown",
+      "label": "Markdown",
+      "file": "../filetype-icons/markdown.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Markdown utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "markdown"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "mov",
+      "label": "Mov",
+      "file": "../filetype-icons/mov.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Mov utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "mov"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "mp3",
+      "label": "Mp3",
+      "file": "../filetype-icons/mp3.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Mp3 utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "mp3"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "mp4",
+      "label": "Mp4",
+      "file": "../filetype-icons/mp4.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Mp4 utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "mp4"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "odp",
+      "label": "Odp",
+      "file": "../filetype-icons/odp.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Odp utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "odp"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "ods",
+      "label": "Ods",
+      "file": "../filetype-icons/ods.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Ods utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "ods"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "odt",
+      "label": "Odt",
+      "file": "../filetype-icons/odt.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Odt utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "odt"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "pdf",
+      "label": "Pdf",
+      "file": "../filetype-icons/pdf.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Pdf utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "pdf"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "png",
+      "label": "Png",
+      "file": "../filetype-icons/png.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Png utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "png"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "ppt",
+      "label": "Ppt",
+      "file": "../filetype-icons/ppt.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Ppt utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "ppt"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "pptx",
+      "label": "Pptx",
+      "file": "../filetype-icons/pptx.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Pptx utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "pptx"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "svg",
+      "label": "Svg",
+      "file": "../filetype-icons/svg.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Svg utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "svg"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "tar",
+      "label": "Tar",
+      "file": "../filetype-icons/tar.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Tar utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "tar"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "tsv",
+      "label": "Tsv",
+      "file": "../filetype-icons/tsv.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Tsv utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "tsv"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "txt",
+      "label": "Txt",
+      "file": "../filetype-icons/txt.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Txt utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "txt"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "wav",
+      "label": "Wav",
+      "file": "../filetype-icons/wav.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Wav utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "wav"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "webm",
+      "label": "Webm",
+      "file": "../filetype-icons/webm.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Webm utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "webm"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "webp",
+      "label": "Webp",
+      "file": "../filetype-icons/webp.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Webp utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "webp"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "xls",
+      "label": "Xls",
+      "file": "../filetype-icons/xls.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Xls utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "xls"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "xlsx",
+      "label": "Xlsx",
+      "file": "../filetype-icons/xlsx.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Xlsx utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "xlsx"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "xml",
+      "label": "Xml",
+      "file": "../filetype-icons/xml.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Xml utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "xml"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "yaml",
+      "label": "Yaml",
+      "file": "../filetype-icons/yaml.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Yaml utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "yaml"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "zip",
+      "label": "Zip",
+      "file": "../filetype-icons/zip.svg",
+      "family": "filetype-icons",
+      "description": "Type de fichier Zip utilisé pour identifier visuellement les entrées et sorties.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "zip"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    }
+  ]
+}

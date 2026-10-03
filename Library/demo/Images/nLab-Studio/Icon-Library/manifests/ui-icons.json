@@ -1,0 +1,525 @@
+{
+  "schema": "nlab-icon-manifest/v1",
+  "family": "ui-icons",
+  "label": "Ui Icons",
+  "description": "Contrôles, états et micro-interactions d’interface.",
+  "updated": "2026-10-03",
+  "style": {
+    "colorMode": "currentColor",
+    "fill": "none",
+    "viewBox": "0 0 24 24",
+    "strokeWidth": 1.7,
+    "linecap": "round",
+    "linejoin": "round"
+  },
+  "icons": [
+    {
+      "id": "active",
+      "label": "Active",
+      "file": "../ui-icons/active.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Active » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "active"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "checkbox-checked",
+      "label": "Checkbox Checked",
+      "file": "../ui-icons/checkbox-checked.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Checkbox Checked » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "checkbox",
+        "checked"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "checkbox-unchecked",
+      "label": "Checkbox Unchecked",
+      "file": "../ui-icons/checkbox-unchecked.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Checkbox Unchecked » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "checkbox",
+        "unchecked"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "chevron-down",
+      "label": "Chevron Down",
+      "file": "../ui-icons/chevron-down.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Chevron Down » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "chevron",
+        "down"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "chevron-left",
+      "label": "Chevron Left",
+      "file": "../ui-icons/chevron-left.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Chevron Left » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "chevron",
+        "left"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "chevron-right",
+      "label": "Chevron Right",
+      "file": "../ui-icons/chevron-right.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Chevron Right » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "chevron",
+        "right"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "chevron-up",
+      "label": "Chevron Up",
+      "file": "../ui-icons/chevron-up.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Chevron Up » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "chevron",
+        "up"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "collapse",
+      "label": "Collapse",
+      "file": "../ui-icons/collapse.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Collapse » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "collapse"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "expand",
+      "label": "Expand",
+      "file": "../ui-icons/expand.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Expand » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "expand"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "folder-closed",
+      "label": "Folder Closed",
+      "file": "../ui-icons/folder-closed.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Folder Closed » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "folder",
+        "closed"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "folder-open",
+      "label": "Folder Open",
+      "file": "../ui-icons/folder-open.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Folder Open » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "folder",
+        "open"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "grip",
+      "label": "Grip",
+      "file": "../ui-icons/grip.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Grip » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "grip"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "inactive",
+      "label": "Inactive",
+      "file": "../ui-icons/inactive.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Inactive » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "inactive"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "lock",
+      "label": "Lock",
+      "file": "../ui-icons/lock.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Lock » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "lock"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "menu",
+      "label": "Menu",
+      "file": "../ui-icons/menu.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Menu » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "menu"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "minus",
+      "label": "Minus",
+      "file": "../ui-icons/minus.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Minus » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "minus"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "more-horizontal",
+      "label": "More Horizontal",
+      "file": "../ui-icons/more-horizontal.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « More Horizontal » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "more",
+        "horizontal"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "more-vertical",
+      "label": "More Vertical",
+      "file": "../ui-icons/more-vertical.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « More Vertical » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "more",
+        "vertical"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "move",
+      "label": "Move",
+      "file": "../ui-icons/move.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Move » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "move"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "plus",
+      "label": "Plus",
+      "file": "../ui-icons/plus.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Plus » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "plus"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "radio-selected",
+      "label": "Radio Selected",
+      "file": "../ui-icons/radio-selected.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Radio Selected » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "radio",
+        "selected"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "radio-unselected",
+      "label": "Radio Unselected",
+      "file": "../ui-icons/radio-unselected.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Radio Unselected » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "radio",
+        "unselected"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "resize",
+      "label": "Resize",
+      "file": "../ui-icons/resize.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Resize » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "resize"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "toggle-off",
+      "label": "Toggle Off",
+      "file": "../ui-icons/toggle-off.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Toggle Off » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "toggle",
+        "off"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "toggle-on",
+      "label": "Toggle On",
+      "file": "../ui-icons/toggle-on.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Toggle On » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "toggle",
+        "on"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "unlock",
+      "label": "Unlock",
+      "file": "../ui-icons/unlock.svg",
+      "family": "ui-icons",
+      "description": "Contrôle d’interface « Unlock » pour les états et interactions standard.",
+      "usage": [
+        "Studio Core V2",
+        "Tous Studios"
+      ],
+      "tags": [
+        "ui",
+        "control",
+        "unlock"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    }
+  ]
+}
