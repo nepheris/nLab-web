@@ -66,10 +66,18 @@ try{
   if(!/\.json$/i.test((await dl).suggestedFilename()))throw new Error('Data export invalide');
  });
  await studio('file-studio',async p=>{
-  await chooseFile(p,'#file-studio-open',['Library/demo/files/demo-input/Code/demo-script.js','Library/demo/source-drive/json/rdc-recettes-complexes-demo.json']);await p.waitForFunction(()=>/2 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
-  await p.locator('#folder').setInputFiles('Library/demo/files/demo-input/Code');await p.waitForFunction(()=>/[1-9]\d* élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
-  await p.locator('#demo').click();await p.waitForFunction(()=>/[1-9]\d* élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
-  await p.locator('#prefix').fill('TEST_{COUNTER}_');const dl=p.waitForEvent('download');await p.locator('#export').click();if(!/\.csv$/i.test((await dl).suggestedFilename()))throw new Error('File manifest export invalide');
+  await p.locator('#file-studio-open').click();
+  await p.waitForSelector('#studioInputPicker:not([hidden])');
+  await p.locator('#studioInputFilesNative').setInputFiles(['Library/demo/files/demo-input/Code/demo-script.js','Library/demo/source-drive/json/rdc-recettes-complexes-demo.json']);
+  await p.locator('#studioInputConfirm').click();
+  await p.waitForFunction(()=>/2 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
+  await p.locator('[data-file-remove="0"]').click();
+  await p.waitForFunction(()=>/1 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
+  await p.locator('#demo').click();
+  await p.waitForFunction(()=>/[1-9]\d* élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
+  await p.locator('#prefix').fill('TEST_{COUNTER}_');
+  const dl=p.waitForEvent('download');await p.locator('#export').click();
+  if(!/\.csv$/i.test((await dl).suggestedFilename()))throw new Error('File manifest export invalide');
  });
  await studio('qr-barcode-studio',async p=>{
   await p.waitForFunction(()=>document.querySelector('#preview')?.children.length>0,null,{timeout:15000});
