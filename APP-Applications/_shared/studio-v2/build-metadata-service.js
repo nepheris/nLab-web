@@ -11,7 +11,9 @@ async function githubLastCommit(repo,path,ref='main'){
   const key=repo+'|'+ref+'|'+path;
   if(cache.has(key))return cache.get(key);
   const url='https://api.github.com/repos/'+encodeURIComponent(repo).replace('%2F','/')+'/commits?sha='+encodeURIComponent(ref)+'&path='+encodeURIComponent(path)+'&per_page=1';
-  const p=fetch(url,{headers:{Accept:'application/vnd.github+json'}}).then(async r=>{
+  const controller=typeof AbortController!=='undefined'?new AbortController():null;
+  const timer=controller?setTimeout(()=>controller.abort(),1200):null;
+  const p=fetch(url,{headers:{Accept:'application/vnd.github+json'},signal:controller?.signal}).then(async r=>{
     if(!r.ok)throw new Error('GitHub commit metadata HTTP '+r.status);
     const rows=await r.json(),c=rows?.[0];
     if(!c)return null;
@@ -22,7 +24,7 @@ async function githubLastCommit(repo,path,ref='main'){
       commitUrl:c.html_url||'',
       source:'github-api'
     };
-  }).catch(()=>null);
+  }).catch(()=>null).finally(()=>{if(timer)clearTimeout(timer)});
   cache.set(key,p);return p;
 }
 export async function resolveBuildMetadata({
