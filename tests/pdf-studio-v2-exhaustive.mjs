@@ -15,7 +15,7 @@ await ctx.addInitScript(()=>{
 });
 const p=await ctx.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error'&&!/favicon|Failed to load resource/i.test(m.text()))errors.push(m.text())});
 try{
- await p.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await p.waitForSelector('#fileInput',{state:'attached',timeout:30000});await load(p,fixture);
+ await p.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await p.waitForSelector('#fileInput',{state:'attached',timeout:30000});await p.waitForSelector('#nlabStudioV2Chrome',{timeout:30000});await p.waitForTimeout(1200);await load(p,fixture);
 
  // Pages : rotation, ajout, duplication, suppression, extraction, undo/redo.
  const basePages=Number((await p.locator('#pageInfo').textContent()).replace(/\D/g,''));
