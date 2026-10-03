@@ -60,5 +60,15 @@ try{
   await p.locator('#rows').fill('25');await p.locator('#generate').click();await p.waitForFunction(()=>/25 ligne/.test(document.querySelector('#count')?.textContent||''),null,{timeout:10000});
   const dl=p.waitForEvent('download');await p.locator('#exportJson').click();if(!/\.json$/i.test((await dl).suggestedFilename()))throw new Error('Dataset export invalide');
  });
+
+ await studio('document-studio',async p=>{
+  await chooseFile(p,'#openDocument','Library/demo/files/demo-input/Code/demo-markdown.md');await p.waitForFunction(()=>document.querySelector('#editor')?.value.length>20,null,{timeout:15000});
+  const d1=p.waitForEvent('download');await p.locator('#exportDocx').click();if(!/\.docx$/i.test((await d1).suggestedFilename()))throw new Error('Document DOCX export invalide');
+  const d2=p.waitForEvent('download');await p.locator('#exportOdt').click();if(!/\.odt$/i.test((await d2).suggestedFilename()))throw new Error('Document ODT export invalide');
+ });
+ await studio('spreadsheet-studio',async p=>{
+  await chooseFile(p,'#openSheet','Library/demo/Data/dataset-validation-complet.csv');await p.waitForFunction(()=>document.querySelector('#dims')?.textContent!=='0 × 0',null,{timeout:15000});
+  const d=p.waitForEvent('download');await p.locator('#exportJson').click();if(!/\.json$/i.test((await d).suggestedFilename()))throw new Error('Spreadsheet JSON export invalide');
+ });
  console.log(JSON.stringify({ok:true,studios:results},null,2));
 }finally{await browser.close()}
