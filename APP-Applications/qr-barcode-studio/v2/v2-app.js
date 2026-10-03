@@ -1,11 +1,13 @@
 import{mountStudioV2}from'../../_shared/studio-v2/frame.js';
-import{resolveStudioVersions}from'../../_shared/studio-v2/version-service.js';
+import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
+import{SYMBOLOGIES,symbologyInfo,defaultPayload,bwipOptions,validatePayload}from'../../_shared/studio-v2/symbology-service.js';
 import studioManifest from'./studio-manifest.js';
-const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
+const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test',sourcePath:studioManifest.sourcePath});
+applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:VERSION_INFO.version,studioStatus:VERSION_INFO.status,coreVersion:VERSION_INFO.coreVersion,build:VERSION_INFO.build});
 await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
 const $=s=>document.querySelector(s),qsa=s=>[...document.querySelectorAll(s)];
 let type='qrcode',qr=null,logoUrl='',hist=JSON.parse(localStorage.getItem('nlab-qr-history')||'[]');
-const presets={qrcode:'https://nepheris.github.io/nLab-web/',datamatrix:'NLAB-DEMO-DATAMATRIX-001',code128:'NLAB-DEMO-CODE128-001','gs1-128':'(01)09501101530003(10)ABC123',ean13:'123456789012',ean8:'1234567'};
+const presets=Object.fromEntries(SYMBOLOGIES.map(x=>[x.id,defaultPayload(x.id)]));
 function hexToRgb(h){h=h.replace('#','');return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
 function rgbToHsl([r,g,b]){r/=255;g/=255;b/=255;const M=Math.max(r,g,b),m=Math.min(r,g,b),d=M-m;let h=0,s=0,l=(M+m)/2;if(d){s=d/(1-Math.abs(2*l-1));if(M===r)h=60*((g-b)/d%6);else if(M===g)h=60*((b-r)/d+2);else h=60*((r-g)/d+4);if(h<0)h+=360}return [Math.round(h),Math.round(s*100),Math.round(l*100)]}
 function colorText(hex){const mode=$('#colorMode').value;if(mode==='hex')return hex.toUpperCase();const rgb=hexToRgb(hex);if(mode==='rgb')return 'rgb('+rgb.join(', ')+')';const hsl=rgbToHsl(rgb);return 'hsl('+hsl[0]+', '+hsl[1]+'%, '+hsl[2]+'%)'}
@@ -14,8 +16,8 @@ for(const id of ['fg','fg2','bg']){$('#'+id).oninput=()=>{syncColorText();render
 $('#colorMode').onchange=syncColorText;
 function common(){return{size:+$('#size').value||360,margin:+$('#margin').value||0,fg:$('#fg').value,bg:$('#bg').value}}
 function renderQR(){const c=common(),grad=$('#gradient').checked?{type:'linear',rotation:Math.PI/4,colorStops:[{offset:0,color:c.fg},{offset:1,color:$('#fg2').value}]}:undefined;qr=new QRCodeStyling({width:c.size,height:c.size,type:'svg',data:$('#value').value||' ',margin:c.margin,qrOptions:{errorCorrectionLevel:$('#ecc').value},dotsOptions:{type:$('#dots').value,color:c.fg,gradient:grad},cornersSquareOptions:{type:$('#corners').value,color:c.fg},cornersDotOptions:{type:$('#cornerDots').value,color:$('#fg2').value},backgroundOptions:{color:$('#transparent').checked?'transparent':c.bg},image:logoUrl||undefined,imageOptions:{hideBackgroundDots:true,imageSize:.24,margin:5,crossOrigin:'anonymous'}});qr.append($('#preview'))}
-function renderBar(){const c=common(),canvas=document.createElement('canvas');let value=$('#value').value.trim()||presets[type];const opts={bcid:type,text:value,scale:4,backgroundcolor:c.bg.slice(1),barcolor:c.fg.slice(1),paddingwidth:c.margin/2,paddingheight:c.margin/2};if(['code128','gs1-128','ean13','ean8'].includes(type)){opts.height=20;opts.includetext=true;opts.textxalign='center'}bwipjs.toCanvas(canvas,opts);$('#preview').append(canvas)}
-function render(){try{$('#preview').innerHTML='';$('#qrOptions').hidden=type!=='qrcode';$('#transparentWrap').hidden=type!=='qrcode';$('#previewType').textContent=qsa('#symTabs button').find(b=>b.dataset.type===type)?.textContent||type;type==='qrcode'?renderQR():renderBar();$('#status').textContent='Aperçu actualisé.'}catch(e){$('#status').textContent='Erreur : '+e.message}}
+function renderBar(){const cc=common(),canvas=document.createElement('canvas'),valid=validatePayload(type,$('#value').value);if(!valid.ok)throw new Error(valid.message);bwipjs.toCanvas(canvas,bwipOptions(type,valid.value,cc));$('#preview').append(canvas)}
+function render(){try{$('#preview').innerHTML='';$('#qrOptions').hidden=type!=='qrcode';$('#transparentWrap').hidden=type!=='qrcode';$('#previewType').textContent=symbologyInfo(type).label;type==='qrcode'?renderQR():renderBar();$('#status').textContent='Aperçu actualisé.'}catch(e){$('#status').textContent='Erreur : '+e.message}}
 $('#symTabs').onclick=e=>{const b=e.target.closest('[data-type]');if(!b)return;type=b.dataset.type;qsa('#symTabs button').forEach(x=>x.classList.toggle('active',x===b));$('#value').value=presets[type];render()};
 ['value','dots','corners','cornerDots','ecc','size','margin','gradient','transparent'].forEach(id=>$('#'+id)?.addEventListener(id==='value'?'input':'change',()=>{clearTimeout(window.__r);window.__r=setTimeout(render,100)}));
 $('#logo').onchange=e=>{const f=e.target.files?.[0];if(logoUrl)URL.revokeObjectURL(logoUrl);logoUrl=f?URL.createObjectURL(f):'';render()};
