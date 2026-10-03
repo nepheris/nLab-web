@@ -374,6 +374,33 @@
       "aliases": []
     },
     {
+      "id": "color_picker",
+      "label": "Color Picker",
+      "file": "../function-icons/color-picker.svg",
+      "family": "function-icons",
+      "description": "Sélecteur de couleur / pipette partagé par le Web Framework et les applications nLab.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "CuisineX",
+        "P005 et sites nLab"
+      ],
+      "tags": [
+        "function",
+        "color",
+        "picker",
+        "eyedropper",
+        "pipette"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "colorPicker",
+        "eyedropper",
+        "pipette"
+      ]
+    },
+    {
       "id": "command",
       "label": "Command",
       "file": "../function-icons/command.svg",
