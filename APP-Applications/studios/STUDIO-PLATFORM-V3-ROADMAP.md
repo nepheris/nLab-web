@@ -133,3 +133,30 @@ PDF Sign intentionally exposes only:
 - escalation to full PDF Studio.
 
 It reuses the PDF engine and Studio Core. PAdES/DSS remains an advanced PDF Studio capability.
+
+
+## V3.x — Dataset Generator Studio as fixture factory
+
+### Dataset Generator 2.1 — implemented
+- configurable tabular schemas: arbitrary column names + per-column synthetic type;
+- deterministic seed + row count;
+- synthetic business types: names, emails, phones, companies, city/postal, SKU, UUID, dates, prices, percentages;
+- symbology test payloads: EAN-8, EAN-13, Code128, QR and Data Matrix;
+- CSV / JSON / XLSX / Markdown exports;
+- rich synthetic documents with H1/H2/H3, Lorem paragraphs, tables and demo illustrations;
+- Markdown / HTML / DOCX / PDF document exports;
+- structure-only cloning from CSV / JSON / XLSX: retain headers/schema, infer types, regenerate independent demo values.
+
+### Dataset Generator 2.2 — next step
+- DOCX / ODT structural clone with heading hierarchy, tables and image placeholders;
+- PDF structural analysis;
+- image / scanned-document ingestion with optional OCR;
+- OCR engine handoff through OCR Studio / shared OCR registry rather than a private OCR fork;
+- presentation-aware synthetic replacement for tables/forms/labels;
+- multi-file fixture packs and ZIP manifests;
+- optional pattern-aware generation that preserves shape/length/range characteristics without copying source values;
+- direct handoff to QR & Barcode Studio for rendered symbology fixtures;
+- reusable fixture profiles/templates for regression tests and demonstrations.
+
+### Privacy invariant
+Imported source values are not copied into generated fixtures by default. Structure-only mode may use field names and coarse type inference, but generated values are independent synthetic data.

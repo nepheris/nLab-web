@@ -270,14 +270,26 @@
       ]
     },
     "dataset-generator-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "preset",
         "rows",
         "seed",
         "status",
         "count",
-        "table"
+        "table",
+        "schemaRows",
+        "addColumn",
+        "docTitle",
+        "docChapters",
+        "docSections",
+        "docParagraphs",
+        "docPreview",
+        "cloneDrop",
+        "cloneFile",
+        "cloneRows",
+        "cloneSummary",
+        "editInTableMode"
       ],
       "required_strings": [
         "xlsx"
@@ -289,7 +301,14 @@
         "exportCsv",
         "exportXlsx",
         "exportMd",
-        "advanced"
+        "advanced",
+        "generateDataset",
+        "inferSchema",
+        "generateDocumentModel",
+        "writeStructuredDocx",
+        "exportPdf",
+        "parseClone",
+        "synthetic-data-service.js"
       ]
     },
     "pdf-studio": {

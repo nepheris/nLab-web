@@ -10,7 +10,7 @@ const browser=await chromium.launch({headless:true});
 const page=await browser.newPage({viewport:{width:1500,height:1000},acceptDownloads:true});
 const errors=[];page.on('pageerror',e=>errors.push('pageerror: '+e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon|Failed to load resource/i.test(m.text()))errors.push('console: '+m.text())});
 try{
- await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await page.waitForSelector('#fileInput',{state:'attached',timeout:30000});await load(page,fixture);
+ await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await page.waitForSelector('#fileInput',{state:'attached',timeout:30000});await page.waitForSelector('#nlabStudioV2Chrome',{timeout:30000});await page.waitForTimeout(1200);await load(page,fixture);
 
  // Métadonnées : écrire, relire, nettoyer.
  await reveal(page,'#pdfMetaTitle');await page.locator('#pdfMetaTitle').fill('nLab CI metadata');await page.locator('#pdfMetaAuthor').fill('nLab');await page.locator('#pdfMetaSubject').fill('deep acceptance');await page.locator('#pdfMetaKeywords').fill('nlab, ci, pdf');
