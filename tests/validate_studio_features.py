@@ -92,6 +92,28 @@ if studio_catalog.exists():
         if 'stroke-width="3"' not in t: fail(f"{svg}: Studio icon must use stroke-width 3")
         if re.search(r'stroke="#|fill="#',t,re.I): fail(f"{svg}: hard-coded SVG color is forbidden")
 
+# Validate canonical nLab Icon Library hierarchy and manifests.
+icon_library=ROOT/"Library/demo/Images/nLab-Studio/Icon-Library"
+if not icon_library.exists(): fail("canonical Icon-Library missing")
+icon_index=json.loads((icon_library/"manifests/index.json").read_text(encoding="utf-8"))
+expected_families={"studio-icons","function-icons","filetype-icons","ui-icons","symbology-icons"}
+actual_families={x.get("id") for x in icon_index.get("families",[])}
+if actual_families!=expected_families: fail(f"Icon-Library families mismatch: {sorted(actual_families)}")
+for fam in expected_families:
+    mf=json.loads((icon_library/"manifests"/f"{fam}.json").read_text(encoding="utf-8"))
+    icons=mf.get("icons",[])
+    if not icons: fail(f"{fam}: empty manifest")
+    for item in icons:
+        for key in ("id","label","file","family","description","usage","tags","status","planned","aliases"):
+            if key not in item: fail(f"{fam}/{item.get('id','?')}: missing manifest field {key}")
+        fp=(icon_library/"manifests"/item["file"]).resolve()
+        if not fp.exists(): fail(f"{fam}/{item['id']}: missing SVG {fp}")
+        t=fp.read_text(encoding="utf-8")
+        if 'stroke="currentColor"' not in t: fail(f"{fp}: canonical icon must use currentColor")
+if not (icon_library/"docs/mini-charte-iconographique-nlab.md").exists(): fail("Icon-Library charter missing")
+if not (icon_library/"docs/icon-generation-prompt.md").exists(): fail("Icon-Library generation prompt missing")
+if not (icon_library/"gallery/index.html").exists(): fail("Icon-Library gallery missing")
+
 # Validate demo/library references used by Studio V2 pages and runtimes.
 demo_ref_re=re.compile(r"""["'](\.\./\.\./Library/demo/[^"']*)["']""")
 for studio_id in CONTRACTS["studios"]:
