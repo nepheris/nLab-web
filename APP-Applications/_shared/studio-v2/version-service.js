@@ -22,6 +22,7 @@ export async function resolveStudioVersions({
   buildHref,repo,ref,sourcePath,
   fallback:{version:out.studioVersion,channel:out.studioStatus}
  });
+ out.version=out.studioVersion;out.status=out.studioStatus;
  applyBuildMetadata(out.build||{});
  return out
 }
