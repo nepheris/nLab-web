@@ -16,7 +16,7 @@ try{
   await p.locator('#demoSynthetic').click();await p.waitForFunction(()=>/px/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
   await p.locator('#left').click();await p.locator('#flipX').click();await p.locator('#flipY').click();
    await p.locator('#axis').evaluate(el=>{const d=el.closest('details');if(d)d.open=true});await p.locator('#axis').selectOption('X');await p.locator('#mm').fill('50');await p.locator('#measure').click();
-  const box=await p.locator('#cv').boundingBox();if(!box)throw new Error('Canvas image sans bbox');await p.mouse.click(box.x+100,box.y+100);await p.mouse.click(box.x+300,box.y+100);
+  await p.locator('#cv').scrollIntoViewIfNeeded();const box=await p.locator('#cv').boundingBox();if(!box)throw new Error('Canvas image sans bbox');await p.mouse.click(box.x+Math.min(100,box.width*.2),box.y+Math.min(100,box.height*.2));await p.mouse.click(box.x+Math.min(300,box.width*.6),box.y+Math.min(100,box.height*.2));
   await p.waitForFunction(()=>document.querySelector('#kx')?.textContent!=='—'&&document.querySelector('#dx')?.textContent!=='—',null,{timeout:10000});
   if(await p.locator('#measureRows tr').count()<1)throw new Error('Calibration non enregistrée');await p.locator('#undoMeasure').click();if(await p.locator('#measureRows tr').count()!==0)throw new Error('Undo calibration inactif');
   await p.locator('#fmt').selectOption('image/jpeg');const out=await dlBytes(p,'#export');if(out.b.length<500)throw new Error('Export JPEG trop petit');
