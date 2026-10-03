@@ -145,8 +145,14 @@
       ],
       "required_strings": [
         "studio-v2/studio.css",
-        "bootstrap-specialized.js",
-        "Papa.parse"
+        "bootstrap-specialized.js"
+      ],
+      "required_runtime_strings": [
+        "parseCsv",
+        "filterRows",
+        "sortRows",
+        "tabular-service.js",
+        "download-service.js"
       ]
     },
     "file-studio": {
@@ -498,7 +504,12 @@
         "exportCsv",
         "exportJson",
         "exportXlsx",
-        "exportOds"
+        "exportOds",
+        "readWorkbook",
+        "workbookFromCsv",
+        "workbookBlob",
+        "tabular-service.js",
+        "download-service.js"
       ]
     }
   }
