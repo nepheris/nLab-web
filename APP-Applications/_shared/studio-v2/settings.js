@@ -1,8 +1,10 @@
 import{qs,qsa,setRibbonGroupVisible,applyRibbonGroups}from'./core.js';
+import{setIconTheme,iconThemeNames}from'./icon-registry.js';
 
 const KEY='nlab-studio-v2-settings';
 const DEFAULTS={
   theme:'system',
+  iconTheme:'nlab-line',
   architectureMarkers:true,
   showUiIds:true,
   showDevelopment:true,
@@ -40,6 +42,7 @@ export function saveStudioSettings(next){
 export function applyStudioSettings(settings=loadStudioSettings()){
   const b=document.body;
   b.dataset.theme=settings.theme;
+  setIconTheme(settings.iconTheme||'nlab-line');
   b.classList.toggle('architectureMarkers',!!settings.architectureMarkers);
   b.classList.toggle('showUiIds',!!settings.showUiIds);
   b.classList.toggle('hideDevelopment',!settings.showDevelopment);
@@ -75,6 +78,11 @@ export function renderStudioSettingsPanel(host){
           <option value="system">Système</option>
           <option value="light">Clair</option>
           <option value="dark">Sombre</option>
+        </select>
+      </label>
+      <label class="field"><span>Thème d’icônes</span>
+        <select data-setting="iconTheme">
+          ${iconThemeNames().map(id=>'<option value="'+id+'">'+id+'</option>').join('')}
         </select>
       </label>
     </section>

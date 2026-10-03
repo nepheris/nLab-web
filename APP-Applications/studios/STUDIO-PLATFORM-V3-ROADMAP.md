@@ -147,16 +147,26 @@ It reuses the PDF engine and Studio Core. PAdES/DSS remains an advanced PDF Stud
 - Markdown / HTML / DOCX / PDF document exports;
 - structure-only cloning from CSV / JSON / XLSX: retain headers/schema, infer types, regenerate independent demo values.
 
-### Dataset Generator 2.2 — next step
-- DOCX / ODT structural clone with heading hierarchy, tables and image placeholders;
-- PDF structural analysis;
-- image / scanned-document ingestion with optional OCR;
-- OCR engine handoff through OCR Studio / shared OCR registry rather than a private OCR fork;
-- presentation-aware synthetic replacement for tables/forms/labels;
+### Dataset Generator 2.2 — implemented in TEST
+- DOCX / ODT structural clone with heading hierarchy and table shape;
+- PDF structural analysis from text layout/font-size heuristics;
+- image/scanned-document ingestion with optional shared OCR service;
+- OCR handoff remains available toward OCR Studio; no private Dataset Generator OCR fork;
+- structure-only and structure+shape policies;
+- XLSX format-profile preservation for debug fixtures: currency/accounting number format, percentage, date, decimals and column width;
+- format profile contributes to semantic type inference, e.g. EUR currency → synthetic price values;
+- generated XLSX reapplies compatible number formats without copying source values;
+- rich clone output can be exported as Markdown / HTML / DOCX / PDF;
+- RecipeX-oriented synthetic preset added as a reusable domain fixture profile.
+
+### Dataset Generator 2.3 — next step
+- presentation-aware replacement for forms, labels, merged cells, formulas and richer spreadsheet styling;
 - multi-file fixture packs and ZIP manifests;
-- optional pattern-aware generation that preserves shape/length/range characteristics without copying source values;
+- reusable fixture-profile registry (recipes, invoices, product catalogs, logistics, CRM, etc.);
+- coarse distribution constraints: ranges, null-rate, uniqueness, cardinality and relationship integrity;
 - direct handoff to QR & Barcode Studio for rendered symbology fixtures;
-- reusable fixture profiles/templates for regression tests and demonstrations.
+- structural cloning of multi-sheet workbooks and relationships between tables;
+- fixture minimization mode for bug reproduction: keep only the smallest synthetic structure required to reproduce a failure.
 
 ### Privacy invariant
 Imported source values are not copied into generated fixtures by default. Structure-only mode may use field names and coarse type inference, but generated values are independent synthetic data.

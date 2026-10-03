@@ -270,7 +270,7 @@
       ]
     },
     "dataset-generator-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "preset",
         "rows",
@@ -289,7 +289,11 @@
         "cloneFile",
         "cloneRows",
         "cloneSummary",
-        "editInTableMode"
+        "editInTableMode",
+        "clonePolicy",
+        "cloneOcr",
+        "cloneOcrLang",
+        "openOcrStudio"
       ],
       "required_strings": [
         "xlsx"
@@ -308,7 +312,22 @@
         "writeStructuredDocx",
         "exportPdf",
         "parseClone",
-        "synthetic-data-service.js"
+        "synthetic-data-service.js",
+        "analyzeRichStructure",
+        "summarizeStructure",
+        "runOcr",
+        "workbookStructureProfile",
+        "workbookFromObjectsWithProfile",
+        "applyFormatProfileToSchema",
+        "syntheticDocumentFromStructure"
+      ],
+      "required_capabilities": [
+        "dataset.generate.synthetic",
+        "dataset.clone.structure",
+        "dataset.clone.format-shape",
+        "dataset.clone.rich-document",
+        "dataset.clone.ocr",
+        "dataset.export.multi-format"
       ]
     },
     "pdf-studio": {

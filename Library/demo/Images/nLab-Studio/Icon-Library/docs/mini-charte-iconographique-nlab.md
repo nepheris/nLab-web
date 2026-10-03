@@ -49,6 +49,24 @@ Les icônes filetype indiquent d’abord la famille générique puis le format p
 - generic-archive -> ZIP/7Z/TAR
 - generic-code -> HTML/JSON/XML/YAML
 
+## Thèmes d’icônes
+
+Le set **nLab Line** est le thème d’icônes par défaut du Web Framework et des Studios.
+
+- Le code fonctionnel référence un **ID sémantique stable** (`sort_az`, `view_gantt`, etc.), jamais une géométrie SVG locale.
+- Un projet peut enregistrer un thème d’icônes alternatif avec des overrides partiels.
+- Une icône non surchargée retombe automatiquement sur le thème nLab Line.
+- Le thème d’icônes est indépendant du thème visuel clair/sombre : les couleurs restent pilotées par `currentColor`.
+- Les états `hover`, `active`, `selected`, `disabled`, `warning`, `success`, `danger` sont pilotés par CSS autant que possible.
+
+### Tri générique
+
+Le tri utilise une paire commune :
+- `sort_az` / `sortAZ` : ordre croissant ;
+- `sort_za` / `sortZA` : ordre décroissant.
+
+A/Z et Z/A indiquent le **sens**. Le comparateur dépend des données : texte, version sémantique, date ou nombre.
+
 ## Validation
 Toute nouvelle icône doit :
 1. respecter la grille de sa famille ;

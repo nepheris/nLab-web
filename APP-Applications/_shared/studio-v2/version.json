@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.5.0",
+  "version": "2.6.1",
   "channel": "test",
-  "notes": "Studio Core 2.5 : métadonnées de build liées aux commits Git, contrat d'apps dérivées, première mini-app PDF Sign, maintien des services Core 2.4 et préparation de la passe responsive multi-device.",
+  "notes": "Studio Core 2.6.1 : thème d’icônes configurable dans les paramètres Core, registre partagé exposé aux Studios et Markdown Studio migré vers des identifiants d’icônes sémantiques.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }

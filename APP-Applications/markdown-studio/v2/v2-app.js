@@ -3,6 +3,7 @@ import{mountStudioV2}from'../../_shared/studio-v2/frame.js';
 import{resolveStudioVersions}from'../../_shared/studio-v2/version-service.js';
 import studioManifest from'./studio-manifest.js';
 import{DemoCorpus}from'../../_shared/studio-v2/demo-corpus.js';
+import{icon}from'../../_shared/studio-v2/icon-registry.js';
 
 const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
 await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
@@ -11,6 +12,8 @@ const engine=new MarkdownEngine();
 const editor=$('#mdEditor'),preview=$('#preview'),toc=$('#toc'),yamlEditor=$('#yamlEditor'),yamlBig=$('#yamlBig');
 let fileName='nouveau.md',dirty=false,imageSeq=0,objectUrls=[];
 const demoCorpus=new DemoCorpus({indexUrl:'../../Library/demo/manifests/index.json'});
+$('#refreshToc').innerHTML=icon('refresh',{label:'Actualiser le sommaire'});
+$('#refreshToc').setAttribute('aria-label','Actualiser le sommaire');
 const demo=`---
 title: Markdown Studio
 lang: fr

@@ -69,3 +69,19 @@ The Core resolves:
 - source path from the Studio manifest.
 
 All headers, footers, About views, version pages and Studio Hub cards must consume that shared metadata.
+
+## Icon registry and icon themes
+
+Studio Core owns the default semantic icon vocabulary through `icon-registry.js`.
+
+Rules:
+- specialized Studios, including Markdown Studio, request icons by stable semantic ID rather than copying SVG geometry;
+- the default theme is `nlab-line`;
+- SVGs are monochrome and use `currentColor`, so light/dark/accent/active/disabled states are controlled by CSS;
+- `registerIconTheme(themeId, overrides)` may register a partial application-specific theme;
+- `setIconTheme(themeId)` activates it;
+- missing overrides automatically fall back to the default nLab icon;
+- icon themes change visual geometry only; they do not change action semantics or accessibility labels;
+- canonical snake_case IDs such as `sort_az`, `view_gantt` and `view_dependency` are accepted alongside legacy Studio aliases.
+
+This makes Markdown Studio, PDF Studio, Dataset Generator Studio and every Studio V2 consumer inherit the same default icon family automatically.
