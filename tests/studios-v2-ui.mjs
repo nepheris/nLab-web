@@ -1,7 +1,7 @@
 import{chromium}from'playwright';
 const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/';
 const studios=[
- ['image-studio',['file','demoSynthetic','export']],
+ ['image-studio',['openPicker','demoSynthetic','export']],
  ['scan-studio',['drop','takePhoto','exportPdf']],
  ['ocr-studio',['drop','run','save']],
  ['code-studio',['file','editor','save']],
