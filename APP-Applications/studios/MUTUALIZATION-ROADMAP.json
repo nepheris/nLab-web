@@ -1,0 +1,245 @@
+{
+  "schema": "nlab-studio-mutualization/v1",
+  "updated": "2026-10-03",
+  "versionTarget": "Studio V2 consolidated",
+  "priorities": {
+    "P0": [
+      {
+        "id": "shared-download",
+        "label": "Download / save Blob, text, JSON, CSV",
+        "status": "migrating",
+        "engine": "download-service.js",
+        "consumers": [
+          "Document Studio",
+          "File Studio",
+          "Data Studio",
+          "Spreadsheet Studio",
+          "Dataset Generator",
+          "OCR Studio",
+          "Image Studio",
+          "PDF Studio"
+        ]
+      },
+      {
+        "id": "shared-input",
+        "label": "Chargement fichiers / URL / formats",
+        "status": "engine-ready",
+        "engine": "input-service.js",
+        "consumers": [
+          "Tous Studios"
+        ]
+      },
+      {
+        "id": "shared-archive",
+        "label": "ZIP open/create/list",
+        "status": "engine-ready",
+        "engine": "archive-service.js",
+        "consumers": [
+          "PDF Studio",
+          "File Studio",
+          "Archive Studio",
+          "Dataset Generator"
+        ]
+      },
+      {
+        "id": "shared-doc-format",
+        "label": "DOCX / ODT / RTF / HTML structurels",
+        "status": "migrating",
+        "engine": "document-format-service.js",
+        "consumers": [
+          "Document Studio",
+          "PDF Studio"
+        ]
+      },
+      {
+        "id": "shared-tabular",
+        "label": "CSV / TSV / JSON / XLSX / ODS tabulaires",
+        "status": "migrating",
+        "engine": "tabular-service.js",
+        "consumers": [
+          "Data Studio",
+          "Spreadsheet Studio",
+          "Dataset Generator",
+          "File Studio"
+        ]
+      },
+      {
+        "id": "shared-formats",
+        "label": "Format registry, accept, icône type, routing Studio",
+        "status": "migrating",
+        "engine": "format-registry.js",
+        "consumers": [
+          "Tous Studios"
+        ]
+      },
+      {
+        "id": "shared-templates",
+        "label": "Variables et templates communs",
+        "status": "migrating",
+        "engine": "template-engine.js",
+        "consumers": [
+          "PDF Studio",
+          "File Studio",
+          "Image Studio",
+          "futurs Studios"
+        ]
+      },
+      {
+        "id": "shared-color",
+        "label": "Color Picker bidirectionnel HEX/RGB/HSL",
+        "status": "engine-ready",
+        "engine": "color-control.js",
+        "consumers": [
+          "PDF Studio",
+          "Image Studio",
+          "QR Studio",
+          "Markdown Studio",
+          "futurs Studios"
+        ]
+      },
+      {
+        "id": "shared-demo",
+        "label": "Corpus démo / chemins / manifests",
+        "status": "existing-partial",
+        "engine": "demo-corpus.js",
+        "consumers": [
+          "Tous Studios"
+        ]
+      }
+    ],
+    "P1": [
+      {
+        "id": "shared-overlay-model",
+        "label": "Objets superposés communs : texte, image, tampon, signature, highlight, redaction-zone",
+        "status": "design",
+        "engine": "overlay-object-service.js",
+        "consumers": [
+          "PDF Studio",
+          "Image Studio",
+          "Document Studio"
+        ],
+        "notes": "Placement/déplacement/resize/rotation/lock/delete communs. Caviardage sécurisé reste une étape spécifique d'aplatissement/rasterisation."
+      },
+      {
+        "id": "shared-ocr",
+        "label": "OCR commun",
+        "status": "todo",
+        "engine": "ocr-service.js",
+        "consumers": [
+          "OCR Studio",
+          "PDF Studio"
+        ]
+      },
+      {
+        "id": "shared-symbology",
+        "label": "QR/DataMatrix/barcodes communs",
+        "status": "todo",
+        "engine": "symbology-service.js",
+        "consumers": [
+          "QR & Barcode Studio",
+          "PDF Studio"
+        ]
+      },
+      {
+        "id": "shared-query",
+        "label": "Recherche / filtre / tri collections",
+        "status": "todo",
+        "engine": "collection-query-service.js",
+        "consumers": [
+          "Data Studio",
+          "Spreadsheet Studio",
+          "File Studio",
+          "Dataset Generator"
+        ]
+      },
+      {
+        "id": "shared-image",
+        "label": "Image normalization / canvas / raster export",
+        "status": "todo",
+        "engine": "image-service.js",
+        "consumers": [
+          "Image Studio",
+          "OCR Studio",
+          "PDF Studio"
+        ]
+      },
+      {
+        "id": "shared-metadata",
+        "label": "Metadata inspection / cleanup générique quand applicable",
+        "status": "todo",
+        "engine": "metadata-service.js",
+        "consumers": [
+          "File Studio",
+          "Document Studio",
+          "Image Studio",
+          "PDF Studio"
+        ]
+      },
+      {
+        "id": "shared-progress",
+        "label": "Progress / cancellation / job status",
+        "status": "todo",
+        "engine": "job-service.js",
+        "consumers": [
+          "OCR",
+          "PDF",
+          "Data",
+          "Dataset",
+          "Archive"
+        ]
+      }
+    ],
+    "P2": [
+      {
+        "id": "presentation-studio",
+        "label": "Presentation Studio PPT/PPTX/ODP",
+        "status": "development"
+      },
+      {
+        "id": "office-high-fidelity",
+        "label": "Office haute fidélité",
+        "status": "development"
+      },
+      {
+        "id": "google-workspace",
+        "label": "Google Docs/Sheets/Drive natif",
+        "status": "development"
+      },
+      {
+        "id": "pdf-visual-compare",
+        "label": "Comparaison PDF/image visuelle pixel",
+        "status": "development"
+      },
+      {
+        "id": "robust-steganography",
+        "label": "Watermark/stéganographie robuste",
+        "status": "development"
+      },
+      {
+        "id": "large-data",
+        "label": "DuckDB / Parquet / gros volumes",
+        "status": "development"
+      },
+      {
+        "id": "complex-batch",
+        "label": "Pipeline batch multi-opérations avancé",
+        "status": "development"
+      },
+      {
+        "id": "pades-dss",
+        "label": "PAdES / DSS réel",
+        "status": "development"
+      },
+      {
+        "id": "cross-browser",
+        "label": "Firefox / Safari-WebKit / File System Access",
+        "status": "development"
+      },
+      {
+        "id": "load-performance",
+        "label": "Tests lourds mémoire/performance",
+        "status": "development"
+      }
+    ]
+  }
+}

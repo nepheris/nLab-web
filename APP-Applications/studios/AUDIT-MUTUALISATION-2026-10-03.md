@@ -1,5 +1,34 @@
 # Audit de mutualisation fonctionnelle des Studios — 2026-10-03
 
+## Mise à jour opérationnelle P0 / P1 / P2
+
+La feuille de route vivante est désormais également maintenue dans `MUTUALIZATION-ROADMAP.json`.
+
+### P0 — en cours de mutualisation
+- **Entrées** : `input-service.js` créé.
+- **Téléchargements** : `download-service.js` créé ; Document Studio et File Studio migrés.
+- **ZIP** : `archive-service.js` créé.
+- **Documents structurés** : `document-format-service.js` créé ; Document Studio migré ; PDF Studio reste à migrer.
+- **Tabulaire** : `tabular-service.js` créé ; File Studio l'utilise pour son CSV ; Data/Spreadsheet/Dataset restent à migrer.
+- **Variables communes** : TemplateEngine enrichi avec `COUNTER`, `MIME`, `FORMAT`, `FILE_FAMILY`, `ARTIFACT_ID`, `SHA256` ; File Studio migré.
+- **Formats communs** : FormatRegistry enrichi avec accept par famille, icône filetype et routage Studio.
+- **Color Picker** : `color-control.js` devient bidirectionnel **visuel ↔ code**, avec HEX par défaut et modes RGB/HSL.
+
+### P1 — immédiatement après P0
+- **Overlay/Object engine partagé** : placement, déplacement, redimensionnement, rotation, verrouillage et suppression pour texte, image, tampon, signature, highlight et zone de caviardage.
+  - Le placement de la zone de caviardage est commun.
+  - L'application sécurisée du caviardage (rasterisation/aplatissement irréversible) reste spécifique au moteur PDF.
+- OCR partagé.
+- QR / Data Matrix / codes-barres partagés.
+- Recherche / filtre / tri partagé.
+- Normalisation image/canvas commune.
+- Métadonnées communes quand le format le permet.
+- Progression / annulation / job status communs.
+
+### P2 — maintenu en développement
+Presentation Studio, Office haute fidélité, Google Workspace natif, comparaison visuelle pixel, stéganographie robuste, gros volumes Data, batch complexe, PAdES/DSS, certification cross-browser et tests lourds.
+
+
 ## Objectif
 
 Auditer les fonctions de la flotte Studio V2 avant la passe finale d'uniformisation UI/icônes, afin de distinguer :
