@@ -33,11 +33,18 @@ for(const ev of ['dragleave','drop'])$('#drop').addEventListener(ev,e=>{e.preven
 $('#drop').addEventListener('drop',e=>{const f=e.dataTransfer.files?.[0];if(f)use(URL.createObjectURL(f),f.name)});
 $('#demo').onclick=()=>use('../../Library/demo/files/demo-input/Images/demo-document-illustration.png','demo-document-illustration.png');
 $('#noisy').onclick=()=>use('../../Library/demo/Images/testNumeregles 2.jpg','testNumeregles 2.jpg');
+async function normalizedOcrInput(){
+ const image=$('#preview');if(image.decode)await image.decode().catch(()=>{});
+ if(!image.naturalWidth||!image.naturalHeight)throw new Error('Image non décodée');
+ const cv=document.createElement('canvas');cv.width=image.naturalWidth;cv.height=image.naturalHeight;cv.getContext('2d').drawImage(image,0,0);
+ return cv.toDataURL('image/png')
+}
 async function run(){
  if(!source)return status('Charge une image.');
  try{
   status('OCR en cours…');
-  const res=await runOcr(source,{engine:$('#engine').value,language:$('#lang').value,logger:m=>status((m.status||'OCR')+(m.progress!=null?' '+Math.round(m.progress*100)+' %':'') )});
+  const input=await normalizedOcrInput();
+  const res=await runOcr(input,{engine:$('#engine').value,language:$('#lang').value,logger:m=>status((m.status||'OCR')+(m.progress!=null?' '+Math.round(m.progress*100)+' %':'') )});
   $('#out').value=res.text;
   $('#meta').textContent='Moteur '+res.engine+' · pack '+res.effectivePack+' · langue détectée '+res.detectedLanguage+' · confiance langue '+Math.round((res.languageConfidence||0)*100)+' %'+(res.confidence!=null?' · OCR '+Math.round(res.confidence)+' %':'');
   status('OCR terminé.');
