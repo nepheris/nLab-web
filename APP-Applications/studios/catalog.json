@@ -11,7 +11,8 @@
       "demo": "../../Library/demo/manifests/pdf.json",
       "versions": "./pdf",
       "versions_path": "../pdf-studio/versions.html",
-      "version_registry": "../pdf-studio/versions.json"
+      "version_registry": "../pdf-studio/versions.json",
+      "icon": "../../assets/studios/pdf-studio.svg"
     },
     {
       "id": "image-studio",
@@ -21,7 +22,8 @@
       "demo": "../../Library/demo/manifests/image.json",
       "versions": "./image",
       "versions_path": "../image-studio/versions.html",
-      "version_registry": "../image-studio/versions.json"
+      "version_registry": "../image-studio/versions.json",
+      "icon": "../../assets/studios/image-studio.svg"
     },
     {
       "id": "ocr-studio",
@@ -31,7 +33,8 @@
       "demo": "../../Library/demo/manifests/ocr.json",
       "versions": "./ocr",
       "versions_path": "../ocr-studio/versions.html",
-      "version_registry": "../ocr-studio/versions.json"
+      "version_registry": "../ocr-studio/versions.json",
+      "icon": "../../assets/studios/ocr-studio.svg"
     },
     {
       "id": "code-studio",
@@ -41,7 +44,8 @@
       "demo": "../../Library/demo/manifests/code-json.json",
       "versions": "./code",
       "versions_path": "../code-studio/versions.html",
-      "version_registry": "../code-studio/versions.json"
+      "version_registry": "../code-studio/versions.json",
+      "icon": "../../assets/studios/code-studio.svg"
     },
     {
       "id": "json-studio",
@@ -51,7 +55,8 @@
       "demo": "../../Library/demo/manifests/code-json.json",
       "versions": "./json",
       "versions_path": "../json-studio/versions.html",
-      "version_registry": "../json-studio/versions.json"
+      "version_registry": "../json-studio/versions.json",
+      "icon": "../../assets/studios/json-studio.svg"
     },
     {
       "id": "data-studio",
@@ -61,7 +66,8 @@
       "demo": "../../Library/demo/manifests/data.json",
       "versions": "./data",
       "versions_path": "../data-studio/versions.html",
-      "version_registry": "../data-studio/versions.json"
+      "version_registry": "../data-studio/versions.json",
+      "icon": "../../assets/studios/data-studio.svg"
     },
     {
       "id": "qr-barcode-studio",
@@ -71,7 +77,8 @@
       "demo": "../../Library/demo/manifests/qr-barcode.json",
       "versions": "./qr-barcode",
       "versions_path": "../qr-barcode-studio/versions.html",
-      "version_registry": "../qr-barcode-studio/versions.json"
+      "version_registry": "../qr-barcode-studio/versions.json",
+      "icon": "../../assets/studios/qr-barcode-studio.svg"
     },
     {
       "id": "file-studio",
@@ -81,7 +88,8 @@
       "demo": "../../Library/demo/manifests/file.json",
       "versions": "./file",
       "versions_path": "../file-studio/versions.html",
-      "version_registry": "../file-studio/versions.json"
+      "version_registry": "../file-studio/versions.json",
+      "icon": "../../assets/studios/file-studio.svg"
     },
     {
       "id": "markdown-studio",
@@ -91,7 +99,8 @@
       "purpose": "Éditeur Markdown transversal V1 : source, aperçu HTML, sommaire, YAML/front matter et exports.",
       "versions": "./markdown",
       "versions_path": "../markdown-studio/versions.html",
-      "version_registry": "../markdown-studio/versions.json"
+      "version_registry": "../markdown-studio/versions.json",
+      "icon": "../../assets/studios/markdown-studio.svg"
     },
     {
       "id": "demo-studio",
@@ -101,7 +110,8 @@
       "purpose": "Galerie publique et corpus de démonstration nLab, avec manifests et jeux de test par Studio.",
       "versions_path": "../demo-studio/versions.html",
       "version_registry": "../demo-studio/versions.json",
-      "card_kind": "transversal"
+      "card_kind": "transversal",
+      "icon": "../../assets/studios/demo-studio.svg"
     },
     {
       "id": "dataset-generator-studio",
@@ -111,7 +121,8 @@
       "purpose": "Génération de datasets, images, QR/Data Matrix/Code128, fichiers de test, manifests et packs. Interface Studio en développement.",
       "versions_path": "../dataset-generator-studio/versions.html",
       "version_registry": "../dataset-generator-studio/versions.json",
-      "card_kind": "development"
+      "card_kind": "development",
+      "icon": "../../assets/studios/dataset-generator-studio.svg"
     },
     {
       "id": "document-studio",
@@ -121,7 +132,8 @@
       "purpose": "Conversion et édition structurelle DOCX, ODT, TXT, Markdown, HTML et RTF simple, avec exports bureautiques locaux.",
       "versions_path": "../document-studio/versions.html",
       "version_registry": "../document-studio/versions.json",
-      "card_kind": "development"
+      "card_kind": "development",
+      "icon": "../../assets/studios/document-studio.svg"
     },
     {
       "id": "spreadsheet-studio",
@@ -131,15 +143,80 @@
       "purpose": "Lecture et conversion locale XLS/XLSX/ODS/CSV/TSV/JSON, sélection de feuille et exports tableur.",
       "versions_path": "../spreadsheet-studio/versions.html",
       "version_registry": "../spreadsheet-studio/versions.json",
-      "card_kind": "development"
+      "card_kind": "development",
+      "icon": "../../assets/studios/spreadsheet-studio.svg"
     }
   ],
   "future": [
     {
       "id": "translation-studio",
       "name": "Translation Studio",
-      "status": "candidate",
-      "purpose": "Studio spécialisé de traduction multilingue réutilisé par PDF, OCR, Markdown et autres Studios."
+      "status": "development",
+      "icon": "../../assets/studios/translation-studio.svg",
+      "purpose": "Traduction multilingue transverse, providers réels et réutilisation par PDF/OCR/Markdown."
+    },
+    {
+      "id": "presentation-studio",
+      "name": "Presentation Studio",
+      "status": "development",
+      "icon": "../../assets/studios/presentation-studio.svg",
+      "purpose": "PPT/PPTX/ODP : lecture, conversion, extraction et génération structurée."
+    },
+    {
+      "id": "markdown-wysiwyg",
+      "name": "Markdown WYSIWYG",
+      "status": "development",
+      "icon": "../../assets/studios/markdown-studio.svg",
+      "purpose": "Édition visuelle complète tout en conservant un Markdown propre et réversible."
+    },
+    {
+      "id": "office-high-fidelity",
+      "name": "Office haute fidélité",
+      "status": "development",
+      "icon": "../../assets/studios/document-studio.svg",
+      "purpose": "Conversions DOC/DOCX/XLS/XLSX/PPT/PPTX avec fidélité avancée via moteur externe si nécessaire."
+    },
+    {
+      "id": "google-workspace",
+      "name": "Google Workspace",
+      "status": "development",
+      "icon": "../../assets/studios/document-studio.svg",
+      "purpose": "Connexion native Google Docs/Sheets/Drive : OAuth, Picker, lecture, écriture et synchronisation."
+    },
+    {
+      "id": "pdf-visual-compare",
+      "name": "Comparaison PDF visuelle",
+      "status": "development",
+      "icon": "../../assets/studios/pdf-studio.svg",
+      "purpose": "Overlay, comparaison pixel et rapport de différences visuelles."
+    },
+    {
+      "id": "pdf-batch-pipeline",
+      "name": "Pipeline batch PDF",
+      "status": "development",
+      "icon": "../../assets/studios/pdf-studio.svg",
+      "purpose": "Chaînes multi-opérations, presets, reprises et rapports de lots."
+    },
+    {
+      "id": "pades-dss",
+      "name": "PAdES / DSS réel",
+      "status": "development",
+      "icon": "../../assets/studios/pdf-studio.svg",
+      "purpose": "Signature cryptographique réelle avec certificat et serveur DSS."
+    },
+    {
+      "id": "image-steganography",
+      "name": "Watermark image robuste",
+      "status": "development",
+      "icon": "../../assets/studios/image-studio.svg",
+      "purpose": "Marque d’identification robuste aux recompressions et transformations, au-delà du LSB expérimental."
+    },
+    {
+      "id": "data-large-volume",
+      "name": "Data gros volumes",
+      "status": "development",
+      "icon": "../../assets/studios/data-studio.svg",
+      "purpose": "DuckDB/Parquet et traitements de volumes supérieurs aux capacités simples navigateur."
     }
   ]
 }
