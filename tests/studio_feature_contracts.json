@@ -200,7 +200,7 @@
       ]
     },
     "qr-barcode-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "symTabs",
         "value",
@@ -242,7 +242,19 @@
         "refreshPreview",
         "downloadPng",
         "downloadSvg",
-        "scanImage"
+        "scanImage",
+        "SYMBOLOGIES",
+        "symbologyInfo",
+        "bwipOptions",
+        "validatePayload",
+        "symbology-service.js"
+      ],
+      "required_capabilities": [
+        "symbology.generate",
+        "symbology.scan.image",
+        "symbology.scan.hid",
+        "symbology.export.png",
+        "symbology.export.svg"
       ]
     },
     "markdown-studio": {
