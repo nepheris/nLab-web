@@ -1,0 +1,16 @@
+{
+  "name": "Spreadsheet Studio",
+  "current": null,
+  "test": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "label": "Spreadsheet Studio 1.0.0 TEST",
+      "date": "2026-10-03",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "MVP local-first : XLS/XLSX/ODS/CSV/TSV/JSON, sélection de feuille, aperçu et exports XLSX/ODS/CSV/JSON."
+    }
+  ]
+}
