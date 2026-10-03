@@ -1,5 +1,6 @@
 export default {
  id:'pdf-studio',
+ sourcePath:'APP-Applications/pdf-studio/v2/index.html',
  name:'PDF Studio',
  subtitle:'Éditeur documentaire modulaire · Studio Core + plugin PDF',
  homeHref:'../../../',

@@ -1,13 +1,21 @@
 {
   "current": "0.9.10",
-  "test": "2.6.0",
+  "test": "2.7.0",
   "versions": [
+    {
+      "version": "2.7.0",
+      "label": "PDF Studio 2.7.0 TEST",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe Studio Platform V3 : métadonnées version/build reliées au registre et au commit Git via Studio Core 2.5, source canonique déclarée dans le manifest, compatibilité avec le premier dérivé nLab PDF Sign. Les capacités PDF restent portées par le même moteur ; CURRENT 0.9.10 reste inchangé."
+    },
     {
       "version": "2.6.0",
       "label": "PDF Studio 2.6.0 TEST",
       "date": "2026-10-03",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Watermark PDF, Bates numbering et manifest documentaire SHA-256, en plus des fonctions 2.5.0."
     },

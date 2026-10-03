@@ -28,7 +28,20 @@ try{
   results.push({studio:id,coreV2:true,controls,studioIcon:true});
   await page.close();
  }
- const hub=await browser.newPage({viewport:{width:1360,height:900}});await hub.goto(base+'APP-Applications/studios/',{waitUntil:'domcontentloaded',timeout:60000});await hub.waitForSelector('#developmentGrid .devCard',{timeout:15000});if(await hub.locator('.studioIcon').count()<10)throw new Error('Hub Studios: icônes insuffisantes');if(await hub.locator('#developmentGrid .devCard').count()<5)throw new Error('Hub Studios: backlog DÉVELOPPEMENT absent');await hub.close();
+ const derived=await browser.newPage({viewport:{width:390,height:844}});
+  const derivedErrors=[];derived.on('pageerror',e=>derivedErrors.push(e.message));
+  await derived.goto(base+'APP-Applications/pdf-sign/v1/',{waitUntil:'domcontentloaded',timeout:60000});
+  await derived.waitForSelector('#nlabStudioV2Chrome',{timeout:60000});
+  for(const id of ['dropTarget','assetKind','assetSelect','drawCanvas','applyAsset','downloadPdf'])await derived.waitForSelector('#'+id,{timeout:15000});
+  const responsive=await derived.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:innerWidth,core:document.documentElement.dataset.studioCoreVersion,version:document.documentElement.dataset.studioVersion}));
+  if(responsive.width>responsive.viewport+2)throw new Error('PDF Sign: débordement horizontal mobile '+responsive.width+' > '+responsive.viewport);
+  if(!responsive.core)throw new Error('PDF Sign: version Studio Core absente');
+  if(!responsive.version)throw new Error('PDF Sign: version runtime absente');
+  if(derivedErrors.length)throw new Error('PDF Sign: erreurs navigateur: '+derivedErrors.join(' | '));
+  results.push({studio:'pdf-sign',derived:true,responsive:true,coreVersion:responsive.core,version:responsive.version});
+  await derived.close();
+
+ const hub=await browser.newPage({viewport:{width:1360,height:900}});await hub.goto(base+'APP-Applications/studios/',{waitUntil:'domcontentloaded',timeout:60000});await hub.waitForSelector('#developmentGrid .devCard',{timeout:15000});await hub.waitForSelector('#derivedGrid .card',{timeout:15000});if(await hub.locator('.studioIcon').count()<10)throw new Error('Hub Studios: icônes insuffisantes');if(await hub.locator('#developmentGrid .devCard').count()<5)throw new Error('Hub Studios: backlog DÉVELOPPEMENT absent');if(!await hub.locator('#derivedGrid').getByText('nLab PDF Sign').count())throw new Error('Hub Studios: PDF Sign dérivé absent');await hub.close();
  const icons=await browser.newPage({viewport:{width:1360,height:900}});await icons.goto(base+'Library/demo/Images/nLab-Studio/Icon-Library/gallery/',{waitUntil:'domcontentloaded',timeout:60000});await icons.waitForFunction(()=>document.querySelectorAll('#families .card').length>=240,null,{timeout:60000});const lib=await icons.evaluate(()=>({cards:document.querySelectorAll('#families .card').length,families:document.querySelectorAll('#families .panel').length,currentColor:[...document.querySelectorAll('.preview svg')].every(x=>x.getAttribute('stroke')==='currentColor')}));if(lib.families<5)throw new Error('Galerie SVG: familles incomplètes');if(!lib.currentColor)throw new Error('Galerie SVG: une icône n’utilise pas currentColor');await icons.close();
  console.log(JSON.stringify({ok:true,studios:results,iconLibrary:lib},null,2));
 }finally{await browser.close()}

@@ -14,7 +14,7 @@ for studio_id,c in CONTRACTS["studios"].items():
         index=ROOT/c["path"]; runtime=ROOT/c["runtime"]; registry=ROOT/"APP-Applications/pdf-studio/versions.json"
     else:
         index=ROOT/"APP-Applications"/studio_id/"v2/index.html"
-        runtime=ROOT/"APP-Applications"/studio_id/"v2/v2-app.js"
+        runtime=ROOT/c.get("runtime", f"APP-Applications/{studio_id}/v2/v2-app.js")
         registry=ROOT/"APP-Applications"/studio_id/"versions.json"
     if not index.exists():
         fail(f"{studio_id}: missing V2 index {index.relative_to(ROOT)}"); continue
