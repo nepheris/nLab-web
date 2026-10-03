@@ -1,0 +1,106 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "studio-icons",
+  "label": "Icônes SVG nLab — Studios",
+  "source": "Bibliothèque canonique nLab Studio V2 · currentColor · grille 64×64",
+  "style": {
+    "viewBox": "0 0 64 64",
+    "fill": "none",
+    "stroke": "currentColor",
+    "strokeWidth": 3,
+    "linecap": "round",
+    "linejoin": "round"
+  },
+  "files": [
+    {
+      "name": "pdf-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/pdf-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "image-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/image-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "ocr-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/ocr-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "code-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/code-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "json-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/json-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "data-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/data-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "file-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/file-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "qr-barcode-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/qr-barcode-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "markdown-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/markdown-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "dataset-generator-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/dataset-generator-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "document-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/document-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "spreadsheet-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/spreadsheet-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "demo-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/demo-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "translation-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/translation-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "presentation-studio.svg",
+      "path": "../files/demo-input/Images/studio-icons/presentation-studio.svg",
+      "storage": "local",
+      "kind": "svg"
+    }
+  ]
+}
