@@ -1,6 +1,6 @@
 {
   "schema": "nlab-demo-manifests-index/v1",
-  "updated": "2026-09-30",
+  "updated": "2026-10-03",
   "sourceReference": "Google Drive reference supplied by HUMAN-00 + synthetic local regression fixtures",
   "studios": [
     {
@@ -56,6 +56,13 @@
       "id": "markdown-studio",
       "label": "Markdown Studio",
       "manifest": "./markdown.json",
+      "fileCount": 15,
+      "pack": null
+    },
+    {
+      "id": "studio-icons",
+      "label": "Icônes SVG nLab — Studios",
+      "manifest": "./studio-icons.json",
       "fileCount": 15,
       "pack": null
     }
