@@ -4,6 +4,7 @@ const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8772/';
 const browser=await chromium.launch({headless:true});
 const done=[];
 async function readDownload(d){const p=await d.path();if(!p)throw new Error('Téléchargement sans fichier temporaire');return readFile(p)}
+async function reveal(page,selector){await page.locator(selector).evaluate(e=>{for(let n=e;n;n=n.parentElement)if(n.tagName==='DETAILS')n.open=true})}
 async function studio(id,fn){
  const page=await browser.newPage({viewport:{width:1360,height:900},acceptDownloads:true});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon|Failed to load resource/i.test(m.text()))errors.push(m.text())});
@@ -14,8 +15,8 @@ try{
  await studio('image-studio',async p=>{
   await p.locator('#demoSynthetic').click();await p.waitForFunction(()=>/\d+ × \d+ px/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
   await p.locator('#w').fill('500');await p.locator('#resize').click();await p.waitForFunction(()=>document.querySelector('#cv')?.width===500,null,{timeout:10000});
-  const before=await p.locator('#cv').evaluate(c=>[c.width,c.height]);await p.locator('#cropLeft').fill('5');await p.locator('#cropRight').fill('5');await p.locator('#cropApply').click();await p.waitForFunction(w=>document.querySelector('#cv')?.width<w,before[0],{timeout:10000});
-  await p.locator('#watermarkText').fill('CI WATERMARK');await p.locator('#watermarkApply').click();await p.locator('#artifactGenerate').click();await p.waitForFunction(()=>/SHA-256/.test(document.querySelector('#artifactIdentityStatus')?.textContent||''),null,{timeout:10000});
+  const before=await p.locator('#cv').evaluate(c=>[c.width,c.height]);await reveal(p,'#cropLeft');await p.locator('#cropLeft').fill('5');await p.locator('#cropRight').fill('5');await p.locator('#cropApply').click();await p.waitForFunction(w=>document.querySelector('#cv')?.width<w,before[0],{timeout:10000});
+  await reveal(p,'#watermarkText');await p.locator('#watermarkText').fill('CI WATERMARK');await p.locator('#watermarkApply').click();await reveal(p,'#artifactGenerate');await p.locator('#artifactGenerate').click();await p.waitForFunction(()=>/SHA-256/.test(document.querySelector('#artifactIdentityStatus')?.textContent||''),null,{timeout:10000});
   const dm=p.waitForEvent('download');await p.locator('#artifactManifest').click();const raw=(await readDownload(await dm)).toString('utf8'),m=JSON.parse(raw);if(m.schema!=='nlab-artifact/v1'||!m.sha256)throw new Error('Manifest Image invalide');
  });
  await studio('json-studio',async p=>{
