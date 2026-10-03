@@ -13,6 +13,8 @@ on:
       - 'APP-Applications/qr-barcode-studio/**'
       - 'APP-Applications/markdown-studio/**'
       - 'APP-Applications/dataset-generator-studio/**'
+      - 'APP-Applications/document-studio/**'
+      - 'APP-Applications/spreadsheet-studio/**'
       - 'APP-Applications/_shared/studio-v2/**'
       - 'tests/studios-v2-ui.mjs'
       - 'tests/studios-v2-functional.mjs'
