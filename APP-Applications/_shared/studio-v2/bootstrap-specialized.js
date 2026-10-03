@@ -7,7 +7,11 @@ export async function bootstrapSpecializedStudioV2(config=window.NLAB_SPECIALIZE
   const versionInfo=await resolveStudioVersions({
     versionsHref:config.versionsHref||'../versions.json',
     coreVersionHref:config.coreVersionHref||'../../_shared/studio-v2/version.json',
-    channel:config.channel||'test'
+    channel:config.channel||'test',
+    buildHref:config.buildHref||manifest.buildHref||'build.json',
+    sourcePath:config.sourcePath||manifest.sourcePath||'',
+    repo:config.repo||manifest.repo||'nepheris/nLab-web',
+    ref:config.ref||manifest.ref||'main'
   });
   await mountStudioV2({manifest,versionInfo});
   const actions=config.actions||{};

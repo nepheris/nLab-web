@@ -25,6 +25,7 @@ def main() -> int:
     errors: list[str] = []
     catalog = load(CATALOG)
     studios = catalog.get("studios") or []
+    derived_apps = catalog.get("derived_apps") or []
 
     seen_ids: set[str] = set()
     for studio in studios:
@@ -99,13 +100,48 @@ def main() -> int:
                 errors,
             )
 
+    for app in derived_apps:
+        app_id = app.get("id")
+        if not app_id:
+            fail("catalog: derived app without id", errors)
+            continue
+        if app_id in seen_ids:
+            fail(f"catalog: duplicate Studio/derived app id {app_id}", errors)
+            continue
+        seen_ids.add(app_id)
+        parent = app.get("parent_studio")
+        if not parent or parent not in {s.get("id") for s in studios}:
+            fail(f"{app_id}: invalid parent_studio {parent!r}", errors)
+        registry_path = ROOT / "APP-Applications" / app_id / "versions.json"
+        if not registry_path.exists():
+            fail(f"{app_id}: missing versions.json", errors)
+            continue
+        registry = load(registry_path)
+        versions = registry.get("versions") or []
+        by_version = {str(item.get("version") or ""): item for item in versions if item.get("version")}
+        for version in by_version:
+            if not SEMVER_RE.match(version):
+                fail(f"{app_id}: non-semver version {version}", errors)
+        for channel in ("current", "test"):
+            pointer = registry.get(channel)
+            if not pointer:
+                continue
+            item = by_version.get(str(pointer))
+            if item is None:
+                fail(f"{app_id}: {channel} pointer {pointer} is absent from versions[]", errors)
+                continue
+            if str(item.get("status") or "").lower() != channel:
+                fail(f"{app_id}: {pointer} selected as {channel} but status={item.get('status')!r}", errors)
+        if any("date" in item for item in versions):
+            fail(f"{app_id}: mutable release date must not be hard-coded in versions[]", errors)
+
     if errors:
         print("Studio registry validation: FAIL", file=sys.stderr)
         for err in errors:
             print(f" - {err}", file=sys.stderr)
         return 1
 
-    print(f"Studio registry validation: OK ({len(studios)} Studios)")
+    print(f"Studio registry validation: OK ({len(studios)} Studios, {len(derived_apps)} derived apps)")
     return 0
 
 

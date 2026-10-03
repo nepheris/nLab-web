@@ -1,6 +1,7 @@
 export default {
  homeHref:'../../',studiosHref:'../studios/',
- id:'dataset-generator-studio',name:'Dataset Generator Studio',subtitle:'Générateur de données synthétiques',
+ id:'dataset-generator-studio',
+ sourcePath:'APP-Applications/dataset-generator-studio/v2/index.html',name:'Dataset Generator Studio',subtitle:'Générateur de données synthétiques',
  menus:[{id:'home',label:'Accueil'},{id:'generate',label:'Génération'},{id:'export',label:'Export'},{id:'help',label:'Aide'}],
  ribbon:[
   {id:'dataset',label:'Dataset',items:[{id:'generate',action:'generate',label:'Générer',icon:'command',primary:true},{id:'randomize',action:'randomize',label:'Nouveau seed',icon:'command'}]},

@@ -1,0 +1,396 @@
+{
+  "schema": "nlab-framework-capabilities/v1",
+  "updated": "2026-10-03",
+  "principle": "Studio = reusable engine + reference UI; Framework Web = orchestration/theme/permissions/routing; Application = composition of capabilities + business logic.",
+  "modules": [
+    {
+      "id": "input-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/input-service.js",
+      "status": "p0",
+      "capabilities": [
+        "input.file",
+        "input.folder",
+        "input.url"
+      ]
+    },
+    {
+      "id": "download-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/download-service.js",
+      "status": "p0",
+      "capabilities": [
+        "output.blob",
+        "output.text",
+        "output.json",
+        "output.csv"
+      ]
+    },
+    {
+      "id": "archive-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/archive-service.js",
+      "status": "p0",
+      "capabilities": [
+        "archive.open",
+        "archive.list",
+        "archive.create"
+      ]
+    },
+    {
+      "id": "document-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/document-format-service.js",
+      "status": "p0",
+      "capabilities": [
+        "document.read.docx",
+        "document.read.odt",
+        "document.read.rtf",
+        "document.write.docx",
+        "document.write.odt",
+        "document.export.html"
+      ]
+    },
+    {
+      "id": "tabular-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/tabular-service.js",
+      "status": "p0",
+      "capabilities": [
+        "table.csv.parse",
+        "table.csv.export",
+        "table.json.parse",
+        "table.sort",
+        "table.filter",
+        "table.xlsx.read",
+        "table.xlsx.write",
+        "table.ods.write"
+      ]
+    },
+    {
+      "id": "template-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/template-engine.js",
+      "status": "p0",
+      "capabilities": [
+        "template.resolve",
+        "template.filename",
+        "variables.common"
+      ]
+    },
+    {
+      "id": "format-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/format-registry.js",
+      "status": "p0",
+      "capabilities": [
+        "format.detect",
+        "format.accept",
+        "format.icon",
+        "format.route"
+      ]
+    },
+    {
+      "id": "color-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/color-control.js",
+      "status": "p0",
+      "capabilities": [
+        "color.pick",
+        "color.parse.hex",
+        "color.parse.rgb",
+        "color.parse.hsl",
+        "color.format"
+      ]
+    },
+    {
+      "id": "artifact-identity-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/artifact-identity.js",
+      "status": "active",
+      "capabilities": [
+        "artifact.id",
+        "artifact.sha256",
+        "artifact.manifest"
+      ]
+    },
+    {
+      "id": "history-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/history.js",
+      "status": "active",
+      "capabilities": [
+        "history.record",
+        "history.list"
+      ]
+    },
+    {
+      "id": "markdown-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/markdown-engine.js",
+      "status": "active",
+      "capabilities": [
+        "markdown.render",
+        "markdown.parse"
+      ]
+    },
+    {
+      "id": "ocr-engine",
+      "module": null,
+      "status": "p1",
+      "capabilities": [
+        "ocr.recognize",
+        "ocr.progress"
+      ]
+    },
+    {
+      "id": "symbology-engine",
+      "module": null,
+      "status": "p1",
+      "capabilities": [
+        "qr.decode",
+        "qr.encode",
+        "qr.edit",
+        "qr.export",
+        "datamatrix.encode",
+        "barcode.encode"
+      ]
+    },
+    {
+      "id": "overlay-object-engine",
+      "module": null,
+      "status": "p1",
+      "capabilities": [
+        "overlay.text",
+        "overlay.image",
+        "overlay.stamp",
+        "overlay.signature",
+        "overlay.highlight",
+        "overlay.redaction-zone",
+        "overlay.move",
+        "overlay.resize",
+        "overlay.rotate",
+        "overlay.lock",
+        "overlay.delete"
+      ]
+    },
+    {
+      "id": "image-engine",
+      "module": null,
+      "status": "p1",
+      "capabilities": [
+        "image.open",
+        "image.crop",
+        "image.rotate",
+        "image.resize",
+        "image.compress",
+        "image.annotate"
+      ]
+    },
+    {
+      "id": "presentation-engine",
+      "module": null,
+      "status": "p2",
+      "capabilities": [
+        "presentation.open",
+        "presentation.extract",
+        "presentation.convert",
+        "presentation.export"
+      ]
+    },
+    {
+      "id": "application-shell-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/application-shell-runtime.js",
+      "capabilities": [
+        "ui.shell",
+        "ui.header",
+        "ui.sidebar",
+        "ui.footer",
+        "ui.version-slot"
+      ]
+    },
+    {
+      "id": "context-help-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/help.js",
+      "status": "active-converging",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/help/contextual-help.json",
+      "capabilities": [
+        "help.contextual",
+        "help.dev-overlay",
+        "ui.id",
+        "ui.reference.copy"
+      ]
+    },
+    {
+      "id": "theme-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/themes/theme-engine.js",
+      "capabilities": [
+        "theme.apply",
+        "theme.tokens",
+        "theme.palette",
+        "theme.dark-light"
+      ]
+    },
+    {
+      "id": "notification-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/notification-center.json",
+      "capabilities": [
+        "notify.toast",
+        "notify.banner",
+        "notify.inline",
+        "notify.queue"
+      ]
+    },
+    {
+      "id": "dialog-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/confirmation-dialog.json",
+      "capabilities": [
+        "dialog.confirm",
+        "dialog.warning",
+        "dialog.danger",
+        "dialog.choice"
+      ]
+    },
+    {
+      "id": "floating-window-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/floating-window.json",
+      "capabilities": [
+        "window.move",
+        "window.lock",
+        "window.resize",
+        "window.dock",
+        "window.fullscreen",
+        "window.persist"
+      ]
+    },
+    {
+      "id": "search-engine",
+      "module": null,
+      "status": "upstream-p1",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/search-engine.json",
+      "capabilities": [
+        "search.query",
+        "search.filter",
+        "search.sort",
+        "search.group",
+        "search.saved-view"
+      ]
+    },
+    {
+      "id": "export-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/modules/export-engine.json",
+      "capabilities": [
+        "export.pdf",
+        "export.csv",
+        "export.json",
+        "export.image",
+        "export.qr",
+        "export.selection",
+        "export.view"
+      ]
+    },
+    {
+      "id": "file-input-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/input-service.js",
+      "status": "p0-converging",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/file-attachment-input.json",
+      "capabilities": [
+        "input.file",
+        "input.folder",
+        "input.drop",
+        "input.multiple",
+        "input.validate"
+      ]
+    },
+    {
+      "id": "draft-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/draft-controls.json",
+      "capabilities": [
+        "draft.save",
+        "draft.restore",
+        "draft.clear",
+        "draft.export",
+        "draft.import"
+      ]
+    },
+    {
+      "id": "structured-data-engine",
+      "module": null,
+      "status": "upstream-p1",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/structured-data-engine.json",
+      "capabilities": [
+        "data.schema-view",
+        "data.schema-edit",
+        "data.tree",
+        "data.table",
+        "data.raw-json"
+      ]
+    },
+    {
+      "id": "media-slot-engine",
+      "module": null,
+      "status": "upstream-p1",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/visual-media-slot.json",
+      "capabilities": [
+        "media.slot",
+        "media.gallery",
+        "media.placeholder",
+        "media.svg-currentColor"
+      ]
+    },
+    {
+      "id": "audio-recorder-engine",
+      "module": null,
+      "status": "upstream-p1",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/audio-recorder.json",
+      "capabilities": [
+        "audio.record",
+        "audio.pause",
+        "audio.stop",
+        "audio.preview",
+        "audio.blob"
+      ]
+    }
+  ],
+  "examples": {
+    "cuisix": [
+      "input.file",
+      "input.camera",
+      "qr.decode",
+      "image.crop",
+      "pdf.open",
+      "search.query",
+      "relation.link",
+      "history.record"
+    ],
+    "qr-studio": [
+      "qr.decode",
+      "qr.encode",
+      "qr.edit",
+      "qr.export"
+    ],
+    "image-studio": [
+      "image.open",
+      "image.crop",
+      "image.rotate",
+      "image.resize",
+      "image.compress",
+      "image.annotate"
+    ],
+    "pdf-studio": [
+      "pdf.open",
+      "pdf.merge",
+      "pdf.split",
+      "pdf.rotate",
+      "pdf.compress",
+      "pdf.export"
+    ]
+  },
+  "cross_project_sources": [
+    "nepheris/nLab-Web-Framework",
+    "nepheris/nLab"
+  ]
+}
