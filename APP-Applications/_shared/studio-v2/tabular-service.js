@@ -8,3 +8,8 @@ export function workbookFromObjects(data,{sheetName='Data'}={}){if(!globalThis.X
 export function workbookFromRows(rows,{sheetName='Data'}={}){if(!globalThis.XLSX)throw new Error('XLSX indisponible');const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet(rows||[]);XLSX.utils.book_append_sheet(wb,ws,sheetName);return wb}
 export function workbookToObjects(wb,sheetName=null){if(!globalThis.XLSX)throw new Error('XLSX indisponible');const name=sheetName||wb?.SheetNames?.[0];return name&&wb.Sheets?.[name]?XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''}):[]}
 export function workbookToRows(wb,sheetName=null){if(!globalThis.XLSX)throw new Error('XLSX indisponible');const name=sheetName||wb?.SheetNames?.[0];return name&&wb.Sheets?.[name]?XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,defval:''}):[]}
+
+export async function readWorkbook(file){if(!globalThis.XLSX)throw new Error('XLSX indisponible');return XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:true})}
+export function workbookFromCsv(text,{delimiter=''}={}){if(!globalThis.XLSX)throw new Error('XLSX indisponible');return XLSX.read(String(text??''),{type:'string',FS:delimiter||undefined})}
+export function workbookFromJson(data,{sheetName='Data'}={}){return workbookFromObjects(Array.isArray(data)?data:(data?.records||[data]),{sheetName})}
+export function workbookBlob(wb,bookType='xlsx'){if(!globalThis.XLSX)throw new Error('XLSX indisponible');const arr=XLSX.write(wb,{bookType,type:'array'});const mime=bookType==='ods'?'application/vnd.oasis.opendocument.spreadsheet':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';return new Blob([arr],{type:mime})}
