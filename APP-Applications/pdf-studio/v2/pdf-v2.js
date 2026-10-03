@@ -499,10 +499,12 @@ async function applyQrQuick(){
   o.wPct=widthPct;o.subtype='code';o.codeType=q.type;o.codeValue=q.value;created.push({page,id:o.id})
  }
  objectLayer.render();
- const missing=created.filter(x=>!engine.annotations(x.page).some(a=>a.id===x.id));
- if(missing.length)throw new Error('Le code a été généré mais '+missing.length+' annotation(s) PDF n’ont pas été persistées.');
+ const assertCreated=stage=>{const missing=created.filter(x=>!engine.annotations(x.page).some(a=>a.id===x.id));if(missing.length)throw new Error('Le code a été généré mais '+missing.length+' annotation(s) PDF ont disparu ('+stage+').')};
+ assertCreated('après ajout');
  setStatus('Code '+q.type+' placé comme objet sur '+pages.length+' page(s) · déplaçable/redimensionnable.');
- recordHistory({studio:'pdf-studio',type:'action',label:'Code placé',detail:q.type+' · '+pages.length+' page(s) · objet éditable',target:engine.fileName,action:'qr',repeatable:false})
+ assertCreated('après statut');
+ recordHistory({studio:'pdf-studio',type:'action',label:'Code placé',detail:q.type+' · '+pages.length+' page(s) · objet éditable',target:engine.fileName,action:'qr',repeatable:false});
+ assertCreated('après historique')
 }
 async function runQuickConversion(){
  if(!engine.pageCount)throw new Error('Chargez un document.');const direction=$('#convertDirection').value||'from-pdf',stem=(engine.fileName||'document').replace(/\.pdf$/i,'');
