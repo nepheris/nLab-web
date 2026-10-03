@@ -34,6 +34,7 @@ import{AdvancedPDFTools}from'../v1/advanced-tools.js';
 import{PdfObjectLayer}from'./object-layer.js';
 import{DriveService}from'../../_shared/studio-v2/drive-service.js';
 import{DocumentConversion}from'./document-conversion.js';
+import{bwipOptions,validatePayload}from'../../_shared/studio-v2/symbology-service.js';
 
 const runtimeVersion=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test',sourcePath:studioManifest.sourcePath});
 applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:runtimeVersion.studioVersion,studioStatus:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion,build:runtimeVersion.build});
@@ -481,8 +482,8 @@ async function codeBlob(){
   const blob=await qr.getRawData('png');if(!blob)throw new Error('Génération QR impossible');return{blob,value,type}
  }
  if(!window.bwipjs?.toCanvas)throw new Error('Moteur code-barres indisponible');
- const canvas=document.createElement('canvas'),map={'datamatrix':'datamatrix','code128':'code128','gs1-128':'gs1-128','ean13':'ean13','ean8':'ean8'},bcid=map[type]||'code128';
- const opts={bcid,text:value,scale:5,paddingwidth:8,paddingheight:8,backgroundcolor:'FFFFFF',barcolor:'000000'};if(['code128','gs1-128','ean13','ean8'].includes(type)){opts.height=18;opts.includetext=true;opts.textxalign='center'}bwipjs.toCanvas(canvas,opts);
+ const canvas=document.createElement('canvas'),valid=validatePayload(type,value);if(!valid.ok)throw new Error(valid.message);
+ const opts=bwipOptions(type,valid.value,{fg:'#000000',bg:'#ffffff',margin:16});opts.scale=5;bwipjs.toCanvas(canvas,opts);
  const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error('Génération du code impossible')),'image/png'));return{blob,value,type}
 }
 async function refreshQrPreview(){
