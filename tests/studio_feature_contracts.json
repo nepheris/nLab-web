@@ -251,7 +251,7 @@
       ]
     },
     "qr-barcode-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "symTabs",
         "value",
@@ -298,14 +298,17 @@
         "symbologyInfo",
         "bwipOptions",
         "validatePayload",
-        "symbology-service.js"
+        "symbology-service.js",
+        "bindColorControl",
+        "color-control.js"
       ],
       "required_capabilities": [
         "symbology.generate",
         "symbology.scan.image",
         "symbology.scan.hid",
         "symbology.export.png",
-        "symbology.export.svg"
+        "symbology.export.svg",
+        "core.color.shared-control"
       ]
     },
     "markdown-studio": {
