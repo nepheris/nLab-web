@@ -72,6 +72,11 @@ function prefixLine(prefix){
 }
 function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1200)}
 function saveMarkdown(){download(new Blob([editor.value],{type:'text/markdown;charset=utf-8'}),fileName);setDirty(false);setStatus('Markdown exporté')}
+function printPdf(){
+ const {html}=engine.renderWithAnchors(editor.value),p=engine.splitFrontMatter(editor.value),title=p.data?.title||fileName.replace(/\.md$/i,'');
+ const w=window.open('','_blank','noopener,noreferrer,width=980,height=760');if(!w){setStatus('Fenêtre d’impression bloquée par le navigateur');return}
+ w.document.write('<!doctype html><html lang="'+(p.data?.lang||'fr')+'"><head><meta charset="utf-8"><title>'+escapeHtml(title)+'</title><style>@page{margin:18mm}body{font:12pt/1.55 Arial,sans-serif;color:#111}img{max-width:100%}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:5px}pre{white-space:pre-wrap;background:#f3f4f6;padding:10px}</style></head><body>'+html+'<script>window.onload=()=>setTimeout(()=>window.print(),150)<\/script></body></html>');w.document.close();setStatus('Aperçu impression ouvert · choisir « Enregistrer au format PDF »')
+}
 function exportHtml(){
  const {html}=engine.renderWithAnchors(editor.value),p=engine.splitFrontMatter(editor.value),title=p.data?.title||fileName.replace(/\.md$/i,'');
  const full='<!doctype html><html lang="'+(p.data?.lang||'fr')+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(title)+'</title><style>body{font:16px/1.65 Arial,sans-serif;max-width:900px;margin:40px auto;padding:0 22px;color:#1f2933}img{max-width:100%}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:6px}pre{overflow:auto;background:#222;color:#fff;padding:12px;border-radius:6px}</style></head><body>'+html+'</body></html>';
@@ -83,6 +88,9 @@ function switchMode(mode){
  if(mode==='help'){g.className='editorGrid mode-preview';preview.innerHTML='<h1>Aide Markdown Studio</h1><p>Utilisez la barre de ruban pour insérer les syntaxes Markdown usuelles. Le panneau de gauche gère le sommaire et le front matter YAML.</p><h2>Fonctions avancées</h2><p><span class="devBadge">DÉVELOPPEMENT</span> Le mode WYSIWYG complet sera branché sur le moteur partagé après validation.</p>'}
 }
 editor.addEventListener('input',()=>{setDirty();refresh()});
+let scrollSync=false;
+function syncScroll(from,to){if(scrollSync)return;scrollSync=true;const maxFrom=Math.max(1,from.scrollHeight-from.clientHeight),maxTo=Math.max(0,to.scrollHeight-to.clientHeight),ratio=from.scrollTop/maxFrom;to.scrollTop=ratio*maxTo;requestAnimationFrame(()=>scrollSync=false)}
+editor.addEventListener('scroll',()=>syncScroll(editor,preview));preview.addEventListener('scroll',()=>syncScroll(preview,editor));
 document.addEventListener('studio-v2:menu',e=>switchMode(e.detail?.tab||'split'));
 document.addEventListener('studio-v2:action',e=>{const a=e.detail?.action;if(a==='bold')insert('**','**');else if(a==='italic')insert('*','*');else if(a==='h1')prefixLine('# ');else if(a==='h2')prefixLine('## ');else if(a==='h3')prefixLine('### ')});
 qsa('[data-wrap]').forEach(b=>b.onclick=()=>{const [a,z]=b.dataset.wrap.split('|');insert(a,z)});
@@ -98,7 +106,7 @@ $('#wysiwygDev').onclick=()=>setStatus('WYSIWYG complet : DÉVELOPPEMENT');
 $('#openMd').onclick=()=>$('#fileInput').click();
 $('#openDemoCorpus').onclick=async()=>{try{const files=await demoCorpus.fetchFiles('markdown-studio',{extensions:['md','markdown']});if(!files.length)throw new Error('Aucun fichier Markdown local dans le corpus public');const f=files[0];fileName=f.name;$('#docName').textContent=fileName;editor.value=await f.text();syncPreview();syncYamlFromSource(true);setDirty(false);setStatus('Corpus démo nLab · '+files.length+' fichier(s) disponible(s) · '+f.name)}catch(e){setStatus('Corpus démo : '+e.message)}};
 $('#fileInput').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;fileName=f.name;$('#docName').textContent=fileName;editor.value=await f.text();syncPreview();syncYamlFromSource(true);setDirty(false);setStatus('Fichier chargé')};
-$('#saveMd').onclick=saveMarkdown;$('#exportHtml').onclick=exportHtml;
+$('#saveMd').onclick=saveMarkdown;$('#exportHtml').onclick=exportHtml;$('#printPdf').onclick=printPdf;
 $('#refreshToc').onclick=syncPreview;
 toc.onclick=e=>{const b=e.target.closest('[data-id]');if(!b)return;preview.querySelector('#'+CSS.escape(b.dataset.id))?.scrollIntoView({behavior:'smooth',block:'start'});switchMode('preview')};
 $('#applyYaml').onclick=()=>applyYaml(yamlEditor.value);yamlBig.addEventListener('change',()=>applyYaml(yamlBig.value));
