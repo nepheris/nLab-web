@@ -186,6 +186,173 @@
         "presentation.convert",
         "presentation.export"
       ]
+    },
+    {
+      "id": "application-shell-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/application-shell-runtime.js",
+      "capabilities": [
+        "ui.shell",
+        "ui.header",
+        "ui.sidebar",
+        "ui.footer",
+        "ui.version-slot"
+      ]
+    },
+    {
+      "id": "context-help-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/help.js",
+      "status": "active-converging",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/help/contextual-help.json",
+      "capabilities": [
+        "help.contextual",
+        "help.dev-overlay",
+        "ui.id",
+        "ui.reference.copy"
+      ]
+    },
+    {
+      "id": "theme-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/themes/theme-engine.js",
+      "capabilities": [
+        "theme.apply",
+        "theme.tokens",
+        "theme.palette",
+        "theme.dark-light"
+      ]
+    },
+    {
+      "id": "notification-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/notification-center.json",
+      "capabilities": [
+        "notify.toast",
+        "notify.banner",
+        "notify.inline",
+        "notify.queue"
+      ]
+    },
+    {
+      "id": "dialog-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/confirmation-dialog.json",
+      "capabilities": [
+        "dialog.confirm",
+        "dialog.warning",
+        "dialog.danger",
+        "dialog.choice"
+      ]
+    },
+    {
+      "id": "floating-window-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/floating-window.json",
+      "capabilities": [
+        "window.move",
+        "window.lock",
+        "window.resize",
+        "window.dock",
+        "window.fullscreen",
+        "window.persist"
+      ]
+    },
+    {
+      "id": "search-engine",
+      "module": null,
+      "status": "upstream-p1",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/search-engine.json",
+      "capabilities": [
+        "search.query",
+        "search.filter",
+        "search.sort",
+        "search.group",
+        "search.saved-view"
+      ]
+    },
+    {
+      "id": "export-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/modules/export-engine.json",
+      "capabilities": [
+        "export.pdf",
+        "export.csv",
+        "export.json",
+        "export.image",
+        "export.qr",
+        "export.selection",
+        "export.view"
+      ]
+    },
+    {
+      "id": "file-input-engine",
+      "module": "../../APP-Applications/_shared/studio-v2/input-service.js",
+      "status": "p0-converging",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/file-attachment-input.json",
+      "capabilities": [
+        "input.file",
+        "input.folder",
+        "input.drop",
+        "input.multiple",
+        "input.validate"
+      ]
+    },
+    {
+      "id": "draft-engine",
+      "module": null,
+      "status": "upstream-p0",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/draft-controls.json",
+      "capabilities": [
+        "draft.save",
+        "draft.restore",
+        "draft.clear",
+        "draft.export",
+        "draft.import"
+      ]
+    },
+    {
+      "id": "structured-data-engine",
+      "module": null,
+      "status": "upstream-p1",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/structured-data-engine.json",
+      "capabilities": [
+        "data.schema-view",
+        "data.schema-edit",
+        "data.tree",
+        "data.table",
+        "data.raw-json"
+      ]
+    },
+    {
+      "id": "media-slot-engine",
+      "module": null,
+      "status": "upstream-p1",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/visual-media-slot.json",
+      "capabilities": [
+        "media.slot",
+        "media.gallery",
+        "media.placeholder",
+        "media.svg-currentColor"
+      ]
+    },
+    {
+      "id": "audio-recorder-engine",
+      "module": null,
+      "status": "upstream-p1",
+      "source_ref": "nepheris/nLab-Web-Framework/dev/framework/components/audio-recorder.json",
+      "capabilities": [
+        "audio.record",
+        "audio.pause",
+        "audio.stop",
+        "audio.preview",
+        "audio.blob"
+      ]
     }
   ],
   "examples": {
@@ -221,5 +388,9 @@
       "pdf.compress",
       "pdf.export"
     ]
-  }
+  },
+  "cross_project_sources": [
+    "nepheris/nLab-Web-Framework",
+    "nepheris/nLab"
+  ]
 }
