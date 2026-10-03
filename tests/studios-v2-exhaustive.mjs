@@ -28,7 +28,7 @@ try{
  });
  await studio('code-studio',async p=>{
   await p.locator('#file').setInputFiles('Library/demo/source-drive/json/rdc-recettes-complexes-demo.json');await p.waitForFunction(()=>document.querySelector('#mode')?.textContent==='json',null,{timeout:15000});
-  await p.locator('#formatJson').click();if(document===undefined){} // keep module syntax simple
+  await p.locator('#formatJson').click();
   if((await p.locator('#editor').getAttribute('class')||'').length===0)throw new Error('Ace absent');
   await p.locator('#langs [data-lang="python"]').click();if((await p.locator('#mode').textContent())!=='python')throw new Error('Changement langage inactif');
   await p.locator('#find').click();await p.waitForFunction(()=>!!document.querySelector('.ace_search'),null,{timeout:5000});
