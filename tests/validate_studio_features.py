@@ -42,6 +42,15 @@ for studio_id,c in CONTRACTS["studios"].items():
             for marker in c["required_runtime_strings"]:
                 if marker.lower() not in js.lower():
                     fail(f"{studio_id}: missing runtime marker {marker!r}")
+    if c.get("required_capabilities"):
+        manifest=ROOT/"APP-Applications"/studio_id/"v2/studio-manifest.js"
+        if not manifest.exists():
+            fail(f"{studio_id}: missing studio-manifest.js for capability contract")
+        else:
+            mt=manifest.read_text(encoding="utf-8")
+            for capability in c["required_capabilities"]:
+                if capability not in mt:
+                    fail(f"{studio_id}: missing declared capability {capability!r}")
     if studio_id!="pdf-studio":
         if "studio-v1/studio.css" in html:
             fail(f"{studio_id}: V2 page still imports Studio Core V1 CSS")

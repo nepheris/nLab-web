@@ -13,3 +13,49 @@ export async function readWorkbook(file){if(!globalThis.XLSX)throw new Error('XL
 export function workbookFromCsv(text,{delimiter=''}={}){if(!globalThis.XLSX)throw new Error('XLSX indisponible');return XLSX.read(String(text??''),{type:'string',FS:delimiter||undefined})}
 export function workbookFromJson(data,{sheetName='Data'}={}){return workbookFromObjects(Array.isArray(data)?data:(data?.records||[data]),{sheetName})}
 export function workbookBlob(wb,bookType='xlsx'){if(!globalThis.XLSX)throw new Error('XLSX indisponible');const arr=XLSX.write(wb,{bookType,type:'array'});const mime=bookType==='ods'?'application/vnd.oasis.opendocument.spreadsheet':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';return new Blob([arr],{type:mime})}
+
+function formatKind(z=''){
+ const s=String(z||'').toLowerCase();
+ if(/%/.test(s))return'percentage';
+ if(/[€]|eur|\[\$€/.test(s))return'currency_eur';
+ if(/\$|usd/.test(s))return'currency_usd';
+ if(/£|gbp/.test(s))return'currency_gbp';
+ if(/[ymd]|dd|mm|yy/.test(s)&&/[dmy]/.test(s))return'date';
+ if(/0\.0+/.test(s))return'decimal';
+ if(/0/.test(s))return'number';
+ return'general'
+}
+export function workbookStructureProfile(wb,sheetName=null){
+ if(!globalThis.XLSX)throw new Error('XLSX indisponible');
+ const name=sheetName||wb?.SheetNames?.[0],ws=name&&wb.Sheets?.[name];if(!ws)return{sheetName:name||'',columns:[]};
+ const range=XLSX.utils.decode_range(ws['!ref']||'A1:A1'),columns=[];
+ for(let col=range.s.c;col<=range.e.c;col++){
+  const h=ws[XLSX.utils.encode_cell({r:range.s.r,c:col})],header=String(h?.v??('col_'+(col+1)));
+  const formats={},types={};let sampleCount=0;
+  for(let row=range.s.r+1;row<=Math.min(range.e.r,range.s.r+40);row++){
+   const cell=ws[XLSX.utils.encode_cell({r:row,c:col})];if(!cell)continue;sampleCount++;
+   if(cell.z)formats[cell.z]=(formats[cell.z]||0)+1;if(cell.t)types[cell.t]=(types[cell.t]||0)+1
+  }
+  const numberFormat=Object.entries(formats).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+  const cellType=Object.entries(types).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+  columns.push({name:header,index:col,numberFormat,formatKind:formatKind(numberFormat),cellType,width:ws['!cols']?.[col]?.wch||null,sampleCount});
+ }
+ return{sheetName:name,columns,freeze:ws['!freeze']||null,autoFilter:ws['!autofilter']?.ref||null};
+}
+export function workbookFromObjectsWithProfile(data,profile,{sheetName='Synthetic'}={}){
+ if(!globalThis.XLSX)throw new Error('XLSX indisponible');
+ const wb=workbookFromObjects(data,{sheetName}),ws=wb.Sheets[sheetName],range=XLSX.utils.decode_range(ws['!ref']||'A1:A1');
+ const byName=new Map((profile?.columns||[]).map(c=>[String(c.name),c]));
+ for(let col=range.s.c;col<=range.e.c;col++){
+  const head=String(ws[XLSX.utils.encode_cell({r:0,c:col})]?.v??''),fmt=byName.get(head);if(!fmt)continue;
+  for(let row=1;row<=range.e.r;row++){
+   const addr=XLSX.utils.encode_cell({r:row,c:col}),cell=ws[addr];if(!cell)continue;
+   if(fmt.numberFormat)cell.z=fmt.numberFormat;
+   if(fmt.formatKind==='percentage'&&typeof cell.v==='number')cell.v=cell.v/100;
+   if(fmt.formatKind==='date'&&typeof cell.v==='string'&&/^\d{4}-\d{2}-\d{2}/.test(cell.v)){cell.v=new Date(cell.v);cell.t='d'}
+  }
+ }
+ if(profile?.columns?.length)ws['!cols']=profile.columns.map(c=>c.width?{wch:c.width}:undefined);
+ if(profile?.autoFilter)ws['!autofilter']={ref:profile.autoFilter};
+ return wb
+}

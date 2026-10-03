@@ -1,8 +1,10 @@
 import{mountStudioV2}from'../../_shared/studio-v2/frame.js';
 import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
-import{readWorkbook,workbookToObjects,workbookFromObjects,workbookBlob,toCsv,parseCsv}from'../../_shared/studio-v2/tabular-service.js';
+import{readWorkbook,workbookToObjects,workbookFromObjects,workbookFromObjectsWithProfile,workbookStructureProfile,workbookBlob,toCsv,parseCsv}from'../../_shared/studio-v2/tabular-service.js';
 import{writeStructuredDocx}from'../../_shared/studio-v2/document-format-service.js';
-import{generateDataset,inferSchema,TYPE_OPTIONS,markdownTable,generateDocumentModel,documentToMarkdown,documentToHtml}from'../../_shared/studio-v2/synthetic-data-service.js';
+import{generateDataset,inferSchema,applyFormatProfileToSchema,TYPE_OPTIONS,markdownTable,generateDocumentModel,documentToMarkdown,documentToHtml,syntheticDocumentFromStructure}from'../../_shared/studio-v2/synthetic-data-service.js';
+import{analyzeRichStructure,summarizeStructure}from'../../_shared/studio-v2/structural-clone-service.js';
+import{runOcr}from'../../_shared/studio-v2/ocr-service.js';
 import{downloadBlob}from'../../_shared/studio-v2/download-service.js';
 import studioManifest from'./studio-manifest.js';
 
@@ -11,7 +13,7 @@ applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:VERSION_I
 await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-let mode='table',data=[],schema=[],docModel=null,cloneSchema=[],cloneSourceName='';
+let mode='table',data=[],schema=[],docModel=null,cloneSchema=[],cloneSourceName='',cloneStructure=null,cloneKind='table',cloneWorkbookProfile=null;
 const status=m=>{$('#status').textContent=m;const s=$('#studioStatusText');if(s)s.textContent=m};
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const typeOptions=sel=>TYPE_OPTIONS.map(([v,l])=>'<option value="'+v+'"'+(v===sel?' selected':'')+'>'+esc(l)+'</option>').join('');
@@ -20,7 +22,8 @@ const presets={
  people:[['person_id','synthetic_id'],['first_name','first_name'],['last_name','last_name'],['email','email'],['phone','phone'],['city','city']],
  finance:[['transaction_id','synthetic_id'],['date','date'],['amount','price'],['tax_rate','percentage'],['category','category'],['reference','uuid']],
  catalog:[['sku','sku'],['label','lorem'],['ean13','ean13'],['price','price'],['category','category'],['image_url','image_url']],
- logistics:[['package_id','synthetic_id'],['sku','sku'],['ean13','ean13'],['code128','code128'],['qr_payload','qr_payload'],['data_matrix','data_matrix']]
+ logistics:[['package_id','synthetic_id'],['sku','sku'],['ean13','ean13'],['code128','code128'],['qr_payload','qr_payload'],['data_matrix','data_matrix']],
+ recipe:[['recipe_id','synthetic_id'],['recipe_title','recipe_title'],['ingredient','ingredient'],['quantity','decimal'],['unit','unit'],['step','lorem'],['category','category']]
 };
 function setSchema(rows){schema=rows.map((x,i)=>({id:'c'+Date.now()+'-'+i,name:x.name||x[0],type:x.type||x[1]||'category',enabled:x.enabled!==false}));renderSchema()}
 function renderSchema(){
@@ -56,17 +59,28 @@ function setMode(next){
  mode=next;$$('.modeBtn').forEach(b=>b.classList.toggle('active',b.dataset.mode===next));$$('.modePanel').forEach(p=>p.hidden=p.dataset.panel!==next);
  if(next==='document'){if(!docModel)generateDoc();else renderDocument()}else renderTable()
 }
-function generateCurrent(){if(mode==='document')generateDoc();else if(mode==='clone'){data=generateDataset(cloneSchema,Number($('#cloneRows').value)||100,Number($('#seed').value)||1);renderTable();status('Clone synthétique généré : '+data.length+' lignes, '+cloneSchema.length+' colonnes.')}else generateTable()}
-function nameStem(){return mode==='document'?'nlab-document-demo':'nlab-dataset-demo'}
-function ensureTable(){if(mode==='document')throw new Error('Export tabulaire indisponible en mode Document.');if(!data.length)generateCurrent()}
-async function exportJson(){if(mode==='document')return downloadBlob(new Blob([JSON.stringify(docModel,null,2)],{type:'application/json'}),nameStem()+'.json');ensureTable();downloadBlob(new Blob([JSON.stringify({schema:'nlab-demo-dataset/v1',synthetic:true,generatorVersion:'2.1.0',columns:schema,records:data},null,2)],{type:'application/json'}),nameStem()+'.json')}
+function generateCurrent(){
+ if(mode==='document')return generateDoc();
+ if(mode==='clone'){
+  if(cloneKind==='document'&&cloneStructure){
+   docModel=syntheticDocumentFromStructure(cloneStructure,{title:'Démonstration — '+(cloneSourceName||'document'),seed:Number($('#seed').value)||1,preserveShape:$('#clonePolicy').value==='shape'});
+   renderDocument();status('Document de démonstration régénéré depuis la structure détectée.');return
+  }
+  data=generateDataset(cloneSchema,Number($('#cloneRows').value)||100,Number($('#seed').value)||1);renderTable();status('Clone synthétique généré : '+data.length+' lignes, '+cloneSchema.length+' colonnes.');return
+ }
+ generateTable()
+}
+function isDocumentMode(){return mode==='document'||(mode==='clone'&&cloneKind==='document')}
+function nameStem(){return isDocumentMode()?'nlab-document-demo':'nlab-dataset-demo'}
+function ensureTable(){if(isDocumentMode())throw new Error('Export tabulaire indisponible pour ce document.');if(!data.length)generateCurrent()}
+async function exportJson(){if(isDocumentMode())return downloadBlob(new Blob([JSON.stringify(docModel,null,2)],{type:'application/json'}),nameStem()+'.json');ensureTable();downloadBlob(new Blob([JSON.stringify({schema:'nlab-demo-dataset/v1',synthetic:true,generatorVersion:'2.2.0',columns:(mode==='clone'?cloneSchema:schema),sourceFormatProfile:cloneWorkbookProfile||null,records:data},null,2)],{type:'application/json'}),nameStem()+'.json')}
 async function exportCsv(){ensureTable();downloadBlob(new Blob([toCsv(data,{delimiter:';',bom:true})],{type:'text/csv;charset=utf-8'}),nameStem()+'.csv')}
-async function exportXlsx(){ensureTable();downloadBlob(workbookBlob(workbookFromObjects(data,{sheetName:'Synthetic'}),'xlsx'),nameStem()+'.xlsx')}
-async function exportMd(){if(mode==='document')downloadBlob(new Blob([documentToMarkdown(docModel)],{type:'text/markdown;charset=utf-8'}),nameStem()+'.md');else{ensureTable();downloadBlob(new Blob(['# nLab Dataset Demo\n\n'+markdownTable(data)],{type:'text/markdown;charset=utf-8'}),nameStem()+'.md')}}
-async function exportHtml(){if(mode!=='document')throw new Error('HTML riche disponible en mode Document.');downloadBlob(new Blob([documentToHtml(docModel)],{type:'text/html;charset=utf-8'}),nameStem()+'.html')}
-async function exportDocx(){if(mode!=='document')throw new Error('DOCX disponible en mode Document.');downloadBlob(await writeStructuredDocx(docModel),nameStem()+'.docx')}
+async function exportXlsx(){ensureTable();const wb=cloneWorkbookProfile?workbookFromObjectsWithProfile(data,cloneWorkbookProfile,{sheetName:cloneWorkbookProfile.sheetName||'Synthetic'}):workbookFromObjects(data,{sheetName:'Synthetic'});downloadBlob(workbookBlob(wb,'xlsx'),nameStem()+'.xlsx')}
+async function exportMd(){if(isDocumentMode())downloadBlob(new Blob([documentToMarkdown(docModel)],{type:'text/markdown;charset=utf-8'}),nameStem()+'.md');else{ensureTable();downloadBlob(new Blob(['# nLab Dataset Demo\n\n'+markdownTable(data)],{type:'text/markdown;charset=utf-8'}),nameStem()+'.md')}}
+async function exportHtml(){if(!isDocumentMode())throw new Error('HTML riche disponible pour les documents.');downloadBlob(new Blob([documentToHtml(docModel)],{type:'text/html;charset=utf-8'}),nameStem()+'.html')}
+async function exportDocx(){if(!isDocumentMode())throw new Error('DOCX disponible pour les documents.');downloadBlob(await writeStructuredDocx(docModel),nameStem()+'.docx')}
 async function exportPdf(){
- if(mode!=='document')throw new Error('PDF disponible en mode Document.');
+ if(!isDocumentMode())throw new Error('PDF disponible pour les documents.');
  const api=window.jspdf?.jsPDF;if(!api)throw new Error('jsPDF indisponible');
  const pdf=new api({unit:'mm',format:'a4'}),margin=16,maxW=178;let y=18;
  const nextPage=(need=10)=>{if(y+need>280){pdf.addPage();y=18}};
@@ -79,23 +93,37 @@ async function exportPdf(){
  pdf.save(nameStem()+'.pdf');status('PDF de démonstration téléchargé.')
 }
 async function parseClone(file){
- const ext=(file.name.split('.').pop()||'').toLowerCase();let records=[];
- if(ext==='csv'||file.type.includes('csv'))records=parseCsv(await file.text(),{header:true,dynamicTyping:true});
- else if(ext==='json'||file.type.includes('json')){const j=JSON.parse(await file.text());records=Array.isArray(j)?j:(j.records||j.data||[j])}
- else if(['xlsx','xls'].includes(ext)){records=workbookToObjects(await readWorkbook(file))}
- else throw new Error('Format structure non pris en charge dans cette étape : '+ext.toUpperCase());
- if(!records.length)throw new Error('Aucune ligne exploitable.');
- cloneSchema=inferSchema(records);cloneSourceName=file.name;$('#cloneSummary').textContent=file.name+' · '+cloneSchema.length+' colonne(s) détectée(s) : '+cloneSchema.map(c=>c.name+' → '+c.type).join(', ');$('#editInTableMode').disabled=false;
- data=generateDataset(cloneSchema,Number($('#cloneRows').value)||100,Number($('#seed').value)||1);renderTable();status('Structure détectée sans recopier les valeurs source. Jeu de démonstration généré.')
+ if(!file)throw new Error('Aucun fichier sélectionné.');
+ const ext=(file.name.split('.').pop()||'').toLowerCase();cloneSourceName=file.name;
+ if(ext==='csv'||file.type.includes('csv')||ext==='json'||file.type.includes('json')||['xlsx','xls'].includes(ext)){
+  let records=[];cloneWorkbookProfile=null;
+  if(ext==='csv'||file.type.includes('csv'))records=parseCsv(await file.text(),{header:true,dynamicTyping:true});
+  else if(ext==='json'||file.type.includes('json')){const j=JSON.parse(await file.text());records=Array.isArray(j)?j:(j.records||j.data||[j])}
+  else {const wb=await readWorkbook(file);records=workbookToObjects(wb);cloneWorkbookProfile=workbookStructureProfile(wb)}
+  if(!records.length)throw new Error('Aucune ligne exploitable.');
+  cloneKind='table';cloneStructure=null;cloneSchema=applyFormatProfileToSchema(inferSchema(records),cloneWorkbookProfile);$('#editInTableMode').disabled=false;
+  const fmt=cloneWorkbookProfile?.columns?.filter(x=>x.numberFormat).map(x=>x.name+' ['+x.formatKind+': '+x.numberFormat+']').join(', ');
+  $('#cloneSummary').textContent=file.name+' · '+cloneSchema.length+' colonne(s) détectée(s) : '+cloneSchema.map(c=>c.name+' → '+c.type).join(', ')+(fmt?' · formats : '+fmt:'');
+  data=generateDataset(cloneSchema,Number($('#cloneRows').value)||100,Number($('#seed').value)||1);renderTable();status('Structure tabulaire détectée sans recopier les valeurs source. Jeu de démonstration généré.');return
+ }
+ cloneKind='document';cloneSchema=[];cloneWorkbookProfile=null;$('#editInTableMode').disabled=true;
+ const useOcr=$('#cloneOcr').checked&&(file.type||'').startsWith('image/');
+ cloneStructure=await analyzeRichStructure(file,{language:$('#cloneOcrLang').value,ocr:useOcr?(input,{language})=>runOcr(input,{engine:'auto',language,logger:m=>{if(m?.status)status('OCR · '+m.status+(m.progress!=null?' '+Math.round(m.progress*100)+' %':''))}}):null});
+ const summary=summarizeStructure(cloneStructure);
+ $('#cloneSummary').textContent=file.name+' · '+String(summary.format).toUpperCase()+' · '+summary.pages+' page(s) · '+summary.headings+' titre(s) · '+summary.paragraphs+' paragraphe(s) · '+summary.tables+' tableau(x) · '+summary.images+' image(s)'+(summary.ocrApplied?' · OCR appliqué':'');
+ docModel=syntheticDocumentFromStructure(cloneStructure,{title:'Démonstration — '+file.name,seed:Number($('#seed').value)||1,preserveShape:$('#clonePolicy').value==='shape'});
+ renderDocument();status('Structure documentaire détectée et document fictif indépendant généré.')
 }
 $$('.modeBtn').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
 $('#preset').onchange=applyPreset;$('#applyPreset').onclick=applyPreset;$('#addColumn').onclick=()=>{schema.push({id:'c'+Date.now(),name:'colonne_'+(schema.length+1),type:'category',enabled:true});renderSchema()};
 $('#editInTableMode').onclick=()=>{if(!cloneSchema.length)return;setSchema(cloneSchema);setMode('table');status('Types détectés chargés dans le configurateur de colonnes.')};
+$('#clonePolicy').onchange=()=>{if(cloneKind==='document'&&cloneStructure)generateCurrent()};
+$('#openOcrStudio').onclick=()=>{location.href='../../ocr-studio/v2/?from=dataset-generator'};
 $('#cloneDrop').onclick=()=>$('#cloneFile').click();$('#cloneDrop').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('#cloneFile').click()};$('#cloneFile').onchange=e=>parseClone(e.target.files?.[0]).catch(x=>status(x.message));
 for(const ev of ['dragenter','dragover'])$('#cloneDrop').addEventListener(ev,e=>{e.preventDefault();e.currentTarget.classList.add('drag')});
 for(const ev of ['dragleave','drop'])$('#cloneDrop').addEventListener(ev,e=>{e.preventDefault();e.currentTarget.classList.remove('drag')});
 $('#cloneDrop').addEventListener('drop',e=>parseClone(e.dataTransfer.files?.[0]).catch(x=>status(x.message)));
 
-const actions={generate:generateCurrent,randomize:()=>{$('#seed').value=Math.floor(Math.random()*2147483647);generateCurrent()},exportJson,exportCsv,exportXlsx,exportMd,exportHtml,exportDocx,exportPdf,advanced:()=>status('Étape suivante : clone DOCX/ODT/PDF/images avec analyse de structure et OCR optionnel, puis génération de packs multi-formats.')};
+const actions={generate:generateCurrent,randomize:()=>{$('#seed').value=Math.floor(Math.random()*2147483647);generateCurrent()},cloneRich:()=>setMode('clone'),ocrStudio:()=>{location.href='../../ocr-studio/v2/?from=dataset-generator'},exportJson,exportCsv,exportXlsx,exportMd,exportHtml,exportDocx,exportPdf,advanced:()=>status('Dataset Generator 2.2 : clone riche actif. Étape suivante : packs multi-fichiers, manifests et rendu de symbologies via QR & Barcode Studio.')};
 document.addEventListener('studio-v2:action',e=>{const a=actions[e.detail?.action];if(a)Promise.resolve().then(a).catch(x=>status(x.message))});
 setSchema(presets.generic.map(([name,type])=>({name,type})));generateTable();
