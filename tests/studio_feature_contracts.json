@@ -450,7 +450,6 @@
         "lines",
         "editor",
         "preview",
-        "openDocument",
         "exportTxt",
         "exportMd",
         "exportHtml",
