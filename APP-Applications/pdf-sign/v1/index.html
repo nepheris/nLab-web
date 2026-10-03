@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="nLab PDF Sign — mini-app dérivée de PDF Studio pour signer et parapher rapidement un PDF.">
+<title>nLab PDF Sign</title>
+<link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../_shared/studio-v2/studio.css">
+<style>
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.pdfSignMain{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:14px;padding:14px;min-height:calc(100vh - 190px)}
+.signViewer,.signPanel{background:var(--studio-surface,#fff);border:1px solid var(--studio-line,#d6dde3);border-radius:14px;min-width:0}
+.signViewer{display:flex;flex-direction:column;overflow:hidden}.viewerToolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px;border-bottom:1px solid var(--studio-line,#d6dde3)}
+.viewerStage{flex:1;min-height:440px;display:grid;place-items:center;overflow:auto;padding:18px;background:linear-gradient(45deg,#eef1f3 25%,transparent 25%),linear-gradient(-45deg,#eef1f3 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#eef1f3 75%),linear-gradient(-45deg,transparent 75%,#eef1f3 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
+.viewerStage canvas{max-width:100%;height:auto;background:#fff;box-shadow:0 6px 26px #0002}.emptyState{text-align:center;max-width:520px;padding:34px}
+.dropTarget{border:2px dashed #9fb5c7;border-radius:14px;padding:28px;background:#fff8;cursor:pointer}.dropTarget.drag{border-color:#3282ca;background:#eef7ff}
+.signPanel{padding:14px;overflow:auto}.signPanel h2{margin:0 0 4px}.field{display:grid;gap:5px;margin:11px 0}.field label{font-size:12px;font-weight:700}.field select,.field input{width:100%;padding:9px;border:1px solid #c8d2da;border-radius:8px;background:#fff;color:#17231c;font:inherit}
+.assetRow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.signatureCanvas{width:100%;height:120px;border:1px solid #c8d2da;border-radius:10px;background:#fff;touch-action:none}
+.actionRow{display:flex;gap:8px;flex-wrap:wrap}.btnSign{border:1px solid #b7c7d4;border-radius:9px;padding:9px 11px;background:#fff;cursor:pointer;font-weight:700}.btnSign.primary{background:#3282ca;border-color:#3282ca;color:#fff}.btnSign.secondary{background:#eef4f8}.btnSign:disabled{opacity:.45;cursor:not-allowed}
+.note{font-size:12px;line-height:1.45;color:#60717b}.statusBox{font-size:12px;padding:9px;border-radius:9px;background:#eef4f8;margin-top:10px;white-space:pre-wrap}
+.buildMeta{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#60717b}
+@media(max-width:900px){.pdfSignMain{grid-template-columns:1fr}.signPanel{order:-1}.viewerStage{min-height:360px}}
+@media(max-width:560px){.pdfSignMain{padding:8px;gap:8px}.viewerToolbar{padding:8px}.signPanel{padding:10px}.viewerStage{min-height:300px;padding:8px}.actionRow .btnSign{flex:1 1 42%;min-height:44px}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs" type="module"></script>
+<script>
+window.addEventListener('DOMContentLoaded',()=>{if(window.pdfjsLib)window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs'});
+</script>
+</head>
+<body>
+<main id="studioMain" class="pdfSignMain">
+<section class="signViewer">
+ <div class="viewerToolbar">
+  <button class="btnSign" id="prevPage" type="button">←</button>
+  <span id="pageInfo">Aucun document</span>
+  <button class="btnSign" id="nextPage" type="button">→</button>
+  <span style="flex:1"></span>
+  <button class="btnSign secondary" id="openFullStudio" type="button" data-advanced-studio="pdf-studio">Ouvrir PDF Studio</button>
+ </div>
+ <div class="viewerStage" id="viewerStage">
+  <div class="emptyState">
+   <div class="dropTarget" id="dropTarget" tabindex="0" role="button">
+    <strong>Glissez-déposez un PDF ici</strong><br><span class="note">ou cliquez pour choisir le document.</span>
+   </div>
+  </div>
+  <canvas id="pdfCanvas" hidden></canvas>
+ </div>
+</section>
+<aside class="signPanel">
+ <h2>Signer / parapher</h2>
+ <p class="note">Mini-app dérivée de PDF Studio. Elle réutilise le moteur PDF et le profil personnel Studio Core ; seules les fonctions nécessaires à la signature rapide sont exposées.</p>
+ <input id="fileInput" type="file" accept="application/pdf,.pdf" hidden>
+ <div class="field"><label for="assetKind">Action</label><select id="assetKind"><option value="signature">Signature</option><option value="initials">Paraphe</option></select></div>
+ <div class="field"><label for="assetSelect">Preset enregistré</label><div class="assetRow"><select id="assetSelect"><option value="">Aucun preset</option></select><button class="btnSign" id="importAsset" type="button">Importer</button></div><input id="assetFile" type="file" accept="image/png,image/jpeg,image/webp" hidden></div>
+ <div class="field"><label>Ou dessiner maintenant</label><canvas id="drawCanvas" class="signatureCanvas" width="640" height="180"></canvas><div class="actionRow"><button class="btnSign" id="clearDraw" type="button">Effacer</button><button class="btnSign" id="saveDraw" type="button">Enregistrer comme preset</button></div></div>
+ <div class="field"><label for="targetScope">Pages</label><select id="targetScope"><option value="current">Page courante</option><option value="all">Toutes les pages</option></select></div>
+ <div class="field"><label for="position">Position</label><select id="position"><option value="bottom-right">Bas droite</option><option value="bottom-center">Bas centre</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-center">Haut centre</option><option value="top-left">Haut gauche</option></select></div>
+ <div class="field"><label for="widthPct">Largeur <span id="widthValue">24 %</span></label><input id="widthPct" type="range" min="8" max="45" step="1" value="24"></div>
+ <div class="actionRow"><button class="btnSign primary" id="applyAsset" type="button" disabled>Appliquer</button><button class="btnSign primary" id="downloadPdf" type="button" disabled>Télécharger le PDF</button></div>
+ <div class="statusBox" id="localStatus">Chargez un PDF pour commencer.</div>
+ <p class="note">La signature visuelle n’est pas une preuve cryptographique. Pour PAdES/certificat/DSS, ouvrez PDF Studio.</p>
+ <div class="buildMeta" id="buildMeta"></div>
+</aside>
+</main>
+<script type="module" src="./pdf-sign.js"></script>
+</body></html>
