@@ -3,7 +3,7 @@
   "updated": "2026-10-03",
   "studios": {
     "image-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "file",
         "demoSynthetic",
@@ -49,6 +49,15 @@
       "required_strings": [
         "studio-v2/studio.css",
         "bootstrap-specialized.js"
+      ],
+      "required_capabilities": [
+        "image.transform.rotate",
+        "image.transform.flip",
+        "image.transform.resize",
+        "image.transform.crop",
+        "image.watermark.text",
+        "image.calibration.measure",
+        "image.identity.sha256"
       ]
     },
     "ocr-studio": {
