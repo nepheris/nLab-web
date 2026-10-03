@@ -217,6 +217,55 @@
       "status": "development",
       "icon": "../../assets/studios/data-studio.svg",
       "purpose": "DuckDB/Parquet et traitements de volumes supérieurs aux capacités simples navigateur."
+    },
+    {
+      "id": "future-studio",
+      "name": "Future Studio",
+      "status": "development",
+      "icon": "../../assets/studios/future-studio.svg",
+      "purpose": "Studio générique planifié pour expérimentations ou nouvelles familles avant spécialisation."
+    },
+    {
+      "id": "duo-studio",
+      "name": "Duo Studio",
+      "status": "development",
+      "icon": "../../assets/studios/duo-studio.svg",
+      "purpose": "Studio planifié pour workflows à deux sources, comparaison ou édition couplée."
+    },
+    {
+      "id": "audio-studio",
+      "name": "Audio Studio",
+      "status": "development",
+      "icon": "../../assets/studios/audio-studio.svg",
+      "purpose": "Audio : WAV/MP3/FLAC, conversion, découpe, normalisation, transcription et métadonnées."
+    },
+    {
+      "id": "video-studio",
+      "name": "Video Studio",
+      "status": "development",
+      "icon": "../../assets/studios/video-studio.svg",
+      "purpose": "Vidéo : MP4/WEBM/MOV, découpe, conversion, extraction audio/images et métadonnées."
+    },
+    {
+      "id": "archive-studio",
+      "name": "Archive Studio",
+      "status": "development",
+      "icon": "../../assets/studios/archive-studio.svg",
+      "purpose": "Archives : ZIP/7Z/TAR, inspection, extraction, recomposition, manifests et sécurité."
+    },
+    {
+      "id": "camp-studio",
+      "name": "Camp Studio",
+      "status": "development",
+      "icon": "../../assets/studios/camp-studio.svg",
+      "purpose": "Studio planifié CAMP, réservé aux futurs usages métier à préciser."
+    },
+    {
+      "id": "automation-studio",
+      "name": "Automation Studio",
+      "status": "development",
+      "icon": "../../assets/studios/automation-studio.svg",
+      "purpose": "Workflows, enchaînements d’actions, batch, presets et automatisations inter-Studios."
     }
   ]
 }
