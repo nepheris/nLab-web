@@ -15,6 +15,8 @@ on:
       - 'APP-Applications/dataset-generator-studio/**'
       - 'APP-Applications/document-studio/**'
       - 'APP-Applications/spreadsheet-studio/**'
+      - 'APP-Applications/pdf-sign/**'
+      - 'APP-Applications/studios/**'
       - 'APP-Applications/_shared/studio-v2/**'
       - 'tests/studios-v2-ui.mjs'
       - 'tests/studios-v2-functional.mjs'
@@ -29,6 +31,9 @@ on:
     paths:
       - 'APP-Applications/**'
       - 'tests/studios-v2-ui.mjs'
+      - 'tests/validate_studio_registries.py'
+      - 'tests/validate_studio_features.py'
+      - 'tests/studio_feature_contracts.json'
   workflow_dispatch:
 
 permissions:
