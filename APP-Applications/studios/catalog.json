@@ -1,5 +1,5 @@
 {
-  "schema": "nlab-studios-catalog/v1",
+  "schema": "nlab-studios-catalog/v2",
   "updated": "2026-10-03",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
@@ -266,6 +266,25 @@
       "status": "development",
       "icon": "../../assets/studios/automation-studio.svg",
       "purpose": "Workflows, enchaînements d’actions, batch, presets et automatisations inter-Studios."
+    }
+  ],
+  "architecture": {
+    "core": "APP-Applications/_shared/studio-v2/",
+    "metadata": "versions registry + Git commit metadata",
+    "responsive_contract": "mobile-tablet-desktop",
+    "propagation": "shared Core/Engine capability changes are consumed by Studios; derived apps expose capability subsets"
+  },
+  "derived_apps": [
+    {
+      "id": "pdf-sign",
+      "name": "nLab PDF Sign",
+      "status": "test-0.1.0",
+      "parent_studio": "pdf-studio",
+      "path": "../pdf-sign/",
+      "versions_path": "../pdf-sign/versions.html",
+      "version_registry": "../pdf-sign/versions.json",
+      "icon": "../../assets/studios/pdf-sign.svg",
+      "purpose": "Mini-app responsive dérivée de PDF Studio : charger/précharger un PDF, signer ou parapher avec presets, puis télécharger le PDF. Les fonctions avancées sont escaladées vers PDF Studio."
     }
   ]
 }
