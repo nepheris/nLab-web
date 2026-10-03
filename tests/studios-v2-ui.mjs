@@ -9,7 +9,9 @@ const studios=[
  ['file-studio',['files','start','export']],
  ['qr-barcode-studio',['refreshPreview','downloadPng','scan']],
  ['markdown-studio',['openMd','saveMd','mdEditor']],
- ['dataset-generator-studio',['generate','exportJson','table']]
+ ['dataset-generator-studio',['generate','exportJson','table']],
+ ['document-studio',['fileInput','editor','exportDocx','exportOdt']],
+ ['spreadsheet-studio',['fileInput','sheetSelect','exportXlsx','exportOds']]
 ];
 const browser=await chromium.launch({headless:true});
 const results=[];
