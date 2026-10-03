@@ -435,4 +435,4 @@ body.studioRibbonCollapsed .ribbonContext{
 
 .contextualHelp{font-size:11px}.contextHelpPath{display:flex;gap:5px;align-items:center;color:var(--nlab-muted);font-size:9px;margin-bottom:5px}.contextualHelp h3{margin:0 0 5px;font-size:13px}.contextHelpSummary{margin:0 0 7px}.contextDevHelp{margin-top:8px;border-top:1px dashed #b8c6d1;padding-top:7px}.contextDevHelp>summary{cursor:pointer;font-weight:700;font-size:10px;color:#405160}.contextDevActions{display:flex;align-items:center;gap:7px;margin:7px 0;flex-wrap:wrap}.contextDevActions code{font-size:9px;overflow-wrap:anywhere}.contextTechnicalMeta{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:5px}.contextDevHelp:not([open]) .contextTechnicalMeta,.contextDevHelp:not([open]) .contextDevActions{display:none!important}.themeDark .contextDevHelp>summary{color:#c7d0d8}
 
-.ribbonContextHead button,.contextDevHelp,.contextDevHelp summary,.contextDevHelp button{pointer-events:auto}
+.ribbonContextHead button,.contextDevHelp summary,.contextDevHelp button{pointer-events:auto}
