@@ -23,14 +23,14 @@
       "id": "function-icons",
       "label": "Function Icons",
       "manifest": "./function-icons.json",
-      "count": 87,
-      "description": "Actions métier partagées entre les Studios."
+      "count": 138,
+      "description": "Actions métier partagées et futures."
     },
     {
       "id": "filetype-icons",
       "label": "Filetype Icons",
       "manifest": "./filetype-icons.json",
-      "count": 42,
+      "count": 51,
       "description": "Types et familles de fichiers."
     },
     {
@@ -38,21 +38,21 @@
       "label": "Ui Icons",
       "manifest": "./ui-icons.json",
       "count": 26,
-      "description": "Contrôles, états et micro-interactions d’interface."
+      "description": "Contrôles, états et micro-interactions UI."
     },
     {
       "id": "symbology-icons",
       "label": "Symbology Icons",
       "manifest": "./symbology-icons.json",
       "count": 10,
-      "description": "QR, Data Matrix et codes-barres."
+      "description": "QR et codes-barres."
     }
   ],
   "counts": {
-    "total": 187,
+    "total": 247,
     "studio-icons": 22,
-    "function-icons": 87,
-    "filetype-icons": 42,
+    "function-icons": 138,
+    "filetype-icons": 51,
     "ui-icons": 26,
     "symbology-icons": 10
   }

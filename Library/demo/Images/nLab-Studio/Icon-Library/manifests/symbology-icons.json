@@ -2,13 +2,13 @@
   "schema": "nlab-icon-manifest/v1",
   "family": "symbology-icons",
   "label": "Symbology Icons",
-  "description": "QR, Data Matrix et codes-barres.",
+  "description": "QR et codes-barres.",
   "updated": "2026-10-03",
   "style": {
-    "colorMode": "currentColor",
-    "fill": "none",
     "viewBox": "0 0 24 24",
     "strokeWidth": 1.7,
+    "colorMode": "currentColor",
+    "fill": "none",
     "linecap": "round",
     "linejoin": "round"
   },
@@ -18,14 +18,13 @@
       "label": "Aztec",
       "file": "../symbology-icons/aztec.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Aztec pour génération, aperçu ou scan.",
+      "description": "Symbologie Aztec.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "aztec"
       ],
       "status": "active",
@@ -37,14 +36,13 @@
       "label": "Barcode",
       "file": "../symbology-icons/barcode.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Barcode pour génération, aperçu ou scan.",
+      "description": "Symbologie Barcode.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "barcode"
       ],
       "status": "active",
@@ -56,14 +54,13 @@
       "label": "Code128",
       "file": "../symbology-icons/code128.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Code128 pour génération, aperçu ou scan.",
+      "description": "Symbologie Code128.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "code128"
       ],
       "status": "active",
@@ -75,14 +72,13 @@
       "label": "Code39",
       "file": "../symbology-icons/code39.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Code39 pour génération, aperçu ou scan.",
+      "description": "Symbologie Code39.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "code39"
       ],
       "status": "active",
@@ -94,14 +90,13 @@
       "label": "Data Matrix",
       "file": "../symbology-icons/data-matrix.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Data Matrix pour génération, aperçu ou scan.",
+      "description": "Symbologie Data Matrix.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "data",
         "matrix"
       ],
@@ -114,14 +109,13 @@
       "label": "Ean13",
       "file": "../symbology-icons/ean13.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Ean13 pour génération, aperçu ou scan.",
+      "description": "Symbologie Ean13.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "ean13"
       ],
       "status": "active",
@@ -133,14 +127,13 @@
       "label": "Ean8",
       "file": "../symbology-icons/ean8.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Ean8 pour génération, aperçu ou scan.",
+      "description": "Symbologie Ean8.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "ean8"
       ],
       "status": "active",
@@ -152,14 +145,13 @@
       "label": "Gs1 128",
       "file": "../symbology-icons/gs1-128.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Gs1 128 pour génération, aperçu ou scan.",
+      "description": "Symbologie Gs1 128.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "gs1",
         "128"
       ],
@@ -172,14 +164,13 @@
       "label": "Pdf417",
       "file": "../symbology-icons/pdf417.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Pdf417 pour génération, aperçu ou scan.",
+      "description": "Symbologie Pdf417.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "pdf417"
       ],
       "status": "active",
@@ -191,14 +182,13 @@
       "label": "Qr Code",
       "file": "../symbology-icons/qr-code.svg",
       "family": "symbology-icons",
-      "description": "Symbologie Qr Code pour génération, aperçu ou scan.",
+      "description": "Symbologie Qr Code.",
       "usage": [
         "qr-barcode-studio",
         "pdf-studio"
       ],
       "tags": [
         "symbology",
-        "barcode",
         "qr",
         "code"
       ],

@@ -2,13 +2,13 @@
   "schema": "nlab-icon-manifest/v1",
   "family": "function-icons",
   "label": "Function Icons",
-  "description": "Actions métier partagées entre les Studios.",
+  "description": "Actions métier partagées et futures.",
   "updated": "2026-10-03",
   "style": {
-    "colorMode": "currentColor",
-    "fill": "none",
     "viewBox": "0 0 24 24",
     "strokeWidth": 1.7,
+    "colorMode": "currentColor",
+    "fill": "none",
     "linecap": "round",
     "linejoin": "round"
   },
@@ -18,10 +18,8 @@
       "label": "Active",
       "file": "../function-icons/active.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Active ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Active.",
+      "usage": [],
       "tags": [
         "function",
         "active"
@@ -35,8 +33,11 @@
       "label": "Add",
       "file": "../function-icons/add.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Add ».",
-      "usage": [],
+      "description": "Action ou fonction Add.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
       "tags": [
         "function",
         "add"
@@ -50,9 +51,10 @@
       "label": "Add Page",
       "file": "../function-icons/add-page.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Add Page ».",
+      "description": "Action ou fonction Add Page.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -66,14 +68,68 @@
       ]
     },
     {
+      "id": "alignCenter",
+      "label": "Align Center",
+      "file": "../function-icons/align-center.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Align Center.",
+      "usage": [],
+      "tags": [
+        "function",
+        "align",
+        "center"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "align-center"
+      ]
+    },
+    {
+      "id": "alignLeft",
+      "label": "Align Left",
+      "file": "../function-icons/align-left.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Align Left.",
+      "usage": [],
+      "tags": [
+        "function",
+        "align",
+        "left"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "align-left"
+      ]
+    },
+    {
+      "id": "alignRight",
+      "label": "Align Right",
+      "file": "../function-icons/align-right.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Align Right.",
+      "usage": [],
+      "tags": [
+        "function",
+        "align",
+        "right"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "align-right"
+      ]
+    },
+    {
       "id": "batch",
       "label": "Batch",
       "file": "../function-icons/batch.svg",
       "family": "function-icons",
-      "description": "Traitement par lot.",
+      "description": "Action ou fonction Batch.",
       "usage": [
-        "pdf-studio",
-        "file-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -84,14 +140,87 @@
       "aliases": []
     },
     {
+      "id": "bates",
+      "label": "Bates",
+      "file": "../function-icons/bates.svg",
+      "family": "function-icons",
+      "description": "Numérotation séquentielle Bates des pages.",
+      "usage": [],
+      "tags": [
+        "function",
+        "bates"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "bold",
+      "label": "Bold",
+      "file": "../function-icons/bold.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Bold.",
+      "usage": [],
+      "tags": [
+        "function",
+        "bold"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "bookmark",
+      "label": "Bookmark",
+      "file": "../function-icons/bookmark.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Bookmark.",
+      "usage": [],
+      "tags": [
+        "function",
+        "bookmark"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "calendar",
+      "label": "Calendar",
+      "file": "../function-icons/calendar.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Calendar.",
+      "usage": [],
+      "tags": [
+        "function",
+        "calendar"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "camera",
+      "label": "Camera",
+      "file": "../function-icons/camera.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Camera.",
+      "usage": [],
+      "tags": [
+        "function",
+        "camera"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "certificate",
       "label": "Certificate",
       "file": "../function-icons/certificate.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Certificate ».",
-      "usage": [
-        "pdf-studio"
-      ],
+      "description": "Action ou fonction Certificate.",
+      "usage": [],
       "tags": [
         "function",
         "certificate"
@@ -105,10 +234,8 @@
       "label": "Check",
       "file": "../function-icons/check.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Check ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Check.",
+      "usage": [],
       "tags": [
         "function",
         "check"
@@ -122,9 +249,10 @@
       "label": "Classify",
       "file": "../function-icons/classify.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Classify ».",
+      "description": "Action ou fonction Classify.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -135,14 +263,42 @@
       "aliases": []
     },
     {
+      "id": "clear",
+      "label": "Clear",
+      "file": "../function-icons/clear.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Clear.",
+      "usage": [],
+      "tags": [
+        "function",
+        "clear"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "clock",
+      "label": "Clock",
+      "file": "../function-icons/clock.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Clock.",
+      "usage": [],
+      "tags": [
+        "function",
+        "clock"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "close",
       "label": "Close",
       "file": "../function-icons/close.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Close ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Close.",
+      "usage": [],
       "tags": [
         "function",
         "close"
@@ -152,14 +308,63 @@
       "aliases": []
     },
     {
+      "id": "cloud",
+      "label": "Cloud",
+      "file": "../function-icons/cloud.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Cloud.",
+      "usage": [],
+      "tags": [
+        "function",
+        "cloud"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "cloudDownload",
+      "label": "Cloud Download",
+      "file": "../function-icons/cloud-download.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Cloud Download.",
+      "usage": [],
+      "tags": [
+        "function",
+        "cloud",
+        "download"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "cloud-download"
+      ]
+    },
+    {
+      "id": "cloudUpload",
+      "label": "Cloud Upload",
+      "file": "../function-icons/cloud-upload.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Cloud Upload.",
+      "usage": [],
+      "tags": [
+        "function",
+        "cloud",
+        "upload"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "cloud-upload"
+      ]
+    },
+    {
       "id": "collapse",
       "label": "Collapse",
       "file": "../function-icons/collapse.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Collapse ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Collapse.",
+      "usage": [],
       "tags": [
         "function",
         "collapse"
@@ -173,12 +378,10 @@
       "label": "Command",
       "file": "../function-icons/command.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Command ».",
+      "description": "Action ou fonction Command.",
       "usage": [
-        "dataset-generator-studio",
-        "markdown-studio",
-        "pdf-studio",
-        "qr-barcode-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -193,9 +396,10 @@
       "label": "Compare",
       "file": "../function-icons/compare.svg",
       "family": "function-icons",
-      "description": "Comparer deux artefacts.",
+      "description": "Action ou fonction Compare.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -206,15 +410,29 @@
       "aliases": []
     },
     {
+      "id": "compress",
+      "label": "Compress",
+      "file": "../function-icons/compress.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Compress.",
+      "usage": [],
+      "tags": [
+        "function",
+        "compress"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "convert",
       "label": "Convert",
       "file": "../function-icons/convert.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Convert ».",
+      "description": "Action ou fonction Convert.",
       "usage": [
-        "document-studio",
-        "pdf-studio",
-        "spreadsheet-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -229,10 +447,8 @@
       "label": "Copy",
       "file": "../function-icons/copy.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Copy ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Copy.",
+      "usage": [],
       "tags": [
         "function",
         "copy"
@@ -246,7 +462,7 @@
       "label": "Crop",
       "file": "../function-icons/crop.svg",
       "family": "function-icons",
-      "description": "Recadrer une image ou une page.",
+      "description": "Action ou fonction Crop.",
       "usage": [
         "pdf-studio",
         "image-studio"
@@ -260,13 +476,44 @@
       "aliases": []
     },
     {
+      "id": "database",
+      "label": "Database",
+      "file": "../function-icons/database.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Database.",
+      "usage": [],
+      "tags": [
+        "function",
+        "database"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "decompress",
+      "label": "Decompress",
+      "file": "../function-icons/decompress.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Decompress.",
+      "usage": [],
+      "tags": [
+        "function",
+        "decompress"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "delete",
       "label": "Delete",
       "file": "../function-icons/delete.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Delete ».",
+      "description": "Action ou fonction Delete.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -281,7 +528,7 @@
       "label": "Download",
       "file": "../function-icons/download.svg",
       "family": "function-icons",
-      "description": "Télécharger ou exporter une ressource.",
+      "description": "Action ou fonction Download.",
       "usage": [
         "Studio Core V2"
       ],
@@ -318,9 +565,10 @@
       "label": "Duplicate",
       "file": "../function-icons/duplicate.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Duplicate ».",
+      "description": "Action ou fonction Duplicate.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -331,11 +579,26 @@
       "aliases": []
     },
     {
+      "id": "edit",
+      "label": "Edit",
+      "file": "../function-icons/edit.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Edit.",
+      "usage": [],
+      "tags": [
+        "function",
+        "edit"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "error",
       "label": "Error",
       "file": "../function-icons/error.svg",
       "family": "function-icons",
-      "description": "Erreur ou échec d’une opération.",
+      "description": "Action ou fonction Error.",
       "usage": [
         "Studio Core V2"
       ],
@@ -352,10 +615,8 @@
       "label": "Expand",
       "file": "../function-icons/expand.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Expand ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Expand.",
+      "usage": [],
       "tags": [
         "function",
         "expand"
@@ -365,13 +626,32 @@
       "aliases": []
     },
     {
+      "id": "externalLink",
+      "label": "External Link",
+      "file": "../function-icons/external-link.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction External Link.",
+      "usage": [],
+      "tags": [
+        "function",
+        "external",
+        "link"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "external-link"
+      ]
+    },
+    {
       "id": "extract",
       "label": "Extract",
       "file": "../function-icons/extract.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Extract ».",
+      "description": "Action ou fonction Extract.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -386,8 +666,11 @@
       "label": "Eye",
       "file": "../function-icons/eye.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Eye ».",
-      "usage": [],
+      "description": "Action ou fonction Eye.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
       "tags": [
         "function",
         "eye"
@@ -401,10 +684,8 @@
       "label": "Eye Off",
       "file": "../function-icons/eye-off.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Eye Off ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Eye Off.",
+      "usage": [],
       "tags": [
         "function",
         "eye",
@@ -421,11 +702,10 @@
       "label": "File",
       "file": "../function-icons/file.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « File ».",
+      "description": "Action ou fonction File.",
       "usage": [
-        "document-studio",
-        "pdf-studio",
-        "spreadsheet-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -440,7 +720,7 @@
       "label": "Filter",
       "file": "../function-icons/filter.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Filter ».",
+      "description": "Action ou fonction Filter.",
       "usage": [
         "data-studio",
         "spreadsheet-studio"
@@ -458,7 +738,7 @@
       "label": "Fingerprint",
       "file": "../function-icons/fingerprint.svg",
       "family": "function-icons",
-      "description": "Identité ou empreinte d’un artefact.",
+      "description": "Identifier un artefact par empreinte.",
       "usage": [
         "file-studio",
         "pdf-studio",
@@ -473,13 +753,50 @@
       "aliases": []
     },
     {
+      "id": "fitPage",
+      "label": "Fit Page",
+      "file": "../function-icons/fit-page.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Fit Page.",
+      "usage": [],
+      "tags": [
+        "function",
+        "fit",
+        "page"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "fit-page"
+      ]
+    },
+    {
+      "id": "fitWidth",
+      "label": "Fit Width",
+      "file": "../function-icons/fit-width.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Fit Width.",
+      "usage": [],
+      "tags": [
+        "function",
+        "fit",
+        "width"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "fit-width"
+      ]
+    },
+    {
       "id": "folder",
       "label": "Folder",
       "file": "../function-icons/folder.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Folder ».",
+      "description": "Action ou fonction Folder.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -494,7 +811,7 @@
       "label": "Folder Closed",
       "file": "../function-icons/folder-closed.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Folder Closed ».",
+      "description": "Action ou fonction Folder Closed.",
       "usage": [
         "file-studio",
         "Studio Core V2"
@@ -515,7 +832,7 @@
       "label": "Folder Open",
       "file": "../function-icons/folder-open.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Folder Open ».",
+      "description": "Action ou fonction Folder Open.",
       "usage": [
         "file-studio",
         "Studio Core V2"
@@ -532,13 +849,32 @@
       ]
     },
     {
+      "id": "formField",
+      "label": "Form Field",
+      "file": "../function-icons/form-field.svg",
+      "family": "function-icons",
+      "description": "Champ de formulaire.",
+      "usage": [],
+      "tags": [
+        "function",
+        "form",
+        "field"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "form-field"
+      ]
+    },
+    {
       "id": "forms",
       "label": "Forms",
       "file": "../function-icons/forms.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Forms ».",
+      "description": "Action ou fonction Forms.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -549,11 +885,41 @@
       "aliases": []
     },
     {
+      "id": "fullscreen",
+      "label": "Fullscreen",
+      "file": "../function-icons/fullscreen.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Fullscreen.",
+      "usage": [],
+      "tags": [
+        "function",
+        "fullscreen"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "grid",
+      "label": "Grid",
+      "file": "../function-icons/grid.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Grid.",
+      "usage": [],
+      "tags": [
+        "function",
+        "grid"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "hash",
       "label": "Hash",
       "file": "../function-icons/hash.svg",
       "family": "function-icons",
-      "description": "Empreinte ou hachage cryptographique.",
+      "description": "Calculer ou afficher une empreinte de hachage.",
       "usage": [
         "file-studio",
         "pdf-studio",
@@ -572,9 +938,10 @@
       "label": "Header Footer",
       "file": "../function-icons/header-footer.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Header Footer ».",
+      "description": "Action ou fonction Header Footer.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -592,8 +959,11 @@
       "label": "Help",
       "file": "../function-icons/help.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Help ».",
-      "usage": [],
+      "description": "Action ou fonction Help.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
       "tags": [
         "function",
         "help"
@@ -607,9 +977,10 @@
       "label": "Highlight",
       "file": "../function-icons/highlight.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Highlight ».",
+      "description": "Action ou fonction Highlight.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -624,9 +995,10 @@
       "label": "History",
       "file": "../function-icons/history.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « History ».",
+      "description": "Action ou fonction History.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -641,8 +1013,11 @@
       "label": "Home",
       "file": "../function-icons/home.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Home ».",
-      "usage": [],
+      "description": "Action ou fonction Home.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
       "tags": [
         "function",
         "home"
@@ -656,10 +1031,10 @@
       "label": "Image",
       "file": "../function-icons/image.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Image ».",
+      "description": "Action ou fonction Image.",
       "usage": [
-        "pdf-studio",
-        "image-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -674,10 +1049,8 @@
       "label": "Inactive",
       "file": "../function-icons/inactive.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Inactive ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Inactive.",
+      "usage": [],
       "tags": [
         "function",
         "inactive"
@@ -691,7 +1064,7 @@
       "label": "Info",
       "file": "../function-icons/info.svg",
       "family": "function-icons",
-      "description": "Information contextuelle.",
+      "description": "Action ou fonction Info.",
       "usage": [
         "Studio Core V2"
       ],
@@ -704,15 +1077,27 @@
       "aliases": []
     },
     {
+      "id": "italic",
+      "label": "Italic",
+      "file": "../function-icons/italic.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Italic.",
+      "usage": [],
+      "tags": [
+        "function",
+        "italic"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "link",
       "label": "Link",
       "file": "../function-icons/link.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Link ».",
-      "usage": [
-        "markdown-studio",
-        "document-studio"
-      ],
+      "description": "Action ou fonction Link.",
+      "usage": [],
       "tags": [
         "function",
         "link"
@@ -722,11 +1107,62 @@
       "aliases": []
     },
     {
+      "id": "list",
+      "label": "List",
+      "file": "../function-icons/list.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction List.",
+      "usage": [],
+      "tags": [
+        "function",
+        "list"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "listBulleted",
+      "label": "List Bulleted",
+      "file": "../function-icons/list-bulleted.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction List Bulleted.",
+      "usage": [],
+      "tags": [
+        "function",
+        "list",
+        "bulleted"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "list-bulleted"
+      ]
+    },
+    {
+      "id": "listNumbered",
+      "label": "List Numbered",
+      "file": "../function-icons/list-numbered.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction List Numbered.",
+      "usage": [],
+      "tags": [
+        "function",
+        "list",
+        "numbered"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "list-numbered"
+      ]
+    },
+    {
       "id": "lock",
       "label": "Lock",
       "file": "../function-icons/lock.svg",
       "family": "function-icons",
-      "description": "État verrouillé ou action de verrouillage.",
+      "description": "Verrouiller ou signaler un état verrouillé.",
       "usage": [
         "pdf-studio",
         "Studio Core V2"
@@ -744,7 +1180,7 @@
       "label": "Manifest",
       "file": "../function-icons/manifest.svg",
       "family": "function-icons",
-      "description": "Manifest décrivant un artefact ou un lot.",
+      "description": "Afficher ou exporter le manifest d’un artefact.",
       "usage": [
         "file-studio",
         "pdf-studio",
@@ -763,9 +1199,10 @@
       "label": "Merge",
       "file": "../function-icons/merge.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Merge ».",
+      "description": "Action ou fonction Merge.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -780,9 +1217,10 @@
       "label": "Metadata",
       "file": "../function-icons/metadata.svg",
       "family": "function-icons",
-      "description": "Métadonnées d’un fichier ou document.",
+      "description": "Action ou fonction Metadata.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -793,14 +1231,27 @@
       "aliases": []
     },
     {
+      "id": "microphone",
+      "label": "Microphone",
+      "file": "../function-icons/microphone.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Microphone.",
+      "usage": [],
+      "tags": [
+        "function",
+        "microphone"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "minus",
       "label": "Minus",
       "file": "../function-icons/minus.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Minus ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Minus.",
+      "usage": [],
       "tags": [
         "function",
         "minus"
@@ -814,8 +1265,11 @@
       "label": "More",
       "file": "../function-icons/more.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « More ».",
-      "usage": [],
+      "description": "Action ou fonction More.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
       "tags": [
         "function",
         "more"
@@ -829,7 +1283,7 @@
       "label": "Move",
       "file": "../function-icons/move.svg",
       "family": "function-icons",
-      "description": "Déplacer un objet ou une sélection.",
+      "description": "Action ou fonction Move.",
       "usage": [
         "Studio Core V2",
         "pdf-studio",
@@ -844,13 +1298,29 @@
       "aliases": []
     },
     {
+      "id": "mute",
+      "label": "Mute",
+      "file": "../function-icons/mute.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Mute.",
+      "usage": [],
+      "tags": [
+        "function",
+        "mute"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "next",
       "label": "Next",
       "file": "../function-icons/next.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Next ».",
+      "description": "Action ou fonction Next.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -865,7 +1335,7 @@
       "label": "Ocr",
       "file": "../function-icons/ocr.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Ocr ».",
+      "description": "Action ou fonction Ocr.",
       "usage": [
         "pdf-studio",
         "ocr-studio"
@@ -883,9 +1353,10 @@
       "label": "Optimize",
       "file": "../function-icons/optimize.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Optimize ».",
+      "description": "Action ou fonction Optimize.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -896,11 +1367,41 @@
       "aliases": []
     },
     {
+      "id": "page",
+      "label": "Page",
+      "file": "../function-icons/page.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Page.",
+      "usage": [],
+      "tags": [
+        "function",
+        "page"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "pages",
+      "label": "Pages",
+      "file": "../function-icons/pages.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Pages.",
+      "usage": [],
+      "tags": [
+        "function",
+        "pages"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "paragraph",
       "label": "Paragraph",
       "file": "../function-icons/paragraph.svg",
       "family": "function-icons",
-      "description": "Paragraphe ou bloc de texte structuré.",
+      "description": "Représenter ou insérer un paragraphe structuré.",
       "usage": [
         "document-studio",
         "markdown-studio"
@@ -919,10 +1420,7 @@
       "file": "../function-icons/paragraph-add.svg",
       "family": "function-icons",
       "description": "Ajouter un paragraphe.",
-      "usage": [
-        "document-studio",
-        "markdown-studio"
-      ],
+      "usage": [],
       "tags": [
         "function",
         "paragraph",
@@ -939,10 +1437,8 @@
       "label": "Paste",
       "file": "../function-icons/paste.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Paste ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Paste.",
+      "usage": [],
       "tags": [
         "function",
         "paste"
@@ -952,13 +1448,29 @@
       "aliases": []
     },
     {
+      "id": "pause",
+      "label": "Pause",
+      "file": "../function-icons/pause.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Pause.",
+      "usage": [],
+      "tags": [
+        "function",
+        "pause"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "pen",
       "label": "Pen",
       "file": "../function-icons/pen.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Pen ».",
+      "description": "Action ou fonction Pen.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -973,10 +1485,8 @@
       "label": "Pin",
       "file": "../function-icons/pin.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Pin ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Pin.",
+      "usage": [],
       "tags": [
         "function",
         "pin"
@@ -986,14 +1496,27 @@
       "aliases": []
     },
     {
+      "id": "play",
+      "label": "Play",
+      "file": "../function-icons/play.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Play.",
+      "usage": [],
+      "tags": [
+        "function",
+        "play"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "plus",
       "label": "Plus",
       "file": "../function-icons/plus.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Plus ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Plus.",
+      "usage": [],
       "tags": [
         "function",
         "plus"
@@ -1007,8 +1530,11 @@
       "label": "Preview",
       "file": "../function-icons/preview.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Preview ».",
-      "usage": [],
+      "description": "Action ou fonction Preview.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
       "tags": [
         "function",
         "preview"
@@ -1022,9 +1548,10 @@
       "label": "Previous",
       "file": "../function-icons/previous.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Previous ».",
+      "description": "Action ou fonction Previous.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1035,11 +1562,26 @@
       "aliases": []
     },
     {
+      "id": "print",
+      "label": "Print",
+      "file": "../function-icons/print.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Print.",
+      "usage": [],
+      "tags": [
+        "function",
+        "print"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "qr",
       "label": "Qr",
       "file": "../function-icons/qr.svg",
       "family": "function-icons",
-      "description": "QR code.",
+      "description": "Action ou fonction Qr.",
       "usage": [
         "pdf-studio",
         "qr-barcode-studio"
@@ -1053,13 +1595,29 @@
       "aliases": []
     },
     {
+      "id": "quote",
+      "label": "Quote",
+      "file": "../function-icons/quote.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Quote.",
+      "usage": [],
+      "tags": [
+        "function",
+        "quote"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "redaction",
       "label": "Redaction",
       "file": "../function-icons/redaction.svg",
       "family": "function-icons",
-      "description": "Caviardage sécurisé.",
+      "description": "Action ou fonction Redaction.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1074,9 +1632,10 @@
       "label": "Redo",
       "file": "../function-icons/redo.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Redo ».",
+      "description": "Action ou fonction Redo.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1091,7 +1650,7 @@
       "label": "Refresh",
       "file": "../function-icons/refresh.svg",
       "family": "function-icons",
-      "description": "Rafraîchir les données ou la vue.",
+      "description": "Action ou fonction Refresh.",
       "usage": [
         "Studio Core V2"
       ],
@@ -1104,13 +1663,59 @@
       "aliases": []
     },
     {
+      "id": "rename",
+      "label": "Rename",
+      "file": "../function-icons/rename.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Rename.",
+      "usage": [],
+      "tags": [
+        "function",
+        "rename"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "reset",
+      "label": "Reset",
+      "file": "../function-icons/reset.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Reset.",
+      "usage": [],
+      "tags": [
+        "function",
+        "reset"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "restore",
+      "label": "Restore",
+      "file": "../function-icons/restore.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Restore.",
+      "usage": [],
+      "tags": [
+        "function",
+        "restore"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "rotateFree",
       "label": "Rotate Free",
       "file": "../function-icons/rotate-free.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Rotate Free ».",
+      "description": "Action ou fonction Rotate Free.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1128,9 +1733,10 @@
       "label": "Rotate Left",
       "file": "../function-icons/rotate-left.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Rotate Left ».",
+      "description": "Action ou fonction Rotate Left.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1148,9 +1754,10 @@
       "label": "Rotate Right",
       "file": "../function-icons/rotate-right.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Rotate Right ».",
+      "description": "Action ou fonction Rotate Right.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1168,11 +1775,10 @@
       "label": "Save",
       "file": "../function-icons/save.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Save ».",
+      "description": "Action ou fonction Save.",
       "usage": [
-        "document-studio",
-        "pdf-studio",
-        "spreadsheet-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1183,11 +1789,26 @@
       "aliases": []
     },
     {
+      "id": "scan",
+      "label": "Scan",
+      "file": "../function-icons/scan.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Scan.",
+      "usage": [],
+      "tags": [
+        "function",
+        "scan"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "search",
       "label": "Search",
       "file": "../function-icons/search.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Search ».",
+      "description": "Action ou fonction Search.",
       "usage": [
         "data-studio",
         "document-studio",
@@ -1206,9 +1827,10 @@
       "label": "Security",
       "file": "../function-icons/security.svg",
       "family": "function-icons",
-      "description": "Sécurité, chiffrement ou permissions.",
+      "description": "Action ou fonction Security.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1223,8 +1845,11 @@
       "label": "Settings",
       "file": "../function-icons/settings.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Settings ».",
-      "usage": [],
+      "description": "Action ou fonction Settings.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
       "tags": [
         "function",
         "settings"
@@ -1234,11 +1859,26 @@
       "aliases": []
     },
     {
+      "id": "share",
+      "label": "Share",
+      "file": "../function-icons/share.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Share.",
+      "usage": [],
+      "tags": [
+        "function",
+        "share"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "signature",
       "label": "Signature",
       "file": "../function-icons/signature.svg",
       "family": "function-icons",
-      "description": "Signature visuelle ou cryptographique.",
+      "description": "Signer visuellement ou cryptographiquement un document.",
       "usage": [
         "pdf-studio"
       ],
@@ -1255,7 +1895,7 @@
       "label": "Sort Asc",
       "file": "../function-icons/sort-asc.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Sort Asc ».",
+      "description": "Action ou fonction Sort Asc.",
       "usage": [
         "data-studio",
         "spreadsheet-studio"
@@ -1276,7 +1916,7 @@
       "label": "Sort Desc",
       "file": "../function-icons/sort-desc.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Sort Desc ».",
+      "description": "Action ou fonction Sort Desc.",
       "usage": [
         "data-studio",
         "spreadsheet-studio"
@@ -1293,13 +1933,29 @@
       ]
     },
     {
+      "id": "split",
+      "label": "Split",
+      "file": "../function-icons/split.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Split.",
+      "usage": [],
+      "tags": [
+        "function",
+        "split"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "stamp",
       "label": "Stamp",
       "file": "../function-icons/stamp.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Stamp ».",
+      "description": "Action ou fonction Stamp.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1310,11 +1966,41 @@
       "aliases": []
     },
     {
+      "id": "star",
+      "label": "Star",
+      "file": "../function-icons/star.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Star.",
+      "usage": [],
+      "tags": [
+        "function",
+        "star"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "stop",
+      "label": "Stop",
+      "file": "../function-icons/stop.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Stop.",
+      "usage": [],
+      "tags": [
+        "function",
+        "stop"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "success",
       "label": "Success",
       "file": "../function-icons/success.svg",
       "family": "function-icons",
-      "description": "Action terminée avec succès.",
+      "description": "Action ou fonction Success.",
       "usage": [
         "Studio Core V2"
       ],
@@ -1327,13 +2013,59 @@
       "aliases": []
     },
     {
+      "id": "sync",
+      "label": "Sync",
+      "file": "../function-icons/sync.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Sync.",
+      "usage": [],
+      "tags": [
+        "function",
+        "sync"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "table",
+      "label": "Table",
+      "file": "../function-icons/table.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Table.",
+      "usage": [],
+      "tags": [
+        "function",
+        "table"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "tag",
+      "label": "Tag",
+      "file": "../function-icons/tag.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Tag.",
+      "usage": [],
+      "tags": [
+        "function",
+        "tag"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "text",
       "label": "Text",
       "file": "../function-icons/text.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Text ».",
+      "description": "Action ou fonction Text.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1348,10 +2080,8 @@
       "label": "Toggle Off",
       "file": "../function-icons/toggle-off.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Toggle Off ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Toggle Off.",
+      "usage": [],
       "tags": [
         "function",
         "toggle",
@@ -1368,10 +2098,8 @@
       "label": "Toggle On",
       "file": "../function-icons/toggle-on.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Toggle On ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Toggle On.",
+      "usage": [],
       "tags": [
         "function",
         "toggle",
@@ -1388,7 +2116,7 @@
       "label": "Translate",
       "file": "../function-icons/translate.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Translate ».",
+      "description": "Action ou fonction Translate.",
       "usage": [
         "pdf-studio",
         "translation-studio"
@@ -1402,13 +2130,29 @@
       "aliases": []
     },
     {
+      "id": "underline",
+      "label": "Underline",
+      "file": "../function-icons/underline.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Underline.",
+      "usage": [],
+      "tags": [
+        "function",
+        "underline"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "undo",
       "label": "Undo",
       "file": "../function-icons/undo.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Undo ».",
+      "description": "Action ou fonction Undo.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1423,10 +2167,8 @@
       "label": "Unlink",
       "file": "../function-icons/unlink.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Unlink ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Unlink.",
+      "usage": [],
       "tags": [
         "function",
         "unlink"
@@ -1440,7 +2182,7 @@
       "label": "Unlock",
       "file": "../function-icons/unlock.svg",
       "family": "function-icons",
-      "description": "État déverrouillé ou action de déverrouillage.",
+      "description": "Déverrouiller ou signaler un état ouvert.",
       "usage": [
         "pdf-studio",
         "Studio Core V2"
@@ -1458,10 +2200,8 @@
       "label": "Unpin",
       "file": "../function-icons/unpin.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Unpin ».",
-      "usage": [
-        "Studio Core V2"
-      ],
+      "description": "Action ou fonction Unpin.",
+      "usage": [],
       "tags": [
         "function",
         "unpin"
@@ -1475,7 +2215,7 @@
       "label": "Update",
       "file": "../function-icons/update.svg",
       "family": "function-icons",
-      "description": "Mettre à jour ou synchroniser un élément.",
+      "description": "Action ou fonction Update.",
       "usage": [
         "Studio Core V2"
       ],
@@ -1492,10 +2232,10 @@
       "label": "Upload",
       "file": "../function-icons/upload.svg",
       "family": "function-icons",
-      "description": "Importer ou téléverser un fichier ou une ressource.",
+      "description": "Action ou fonction Upload.",
       "usage": [
         "Studio Core V2",
-        "google-workspace"
+        "Google Workspace"
       ],
       "tags": [
         "function",
@@ -1506,11 +2246,26 @@
       "aliases": []
     },
     {
+      "id": "volume",
+      "label": "Volume",
+      "file": "../function-icons/volume.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Volume.",
+      "usage": [],
+      "tags": [
+        "function",
+        "volume"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "warning",
       "label": "Warning",
       "file": "../function-icons/warning.svg",
       "family": "function-icons",
-      "description": "Avertissement nécessitant l’attention de l’utilisateur.",
+      "description": "Action ou fonction Warning.",
       "usage": [
         "Studio Core V2"
       ],
@@ -1523,11 +2278,26 @@
       "aliases": []
     },
     {
+      "id": "watermark",
+      "label": "Watermark",
+      "file": "../function-icons/watermark.svg",
+      "family": "function-icons",
+      "description": "Ajouter ou représenter un watermark.",
+      "usage": [],
+      "tags": [
+        "function",
+        "watermark"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
       "id": "workflow",
       "label": "Workflow",
       "file": "../function-icons/workflow.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Workflow ».",
+      "description": "Action ou fonction Workflow.",
       "usage": [
         "pdf-studio",
         "automation-studio"
@@ -1545,9 +2315,10 @@
       "label": "Zip",
       "file": "../function-icons/zip.svg",
       "family": "function-icons",
-      "description": "Icône nLab pour « Zip ».",
+      "description": "Action ou fonction Zip.",
       "usage": [
-        "pdf-studio"
+        "Studio Core V2",
+        "Studios spécialisés"
       ],
       "tags": [
         "function",
@@ -1556,6 +2327,42 @@
       "status": "active",
       "planned": false,
       "aliases": []
+    },
+    {
+      "id": "zoomIn",
+      "label": "Zoom In",
+      "file": "../function-icons/zoom-in.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Zoom In.",
+      "usage": [],
+      "tags": [
+        "function",
+        "zoom",
+        "in"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "zoom-in"
+      ]
+    },
+    {
+      "id": "zoomOut",
+      "label": "Zoom Out",
+      "file": "../function-icons/zoom-out.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Zoom Out.",
+      "usage": [],
+      "tags": [
+        "function",
+        "zoom",
+        "out"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "zoom-out"
+      ]
     }
   ]
 }

@@ -5,10 +5,10 @@
   "description": "Types et familles de fichiers.",
   "updated": "2026-10-03",
   "style": {
-    "colorMode": "currentColor",
-    "fill": "none",
     "viewBox": "0 0 24 24",
     "strokeWidth": 1.7,
+    "colorMode": "currentColor",
+    "fill": "none",
     "linecap": "round",
     "linejoin": "round"
   },
@@ -18,7 +18,7 @@
       "label": "7z",
       "file": "../filetype-icons/7z.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier 7z utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier 7z.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -34,11 +34,31 @@
       "aliases": []
     },
     {
+      "id": "avif",
+      "label": "Avif",
+      "file": "../filetype-icons/avif.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Avif.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "avif"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
       "id": "bmp",
       "label": "Bmp",
       "file": "../filetype-icons/bmp.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Bmp utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Bmp.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -58,7 +78,7 @@
       "label": "Csv",
       "file": "../filetype-icons/csv.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Csv utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Csv.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -78,7 +98,7 @@
       "label": "Doc",
       "file": "../filetype-icons/doc.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Doc utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Doc.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -98,7 +118,7 @@
       "label": "Docx",
       "file": "../filetype-icons/docx.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Docx utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Docx.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -114,11 +134,31 @@
       "aliases": []
     },
     {
+      "id": "epub",
+      "label": "Epub",
+      "file": "../filetype-icons/epub.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Epub.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "epub"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
       "id": "flac",
       "label": "Flac",
       "file": "../filetype-icons/flac.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Flac utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Flac.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -138,7 +178,7 @@
       "label": "Generic Archive",
       "file": "../filetype-icons/generic-archive.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier générique Archive utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Generic Archive.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -159,7 +199,7 @@
       "label": "Generic Audio",
       "file": "../filetype-icons/generic-audio.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier générique Audio utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Generic Audio.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -180,7 +220,7 @@
       "label": "Generic Code",
       "file": "../filetype-icons/generic-code.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier générique Code utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Generic Code.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -201,7 +241,7 @@
       "label": "Generic Document",
       "file": "../filetype-icons/generic-document.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier générique Document utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Generic Document.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -222,7 +262,7 @@
       "label": "Generic Image",
       "file": "../filetype-icons/generic-image.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier générique Image utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Generic Image.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -243,7 +283,7 @@
       "label": "Generic Presentation",
       "file": "../filetype-icons/generic-presentation.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier générique Presentation utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Generic Presentation.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -264,7 +304,7 @@
       "label": "Generic Spreadsheet",
       "file": "../filetype-icons/generic-spreadsheet.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier générique Spreadsheet utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Generic Spreadsheet.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -285,7 +325,7 @@
       "label": "Generic Video",
       "file": "../filetype-icons/generic-video.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier générique Video utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Generic Video.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -306,7 +346,7 @@
       "label": "Gif",
       "file": "../filetype-icons/gif.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Gif utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Gif.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -322,11 +362,31 @@
       "aliases": []
     },
     {
+      "id": "heic",
+      "label": "Heic",
+      "file": "../filetype-icons/heic.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Heic.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "heic"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
       "id": "html",
       "label": "Html",
       "file": "../filetype-icons/html.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Html utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Html.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -342,11 +402,31 @@
       "aliases": []
     },
     {
+      "id": "ico",
+      "label": "Ico",
+      "file": "../filetype-icons/ico.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Ico.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "ico"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
       "id": "jpeg",
       "label": "Jpeg",
       "file": "../filetype-icons/jpeg.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Jpeg utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Jpeg.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -366,7 +446,7 @@
       "label": "Jpg",
       "file": "../filetype-icons/jpg.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Jpg utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Jpg.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -386,7 +466,7 @@
       "label": "Json",
       "file": "../filetype-icons/json.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Json utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Json.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -406,7 +486,7 @@
       "label": "Markdown",
       "file": "../filetype-icons/markdown.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Markdown utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Markdown.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -422,11 +502,31 @@
       "aliases": []
     },
     {
+      "id": "mobi",
+      "label": "Mobi",
+      "file": "../filetype-icons/mobi.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Mobi.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "mobi"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
       "id": "mov",
       "label": "Mov",
       "file": "../filetype-icons/mov.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Mov utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Mov.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -446,7 +546,7 @@
       "label": "Mp3",
       "file": "../filetype-icons/mp3.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Mp3 utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Mp3.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -466,7 +566,7 @@
       "label": "Mp4",
       "file": "../filetype-icons/mp4.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Mp4 utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Mp4.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -486,7 +586,7 @@
       "label": "Odp",
       "file": "../filetype-icons/odp.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Odp utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Odp.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -506,7 +606,7 @@
       "label": "Ods",
       "file": "../filetype-icons/ods.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Ods utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Ods.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -526,7 +626,7 @@
       "label": "Odt",
       "file": "../filetype-icons/odt.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Odt utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Odt.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -542,11 +642,31 @@
       "aliases": []
     },
     {
+      "id": "parquet",
+      "label": "Parquet",
+      "file": "../filetype-icons/parquet.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Parquet.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "parquet"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
       "id": "pdf",
       "label": "Pdf",
       "file": "../filetype-icons/pdf.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Pdf utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Pdf.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -566,7 +686,7 @@
       "label": "Png",
       "file": "../filetype-icons/png.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Png utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Png.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -586,7 +706,7 @@
       "label": "Ppt",
       "file": "../filetype-icons/ppt.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Ppt utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Ppt.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -606,7 +726,7 @@
       "label": "Pptx",
       "file": "../filetype-icons/pptx.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Pptx utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Pptx.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -622,11 +742,31 @@
       "aliases": []
     },
     {
+      "id": "sql",
+      "label": "Sql",
+      "file": "../filetype-icons/sql.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Sql.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "sql"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
       "id": "svg",
       "label": "Svg",
       "file": "../filetype-icons/svg.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Svg utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Svg.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -646,7 +786,7 @@
       "label": "Tar",
       "file": "../filetype-icons/tar.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Tar utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Tar.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -662,11 +802,51 @@
       "aliases": []
     },
     {
+      "id": "tif",
+      "label": "Tif",
+      "file": "../filetype-icons/tif.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Tif.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "tif"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "tiff",
+      "label": "Tiff",
+      "file": "../filetype-icons/tiff.svg",
+      "family": "filetype-icons",
+      "description": "Icône du type ou de la famille de fichier Tiff.",
+      "usage": [
+        "file-studio",
+        "document-studio",
+        "spreadsheet-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "filetype",
+        "tiff"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
       "id": "tsv",
       "label": "Tsv",
       "file": "../filetype-icons/tsv.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Tsv utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Tsv.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -686,7 +866,7 @@
       "label": "Txt",
       "file": "../filetype-icons/txt.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Txt utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Txt.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -706,7 +886,7 @@
       "label": "Wav",
       "file": "../filetype-icons/wav.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Wav utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Wav.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -726,7 +906,7 @@
       "label": "Webm",
       "file": "../filetype-icons/webm.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Webm utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Webm.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -746,7 +926,7 @@
       "label": "Webp",
       "file": "../filetype-icons/webp.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Webp utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Webp.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -766,7 +946,7 @@
       "label": "Xls",
       "file": "../filetype-icons/xls.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Xls utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Xls.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -786,7 +966,7 @@
       "label": "Xlsx",
       "file": "../filetype-icons/xlsx.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Xlsx utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Xlsx.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -806,7 +986,7 @@
       "label": "Xml",
       "file": "../filetype-icons/xml.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Xml utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Xml.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -826,7 +1006,7 @@
       "label": "Yaml",
       "file": "../filetype-icons/yaml.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Yaml utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Yaml.",
       "usage": [
         "file-studio",
         "document-studio",
@@ -846,7 +1026,7 @@
       "label": "Zip",
       "file": "../filetype-icons/zip.svg",
       "family": "filetype-icons",
-      "description": "Type de fichier Zip utilisé pour identifier visuellement les entrées et sorties.",
+      "description": "Icône du type ou de la famille de fichier Zip.",
       "usage": [
         "file-studio",
         "document-studio",

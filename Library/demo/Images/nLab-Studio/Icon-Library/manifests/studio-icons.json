@@ -5,10 +5,10 @@
   "description": "Identités visuelles des Studios actuels et planifiés.",
   "updated": "2026-10-03",
   "style": {
-    "colorMode": "currentColor",
-    "fill": "none",
     "viewBox": "0 0 64 64",
     "strokeWidth": 3,
+    "colorMode": "currentColor",
+    "fill": "none",
     "linecap": "round",
     "linejoin": "round"
   },
