@@ -92,33 +92,38 @@ Studio Core
 - [ ] eliminate UI hard-coded version/date strings.
 - [ ] expose commit metadata consistently in About/footer/version views.
 
-### V3.1 — Core responsive contract
-- normalize breakpoints and touch targets;
-- responsive windows/panels/sidebar/ribbon;
-- phone/tablet test matrix;
-- PWA/camera hooks for acquisition Studios.
+### V3.1 — Core responsive contract — IMPLEMENTED IN TEST
+- [x] normalized breakpoints and touch targets;
+- [x] responsive windows/panels/sidebar/ribbon;
+- [x] coarse-pointer/touch controls and mobile-safe inputs;
+- [x] acquisition hooks exercised by Scan Studio camera/photo inputs;
+- [ ] extend the mobile regression matrix to every legacy Studio surface before CURRENT promotion.
 
-### V3.2 — Shared engines adoption
-- OCR service multi-engine registry;
-- symbology service used by QR & Barcode + PDF;
-- image service consumed by Image/OCR/Scan/PDF;
-- document/tabular services adopted by all matching Studios.
+### V3.2 — Shared engines adoption — IN PROGRESS
+- [x] OCR shared service with multi-engine registry and browser execution adapter;
+- [x] automatic FR/EN post-recognition language inference for the shared browser OCR path;
+- [x] symbology registry shared by QR & Barcode Studio and PDF Studio;
+- [x] document/tabular shared services used by Dataset Generator / Document / Spreadsheet flows;
+- [ ] extract the remaining Image Studio canvas operations into a shared image engine service;
+- [ ] route Scan/PDF image cleanup through that image engine once extracted.
 
-### V3.3 — Studio refresh
-- Image Studio as first Core reference;
-- OCR Studio multi-engine;
-- QR & Barcode Studio;
-- PDF Studio convergence;
-- Scan Studio acquisition/document-capture product;
-- Code Studio developer scope kept separate.
+### V3.3 — Studio refresh — IMPLEMENTED IN TEST
+- [x] Image Studio 2.2: responsive Core inheritance, capability contract, dynamic runtime version metadata;
+- [x] OCR Studio 2.1: engine selector, shared OCR registry, auto FR/EN inference and diagnostics;
+- [x] QR & Barcode Studio 2.1: QR/Data Matrix/Aztec/PDF417/Code128/GS1/Code39/EAN/UPC/ITF/Codabar;
+- [x] PDF Studio 2.8: shared symbology engine adoption + responsive Core;
+- [x] Scan Studio 0.1: mobile/desktop capture, multipage organization, rotate/deskew/cleanup, OCR and PDF assembly;
+- [x] Code Studio remains the developer/source-code product, distinct from QR & Barcode Studio.
 
-### V3.4 — Studio Hub / launcher
-- CURRENT / TEST / latest;
-- global policy + per-Studio override;
-- runtime health;
-- capability and engine status;
-- derived apps;
-- read-only Assets/UX and demo galleries.
+### V3.4 — Studio Hub / launcher — PARTIALLY IMPLEMENTED
+- [x] CURRENT / TEST / latest policy;
+- [x] global policy + per-Studio override persisted locally;
+- [x] derived apps remain a distinct family;
+- [x] Scan Studio added to the canonical catalog;
+- [x] read-only demo / catalog entry points retained;
+- [ ] runtime health indicators;
+- [ ] aggregated capability + engine status on Hub cards;
+- [ ] full Assets/UX gallery link and capability browser.
 
 ## PDF Sign as architecture test
 
@@ -170,3 +175,18 @@ It reuses the PDF engine and Studio Core. PAdES/DSS remains an advanced PDF Stud
 
 ### Privacy invariant
 Imported source values are not copied into generated fixtures by default. Structure-only mode may use field names and coarse type inference, but generated values are independent synthetic data.
+
+
+## Current TEST refresh batch
+
+| Layer / Studio | TEST |
+| --- | --- |
+| Studio Core | 2.7.0 |
+| Image Studio | 2.2.0 |
+| OCR Studio | 2.1.0 |
+| QR & Barcode Studio | 2.1.0 |
+| PDF Studio | 2.8.0 |
+| Dataset Generator Studio | 2.2.0 |
+| Scan Studio | 0.1.0 |
+
+CURRENT pointers are intentionally unchanged during this validation phase.

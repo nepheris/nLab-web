@@ -1,0 +1,15 @@
+{
+  "name": "Scan Studio",
+  "current": null,
+  "test": "0.1.0",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "label": "Scan Studio 0.1.0 TEST",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Première webapp d'acquisition documentaire responsive : caméra/photo/fichiers, pages multiples, rotation, deskew manuel, nettoyage document, OCR partagé, assemblage PDF et export images."
+    }
+  ]
+}

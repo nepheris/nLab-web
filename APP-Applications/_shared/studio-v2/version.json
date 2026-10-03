@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.6.2",
+  "version": "2.7.0",
   "channel": "test",
-  "notes": "Studio Core 2.6.2 : color_picker rejoint le registre d’icônes partagé et Markdown Studio utilise désormais cet identifiant sémantique au lieu d’une icône locale/générique.",
+  "notes": "Studio Core 2.7 : contrat responsive/tactile commun, registre OCR multi-engine, registre symbologies partagé, support Scan Studio et propagation metadata/version commune.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
