@@ -65,6 +65,13 @@
       "manifest": "./studio-icons.json",
       "fileCount": 15,
       "pack": null
+    },
+    {
+      "id": "function-icons",
+      "label": "Icônes SVG nLab — Fonctions",
+      "manifest": "./function-icons.json",
+      "fileCount": 46,
+      "pack": null
     }
   ]
 }

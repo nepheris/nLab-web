@@ -1,0 +1,292 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "function-icons",
+  "label": "Icônes SVG nLab — Fonctions",
+  "source": "Registre canonique Studio Core V2",
+  "style": {
+    "viewBox": "0 0 24 24",
+    "fill": "none",
+    "stroke": "currentColor",
+    "strokeWidth": 1.7,
+    "linecap": "round",
+    "linejoin": "round"
+  },
+  "files": [
+    {
+      "name": "home.svg",
+      "path": "../files/demo-input/Images/function-icons/home.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "file.svg",
+      "path": "../files/demo-input/Images/function-icons/file.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "folder.svg",
+      "path": "../files/demo-input/Images/function-icons/folder.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "save.svg",
+      "path": "../files/demo-input/Images/function-icons/save.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "zip.svg",
+      "path": "../files/demo-input/Images/function-icons/zip.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "add.svg",
+      "path": "../files/demo-input/Images/function-icons/add.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "addPage.svg",
+      "path": "../files/demo-input/Images/function-icons/addPage.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "duplicate.svg",
+      "path": "../files/demo-input/Images/function-icons/duplicate.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "delete.svg",
+      "path": "../files/demo-input/Images/function-icons/delete.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "rotateLeft.svg",
+      "path": "../files/demo-input/Images/function-icons/rotateLeft.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "rotateRight.svg",
+      "path": "../files/demo-input/Images/function-icons/rotateRight.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "rotateFree.svg",
+      "path": "../files/demo-input/Images/function-icons/rotateFree.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "history.svg",
+      "path": "../files/demo-input/Images/function-icons/history.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "undo.svg",
+      "path": "../files/demo-input/Images/function-icons/undo.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "redo.svg",
+      "path": "../files/demo-input/Images/function-icons/redo.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "help.svg",
+      "path": "../files/demo-input/Images/function-icons/help.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "preview.svg",
+      "path": "../files/demo-input/Images/function-icons/preview.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "eye.svg",
+      "path": "../files/demo-input/Images/function-icons/eye.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "text.svg",
+      "path": "../files/demo-input/Images/function-icons/text.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "stamp.svg",
+      "path": "../files/demo-input/Images/function-icons/stamp.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "highlight.svg",
+      "path": "../files/demo-input/Images/function-icons/highlight.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "pen.svg",
+      "path": "../files/demo-input/Images/function-icons/pen.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "image.svg",
+      "path": "../files/demo-input/Images/function-icons/image.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "signature.svg",
+      "path": "../files/demo-input/Images/function-icons/signature.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "ocr.svg",
+      "path": "../files/demo-input/Images/function-icons/ocr.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "optimize.svg",
+      "path": "../files/demo-input/Images/function-icons/optimize.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "translate.svg",
+      "path": "../files/demo-input/Images/function-icons/translate.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "qr.svg",
+      "path": "../files/demo-input/Images/function-icons/qr.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "convert.svg",
+      "path": "../files/demo-input/Images/function-icons/convert.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "headerFooter.svg",
+      "path": "../files/demo-input/Images/function-icons/headerFooter.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "forms.svg",
+      "path": "../files/demo-input/Images/function-icons/forms.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "redaction.svg",
+      "path": "../files/demo-input/Images/function-icons/redaction.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "compare.svg",
+      "path": "../files/demo-input/Images/function-icons/compare.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "batch.svg",
+      "path": "../files/demo-input/Images/function-icons/batch.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "security.svg",
+      "path": "../files/demo-input/Images/function-icons/security.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "metadata.svg",
+      "path": "../files/demo-input/Images/function-icons/metadata.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "crop.svg",
+      "path": "../files/demo-input/Images/function-icons/crop.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "extract.svg",
+      "path": "../files/demo-input/Images/function-icons/extract.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "merge.svg",
+      "path": "../files/demo-input/Images/function-icons/merge.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "classify.svg",
+      "path": "../files/demo-input/Images/function-icons/classify.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "settings.svg",
+      "path": "../files/demo-input/Images/function-icons/settings.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "command.svg",
+      "path": "../files/demo-input/Images/function-icons/command.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "workflow.svg",
+      "path": "../files/demo-input/Images/function-icons/workflow.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "previous.svg",
+      "path": "../files/demo-input/Images/function-icons/previous.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "next.svg",
+      "path": "../files/demo-input/Images/function-icons/next.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "more.svg",
+      "path": "../files/demo-input/Images/function-icons/more.svg",
+      "storage": "local",
+      "kind": "svg"
+    }
+  ]
+}
