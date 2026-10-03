@@ -464,9 +464,11 @@
         "mountStudioV2",
         "readDocx",
         "readOdt",
-        "makeDocx",
-        "makeOdt",
-        "printPdf"
+        "writeDocx",
+        "writeOdt",
+        "printPdf",
+        "document-format-service.js",
+        "download-service.js"
       ]
     },
     "spreadsheet-studio": {
