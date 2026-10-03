@@ -381,7 +381,24 @@
         "archiveWorkspaceControls",
         "updateArchiveEntry",
         "exportArchiveWorkspace",
-        "extractArchiveWorkspace"
+        "extractArchiveWorkspace",
+        "watermarkText",
+        "watermarkPosition",
+        "watermarkRotation",
+        "watermarkOpacity",
+        "watermarkFontSize",
+        "watermarkScope",
+        "applyWatermark",
+        "batesPrefix",
+        "batesSuffix",
+        "batesStart",
+        "batesDigits",
+        "batesPosition",
+        "batesScope",
+        "applyBates",
+        "pdfArtifactStatus",
+        "generatePdfArtifact",
+        "exportPdfArtifact"
       ],
       "required_runtime_strings": [
         "mountStudioV2",
@@ -415,7 +432,11 @@
         "same-source",
         "loadArchiveWorkspace",
         "NLAB_ARCHIVE_WORKSPACE",
-        "updateArchiveEntry"
+        "updateArchiveEntry",
+        "watermarkText",
+        "batesNumbering",
+        "buildArtifactManifest",
+        "downloadManifest"
       ]
     },
     "document-studio": {
