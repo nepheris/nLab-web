@@ -13,7 +13,7 @@ async function studio(id,fn){
 }
 try{
  await studio('image-studio',async p=>{
-  await p.locator('#demoSynthetic').click();await p.waitForFunction(()=>/\d+ × \d+ px/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
+  await p.locator('#demoSynthetic').click();await p.waitForTimeout(1200);const imeta=await p.locator('#imageMeta').textContent(),imsg=await p.locator('#msg').textContent();if(!/\d+ × \d+ px/.test(imeta||''))throw new Error('Image demo non chargée · meta='+imeta+' · msg='+imsg);
   await p.locator('#w').fill('500');await p.locator('#resize').click();await p.waitForFunction(()=>document.querySelector('#cv')?.width===500,null,{timeout:10000});
   const before=await p.locator('#cv').evaluate(c=>[c.width,c.height]);await reveal(p,'#cropLeft');await p.locator('#cropLeft').fill('5');await p.locator('#cropRight').fill('5');await p.locator('#cropApply').click();await p.waitForFunction(w=>document.querySelector('#cv')?.width<w,before[0],{timeout:10000});
   await reveal(p,'#watermarkText');await p.locator('#watermarkText').fill('CI WATERMARK');await p.locator('#watermarkApply').click();await reveal(p,'#artifactGenerate');await p.locator('#artifactGenerate').click();await p.waitForFunction(()=>/SHA-256/.test(document.querySelector('#artifactIdentityStatus')?.textContent||''),null,{timeout:10000});
