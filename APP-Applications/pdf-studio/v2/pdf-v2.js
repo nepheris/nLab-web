@@ -415,7 +415,7 @@ $('#testSignatureDss').onclick=async()=>{try{$('#signatureCryptoStatus').textCon
 $('#validateSignaturePdf').onclick=()=>validateCurrentSignature().catch(e=>$('#signatureCryptoStatus').textContent=e.message);
 $('#placeVisualSignature').onclick=async()=>{try{const id=$('#signatureAssetSelect').value;if(!id)throw new Error('Choisissez une signature ou un paraphe.');const a=await getPersonalAsset(id);if(!a?.blob)throw new Error('Image de signature/paraphe indisponible.');await objectLayer.setImageBlob(a.blob,'signature');openToolSection('#sectionAnnotations');activateObjectTool('signature');setStatus('Cliquez dans la page pour placer la signature, puis déplacez/redimensionnez-la.')}catch(e){setStatus(e.message)}};
 $('#applyVisualSignature').onclick=()=>applyVisualSignature().catch(e=>setStatus(e.message));
-$('#applyCryptographicSignature').onclick=()=>applyCryptographicSignature().catch(e=>setStatus(e.message));
+$('#applyCryptographicSignature').onclick=()=>applyCryptographicSignature().catch(e=>{const m=e?.message||String(e);if($('#signatureCryptoStatus'))$('#signatureCryptoStatus').textContent='Échec : '+m;setStatus(m)});
 $('#signatureDssUrl').value=signatureService.baseUrl||'';
 $('#signatureSignerName').value='{DISPLAY_NAME}';$('#signatureLocation').value='{SITE}';
 setSignatureMode('visual');refreshSignatureAssets();
