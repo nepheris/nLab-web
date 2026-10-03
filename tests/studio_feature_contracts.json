@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studio-feature-contracts/v1",
-  "updated": "2026-10-01",
+  "updated": "2026-10-03",
   "studios": {
     "image-studio": {
       "test": "2.0.0",
@@ -30,7 +30,21 @@
         "measureRows",
         "cal",
         "cv",
-        "msg"
+        "msg",
+        "cropLeft",
+        "cropRight",
+        "cropTop",
+        "cropBottom",
+        "cropApply",
+        "watermarkText",
+        "watermarkPosition",
+        "watermarkOpacity",
+        "watermarkRotation",
+        "watermarkApply",
+        "artifactIdentityStatus",
+        "artifactGenerate",
+        "artifactEmbed",
+        "artifactManifest"
       ],
       "required_strings": [
         "studio-v2/studio.css",
@@ -118,7 +132,16 @@
         "shown",
         "head",
         "body",
-        "types"
+        "types",
+        "searchAll",
+        "filterColumn",
+        "filterValue",
+        "sortDirection",
+        "sortColumn",
+        "csvDelimiter",
+        "csvBom",
+        "exportCsv",
+        "exportXlsx"
       ],
       "required_strings": [
         "studio-v2/studio.css",
@@ -139,7 +162,9 @@
         "demo",
         "export",
         "body",
-        "status"
+        "status",
+        "hashFiles",
+        "exportJson"
       ],
       "required_strings": [
         "studio-v2/studio.css",
@@ -233,7 +258,8 @@
         "saveMarkdown",
         "exportHtml",
         "switchMode",
-        "studio-v2:action"
+        "studio-v2:action",
+        "printPdf"
       ]
     },
     "dataset-generator-studio": {
@@ -390,6 +416,67 @@
         "loadArchiveWorkspace",
         "NLAB_ARCHIVE_WORKSPACE",
         "updateArchiveEntry"
+      ]
+    },
+    "document-studio": {
+      "test": "1.0.0",
+      "required_ids": [
+        "fileInput",
+        "status",
+        "search",
+        "words",
+        "chars",
+        "lines",
+        "editor",
+        "preview",
+        "openDocument",
+        "exportTxt",
+        "exportMd",
+        "exportHtml",
+        "exportDocx",
+        "exportOdt",
+        "printPdf"
+      ],
+      "required_strings": [
+        "jszip"
+      ],
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "readDocx",
+        "readOdt",
+        "makeDocx",
+        "makeOdt",
+        "printPdf"
+      ]
+    },
+    "spreadsheet-studio": {
+      "test": "1.0.0",
+      "required_ids": [
+        "fileInput",
+        "sheetSelect",
+        "search",
+        "status",
+        "delimiter",
+        "bom",
+        "exportCsv",
+        "exportJson",
+        "exportXlsx",
+        "exportOds",
+        "bookName",
+        "dims",
+        "tableWrap"
+      ],
+      "required_strings": [
+        "xlsx"
+      ],
+      "required_runtime_strings": [
+        "mountStudioV2",
+        "openFile",
+        "sheetRows",
+        "exportCsv",
+        "exportJson",
+        "exportXlsx",
+        "exportOds"
       ]
     }
   }
