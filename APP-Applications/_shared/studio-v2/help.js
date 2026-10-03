@@ -64,3 +64,67 @@ export function renderHelpCatalog(host,manifest,{activeAction=null,query=''}={})
  host.innerHTML=[...groups].map(([g,list])=>'<section class="helpCatalogGroup"><strong>'+esc(g)+'</strong>'+list.map(f=>{const m=featureMeta(f),active=f.action===activeAction;return'<details class="'+(active?'active':'')+'" data-help-action="'+esc(f.action||'')+'" '+(active?'open':'')+'><summary>'+esc(m.label)+' <small>'+esc(String(m.status||'').toUpperCase())+'</small></summary><div class="helpCatalogBody">'+(m.summary?'<p>'+esc(m.summary)+'</p>':'')+(m.details?'<p>'+esc(m.details)+'</p>':'')+'<div><code>'+esc(m.id)+'</code></div><button type="button" data-help-open="'+esc(f.action||'')+'">Ouvrir l’outil</button></div></details>'}).join('')+'</section>').join('')||'<div class="statusBox">Aucune fonction correspondante.</div>';
  return items
 }
+
+
+function elementLabel(el){
+  if(!el)return'Contrôle';
+  return el.getAttribute('aria-label')||el.getAttribute('title')||el.closest('label')?.childNodes?.[0]?.textContent?.trim()||el.textContent?.trim()?.replace(/\s+/g,' ')||el.id||el.tagName;
+}
+function sectionInfo(el){
+  const section=el?.closest('details[id],section[id],[data-section],fieldset[id]');
+  const nested=el?.closest('details details[id],fieldset fieldset[id]');
+  const summary=section?.querySelector(':scope > summary');
+  const legend=section?.querySelector(':scope > legend');
+  return{
+    id:section?.id||section?.dataset?.section||'',
+    label:summary?.textContent?.trim()?.replace(/\s+/g,' ')||legend?.textContent?.trim()?.replace(/\s+/g,' ')||section?.getAttribute('aria-label')||'',
+    subsectionId:nested&&nested!==section?(nested.id||nested.dataset?.section||''):'',
+    subsectionLabel:nested&&nested!==section?(nested.querySelector(':scope > summary')?.textContent?.trim()?.replace(/\s+/g,' ')||nested.querySelector(':scope > legend')?.textContent?.trim()?.replace(/\s+/g,' ')||''):''
+  };
+}
+export function contextualMeta(el,{manifest={},versionInfo={},feature=null}={}){
+  const section=sectionInfo(el),action=el?.dataset?.studioAction||feature?.action||'',featureId=el?.dataset?.featureId||feature?.featureId||feature?.id||action||'',uiId=el?.dataset?.uiId||el?.id||'';
+  return{
+    studio:manifest.id||document.body.dataset.studio||'studio',
+    studioName:manifest.name||document.body.dataset.studio||'Studio',
+    studioVersion:versionInfo.version||document.body.dataset.studioVersion||'',
+    coreVersion:versionInfo.coreVersion||document.body.dataset.studioCoreVersion||'',
+    sectionId:section.id,
+    sectionLabel:section.label,
+    subsectionId:section.subsectionId,
+    subsectionLabel:section.subsectionLabel,
+    controlId:el?.id||'',
+    uiId,featureId,action,
+    scope:el?.dataset?.scope||feature?.scope||'studio',
+    plugin:el?.dataset?.plugin||feature?.plugin||'',
+    capability:el?.dataset?.capability||feature?.capability||'',
+    status:el?.dataset?.featureStatus||feature?.status||'stable',
+    controlLabel:feature?.label||elementLabel(el),
+    element:el
+  };
+}
+export function renderContextualHelp(host,el,{manifest={},versionInfo={},feature=null}={}){
+  if(!host||!el)return null;
+  const m=contextualMeta(el,{manifest,versionInfo,feature});
+  const summary=feature?.help?.summary||feature?.summary||el?.dataset?.helpSummary||'';
+  const details=feature?.help?.details||feature?.details||el?.dataset?.helpDetails||'';
+  const sectionText=m.subsectionLabel||m.sectionLabel||'Section du Studio';
+  const devRows=[
+    ['Studio',m.studio],['Version Studio',m.studioVersion],['Studio Core',m.coreVersion],
+    ['Section',m.sectionLabel],['Section ID',m.sectionId],['Sous-section',m.subsectionLabel],['Sous-section ID',m.subsectionId],
+    ['Contrôle',m.controlLabel],['DOM ID',m.controlId],['UI ID',m.uiId],['Feature ID',m.featureId],['Action',m.action],
+    ['Scope',String(m.scope||'').toUpperCase()],['Plugin',m.plugin],['Capability',m.capability],['Statut',String(m.status||'').toUpperCase()]
+  ].filter(([,v])=>v);
+  const ref=[m.studio,m.sectionId||'section',m.subsectionId||'',m.controlId||m.featureId||m.action||'control'].filter(Boolean).join(' > ');
+  host.innerHTML='<article class="contextualHelp">'+
+    '<div class="contextHelpPath"><span>'+esc(m.studioName)+'</span><span>›</span><span>'+esc(sectionText)+'</span></div>'+
+    '<h3>'+esc(m.controlLabel)+'</h3>'+
+    (summary?'<p class="contextHelpSummary">'+esc(summary)+'</p>':'<p class="contextHelpSummary">Aide contextuelle pour ce contrôle dans la section active.</p>')+
+    (details?'<div class="featureHelpDetails">'+esc(details)+'</div>':'')+
+    '<details class="contextDevHelp"><summary>Développement · identification</summary>'+
+      '<div class="contextDevActions"><button type="button" data-copy-dev-ref>Copier la référence</button><code>'+esc(ref)+'</code></div>'+
+      '<div class="technicalMeta contextTechnicalMeta">'+devRows.map(([k,v])=>'<div><b>'+esc(k)+'</b><code>'+esc(v)+'</code></div>').join('')+'</div>'+
+    '</details></article>';
+  host.querySelector('[data-copy-dev-ref]')?.addEventListener('click',async e=>{try{await navigator.clipboard.writeText(ref);e.currentTarget.textContent='Référence copiée'}catch{}});
+  return m;
+}
