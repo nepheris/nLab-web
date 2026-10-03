@@ -16,4 +16,5 @@ $('#exportJson').onclick=()=>dl(new Blob([JSON.stringify(currentObjects(),null,2
 $('#exportCsv').onclick=()=>{const sep=$('#delimiter').value==='\t'?'\t':$('#delimiter').value,q=v=>'"'+String(v??'').replaceAll('"','""')+'"',csv=sheetRows().map(r=>r.map(q).join(sep)).join('\r\n'),bom=$('#bom').checked?'\ufeff':'';dl(new Blob([bom+csv],{type:'text/csv;charset=utf-8'}),bookName.replace(/\.[^.]+$/,'.csv'))};
 $('#exportXlsx').onclick=()=>XLSX.writeFile(wb,bookName.replace(/\.[^.]+$/,'.xlsx'),{bookType:'xlsx'});
 $('#exportOds').onclick=()=>XLSX.writeFile(wb,bookName.replace(/\.[^.]+$/,'.ods'),{bookType:'ods'});
+document.addEventListener('studio-v2:action',e=>{const a=e.detail?.action,map={openSheet:'#openSheet',exportCsv:'#exportCsv',exportJson:'#exportJson',exportXlsx:'#exportXlsx',exportOds:'#exportOds'};const sel=map[a];if(sel)$(sel)?.click()});
 const ws=XLSX.utils.aoa_to_sheet([['Colonne A','Colonne B'],['Exemple',123]]);XLSX.utils.book_append_sheet(wb,ws,'Feuille1');syncSheets();window.__NLAB_SPREADSHEET_STUDIO__={openFile,getWorkbook:()=>wb};
