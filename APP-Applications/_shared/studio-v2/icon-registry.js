@@ -138,8 +138,46 @@ watermark:'<svg viewBox="0 0 24 24"><path d="M4 17c4-8 12-8 16 0"/><path d="M8 7
 bates:'<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 9h8M8 13h8M8 17h5"/><path d="M8 6h1M12 6h1M16 6h1"/></svg>',
 page:'<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM15 3v5h5"/></svg>',
 pages:'<svg viewBox="0 0 24 24"><path d="M8 5h9l3 3v13H8z"/><path d="M5 3h9M5 3v15"/></svg>',
-formField:'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h8M8 13h5"/></svg>'
+formField:'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h8M8 13h5"/></svg>',
+sortAZ:'<svg viewBox="0 0 24 24"><text x="3.5" y="8.5" font-family="Arial,sans-serif" font-size="6.5" font-weight="700" fill="currentColor" stroke="none">A</text><text x="3.5" y="20" font-family="Arial,sans-serif" font-size="6.5" font-weight="700" fill="currentColor" stroke="none">Z</text><path d="M15 5v14m0 0-4-4m4 4 4-4"/></svg>',
+sortZA:'<svg viewBox="0 0 24 24"><text x="3.5" y="8.5" font-family="Arial,sans-serif" font-size="6.5" font-weight="700" fill="currentColor" stroke="none">Z</text><text x="3.5" y="20" font-family="Arial,sans-serif" font-size="6.5" font-weight="700" fill="currentColor" stroke="none">A</text><path d="M15 5v14m0 0-4-4m4 4 4-4"/></svg>',
+viewKanban:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="9.5" y="4" width="5" height="11" rx="1.5"/><rect x="16" y="4" width="5" height="7" rx="1.5"/></svg>',
+viewGantt:'<svg viewBox="0 0 24 24"><path d="M4 4v16M4 20h17"/><rect x="7" y="6" width="8" height="3" rx="1" fill="currentColor" stroke="none"/><rect x="10" y="11" width="9" height="3" rx="1" fill="currentColor" stroke="none"/><rect x="6" y="16" width="6" height="3" rx="1" fill="currentColor" stroke="none"/></svg>',
+viewGanttHierarchy:'<svg viewBox="0 0 24 24"><path d="M4 4v16M4 20h17M7 7h3M7 13h3M9 7v6"/><rect x="11" y="5.5" width="8" height="3" rx="1" fill="currentColor" stroke="none"/><rect x="11" y="11.5" width="6" height="3" rx="1" fill="currentColor" stroke="none"/></svg>',
+viewCalendar:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/><rect x="7" y="13" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="13" width="3" height="3" rx=".5" fill="currentColor" stroke="none"/></svg>',
+viewTimeline:'<svg viewBox="0 0 24 24"><path d="M5 12h14"/><circle cx="7" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="17" cy="12" r="2" fill="currentColor" stroke="none"/><path d="M7 8V5M12 16v3M17 8V5"/></svg>',
+viewDependency:'<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.5 6.2 15.5 6.8M7.3 8.2 10.8 15.6M16.7 9.2 13.3 15.7"/></svg>'
 };
-export function icon(name,{className='studioIcon'}={}){const svg=ICONS[name]||ICONS.command;return svg.replace('<svg ','<svg class="'+className+'" aria-hidden="true" ')}
-export function hasIcon(name){return !!ICONS[name]}
-export const iconNames=()=>Object.keys(ICONS);
+
+const ALIASES={
+  sort_az:'sortAZ',sort_za:'sortZA',
+  view_kanban:'viewKanban',view_gantt:'viewGantt',
+  view_gantt_hierarchy:'viewGanttHierarchy',view_calendar:'viewCalendar',
+  view_timeline:'viewTimeline',view_dependency:'viewDependency'
+};
+const THEMES=new Map([['nlab-line',{}]]);
+let activeTheme='nlab-line';
+function resolveName(name){return ALIASES[name]||name}
+function themedSvg(name){
+  const canonical=resolveName(name);
+  const theme=THEMES.get(activeTheme)||{};
+  return theme[name]||theme[canonical]||ICONS[canonical]||ICONS.command;
+}
+export function registerIconTheme(id,overrides={}){
+  if(typeof id!=='string'||!/^[a-z0-9_-]+$/.test(id))throw new Error('INVALID_ICON_THEME_ID');
+  THEMES.set(id,{...overrides});
+  return id;
+}
+export function setIconTheme(id='nlab-line'){
+  activeTheme=THEMES.has(id)?id:'nlab-line';
+  if(typeof document!=='undefined')document.documentElement.dataset.iconTheme=activeTheme;
+  if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:icon-theme',{detail:{theme:activeTheme}}));
+  return activeTheme;
+}
+export function getIconTheme(){return activeTheme}
+export function icon(name,{className='studioIcon',label=null}={}){
+  const svg=themedSvg(name);
+  return svg.replace('<svg ','<svg class="'+className+'" '+(label?'role="img" aria-label="'+String(label).replace(/"/g,'&quot;')+'"':'aria-hidden="true"')+' ');
+}
+export function hasIcon(name){return !!ICONS[resolveName(name)]}
+export const iconNames=()=>[...new Set([...Object.keys(ICONS),...Object.keys(ALIASES)])];
