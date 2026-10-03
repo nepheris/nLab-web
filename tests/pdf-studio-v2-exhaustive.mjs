@@ -5,7 +5,7 @@ const fixture=process.env.PDF_STUDIO_FIXTURE||'/tmp/pdf-studio-v1.pdf';
 const fixture2=process.env.PDF_STUDIO_FIXTURE2||'/tmp/pdf-studio-v1-b.pdf';
 const fail=m=>{throw new Error(m)};
 async function reveal(p,s){await p.locator(s).evaluate(e=>{for(let n=e;n;n=n.parentElement)if(n.tagName==='DETAILS')n.open=true})}
-async function load(p,path){await p.locator('#fileInput').setInputFiles([]);await p.locator('#fileInput').setInputFiles(path);await p.waitForFunction(()=>/\/\s*[1-9]\d*/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000})}
+async function load(p,path){await p.locator('#fileInput').setInputFiles([]);await p.locator('#fileInput').setInputFiles(path);await p.waitForFunction(()=>/\/\s*[1-9]\d*/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000});await p.waitForFunction(()=>/Document chargé/.test(document.querySelector('#studioStatusText')?.textContent||''),null,{timeout:30000})}
 async function dl(p,button,timeout=60000){const q=p.waitForEvent('download',{timeout});await p.locator(button).click();const d=await q,path=await d.path();return{d,path,b:path?await readFile(path):null}}
 async function action(p,name){await p.evaluate(a=>document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:a,source:'ci'}})),name)}
 const browser=await chromium.launch({headless:true});
