@@ -7,6 +7,7 @@ import{registerCapabilities}from'./capability-registry.js';
 import{mountCommandPalette}from'./command-palette.js';
 import{mountWorkflowUI}from'./workflow-ui.js';
 import{openStudio as openResolvedStudio}from'./studio-link-resolver.js';
+import{findFeature,renderContextualHelp}from'./help.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
@@ -122,6 +123,30 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   qs('#studioWorkflowOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-workflows')));
 
   const ribbon=qs('.studioRibbon');
+
+  const showContextHelp=(el,feature=null)=>{
+    const panel=qs('#ribbonContext'),body=qs('#ribbonContextBody'),title=qs('#ribbonContextTitle');
+    if(!panel||!body||!el)return;
+    const m=renderContextualHelp(body,el,{manifest,versionInfo,feature});
+    if(title)title.textContent=m?.sectionLabel||m?.controlLabel||'Aide contextuelle';
+    panel.hidden=false;
+    panel.classList.remove('collapsed');
+  };
+  ribbon?.addEventListener('click',e=>{
+    const b=e.target.closest('[data-studio-action]');if(!b)return;
+    showContextHelp(b,findFeature(manifest,b.dataset.studioAction)||null);
+  });
+  root.addEventListener('click',e=>{
+    const el=e.target.closest('button,input,select,textarea,[role="button"],a[data-ui-id]');
+    if(!el||el.closest('#nlabStudioV2Chrome')||el.closest('#ribbonContext'))return;
+    showContextHelp(el,null);
+  },true);
+  root.addEventListener('focusin',e=>{
+    const el=e.target.closest?.('input,select,textarea,button');
+    if(!el||el.closest('#nlabStudioV2Chrome')||el.closest('#ribbonContext'))return;
+    showContextHelp(el,null);
+  });
+
   ribbon?.addEventListener('click',e=>{
     const b=e.target.closest('[data-studio-action]');if(!b)return;
     const detail={action:b.dataset.studioAction,element:b,scope:b.dataset.scope,plugin:b.dataset.plugin,featureId:b.dataset.featureId,status:b.dataset.featureStatus,capability:b.dataset.capability,studio:manifest.id};
