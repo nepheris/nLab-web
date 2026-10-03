@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.4.0",
-  "date": "2026-10-01",
+  "version": "2.5.0",
   "channel": "test",
-  "notes": "Studio Core 2.4 : SteppedPresetControl partagé, AssetPicker personnel, color picker + HEX, CollectionBrowser à groupes repliables et vignettes réglables, bibliothèque personnelle éditable/drag-drop, recherche/aide contextuelle, fenêtres ancrables, sidebar flottante, aperçu Markdown isolé, et StudioLinkResolver global Dernière/CURRENT/TEST avec overrides par Studio."
+  "notes": "Studio Core 2.5 : métadonnées de build liées aux commits Git, contrat d'apps dérivées, première mini-app PDF Sign, maintien des services Core 2.4 et préparation de la passe responsive multi-device.",
+  "metadata_source": "canonical version registry + Git commit metadata"
 }
