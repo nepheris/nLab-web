@@ -319,8 +319,15 @@
         "workbookStructureProfile",
         "workbookFromObjectsWithProfile",
         "applyFormatProfileToSchema",
-        "syntheticDocumentFromStructure",
-        "dataset.clone.format-shape"
+        "syntheticDocumentFromStructure"
+      ],
+      "required_capabilities": [
+        "dataset.generate.synthetic",
+        "dataset.clone.structure",
+        "dataset.clone.format-shape",
+        "dataset.clone.rich-document",
+        "dataset.clone.ocr",
+        "dataset.export.multi-format"
       ]
     },
     "pdf-studio": {
