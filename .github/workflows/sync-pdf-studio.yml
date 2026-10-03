@@ -219,14 +219,24 @@ jobs:
           grep -q 'sidebarGrip0925' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q 'nLab Web' APP-Applications/pdf-studio/runtime0925/visible-controls.js
           grep -q '../studios/' APP-Applications/pdf-studio/runtime0925/visible-controls.js
-          grep -q '"test": "2.6.0"' APP-Applications/pdf-studio/versions.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          reg=json.loads(Path('APP-Applications/pdf-studio/versions.json').read_text())
+          test=reg.get('test')
+          assert test, 'PDF Studio TEST pointer absent'
+          item=next((x for x in reg.get('versions',[]) if str(x.get('version'))==str(test)),None)
+          assert item, f'PDF Studio TEST {test} absent from versions[]'
+          assert str(item.get('status','')).lower()=='test', f'PDF Studio TEST {test} status invalide'
+          assert item.get('href')=='./v2/', f'PDF Studio TEST {test} doit cibler ./v2/'
+          print('PDF Studio TEST registry:',test)
+          PY
 
           test -s APP-Applications/pdf-studio/config/user-config.example.json
           test -s APP-Applications/pdf-studio/config/stamps-v3.example.json
           test -s APP-Applications/pdf-studio/config/google-auth.example.json
           test -s APP-Applications/pdf-studio/versions.json
           grep -q '"current": "0.9.10"' APP-Applications/pdf-studio/versions.json
-          grep -q '"test": "2.6.0"' APP-Applications/pdf-studio/versions.json
 
           # Corpus commun nLab : génération reproductible et ZIP valide
           test -s Library/demo/generate_demo.py
@@ -246,7 +256,12 @@ jobs:
             exit 1
           fi
 
-          echo 'PDF Studio CURRENT 0.9.10 + TEST 2.6.0 + DEMO v2: OK'
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          reg=json.loads(Path('APP-Applications/pdf-studio/versions.json').read_text())
+          print(f"PDF Studio CURRENT {reg.get('current')} + TEST {reg.get('test')} + DEMO v2: OK")
+          PY
 
           # PDF Studio 2.0 architecture contract
           test -s APP-Applications/pdf-studio/v2/index.html
