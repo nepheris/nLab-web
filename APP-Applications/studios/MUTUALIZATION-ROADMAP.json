@@ -105,6 +105,124 @@
         "consumers": [
           "Tous Studios"
         ]
+      },
+      {
+        "id": "framework-shell",
+        "label": "Application shell / header / sidebar / footer / version slot",
+        "status": "adopt-existing",
+        "engine": "nLab-Web-Framework application-shell-runtime",
+        "consumers": [
+          "Tous Studios",
+          "Cockpits",
+          "Applications web"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/application-shell-runtime.js"
+      },
+      {
+        "id": "framework-context-help",
+        "label": "Aide contextuelle publique + overlay développement + UI IDs stables",
+        "status": "converging",
+        "engine": "Studio Core help.js + Web Framework contextual-help",
+        "consumers": [
+          "Tous Studios",
+          "Toutes applications web"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/help/contextual-help.json"
+      },
+      {
+        "id": "framework-theme",
+        "label": "Theme engine / design tokens / palettes / dark-light",
+        "status": "adopt-existing",
+        "engine": "Web Framework theme-engine",
+        "consumers": [
+          "Tous Studios",
+          "Cockpits",
+          "Sites"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/themes/theme-engine.js"
+      },
+      {
+        "id": "framework-notifications",
+        "label": "Notifications toast / banner / inline / queue",
+        "status": "adopt-existing",
+        "engine": "Web Framework notification-center",
+        "consumers": [
+          "Tous Studios",
+          "Applications web"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/notification-center.json"
+      },
+      {
+        "id": "framework-dialogs",
+        "label": "Confirmation / warning / danger dialogs",
+        "status": "adopt-existing",
+        "engine": "Web Framework confirmation-dialog",
+        "consumers": [
+          "Tous Studios",
+          "Applications web"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/confirmation-dialog.json"
+      },
+      {
+        "id": "framework-floating-window",
+        "label": "Fenêtres flottantes move/lock/resize/dock/fullscreen/persistence",
+        "status": "adopt-existing",
+        "engine": "Web Framework floating-window",
+        "consumers": [
+          "Aide",
+          "Logs",
+          "Outils",
+          "Cockpits",
+          "Studios"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/floating-window.json"
+      },
+      {
+        "id": "framework-export",
+        "label": "Export engine unifié PDF/CSV/JSON/Image/QR/selection/view",
+        "status": "converging",
+        "engine": "Web Framework export-engine + Studio download/output services",
+        "consumers": [
+          "Tous Studios",
+          "Data editors",
+          "Search"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/modules/export-engine.json"
+      },
+      {
+        "id": "framework-file-input",
+        "label": "File attachment / picker / drag-drop / validation / multiple",
+        "status": "converging",
+        "engine": "Web Framework file-attachment-input + Studio input/drop services",
+        "consumers": [
+          "Tous Studios",
+          "Formulaires web"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/file-attachment-input.json"
+      },
+      {
+        "id": "framework-draft",
+        "label": "Draft save/restore/clear/export/import local persistence",
+        "status": "adopt-existing",
+        "engine": "Web Framework draft-controls",
+        "consumers": [
+          "Editors",
+          "Forms",
+          "Studios"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/draft-controls.json"
+      },
+      {
+        "id": "framework-ui-context",
+        "label": "Stable UI Context Registry et validation des IDs",
+        "status": "converging",
+        "engine": "Studio contextual help + BRK116 UI Context Registry",
+        "consumers": [
+          "Tous Studios",
+          "Cockpits",
+          "Applications web"
+        ],
+        "source": "nepheris/nLab/Work/PRJ_Project/P005-nlab-dashboard/.../UiContextRegistryCore.html"
       }
     ],
     "P1": [
@@ -187,6 +305,82 @@
           "Dataset",
           "Archive"
         ]
+      },
+      {
+        "id": "framework-search",
+        "label": "Search/filter/sort/group/view engine",
+        "status": "adopt-existing",
+        "engine": "Web Framework search-engine + future collection-query-service",
+        "consumers": [
+          "Data Studio",
+          "Spreadsheet Studio",
+          "File Studio",
+          "Cockpits",
+          "Apps"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/search-engine.json"
+      },
+      {
+        "id": "framework-structured-data",
+        "label": "Structured data viewer/editor/schema-driven forms",
+        "status": "adopt-existing",
+        "engine": "Web Framework structured-data-engine",
+        "consumers": [
+          "JSON Studio",
+          "Data Studio",
+          "Apps métier"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/structured-data-engine.json"
+      },
+      {
+        "id": "framework-media-slot",
+        "label": "Visual media slot / gallery / currentColor / placeholders",
+        "status": "adopt-existing",
+        "engine": "Web Framework visual-media-slot",
+        "consumers": [
+          "Image Studio",
+          "Document Studio",
+          "Sites",
+          "Cockpits"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/visual-media-slot.json"
+      },
+      {
+        "id": "framework-audio",
+        "label": "Audio recorder / permission / preview / Blob output",
+        "status": "adopt-existing",
+        "engine": "Web Framework audio-recorder",
+        "consumers": [
+          "Audio Studio futur",
+          "Forms",
+          "Apps"
+        ],
+        "source": "nepheris/nLab-Web-Framework/dev/framework/components/audio-recorder.json"
+      },
+      {
+        "id": "document-conversion-runtime",
+        "label": "Conversion documentaire locale haute fidélité via LibreOffice/WeasyPrint/ReportLab",
+        "status": "validated-upstream",
+        "engine": "BRK40 document-conversion-core",
+        "consumers": [
+          "Document Studio",
+          "PDF Studio",
+          "Applications desktop/local"
+        ],
+        "source": "nepheris/nLab/Build/BRK-Brick/BRK40-document-conversion-core/"
+      },
+      {
+        "id": "image-runtime-adapter",
+        "label": "Façade image Pillow/OpenCV pour crop/resize/convert/OCR preprocessing",
+        "status": "upstream-validation-partial",
+        "engine": "BRK114 + BRK38",
+        "consumers": [
+          "Image Studio",
+          "OCR Studio",
+          "PDF Studio",
+          "Scan Studio"
+        ],
+        "source": "nepheris/nLab/Build/BRK-Brick/BRK114-image-engine-adapter/"
       }
     ],
     "P2": [
@@ -239,6 +433,22 @@
         "id": "load-performance",
         "label": "Tests lourds mémoire/performance",
         "status": "development"
+      },
+      {
+        "id": "desktop-local-runtime",
+        "label": "Runtime local/desktop pour capacités non-browser (LibreOffice, Pillow, OpenCV, ffmpeg)",
+        "status": "development",
+        "source": "BRK40 / BRK114 / futurs media engines"
+      },
+      {
+        "id": "video-media-engine",
+        "label": "Video/audio conversion, frames, transcode, metadata",
+        "status": "development"
+      },
+      {
+        "id": "framework-cross-repo-package",
+        "label": "Packaging/versioning des composants Framework réutilisés entre dépôts",
+        "status": "development"
       }
     ]
   },
@@ -272,6 +482,18 @@
         "label": "Framework fournit le shell, Studio fournit la capacité",
         "status": "adopted"
       }
-    ]
+    ],
+    "crossProjectAudit": {
+      "status": "in-progress",
+      "repositories": [
+        "nepheris/nLab-web",
+        "nepheris/nLab-Web-Framework",
+        "nepheris/nLab",
+        "nepheris/nLab-GitHub-Manager",
+        "nepheris/nLab-Webmaster",
+        "nepheris/nLab-Maker-Framework"
+      ],
+      "principle": "Promote existing reusable components into Framework capabilities before writing new Studio-local code."
+    }
   }
 }
