@@ -76,6 +76,12 @@ try{
  // Signature crypto doit échouer proprement sans certificat, pas planter.
  await reveal(p,'[data-signature-mode="digital"]');await p.locator('[data-signature-mode="digital"]').click();await reveal(p,'#applyCryptographicSignature');await p.locator('#applyCryptographicSignature').click();await p.waitForTimeout(300);if(!/certificat/i.test(await p.locator('#signatureCryptoStatus').textContent()))fail('Signature crypto sans certificat non diagnostiquée');
 
+
+ // Watermark + Bates + identité documentaire.
+ await load(p,fixture);await reveal(p,'#applyWatermark');await p.locator('#watermarkText').fill('CI {FILENAME}');await p.locator('#watermarkScope').selectOption('current');await p.locator('#applyWatermark').click();await p.waitForFunction(()=>/Watermark appliqué/.test(document.querySelector('#studioStatusText')?.textContent||''),null,{timeout:20000});
+ await reveal(p,'#applyBates');await p.locator('#batesPrefix').fill('CI-');await p.locator('#batesStart').fill('42');await p.locator('#batesDigits').fill('4');await p.locator('#batesScope').selectOption('current');await p.locator('#applyBates').click();await p.waitForFunction(()=>/Bates/.test(document.querySelector('#studioStatusText')?.textContent||''),null,{timeout:20000});
+ await reveal(p,'#generatePdfArtifact');await p.locator('#generatePdfArtifact').click();await p.waitForFunction(()=>/SHA-256/.test(document.querySelector('#pdfArtifactStatus')?.textContent||''),null,{timeout:10000});{const d=await dl(p,'#exportPdfArtifact');const mf=JSON.parse(d.b.toString('utf8'));if(mf.schema!=='nlab-artifact/v1'||mf.studio!=='pdf-studio'||!mf.sha256)fail('Manifest PDF invalide')}
+
  if(errors.length)fail('Erreurs navigateur exhaustive PDF V2: '+errors.join(' | '));
  console.log(JSON.stringify({ok:true,pages:true,crop:true,insert:true,ocr:true,optimize:true,translationMock:true,signatureVisual:true,qr:true,redaction:true,diagnostics:true,stamps:true,legacyMigration:true,zipClassify:true,aes:true,cryptoExternalGuard:true},null,2));
 }finally{await ctx.close();await browser.close()}
