@@ -1,8 +1,23 @@
-const valid=v=>/^#[0-9a-f]{6}$/i.test(String(v||'').trim());
-export function bindColorHexControl({colorInput,hexInput,onChange}={}){
- const color=typeof colorInput==='string'?document.querySelector(colorInput):colorInput,hex=typeof hexInput==='string'?document.querySelector(hexInput):hexInput;if(!color||!hex)return null;
- const apply=v=>{if(!valid(v))return false;const value=String(v).toUpperCase();color.value=value;hex.value=value;onChange?.(value);return true};
- const fromColor=()=>apply(color.value);color.addEventListener('input',fromColor);hex.addEventListener('change',()=>{if(!apply(hex.value))hex.value=String(color.value||'#000000').toUpperCase()});hex.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();hex.blur()}});
- apply(color.value||hex.value||'#000000');
- return{setValue:apply,get value(){return color.value.toUpperCase()},destroy(){color.removeEventListener('input',fromColor)}}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+export const normalizeHex=v=>{let s=String(v||'').trim().replace(/^#/,'');if(s.length===3)s=s.split('').map(x=>x+x).join('');return/^[0-9a-f]{6}$/i.test(s)?'#'+s.toUpperCase():null};
+export function hexToRgb(v){const h=normalizeHex(v);if(!h)return null;return{r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),16),b:parseInt(h.slice(5,7),16)}}
+export function rgbToHex(r,g,b){const h=n=>clamp(Math.round(Number(n)||0),0,255).toString(16).padStart(2,'0');return('#'+h(r)+h(g)+h(b)).toUpperCase()}
+export function rgbToHsl(r,g,b){r=clamp(Number(r)||0,0,255)/255;g=clamp(Number(g)||0,0,255)/255;b=clamp(Number(b)||0,0,255)/255;const max=Math.max(r,g,b),min=Math.min(r,g,b),l=(max+min)/2,d=max-min;let h=0,s=0;if(d){s=d/(1-Math.abs(2*l-1));if(max===r)h=60*(((g-b)/d)%6);else if(max===g)h=60*((b-r)/d+2);else h=60*((r-g)/d+4);if(h<0)h+=360}return{h:Math.round(h),s:Math.round(s*100),l:Math.round(l*100)}}
+export function hslToRgb(h,s,l){h=((Number(h)||0)%360+360)%360;s=clamp(Number(s)||0,0,100)/100;l=clamp(Number(l)||0,0,100)/100;const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;let r=0,g=0,b=0;if(h<60){r=c;g=x}else if(h<120){r=x;g=c}else if(h<180){g=c;b=x}else if(h<240){g=x;b=c}else if(h<300){r=x;b=c}else{r=c;b=x}return{r:Math.round((r+m)*255),g:Math.round((g+m)*255),b:Math.round((b+m)*255)}}
+export function parseColor(value,format='hex'){const f=String(format||'hex').toLowerCase(),s=String(value||'').trim();if(f==='hex')return normalizeHex(s);if(f==='rgb'){const m=s.match(/(?:rgb\()?\s*(\d{1,3})\s*[, ]\s*(\d{1,3})\s*[, ]\s*(\d{1,3})\s*\)?/i);return m?rgbToHex(m[1],m[2],m[3]):null}if(f==='hsl'){const m=s.match(/(?:hsl\()?\s*(-?\d+(?:\.\d+)?)\s*[, ]\s*(\d+(?:\.\d+)?)%?\s*[, ]\s*(\d+(?:\.\d+)?)%?\s*\)?/i);if(!m)return null;const rgb=hslToRgb(m[1],m[2],m[3]);return rgbToHex(rgb.r,rgb.g,rgb.b)}return normalizeHex(s)}
+export function formatColor(hex,format='hex'){const h=normalizeHex(hex)||'#000000';if(format==='hex')return h;const rgb=hexToRgb(h);if(format==='rgb')return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`}
+export function bindColorControl({colorInput,textInput,formatInput,onChange,defaultValue='#000000'}={}){
+ const color=typeof colorInput==='string'?document.querySelector(colorInput):colorInput,text=typeof textInput==='string'?document.querySelector(textInput):textInput,format=typeof formatInput==='string'?document.querySelector(formatInput):formatInput;
+ if(!color||!text)return null;
+ const currentFormat=()=>String(format?.value||'hex').toLowerCase();
+ const emit=hex=>onChange?.(hex,{hex,rgb:hexToRgb(hex),hsl:rgbToHsl(...Object.values(hexToRgb(hex))),format:currentFormat(),display:formatColor(hex,currentFormat())});
+ const applyHex=v=>{const h=normalizeHex(v);if(!h)return false;color.value=h;text.value=formatColor(h,currentFormat());emit(h);return true};
+ const fromPicker=()=>applyHex(color.value),fromText=()=>{const h=parseColor(text.value,currentFormat());if(!h){text.value=formatColor(color.value,currentFormat());return false}return applyHex(h)},fromFormat=()=>{text.value=formatColor(color.value,currentFormat());emit(color.value.toUpperCase())};
+ color.addEventListener('input',fromPicker);text.addEventListener('change',fromText);text.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();text.blur()}});format?.addEventListener('change',fromFormat);
+ applyHex(normalizeHex(color.value)||parseColor(text.value,currentFormat())||normalizeHex(defaultValue)||'#000000');
+ return{setValue:applyHex,get value(){return color.value.toUpperCase()},get format(){return currentFormat()},destroy(){color.removeEventListener('input',fromPicker);text.removeEventListener('change',fromText);format?.removeEventListener('change',fromFormat)}}
+}
+export function bindColorHexControl({colorInput,hexInput,onChange}={}){return bindColorControl({colorInput,textInput:hexInput,onChange,defaultValue:'#000000'})}
+export function createColorPicker({value='#000000',format='hex',label='Couleur',onChange}={}){
+ const host=document.createElement('div');host.className='nlabColorPicker';host.innerHTML='<label class="nlabColorPickerLabel"></label><div class="nlabColorPickerRow"><input class="nlabColorPickerVisual" type="color"><select class="nlabColorPickerFormat"><option value="hex">HEX</option><option value="rgb">RGB</option><option value="hsl">HSL</option></select><input class="nlabColorPickerText" type="text"></div>';host.querySelector('.nlabColorPickerLabel').textContent=label;host.querySelector('.nlabColorPickerFormat').value=format;const control=bindColorControl({colorInput:host.querySelector('.nlabColorPickerVisual'),textInput:host.querySelector('.nlabColorPickerText'),formatInput:host.querySelector('.nlabColorPickerFormat'),defaultValue:value,onChange});control.setValue(value);return{element:host,control}
 }
