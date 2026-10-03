@@ -3,24 +3,74 @@
 <link rel="icon" type="image/svg+xml" href="../../assets/branding/nlab-favicon.svg">
 <link rel="stylesheet" href="../_shared/studio-v2/studio.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<style>
+.datasetMain{display:grid;grid-template-columns:minmax(300px,390px) minmax(0,1fr);gap:12px;padding:12px;min-height:calc(100vh - 180px)}
+.datasetSidebar,.datasetViewer{background:var(--studio-surface,#fff);border:1px solid var(--studio-line,#d6dde3);border-radius:14px;min-width:0}
+.datasetSidebar{overflow:auto}.datasetBody{padding:12px}.modeTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.modeBtn{border:1px solid #c8d2da;border-radius:8px;background:#fff;padding:8px;font:inherit;cursor:pointer}.modeBtn.active{background:#3282ca;color:#fff;border-color:#3282ca}
+.modePanel[hidden]{display:none!important}.schemaHead,.schemaRow{display:grid;grid-template-columns:minmax(100px,1fr) minmax(120px,1fr) auto;gap:6px;align-items:center}.schemaHead{font-size:11px;font-weight:700;color:#61717d;margin-top:8px}.schemaRow{margin-top:6px}.schemaRow input,.schemaRow select,.docGrid input,.docGrid select{width:100%;box-sizing:border-box;padding:7px;border:1px solid #c8d2da;border-radius:7px;background:#fff}.schemaRow button{width:34px;height:34px;border:1px solid #c8d2da;border-radius:7px;background:#fff;cursor:pointer}
+.toolbarLine{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.miniBtn{border:1px solid #b7c7d4;border-radius:8px;background:#fff;padding:7px 9px;cursor:pointer;font-weight:650}.miniBtn.primary{background:#3282ca;border-color:#3282ca;color:#fff}
+.dropClone{border:2px dashed #a9bac7;border-radius:10px;padding:14px;text-align:center;background:#f7fafc;cursor:pointer}.dropClone.drag{border-color:#3282ca;background:#eef7ff}
+.docGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.viewerToolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px;border-bottom:1px solid #d8e0e7}.viewerBody{overflow:auto;max-height:calc(100vh - 235px);padding:12px}.previewDoc{max-width:860px;margin:auto;background:white;border:1px solid #dfe5ea;border-radius:10px;padding:28px;line-height:1.55}.previewDoc img{max-width:100%;border-radius:8px}.previewDoc table,#table{width:100%;border-collapse:collapse;font-size:12px}.previewDoc td,.previewDoc th,#table td,#table th{border:1px solid #d8e0e7;padding:6px;text-align:left}.previewDoc th,#table th{background:#f4f7f9}.privacyBox{font-size:12px;line-height:1.45;padding:9px;border-radius:8px;background:#eef4f8}.statusBox{font-size:12px}
+@media(max-width:920px){.datasetMain{grid-template-columns:1fr}.datasetSidebar{max-height:none}.viewerBody{max-height:none}.docGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.datasetMain{padding:7px;gap:7px}.modeTabs{grid-template-columns:1fr}.schemaHead{display:none}.schemaRow{grid-template-columns:1fr}.schemaRow button{width:100%}.docGrid{grid-template-columns:1fr}.viewerToolbar{padding:8px}.viewerBody{padding:8px}.previewDoc{padding:16px}.miniBtn{min-height:42px;flex:1 1 42%}}
+</style>
 </head><body>
+<main class="datasetMain">
+<aside class="datasetSidebar"><div class="datasetBody">
+<strong>Dataset Generator Studio</strong>
+<p class="privacyBox">Jeux synthétiques uniquement. Le mode « cloner la structure » conserve les noms de colonnes et infère les types, mais ne recopie pas les valeurs source.</p>
+<div class="modeTabs">
+<button class="modeBtn active" data-mode="table" type="button">Tableau</button>
+<button class="modeBtn" data-mode="document" type="button">Document</button>
+<button class="modeBtn" data-mode="clone" type="button">Cloner structure</button>
+</div>
 
-
-<main class="studioMain">
-<aside class="studioSidebar"><div class="sidebarTop"><strong>Configuration</strong></div><div class="studioSidebarBody">
-<label class="field"><span>Preset</span><select id="preset"><option value="generic">Dataset générique</option><option value="people">Personnes synthétiques</option><option value="finance">Valeurs financières</option><option value="catalog">Catalogue produits</option></select></label>
-<label class="field"><span>Nombre de lignes</span><input id="rows" type="number" min="1" max="5000" value="40"></label>
+<section class="modePanel" data-panel="table">
+<label class="field"><span>Preset</span><select id="preset"><option value="generic">Dataset générique</option><option value="people">Personnes synthétiques</option><option value="finance">Valeurs financières</option><option value="catalog">Catalogue produits</option><option value="logistics">Logistique / codes</option></select></label>
+<label class="field"><span>Nombre de lignes</span><input id="rows" type="number" min="1" max="100000" value="40"></label>
 <label class="field"><span>Seed</span><input id="seed" type="number" value="20260929"></label>
-<div class="statusBox">Données synthétiques uniquement. Aucun identifiant réel n'est généré.</div>
-<div class="sectionSubhead">Colonnes</div>
-<label class="checkboxField"><input type="checkbox" data-col="id" checked><span>ID synthétique</span></label>
-<label class="checkboxField"><input type="checkbox" data-col="name" checked><span>Nom de test</span></label>
-<label class="checkboxField"><input type="checkbox" data-col="category" checked><span>Catégorie</span></label>
-<label class="checkboxField"><input type="checkbox" data-col="number" checked><span>Valeur numérique</span></label>
-<label class="checkboxField"><input type="checkbox" data-col="date" checked><span>Date</span></label>
-<label class="checkboxField"><input type="checkbox" data-col="url" checked><span>URL publique</span></label>
+<div class="sectionSubhead">Colonnes configurables</div>
+<div class="schemaHead"><span>Nom</span><span>Type</span><span></span></div>
+<div id="schemaRows"></div>
+<div class="toolbarLine"><button class="miniBtn" id="addColumn" type="button">+ Colonne</button><button class="miniBtn" id="applyPreset" type="button">Appliquer preset</button></div>
+<div id="legacyColumns" hidden>
+<input type="checkbox" data-col="id" checked><input type="checkbox" data-col="name" checked><input type="checkbox" data-col="category" checked><input type="checkbox" data-col="number" checked><input type="checkbox" data-col="date" checked><input type="checkbox" data-col="url" checked>
+</div>
+</section>
+
+<section class="modePanel" data-panel="document" hidden>
+<div class="docGrid">
+<label class="field"><span>Titre</span><input id="docTitle" value="Document de démonstration nLab"></label>
+<label class="field"><span>Chapitres</span><input id="docChapters" type="number" min="1" max="20" value="3"></label>
+<label class="field"><span>Sections / chapitre</span><input id="docSections" type="number" min="1" max="10" value="2"></label>
+<label class="field"><span>Paragraphes / section</span><input id="docParagraphs" type="number" min="1" max="10" value="2"></label>
+</div>
+<label class="checkboxField"><input id="docTables" type="checkbox" checked><span>Ajouter tableaux</span></label>
+<label class="checkboxField"><input id="docImages" type="checkbox" checked><span>Ajouter illustrations de démonstration</span></label>
+<p class="privacyBox">Le document utilise H1/H2/H3, paragraphes Lorem Ipsum, tableaux et emplacements d’illustrations synthétiques. Les exports DOCX conservent la hiérarchie des titres.</p>
+</section>
+
+<section class="modePanel" data-panel="clone" hidden>
+<div class="dropClone" id="cloneDrop" tabindex="0" role="button"><strong>Importer CSV, JSON ou XLSX</strong><br><span>La structure sera détectée et un nouveau jeu fictif sera généré.</span></div>
+<input id="cloneFile" type="file" accept=".csv,.json,.xlsx,.xls,application/json,text/csv" hidden>
+<label class="field"><span>Lignes à générer</span><input id="cloneRows" type="number" min="1" max="100000" value="100"></label>
+<div id="cloneSummary" class="statusBox">Aucune structure importée.</div>
+<div class="toolbarLine"><button class="miniBtn" id="editInTableMode" type="button" disabled>Modifier les types détectés</button></div>
+</section>
+
 <div class="sectionSubhead">État</div><div id="status" class="statusBox">Prêt.</div>
 </div></aside>
-<section class="viewer"><div class="viewerCard"><div class="viewerToolbar"><strong>Aperçu</strong><span class="spacer"></span><span id="count">0 ligne</span></div><div style="overflow:auto"><table id="table" style="width:100%;border-collapse:collapse;font-size:12px"></table></div></div></section>
+
+<section class="datasetViewer">
+<div class="viewerToolbar">
+<strong id="previewTitle">Aperçu tabulaire</strong><span class="spacer"></span><span id="count">0 ligne</span>
+</div>
+<div class="viewerBody">
+<table id="table"></table>
+<div id="docPreview" class="previewDoc" hidden></div>
+</div>
+</section>
 </main>
 <script type="module" src="./v2/v2-app.js"></script></body></html>
