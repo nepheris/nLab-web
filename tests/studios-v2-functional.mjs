@@ -26,7 +26,7 @@ try{
   const dl=p.waitForEvent('download');await p.locator('#downloadPage').click();if(!/\.png$/i.test((await dl).suggestedFilename()))throw new Error('Scan page PNG invalide');
  });
  await studio('ocr-studio',async p=>{
-  await chooseFile(p,'#ocr-studio-open','Library/demo/files/demo-input/Images/demo-document-illustration.png');await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
+  await chooseFile(p,'#ocr-open','Library/demo/files/demo-input/Images/demo-document-illustration.png');await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
   await p.locator('#demo').click();await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
   await p.locator('#out').fill('OCR TEST');const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.txt$/i.test((await dl).suggestedFilename()))throw new Error('OCR TXT export invalide');
  });
