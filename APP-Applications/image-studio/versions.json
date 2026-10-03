@@ -1,14 +1,22 @@
 {
   "name": "Image Studio",
   "current": "0.2.1",
-  "test": "2.1.0",
+  "test": "2.2.0",
   "versions": [
+    {
+      "version": "2.2.0",
+      "label": "Image Studio 2.2.0 TEST",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Héritage Studio Core responsive, capacités Image déclarées, version runtime issue du registre/metadata au lieu d'une chaîne codée en dur, fonctions rotation/miroir/resize/crop/watermark/calibration/empreinte conservées."
+    },
     {
       "version": "2.1.0",
       "label": "Image Studio 2.1.0 TEST",
       "date": "2026-10-03",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Crop, watermark texte, identifiant invisible expérimental LSB et manifest SHA-256 nLab."
     },
