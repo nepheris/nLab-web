@@ -486,8 +486,22 @@ async function refreshQrPreview(){
  const p=$('#qrPreview');try{const q=await codeBlob(),url=URL.createObjectURL(q.blob);p.innerHTML='<img src="'+url+'" alt="Aperçu du code"><small>'+escHtml(q.value)+'</small>';p.querySelector('img').onload=()=>setTimeout(()=>URL.revokeObjectURL(url),500)}catch(e){p.innerHTML='<span>'+escHtml(e.message)+'</span>'}
 }
 async function applyQrQuick(){
- assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const q=await codeBlob(),pages=toolPages('qrScope'),widthPct=Number($('#qrWidthPct').value)||12,pos=$('#qrPosition').value,map={'top-left':[6,7],'top-right':[82,7],'bottom-left':[6,82],'bottom-right':[82,82]},xy=map[pos]||[82,82];
- await objectLayer.setImageBlob(q.blob,'image');for(const p of pages){const o=objectLayer.addAt(p,xy[0],xy[1],'image');if(o){o.wPct=widthPct;o.subtype='code';o.codeType=q.type;o.codeValue=q.value}}objectLayer.setTool('select');objectLayer.render();openToolSection('#sectionAnnotations');setStatus('Code '+q.type+' placé comme objet sur '+pages.length+' page(s) · déplaçable/redimensionnable.');
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');
+ const q=await codeBlob(),pages=toolPages('qrScope'),widthPct=Number($('#qrWidthPct').value)||12,pos=$('#qrPosition').value,map={'top-left':[6,7],'top-right':[82,7],'bottom-left':[6,82],'bottom-right':[82,82]},xy=map[pos]||[82,82];
+ if(!pages.length)throw new Error('Aucune page cible pour le code.');
+ await objectLayer.setImageBlob(q.blob,'image');
+ // Prépare l'UI avant l'écriture des annotations : aucune transition de panneau ne doit pouvoir effacer l'objet nouvellement créé.
+ openToolSection('#sectionAnnotations');objectLayer.setTool('select');
+ const created=[];
+ for(const page of pages){
+  const o=objectLayer.addAt(page,xy[0],xy[1],'image');
+  if(!o)throw new Error('Le code a été généré mais l’objet PDF n’a pas pu être créé.');
+  o.wPct=widthPct;o.subtype='code';o.codeType=q.type;o.codeValue=q.value;created.push({page,id:o.id})
+ }
+ objectLayer.render();
+ const missing=created.filter(x=>!engine.annotations(x.page).some(a=>a.id===x.id));
+ if(missing.length)throw new Error('Le code a été généré mais '+missing.length+' annotation(s) PDF n’ont pas été persistées.');
+ setStatus('Code '+q.type+' placé comme objet sur '+pages.length+' page(s) · déplaçable/redimensionnable.');
  recordHistory({studio:'pdf-studio',type:'action',label:'Code placé',detail:q.type+' · '+pages.length+' page(s) · objet éditable',target:engine.fileName,action:'qr',repeatable:false})
 }
 async function runQuickConversion(){
