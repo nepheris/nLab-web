@@ -139,12 +139,12 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   root.addEventListener('click',e=>{
     const el=e.target.closest('button,input,select,textarea,[role="button"],a[data-ui-id]');
     if(!el||el.closest('#nlabStudioV2Chrome')||el.closest('#ribbonContext'))return;
-    showContextHelp(el,null);
+    queueMicrotask(()=>showContextHelp(el,null));
   },true);
   root.addEventListener('focusin',e=>{
     const el=e.target.closest?.('input,select,textarea,button');
     if(!el||el.closest('#nlabStudioV2Chrome')||el.closest('#ribbonContext'))return;
-    showContextHelp(el,null);
+    queueMicrotask(()=>showContextHelp(el,null));
   });
 
   ribbon?.addEventListener('click',e=>{
