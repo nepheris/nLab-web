@@ -540,10 +540,19 @@
         "downloadManifest",
         "bwipOptions",
         "validatePayload",
-        "symbology-service.js",
-        "miniSvg",
-        "ondblclick"
-      ]
+        "symbology-service.js"
+      ],
+      "required_source_files": [
+        "APP-Applications/pdf-studio/v2/object-layer.js"
+      ],
+      "required_source_strings": {
+        "APP-Applications/pdf-studio/v2/object-layer.js": [
+          "miniSvg",
+          "ondblclick",
+          "data-obj-delete",
+          "data-obj-lock"
+        ]
+      }
     },
     "document-studio": {
       "test": "1.0.0",
