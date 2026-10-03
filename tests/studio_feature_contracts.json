@@ -115,7 +115,7 @@
       ]
     },
     "code-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "file",
         "demo",
@@ -128,12 +128,21 @@
         "tab",
         "mode",
         "cursor",
-        "editor"
+        "editor",
+        "codeAddFiles",
+        "codeFiles"
       ],
       "required_strings": [
         "studio-v2/studio.css",
         "bootstrap-specialized.js",
         "ace.edit"
+      ],
+      "required_capabilities": [
+        "core.input.file-folder-drop",
+        "code.collection.multi",
+        "code.edit.ace",
+        "code.search",
+        "code.export.text"
       ]
     },
     "json-studio": {
@@ -166,7 +175,7 @@
       ]
     },
     "data-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "file",
         "demoCsv",
@@ -185,7 +194,9 @@
         "csvDelimiter",
         "csvBom",
         "exportCsv",
-        "exportXlsx"
+        "exportXlsx",
+        "dataAddFiles",
+        "datasetFileSelect"
       ],
       "required_strings": [
         "studio-v2/studio.css",
@@ -198,10 +209,17 @@
         "tabular-service.js",
         "download-service.js"
       ],
-      "runtime": "APP-Applications/data-studio/v2/index.html"
+      "runtime": "APP-Applications/data-studio/v2/index.html",
+      "required_capabilities": [
+        "core.input.file-folder-drop",
+        "data.collection.multi",
+        "data.filter.sort",
+        "data.export.multi-format",
+        "data.fixture.handoff"
+      ]
     },
     "file-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "files",
         "folder",
@@ -215,11 +233,21 @@
         "body",
         "status",
         "hashFiles",
-        "exportJson"
+        "exportJson",
+        "fileAddInputs",
+        "fileClearInputs",
+        "fileInputSummary"
       ],
       "required_strings": [
         "studio-v2/studio.css",
         "bootstrap-specialized.js"
+      ],
+      "required_capabilities": [
+        "core.input.file-folder-drop",
+        "file.batch.collection",
+        "file.rename.preview",
+        "file.identity.sha256",
+        "file.manifest.export"
       ]
     },
     "qr-barcode-studio": {
