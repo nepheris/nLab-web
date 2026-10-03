@@ -23,8 +23,9 @@ try{
  });
  await studio('ocr-studio',async p=>{
   await p.locator('#lang').selectOption('fra');await p.locator('#noisy').click();await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
-  await p.locator('#demo').click();await p.locator('#run').click();await p.waitForFunction(()=>/OCR terminé|Erreur OCR/.test(document.querySelector('#status')?.textContent||''),null,{timeout:120000});
-  const st=await p.locator('#status').textContent();if(/Erreur OCR/.test(st))throw new Error('OCR réel: '+st);if((await p.locator('#out').inputValue()).trim().length<3)throw new Error('OCR réel vide');
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300"><rect width="100%" height="100%" fill="white"/><text x="60" y="180" font-family="Arial" font-size="96" font-weight="700" fill="black">NLAB OCR TEST 1234</text></svg>';
+  await p.locator('#file').setInputFiles({name:'ocr-ci.svg',mimeType:'image/svg+xml',buffer:Buffer.from(svg)});await p.waitForTimeout(300);await p.locator('#run').click();await p.waitForFunction(()=>/OCR terminé|Erreur OCR/.test(document.querySelector('#status')?.textContent||''),null,{timeout:120000});
+  const st=await p.locator('#status').textContent(),txt=(await p.locator('#out').inputValue()).toUpperCase();if(/Erreur OCR/.test(st))throw new Error('OCR réel: '+st);if(!/NLAB/.test(txt)||!/1234/.test(txt))throw new Error('OCR réel incorrect: '+txt.slice(0,120));
  });
  await studio('code-studio',async p=>{
   await p.locator('#file').setInputFiles('Library/demo/source-drive/json/rdc-recettes-complexes-demo.json');await p.waitForFunction(()=>document.querySelector('#mode')?.textContent==='json',null,{timeout:15000});
