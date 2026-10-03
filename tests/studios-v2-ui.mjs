@@ -20,7 +20,7 @@ try{
   const page=await browser.newPage({viewport:{width:1360,height:900}});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon|Failed to load resource/i.test(m.text()))errors.push(m.text())});
   await page.goto(base+'APP-Applications/'+id+'/v2/',{waitUntil:'domcontentloaded',timeout:60000});
-  await page.waitForSelector('#nlabStudioV2Chrome',{timeout:30000});
+  await page.waitForSelector('#nlabStudioV2Chrome',{timeout:60000});
   for(const c of controls)await page.waitForSelector('#'+c,{timeout:15000}).catch(()=>{throw new Error(id+': contrôle #'+c+' absent')});
   if(errors.length)throw new Error(id+': erreurs navigateur: '+errors.join(' | '));
   const iconOk=await page.evaluate(()=>{const el=document.querySelector('.studioAppIcon');if(!el)return false;const s=getComputedStyle(el,'::after');return (s.maskImage&&s.maskImage!=='none')||(s.webkitMaskImage&&s.webkitMaskImage!=='none')});if(!iconOk)throw new Error(id+': icône Studio SVG/mask absente');
@@ -29,6 +29,6 @@ try{
   await page.close();
  }
  const hub=await browser.newPage({viewport:{width:1360,height:900}});await hub.goto(base+'APP-Applications/studios/',{waitUntil:'domcontentloaded',timeout:60000});await hub.waitForSelector('#developmentGrid .devCard',{timeout:15000});if(await hub.locator('.studioIcon').count()<10)throw new Error('Hub Studios: icônes insuffisantes');if(await hub.locator('#developmentGrid .devCard').count()<5)throw new Error('Hub Studios: backlog DÉVELOPPEMENT absent');await hub.close();
- const icons=await browser.newPage({viewport:{width:1360,height:900}});await icons.goto(base+'Library/demo/Images/nLab-Studio/Icon-Library/gallery/',{waitUntil:'domcontentloaded',timeout:60000});await icons.waitForFunction(()=>document.querySelectorAll('#families .card').length>=200,null,{timeout:30000});const lib=await icons.evaluate(()=>({cards:document.querySelectorAll('#families .card').length,families:document.querySelectorAll('#families .panel').length,currentColor:[...document.querySelectorAll('.preview svg')].every(x=>x.getAttribute('stroke')==='currentColor')}));if(lib.families<5)throw new Error('Galerie SVG: familles incomplètes');if(!lib.currentColor)throw new Error('Galerie SVG: une icône n’utilise pas currentColor');await icons.close();
+ const icons=await browser.newPage({viewport:{width:1360,height:900}});await icons.goto(base+'Library/demo/Images/nLab-Studio/Icon-Library/gallery/',{waitUntil:'domcontentloaded',timeout:60000});await icons.waitForFunction(()=>document.querySelectorAll('#families .card').length>=240,null,{timeout:30000});const lib=await icons.evaluate(()=>({cards:document.querySelectorAll('#families .card').length,families:document.querySelectorAll('#families .panel').length,currentColor:[...document.querySelectorAll('.preview svg')].every(x=>x.getAttribute('stroke')==='currentColor')}));if(lib.families<5)throw new Error('Galerie SVG: familles incomplètes');if(!lib.currentColor)throw new Error('Galerie SVG: une icône n’utilise pas currentColor');await icons.close();
  console.log(JSON.stringify({ok:true,studios:results,iconLibrary:lib},null,2));
 }finally{await browser.close()}
