@@ -48,6 +48,50 @@ for studio_id,c in CONTRACTS["studios"].items():
         if "studio-shell.js" in html:
             fail(f"{studio_id}: V2 page still imports legacy studio-shell.js")
 
+# Validate the homogeneous nLab SVG icon libraries.
+icon_registry=ROOT/"APP-Applications/_shared/studio-v2/icon-registry.js"
+if icon_registry.exists():
+    registry_text=icon_registry.read_text(encoding="utf-8")
+    registry_names=set(re.findall(r"([A-Za-z0-9_]+):'<svg",registry_text))
+    function_dir=ROOT/"assets/icons/functions"
+    function_files={p.stem for p in function_dir.glob("*.svg")} if function_dir.exists() else set()
+    missing_files=sorted(registry_names-function_files)
+    extra_files=sorted(function_files-registry_names)
+    if missing_files: fail("function SVG library missing: "+", ".join(missing_files))
+    if extra_files: fail("function SVG library has unregistered files: "+", ".join(extra_files))
+    for svg in function_dir.glob("*.svg"):
+        t=svg.read_text(encoding="utf-8")
+        if 'viewBox="0 0 24 24"' not in t: fail(f"{svg}: function icon must use 24x24 viewBox")
+        if 'stroke="currentColor"' not in t: fail(f"{svg}: function icon must use currentColor")
+        if 'stroke-width="1.7"' not in t: fail(f"{svg}: function icon must use stroke-width 1.7")
+        if re.search(r'stroke="#|fill="#',t,re.I): fail(f"{svg}: hard-coded SVG color is forbidden")
+    # Every icon name referenced by V2 manifests must exist in the canonical registry.
+    for src in (ROOT/"APP-Applications").glob("*/v2/*"):
+        if src.suffix.lower() not in {".js",".html"} or not src.is_file(): continue
+        text=src.read_text(encoding="utf-8",errors="ignore")
+        for name in re.findall(r"icon\s*:\s*['\"]([A-Za-z0-9_-]+)['\"]",text):
+            if name not in registry_names:
+                fail(f"{src.relative_to(ROOT)}: unknown function icon {name}")
+
+studio_catalog=ROOT/"APP-Applications/studios/catalog.json"
+if studio_catalog.exists():
+    data=json.loads(studio_catalog.read_text(encoding="utf-8"))
+    studio_dir=ROOT/"assets/studios"
+    referenced=[]
+    for s in list(data.get("studios",[]))+list(data.get("future",[])):
+        icon_path=s.get("icon")
+        if not icon_path: continue
+        name=Path(icon_path).name
+        referenced.append(name)
+        target=studio_dir/name
+        if not target.exists(): fail(f"studio icon missing: {name}")
+    for svg in studio_dir.glob("*.svg"):
+        t=svg.read_text(encoding="utf-8")
+        if 'viewBox="0 0 64 64"' not in t: fail(f"{svg}: Studio icon must use 64x64 viewBox")
+        if 'stroke="currentColor"' not in t: fail(f"{svg}: Studio icon must use currentColor")
+        if 'stroke-width="3"' not in t: fail(f"{svg}: Studio icon must use stroke-width 3")
+        if re.search(r'stroke="#|fill="#',t,re.I): fail(f"{svg}: hard-coded SVG color is forbidden")
+
 # Validate demo/library references used by Studio V2 pages and runtimes.
 demo_ref_re=re.compile(r"""["'](\.\./\.\./Library/demo/[^"']*)["']""")
 for studio_id in CONTRACTS["studios"]:
