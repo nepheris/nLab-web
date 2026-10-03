@@ -53,9 +53,17 @@ try{
   await p.locator('#format').click();await p.locator('#sort').click();const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.json$/i.test((await dl).suggestedFilename()))throw new Error('JSON export invalide');
  });
  await studio('data-studio',async p=>{
-  await chooseFile(p,'#data-studio-open','Library/demo/Data/dataset-validation-complet.csv');await p.waitForFunction(()=>!/0 \/ 0/.test(document.querySelector('#shown')?.textContent||''),null,{timeout:15000});
-  await p.locator('#demoCsv').click();await p.waitForFunction(()=>!/0 \/ 0/.test(document.querySelector('#shown')?.textContent||''),null,{timeout:15000});
-  const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.json$/i.test((await dl).suggestedFilename()))throw new Error('Data export invalide');
+  await p.locator('#data-studio-open').click();
+  await p.waitForSelector('#studioInputPicker:not([hidden])');
+  await p.locator('#studioInputFilesNative').setInputFiles(['Library/demo/Data/dataset-validation-complet.csv','Library/demo/Data/dataset-validation-complet.json']);
+  await p.locator('#studioInputConfirm').click();
+  await p.waitForFunction(()=>document.querySelectorAll('#datasetFileSelect option').length>=3,null,{timeout:15000});
+  await p.locator('#datasetFileSelect').selectOption('0');
+  await p.waitForFunction(()=>!/0 \/ 0/.test(document.querySelector('#shown')?.textContent||''),null,{timeout:15000});
+  await p.locator('#demoCsv').click();
+  await p.waitForFunction(()=>!/0 \/ 0/.test(document.querySelector('#shown')?.textContent||''),null,{timeout:15000});
+  const dl=p.waitForEvent('download');await p.locator('#save').click();
+  if(!/\.json$/i.test((await dl).suggestedFilename()))throw new Error('Data export invalide');
  });
  await studio('file-studio',async p=>{
   await chooseFile(p,'#file-studio-open',['Library/demo/files/demo-input/Code/demo-script.js','Library/demo/source-drive/json/rdc-recettes-complexes-demo.json']);await p.waitForFunction(()=>/2 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
