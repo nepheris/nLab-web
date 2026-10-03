@@ -3,7 +3,7 @@
   "updated": "2026-10-03",
   "studios": {
     "image-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "file",
         "demoSynthetic",
@@ -122,7 +122,7 @@
       ]
     },
     "data-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "file",
         "demoCsv",
@@ -150,7 +150,7 @@
       ]
     },
     "file-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "files",
         "folder",
@@ -218,7 +218,7 @@
       ]
     },
     "markdown-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "metaTitle",
         "metaLang",
@@ -286,7 +286,7 @@
       ]
     },
     "pdf-studio": {
-      "test": "2.5.0",
+      "test": "2.6.0",
       "path": "APP-Applications/pdf-studio/v2/index.html",
       "runtime": "APP-Applications/pdf-studio/v2/pdf-v2.js",
       "required_ids": [
