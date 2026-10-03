@@ -63,6 +63,8 @@ icon_registry=ROOT/"APP-Applications/_shared/studio-v2/icon-registry.js"
 if icon_registry.exists():
     registry_text=icon_registry.read_text(encoding="utf-8")
     registry_names=set(re.findall(r"([A-Za-z0-9_]+):'<svg",registry_text))
+    alias_pairs=re.findall(r"([A-Za-z0-9_]+):'([A-Za-z0-9_]+)'",registry_text.split("const ALIASES=",1)[1].split("};",1)[0] if "const ALIASES=" in registry_text else "")
+    registry_aliases={a:b for a,b in alias_pairs}
     function_dir=ROOT/"assets/icons/functions"
     function_files={p.stem for p in function_dir.glob("*.svg")} if function_dir.exists() else set()
     missing_files=sorted(registry_names-function_files)
@@ -80,7 +82,8 @@ if icon_registry.exists():
         if src.suffix.lower() not in {".js",".html"} or not src.is_file(): continue
         text=src.read_text(encoding="utf-8",errors="ignore")
         for name in re.findall(r"icon\s*:\s*['\"]([A-Za-z0-9_-]+)['\"]",text):
-            if name not in registry_names:
+            canonical=registry_aliases.get(name,name)
+            if canonical not in registry_names:
                 fail(f"{src.relative_to(ROOT)}: unknown function icon {name}")
 
 studio_catalog=ROOT/"APP-Applications/studios/catalog.json"
