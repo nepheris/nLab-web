@@ -1,13 +1,22 @@
 {
   "current": null,
-  "test": "2.0.0",
+  "test": "2.1.0",
   "versions": [
+    {
+      "version": "2.1.0",
+      "label": "Markdown Studio 2.1.0 TEST",
+      "date": "2026-10-03",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Scroll synchronisé édition/aperçu et export PDF via impression navigateur."
+    },
     {
       "version": "2.0.0",
       "label": "markdown-studio 2.0.0 TEST",
       "date": "2026-10-01",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion."
     },
