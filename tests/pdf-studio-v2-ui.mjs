@@ -25,7 +25,7 @@ try{
  // Source distante : même moteur, via une URL HTTP/CORS accessible.
  const remoteUrl=new URL('/Library/demo/files/demo-input/Security/demo-redaction-secrets.pdf',url).href;
  await reveal(page,'#remoteFileUrl');await page.locator('#remoteFileUrl').fill(remoteUrl);await page.locator('#openRemoteUrl').click();
- await page.waitForFunction(()=>/Fichier distant chargé/.test(document.querySelector('#studioStatusText')?.textContent||''),null,{timeout:30000});
+ await page.waitForFunction(()=>/demo-redaction-secrets\\.pdf/i.test(document.querySelector('#sourceStatus')?.textContent||''),null,{timeout:30000});
  // Configuration Drive : test local sans déclencher OAuth réel.
  await reveal(page,'#googleClientId');
  await page.locator('#googleClientId').fill('1234567890-test.apps.googleusercontent.com');await page.locator('#googleApiKey').fill('AIzaTESTKEY');await page.locator('#googleAppId').fill('1234567890');await page.locator('#saveGoogleConfig').click();
