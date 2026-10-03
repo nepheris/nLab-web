@@ -98,6 +98,4 @@ $('#cloneDrop').addEventListener('drop',e=>parseClone(e.dataTransfer.files?.[0])
 
 const actions={generate:generateCurrent,randomize:()=>{$('#seed').value=Math.floor(Math.random()*2147483647);generateCurrent()},exportJson,exportCsv,exportXlsx,exportMd,exportHtml,exportDocx,exportPdf,advanced:()=>status('Étape suivante : clone DOCX/ODT/PDF/images avec analyse de structure et OCR optionnel, puis génération de packs multi-formats.')};
 document.addEventListener('studio-v2:action',e=>{const a=actions[e.detail?.action];if(a)Promise.resolve().then(a).catch(x=>status(x.message))});
-for(const [id,fn] of Object.entries(actions)){const el=$('#'+id);if(el)el.onclick=()=>Promise.resolve().then(fn).catch(x=>status(x.message))}
-
 setSchema(presets.generic.map(([name,type])=>({name,type})));generateTable();
