@@ -24,6 +24,7 @@ try{
   for(const c of controls)await page.waitForSelector('#'+c,{timeout:15000}).catch(()=>{throw new Error(id+': contrôle #'+c+' absent')});
   if(errors.length)throw new Error(id+': erreurs navigateur: '+errors.join(' | '));
   const iconOk=await page.evaluate(()=>{const el=document.querySelector('.studioAppIcon');if(!el)return false;const s=getComputedStyle(el,'::after');return (s.maskImage&&s.maskImage!=='none')||(s.webkitMaskImage&&s.webkitMaskImage!=='none')});if(!iconOk)throw new Error(id+': icône Studio SVG/mask absente');
+  const rb=page.locator('[data-studio-action]').first();if(await rb.count()){await rb.click();await page.waitForSelector('#ribbonContext:not([hidden])',{timeout:5000});if(!await page.locator('#ribbonContext .contextualHelp').count())throw new Error(id+': aide contextuelle dynamique absente');if(!await page.locator('#ribbonContext .contextDevHelp').count())throw new Error(id+': bloc Développement de l’aide absent');const devText=await page.locator('#ribbonContext .contextDevHelp').textContent();if(!/identification/i.test(devText))throw new Error(id+': identification développeur absente');}
   results.push({studio:id,coreV2:true,controls,studioIcon:true});
   await page.close();
  }
