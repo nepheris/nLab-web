@@ -1,20 +1,103 @@
 import{mountStudioV2}from'../../_shared/studio-v2/frame.js';
-import{resolveStudioVersions}from'../../_shared/studio-v2/version-service.js';
+import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
+import{readWorkbook,workbookToObjects,workbookFromObjects,workbookBlob,toCsv,parseCsv}from'../../_shared/studio-v2/tabular-service.js';
+import{writeStructuredDocx}from'../../_shared/studio-v2/document-format-service.js';
+import{generateDataset,inferSchema,TYPE_OPTIONS,markdownTable,generateDocumentModel,documentToMarkdown,documentToHtml}from'../../_shared/studio-v2/synthetic-data-service.js';
+import{downloadBlob}from'../../_shared/studio-v2/download-service.js';
 import studioManifest from'./studio-manifest.js';
-const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
+
+const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test',sourcePath:studioManifest.sourcePath});
+applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:VERSION_INFO.version,studioStatus:VERSION_INFO.status,coreVersion:VERSION_INFO.coreVersion,build:VERSION_INFO.build});
 await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
-const $=s=>document.querySelector(s),qsa=s=>[...document.querySelectorAll(s)];
-let data=[];
-function rng(seed){let x=seed>>>0;return()=>((x=(1664525*x+1013904223)>>>0)/4294967296)}
-function cols(){return new Set(qsa('[data-col]:checked').map(x=>x.dataset.col))}
-function make(){const n=Math.max(1,Math.min(5000,+$('#rows').value||40)),r=rng(+$('#seed').value||1),c=cols(),preset=$('#preset').value;const cats=['A','B','C','D'];data=[];for(let i=1;i<=n;i++){const o={};if(c.has('id'))o.test_id='NLAB-TEST-'+String(i).padStart(4,'0');if(c.has('name'))o.name=['Alpha','Bêta','Gamma','Delta'][Math.floor(r()*4)]+' Test '+i;if(c.has('category'))o.category=cats[Math.floor(r()*cats.length)];if(c.has('number'))o.value=preset==='finance'?Math.round((r()*20000-5000)*100)/100:Math.round(r()*100000)/100;if(c.has('date'))o.date='2026-09-'+String(1+Math.floor(r()*28)).padStart(2,'0');if(c.has('url'))o.public_url=['https://www.data.gouv.fr/','https://www.insee.fr/','https://fr.wikipedia.org/'][Math.floor(r()*3)];if(preset==='catalog')o.sku='DEMO-'+String(100000+i);if(preset==='people'){o.email='demo.'+i+'@example.test';o.phone='+33 0 00 00 '+String(i).padStart(2,'0')+' 00'}data.push(o)}render();$('#status').textContent=n+' lignes générées localement.'}
-function render(){const keys=[...new Set(data.flatMap(Object.keys))];$('#count').textContent=data.length+' ligne(s)';$('#table').innerHTML='<thead><tr>'+keys.map(k=>'<th style="border:1px solid #d8e0e7;padding:6px;background:#f4f7f9;text-align:left">'+k+'</th>').join('')+'</tr></thead><tbody>'+data.slice(0,250).map(o=>'<tr>'+keys.map(k=>'<td style="border:1px solid #e4e9ed;padding:6px">'+String(o[k]??'')+'</td>').join('')+'</tr>').join('')+'</tbody>'}
-function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-function csv(){if(!data.length)return'';const k=Object.keys(data[0]),q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';return k.map(q).join(';')+'\n'+data.map(o=>k.map(x=>q(o[x])).join(';')).join('\n')}
-$('#generate').onclick=make;$('#randomize').onclick=()=>{$('#seed').value=Math.floor(Math.random()*2147483647);make()};
-$('#exportJson').onclick=()=>dl(new Blob([JSON.stringify({schema:'nlab-demo-dataset/v1',synthetic:true,records:data},null,2)],{type:'application/json'}),'nlab-dataset-demo.json');
-$('#exportCsv').onclick=()=>dl(new Blob([csv()],{type:'text/csv;charset=utf-8'}),'nlab-dataset-demo.csv');
-$('#exportMd').onclick=()=>dl(new Blob(['# nLab Dataset Demo\n\n~~~json\n'+JSON.stringify(data.slice(0,20),null,2)+'\n~~~\n'],{type:'text/markdown'}),'nlab-dataset-demo.md');
-$('#exportXlsx').onclick=()=>{if(!window.XLSX){$('#status').textContent='XLSX indisponible';return}const wb=XLSX.utils.book_new(),ws=XLSX.utils.json_to_sheet(data);XLSX.utils.book_append_sheet(wb,ws,'Dataset');XLSX.writeFile(wb,'nlab-dataset-demo.xlsx')};
-$('#advanced').onclick=()=>$('#status').textContent='Générateurs avancés (images, QR, arborescences, packs) : moteur existant côté scripts, intégration navigateur en développement.';
-make();
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let mode='table',data=[],schema=[],docModel=null,cloneSchema=[],cloneSourceName='';
+const status=m=>{$('#status').textContent=m;const s=$('#studioStatusText');if(s)s.textContent=m};
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const typeOptions=sel=>TYPE_OPTIONS.map(([v,l])=>'<option value="'+v+'"'+(v===sel?' selected':'')+'>'+esc(l)+'</option>').join('');
+const presets={
+ generic:[['test_id','synthetic_id'],['name','full_name'],['category','category'],['value','decimal'],['date','date'],['public_url','url']],
+ people:[['person_id','synthetic_id'],['first_name','first_name'],['last_name','last_name'],['email','email'],['phone','phone'],['city','city']],
+ finance:[['transaction_id','synthetic_id'],['date','date'],['amount','price'],['tax_rate','percentage'],['category','category'],['reference','uuid']],
+ catalog:[['sku','sku'],['label','lorem'],['ean13','ean13'],['price','price'],['category','category'],['image_url','image_url']],
+ logistics:[['package_id','synthetic_id'],['sku','sku'],['ean13','ean13'],['code128','code128'],['qr_payload','qr_payload'],['data_matrix','data_matrix']]
+};
+function setSchema(rows){schema=rows.map((x,i)=>({id:'c'+Date.now()+'-'+i,name:x.name||x[0],type:x.type||x[1]||'category',enabled:x.enabled!==false}));renderSchema()}
+function renderSchema(){
+ const host=$('#schemaRows');host.innerHTML='';
+ schema.forEach((c,i)=>{
+  const row=document.createElement('div');row.className='schemaRow';row.dataset.schemaIndex=i;
+  row.innerHTML='<input class="colName" aria-label="Nom colonne" value="'+esc(c.name)+'"><select class="colType" aria-label="Type colonne">'+typeOptions(c.type)+'</select><button class="removeCol" type="button" title="Supprimer la colonne">×</button>';
+  row.querySelector('.colName').oninput=e=>c.name=e.target.value;
+  row.querySelector('.colType').onchange=e=>c.type=e.target.value;
+  row.querySelector('.removeCol').onclick=()=>{schema.splice(i,1);renderSchema()};
+  host.append(row)
+ })
+}
+function applyPreset(){
+ const p=$('#preset').value;setSchema((presets[p]||presets.generic).map(([name,type])=>({name,type})));status('Preset '+p+' chargé.')
+}
+function renderTable(){
+ $('#docPreview').hidden=true;$('#table').hidden=false;$('#previewTitle').textContent='Aperçu tabulaire';$('#count').textContent=data.length+' ligne(s)';
+ const keys=[...new Set(data.flatMap(o=>Object.keys(o||{})))];
+ $('#table').innerHTML='<thead><tr>'+keys.map(k=>'<th>'+esc(k)+'</th>').join('')+'</tr></thead><tbody>'+data.slice(0,250).map(o=>'<tr>'+keys.map(k=>'<td>'+esc(o[k]??'')+'</td>').join('')+'</tr>').join('')+'</tbody>';
+}
+function renderDocument(){
+ $('#table').hidden=true;$('#docPreview').hidden=false;$('#previewTitle').textContent='Aperçu document';$('#count').textContent=(docModel?.blocks?.length||0)+' bloc(s)';
+ $('#docPreview').innerHTML=documentToHtml(docModel||{}).match(/<body>([\s\S]*)<\/body>/i)?.[1]||'';
+}
+function generateTable(){
+ data=generateDataset(schema,Number($('#rows').value)||40,Number($('#seed').value)||1);renderTable();status(data.length+' lignes synthétiques générées.')
+}
+function generateDoc(){
+ docModel=generateDocumentModel({title:$('#docTitle').value||'Document de démonstration',chapters:Number($('#docChapters').value)||3,sections:Number($('#docSections').value)||2,paragraphs:Number($('#docParagraphs').value)||2,seed:Number($('#seed').value)||1,includeTable:$('#docTables').checked,includeImages:$('#docImages').checked});renderDocument();status('Document synthétique généré : '+docModel.blocks.length+' blocs.')
+}
+function setMode(next){
+ mode=next;$$('.modeBtn').forEach(b=>b.classList.toggle('active',b.dataset.mode===next));$$('.modePanel').forEach(p=>p.hidden=p.dataset.panel!==next);
+ if(next==='document'){if(!docModel)generateDoc();else renderDocument()}else renderTable()
+}
+function generateCurrent(){if(mode==='document')generateDoc();else if(mode==='clone'){data=generateDataset(cloneSchema,Number($('#cloneRows').value)||100,Number($('#seed').value)||1);renderTable();status('Clone synthétique généré : '+data.length+' lignes, '+cloneSchema.length+' colonnes.')}else generateTable()}
+function nameStem(){return mode==='document'?'nlab-document-demo':'nlab-dataset-demo'}
+function ensureTable(){if(mode==='document')throw new Error('Export tabulaire indisponible en mode Document.');if(!data.length)generateCurrent()}
+async function exportJson(){if(mode==='document')return downloadBlob(new Blob([JSON.stringify(docModel,null,2)],{type:'application/json'}),nameStem()+'.json');ensureTable();downloadBlob(new Blob([JSON.stringify({schema:'nlab-demo-dataset/v2',synthetic:true,columns:schema,records:data},null,2)],{type:'application/json'}),nameStem()+'.json')}
+async function exportCsv(){ensureTable();downloadBlob(new Blob([toCsv(data,{delimiter:';',bom:true})],{type:'text/csv;charset=utf-8'}),nameStem()+'.csv')}
+async function exportXlsx(){ensureTable();downloadBlob(workbookBlob(workbookFromObjects(data,{sheetName:'Synthetic'}),'xlsx'),nameStem()+'.xlsx')}
+async function exportMd(){if(mode==='document')downloadBlob(new Blob([documentToMarkdown(docModel)],{type:'text/markdown;charset=utf-8'}),nameStem()+'.md');else{ensureTable();downloadBlob(new Blob(['# nLab Dataset Demo\n\n'+markdownTable(data)],{type:'text/markdown;charset=utf-8'}),nameStem()+'.md')}}
+async function exportHtml(){if(mode!=='document')throw new Error('HTML riche disponible en mode Document.');downloadBlob(new Blob([documentToHtml(docModel)],{type:'text/html;charset=utf-8'}),nameStem()+'.html')}
+async function exportDocx(){if(mode!=='document')throw new Error('DOCX disponible en mode Document.');downloadBlob(await writeStructuredDocx(docModel),nameStem()+'.docx')}
+async function exportPdf(){
+ if(mode!=='document')throw new Error('PDF disponible en mode Document.');
+ const api=window.jspdf?.jsPDF;if(!api)throw new Error('jsPDF indisponible');
+ const pdf=new api({unit:'mm',format:'a4'}),margin=16,maxW=178;let y=18;
+ const nextPage=(need=10)=>{if(y+need>280){pdf.addPage();y=18}};
+ for(const b of docModel.blocks||[]){
+  if(/^h[123]$/.test(b.type)){const lvl=Number(b.type[1]),size={1:18,2:15,3:12}[lvl]||12;nextPage(size);pdf.setFont('helvetica','bold');pdf.setFontSize(size);const lines=pdf.splitTextToSize(b.text,maxW);pdf.text(lines,margin,y);y+=lines.length*(size*.42)+4}
+  else if(b.type==='p'){pdf.setFont('helvetica','normal');pdf.setFontSize(10);const lines=pdf.splitTextToSize(b.text,maxW);for(const line of lines){nextPage(5);pdf.text(line,margin,y);y+=4.6}y+=2}
+  else if(b.type==='table'){pdf.setFontSize(8);const rows=[b.columns,...b.rows];for(const row of rows){nextPage(6);pdf.text(row.map(String).join('  |  '),margin,y);y+=5}y+=2}
+  else if(b.type==='image'){nextPage(16);pdf.setFontSize(9);pdf.text('[Illustration synthétique] '+b.alt,margin,y);y+=10}
+ }
+ pdf.save(nameStem()+'.pdf');status('PDF de démonstration téléchargé.')
+}
+async function parseClone(file){
+ const ext=(file.name.split('.').pop()||'').toLowerCase();let records=[];
+ if(ext==='csv'||file.type.includes('csv'))records=parseCsv(await file.text(),{header:true,dynamicTyping:true});
+ else if(ext==='json'||file.type.includes('json')){const j=JSON.parse(await file.text());records=Array.isArray(j)?j:(j.records||j.data||[j])}
+ else if(['xlsx','xls'].includes(ext)){records=workbookToObjects(await readWorkbook(file))}
+ else throw new Error('Format structure non pris en charge dans cette étape : '+ext.toUpperCase());
+ if(!records.length)throw new Error('Aucune ligne exploitable.');
+ cloneSchema=inferSchema(records);cloneSourceName=file.name;$('#cloneSummary').textContent=file.name+' · '+cloneSchema.length+' colonne(s) détectée(s) : '+cloneSchema.map(c=>c.name+' → '+c.type).join(', ');$('#editInTableMode').disabled=false;
+ data=generateDataset(cloneSchema,Number($('#cloneRows').value)||100,Number($('#seed').value)||1);renderTable();status('Structure détectée sans recopier les valeurs source. Jeu de démonstration généré.')
+}
+$$('.modeBtn').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+$('#preset').onchange=applyPreset;$('#applyPreset').onclick=applyPreset;$('#addColumn').onclick=()=>{schema.push({id:'c'+Date.now(),name:'colonne_'+(schema.length+1),type:'category',enabled:true});renderSchema()};
+$('#editInTableMode').onclick=()=>{if(!cloneSchema.length)return;setSchema(cloneSchema);setMode('table');status('Types détectés chargés dans le configurateur de colonnes.')};
+$('#cloneDrop').onclick=()=>$('#cloneFile').click();$('#cloneDrop').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('#cloneFile').click()};$('#cloneFile').onchange=e=>parseClone(e.target.files?.[0]).catch(x=>status(x.message));
+for(const ev of ['dragenter','dragover'])$('#cloneDrop').addEventListener(ev,e=>{e.preventDefault();e.currentTarget.classList.add('drag')});
+for(const ev of ['dragleave','drop'])$('#cloneDrop').addEventListener(ev,e=>{e.preventDefault();e.currentTarget.classList.remove('drag')});
+$('#cloneDrop').addEventListener('drop',e=>parseClone(e.dataTransfer.files?.[0]).catch(x=>status(x.message)));
+
+const actions={generate:generateCurrent,randomize:()=>{$('#seed').value=Math.floor(Math.random()*2147483647);generateCurrent()},exportJson,exportCsv,exportXlsx,exportMd,exportHtml,exportDocx,exportPdf,advanced:()=>status('Étape suivante : clone DOCX/ODT/PDF/images avec analyse de structure et OCR optionnel, puis génération de packs multi-formats.')};
+document.addEventListener('studio-v2:action',e=>{const a=actions[e.detail?.action];if(a)Promise.resolve().then(a).catch(x=>status(x.message))});
+for(const [id,fn] of Object.entries(actions)){const el=$('#'+id);if(el)el.onclick=()=>Promise.resolve().then(fn).catch(x=>status(x.message))}
+
+setSchema(presets.generic.map(([name,type])=>({name,type})));generateTable();
