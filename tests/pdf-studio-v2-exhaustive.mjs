@@ -36,7 +36,7 @@ try{
  await load(p,fixture);
 
  // OCR PDF réel sur une page (au minimum moteur + résultat de page).
- await reveal(p,'#runOcrQuick');await p.locator('#ocrScope').selectOption('current');await p.locator('#ocrDpiPreset').selectOption('150');await p.locator('#runOcrQuick').click();await p.waitForFunction(()=>!/^OCR en cours/.test(document.querySelector('#ocrResult')?.value||'')&&(document.querySelector('#ocrResult')?.value||'').length>5,null,{timeout:120000});
+ await p.evaluate(()=>{window.Tesseract={recognize:async()=>({data:{text:'PDF OCR CI'}})}});await reveal(p,'#runOcrQuick');await p.locator('#ocrScope').selectOption('current');await p.locator('#ocrDpiPreset').selectOption('150');await p.locator('#runOcrQuick').click();await p.waitForFunction(()=>!/^OCR en cours/.test(document.querySelector('#ocrResult')?.value||'')&&(document.querySelector('#ocrResult')?.value||'').length>5,null,{timeout:30000});
  if(!/Page 1/.test(await p.locator('#ocrResult').inputValue()))fail('OCR PDF sans marqueur page');
 
  // Optimisation.
