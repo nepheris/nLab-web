@@ -37,13 +37,16 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
     <a class="studioLogo" href="${esc(manifest.homeHref||'../../')}" aria-label="nLab Web">
       <img src="${esc(manifest.logoHref||'../../assets/branding/nlab-wordmark.svg')}" alt="nLab">
     </a>
-    <div class="studioBrand">
+    <div class="studioIdentity">
+      <span class="studioAppIcon"><img src="${esc(manifest.studioIconHref||('../../assets/studios/'+manifest.id+'.svg'))}" alt="" aria-hidden="true"></span>
+      <div class="studioBrand">
       <b>${esc(manifest.name)}</b>
       <small>${esc(manifest.subtitle||'nLab Studio')}${versionInfo.version?' · v'+esc(versionInfo.version):''}</small>
       <span class="studioHeaderMeta">
         <span class="studioPill local">● local-first</span>
         <span class="studioPill test">${esc(versionInfo.status||'TEST')}</span>
       </span>
+      </div>
     </div>
     <nav class="studioGlobalNav" aria-label="Navigation nLab">
       <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'APP-Applications/')}">Applications</a>
