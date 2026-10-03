@@ -4,6 +4,7 @@ import studioManifest from'./studio-manifest.js';
 import{findFeature,renderFeatureHelp,renderHelpCatalog,listManifestFeatures}from'../../_shared/studio-v2/help.js';
 import{PDFEngine}from'../v1/pdf-engine.js';
 import{recordHistory,loadHistory}from'../../_shared/studio-v2/history.js';
+import{buildArtifactManifest,downloadManifest}from'../../_shared/studio-v2/artifact-identity.js';
 import{StudioPageViewer}from'../../_shared/studio-v2/page-viewer.js';
 import{createStudioContext}from'../../_shared/studio-v2/studio-context.js';
 import{detectFileCapabilities}from'../../_shared/studio-v2/file-capabilities.js';
@@ -544,6 +545,7 @@ async function savePdfMetadataFields(){
 async function cleanPdfMetadata(){
  assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');await checkpoint();await advancedTools.cleanMetadata();markPdfModifiedAfterSignature();await renderAll();setStatus('Métadonnées PDF nettoyées.')
 }
+let pdfArtifactManifest=null;
 let unlockPdfFile=null;
 let compareFileA=null,compareFileB=null;
 async function runCompare(){
@@ -805,5 +807,7 @@ registerPipelineHandler('rotateLeft',async()=>{await rotate(-90);return engine})
 document.addEventListener('studio-v2:workflow-run',async e=>{const steps=(e.detail?.steps||[]).map(action=>({capability:action}));if(!steps.length)return;try{await runPipeline({steps,context:{input:engine,studio:'pdf-studio',fileName:engine.fileName},onProgress:x=>setStatus('Workflow '+(x.index+1)+'/'+x.total+' · '+x.capability)})}catch(err){setStatus('Workflow interrompu : '+err.message)}});
 
 $('#copyDiagnostics').onclick=async()=>{const tests=runCapabilitySelfTests({manifest:studioManifest,root:document}),info={studio:'pdf-studio',version:runtimeVersion.studioVersion,coreVersion:runtimeVersion.coreVersion,documentSession:session.snapshot(),file:engine.fileName,pages:engine.pageCount,currentPage:engine.currentPage,selectedPages:[...engine.selected],fileCollection:{count:fileBrowser.items.length,selected:fileBrowser.selected.size,view:fileBrowser.view,sort:fileBrowser.sortMode,groupBy:fileBrowser.groupBy},pagesPerRow:viewer.pagesPerRow,zoom:viewer.zoom,previewScale:viewer.previewScale,previewColumns:viewer.previewColumns,fileCapabilities:activeFileCapabilities,capabilityTests:tests,userAgent:navigator.userAgent};await navigator.clipboard?.writeText(JSON.stringify(info,null,2));setStatus('Diagnostic copié')};
+$('#generatePdfArtifact')?.addEventListener('click',async()=>{try{if(!engine.pageCount)throw new Error('Chargez un PDF.');const blob=await currentBlob();pdfArtifactManifest=await buildArtifactManifest({blob,studio:'pdf-studio',studioVersion:runtimeVersion.studioVersion,source:engine.fileName,operations:['current-document'],meta:{pages:engine.pageCount}});$('#pdfArtifactStatus').textContent=pdfArtifactManifest.id+' · SHA-256 '+pdfArtifactManifest.sha256.slice(0,20)+'…';setStatus('Empreinte documentaire générée.')}catch(e){setStatus(e.message)}});
+$('#exportPdfArtifact')?.addEventListener('click',async()=>{try{if(!pdfArtifactManifest){$('#generatePdfArtifact').click();await new Promise(r=>setTimeout(r,250))}if(!pdfArtifactManifest)throw new Error('Générez d’abord une empreinte.');downloadManifest(pdfArtifactManifest,(engine.fileName||'document.pdf').replace(/\.pdf$/i,'')+'.manifest.json')}catch(e){setStatus(e.message)}});
 window.__NLAB_PDF_STUDIO__={engine,objectLayer,viewer,session,getAnnotations:(page=engine.currentPage)=>engine.annotations(page),getAllAnnotations:()=>[...engine.pageAnnotations.entries()].map(([page,items])=>({page,type:typeof page,items:items.map(x=>({id:x.id,type:x.type,subtype:x.subtype,wPct:x.wPct}))})),version:runtimeVersion};
 updateNamingPreview();updateOutputPreview();setStatus('PDF Studio '+runtimeVersion.studioStatus+' v'+runtimeVersion.studioVersion+' · Studio Core v'+runtimeVersion.coreVersion+' prêt');
