@@ -66,7 +66,6 @@ async function savePdf(){
 }
 
 $('#fileInput').addEventListener('change',e=>loadPdf(e.target.files?.[0]).catch(x=>status(x.message)));
-$('#openPdf').addEventListener('click',()=>$('#fileInput').click());
 $('#dropTarget').addEventListener('click',()=>$('#fileInput').click());$('#dropTarget').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')$('#fileInput').click()});
 for(const ev of ['dragenter','dragover'])$('#viewerStage').addEventListener(ev,e=>{e.preventDefault();$('#dropTarget')?.classList.add('drag')});
 for(const ev of ['dragleave','drop'])$('#viewerStage').addEventListener(ev,e=>{e.preventDefault();$('#dropTarget')?.classList.remove('drag')});
@@ -77,10 +76,6 @@ $('#assetKind').onchange=()=>refreshAssets().catch(e=>status(e.message));$('#ass
 $('#importAsset').onclick=()=>$('#assetFile').click();$('#assetFile').onchange=async e=>{try{const f=e.target.files?.[0];if(!f)return;await saveAssetBlob(f,$('#assetKind').value,fileStem(f.name)||($('#assetKind').value==='initials'?'Paraphe':'Signature'));status('Preset importé.')}catch(x){status(x.message)}};
 $('#widthPct').oninput=e=>$('#widthValue').textContent=e.target.value+' %';
 $('#applyAsset').onclick=()=>applyAsset().catch(e=>status(e.message));$('#downloadPdf').onclick=()=>savePdf().catch(e=>status(e.message));
-$('#applySignature').onclick=()=>{$('#assetKind').value='signature';refreshAssets().then(()=>status('Mode signature. Choisissez un preset ou dessinez.'))};
-$('#applyInitials').onclick=()=>{$('#assetKind').value='initials';refreshAssets().then(()=>status('Mode paraphe. Choisissez un preset ou dessinez.'))};
-$('#savePdf').onclick=()=>savePdf().catch(e=>status(e.message));
-$('#openFullStudio').onclick=()=>{location.href='../../pdf-studio/v2/?from=pdf-sign'};
 
 const canvas=$('#drawCanvas'),ctx=canvas.getContext('2d');ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=4;ctx.strokeStyle='#111';let drawing=false,last=null;
 const point=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}};
