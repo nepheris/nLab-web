@@ -629,9 +629,7 @@
       "required_runtime_strings": [
         "mountStudioV2",
         "runOcr",
-        "scan.capture.camera",
-        "scan.image.cleanup",
-        "scan.export.pdf"
+        "downloadBlob"
       ],
       "required_capabilities": [
         "scan.capture.camera",
