@@ -63,7 +63,7 @@ try{
   await p.locator('#clearHistory').click();if(!/Aucun historique/.test(await p.locator('#history').textContent()))throw new Error('Effacement historique QR inactif');
  });
  await studio('markdown-studio',async p=>{
-  await p.locator('#metaTitle').fill('Titre CI');await p.locator('#metaLang').fill('fr');await p.locator('#metaAuthor').fill('nLab CI');await p.locator('#syncMeta').click();await p.waitForFunction(()=>document.querySelector('#mdEditor')?.value.includes('Titre CI'),null,{timeout:5000});
+  await p.locator('#metaTitle').fill('Titre CI');await p.locator('#metaLang').fill('fr');await p.locator('#metaAuthor').fill('nLab CI');await p.locator('#syncMeta').click();await p.waitForTimeout(250);const metaSrc=await p.locator('#mdEditor').inputValue();if(!metaSrc.includes('Titre CI'))throw new Error('Sync meta Markdown inactif · yamlStatus='+(await p.locator('#yamlStatus').textContent())+' · status='+(await p.locator('#status').textContent())+' · source='+metaSrc.slice(0,220));
   await p.locator('#refreshToc').click();if(await p.locator('#toc button').count()<1)throw new Error('TOC Markdown vide');
   await p.locator('#addQuote').click();await p.locator('#addCode').click();await p.locator('#addTable2x3').click();
   await p.locator('#yamlEditor').fill('title: YAML CI\nlang: fr\nauthor: nLab');await p.locator('#applyYaml').click();if(!/YAML valide/.test(await p.locator('#yamlStatus').textContent()))throw new Error('YAML Markdown invalide');
