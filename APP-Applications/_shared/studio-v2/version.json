@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "channel": "test",
-  "notes": "Studio Core 2.6 : registre SVG partagé, tri A→Z/Z→A, vues avancées, thèmes d’icônes partiels avec fallback nLab Line et pilotage des couleurs par currentColor.",
+  "notes": "Studio Core 2.6.1 : thème d’icônes configurable dans les paramètres Core, registre partagé exposé aux Studios et Markdown Studio migré vers des identifiants d’icônes sémantiques.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }

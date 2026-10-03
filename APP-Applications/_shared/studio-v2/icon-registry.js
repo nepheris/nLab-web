@@ -175,6 +175,7 @@ export function setIconTheme(id='nlab-line'){
   return activeTheme;
 }
 export function getIconTheme(){return activeTheme}
+export const iconThemeNames=()=>[...THEMES.keys()];
 export function icon(name,{className='studioIcon',label=null}={}){
   const svg=themedSvg(name);
   return svg.replace('<svg ','<svg class="'+className+'" '+(label?'role="img" aria-label="'+String(label).replace(/"/g,'&quot;')+'"':'aria-hidden="true"')+' ');
