@@ -22,6 +22,20 @@ try{
   await p.locator('#undoEdit').click();await p.locator('#resetAll').click();
   const dl=p.waitForEvent('download');await p.locator('#export').click();if(!/\.(png|jpg|jpeg|webp)$/i.test((await dl).suggestedFilename()))throw new Error('Image export invalide');
  });
+ await studio('merge-studio',async p=>{
+  await p.locator('#merge-studio-open').click();
+  await p.waitForSelector('#studioInputPicker:not([hidden])');
+  await p.locator('#studioInputFilesNative').setInputFiles(['Library/demo/Images/testNumregles.pdf','Library/demo/Images/testNumeregles 2..pdf','Library/demo/files/demo-input/Security/demo-redaction-secrets.pdf']);
+  await p.locator('#studioInputConfirm').click();
+  await p.waitForFunction(()=>document.querySelectorAll('#mergeList .mergeItem').length===3,null,{timeout:20000});
+  await p.locator('#moveMergeDown').click();
+  await p.locator('[data-remove-merge="2"]').click();
+  await p.waitForFunction(()=>document.querySelectorAll('#mergeList .mergeItem').length===2,null,{timeout:10000});
+  await p.locator('#mergeOutputName').fill('fusion-ci.pdf');
+  const dl=p.waitForEvent('download');await p.locator('#mergeNow').click();
+  const d=await dl;if(!/fusion-ci\.pdf$/i.test(d.suggestedFilename()))throw new Error('Merge Studio export invalide');
+  await p.waitForFunction(()=>/Fusion créée/.test(document.querySelector('#mergeStatus')?.textContent||''),null,{timeout:20000});
+ });
  await studio('scan-studio',async p=>{
   await p.locator('#fileInput').setInputFiles(['Library/demo/files/demo-input/Images/demo-document-illustration.png','Library/demo/Images/demo-image-color.png']);
   await p.waitForFunction(()=>document.querySelectorAll('#pageList .pageItem').length===2,null,{timeout:15000});
