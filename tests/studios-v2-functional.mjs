@@ -3,10 +3,10 @@ const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/';
 const browser=await chromium.launch({headless:true});
 const results=[];
 async function chooseFile(page,button,path){const fp=page.waitForEvent('filechooser');await page.locator(button).click();const fc=await fp;await fc.setFiles(path)}
-async function studio(id,fn){
+async function studio(id,fn,versionPath='v2/'){
  const page=await browser.newPage({viewport:{width:1360,height:900},acceptDownloads:true});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon|Failed to load resource/i.test(m.text()))errors.push(m.text())});
- await page.goto(base+'APP-Applications/'+id+'/v2/',{waitUntil:'domcontentloaded',timeout:60000});
+ await page.goto(base+'APP-Applications/'+id+'/'+versionPath,{waitUntil:'domcontentloaded',timeout:60000});
  await page.waitForSelector('#nlabStudioV2Chrome',{timeout:30000});
  await fn(page);
  if(errors.length)throw new Error(id+': erreurs navigateur: '+errors.join(' | '));
@@ -35,7 +35,7 @@ try{
   const dl=p.waitForEvent('download');await p.locator('#mergeNow').click();
   const d=await dl;if(!/fusion-ci\.pdf$/i.test(d.suggestedFilename()))throw new Error('Merge Studio export invalide');
   await p.waitForFunction(()=>/Fusion créée/.test(document.querySelector('#mergeStatus')?.textContent||''),null,{timeout:20000});
- });
+ },'v1/');
  await studio('scan-studio',async p=>{
   await p.locator('#fileInput').setInputFiles(['Library/demo/files/demo-input/Images/demo-document-illustration.png','Library/demo/Images/demo-image-color.png']);
   await p.waitForFunction(()=>document.querySelectorAll('#pageList .pageItem').length===2,null,{timeout:15000});
