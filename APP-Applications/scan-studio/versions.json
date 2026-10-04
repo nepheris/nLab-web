@@ -13,6 +13,15 @@
       "notes": "Core 3.0 : Input commun, sélection de pages, Undo/Redo, rotation libre, réglages image partagés, OCR page/sélection/document et PDF sélection avec couche OCR recherchable."
     },
     {
+      "version": "0.3.0",
+      "label": "Scan Studio 0.3.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "historical",
+      "href": "./v2/",
+      "notes": "Core 3.0 : Input commun, sélection de pages, Undo/Redo, rotation libre, réglages image partagés, OCR page/sélection/document et PDF sélection avec couche OCR recherchable."
+    },
+    {
       "version": "0.2.0",
       "label": "Scan Studio 0.2.0 TEST",
       "date": "2026-10-04",
