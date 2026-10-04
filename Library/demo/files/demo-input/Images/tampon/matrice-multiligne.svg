@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" role="img" aria-label="LIGNE 1 LIGNE 2 LIGNE 3">
+  <g class="stamp-ink" fill="none" stroke="currentColor" color="currentColor">
+    <rect x="8" y="8" width="804" height="364" rx="18" stroke-width="10"/>
+    <rect x="22" y="22" width="776" height="336" rx="11" fill="none" stroke="currentColor" stroke-width="5"/>
+  </g>
+  <g class="stamp-text" color="currentColor">
+    <text x="410.0" y="127.30000000000001" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="800" letter-spacing="2" fill="currentColor">LIGNE 1</text>
+<text x="410.0" y="190.0" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="800" letter-spacing="2" fill="currentColor">LIGNE 2</text>
+<text x="410.0" y="252.7" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="800" letter-spacing="2" fill="currentColor">LIGNE 3</text>
+  </g>
+</svg>

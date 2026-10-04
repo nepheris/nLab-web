@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" role="img" aria-label="Matrice de tampon circulaire">
+  <g class="stamp-ink" fill="none" stroke="currentColor" color="currentColor">
+    <circle cx="210" cy="210" r="194" stroke-width="10"/>
+    <circle cx="210" cy="210" r="170" stroke-width="5"/>
+    <path d="M92 210H328" stroke-width="5"/>
+  </g>
+  <g class="stamp-text" fill="currentColor" color="currentColor" font-family="Arial, Helvetica, sans-serif" font-weight="800" text-anchor="middle">
+    <text x="210" y="166" font-size="42" letter-spacing="2">VOTRE TEXTE</text>
+    <text x="210" y="260" font-size="34" letter-spacing="1.5">LIGNE 2</text>
+  </g>
+</svg>
