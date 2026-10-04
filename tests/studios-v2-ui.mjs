@@ -42,7 +42,7 @@ try{
   results.push({studio:'pdf-sign',derived:true,responsive:true,coreVersion:responsive.core,version:responsive.version});
   await derived.close();
   const mergeDerived=await browser.newPage({viewport:{width:390,height:844}});
-  const mergeErrors=[];mergeDerived.on('pageerror',e=>mergeErrors.push(e.message));
+  const mergeErrors=[];mergeDerived.on('pageerror',e=>mergeErrors.push(e.stack||e.message));
   await mergeDerived.goto(base+'APP-Applications/merge-studio/v1/',{waitUntil:'domcontentloaded',timeout:60000});
   await mergeDerived.waitForSelector('#nlabStudioV2Chrome',{timeout:60000});
   for(const id of ['addMergeFiles','mergeList','mergeOutputName','mergeNow','mergePreview'])await mergeDerived.waitForSelector('#'+id,{state:'attached',timeout:15000});
