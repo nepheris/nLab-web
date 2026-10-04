@@ -18,6 +18,7 @@ import{mountSteppedPresetControl}from'../../_shared/studio-v2/stepped-preset-con
 import{mountAssetPicker}from'../../_shared/studio-v2/asset-picker.js';
 import{bindColorHexControl}from'../../_shared/studio-v2/color-control.js';
 import{lightweightThumbnail}from'../../_shared/studio-v2/thumbnail-service.js';
+import{downloadJson}from'../../_shared/studio-v2/download-service.js';
 import{renderMarkdownFilePreview,renderPlainTextPreview}from'../../_shared/studio-v2/file-preview-service.js';
 import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../../_shared/studio-v2/output-service.js';
@@ -34,7 +35,7 @@ import{AdvancedPDFTools}from'../v1/advanced-tools.js';
 import{PdfObjectLayer}from'./object-layer.js';
 import{DriveService}from'../../_shared/studio-v2/drive-service.js';
 import{DocumentConversion}from'./document-conversion.js';
-import{bwipOptions,validatePayload}from'../../_shared/studio-v2/symbology-service.js';
+import{generateSymbologyBlob,symbologyDataUrl}from'../../_shared/studio-v2/symbology-service.js';
 import{SYSTEM_STAMPS,createStampSvg,stampSvgToPngDataUrl,downloadStampSvg,stampSvgFileName}from'./stamp-svg-service.js';
 
 const runtimeVersion=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test',sourcePath:studioManifest.sourcePath});
@@ -141,7 +142,6 @@ function refreshStampEditorPreview(){
  const prefix=$('#stampEditorPrefixEnabled').checked?templates.resolve($('#stampEditorPrefix').value||'',engine.fileName,ctx):'',suffix=$('#stampEditorSuffixEnabled').checked?templates.resolve($('#stampEditorSuffix').value||'',engine.fileName,ctx):'';
  const base=(engine.fileName||'document.pdf').replace(/\.pdf$/i,'');$('#stampEditorFilenamePreview').textContent=(prefix||'')+base+(suffix||'')+'.pdf'
 }
-function downloadJson(data,name){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function syncStampDates(){
  const values={STAMP_DATE:$('#stampDate')?.value||todayValue(),DATE_A:$('#stampDateA')?.value||todayValue(),DATE_B:$('#stampDateB')?.value||todayValue(),DATE_C:$('#stampDateC')?.value||todayValue(),DATE_D:$('#stampDateD')?.value||todayValue()};
  templates.setValues(values);return values
@@ -263,7 +263,7 @@ $('#stampTemplate')?.addEventListener('input',()=>refreshStampPreview().catch(()
 $('#stampSvgShape')?.addEventListener('change',refreshStampSvgPreview);
 $('#stampSvgText')?.addEventListener('input',refreshStampSvgPreview);
 bindColorHexControl({colorInput:$('#stampSvgColor'),hexInput:$('#stampSvgColorHex'),onChange:()=>refreshStampSvgPreview()});
-$('[data-stamp-svg-preset]').forEach(b=>b.addEventListener('click',()=>{const item=SYSTEM_STAMPS.find(x=>x.id===b.dataset.stampSvgPreset);if(!item)return;$('#stampSvgShape').value=item.shape;$('#stampSvgText').value=item.text;$('#stampTemplate').value='';$('#stampImageAsset').value='';generatedStampActive=true;refreshStampSvgPreview();refreshStampPreview().catch(()=>{});setStatus('Tampon SVG « '+item.label+' » prêt à être placé.')})); 
+$$('[data-stamp-svg-preset]').forEach(b=>b.addEventListener('click',()=>{const item=SYSTEM_STAMPS.find(x=>x.id===b.dataset.stampSvgPreset);if(!item)return;$('#stampSvgShape').value=item.shape;$('#stampSvgText').value=item.text;$('#stampTemplate').value='';$('#stampImageAsset').value='';generatedStampActive=true;refreshStampSvgPreview();refreshStampPreview().catch(()=>{});setStatus('Tampon SVG « '+item.label+' » prêt à être placé.')})); 
 $('#useStampSvg')?.addEventListener('click',()=>{$('#stampTemplate').value='';$('#stampImageAsset').value='';generatedStampActive=true;refreshStampSvgPreview();refreshStampPreview().catch(()=>{});setStatus('Tampon SVG actif.')});
 $('#downloadStampSvg')?.addEventListener('click',()=>{const svg=refreshStampSvgPreview();downloadStampSvg(svg,stampSvgFileName($('#stampSvgText')?.value||'tampon'))});
 $('#saveStampSvgAsset')?.addEventListener('click',async()=>{try{await saveGeneratedStampSvgAsset();setStatus('Tampon SVG ajouté à la galerie personnelle.')}catch(e){setStatus(e.message)}});
@@ -468,10 +468,8 @@ $('#addFormTextField')?.addEventListener('click',async()=>{try{assertPdfMutation
 $('#fillFormsJson')?.addEventListener('click',async()=>{try{assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const values=JSON.parse($('#formFillJson').value||'{}');await checkpoint();await advancedTools.fillForms(values);markPdfModifiedAfterSignature();await renderAll();await inspectFormsQuick();setStatus('Champs de formulaire remplis.')}catch(e){setStatus('Formulaire : '+e.message)}});
 
 async function qrDataUrl(value){
- if(typeof QRCodeStyling!=='function')throw new Error('Moteur QR indisponible');
- const qr=new QRCodeStyling({width:360,height:360,type:'canvas',data:String(value||' '),margin:12,qrOptions:{errorCorrectionLevel:'M'},dotsOptions:{type:'square',color:'#000000'},backgroundOptions:{color:'#ffffff'}});
- const blob=await qr.getRawData('png');if(!blob)throw new Error('Génération QR impossible');
- return await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.readAsDataURL(blob)})
+ const r=await symbologyDataUrl('qrcode',value,{size:360,margin:12,fg:'#000000',bg:'#ffffff',ecc:'M',dots:'square'},'png');
+ return r.url
 }
 $('#applyHeaderFooter')?.addEventListener('click',async()=>{try{assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const pages=toolPages('headerFooterScope');await checkpoint();await advancedTools.headerFooter(pages,{headerLeft:$('#headerLeft').value,header:$('#headerCenter').value,headerRight:$('#headerRight').value,footerLeft:$('#footerLeft').value,footer:$('#footerCenter').value,footerRight:$('#footerRight').value,fontSize:Number($('#headerFooterFontSize').value)||9,qrTemplate:$('#headerFooterQr')?.value||'',qrPosition:$('#headerFooterQrPos')?.value||'none',qrSize:Number($('#headerFooterQrSize')?.value)||38,qrFactory:qrDataUrl});markPdfModifiedAfterSignature();await renderAll();setStatus('En-tête / pied appliqué sur '+pages.length+' page(s).')}catch(e){setStatus(e.message)}});
 $('#applyWatermark')?.addEventListener('click',async()=>{try{assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');const pages=toolPages('watermarkScope');await checkpoint();await advancedTools.watermarkText(pages,{text:$('#watermarkText').value||'CONFIDENTIEL',opacity:(Number($('#watermarkOpacity').value)||18)/100,rotation:Number($('#watermarkRotation').value)||0,fontSize:Number($('#watermarkFontSize').value)||42,position:$('#watermarkPosition').value});markPdfModifiedAfterSignature();await renderAll();setStatus('Watermark appliqué sur '+pages.length+' page(s).');recordHistory({studio:'pdf-studio',type:'action',label:'Watermark PDF',detail:pages.length+' page(s)',target:engine.fileName,action:'watermark',repeatable:false})}catch(e){setStatus(e.message)}});
@@ -503,16 +501,10 @@ async function runTranslateQuick(){
  recordHistory({studio:'pdf-studio',type:'action',label:'Traduction bilingue',detail:$('#translateSource').value+' → '+$('#translateTarget').value+' · '+pages.length+' page(s)',target:engine.fileName,action:'translate',repeatable:false})
 }
 async function codeBlob(){
- const raw=$('#qrValue').value.trim();if(!raw)throw new Error('Saisissez un contenu.');const value=templates.resolve(raw,engine.fileName,outputContext()),type=$('#codeType').value||'qrcode';
- if(type==='qrcode'){
-  if(typeof QRCodeStyling!=='function')throw new Error('Moteur QR indisponible');
-  const qr=new QRCodeStyling({width:720,height:720,type:'canvas',data:value,margin:24,qrOptions:{errorCorrectionLevel:'M'},dotsOptions:{type:'square',color:'#000000'},backgroundOptions:{color:'#ffffff'}});
-  const blob=await qr.getRawData('png');if(!blob)throw new Error('Génération QR impossible');return{blob,value,type}
- }
- if(!window.bwipjs?.toCanvas)throw new Error('Moteur code-barres indisponible');
- const canvas=document.createElement('canvas'),valid=validatePayload(type,value);if(!valid.ok)throw new Error(valid.message);
- const opts=bwipOptions(type,valid.value,{fg:'#000000',bg:'#ffffff',margin:16});opts.scale=5;bwipjs.toCanvas(canvas,opts);
- const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error('Génération du code impossible')),'image/png'));return{blob,value,type}
+ const raw=$('#qrValue').value.trim();if(!raw)throw new Error('Saisissez un contenu.');
+ const value=templates.resolve(raw,engine.fileName,outputContext()),type=$('#codeType').value||'qrcode';
+ const r=await generateSymbologyBlob(type,value,{size:720,margin:type==='qrcode'?24:16,fg:'#000000',bg:'#ffffff',ecc:'M',dots:'square',scale:5},'png');
+ return{blob:r.blob,value:r.value,type}
 }
 async function refreshQrPreview(){
  const p=$('#qrPreview');try{const q=await codeBlob(),url=URL.createObjectURL(q.blob);p.innerHTML='<img src="'+url+'" alt="Aperçu du code"><small>'+escHtml(q.value)+'</small>';p.querySelector('img').onload=()=>setTimeout(()=>URL.revokeObjectURL(url),500)}catch(e){p.innerHTML='<span>'+escHtml(e.message)+'</span>'}
