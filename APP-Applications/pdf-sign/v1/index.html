@@ -12,7 +12,7 @@ body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .signViewer,.signPanel{background:var(--studio-surface,#fff);border:1px solid var(--studio-line,#d6dde3);border-radius:14px;min-width:0}
 .signViewer{display:flex;flex-direction:column;overflow:hidden}.viewerToolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px;border-bottom:1px solid var(--studio-line,#d6dde3)}
 .viewerStage{flex:1;min-height:440px;display:grid;place-items:center;overflow:auto;padding:18px;background:linear-gradient(45deg,#eef1f3 25%,transparent 25%),linear-gradient(-45deg,#eef1f3 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#eef1f3 75%),linear-gradient(-45deg,transparent 75%,#eef1f3 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
-.viewerStage canvas{max-width:100%;height:auto;background:#fff;box-shadow:0 6px 26px #0002}.emptyState{text-align:center;max-width:520px;padding:34px}
+.viewerStage{position:relative}.viewerStage canvas{max-width:100%;height:auto;background:#fff;box-shadow:0 6px 26px #0002}.signatureOverlay{position:absolute;z-index:8;cursor:move;border:1px dashed #3282ca;background:#ffffff18;touch-action:none;user-select:none}.signatureOverlay[hidden]{display:none}.signatureOverlay img{display:block;width:100%;height:auto;pointer-events:none}.signatureOverlay:after{content:'↘';position:absolute;right:-10px;bottom:-10px;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:#3282ca;color:#fff;font-size:11px;cursor:nwse-resize}.emptyState{text-align:center;max-width:520px;padding:34px}
 .dropTarget{border:2px dashed #9fb5c7;border-radius:14px;padding:28px;background:#fff8;cursor:pointer}.dropTarget.drag{border-color:#3282ca;background:#eef7ff}
 .signPanel{padding:14px;overflow:auto}.signPanel h2{margin:0 0 4px}.field{display:grid;gap:5px;margin:11px 0}.field label{font-size:12px;font-weight:700}.field select,.field input{width:100%;padding:9px;border:1px solid #c8d2da;border-radius:8px;background:#fff;color:#17231c;font:inherit}
 .assetRow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.signatureCanvas{width:100%;height:120px;border:1px solid #c8d2da;border-radius:10px;background:#fff;touch-action:none}
@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded',()=>{if(window.pdfjsLib)window.pdfjsL
     <strong>Glissez-déposez un PDF ici</strong><br><span class="note">ou cliquez pour choisir le document.</span>
    </div>
   </div>
-  <canvas id="pdfCanvas" hidden></canvas>
+  <canvas id="pdfCanvas" hidden></canvas><div id="signatureOverlay" class="signatureOverlay" hidden title="Déplacer la signature"><img id="signatureOverlayImage" alt="Signature à placer"></div>
  </div>
 </section>
 <aside class="signPanel">
@@ -52,10 +52,10 @@ window.addEventListener('DOMContentLoaded',()=>{if(window.pdfjsLib)window.pdfjsL
  <p class="note">Mini-app dérivée de PDF Studio. Elle réutilise le moteur PDF et le profil personnel Studio Core ; seules les fonctions nécessaires à la signature rapide sont exposées.</p>
  <input id="fileInput" type="file" accept="application/pdf,.pdf" hidden>
  <div class="field"><label for="assetKind">Action</label><select id="assetKind"><option value="signature">Signature</option><option value="initials">Paraphe</option></select></div>
- <div class="field"><label for="assetSelect">Preset enregistré</label><div class="assetRow"><select id="assetSelect"><option value="">Aucun preset</option></select><button class="btnSign" id="importAsset" type="button">Importer</button></div><input id="assetFile" type="file" accept="image/png,image/jpeg,image/webp" hidden></div>
+ <div class="field"><label for="assetSelect">Preset enregistré</label><div class="assetRow"><select id="assetSelect"><option value="">Aucun preset</option></select><button class="btnSign" id="importAsset" type="button">Importer / photo</button></div><div id="assetPreview" class="statusBox">Aucune image de signature.</div><input id="assetFile" type="file" accept="image/png,image/jpeg,image/webp" hidden></div>
  <div class="field"><label>Ou dessiner maintenant</label><canvas id="drawCanvas" class="signatureCanvas" width="640" height="180"></canvas><div class="actionRow"><button class="btnSign" id="clearDraw" type="button">Effacer</button><button class="btnSign" id="saveDraw" type="button">Enregistrer comme preset</button></div></div>
  <div class="field"><label for="targetScope">Pages</label><select id="targetScope"><option value="current">Page courante</option><option value="all">Toutes les pages</option></select></div>
- <div class="field"><label for="position">Position</label><select id="position"><option value="bottom-right">Bas droite</option><option value="bottom-center">Bas centre</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-center">Haut centre</option><option value="top-left">Haut gauche</option></select></div>
+ <div class="field"><label for="position">Placement</label><select id="position"><option value="custom">Libre — déplacer sur le document</option><option value="bottom-right">Bas droite</option><option value="bottom-center">Bas centre</option><option value="bottom-left">Bas gauche</option><option value="top-right">Haut droite</option><option value="top-center">Haut centre</option><option value="top-left">Haut gauche</option></select><span class="note">En placement libre, glissez directement la signature sur l’aperçu.</span></div>
  <div class="field"><label for="widthPct">Largeur <span id="widthValue">24 %</span></label><input id="widthPct" type="range" min="8" max="45" step="1" value="24"></div>
  <div class="actionRow"><button class="btnSign primary" id="applyAsset" type="button" disabled>Appliquer</button><button class="btnSign primary" id="downloadPdf" type="button" disabled>Télécharger le PDF</button></div>
  <div class="statusBox" id="localStatus">Chargez un PDF pour commencer.</div>
