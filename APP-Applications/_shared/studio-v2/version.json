@@ -2,6 +2,6 @@
   "schema": "nlab-studio-core-version/v1",
   "version": "3.1.0",
   "channel": "test",
-  "notes": "Studio Core 3.1 : paramètres en grands accordéons, modes de panneaux Libre/Fixe gauche/Fixe droite/Aucun, aide contextuelle gauche par défaut mais librement déplaçable et toujours au premier plan, affichage de l’aide désactivable, reset interface en haut et en bas.",
+  "notes": "Studio Core 3.1 : paramètres en grands accordéons, modes de panneaux Libre/Fixe gauche/Fixe droite/Aucun, registre canonique de panneaux, Window Manager avec priorité topmost réelle, événements d’état standardisés, fermeture Échap, focus clavier, verrouillage strict, aide contextuelle gauche par défaut et reset interface en haut et en bas.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
