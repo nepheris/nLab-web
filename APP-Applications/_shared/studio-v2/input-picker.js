@@ -71,8 +71,9 @@ async function fileFromUrl(url){
  try{Object.defineProperty(file,'__sourceUrl',{value:value,configurable:true})}catch{}return file
 }
 async function extractZip(file){
- const JSZip=await ensureJsZip(),zip=await JSZip.loadAsync(await file.arrayBuffer()),out=[];
- for(const [path,entry] of Object.entries(zip.files)){if(entry.dir)continue;const blob=await entry.async('blob'),name=path.split('/').pop()||'file',child=new File([blob],name,{type:blob.type,lastModified:file.lastModified});try{Object.defineProperty(child,'__relativePath',{value:file.name+'/'+path,configurable:true})}catch{}out.push(child)}
+ const JSZip=await ensureJsZip(),zip=await JSZip.loadAsync(await file.arrayBuffer()),out=[],entries=Object.entries(zip.files).filter(([,entry])=>!entry.dir),maxEntries=Number(state.options.maxArchiveEntries||500),maxBytes=Number(state.options.maxArchiveBytes||250*1024*1024);let total=0;
+ if(entries.length>maxEntries)throw new Error('Archive trop volumineuse : '+entries.length+' fichiers (limite '+maxEntries+').');
+ for(const [path,entry] of entries){const blob=await entry.async('blob');total+=blob.size;if(total>maxBytes)throw new Error('Archive décompressée trop volumineuse (limite '+Math.round(maxBytes/1024/1024)+' Mo).');const name=path.split('/').pop()||'file',child=new File([blob],name,{type:blob.type,lastModified:file.lastModified});try{Object.defineProperty(child,'__relativePath',{value:file.name+'/'+path,configurable:true})}catch{}out.push(child)}
  return out
 }
 async function normalizeIncoming(files){
