@@ -88,8 +88,9 @@ function hide(panel,key){
  const c=cfg(key);c.hidden=true;save();sync(panel,key);panel.dispatchEvent(new CustomEvent('studio-window-close',{detail:{key}}));
 }
 function bind(panel,key,title){
+ const existed=Object.prototype.hasOwnProperty.call(prefs.windows,key),initiallyHidden=panel.hidden;
  addBar(panel,key,title);live.set(key,{panel,title});if(panel.dataset.studioWinBound){sync(panel,key);return panel}
- panel.dataset.studioWinBound='1';const c=cfg(key);let drag=null;const grip=panel.querySelector('[data-win-grip]');
+ panel.dataset.studioWinBound='1';const c=cfg(key);if(!existed&&initiallyHidden){c.hidden=true;save()}let drag=null;const grip=panel.querySelector('[data-win-grip]');
  panel.addEventListener('pointerdown',()=>bringToFront(panel),{capture:true});
  grip?.addEventListener('pointerdown',e=>{if(c.locked||c.docked)return;e.preventDefault();bringToFront(panel);const r=panel.getBoundingClientRect();drag={dx:e.clientX-r.left,dy:e.clientY-r.top};grip.setPointerCapture?.(e.pointerId);document.body.classList.add('studioWindowDragging')});
  grip?.addEventListener('pointermove',e=>{if(!drag)return;const vw=innerWidth,vh=innerHeight;panel.style.left=Math.max(4,Math.min(vw-panel.offsetWidth-4,e.clientX-drag.dx))+'px';panel.style.top=Math.max(topOffset(),Math.min(vh-40,e.clientY-drag.dy))+'px';panel.style.right='auto';panel.style.transform='none'});
