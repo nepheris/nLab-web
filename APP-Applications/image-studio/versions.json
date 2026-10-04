@@ -1,14 +1,23 @@
 {
   "name": "Image Studio",
   "current": "0.2.1",
-  "test": "2.4.0",
+  "test": "2.5.0",
   "versions": [
+    {
+      "version": "2.5.0",
+      "label": "Image Studio 2.5.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Core 3.0 : Undo/Redo partagé, rotation libre sans rognage, zoom Ajuster/Taille réelle, import photo/URL et thème Core renforcé."
+    },
     {
       "version": "2.4.0",
       "label": "Image Studio 2.4.0 TEST",
       "date": "2026-10-04",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe TEST Core 2.9 : sélection fichiers/dossiers enrichie, vues Texte/Icône/Preview, vignettes réelles, SVG filetype, suppression individuelle et rotation avant import ; fonctions Image Studio 2.3 conservées."
     },
