@@ -90,7 +90,8 @@
         "extract-pages",
         "merge-pdf",
         "insert-pdf",
-        "base-bytes"
+        "base-bytes",
+        "page-count"
       ],
       "consumers": [
         "pdf-studio",
@@ -306,26 +307,21 @@
     },
     {
       "id": "overlay",
-      "module": "APP-Applications/pdf-studio/v2/object-layer.js",
+      "module": "APP-Applications/_shared/studio-v2/object-transform-service.js",
       "capabilities": [
-        "add-object",
-        "move",
-        "resize",
-        "rotate",
-        "lock",
-        "delete",
-        "text",
-        "image",
-        "stamp",
-        "signature",
-        "highlight",
-        "redaction",
-        "pen"
+        "normalize-rotation",
+        "rotate-object",
+        "set-rotation",
+        "toggle-lock",
+        "move-percent",
+        "resize-percent"
       ],
       "consumers": [
-        "pdf-studio"
+        "pdf-studio-v1-annotations",
+        "pdf-studio-v2-object-layer"
       ],
-      "status": "domain-current-promotion-candidate"
+      "status": "canonical-primitives",
+      "domainEngine": "APP-Applications/pdf-studio/v2/object-layer.js"
     },
     {
       "id": "markdown",
