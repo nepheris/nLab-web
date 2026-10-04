@@ -4,6 +4,7 @@ import{resolveStudioVersions}from'../../_shared/studio-v2/version-service.js';
 import studioManifest from'./studio-manifest.js';
 import{DemoCorpus}from'../../_shared/studio-v2/demo-corpus.js';
 import{icon}from'../../_shared/studio-v2/icon-registry.js';
+import{downloadBlob}from'../../_shared/studio-v2/download-service.js';
 
 const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
 await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
@@ -73,7 +74,7 @@ function insert(before,after='',placeholder='texte'){
 function prefixLine(prefix){
  const s=editor.selectionStart,start=editor.value.lastIndexOf('\n',s-1)+1;editor.value=editor.value.slice(0,start)+prefix+editor.value.slice(start);editor.focus();editor.setSelectionRange(s+prefix.length,s+prefix.length);setDirty();syncPreview()
 }
-function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1200)}
+const download=(blob,name)=>downloadBlob(blob,name)
 function saveMarkdown(){download(new Blob([editor.value],{type:'text/markdown;charset=utf-8'}),fileName);setDirty(false);setStatus('Markdown exporté')}
 function printPdf(){
  const {html}=engine.renderWithAnchors(editor.value),p=engine.splitFrontMatter(editor.value),title=p.data?.title||fileName.replace(/\.md$/i,'');
