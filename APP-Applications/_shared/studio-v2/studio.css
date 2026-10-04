@@ -750,14 +750,20 @@ body.studioMobileOptimized .inputDropZone{min-height:110px}
 .studioWindowBar button.locked{background:#a61f1f!important;color:#fff!important;border-color:#c84b4b!important}
 .studioWindowBar button{position:relative;flex:0 0 28px}
 .studioWindowBar svg,.studioWindowGrip svg,.studioIcon,.contextHelpIcon,.historyQuickControls button svg{aspect-ratio:1/1;flex:0 0 auto;max-width:100%;max-height:100%}
-.studioWindowRestoreTray{position:fixed;left:6px;top:42%;z-index:410;width:min(250px,calc(100vw - 12px));padding:7px;border:1px solid #aebdca;border-radius:0 10px 10px 0;background:#fffffff2;box-shadow:0 10px 30px #0003;backdrop-filter:blur(8px)}
+.studioWindowRestoreTray{position:fixed;right:0;top:42%;z-index:410;pointer-events:none}
 .studioWindowRestoreTray[hidden]{display:none!important}
+.studioWindowRestoreToggle{pointer-events:auto;width:34px;min-width:34px;height:54px;min-height:54px;padding:4px 2px!important;border-radius:9px 0 0 9px!important;border-right:0!important;display:grid!important;place-items:center;gap:1px;background:#fffffff2!important;box-shadow:0 6px 18px #0002}
+.studioWindowRestoreToggle b{font-size:8px;line-height:1}.studioWindowRestoreToggle span{font-size:15px;line-height:1}
+.studioWindowRestorePanel{pointer-events:auto;position:absolute;right:40px;top:0;width:min(250px,calc(100vw - 54px));padding:7px;border:1px solid #aebdca;border-radius:10px;background:#fffffff5;box-shadow:0 10px 30px #0003;backdrop-filter:blur(8px)}
+.studioWindowRestorePanel[hidden]{display:none!important}
 .studioWindowRestoreHead{display:flex;gap:6px;align-items:center;margin-bottom:5px}
 .studioWindowRestoreHead strong{font-size:9px}
 .studioWindowRestoreHead button{margin-left:auto;font-size:8px;padding:4px 6px}
 .studioWindowRestoreTray [data-win-restore-list]{display:grid;gap:4px}
 .studioWindowRestoreTray [data-win-restore]{text-align:left;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.themeDark .studioWindowRestoreTray{background:#20262cf2;border-color:#46515c;color:#e6edf3}
+.themeDark .studioWindowRestoreToggle,.themeDark .studioWindowRestorePanel{background:#20262cf2!important;border-color:#46515c;color:#e6edf3}
+.studioStatus{pointer-events:none}
+@media(max-width:620px){.studioWindowRestoreTray{top:auto;bottom:42px}.studioWindowRestoreToggle{width:30px;min-width:30px;height:48px;min-height:48px}.studioWindowRestorePanel{right:36px;top:auto;bottom:0}}
 
 .coreSettingsDangerTop{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:8px;border:1px solid #d59a9a;border-radius:8px;background:#fff4f4}
 .coreSettingsDangerTop button{background:#9f2323!important;color:#fff!important;border-color:#9f2323!important;font-weight:800}
