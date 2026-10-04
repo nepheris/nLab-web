@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "channel": "test",
-  "notes": "Studio Core 3.2 TEST : Input/Collection unifié avec sélection explicite, tout sélectionner/désélectionner, élément actif, tri ordre/nom/chemin/type/taille/pages, regroupement dossier/type, mise à l’échelle des vignettes et du texte, chemin et nombre de pages visibles, sélection utilisée explicitement et collection conservée pendant la session.",
+  "notes": "Studio Core 3.3 TEST : Viewer Core canonique avec zoom - / % éditable / +, Ajuster, 100 %, presets, bornes de zoom, événements de commande et synchronisation d’état. Image Studio devient le premier consommateur réel; PDF, Scan et QR restent à migrer dans les passes suivantes.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
