@@ -1,3 +1,4 @@
+import{downloadJson}from'./download-service.js';
 const enc=new TextEncoder();
 function hex(buf){return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('')}
 export function generateArtifactId(prefix='NLAB'){
@@ -21,6 +22,4 @@ export async function verifyArtifactManifest(blob,manifest){
  const digest=await sha256(blob);
  return{ok:!!manifest&&manifest.schema==='nlab-artifact/v1'&&digest===manifest.sha256,sha256:digest,expected:manifest?.sha256||null,id:manifest?.id||null};
 }
-export function downloadManifest(manifest,name='artifact.manifest.json'){
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(manifest,null,2)],{type:'application/json'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
-}
+export function downloadManifest(manifest,name='artifact.manifest.json'){return downloadJson(manifest,name)}
