@@ -9,7 +9,6 @@ applyVersionDocumentMeta({studioName:manifest.name,studioVersion:VERSION_INFO.ve
 await mountStudioV2({manifest,versionInfo:VERSION_INFO});
 const $=s=>document.querySelector(s),canvas=$('#canvas'),ctx=canvas.getContext('2d');let pages=[],active=-1;
 const status=m=>{$('#status').textContent=m;const x=$('#studioStatusText');if(x)x.textContent=m};
-function fileToDataUrl(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
 async function addFiles(files){for(const f of files||[]){if(!(f.type||'').startsWith('image/'))continue;pages.push({name:f.name||('page-'+(pages.length+1)+'.png'),src:await fileToDataUrl(f),rotation:0,deskew:0,cleanup:'original'})}if(active<0&&pages.length)active=0;renderList();renderActive();status(pages.length+' page(s) chargée(s).')}
 function renderList(){$('#pageList').innerHTML=pages.map((p,i)=>'<div class="pageItem '+(i===active?'active':'')+'" data-i="'+i+'"><img src="'+p.src+'" alt=""><div><strong>Page '+(i+1)+'</strong><br><small>'+p.name+'</small></div><button data-select="'+i+'" type="button">Ouvrir</button></div>').join('');$('#pageList').onclick=e=>{const b=e.target.closest('[data-select]');if(!b)return;active=Number(b.dataset.select);renderList();renderActive()}}
 function drawImageWithEffects(img,p){return renderImageTransformed(canvas,img,{rotation:p.rotation,deskew:p.deskew,cleanup:p.cleanup})}
