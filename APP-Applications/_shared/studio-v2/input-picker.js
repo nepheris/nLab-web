@@ -4,7 +4,7 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const asset=(group,name)=>new URL(`../../../assets/icons/${group}/${name}`,import.meta.url).href;
 const FILETYPE_ICONS=new Set(['7z','avif','bmp','csv','doc','docx','epub','flac','gif','heic','html','ico','jpeg','jpg','json','markdown','mobi','mov','mp3','mp4','odp','ods','odt','parquet','pdf','png','ppt','pptx','sql','svg','tar','tif','tiff','tsv','txt','wav','webm','webp','xls','xlsx','xml','yaml','zip']);
 let state={files:[],options:{},resolve:null,view:'text',meta:new Map(),busy:false};
-let pdfJsPromise=null,pdfLibPromise=null;
+let pdfJsPromise=null,pdfLibPromise=null,jsZipPromise=null;
 
 function keyOf(f){return [f.webkitRelativePath||f.__relativePath||'',f.name,f.size,f.lastModified].join('|')}
 function dedupe(files){const seen=new Set(),out=[];for(const f of files){const k=keyOf(f);if(seen.has(k))continue;seen.add(k);out.push(f)}return out}
@@ -55,6 +55,29 @@ async function ensurePdfLib(){
  if(!pdfLibPromise)pdfLibPromise=loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js',()=>!!window.PDFLib).then(()=>window.PDFLib);
  return pdfLibPromise
 }
+async function ensureJsZip(){
+ if(window.JSZip)return window.JSZip;
+ if(!jsZipPromise)jsZipPromise=loadScript('https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',()=>!!window.JSZip).then(()=>window.JSZip);
+ return jsZipPromise
+}
+function fileNameFromUrl(url,contentType=''){
+ try{const u=new URL(url,location.href),raw=decodeURIComponent(u.pathname.split('/').filter(Boolean).pop()||'import-url');if(/\.[a-z0-9]{1,8}$/i.test(raw))return raw;const ext={'application/pdf':'.pdf','application/json':'.json','text/plain':'.txt','text/html':'.html','image/png':'.png','image/jpeg':'.jpg','image/webp':'.webp','image/svg+xml':'.svg'}[String(contentType).split(';')[0].toLowerCase()]||'';return raw+ext}catch{return'import-url'}
+}
+async function fileFromUrl(url){
+ const value=String(url||'').trim();if(!value)throw new Error('URL_REQUIRED');
+ let r;try{r=await fetch(value,{mode:'cors'})}catch{throw new Error('URL_IMPORT_BLOCKED_CORS')}
+ if(!r.ok)throw new Error('URL_IMPORT_HTTP_'+r.status);
+ const blob=await r.blob(),name=fileNameFromUrl(value,blob.type),file=new File([blob],name,{type:blob.type,lastModified:Date.now()});
+ try{Object.defineProperty(file,'__sourceUrl',{value:value,configurable:true})}catch{}return file
+}
+async function extractZip(file){
+ const JSZip=await ensureJsZip(),zip=await JSZip.loadAsync(await file.arrayBuffer()),out=[];
+ for(const [path,entry] of Object.entries(zip.files)){if(entry.dir)continue;const blob=await entry.async('blob'),name=path.split('/').pop()||'file',child=new File([blob],name,{type:blob.type,lastModified:file.lastModified});try{Object.defineProperty(child,'__relativePath',{value:file.name+'/'+path,configurable:true})}catch{}out.push(child)}
+ return out
+}
+async function normalizeIncoming(files){
+ const out=[];for(const f of files||[]){if(extOf(f)==='zip'&&state.options.expandZip!==false){try{out.push(...await extractZip(f))}catch(e){state.error='ZIP : '+(e?.message||e)}}else out.push(f)}return out
+}
 async function imageThumb(file){
  const url=URL.createObjectURL(file);try{
   const im=await new Promise((res,rej)=>{const x=new Image();x.onload=()=>res(x);x.onerror=rej;x.src=url});
@@ -96,17 +119,19 @@ function ensure(){
  let host=document.querySelector('#studioInputPicker');if(host)return host;
  host=document.createElement('div');host.id='studioInputPicker';host.className='studioInputPicker studioWindow scope-core';host.dataset.scope='core';host.hidden=true;
  host.innerHTML='<div class="studioInputPickerBody">'+
- '<div class="inputPickerActions"><button id="studioInputPickFiles" type="button">Fichier(s)</button><button id="studioInputPickFolder" type="button">Dossier</button><button id="studioInputClear" type="button">Tout effacer</button><span class="inputPickerSpacer"></span><div class="inputPickerViews" role="group" aria-label="Mode d’affichage"><button type="button" data-input-view="text">Texte</button><button type="button" data-input-view="icon">Icône</button><button type="button" data-input-view="preview">Preview</button></div></div>'+
- '<input id="studioInputFilesNative" type="file" multiple hidden><input id="studioInputFolderNative" type="file" webkitdirectory multiple hidden>'+
- '<div id="studioInputDrop" class="studioInputDrop" tabindex="0" role="button"><strong>Glisser-déposer</strong><span>Fichiers ou dossiers</span></div>'+
+ '<div class="inputPickerActions"><button id="studioInputPickFiles" type="button">Fichier(s)</button><button id="studioInputPickFolder" type="button">Dossier</button><button id="studioInputPickCamera" type="button">Photo</button><button id="studioInputClear" type="button">Tout effacer</button><span class="inputPickerSpacer"></span><div class="inputPickerViews" role="group" aria-label="Mode d’affichage"><button type="button" data-input-view="text">Texte</button><button type="button" data-input-view="icon">Icône</button><button type="button" data-input-view="preview">Preview</button></div></div>'+
+ '<input id="studioInputFilesNative" type="file" multiple hidden><input id="studioInputFolderNative" type="file" webkitdirectory multiple hidden><input id="studioInputCameraNative" type="file" accept="image/*" capture="environment" hidden>'+
+ '<div class="inputPickerUrlRow"><input id="studioInputUrl" type="url" inputmode="url" placeholder="https://… image, PDF, texte, JSON…"><button id="studioInputUrlImport" type="button">Importer URL</button></div>'+
+ '<div id="studioInputDrop" class="studioInputDrop" tabindex="0" role="button"><strong>Glisser-déposer</strong><span>Fichiers, dossiers ou ZIP</span></div>'+
  '<div class="inputPickerMeta"><strong id="studioInputCount">0 élément</strong><span id="studioInputAccept"></span></div>'+
  '<div id="studioInputList" class="studioInputList"></div>'+
  '<div class="inputPickerFooter"><button id="studioInputCancel" type="button">Annuler</button><button id="studioInputConfirm" class="primary" type="button">Utiliser la sélection</button></div>'+
  '</div>';
  document.body.append(host);enhanceStudioWindow(host,{key:'core-input-picker',title:'Choisir une entrée'});
- const fileInput=host.querySelector('#studioInputFilesNative'),folderInput=host.querySelector('#studioInputFolderNative'),drop=host.querySelector('#studioInputDrop');
- host.querySelector('#studioInputPickFiles').onclick=()=>fileInput.click();host.querySelector('#studioInputPickFolder').onclick=()=>folderInput.click();
- fileInput.onchange=e=>add([...e.target.files]);folderInput.onchange=e=>add([...e.target.files]);
+ const fileInput=host.querySelector('#studioInputFilesNative'),folderInput=host.querySelector('#studioInputFolderNative'),cameraInput=host.querySelector('#studioInputCameraNative'),drop=host.querySelector('#studioInputDrop');
+ host.querySelector('#studioInputPickFiles').onclick=()=>fileInput.click();host.querySelector('#studioInputPickFolder').onclick=()=>folderInput.click();host.querySelector('#studioInputPickCamera').onclick=()=>cameraInput.click();
+ fileInput.onchange=async e=>await add([...e.target.files]);folderInput.onchange=async e=>await add([...e.target.files]);cameraInput.onchange=async e=>await add([...e.target.files]);
+ host.querySelector('#studioInputUrlImport').onclick=async()=>{const input=host.querySelector('#studioInputUrl');state.error='';render(host);try{await add([await fileFromUrl(input.value)]);input.value=''}catch(e){state.error=e?.message||String(e);render(host)}};
  host.querySelector('#studioInputClear').onclick=()=>{state.files=[];state.meta.clear();render(host)};
  host.querySelector('#studioInputCancel').onclick=()=>close(null);
  host.querySelector('#studioInputConfirm').onclick=async()=>{if(state.busy)return;state.busy=true;render(host);try{close(await materializeSelection(state.files))}catch(e){state.busy=false;const a=host.querySelector('#studioInputAccept');if(a)a.textContent='Erreur : '+(e?.message||e);render(host)}};
@@ -114,7 +139,7 @@ function ensure(){
  drop.onclick=()=>fileInput.click();drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fileInput.click()}};
  for(const ev of ['dragenter','dragover'])drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('dragover')});
  for(const ev of ['dragleave','drop'])drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('dragover')});
- drop.addEventListener('drop',async e=>{drop.classList.add('loading');try{add(await filesFromDrop(e.dataTransfer))}finally{drop.classList.remove('loading')}});
+ drop.addEventListener('drop',async e=>{drop.classList.add('loading');try{await add(await filesFromDrop(e.dataTransfer))}finally{drop.classList.remove('loading')}});
  host.querySelector('#studioInputList').onclick=e=>{
   const rm=e.target.closest('[data-input-remove]');if(rm){const i=Number(rm.dataset.inputRemove),f=state.files[i];if(f)state.meta.delete(keyOf(f));state.files.splice(i,1);render(host);return}
   const rot=e.target.closest('[data-input-rotate]');if(rot){const i=Number(rot.dataset.inputIndex),f=state.files[i];if(!f)return;setRotation(f,rotationOf(f)+Number(rot.dataset.inputRotate));render(host);return}
@@ -126,7 +151,7 @@ function accepted(f){
  const parts=a.split(',').map(x=>x.trim().toLowerCase()).filter(Boolean),name=String(f.name||'').toLowerCase(),type=String(f.type||'').toLowerCase();
  return parts.some(x=>x.startsWith('.')?name.endsWith(x):x.endsWith('/*')?type.startsWith(x.slice(0,-1)):type===x)
 }
-function add(files){const next=(files||[]).filter(accepted);state.files=dedupe([...(state.options.multiple===false?[]:state.files),...next]);if(state.options.multiple===false&&state.files.length>1)state.files=state.files.slice(-1);render(ensure());analyzeVisible()}
+async function add(files){state.busy=true;state.error='';render(ensure());try{const normalized=await normalizeIncoming(files),next=normalized.filter(accepted);state.files=dedupe([...(state.options.multiple===false?[]:state.files),...next]);if(state.options.multiple===false&&state.files.length>1)state.files=state.files.slice(-1)}finally{state.busy=false;render(ensure());analyzeVisible()}}
 function folderSummaries(){
  const m=new Map();for(const f of state.files){const root=folderRoot(f);if(!root)continue;const v=m.get(root)||{name:root,count:0,size:0};v.count++;v.size+=Number(f.size||0);m.set(root,v)}return[...m.values()]
 }
@@ -149,8 +174,8 @@ function previewItem(f,i){
 }
 function render(host=ensure()){
  const list=host.querySelector('#studioInputList'),count=host.querySelector('#studioInputCount'),accept=host.querySelector('#studioInputAccept');
- count.textContent=state.files.length+' élément'+(state.files.length>1?'s':'');accept.textContent=state.options.accept?'Formats : '+state.options.accept:'Tous formats';
- host.querySelector('#studioInputPickFolder').hidden=state.options.folders===false;host.querySelector('#studioInputFilesNative').accept=state.options.accept||'';host.querySelector('#studioInputFilesNative').multiple=state.options.multiple!==false;
+ count.textContent=state.files.length+' élément'+(state.files.length>1?'s':'');accept.textContent=state.error?state.error:(state.options.accept?'Formats : '+state.options.accept:'Tous formats');accept.classList.toggle('inputPickerError',!!state.error);
+ host.querySelector('#studioInputPickFolder').hidden=state.options.folders===false;host.querySelector('#studioInputPickCamera').hidden=state.options.camera!==true;host.querySelector('.inputPickerUrlRow').hidden=state.options.url===false;host.querySelector('#studioInputFilesNative').accept=state.options.accept||'';host.querySelector('#studioInputFilesNative').multiple=state.options.multiple!==false;
  host.querySelectorAll('[data-input-view]').forEach(b=>b.classList.toggle('active',b.dataset.inputView===state.view));
  const folders=folderSummaries(),folderHtml=state.view==='text'?'':folders.map(x=>'<div class="studioInputFolderCard"><div class="studioInputVisual"><img class="studioInputFolderIcon" src="'+asset('ui','folder-closed.svg')+'" alt=""><span class="studioInputTypeBadge">DOSSIER</span></div><strong>'+esc(x.name)+'</strong><small>'+x.count+' fichier'+(x.count>1?'s':'')+' · '+formatKb(x.size)+'</small></div>').join('');
  const filesHtml=state.files.map((f,i)=>state.view==='preview'?previewItem(f,i):state.view==='icon'?iconItem(f,i):textItem(f,i)).join('');
@@ -175,7 +200,7 @@ async function materializeSelection(files){
 function close(value){const host=ensure();host.hidden=true;const resolve=state.resolve;state.resolve=null;state.busy=false;if(resolve)resolve(value)}
 export function openInputPicker(options={}){
  const host=ensure();let saved='text';try{saved=localStorage.getItem('nlab.inputPicker.view')||'text'}catch{}
- state={files:[],options:{multiple:true,folders:true,accept:'',view:saved,...options},resolve:null,view:['text','icon','preview'].includes(options.view)?options.view:saved,meta:new Map(),busy:false};render(host);host.hidden=false;host.style.zIndex='260';return new Promise(resolve=>{state.resolve=resolve})
+ state={files:[],options:{multiple:true,folders:true,url:true,expandZip:true,accept:'',view:saved,...options},resolve:null,view:['text','icon','preview'].includes(options.view)?options.view:saved,meta:new Map(),busy:false,error:''};render(host);host.hidden=false;host.style.zIndex='260';return new Promise(resolve=>{state.resolve=resolve})
 }
 export function mountInputPicker(){ensure();return{open:openInputPicker}}
 export{filesFromDrop,materializeSelection};
