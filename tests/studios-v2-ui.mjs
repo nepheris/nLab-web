@@ -45,7 +45,7 @@ try{
   const mergeErrors=[];mergeDerived.on('pageerror',e=>mergeErrors.push(e.message));
   await mergeDerived.goto(base+'APP-Applications/merge-studio/v1/',{waitUntil:'domcontentloaded',timeout:60000});
   await mergeDerived.waitForSelector('#nlabStudioV2Chrome',{timeout:60000});
-  for(const id of ['addMergeFiles','mergeList','mergeOutputName','mergeNow','mergePreview'])await mergeDerived.waitForSelector('#'+id,{timeout:15000});
+  for(const id of ['addMergeFiles','mergeList','mergeOutputName','mergeNow','mergePreview'])await mergeDerived.waitForSelector('#'+id,{state:'attached',timeout:15000});
   const mergeResponsive=await mergeDerived.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:innerWidth,core:document.documentElement.dataset.studioCoreVersion,version:document.documentElement.dataset.studioVersion}));
   if(mergeResponsive.width>mergeResponsive.viewport+2)throw new Error('Merge Studio: débordement horizontal mobile '+mergeResponsive.width+' > '+mergeResponsive.viewport);
   if(!mergeResponsive.core||!mergeResponsive.version)throw new Error('Merge Studio: métadonnées runtime absentes');
