@@ -980,3 +980,15 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 .studioInputList[data-view="icon"] .studioInputGroupItems,.studioInputList[data-view="preview"] .studioInputGroupItems{grid-template-columns:repeat(auto-fill,minmax(calc(132px * var(--input-thumb-scale,1)),1fr))}
 .themeDark .inputPickerCollectionBar{background:#20262c;border-color:#46515c}.themeDark .studioInputGroup{border-color:#39434c}.themeDark .studioInputCard.active,.themeDark .studioInputItem.active{background:#27445a}
 @media(max-width:700px){.inputPickerCollectionBar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.inputPickerCollectionBar>span{grid-column:1/-1}.inputPickerScale{grid-column:1/-1}.inputPickerScale input{flex:1;min-width:0;width:auto}}
+
+
+/* Studio Core Viewer 3.3 */
+.coreViewerControls{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.coreViewerControls button,.coreViewerControls select{min-height:30px;height:30px;padding:3px 8px}
+.coreViewerPercent{display:inline-flex;align-items:center;border:1px solid #b9c7d1;border-radius:6px;background:#fff;overflow:hidden}
+.coreViewerPercent input{width:68px;min-width:68px;height:28px;border:0!important;border-radius:0!important;padding:3px 4px!important;text-align:right;background:transparent!important;color:inherit!important}
+.coreViewerPercent span{padding:0 6px 0 0;font-size:10px;font-weight:800}
+.coreViewerState{font-size:9px;font-weight:800;color:var(--nlab-muted);min-width:56px}
+.themeDark .coreViewerPercent{background:#252c33;border-color:#46515c}
+body.studioMobileOptimized .coreViewerControls{overflow-x:auto;flex-wrap:nowrap}
+body.studioMobileOptimized .coreViewerControls>*{flex:0 0 auto}
