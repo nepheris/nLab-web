@@ -15,7 +15,7 @@
       "label": "Image Studio",
       "manifest": "./image.json",
       "pack": "../packs/nLab-DEMO-image-v3.zip",
-      "fileCount": 20
+      "fileCount": 8
     },
     {
       "id": "ocr",

@@ -89,8 +89,8 @@
     {
       "path": "demo-input/Data/donnees-synthetiques.xlsx",
       "category": "Data",
-      "size": 8486,
-      "sha256": "8f6c0ca3cf5c143b6263124ca687c0faffdbe48f8d940dd641deb4c5c02dadd1"
+      "size": 8485,
+      "sha256": "568c0545ae9fbbda2b5bc24fcc6f5ebc7d5dcb86aec0e8daa8b6d2aa52e91dad"
     },
     {
       "path": "demo-input/Data/notes-demo.txt",
@@ -168,13 +168,13 @@
       "path": "demo-input/Office/document-demo.docx",
       "category": "Office",
       "size": 37171,
-      "sha256": "c79dd4e350d22130ed1c16557e88f14bf5c0a42b3fadc0d21be8ca085aebada7"
+      "sha256": "cced39635757b5d9a4f302061cacb8e08f019090e71ef26d58c449ccad9909fb"
     },
     {
       "path": "demo-input/Office/document-demo.odt",
       "category": "Office",
       "size": 1161,
-      "sha256": "a19a6d43d90e703bf1fd1ac8ff511d2c18a6b8aefcaef484b57f7a9006add735"
+      "sha256": "b380bb5206968140bbb3fdabb14f9d484103a328dd291fbf938087f1df1bc546"
     },
     {
       "path": "demo-input/Office/document-demo.rtf",
@@ -186,43 +186,43 @@
       "path": "demo-input/PDF/pdf-formulaire-acroform.pdf",
       "category": "PDF",
       "size": 8752,
-      "sha256": "9bf7df75ba850f71f9bdef992cf32271db71ef667d193d23c43c6f3e5419f951"
+      "sha256": "097b6e8b9f08cb521de26f3882bddcea74f278a224732c68801c9986c116d6e3"
     },
     {
       "path": "demo-input/PDF/pdf-multipage-orientations.pdf",
       "category": "PDF",
       "size": 2439,
-      "sha256": "08afa30a77c17c83ced218637f0f31ccd2248a558a85ad7e98c73be13e4eeb81"
+      "sha256": "a0bc3b99f76c6e8758d29ef4737064e2c74f8e276e81d3e7e2564bfb175e61d6"
     },
     {
       "path": "demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
       "category": "PDF",
       "size": 149500,
-      "sha256": "da33c641e4c651b9a8768f637b3963ab17e33180b13cc9e132879fcce2f59b90"
+      "sha256": "b0bd5315d705d7cde034062e2a649738cf81fc7692e48ff1d54e6c4c6a1e893d"
     },
     {
       "path": "demo-input/PDF/pdf-scan-image-only-propre.pdf",
       "category": "PDF",
       "size": 116805,
-      "sha256": "e00fc66113913acc7e75aee87accf0f0ae0314555f57fee5eb92268ddc11a3de"
+      "sha256": "79c9ddf787a6c654047ebd9d2c3262b397eb017ed6ed69bd180d4cfe71591abe"
     },
     {
       "path": "demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
       "category": "PDF",
       "size": 116698,
-      "sha256": "ed4c15e49294847faeef33ad6e3ab5fa1337ba302ac16697859c960059958426"
+      "sha256": "face1461e42ea7bbe0c510781160214376615af49ddcb229c9e43a6026532ad1"
     },
     {
       "path": "demo-input/PDF/pdf-texte-actif.pdf",
       "category": "PDF",
       "size": 3377,
-      "sha256": "23df906123ffe0b41fecf732d761c20816b97c6f83109d5dfa7ed00bbbf1eef9"
+      "sha256": "50bb23c879ce5eecd6959a19fbf37917867cc4ec657cf9434c991dbb9ae3dbd9"
     },
     {
       "path": "demo-input/Zip/archive-imbriquee-demo.zip",
       "category": "Zip",
       "size": 715,
-      "sha256": "206820cc3e49283897d6e81629ab58463dc031a74f02123b7c14b49773cf7a58"
+      "sha256": "ce80379ab38c35bd5988c27b348641cea615397699d5316de3d23345a798ce87"
     },
     {
       "path": "demo-output/README.txt",
@@ -235,78 +235,6 @@
       "category": "Documentation",
       "size": 868,
       "sha256": "b49430ec524ca69eeb5093448cb86637d45b0f2ef45b93b4f970c62c75c37a14"
-    },
-    {
-      "path": "demo-input/Images/tampon/demo-signature-martin.png",
-      "category": "Images",
-      "size": 189192,
-      "sha256": "6e4f77684523c202ae5d86e9caa837c55d48b13ba0f289ec23bc5c3237908b85"
-    },
-    {
-      "path": "demo-input/Images/tampon/demo-paraphe-dm.png",
-      "category": "Images",
-      "size": 166499,
-      "sha256": "7636fef3b5656519b951c5d80fff379cb8a2d7f133c2a0dde2e1457ef08e4b80"
-    },
-    {
-      "path": "demo-input/Images/tampon/demo-signature-demo-corp.png",
-      "category": "Images",
-      "size": 413613,
-      "sha256": "207ef4842611ee842705fc1a7c3e0401c7dfdac5fec2d734f325d0c759d55c15"
-    },
-    {
-      "path": "demo-input/Images/tampon/paye.svg",
-      "category": "Images",
-      "size": 631,
-      "sha256": "54680aa0a3ad5019cf16fa85e6deb2851b570a46e86fdb5d5a4e92d052de69a7"
-    },
-    {
-      "path": "demo-input/Images/tampon/paye-le.svg",
-      "category": "Images",
-      "size": 880,
-      "sha256": "56d38185430a8d0160ccdffb06ed82ed99223e2aa8d8baacc4f761c0909f9fed"
-    },
-    {
-      "path": "demo-input/Images/tampon/archive.svg",
-      "category": "Images",
-      "size": 637,
-      "sha256": "8f3460865b02db28a1e79d698809b5e4c0f30fbb3cb13bf2575fda53e5b7014d"
-    },
-    {
-      "path": "demo-input/Images/tampon/non-conforme.svg",
-      "category": "Images",
-      "size": 644,
-      "sha256": "df1c9a2c108c454f9a91afde9a0d3e70b31de1de11644a0f255f2b91d2d4f8ab"
-    },
-    {
-      "path": "demo-input/Images/tampon/non-concerne.svg",
-      "category": "Images",
-      "size": 646,
-      "sha256": "5d8e746d31f1104c3597aea777704e6bcda8217b9c7ea975c2835cdb825cbc12"
-    },
-    {
-      "path": "demo-input/Images/tampon/documents-de-travail.svg",
-      "category": "Images",
-      "size": 858,
-      "sha256": "1a6c34f42524ef115ab3d344bede5cd05e2c8622f25737d323411287ba9845fa"
-    },
-    {
-      "path": "demo-input/Images/tampon/matrice-circulaire.svg",
-      "category": "Images",
-      "size": 680,
-      "sha256": "84b638539ad6b17a56383d5af8f244b4017e7481a265631d8a685fafbe88513e"
-    },
-    {
-      "path": "demo-input/Images/tampon/matrice-ligne.svg",
-      "category": "Images",
-      "size": 642,
-      "sha256": "ba2f3ef06235f6e8de06961b7b762daa0cfa324e78bbf404d48d3d49093ad3b4"
-    },
-    {
-      "path": "demo-input/Images/tampon/matrice-multiligne.svg",
-      "category": "Images",
-      "size": 1071,
-      "sha256": "8830c777f61be8be69d2998ce09167145e91102edfa9bb6447d1119c01cd430d"
     }
   ],
   "cards": [
@@ -389,102 +317,6 @@
       "preview": "previews/compare.jpg",
       "path": "demo-input/Compare/",
       "description": "Jeu de dossiers pour tester les differences d'arborescences."
-    },
-    {
-      "id": "tampon-demo-signature-martin",
-      "title": "Signature manuscrite Demo Martin",
-      "kind": "Signature",
-      "preview": "files/demo-input/Images/tampon/demo-signature-martin.png",
-      "path": "demo-input/Images/tampon/demo-signature-martin.png",
-      "description": "Image synthétique de démonstration pour signature, paraphe et tampon."
-    },
-    {
-      "id": "tampon-demo-paraphe-dm",
-      "title": "Paraphe DM",
-      "kind": "Signature",
-      "preview": "files/demo-input/Images/tampon/demo-paraphe-dm.png",
-      "path": "demo-input/Images/tampon/demo-paraphe-dm.png",
-      "description": "Image synthétique de démonstration pour signature, paraphe et tampon."
-    },
-    {
-      "id": "tampon-demo-signature-demo-corp",
-      "title": "Signature + tampon Demo Corp.",
-      "kind": "Signature",
-      "preview": "files/demo-input/Images/tampon/demo-signature-demo-corp.png",
-      "path": "demo-input/Images/tampon/demo-signature-demo-corp.png",
-      "description": "Image synthétique de démonstration pour signature, paraphe et tampon."
-    },
-    {
-      "id": "tampon-paye",
-      "title": "Tampon PAYÉ",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/paye.svg",
-      "path": "demo-input/Images/tampon/paye.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
-    },
-    {
-      "id": "tampon-paye-le",
-      "title": "Tampon PAYÉ LE",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/paye-le.svg",
-      "path": "demo-input/Images/tampon/paye-le.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
-    },
-    {
-      "id": "tampon-archive",
-      "title": "Tampon ARCHIVÉ",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/archive.svg",
-      "path": "demo-input/Images/tampon/archive.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
-    },
-    {
-      "id": "tampon-non-conforme",
-      "title": "Tampon NON CONFORME",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/non-conforme.svg",
-      "path": "demo-input/Images/tampon/non-conforme.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
-    },
-    {
-      "id": "tampon-non-concerne",
-      "title": "Tampon NON CONCERNÉ",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/non-concerne.svg",
-      "path": "demo-input/Images/tampon/non-concerne.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
-    },
-    {
-      "id": "tampon-documents-de-travail",
-      "title": "Tampon DOCUMENTS DE TRAVAIL",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/documents-de-travail.svg",
-      "path": "demo-input/Images/tampon/documents-de-travail.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
-    },
-    {
-      "id": "tampon-matrice-circulaire",
-      "title": "Matrice tampon circulaire",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/matrice-circulaire.svg",
-      "path": "demo-input/Images/tampon/matrice-circulaire.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
-    },
-    {
-      "id": "tampon-matrice-ligne",
-      "title": "Matrice tampon une ligne",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/matrice-ligne.svg",
-      "path": "demo-input/Images/tampon/matrice-ligne.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
-    },
-    {
-      "id": "tampon-matrice-multiligne",
-      "title": "Matrice tampon multiligne",
-      "kind": "Tampon",
-      "preview": "files/demo-input/Images/tampon/matrice-multiligne.svg",
-      "path": "demo-input/Images/tampon/matrice-multiligne.svg",
-      "description": "SVG monochrome à fond transparent, compatible currentColor/CSS et color picker."
     }
   ]
 }
