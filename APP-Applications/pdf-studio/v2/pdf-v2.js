@@ -18,6 +18,7 @@ import{mountSteppedPresetControl}from'../../_shared/studio-v2/stepped-preset-con
 import{mountAssetPicker}from'../../_shared/studio-v2/asset-picker.js';
 import{bindColorHexControl}from'../../_shared/studio-v2/color-control.js';
 import{lightweightThumbnail}from'../../_shared/studio-v2/thumbnail-service.js';
+import{downloadJson}from'../../_shared/studio-v2/download-service.js';
 import{renderMarkdownFilePreview,renderPlainTextPreview}from'../../_shared/studio-v2/file-preview-service.js';
 import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../../_shared/studio-v2/output-service.js';
@@ -141,7 +142,6 @@ function refreshStampEditorPreview(){
  const prefix=$('#stampEditorPrefixEnabled').checked?templates.resolve($('#stampEditorPrefix').value||'',engine.fileName,ctx):'',suffix=$('#stampEditorSuffixEnabled').checked?templates.resolve($('#stampEditorSuffix').value||'',engine.fileName,ctx):'';
  const base=(engine.fileName||'document.pdf').replace(/\.pdf$/i,'');$('#stampEditorFilenamePreview').textContent=(prefix||'')+base+(suffix||'')+'.pdf'
 }
-function downloadJson(data,name){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function syncStampDates(){
  const values={STAMP_DATE:$('#stampDate')?.value||todayValue(),DATE_A:$('#stampDateA')?.value||todayValue(),DATE_B:$('#stampDateB')?.value||todayValue(),DATE_C:$('#stampDateC')?.value||todayValue(),DATE_D:$('#stampDateD')?.value||todayValue()};
  templates.setValues(values);return values
