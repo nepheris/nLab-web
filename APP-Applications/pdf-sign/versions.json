@@ -6,18 +6,8 @@
     {
       "version": "0.3.0",
       "label": "nLab PDF Sign 0.3.0 TEST",
-      "date": "2026-10-04",
       "current": false,
       "status": "test",
-      "href": "./v1/",
-      "notes": "Core 3.0 : import PDF/signature via Input commun avec photo/URL, aperçu, placement libre déplaçable et redimensionnable, thème Core homogène."
-    },
-    {
-      "version": "0.3.0",
-      "label": "nLab PDF Sign 0.3.0 TEST",
-      "date": "2026-10-04",
-      "current": false,
-      "status": "historical",
       "href": "./v1/",
       "notes": "Core 3.0 : import PDF/signature via Input commun avec photo/URL, aperçu, placement libre déplaçable et redimensionnable, thème Core homogène."
     },
