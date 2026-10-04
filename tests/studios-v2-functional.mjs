@@ -32,9 +32,16 @@ try{
   await p.locator('[data-remove-merge="2"]').click();
   await p.waitForFunction(()=>document.querySelectorAll('#mergeList .mergeItem').length===2,null,{timeout:10000});
   await p.locator('#mergeOutputName').fill('fusion-ci.pdf');
-  const dl=p.waitForEvent('download');await p.locator('#mergeNow').click();
-  const d=await dl;if(!/fusion-ci\.pdf$/i.test(d.suggestedFilename()))throw new Error('Merge Studio export invalide');
-  await p.waitForFunction(()=>/Fusion créée/.test(document.querySelector('#mergeStatus')?.textContent||''),null,{timeout:20000});
+  const dl=p.waitForEvent('download',{timeout:30000}).catch(()=>null);await p.locator('#mergeNow').click();
+  const result=await Promise.race([
+   dl.then(d=>({kind:'download',d})),
+   p.waitForFunction(()=>/Fusion créée|Erreur\s*:/.test(document.querySelector('#mergeStatus')?.textContent||''),null,{timeout:30000}).then(()=>({kind:'status'}))
+  ]);
+  const status=(await p.locator('#mergeStatus').textContent())||'';
+  if(/Erreur\s*:/.test(status))throw new Error('Merge Studio runtime: '+status);
+  const d=result.kind==='download'?result.d:await dl;if(!d)throw new Error('Merge Studio aucun téléchargement · '+status);
+  if(!/fusion-ci\.pdf$/i.test(d.suggestedFilename()))throw new Error('Merge Studio export invalide: '+d.suggestedFilename());
+  if(!/Fusion créée/.test(status))await p.waitForFunction(()=>/Fusion créée/.test(document.querySelector('#mergeStatus')?.textContent||''),null,{timeout:10000});
  },'v1/');
  await studio('scan-studio',async p=>{
   await p.locator('#fileInput').setInputFiles(['Library/demo/files/demo-input/Images/demo-document-illustration.png','Library/demo/Images/demo-image-color.png']);
