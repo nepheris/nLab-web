@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studios-catalog/v2",
-  "updated": "2026-10-03",
+  "updated": "2026-10-04",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
     {
@@ -296,6 +296,17 @@
       "version_registry": "../pdf-sign/versions.json",
       "icon": "../../assets/studios/pdf-sign.svg",
       "purpose": "Mini-app responsive dérivée de PDF Studio : charger/précharger un PDF, signer ou parapher avec presets, puis télécharger le PDF. Les fonctions avancées sont escaladées vers PDF Studio."
+    },
+    {
+      "id": "merge-studio",
+      "name": "nLab Merge Studio",
+      "status": "test-0.1.0",
+      "parent_studio": "pdf-studio",
+      "path": "../merge-studio/",
+      "versions_path": "../merge-studio/versions.html",
+      "version_registry": "../merge-studio/versions.json",
+      "icon": "../../assets/studios/merge-studio.svg",
+      "purpose": "Mini-app responsive dérivée de PDF Studio : charger des PDF par fichier, dossier ou glisser-déposer, réordonner, retirer, prévisualiser et fusionner via le moteur PDF partagé."
     }
   ]
 }

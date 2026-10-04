@@ -1,0 +1,14 @@
+{
+  "schema": "nlab-studio-versions/v2",
+  "current": null,
+  "test": "0.1.0",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "label": "nLab Merge Studio 0.1.0 TEST",
+      "status": "test",
+      "href": "./v1/",
+      "notes": "Mini-app dérivée de PDF Studio : fichiers/dossiers/glisser-déposer via Studio Core, ordre de fusion, suppression, aperçu et fusion PDF via le moteur PDF partagé."
+    }
+  ]
+}
