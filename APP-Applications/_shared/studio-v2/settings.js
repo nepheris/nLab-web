@@ -92,7 +92,8 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.classList.toggle('headerBlur',!!settings.headerBlur);
   b.dataset.headerMode=settings.headerMode||'sticky';
   b.dataset.ribbonRows=settings.ribbonRows||'auto';
-  b.dataset.navPlacement=settings.navPlacement||'header';
+  const requestedNav=settings.navPlacement||'header';
+  b.dataset.navPlacement=(profile==='mobile'&&settings.mobileAutoOptimize!==false&&requestedNav==='header')?'separate':requestedNav;
   b.dataset.contextualHelpMode=settings.contextualHelpMode||'explicit';
   b.classList.toggle('sidebarLocked',!!settings.sidebarLocked);
   b.dataset.thumbnailQuality=settings.thumbnailQuality||'light';
