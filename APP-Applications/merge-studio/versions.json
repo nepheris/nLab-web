@@ -1,13 +1,22 @@
 {
   "schema": "nlab-studio-versions/v2",
   "current": null,
-  "test": "0.2.0",
+  "test": "0.3.0",
   "versions": [
+    {
+      "version": "0.3.0",
+      "label": "nLab Merge Studio 0.3.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v1/",
+      "notes": "Core 3.0 : collection via Input commun, suppression/ordre conservés et réordonnancement par glisser-déposer avant fusion, thème Core homogène."
+    },
     {
       "version": "0.2.0",
       "label": "nLab Merge Studio 0.2.0 TEST",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v1/",
       "notes": "Passe TEST Core 2.9 : nouveau Input Picker fichiers/dossiers/glisser-déposer avec vues Texte/Icône/Preview, rotation PDF matérialisée avant fusion, ordre/retrait/preview/fusion conservés."
     },
