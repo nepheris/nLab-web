@@ -7,9 +7,8 @@
 <div id="drop" class="drop" tabindex="0" role="button"><strong>Photos / images</strong><br><small>Glissez-déposez ou choisissez plusieurs pages.</small></div>
 <input id="fileInput" type="file" accept="image/*" multiple hidden>
 <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
-<div class="toolbar"><button id="pickFiles" type="button">Choisir images</button><button id="takePhoto" type="button">Prendre photo</button></div>
-<h3>Pages</h3><div id="pageList" class="pageList"></div>
-<div class="toolbar"><button id="moveUp" type="button">↑ Monter</button><button id="moveDown" type="button">↓ Descendre</button><button id="removePage" type="button">Retirer</button></div>
+<div class="toolbar"><button id="pickFiles" type="button">Choisir images / dossier / URL</button><button id="takePhoto" type="button">Prendre photo</button></div>
+<h3>Pages</h3><div class="toolbar"><button id="selectAll" type="button">Tout sélectionner</button><button id="selectNone" type="button">Tout désélectionner</button></div><div id="pageList" class="pageList"></div><div class="toolbar"><button id="moveUp" type="button">↑ Monter</button><button id="moveDown" type="button">↓ Descendre</button><button id="removePage" type="button">Retirer</button></div><div class="toolbar"><button id="undoScan" type="button">↶ Annuler</button><button id="redoScan" type="button">↷ Rétablir</button><button id="resetLot" type="button">Réinitialiser le lot</button></div>
 <hr>
 <h3>Nettoyage</h3>
 <div class="controls">
@@ -19,7 +18,7 @@
 </div>
 <button id="applyCleanup" type="button">Appliquer au rendu</button>
 <hr>
-<div class="toolbar"><button id="runOcr" type="button">OCR page</button><button id="exportPdf" class="primary" type="button">Créer PDF</button></div>
+<div class="toolbar"><button id="runOcr" type="button">OCR page</button><button id="runOcrSelection" type="button">OCR sélection</button><button id="runOcrDocument" type="button">OCR document</button><button id="exportPdf" class="primary" type="button">Créer PDF sélection</button></div><label class="checkboxField"><input id="searchablePdf" type="checkbox"><span>Ajouter une couche OCR recherchable au PDF (OCR automatique des pages sélectionnées si nécessaire)</span></label>
 <label class="field"><span>Langue OCR</span><select id="ocrLang"><option value="auto">Auto FR/EN</option><option value="fra">Français</option><option value="eng">English</option><option value="fra+eng">FR + EN</option></select></label>
 <div id="status" class="statusBox">Prêt.</div>
 <textarea id="ocrOut" class="ocrOut" placeholder="Texte OCR de la page active…"></textarea>
