@@ -74,6 +74,29 @@
       "status": "canonical"
     },
     {
+      "id": "viewer",
+      "module": "APP-Applications/_shared/studio-v2/viewer-control.js",
+      "capabilities": [
+        "zoom-in",
+        "zoom-out",
+        "editable-percent",
+        "fit",
+        "actual-100",
+        "zoom-presets",
+        "bounded-zoom",
+        "viewer-command-events",
+        "state-sync",
+        "mobile-toolbar"
+      ],
+      "consumers": [
+        "image-studio",
+        "pdf-studio-planned",
+        "scan-studio-planned",
+        "qr-barcode-studio-planned"
+      ],
+      "status": "canonical-ui"
+    },
+    {
       "id": "image",
       "module": "APP-Applications/_shared/studio-v2/image-service.js",
       "upstream": [
