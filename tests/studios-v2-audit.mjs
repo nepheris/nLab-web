@@ -70,7 +70,7 @@ try{
   await p.locator('#file-studio-open').click();await p.waitForSelector('#studioInputPicker:not([hidden])');await p.locator('#studioInputFilesNative').setInputFiles(['Library/demo/files/demo-input/Code/demo-script.js','Library/demo/source-drive/json/rdc-recettes-complexes-demo.json']);await p.locator('#studioInputConfirm').click();
   await p.waitForFunction(()=>/2 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});await p.locator('#fileClearInputs').click();await p.waitForFunction(()=>/0 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
   await p.locator('#files').setInputFiles('Library/demo/files/demo-input/Code/demo-script.js');await p.locator('#hashFiles').click();await p.waitForFunction(()=>/empreinte/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
-  const j=await dlBytes(p,'#exportJson');const arr=JSON.parse(j.bytes.toString('utf8'));if(!Array.isArray(arr)||!arr[0]?.sha256)fail('File Studio SHA absent export JSON');
+  const j=await dlBytes(p,'#exportJson');const payload=JSON.parse(j.bytes.toString('utf8'));if(payload?.schema!=='nlab-file-manifest/v1'||!Array.isArray(payload.files)||!payload.files[0]?.sha256||!payload.files[0]?.id)fail('File Studio SHA/ID absents export JSON');
   if(errors.length)fail('File Studio audit: '+errors.join(' | '));results.push('file-studio+identity');await p.close();
  }
 
