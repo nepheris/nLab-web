@@ -79,7 +79,7 @@ $('#runOcrDocument').onclick=()=>ocrIndexes(pages.map((_,i)=>i),'OCR document').
 
 function addInvisibleTextLayer(pdf,p){
  const o=p.ocr;if(!o)return;const words=o.words||[];
- if(words.length){for(const w of words){if(!w.text||!w.bbox)continue;const x=w.bbox.x0*(canvas.width/o.width),y=w.bbox.y1*(canvas.height/o.height),fs=Math.max(5,(w.bbox.y1-w.bbox.y0)*(canvas.height/o.height)*.85);pdf.setFontSize(fs);try{pdf.text(w.text,x,y,{renderingMode:'invisible'})}catch{pdf.text(w.text,x,y)}}
+ if(words.length){for(const w of words){if(!w.text||!w.bbox)continue;const x=w.bbox.x0*(canvas.width/o.width),y=w.bbox.y1*(canvas.height/o.height),fs=Math.max(5,(w.bbox.y1-w.bbox.y0)*(canvas.height/o.height)*.85);pdf.setFontSize(fs);try{pdf.text(w.text,x,y,{renderingMode:'invisible'})}catch{}}
  }else if(o.text){pdf.setFontSize(7);try{pdf.text(o.text,4,10,{maxWidth:Math.max(20,canvas.width-8),renderingMode:'invisible'})}catch{}}
 }
 $('#exportPdf').onclick=async()=>{
