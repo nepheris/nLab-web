@@ -11,27 +11,34 @@ export function canvasToBlob(canvas,type='image/png',quality=.92){
 }
 export function imageDimensions(source){return{width:Number(source?.naturalWidth||source?.videoWidth||source?.width||0),height:Number(source?.naturalHeight||source?.videoHeight||source?.height||0)}}
 
-function applyCleanup(ctx,w,h,mode='original'){
+function applyAdjustments(ctx,w,h,{brightness=0,contrast=0,blackPoint=0,whitePoint=255}={}){
+ const bp=clamp(Number(blackPoint)||0,0,254),wp=clamp(Number(whitePoint)||255,bp+1,255),br=clamp(Number(brightness)||0,-100,100)*2.55,ct=clamp(Number(contrast)||0,-100,100),factor=(259*(ct+255))/(255*(259-ct));
+ if(!br&&!ct&&bp===0&&wp===255)return;
+ const im=ctx.getImageData(0,0,w,h),d=im.data,span=wp-bp;
+ for(let i=0;i<d.length;i+=4)for(let k=0;k<3;k++){let v=(d[i+k]-bp)*255/span;v=factor*(v-128)+128+br;d[i+k]=clamp(v,0,255)}
+ ctx.putImageData(im,0,0)
+}
+function applyCleanup(ctx,w,h,mode='original',threshold=155){
  if(mode==='original')return;
  const im=ctx.getImageData(0,0,w,h),d=im.data;
  for(let i=0;i<d.length;i+=4){
   const g=.299*d[i]+.587*d[i+1]+.114*d[i+2];
   if(mode==='gray')d[i]=d[i+1]=d[i+2]=g;
   else if(mode==='document'){const v=clamp((g-128)*1.55+150,0,255);d[i]=d[i+1]=d[i+2]=v}
-  else if(mode==='bw'||mode==='binary'){const v=g>155?255:0;d[i]=d[i+1]=d[i+2]=v}
+  else if(mode==='bw'||mode==='binary'){const v=g>clamp(Number(threshold)||155,0,255)?255:0;d[i]=d[i+1]=d[i+2]=v}
  }
  ctx.putImageData(im,0,0)
 }
 
-export function renderImageTransformed(canvas,source,{rotation=0,deskew=0,flipX=false,flipY=false,cleanup='original',background=null}={}){
+export function renderImageTransformed(canvas,source,{rotation=0,deskew=0,flipX=false,flipY=false,cleanup='original',threshold=155,brightness=0,contrast=0,blackPoint=0,whitePoint=255,background=null}={}){
  if(!canvas||!source)throw new Error('Canvas ou image absent');
  const {width:sw,height:sh}=imageDimensions(source);if(!sw||!sh)throw new Error('Dimensions image invalides');
- const normalized=((Number(rotation)||0)%360+360)%360,quarter=normalized===90||normalized===270;
- const w=quarter?sh:sw,h=quarter?sw:sh,ctx=canvas.getContext('2d');
+ const total=(Number(rotation||0)+Number(deskew||0))*Math.PI/180,cos=Math.abs(Math.cos(total)),sin=Math.abs(Math.sin(total));
+ const w=Math.max(1,Math.ceil(sw*cos+sh*sin)),h=Math.max(1,Math.ceil(sw*sin+sh*cos)),ctx=canvas.getContext('2d');
  canvas.width=w;canvas.height=h;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,w,h);
  if(background){ctx.fillStyle=background;ctx.fillRect(0,0,w,h)}
- ctx.save();ctx.translate(w/2,h/2);ctx.rotate((Number(rotation||0)+Number(deskew||0))*Math.PI/180);ctx.scale(flipX?-1:1,flipY?-1:1);ctx.drawImage(source,-sw/2,-sh/2);ctx.restore();
- applyCleanup(ctx,w,h,cleanup);return canvas
+ ctx.save();ctx.translate(w/2,h/2);ctx.rotate(total);ctx.scale(flipX?-1:1,flipY?-1:1);ctx.drawImage(source,-sw/2,-sh/2);ctx.restore();
+ applyCleanup(ctx,w,h,cleanup,threshold);applyAdjustments(ctx,w,h,{brightness,contrast,blackPoint,whitePoint});return canvas
 }
 export function transformedCanvas(source,options={}){
  const c=document.createElement('canvas');return renderImageTransformed(c,source,options)

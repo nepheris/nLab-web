@@ -4,6 +4,9 @@ export default {
  sourcePath:'APP-Applications/qr-barcode-studio/v2/index.html',name:'QR & Barcode Studio',subtitle:'QR · Data Matrix · Aztec · PDF417 · 1D · Scanner',
  capabilities:[
   {id:'symbology.generate',status:'test'},
+  {id:'symbology.workflow.generate-read',status:'test'},
+  {id:'symbology.preview.zoom-content',status:'test'},
+  {id:'core.input.file-folder-drop-url-camera',status:'test',engine:'studio-core.input-picker'},
   {id:'symbology.scan.image',status:'test'},
   {id:'symbology.scan.hid',status:'stable'},
   {id:'symbology.export.png',status:'stable'},

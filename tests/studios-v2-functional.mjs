@@ -69,7 +69,7 @@ try{
   if(!/\.js$/i.test((await dl).suggestedFilename()))throw new Error('Code export invalide');
  });
  await studio('json-studio',async p=>{
-  await chooseFile(p,'#json-studio-open','Library/demo/source-drive/json/rdc-recettes-complexes-demo.json');await p.waitForFunction(()=>/JSON valide/.test(document.querySelector('#validity')?.textContent||''),null,{timeout:15000});
+  await p.locator('#json-studio-open').click();await p.waitForSelector('#studioInputPicker:not([hidden])');await p.locator('#studioInputFilesNative').setInputFiles('Library/demo/source-drive/json/rdc-recettes-complexes-demo.json');await p.locator('#studioInputConfirm').click();await p.waitForFunction(()=>/JSON valide/.test(document.querySelector('#validity')?.textContent||''),null,{timeout:15000});
   await p.locator('#demo').selectOption({index:1});await p.locator('#loadDemo').click();await p.waitForFunction(()=>/JSON valide/.test(document.querySelector('#validity')?.textContent||''),null,{timeout:15000});
   await p.locator('#format').click();await p.locator('#sort').click();const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.json$/i.test((await dl).suggestedFilename()))throw new Error('JSON export invalide');
  });

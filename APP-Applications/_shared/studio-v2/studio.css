@@ -742,3 +742,64 @@ body.studioMobileOptimized .inputDropZone{min-height:110px}
 .studioInputTextItem{grid-template-columns:28px minmax(0,1fr) auto}.studioInputTypeIcon{width:24px;height:24px;object-fit:contain}
 .themeDark .inputPickerViews{background:#171c20}.themeDark .inputPickerViews button.active{background:#27445a;color:#d9f0ff}.themeDark .studioInputCard,.themeDark .studioInputFolderCard{background:#20262c;border-color:#39434c}.themeDark .studioInputVisual{background:#171c20}
 @media(max-width:620px){.inputPickerSpacer{display:none}.inputPickerViews{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.studioInputList[data-view="icon"],.studioInputList[data-view="preview"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* Studio Core 3.0 — unified windows, stronger theming, geometry invariants */
+.studioWindow{isolation:isolate}
+.studioWindowLarge{width:min(920px,calc(100vw - 24px))!important;height:min(78vh,760px)!important}
+.studioWindowBar button.locked{background:#a61f1f!important;color:#fff!important;border-color:#c84b4b!important}
+.studioWindowBar button{position:relative;flex:0 0 28px}
+.studioWindowBar svg,.studioWindowGrip svg,.studioIcon,.contextHelpIcon,.historyQuickControls button svg{aspect-ratio:1/1;flex:0 0 auto;max-width:100%;max-height:100%}
+.studioWindowRestoreTray{position:fixed;right:0;top:42%;z-index:410;pointer-events:none}
+.studioWindowRestoreTray[hidden]{display:none!important}
+.studioWindowRestoreToggle{pointer-events:auto;width:34px;min-width:34px;height:54px;min-height:54px;padding:4px 2px!important;border-radius:9px 0 0 9px!important;border-right:0!important;display:grid!important;place-items:center;gap:1px;background:#fffffff2!important;box-shadow:0 6px 18px #0002}
+.studioWindowRestoreToggle b{font-size:8px;line-height:1}.studioWindowRestoreToggle span{font-size:15px;line-height:1}
+.studioWindowRestorePanel{pointer-events:auto;position:absolute;right:40px;top:0;width:min(250px,calc(100vw - 54px));padding:7px;border:1px solid #aebdca;border-radius:10px;background:#fffffff5;box-shadow:0 10px 30px #0003;backdrop-filter:blur(8px)}
+.studioWindowRestorePanel[hidden]{display:none!important}
+.studioWindowRestoreHead{display:flex;gap:6px;align-items:center;margin-bottom:5px}
+.studioWindowRestoreHead strong{font-size:9px}
+.studioWindowRestoreHead button{margin-left:auto;font-size:8px;padding:4px 6px}
+.studioWindowRestoreTray [data-win-restore-list]{display:grid;gap:4px}
+.studioWindowRestoreTray [data-win-restore]{text-align:left;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.themeDark .studioWindowRestoreToggle,.themeDark .studioWindowRestorePanel{background:#20262cf2!important;border-color:#46515c;color:#e6edf3}
+.studioStatus{pointer-events:none}
+@media(max-width:620px){.studioWindowRestoreTray{top:auto;bottom:42px}.studioWindowRestoreToggle{width:30px;min-width:30px;height:48px;min-height:48px}.studioWindowRestorePanel{right:36px;top:auto;bottom:0}}
+
+.coreSettingsDangerTop{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:8px;border:1px solid #d59a9a;border-radius:8px;background:#fff4f4}
+.coreSettingsDangerTop button{background:#9f2323!important;color:#fff!important;border-color:#9f2323!important;font-weight:800}
+.coreSettingsDangerTop span{font-size:9px;color:#744}
+.themeDark .coreSettingsDangerTop{background:#3b2020;border-color:#704040}
+.themeDark .coreSettingsDangerTop span{color:#f0c7c7}
+
+/* Shared surfaces: every specialized Studio inherits Core light/dark tokens. */
+body.themeDark .panel,body.themeDark .hero,body.themeDark .card,body.themeDark .viewPane,
+body.themeDark .treeBox,body.themeDark .preview,body.themeDark .codeBar,body.themeDark .statusBox,
+body.themeDark .mergeItem,body.themeDark .signPanel,body.themeDark .viewerToolbar,body.themeDark .dropTarget,
+body.themeDark .sheetGrid,body.themeDark .docEditor,body.themeDark .jsonEditor{
+  background:#20262c!important;color:#e6edf3!important;border-color:#39434c!important
+}
+body.themeDark .muted,body.themeDark .note,body.themeDark .status,body.themeDark .meta{color:#aeb9c3!important}
+body.themeDark input,body.themeDark select,body.themeDark textarea,body.themeDark button,body.themeDark .btn{
+  background:#252c33;color:#e6edf3;border-color:#46515c
+}
+body.themeDark .treeBox summary:hover,body.themeDark .languageList button.active,body.themeDark .tabbar button.active{background:#27445a!important;color:#d9f0ff!important}
+body.themeDark canvas{background:#fff}
+body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .card{color:#1f2933}
+
+/* Contextual help is always an overlay, never part of document flow. */
+#studioContextHelpWindow.floatingHelpWindow,#studioContextHelpWindow.studioWindow{
+  position:fixed!important;right:12px!important;top:calc(var(--studio-header-h) + 8px)!important;
+  left:auto!important;width:min(560px,calc(100vw - 24px))!important;max-height:min(76vh,760px)!important;
+  z-index:420!important;transform:none!important
+}
+
+.inputPickerUrlRow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center}
+.inputPickerUrlRow input{min-width:0;width:100%}
+.inputPickerError{color:#a12626!important;font-weight:800}
+.themeDark .inputPickerError{color:#ff9c9c!important}
+@media(max-width:620px){.inputPickerUrlRow{grid-template-columns:1fr}.inputPickerUrlRow button{width:100%}}
+
+.sidebarGlobalControls #sidebarLock.locked{background:#a61f1f!important;color:#fff!important;border-color:#c84b4b!important}
+.sidebarRestoreTab{position:fixed;left:0;top:42%;z-index:405;border-radius:0 8px 8px 0!important;padding:10px 6px!important;writing-mode:vertical-rl;text-orientation:mixed;font-weight:800}
+.sidebarRestoreTab[hidden]{display:none!important}
+.sidebarLocked .sidebarResizer{cursor:not-allowed;opacity:.35;pointer-events:none}

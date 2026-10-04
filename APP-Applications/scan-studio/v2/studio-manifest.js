@@ -2,13 +2,20 @@ export default {
  id:'scan-studio',sourcePath:'APP-Applications/scan-studio/v2/index.html',name:'Scan Studio',subtitle:'Capture documentaire · mobile + desktop',
  homeHref:'../../',studiosHref:'../studios/',
  capabilities:[
+  {id:'core.input.file-folder-drop-url-camera',status:'test',engine:'studio-core.input-picker'},
   {id:'scan.capture.camera',status:'test'},
   {id:'scan.capture.files',status:'test'},
-  {id:'scan.pages.organize',status:'test'},
-  {id:'scan.image.cleanup',status:'test'},
-  {id:'scan.image.deskew',status:'test'},
-  {id:'scan.ocr',status:'test',engine:'studio-core.ocr'},
-  {id:'scan.export.pdf',status:'test'}
+  {id:'scan.pages.organize',status:'test',aliasOf:'scan.pages.organize-select'},
+  {id:'scan.pages.organize-select',status:'test'},
+  {id:'scan.history.undo-redo',status:'test',engine:'studio-core.edit-history'},
+  {id:'scan.image.cleanup',status:'test',engine:'studio-core.image'},
+  {id:'scan.image.deskew',status:'test',engine:'studio-core.image'},
+  {id:'scan.image.adjustments',status:'test',engine:'studio-core.image'},
+  {id:'scan.ocr',status:'test',aliasOf:'scan.ocr.page-selection-document',engine:'studio-core.ocr'},
+  {id:'scan.ocr.page-selection-document',status:'test',engine:'studio-core.ocr'},
+  {id:'scan.export.pdf',status:'test',aliasOf:'scan.export.pdf-selected'},
+  {id:'scan.export.pdf-selected',status:'test'},
+  {id:'scan.export.pdf-searchable',status:'test',engine:'studio-core.ocr'}
  ],
  menus:[{id:'capture',label:'Capture',scope:'studio'},{id:'pages',label:'Pages',scope:'studio'},{id:'ocr',label:'OCR',scope:'studio'},{id:'help',label:'Aide',scope:'core'}],
  ribbon:[
