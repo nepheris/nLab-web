@@ -5,6 +5,7 @@ const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8774/';
 const browser=await chromium.launch({headless:true});
 const results=[];
 const fail=m=>{throw new Error(m)};
+async function reveal(page,selector){await page.locator(selector).evaluate(el=>{for(let n=el;n;n=n.parentElement)if(n.tagName==='DETAILS')n.open=true})}
 async function dlBytes(page,selector,timeout=30000){
  const q=page.waitForEvent('download',{timeout});await page.locator(selector).click();const d=await q,path=await d.path();
  return{download:d,bytes:path?await readFile(path):Buffer.alloc(0)}
@@ -25,8 +26,8 @@ try{
   await p.locator('#image-studio-open').click();await p.waitForSelector('#studioInputPicker:not([hidden])');
   await p.locator('#studioInputFilesNative').setInputFiles('Library/demo/Images/demo-image-color.png');await p.locator('#studioInputConfirm').click();
   await p.waitForFunction(()=>!/Aucune image/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
-  await p.locator('#artifactGenerate').click();await p.waitForFunction(()=>/SHA-256/.test(document.querySelector('#artifactIdentityStatus')?.textContent||''),null,{timeout:15000});
-  await p.locator('#watermarkText').fill('AUDIT {ID}');await p.locator('#watermarkPosition').selectOption('bottom-right');await p.locator('#watermarkOpacity').fill('40');await p.locator('#watermarkRotation').fill('-15');await p.locator('#watermarkApply').click();
+  await reveal(p,'#artifactGenerate');await p.locator('#artifactGenerate').click();await p.waitForFunction(()=>/SHA-256/.test(document.querySelector('#artifactIdentityStatus')?.textContent||''),null,{timeout:15000});
+  await reveal(p,'#watermarkApply');await p.locator('#watermarkText').fill('AUDIT {ID}');await p.locator('#watermarkPosition').selectOption('bottom-right');await p.locator('#watermarkOpacity').fill('40');await p.locator('#watermarkRotation').fill('-15');await p.locator('#watermarkApply').click();
   const man=await dlBytes(p,'#artifactManifest');if(!/\.json$/i.test(man.download.suggestedFilename())||man.bytes.length<100)fail('Image Studio manifest invalide');
   await p.locator('#clearImages').click();await p.waitForFunction(()=>document.querySelectorAll('#imageList .imageItem').length===0,null,{timeout:10000});
   if(errors.length)fail('Image Studio audit: '+errors.join(' | '));results.push('image-studio+advanced');await p.close();
