@@ -33,7 +33,18 @@
         "url-import",
         "camera-capture",
         "view-text-icon-preview",
-        "rotation-before-import"
+        "rotation-before-import",
+        "multi-selection",
+        "select-all-none",
+        "active-item",
+        "sort-order-name-path-type-size-pages",
+        "group-folder-type",
+        "thumbnail-scale",
+        "text-scale",
+        "session-collection",
+        "selected-materialization",
+        "relative-path-display",
+        "page-count-display"
       ],
       "consumers": [
         "specialized-studios-v2",
@@ -42,7 +53,7 @@
         "scan-studio",
         "qr-barcode-studio"
       ],
-      "status": "canonical-ui"
+      "status": "canonical-ui-collection"
     },
     {
       "id": "thumbnail",
@@ -57,7 +68,8 @@
       "consumers": [
         "pdf-studio",
         "input-picker-planned",
-        "collection-browser"
+        "collection-browser",
+        "input-picker"
       ],
       "status": "canonical"
     },

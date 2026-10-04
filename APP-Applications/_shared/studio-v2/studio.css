@@ -956,3 +956,27 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 .studioWindowLocked .studioWindowGrip{cursor:not-allowed;opacity:.45}
 .studioWindowBar button:focus-visible,.studioWindowRestoreTray button:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .studioWindowBar button:disabled{display:none!important}
+
+
+/* Studio Core Input / Collection 3.2 */
+.inputPickerCollectionBar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:7px;border:1px solid var(--nlab-line);border-radius:8px;background:color-mix(in srgb,var(--nlab-panel,#fff) 94%,#8aa 6%)}
+.inputPickerCollectionBar>span{font-size:9px;font-weight:800;min-width:max-content}
+.inputPickerCollectionBar label{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:700}
+.inputPickerCollectionBar select{min-height:28px;height:28px;padding:2px 22px 2px 6px;font-size:9px}
+.inputPickerCollectionBar button{min-height:28px;height:28px;padding:3px 7px;font-size:9px}
+.inputPickerScale input{width:100px}.inputPickerScale output{min-width:40px;font-size:8px;text-align:right}
+.studioInputList{font-size:calc(1em * var(--input-text-scale,1))}
+.studioInputList[data-view="icon"],.studioInputList[data-view="preview"]{grid-template-columns:repeat(auto-fill,minmax(calc(132px * var(--input-thumb-scale,1)),1fr))}
+.studioInputCard,.studioInputFolderCard{grid-template-rows:calc(112px * var(--input-thumb-scale,1)) auto auto auto}
+.studioInputVisual{min-height:calc(112px * var(--input-thumb-scale,1))}
+.studioInputThumb{max-height:calc(104px * var(--input-thumb-scale,1))}
+.studioInputFileIcon{width:calc(58px * var(--input-thumb-scale,1));height:calc(58px * var(--input-thumb-scale,1))}
+.studioInputCard.active,.studioInputItem.active{outline:2px solid #2b78a6;outline-offset:-2px;background:color-mix(in srgb,var(--nlab-panel,#fff) 88%,#4aa3d8 12%)}
+.studioInputSelect{display:grid!important;place-items:center!important;margin:0!important;padding:0!important}
+.studioInputSelect input{width:18px;height:18px;margin:0}
+.studioInputGroup{display:block;min-width:0;border:1px solid #dce4ea;border-radius:8px;padding:6px;background:transparent}
+.studioInputGroup>h4{display:flex;align-items:center;gap:6px;margin:0 0 6px;font-size:10px}.studioInputGroup>h4 small{font-weight:600;color:var(--nlab-muted)}
+.studioInputGroupItems{display:grid;gap:6px}
+.studioInputList[data-view="icon"] .studioInputGroupItems,.studioInputList[data-view="preview"] .studioInputGroupItems{grid-template-columns:repeat(auto-fill,minmax(calc(132px * var(--input-thumb-scale,1)),1fr))}
+.themeDark .inputPickerCollectionBar{background:#20262c;border-color:#46515c}.themeDark .studioInputGroup{border-color:#39434c}.themeDark .studioInputCard.active,.themeDark .studioInputItem.active{background:#27445a}
+@media(max-width:700px){.inputPickerCollectionBar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.inputPickerCollectionBar>span{grid-column:1/-1}.inputPickerScale{grid-column:1/-1}.inputPickerScale input{flex:1;min-width:0;width:auto}}
