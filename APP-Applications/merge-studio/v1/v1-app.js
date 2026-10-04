@@ -2,7 +2,7 @@ import{PDFEngine,pdfPageCount}from'../../pdf-studio/v1/pdf-engine.js';
 import{downloadBlob}from'../../_shared/studio-v2/download-service.js';
 const $=id=>document.getElementById(id),engine=new PDFEngine();let items=[],selected=-1;
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-const pageCount=file=>pdfPageCount(file));return d.getPageCount()}catch{return 0}}
+const pageCount=file=>pdfPageCount(file)
 async function addFiles(files){for(const f of files||[]){if(!/\.pdf$/i.test(f.name)&&f.type!=='application/pdf')continue;items.push({file:f,name:f.name,size:f.size,pages:await pageCount(f),relativePath:f.webkitRelativePath||f.__relativePath||''})}if(selected<0&&items.length)selected=0;render();await previewSelected()}
 function setText(id,value){const el=$(id);if(el)el.textContent=value}
 function render(){const host=$('mergeList');if(!host)return;host.innerHTML=items.map((x,i)=>'<div class="mergeItem '+(i===selected?'active':'')+'" data-merge-index="'+i+'"><span class="mergeOrder">'+(i+1)+'</span><div><strong>'+esc(x.name)+'</strong><small>'+x.pages+' page(s) · '+Math.max(1,Math.round(x.size/1024))+' Ko'+(x.relativePath?' · '+esc(x.relativePath):'')+'</small></div><button type="button" data-remove-merge="'+i+'" title="Retirer">×</button></div>').join('')||'<div class="status">Aucun PDF.</div>';setText('mergeFileCount',items.length);setText('mergePageCount',items.reduce((s,x)=>s+x.pages,0));setText('mergeSize',Math.round(items.reduce((s,x)=>s+x.size,0)/1024)+' Ko');setText('mergeStatus',items.length<2?'Ajoutez au moins deux PDF.':items.length+' PDF prêts à fusionner.')}
