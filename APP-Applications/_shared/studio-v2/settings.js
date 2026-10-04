@@ -13,6 +13,10 @@ const DEFAULTS={
   fontFamily:'system',
   fontScale:1,
   density:'normal',
+  responsiveProfile:'auto',
+  mobileAutoOptimize:true,
+  ribbonMode:'auto',
+  ribbonFavorites:[],
   sidebarMode:'normal',
   sidebarWidth:360,
   floatingWindows:true,
@@ -40,7 +44,24 @@ export function saveStudioSettings(next){
   const value={...loadStudioSettings(),...next};
   localStorage.setItem(KEY,JSON.stringify(value));
   applyStudioSettings(value);
+  document.dispatchEvent(new CustomEvent('studio-v2:settings-changed',{detail:{settings:value,changed:next}}));
   return value;
+}
+function resolvedResponsiveProfile(settings){
+  const pref=settings.responsiveProfile||'auto';
+  if(pref!=='auto')return pref;
+  if(typeof matchMedia==='function'){
+    if(matchMedia('(max-width: 700px)').matches)return 'mobile';
+    if(matchMedia('(max-width: 1100px)').matches)return 'compact';
+  }
+  return 'desktop';
+}
+function resolvedRibbonMode(settings,profile){
+  const pref=settings.ribbonMode||'auto';
+  if(pref!=='auto')return pref;
+  if(profile==='mobile')return 'primary';
+  if(profile==='compact')return 'icons';
+  return 'full';
 }
 export function applyStudioSettings(settings=loadStudioSettings()){
   const b=document.body;
@@ -53,7 +74,14 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.classList.toggle('hideDevBadges',!settings.showDevBadges);
   const dark=settings.theme==='dark'||(settings.theme==='system'&&matchMedia?.('(prefers-color-scheme: dark)').matches);
   b.classList.toggle('themeDark',!!dark);
-  b.dataset.density=settings.density||'normal';
+  const profile=resolvedResponsiveProfile(settings);
+  const ribbonMode=resolvedRibbonMode(settings,profile);
+  b.dataset.responsivePreference=settings.responsiveProfile||'auto';
+  b.dataset.responsiveProfile=profile;
+  b.dataset.ribbonMode=ribbonMode;
+  b.classList.toggle('studioMobileOptimized',profile==='mobile'&&settings.mobileAutoOptimize!==false);
+  const density=(profile==='mobile'&&settings.mobileAutoOptimize!==false&&(!settings.density||settings.density==='normal'))?'mobile':(settings.density||'normal');
+  b.dataset.density=density;
   b.style.setProperty('--studio-font-scale',String(settings.fontScale||1));
   const fonts={system:'system-ui,Arial,sans-serif',arial:'Arial,Helvetica,sans-serif',verdana:'Verdana,Arial,sans-serif',georgia:'Georgia,serif',mono:'ui-monospace,SFMono-Regular,Consolas,monospace'};
   b.style.setProperty('--studio-font-family',fonts[settings.fontFamily]||fonts.system);
@@ -70,6 +98,12 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.dataset.thumbnailQuality=settings.thumbnailQuality||'light';
   b.style.setProperty('--collection-thumb-size',(Number(settings.collectionThumbnailSize)||104)+'px');
   const main=qs('#studioMain');if(main){main.classList.toggle('sidebarCompact',settings.sidebarMode==='compact');main.classList.toggle('sidebarWide',settings.sidebarMode==='wide');main.classList.toggle('sidebarHidden',settings.sidebarMode==='hidden')}
+  if(!applyStudioSettings._responsiveBound&&typeof window!=='undefined'){
+    applyStudioSettings._responsiveBound=true;
+    const mqMobile=matchMedia('(max-width: 700px)'),mqCompact=matchMedia('(max-width: 1100px)');
+    const refresh=()=>{const current=loadStudioSettings();if((current.responsiveProfile||'auto')==='auto')applyStudioSettings(current)};
+    mqMobile.addEventListener?.('change',refresh);mqCompact.addEventListener?.('change',refresh);
+  }
   return settings;
 }
 export function renderStudioSettingsPanel(host){
@@ -115,6 +149,15 @@ export function renderStudioSettingsPanel(host){
           <option value="mobile">Mobile / tactile</option>
         </select>
       </label>
+      <label class="field"><span>Profil responsive</span>
+        <select data-setting="responsiveProfile">
+          <option value="auto">Automatique selon l’écran</option>
+          <option value="desktop">Desktop</option>
+          <option value="compact">Compact / tablette</option>
+          <option value="mobile">Mobile / tactile</option>
+        </select>
+      </label>
+      <label class="checkboxField"><input type="checkbox" data-setting="mobileAutoOptimize"><span>Optimiser automatiquement les panneaux et commandes en mobile</span></label>
     </section>
     <section>
       <h3>Mode développement</h3>
@@ -192,6 +235,8 @@ export function renderStudioSettingsPanel(host){
       <label class="field"><span>Menus Studio</span><select data-setting="navPlacement"><option value="header">Dans la bande haute</option><option value="separate">Bande séparée</option><option value="hidden">Masqués</option></select></label>
       <label class="field"><span>Aide contextuelle</span><select data-setting="contextualHelpMode"><option value="explicit">À la demande</option><option value="auto">Automatique</option></select></label>
       <label class="field"><span>Ruban</span><select data-setting="ribbonRows"><option value="auto">Auto</option><option value="one">1 ligne</option><option value="two">2 lignes</option></select></label>
+      <label class="field"><span>Présentation du ruban</span><select data-setting="ribbonMode"><option value="auto">Auto</option><option value="full">Complet</option><option value="compact">Compact</option><option value="icons">Icônes seules</option><option value="primary">Actions principales</option></select></label>
+      <div id="ribbon-action-settings"></div>
       <label class="field"><span>Miniatures collections</span><select data-setting="thumbnailQuality"><option value="light">Légères / rapides</option><option value="standard">Standard</option></select></label>
       <label class="field"><span>Taille des vignettes</span><input type="range" min="64" max="220" step="8" data-setting="collectionThumbnailSize"></label>
       <div class="settingsScaleValue" data-thumbnail-size-value></div>
@@ -202,17 +247,28 @@ export function renderStudioSettingsPanel(host){
     </section>
   </div>`;
   host.querySelector('[data-setting="theme"]').value=s.theme;
-  for(const k of ['fontFamily','density','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality','specializedStudioPolicy','navPlacement','contextualHelpMode'])host.querySelector('[data-setting="'+k+'"]').value=s[k];
+  for(const k of ['fontFamily','density','responsiveProfile','ribbonMode','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality','specializedStudioPolicy','navPlacement','contextualHelpMode']){const el=host.querySelector('[data-setting="'+k+'"]');if(el)el.value=s[k]}
+  const iconThemeSelect=host.querySelector('[data-setting="iconTheme"]');if(iconThemeSelect)iconThemeSelect.value=s.iconTheme||'nlab-line';
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
   const sidebarNumber=host.querySelector('[data-setting-number="sidebarWidth"]');if(sidebarNumber)sidebarNumber.value=s.sidebarWidth;
   host.querySelector('[data-setting="collectionThumbnailSize"]').value=s.collectionThumbnailSize;
   const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';const thumbOut=host.querySelector('[data-thumbnail-size-value]');if(thumbOut)thumbOut.textContent=Math.round(Number(s.collectionThumbnailSize||104))+' px';
-  for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','floatingWindows','headerVisible','headerShadow','headerBlur','sidebarLocked']){
+  for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','mobileAutoOptimize','floatingWindows','headerVisible','headerShadow','headerBlur','sidebarLocked']){
     host.querySelector('[data-setting="'+k+'"]').checked=!!s[k];
   }
   const overrideHost=host.querySelector('#specialized-studio-overrides');
   if(overrideHost){(async()=>{try{const catalogUrl=new URL('../../studios/catalog.json',import.meta.url),r=await fetch(catalogUrl,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const data=await r.json(),current=loadStudioSettings().specializedStudioOverrides||{};overrideHost.innerHTML=(data.studios||[]).filter(x=>x.id!=='pdf-studio').map(x=>'<label class="field studioOverrideRow"><span>'+x.name+'</span><select data-studio-override="'+x.id+'"><option value="inherit">Hériter</option><option value="latest">Dernière version</option><option value="current">CURRENT</option><option value="test">TEST</option></select></label>').join('')||'<span class="muted">Aucun Studio spécialisé.</span>';overrideHost.querySelectorAll('[data-studio-override]').forEach(el=>{el.value=current[el.dataset.studioOverride]||'inherit';el.onchange=()=>{const s=loadStudioSettings(),next={...(s.specializedStudioOverrides||{}),[el.dataset.studioOverride]:el.value};saveStudioSettings({specializedStudioOverrides:next})}})}catch(e){overrideHost.textContent='Catalogue indisponible : '+e.message}})()}
+  const actionHost=host.querySelector('#ribbon-action-settings');
+  if(actionHost){
+    const buttons=qsa('.ribbonBtn[data-studio-action]').map(b=>({action:b.dataset.studioAction,label:b.querySelector('.ribbonBtnLabel')?.textContent?.trim()||b.title||b.dataset.studioAction,primary:b.classList.contains('primary')})).filter(x=>x.action);
+    const chosen=new Set(Array.isArray(s.ribbonFavorites)?s.ribbonFavorites:[]);
+    const useDefault=chosen.size===0;
+    actionHost.innerHTML='<details><summary>Actions principales du ruban</summary><div class="ribbonFavoriteGrid">'+buttons.map(x=>'<label class="checkboxField"><input type="checkbox" data-ribbon-favorite="'+x.action+'" '+((chosen.has(x.action)||(useDefault&&x.primary))?'checked':'')+'><span>'+x.label+'</span></label>').join('')+'</div><button type="button" data-reset-ribbon-favorites>Réinitialiser les actions principales</button></details>';
+    const saveFavorites=()=>saveStudioSettings({ribbonFavorites:[...actionHost.querySelectorAll('[data-ribbon-favorite]:checked')].map(x=>x.dataset.ribbonFavorite)});
+    actionHost.querySelectorAll('[data-ribbon-favorite]').forEach(el=>el.addEventListener('change',saveFavorites));
+    actionHost.querySelector('[data-reset-ribbon-favorites]')?.addEventListener('click',()=>saveStudioSettings({ribbonFavorites:[]}));
+  }
   const ribbonHost=host.querySelector('#ribbon-group-settings');
   if(ribbonHost){
     const groups=qsa('[data-ribbon-group]').map(g=>({id:g.dataset.ribbonGroup,label:g.querySelector('.ribbonLabel')?.textContent?.trim()||g.dataset.ribbonGroup}));
