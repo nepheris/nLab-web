@@ -360,6 +360,78 @@
       "category": "Zip",
       "size": 715,
       "sha256": "5ef843b4e0135f98b942d2999683526a83875a5a0bf7eadcb530107c13296b5e"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/demo-signature-martin.png",
+      "category": "Images",
+      "size": 189192,
+      "sha256": "6e4f77684523c202ae5d86e9caa837c55d48b13ba0f289ec23bc5c3237908b85"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/demo-paraphe-dm.png",
+      "category": "Images",
+      "size": 166499,
+      "sha256": "7636fef3b5656519b951c5d80fff379cb8a2d7f133c2a0dde2e1457ef08e4b80"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/demo-signature-demo-corp.png",
+      "category": "Images",
+      "size": 413613,
+      "sha256": "207ef4842611ee842705fc1a7c3e0401c7dfdac5fec2d734f325d0c759d55c15"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/paye.svg",
+      "category": "Images",
+      "size": 631,
+      "sha256": "54680aa0a3ad5019cf16fa85e6deb2851b570a46e86fdb5d5a4e92d052de69a7"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/paye-le.svg",
+      "category": "Images",
+      "size": 880,
+      "sha256": "56d38185430a8d0160ccdffb06ed82ed99223e2aa8d8baacc4f761c0909f9fed"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/archive.svg",
+      "category": "Images",
+      "size": 637,
+      "sha256": "8f3460865b02db28a1e79d698809b5e4c0f30fbb3cb13bf2575fda53e5b7014d"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/non-conforme.svg",
+      "category": "Images",
+      "size": 644,
+      "sha256": "df1c9a2c108c454f9a91afde9a0d3e70b31de1de11644a0f255f2b91d2d4f8ab"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/non-concerne.svg",
+      "category": "Images",
+      "size": 646,
+      "sha256": "5d8e746d31f1104c3597aea777704e6bcda8217b9c7ea975c2835cdb825cbc12"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/documents-de-travail.svg",
+      "category": "Images",
+      "size": 858,
+      "sha256": "1a6c34f42524ef115ab3d344bede5cd05e2c8622f25737d323411287ba9845fa"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/matrice-circulaire.svg",
+      "category": "Images",
+      "size": 680,
+      "sha256": "84b638539ad6b17a56383d5af8f244b4017e7481a265631d8a685fafbe88513e"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/matrice-ligne.svg",
+      "category": "Images",
+      "size": 642,
+      "sha256": "ba2f3ef06235f6e8de06961b7b762daa0cfa324e78bbf404d48d3d49093ad3b4"
+    },
+    {
+      "path": "files/demo-input/Images/tampon/matrice-multiligne.svg",
+      "category": "Images",
+      "size": 1071,
+      "sha256": "8830c777f61be8be69d2998ce09167145e91102edfa9bb6447d1119c01cd430d"
     }
   ]
 }
