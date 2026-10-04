@@ -54,10 +54,11 @@ export function bindStudioChrome(){
     localStorage.setItem('nlab-studio-v2-context-collapsed',context?.classList.contains('collapsed')?'0':'1');apply();
   });
   contextClose?.addEventListener('click',()=>{if(context)context.hidden=true});
-  sidebarRestore?.addEventListener('click',()=>{main?.classList.remove('sidebarHidden','sidebarCompact');sidebarRestore.hidden=true});
+  sidebarRestore?.addEventListener('click',()=>{main?.classList.remove('sidebarHidden','sidebarCompact');sidebarRestore.hidden=true;if(body.dataset.responsiveProfile==='mobile')body.classList.add('studioMobileSidebarOpen')});
   document.addEventListener('studio-v2:open-section',e=>{
     const id=e.detail?.section,el=id?qs(id):null;if(!el)return;
     main?.classList.remove('sidebarHidden');if(sidebarRestore)sidebarRestore.hidden=true;
+    if(body.dataset.responsiveProfile==='mobile')body.classList.add('studioMobileSidebarOpen');
     el.open=true;el.scrollIntoView({behavior:'smooth',block:'nearest'});
   });
   apply();
