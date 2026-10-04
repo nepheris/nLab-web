@@ -1,6 +1,7 @@
 import{mountStudioV2}from'../../_shared/studio-v2/frame.js';
 import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
 import{SYMBOLOGIES,symbologyInfo,defaultPayload,bwipOptions,validatePayload}from'../../_shared/studio-v2/symbology-service.js';
+import{bindColorControl}from'../../_shared/studio-v2/color-control.js';
 import studioManifest from'./studio-manifest.js';
 const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test',sourcePath:studioManifest.sourcePath});
 applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:VERSION_INFO.version,studioStatus:VERSION_INFO.status,coreVersion:VERSION_INFO.coreVersion,build:VERSION_INFO.build});
@@ -8,12 +9,7 @@ await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
 const $=s=>document.querySelector(s),qsa=s=>[...document.querySelectorAll(s)];
 let type='qrcode',qr=null,logoUrl='',hist=JSON.parse(localStorage.getItem('nlab-qr-history')||'[]');
 const presets=Object.fromEntries(SYMBOLOGIES.map(x=>[x.id,defaultPayload(x.id)]));
-function hexToRgb(h){h=h.replace('#','');return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
-function rgbToHsl([r,g,b]){r/=255;g/=255;b/=255;const M=Math.max(r,g,b),m=Math.min(r,g,b),d=M-m;let h=0,s=0,l=(M+m)/2;if(d){s=d/(1-Math.abs(2*l-1));if(M===r)h=60*((g-b)/d%6);else if(M===g)h=60*((b-r)/d+2);else h=60*((r-g)/d+4);if(h<0)h+=360}return [Math.round(h),Math.round(s*100),Math.round(l*100)]}
-function colorText(hex){const mode=$('#colorMode').value;if(mode==='hex')return hex.toUpperCase();const rgb=hexToRgb(hex);if(mode==='rgb')return 'rgb('+rgb.join(', ')+')';const hsl=rgbToHsl(rgb);return 'hsl('+hsl[0]+', '+hsl[1]+'%, '+hsl[2]+'%)'}
-function syncColorText(){for(const id of ['fg','fg2','bg'])$('#'+id+'Text').value=colorText($('#'+id).value)}
-for(const id of ['fg','fg2','bg']){$('#'+id).oninput=()=>{syncColorText();render()}}
-$('#colorMode').onchange=syncColorText;
+const colorControls=['fg','fg2','bg'].map(id=>bindColorControl({colorInput:'#'+id,textInput:'#'+id+'Text',formatInput:'#colorMode',defaultValue:$('#'+id).value,onChange:()=>{clearTimeout(window.__colorRender);window.__colorRender=setTimeout(render,40)}}));
 function common(){return{size:+$('#size').value||360,margin:+$('#margin').value||0,fg:$('#fg').value,bg:$('#bg').value}}
 function renderQR(){const c=common(),grad=$('#gradient').checked?{type:'linear',rotation:Math.PI/4,colorStops:[{offset:0,color:c.fg},{offset:1,color:$('#fg2').value}]}:undefined;qr=new QRCodeStyling({width:c.size,height:c.size,type:'svg',data:$('#value').value||' ',margin:c.margin,qrOptions:{errorCorrectionLevel:$('#ecc').value},dotsOptions:{type:$('#dots').value,color:c.fg,gradient:grad},cornersSquareOptions:{type:$('#corners').value,color:c.fg},cornersDotOptions:{type:$('#cornerDots').value,color:$('#fg2').value},backgroundOptions:{color:$('#transparent').checked?'transparent':c.bg},image:logoUrl||undefined,imageOptions:{hideBackgroundDots:true,imageSize:.24,margin:5,crossOrigin:'anonymous'}});qr.append($('#preview'))}
 function renderBar(){const cc=common(),canvas=document.createElement('canvas'),valid=validatePayload(type,$('#value').value);if(!valid.ok)throw new Error(valid.message);bwipjs.toCanvas(canvas,bwipOptions(type,valid.value,cc));$('#preview').append(canvas)}
@@ -32,4 +28,4 @@ $('#pickImage').onclick=()=>$('#scanFile').click();$('#scanFile').onchange=e=>sc
 const dz=$('#dropZone');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag')}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag')}));dz.addEventListener('drop',e=>scanImage(e.dataTransfer.files?.[0]));
 $('#clearHistory').onclick=()=>{hist=[];localStorage.removeItem('nlab-qr-history');renderHistory()};
 $('#openDemo').onclick=()=>window.open('../../Library/demo/','_blank');
-syncColorText();renderHistory();render();
+renderHistory();render();

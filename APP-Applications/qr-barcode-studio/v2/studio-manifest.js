@@ -7,7 +7,8 @@ export default {
   {id:'symbology.scan.image',status:'test'},
   {id:'symbology.scan.hid',status:'stable'},
   {id:'symbology.export.png',status:'stable'},
-  {id:'symbology.export.svg',status:'partial'}
+  {id:'symbology.export.svg',status:'partial'},
+  {id:'core.color.shared-control',status:'test'}
  ],
  menus:[{id:'generate',label:'Génération'},{id:'scan',label:'Scanner'},{id:'demos',label:'Démos'},{id:'history',label:'Historique'},{id:'help',label:'Aide'}],
  ribbon:[
