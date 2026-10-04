@@ -106,3 +106,4 @@ export class PDFEngine extends EventTarget{
  async pageRaster(page,{scale=2,type='image/jpeg',quality=.85,gray=false}={}){const p=await this.pdfjs.getPage(page),vp=p.getViewport({scale}),c=document.createElement('canvas');c.width=Math.ceil(vp.width);c.height=Math.ceil(vp.height);const ctx=c.getContext('2d');await p.render({canvasContext:ctx,viewport:vp}).promise;if(gray){const im=ctx.getImageData(0,0,c.width,c.height);for(let i=0;i<im.data.length;i+=4){const y=.299*im.data[i]+.587*im.data[i+1]+.114*im.data[i+2];im.data[i]=im.data[i+1]=im.data[i+2]=y}ctx.putImageData(im,0,0)}const blob=await new Promise(r=>c.toBlob(r,type,quality));return{blob,width:c.width,height:c.height,dataUrl:await blobToDataURL(blob)}}
 }
 export{fileStem};
+export async function pdfPageCount(file){try{const d=await PDFDocument.load(await file.arrayBuffer(),{ignoreEncryption:true});return d.getPageCount()}catch{return 0}}

@@ -1,13 +1,13 @@
 {
   "schema": "nlab-studio-mutualization/v1",
-  "updated": "2026-10-03",
+  "updated": "2026-10-04",
   "versionTarget": "Studio V2 consolidated",
   "priorities": {
     "P0": [
       {
         "id": "shared-download",
         "label": "Download / save Blob, text, JSON, CSV",
-        "status": "migrating",
+        "status": "adopted-core",
         "engine": "download-service.js",
         "consumers": [
           "Document Studio",
@@ -15,9 +15,12 @@
           "Data Studio",
           "Spreadsheet Studio",
           "Dataset Generator",
-          "OCR Studio",
-          "Image Studio",
-          "PDF Studio"
+          "Markdown Studio",
+          "QR & Barcode Studio",
+          "Scan Studio",
+          "PDF Studio",
+          "PDF Sign",
+          "Merge Studio"
         ]
       },
       {
@@ -44,17 +47,18 @@
       {
         "id": "shared-doc-format",
         "label": "DOCX / ODT / RTF / HTML structurels",
-        "status": "migrating",
+        "status": "adopted-core",
         "engine": "document-format-service.js",
         "consumers": [
           "Document Studio",
-          "PDF Studio"
+          "PDF Studio",
+          "Dataset Generator"
         ]
       },
       {
         "id": "shared-tabular",
         "label": "CSV / TSV / JSON / XLSX / ODS tabulaires",
-        "status": "migrating",
+        "status": "adopted-core",
         "engine": "tabular-service.js",
         "consumers": [
           "Data Studio",
@@ -87,7 +91,7 @@
       {
         "id": "shared-color",
         "label": "Color Picker bidirectionnel HEX/RGB/HSL",
-        "status": "engine-ready",
+        "status": "adopted-core",
         "engine": "color-control.js",
         "consumers": [
           "PDF Studio",
@@ -229,34 +233,38 @@
       {
         "id": "shared-overlay-model",
         "label": "Objets superposés communs : texte, image, tampon, signature, highlight, redaction-zone",
-        "status": "design",
-        "engine": "overlay-object-service.js",
+        "status": "partial-canonical-primitives",
+        "engine": "object-transform-service.js + PDF object-layer",
         "consumers": [
           "PDF Studio",
           "Image Studio",
           "Document Studio"
         ],
-        "notes": "Placement/déplacement/resize/rotation/lock/delete communs. Caviardage sécurisé reste une étape spécifique d'aplatissement/rasterisation."
+        "notes": "Rotation, verrouillage et géométrie de base mutualisés entre annotations PDF V1/V2. Le modèle objet complet reste à promouvoir lorsque Image/Document en deviennent consommateurs."
       },
       {
         "id": "shared-ocr",
         "label": "OCR commun",
-        "status": "todo",
+        "status": "adopted-core",
         "engine": "ocr-service.js",
         "consumers": [
           "OCR Studio",
-          "PDF Studio"
+          "PDF Studio",
+          "Scan Studio",
+          "Dataset Generator"
         ]
       },
       {
         "id": "shared-symbology",
         "label": "QR/DataMatrix/barcodes communs",
-        "status": "todo",
+        "status": "adopted-core-superset",
         "engine": "symbology-service.js",
         "consumers": [
           "QR & Barcode Studio",
-          "PDF Studio"
-        ]
+          "PDF Studio",
+          "Dataset Generator"
+        ],
+        "notes": "Le moteur commun couvre validation, QR stylé, Data Matrix/Aztec/PDF417, codes 1D, preview et exports PNG/SVG."
       },
       {
         "id": "shared-query",
@@ -273,13 +281,16 @@
       {
         "id": "shared-image",
         "label": "Image normalization / canvas / raster export",
-        "status": "todo",
+        "status": "adopted-core-browser",
         "engine": "image-service.js",
         "consumers": [
           "Image Studio",
-          "OCR Studio",
-          "PDF Studio"
-        ]
+          "Scan Studio",
+          "PDF tools",
+          "PDF Sign",
+          "Input Picker planned"
+        ],
+        "notes": "Moteur navigateur commun : rotation, flip, resize, crop, deskew, nettoyage scan et export raster. Aligné avec BRK114 pour runtime local/desktop."
       },
       {
         "id": "shared-metadata",
