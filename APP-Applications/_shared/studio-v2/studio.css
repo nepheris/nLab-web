@@ -803,3 +803,145 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 .sidebarRestoreTab{position:fixed;left:0;top:42%;z-index:405;border-radius:0 8px 8px 0!important;padding:10px 6px!important;writing-mode:vertical-rl;text-orientation:mixed;font-weight:800}
 .sidebarRestoreTab[hidden]{display:none!important}
 .sidebarLocked .sidebarResizer{cursor:not-allowed;opacity:.35;pointer-events:none}
+
+
+/* Studio Core 3.1 — settings accordions + explicit Core panel placement */
+.coreSettingsPanel{
+  width:min(820px,calc(100vw - 24px));
+  max-height:min(82vh,860px);
+}
+.coreSettingsAccordionToolbar{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  margin:0 0 8px;
+  position:sticky;
+  top:0;
+  z-index:3;
+  padding:4px 0;
+  background:inherit;
+}
+.coreSettingsGrid{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:7px!important;
+}
+.coreSettingsSection{
+  border:1px solid #dce4ea;
+  border-radius:9px;
+  overflow:hidden;
+  background:transparent;
+}
+.coreSettingsSection>summary{
+  cursor:pointer;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:10px 12px;
+  font-size:11px;
+  font-weight:900;
+  user-select:none;
+  background:#f7f9fb;
+}
+.coreSettingsSection>summary::-webkit-details-marker{display:none}
+.coreSettingsSection>summary:before{
+  content:"▸";
+  display:inline-grid;
+  place-items:center;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#e8eef3;
+}
+.coreSettingsSection[open]>summary:before{content:"▾"}
+.coreSettingsSectionBody{padding:10px 12px}
+.coreSettingsDangerBottom{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:10px 0 0;
+  padding:8px;
+  border:1px solid #d59a9a;
+  border-radius:8px;
+  background:#fff4f4;
+}
+.coreSettingsDangerBottom button{background:#9f2323!important;color:#fff!important;border-color:#9f2323!important;font-weight:800}
+.coreSettingsDangerBottom span{font-size:9px;color:#744}
+.themeDark .coreSettingsSection{border-color:#39434c}
+.themeDark .coreSettingsSection>summary{background:#252c33;color:#e6edf3}
+.themeDark .coreSettingsSection>summary:before{background:#33404a}
+.themeDark .coreSettingsDangerBottom{background:#3b2020;border-color:#704040}
+.themeDark .coreSettingsDangerBottom span{color:#f0c7c7}
+
+/* Shared Core panel placement. Free windows remain draggable and always float above the workspace. */
+#studioCoreSettingsPanel.corePanelFree,
+#studioContextHelpWindow.corePanelFree{
+  position:fixed!important;
+  top:calc(var(--studio-header-h) + 12px)!important;
+  right:auto!important;
+  transform:none!important;
+}
+#studioCoreSettingsPanel.corePanelFree{
+  left:max(12px,calc(50vw - 410px))!important;
+}
+#studioContextHelpWindow.corePanelFree{
+  left:12px!important;
+  right:auto!important;
+  width:min(520px,calc(100vw - 24px))!important;
+  max-height:min(78vh,780px)!important;
+}
+#studioCoreSettingsPanel.corePanelFixedLeft,
+#studioContextHelpWindow.corePanelFixedLeft{
+  position:fixed!important;
+  left:8px!important;
+  right:auto!important;
+  top:calc(var(--studio-header-h) + 8px)!important;
+  bottom:38px!important;
+  height:auto!important;
+  transform:none!important;
+  resize:horizontal!important;
+}
+#studioCoreSettingsPanel.corePanelFixedRight,
+#studioContextHelpWindow.corePanelFixedRight{
+  position:fixed!important;
+  right:8px!important;
+  left:auto!important;
+  top:calc(var(--studio-header-h) + 8px)!important;
+  bottom:38px!important;
+  height:auto!important;
+  transform:none!important;
+  resize:horizontal!important;
+}
+#studioCoreSettingsPanel.corePanelFixedLeft,
+#studioCoreSettingsPanel.corePanelFixedRight{width:min(760px,calc(100vw - 16px))!important}
+#studioContextHelpWindow.corePanelFixedLeft,
+#studioContextHelpWindow.corePanelFixedRight{width:min(470px,calc(100vw - 16px))!important}
+#studioContextHelpWindow{
+  z-index:650!important;
+}
+#studioContextHelpWindow:not([hidden]){
+  display:block;
+}
+#studioContextHelpWindow .studioWindowBar{
+  cursor:default;
+}
+.contextualHelpDisabled #studioContextHelpOpen{
+  opacity:.45;
+}
+@media(max-width:700px){
+  #studioCoreSettingsPanel.corePanelFree,
+  #studioContextHelpWindow.corePanelFree,
+  #studioCoreSettingsPanel.corePanelFixedLeft,
+  #studioContextHelpWindow.corePanelFixedLeft,
+  #studioCoreSettingsPanel.corePanelFixedRight,
+  #studioContextHelpWindow.corePanelFixedRight{
+    left:6px!important;
+    right:6px!important;
+    width:auto!important;
+    top:calc(var(--studio-header-h) + 6px)!important;
+    bottom:42px!important;
+    height:auto!important;
+    max-height:none!important;
+  }
+}
