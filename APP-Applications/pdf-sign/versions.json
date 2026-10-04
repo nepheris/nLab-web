@@ -1,13 +1,22 @@
 {
   "schema": "nlab-studio-versions/v2",
   "current": null,
-  "test": "0.2.0",
+  "test": "0.3.0",
   "versions": [
+    {
+      "version": "0.3.0",
+      "label": "nLab PDF Sign 0.3.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v1/",
+      "notes": "Core 3.0 : import PDF/signature via Input commun avec photo/URL, aperçu, placement libre déplaçable et redimensionnable, thème Core homogène."
+    },
     {
       "version": "0.2.0",
       "label": "nLab PDF Sign 0.2.0 TEST",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v1/",
       "notes": "Passe TEST Core 2.9 et recette réelle : dessin/import de signature, preset personnel, application page courante/toutes pages et export PDF signé revalidés."
     },
