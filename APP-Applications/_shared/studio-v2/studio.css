@@ -695,7 +695,7 @@ body.studioMobileOptimized .ribbonContext.studioWindow,
 body.studioMobileOptimized .studioVisibilityPanel{
   position:fixed!important;left:6px!important;right:6px!important;bottom:64px!important;top:auto!important;
   width:auto!important;max-width:none!important;max-height:calc(88dvh - 64px)!important;border-radius:14px 14px 10px 10px!important;
-  z-index:280!important;transform:none!important;resize:none!important;overflow:auto!important;
+  z-index:280;transform:none!important;resize:none!important;overflow:auto!important;
 }
 body.studioMobileOptimized .coreSettingsGrid{grid-template-columns:1fr!important}
 body.studioMobileOptimized .coreSettingsGrid section:last-child{grid-column:auto!important}
