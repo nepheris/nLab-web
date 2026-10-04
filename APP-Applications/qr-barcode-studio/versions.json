@@ -13,15 +13,6 @@
       "notes": "Core 3.0 : workflows Générer/Lire séparés, lecture via Input commun, aperçu zoomable et panneau Contenu synchronisé."
     },
     {
-      "version": "2.4.0",
-      "label": "QR & Barcode Studio 2.4.0 TEST",
-      "date": "2026-10-04",
-      "current": false,
-      "status": "historical",
-      "href": "./v2/",
-      "notes": "Core 3.0 : workflows Générer/Lire séparés, lecture via Input commun, aperçu zoomable et panneau Contenu synchronisé."
-    },
-    {
       "version": "2.3.0",
       "label": "QR & Barcode Studio 2.3.0 TEST",
       "date": "2026-10-04",
