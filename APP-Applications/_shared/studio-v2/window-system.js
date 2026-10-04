@@ -39,6 +39,7 @@ function ensureRestoreTray(){
 }
 function refreshRestoreTray(){
  const tray=ensureRestoreTray(),list=tray.querySelector('[data-win-restore-list]'),hidden=[...live.entries()].filter(([k])=>{const c=cfg(k);return c.hidden&&c.restorable});
+ if(!tray.matches(':focus-within')){tray.classList.remove('open');const panel=tray.querySelector('[data-win-restore-panel]');if(panel)panel.hidden=true;tray.querySelector('[data-win-restore-toggle]')?.setAttribute('aria-expanded','false')}
  tray.hidden=!hidden.length;
  tray.querySelector('[data-win-restore-count]').textContent=String(hidden.length);
  list.innerHTML=hidden.map(([k,v])=>'<button type="button" data-win-restore="'+k+'" title="Restaurer '+String(v.title||k).replace(/"/g,'&quot;')+'">'+String(v.title||k)+'</button>').join('');
