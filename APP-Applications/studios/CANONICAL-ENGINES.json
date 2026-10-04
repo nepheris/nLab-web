@@ -420,7 +420,13 @@
         "scroll-x-y",
         "hide-restore",
         "normal-large",
-        "persistence"
+        "persistence",
+        "panel-mode-free",
+        "panel-mode-fixed-left",
+        "panel-mode-fixed-right",
+        "panel-mode-hidden",
+        "topmost-context-help",
+        "left-default-context-help"
       ],
       "consumers": [
         "all-studios"
