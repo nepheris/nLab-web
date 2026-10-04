@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "channel": "test",
-  "notes": "Studio Core 3.0 : Window Manager unifié (z-order, verrou rouge, détachement, taille, restauration des fenêtres masquées), thèmes clair/sombre renforcés, aide contextuelle overlay, Input Picker commun fichier/dossier/drop/ZIP/URL/photo, historique d’édition partagé, Image Engine enrichi et thèmes d’icônes avec fallback canonique.",
+  "notes": "Studio Core 3.1 : paramètres en grands accordéons, modes de panneaux Libre/Fixe gauche/Fixe droite/Aucun, aide contextuelle gauche par défaut mais librement déplaçable et toujours au premier plan, affichage de l’aide désactivable, reset interface en haut et en bas.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
