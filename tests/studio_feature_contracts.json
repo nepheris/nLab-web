@@ -58,7 +58,9 @@
       ],
       "required_strings": [
         "studio-v2/studio.css",
-        "bootstrap-specialized.js"
+        "bootstrap-specialized.js",
+        "image-service.js",
+        "download-service.js"
       ],
       "required_capabilities": [
         "image.transform.rotate",
@@ -296,11 +298,12 @@
         "scanImage",
         "SYMBOLOGIES",
         "symbologyInfo",
-        "bwipOptions",
-        "validatePayload",
+        "renderSymbology",
+        "generateSymbologyBlob",
         "symbology-service.js",
         "bindColorControl",
-        "color-control.js"
+        "color-control.js",
+        "download-service.js"
       ],
       "required_capabilities": [
         "symbology.generate",
@@ -569,9 +572,10 @@
         "batesNumbering",
         "buildArtifactManifest",
         "downloadManifest",
-        "bwipOptions",
-        "validatePayload",
-        "symbology-service.js"
+        "symbology-service.js",
+        "generateSymbologyBlob",
+        "symbologyDataUrl",
+        "download-service.js"
       ],
       "required_source_files": [
         "APP-Applications/pdf-studio/v2/object-layer.js"
@@ -686,7 +690,10 @@
       "required_runtime_strings": [
         "mountStudioV2",
         "runOcr",
-        "downloadBlob"
+        "downloadBlob",
+        "image-service.js",
+        "renderImageTransformed",
+        "canvasToBlob"
       ],
       "required_capabilities": [
         "scan.capture.camera",
