@@ -152,7 +152,8 @@ if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push
   const{p,errors}=await core('spreadsheet-studio');
   const chooser=p.waitForEvent('filechooser');await p.locator('#openSheet').click();await (await chooser).setFiles('Library/demo/Data/dataset-validation-complet.csv');await p.waitForFunction(()=>document.querySelector('#dims')?.textContent!=='0 × 0',null,{timeout:15000});
   await p.locator('#search').fill('a');await p.locator('#search').dispatchEvent('input');await p.locator('#delimiter').selectOption('|');await p.locator('#bom').check();
-  const c=await dlBytes(p,'#exportCsv');if(!(c.bytes[0]===0xEF&&c.bytes[1]===0xBB&&c.bytes[2]===0xBF)||!c.bytes.toString('utf8').includes('|'))fail('Spreadsheet options CSV non respectées');
+  const csvClickError=await p.locator('#exportCsv').evaluate(el=>{try{el.click();return null}catch(e){return e?.message||String(e)}});if(csvClickError)fail('Spreadsheet CSV click : '+csvClickError);await p.waitForTimeout(100);if(errors.length)fail('Spreadsheet CSV runtime : '+errors.join(' | '));
+  const c=await dlBytes(p,'#exportCsv',10000);if(!(c.bytes[0]===0xEF&&c.bytes[1]===0xBB&&c.bytes[2]===0xBF)||!c.bytes.toString('utf8').includes('|'))fail('Spreadsheet options CSV non respectées');
   const o=await dlBytes(p,'#exportOds');if(!/\.ods$/i.test(o.download.suggestedFilename())||o.bytes.length<500)fail('Spreadsheet ODS invalide');
   if(errors.length)fail('Spreadsheet Studio audit: '+errors.join(' | '));results.push('spreadsheet-studio+csv-ods');await p.close();
  }
