@@ -2,7 +2,7 @@ import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible,setStatus
 import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings,loadStudioSettings}from'./settings.js';
 import{enhanceStudioWindow,showStudioWindow,bringStudioWindowToFront,restoreAllStudioWindows}from'./window-system.js';
 import{mountHistoryUI,recordHistory}from'./history.js';
-import{icon}from'./icon-registry.js';
+import{icon,loadIconThemeCatalog}from'./icon-registry.js';
 import{registerCapabilities}from'./capability-registry.js';
 import{mountCommandPalette}from'./command-palette.js';
 import{mountWorkflowUI}from'./workflow-ui.js';
@@ -28,6 +28,7 @@ function itemButton(it){
 }
 export async function mountStudioV2({manifest,versionInfo={version:'',status:'TEST'},root=document.body}={}){
   if(!manifest)throw new Error('Manifest Studio V2 requis');
+  try{await loadIconThemeCatalog()}catch(e){console.warn('Icon theme catalog unavailable',e)}
   root.querySelector('#nlabStudioV2Chrome')?.remove();
 
   const chrome=document.createElement('div');
@@ -62,7 +63,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
 </header>
 <nav class="studioMenu">
   ${(manifest.menus||[]).map((m,i)=>'<button class="scope-'+scopeClass(m)+(i===0?' active':'')+'" data-scope="'+scopeOf(m)+'" data-menu="'+esc(m.id)+'">'+esc(m.label)+'<small class="scopeBadge">'+scopeOf(m).toUpperCase()+'</small></button>').join('')}
-  <button id="studioVisibilityOpen" class="studioMenuUtility scope-core" data-scope="core" title="Afficher / masquer les menus et groupes du ruban">${icon('eye')}<span>Affichage</span></button><button id="studioRestoreWindows" class="studioMenuUtility scope-core" data-scope="core" title="Restaurer toutes les fenêtres masquées">${icon('window')}<span>Fenêtres</span></button>
+  <button id="studioVisibilityOpen" class="studioMenuUtility scope-core" data-scope="core" title="Afficher / masquer les menus et groupes du ruban">${icon('eye')}<span>Affichage</span></button><button id="studioRestoreWindows" class="studioMenuUtility scope-core" data-scope="core" title="Restaurer toutes les fenêtres masquées">${icon('restore')}<span>Fenêtres</span></button>
 </nav>
 <div class="studioRibbon">
   ${(manifest.ribbon||[]).map(g=>'<div class="ribbonGroup scope-'+scopeClass(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
