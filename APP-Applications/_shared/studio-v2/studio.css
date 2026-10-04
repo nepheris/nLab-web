@@ -786,3 +786,9 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
   left:auto!important;width:min(560px,calc(100vw - 24px))!important;max-height:min(76vh,760px)!important;
   z-index:420!important;transform:none!important
 }
+
+.inputPickerUrlRow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center}
+.inputPickerUrlRow input{min-width:0;width:100%}
+.inputPickerError{color:#a12626!important;font-weight:800}
+.themeDark .inputPickerError{color:#ff9c9c!important}
+@media(max-width:620px){.inputPickerUrlRow{grid-template-columns:1fr}.inputPickerUrlRow button{width:100%}}
