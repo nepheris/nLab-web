@@ -1,5 +1,6 @@
 const KEY='nlab-studio-v2-windows';
 let z=220;
+let topZ=100000;
 const live=new Map();
 
 function load(){try{return{windows:{},...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return{windows:{}}}}
@@ -22,7 +23,12 @@ function svg(name){
  return '<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';
 }
 function topOffset(){const h=document.querySelector('.studioHeader');return (h?Math.ceil(h.getBoundingClientRect().height):48)+8}
-function bringToFront(panel){panel.style.zIndex=String(++z);return z}
+function bringToFront(panel){
+ const topmost=panel?.dataset?.studioWindowTopmost==='1';
+ const next=topmost?++topZ:++z;
+ panel.style.zIndex=String(next);
+ return next
+}
 function ensureRestoreTray(){
  let tray=document.querySelector('#studioWindowRestoreTray');
  if(tray)return tray;
@@ -91,9 +97,9 @@ function constrain(panel){
 function hide(panel,key){
  const c=cfg(key);c.hidden=true;c.restorable=true;save();sync(panel,key);panel.dispatchEvent(new CustomEvent('studio-window-close',{detail:{key}}));
 }
-function bind(panel,key,title){
+function bind(panel,key,title,{topmost=false}={}){
  const existed=Object.prototype.hasOwnProperty.call(prefs.windows,key),initiallyHidden=panel.hidden;
- addBar(panel,key,title);live.set(key,{panel,title});if(panel.dataset.studioWinBound){sync(panel,key);return panel}
+ addBar(panel,key,title);panel.dataset.studioWindowTopmost=topmost?'1':'0';live.set(key,{panel,title,topmost:!!topmost});if(panel.dataset.studioWinBound){sync(panel,key);return panel}
  panel.dataset.studioWinBound='1';const c=cfg(key);if(!existed&&initiallyHidden){c.hidden=true;c.restorable=false;save()}let drag=null;const grip=panel.querySelector('[data-win-grip]');
  panel.addEventListener('pointerdown',()=>bringToFront(panel),{capture:true});
  grip?.addEventListener('pointerdown',e=>{if(c.locked||c.docked)return;e.preventDefault();bringToFront(panel);const r=panel.getBoundingClientRect();drag={dx:e.clientX-r.left,dy:e.clientY-r.top};grip.setPointerCapture?.(e.pointerId);document.body.classList.add('studioWindowDragging')});
@@ -110,9 +116,9 @@ function bind(panel,key,title){
  panel.addEventListener('pointerup',()=>{if(!c.locked&&!c.collapsed&&!c.docked&&!panel.hidden){c.width=panel.offsetWidth+'px';c.height=panel.offsetHeight+'px';save()}});
  sync(panel,key);constrain(panel);window.addEventListener('resize',()=>constrain(panel),{passive:true});return panel;
 }
-export function enhanceStudioWindow(panel,{key,title}={}){
+export function enhanceStudioWindow(panel,{key,title,topmost=false}={}){
  const el=typeof panel==='string'?document.querySelector(panel):panel;if(!el)return null;
- return bind(el,key||el.id||'window',title||el.dataset.windowTitle||el.querySelector('h1,h2,h3,strong')?.textContent?.trim()||'Fenêtre');
+ return bind(el,key||el.id||'window',title||el.dataset.windowTitle||el.querySelector('h1,h2,h3,strong')?.textContent?.trim()||'Fenêtre',{topmost});
 }
 export function showStudioWindow(key){const item=live.get(key);if(!item)return false;const c=cfg(key);c.hidden=false;c.restorable=false;save();sync(item.panel,key);bringToFront(item.panel);constrain(item.panel);return true}
 export function restoreStudioWindow(key){return showStudioWindow(key)}
