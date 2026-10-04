@@ -152,7 +152,7 @@ if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push
   const{p,errors}=await core('spreadsheet-studio');
   const chooser=p.waitForEvent('filechooser');await p.locator('#openSheet').click();await (await chooser).setFiles('Library/demo/Data/dataset-validation-complet.csv');await p.waitForFunction(()=>document.querySelector('#dims')?.textContent!=='0 × 0',null,{timeout:15000});
   await p.locator('#search').fill('a');await p.locator('#search').dispatchEvent('input');await p.locator('#delimiter').selectOption('|');await p.locator('#bom').check();
-  const c=await dlBytes(p,'#exportCsv',15000);if(!(c.bytes[0]===0xEF&&c.bytes[1]===0xBB&&c.bytes[2]===0xBF)||!c.bytes.toString('utf8').includes('|'))fail('Spreadsheet options CSV non respectées');
+  const c=await p.evaluate(async()=>{let href='',name='',clicks=0;const proto=HTMLAnchorElement.prototype,orig=proto.click;proto.click=function(){clicks++;href=this.href;name=this.download};try{document.querySelector('#exportCsv')?.click();if(!href)return{clicks,name,text:'',error:'Aucune ancre de téléchargement créée'};const text=await fetch(href).then(r=>r.text());return{clicks,name,text,error:''}}catch(e){return{clicks,name,text:'',error:e?.message||String(e)}}finally{proto.click=orig}});if(c.error||c.clicks!==1||!/\.csv$/i.test(c.name)||c.text.charCodeAt(0)!==0xFEFF||!c.text.includes('|'))fail('Spreadsheet options CSV non respectées · '+JSON.stringify(c));
   const o=await dlBytes(p,'#exportOds');if(!/\.ods$/i.test(o.download.suggestedFilename())||o.bytes.length<500)fail('Spreadsheet ODS invalide');
   if(errors.length)fail('Spreadsheet Studio audit: '+errors.join(' | '));results.push('spreadsheet-studio+csv-ods');await p.close();
  }
