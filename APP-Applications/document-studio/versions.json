@@ -13,6 +13,15 @@
       "notes": "Passe Core 3.0 de cohérence visuelle : héritage clair/sombre renforcé et fenêtres Core homogènes ; fonctions de conversion avancées volontairement conservées pour une passe ultérieure."
     },
     {
+      "version": "1.2.0",
+      "label": "Document Studio 1.2.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "historical",
+      "href": "./v2/",
+      "notes": "Passe Core 3.0 de cohérence visuelle : héritage clair/sombre renforcé et fenêtres Core homogènes ; fonctions de conversion avancées volontairement conservées pour une passe ultérieure."
+    },
+    {
       "version": "1.1.0",
       "label": "Document Studio 1.1.0 TEST",
       "date": "2026-10-04",
