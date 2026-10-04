@@ -22,8 +22,8 @@ function itemButton(it){
   const domId=it.id||('studio-action-'+String(it.action||featureId).replace(/[^a-z0-9_-]+/gi,'-').toLowerCase());
   return '<button id="'+esc(domId)+'" data-ui-id="'+esc(featureId)+'"'+
     ' class="ribbonBtn scope-'+visualScope+(it.primary?' primary':'')+(dev?' devFeatureBtn':'')+'"'+
-    ' data-scope="'+scope+'" data-plugin="'+esc(plugin)+'" data-feature-id="'+esc(featureId)+'" data-feature-status="'+esc(status)+'" data-capability="'+esc(capability)+'" data-studio-action="'+esc(it.action||it.id||'')+'" title="'+esc(it.title||it.label||'')+'">'+
-    '<span class="scopeIcon">'+icon(it.icon||'command')+'</span><span>'+esc(it.label||'')+'</span>'+
+    ' data-scope="'+scope+'" data-plugin="'+esc(plugin)+'" data-feature-id="'+esc(featureId)+'" data-feature-status="'+esc(status)+'" data-capability="'+esc(capability)+'" data-studio-action="'+esc(it.action||it.id||'')+'" data-tooltip="'+esc(it.title||it.label||'')+'" aria-label="'+esc(it.title||it.label||'')+'" title="'+esc(it.title||it.label||'')+'">'+
+    '<span class="scopeIcon">'+icon(it.icon||'command')+'</span><span class="ribbonBtnLabel">'+esc(it.label||'')+'</span>'+
     '<small class="scopeBadge">'+scope.toUpperCase()+'</small>'+(dev?'<small class="devBadge">DEV</small>':'')+'</button>';
 }
 export async function mountStudioV2({manifest,versionInfo={version:'',status:'TEST'},root=document.body}={}){
@@ -72,6 +72,14 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   <div class="ribbonContextHead"><strong id="ribbonContextTitle">Outil</strong><button id="ribbonContextDetails">Détails</button><button id="ribbonContextToggle">⌃</button><button id="ribbonContextClose">×</button></div>
   <div id="ribbonContextBody"></div>
 </div>
+<div id="studioMobileBackdrop" class="studioMobileBackdrop" hidden></div>
+<nav id="studioMobileDock" class="studioMobileDock scope-core" data-scope="core" aria-label="Accès rapides mobile">
+  <button type="button" data-mobile-action="ribbon" title="Afficher toutes les actions">${icon('command')}<span>Ruban</span></button>
+  <button type="button" data-mobile-action="tools" title="Ouvrir les outils">${icon('settings')}<span>Outils</span></button>
+  <button type="button" data-mobile-action="commands" title="Rechercher une commande">${icon('search')}<span>Commandes</span></button>
+  <button type="button" data-mobile-action="settings" title="Paramètres d’affichage">${icon('settings')}<span>Réglages</span></button>
+</nav>
+<div id="studioTouchTooltip" class="studioTouchTooltip" hidden></div>
 <div id="studioCoreSettingsPanel" class="coreSettingsPanel scope-core" data-scope="core" hidden>
  <div class="coreSettingsHead"><strong>Paramètres Studio Core</strong><button id="studioCoreSettingsClose" aria-label="Fermer">×</button></div>
  <div id="studioCoreSettingsBody"></div>
@@ -102,6 +110,24 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   document.body.dataset.studioCoreVersion=versionInfo.coreVersion||'';
   registerCapabilities(manifest);
   applyStudioSettings();
+  const syncRibbonPersonalization=()=>{
+    const settings=loadStudioSettings(),favorites=new Set(Array.isArray(settings.ribbonFavorites)?settings.ribbonFavorites:[]);
+    qsa('.ribbonBtn[data-studio-action]',chrome).forEach(b=>{
+      const selected=favorites.size?favorites.has(b.dataset.studioAction):b.classList.contains('primary');
+      b.classList.toggle('ribbonFavorite',selected);
+      if(!b.dataset.tooltip)b.dataset.tooltip=b.title||b.querySelector('.ribbonBtnLabel')?.textContent?.trim()||b.dataset.studioAction;
+    });
+  };
+  const applySavedRibbonOrder=()=>{
+    qsa('[data-ribbon-group]',chrome).forEach(group=>{
+      let order=[];try{order=JSON.parse(localStorage.getItem('nlab-studio-v2-ribbon-order-'+manifest.id+'-'+group.dataset.ribbonGroup)||'[]')}catch{}
+      if(!Array.isArray(order)||!order.length)return;
+      const byAction=new Map(qsa('.ribbonBtn[data-studio-action]',group).map(b=>[b.dataset.studioAction,b]));
+      for(const action of order){const b=byAction.get(action);if(b)group.insertBefore(b,group.querySelector('.ribbonLabel'))}
+    });
+  };
+  syncRibbonPersonalization();applySavedRibbonOrder();
+  document.addEventListener('studio-v2:settings-changed',syncRibbonPersonalization);
   mountHistoryUI();
   mountCommandPalette();
   mountWorkflowUI();
@@ -129,6 +155,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   qs('#studioWorkflowOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-workflows')));
 
   const ribbon=qs('.studioRibbon');
+  const mobileDock=qs('#studioMobileDock'),mobileBackdrop=qs('#studioMobileBackdrop'),touchTooltip=qs('#studioTouchTooltip');
   const studioMenu=qs('.studioMenu');
   const headerInner=qs('.studioHeaderInner');
   const syncMenuPlacement=()=>{
@@ -145,6 +172,49 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   };
   syncMenuPlacement();
   const mo=new MutationObserver(syncMenuPlacement);mo.observe(document.body,{attributes:true,attributeFilter:['data-nav-placement']});
+
+  const closeMobileSurfaces=()=>{document.body.classList.remove('studioMobileSidebarOpen','studioMobileRibbonExpanded');if(mobileBackdrop)mobileBackdrop.hidden=true};
+  const setMobileSidebar=open=>{document.body.classList.toggle('studioMobileSidebarOpen',!!open);if(mobileBackdrop)mobileBackdrop.hidden=!open};
+  mobileDock?.addEventListener('click',e=>{
+    const action=e.target.closest('[data-mobile-action]')?.dataset.mobileAction;if(!action)return;
+    if(action==='tools'){setMobileSidebar(!document.body.classList.contains('studioMobileSidebarOpen'));return}
+    if(action==='ribbon'){document.body.classList.toggle('studioMobileRibbonExpanded');return}
+    if(action==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
+    if(action==='settings'){const panel=qs('#studioCoreSettingsPanel');if(panel){panel.hidden=false;renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));panel.style.zIndex='280'}return}
+  });
+  mobileBackdrop?.addEventListener('click',closeMobileSurfaces);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.dataset.responsiveProfile==='mobile')closeMobileSurfaces()});
+
+  qsa('[data-ribbon-group]',chrome).forEach(group=>{
+    const buttons=qsa('.ribbonBtn[data-studio-action]',group);
+    buttons.forEach(b=>{
+      b.draggable=true;
+      b.addEventListener('dragstart',e=>{if(matchMedia?.('(pointer: coarse)').matches){e.preventDefault();return}e.dataTransfer?.setData('text/plain',b.dataset.studioAction);b.classList.add('ribbonDragging')});
+      b.addEventListener('dragend',()=>b.classList.remove('ribbonDragging'));
+      b.addEventListener('dragover',e=>{if(!matchMedia?.('(pointer: coarse)').matches)e.preventDefault()});
+      b.addEventListener('drop',e=>{
+        e.preventDefault();const action=e.dataTransfer?.getData('text/plain'),src=buttons.find(x=>x.dataset.studioAction===action);if(!src||src===b)return;
+        const rect=b.getBoundingClientRect(),before=e.clientX<rect.left+rect.width/2;group.insertBefore(src,before?b:b.nextSibling);
+        const order=qsa('.ribbonBtn[data-studio-action]',group).map(x=>x.dataset.studioAction);
+        localStorage.setItem('nlab-studio-v2-ribbon-order-'+manifest.id+'-'+group.dataset.ribbonGroup,JSON.stringify(order));
+      });
+    });
+  });
+
+  let tooltipTimer=null;
+  const hideTouchTooltip=()=>{clearTimeout(tooltipTimer);tooltipTimer=null;if(touchTooltip)touchTooltip.hidden=true};
+  root.addEventListener('pointerdown',e=>{
+    if(e.pointerType!=='touch')return;const target=e.target.closest('[data-tooltip],button[title]');if(!target)return;
+    hideTouchTooltip();tooltipTimer=setTimeout(()=>{
+      if(!touchTooltip)return;const label=target.dataset.tooltip||target.title||target.getAttribute('aria-label');if(!label)return;
+      const r=target.getBoundingClientRect();touchTooltip.textContent=label;touchTooltip.hidden=false;
+      touchTooltip.style.left=Math.max(8,Math.min(window.innerWidth-220,r.left+r.width/2-100))+'px';
+      touchTooltip.style.top=Math.max(8,r.top-46)+'px';
+    },520);
+  },true);
+  root.addEventListener('pointerup',()=>setTimeout(hideTouchTooltip,900),true);
+  root.addEventListener('pointercancel',hideTouchTooltip,true);
+  root.addEventListener('scroll',hideTouchTooltip,true);
 
   let lastContextEl=null,lastContextFeature=null;
   const rememberContext=(el,feature=null)=>{if(el){lastContextEl=el;lastContextFeature=feature}};
