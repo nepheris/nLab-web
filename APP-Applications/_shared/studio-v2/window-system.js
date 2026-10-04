@@ -5,7 +5,7 @@ const live=new Map();
 function load(){try{return{windows:{},...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return{windows:{}}}}
 let prefs=load();
 function save(){localStorage.setItem(KEY,JSON.stringify(prefs))}
-function cfg(key){return prefs.windows[key]=prefs.windows[key]||{locked:false,docked:false,collapsed:false,scrollX:true,scrollY:true,size:'normal',hidden:false,left:null,top:null,width:null,height:null}}
+function cfg(key){return prefs.windows[key]=prefs.windows[key]||{locked:false,docked:false,collapsed:false,scrollX:true,scrollY:true,size:'normal',hidden:false,restorable:false,left:null,top:null,width:null,height:null}}
 function svg(name){
  const p={
   grip:'<circle cx="8" cy="6" r="1"/><circle cx="16" cy="6" r="1"/><circle cx="8" cy="12" r="1"/><circle cx="16" cy="12" r="1"/><circle cx="8" cy="18" r="1"/><circle cx="16" cy="18" r="1"/>',
@@ -27,18 +27,22 @@ function ensureRestoreTray(){
  let tray=document.querySelector('#studioWindowRestoreTray');
  if(tray)return tray;
  tray=document.createElement('aside');tray.id='studioWindowRestoreTray';tray.className='studioWindowRestoreTray';tray.setAttribute('aria-label','Fenêtres masquées');tray.hidden=true;
- tray.innerHTML='<div class="studioWindowRestoreHead"><strong>Fenêtres masquées</strong><button type="button" data-win-restore-all title="Tout restaurer">Tout restaurer</button></div><div data-win-restore-list></div>';
+ tray.innerHTML='<button type="button" class="studioWindowRestoreToggle" data-win-restore-toggle title="Fenêtres masquées" aria-expanded="false"><span aria-hidden="true">▣</span><b data-win-restore-count>0</b></button><div class="studioWindowRestorePanel" data-win-restore-panel hidden><div class="studioWindowRestoreHead"><strong>Fenêtres masquées</strong><button type="button" data-win-restore-all title="Tout restaurer">Tout restaurer</button></div><div data-win-restore-list></div></div>';
  document.body.append(tray);
  tray.addEventListener('click',e=>{
-  const one=e.target.closest('[data-win-restore]');if(one){restoreStudioWindow(one.dataset.winRestore);return}
-  if(e.target.closest('[data-win-restore-all]'))restoreAllStudioWindows();
+  const toggle=e.target.closest('[data-win-restore-toggle]');if(toggle){const open=!tray.classList.contains('open');tray.classList.toggle('open',open);toggle.setAttribute('aria-expanded',open?'true':'false');tray.querySelector('[data-win-restore-panel]').hidden=!open;return}
+  const one=e.target.closest('[data-win-restore]');if(one){restoreStudioWindow(one.dataset.winRestore);tray.classList.remove('open');tray.querySelector('[data-win-restore-panel]').hidden=true;tray.querySelector('[data-win-restore-toggle]')?.setAttribute('aria-expanded','false');return}
+  if(e.target.closest('[data-win-restore-all]')){restoreAllStudioWindows();tray.classList.remove('open')}
  });
+ document.addEventListener('pointerdown',e=>{if(!tray.classList.contains('open')||tray.contains(e.target))return;tray.classList.remove('open');tray.querySelector('[data-win-restore-panel]').hidden=true;tray.querySelector('[data-win-restore-toggle]')?.setAttribute('aria-expanded','false')});
  return tray
 }
 function refreshRestoreTray(){
- const tray=ensureRestoreTray(),list=tray.querySelector('[data-win-restore-list]'),hidden=[...live.entries()].filter(([k])=>cfg(k).hidden);
+ const tray=ensureRestoreTray(),list=tray.querySelector('[data-win-restore-list]'),hidden=[...live.entries()].filter(([k])=>{const c=cfg(k);return c.hidden&&c.restorable});
  tray.hidden=!hidden.length;
+ tray.querySelector('[data-win-restore-count]').textContent=String(hidden.length);
  list.innerHTML=hidden.map(([k,v])=>'<button type="button" data-win-restore="'+k+'" title="Restaurer '+String(v.title||k).replace(/"/g,'&quot;')+'">'+String(v.title||k)+'</button>').join('');
+ if(!hidden.length){tray.classList.remove('open');tray.querySelector('[data-win-restore-panel]').hidden=true;tray.querySelector('[data-win-restore-toggle]')?.setAttribute('aria-expanded','false')}
 }
 function sync(panel,key){
  const c=cfg(key);
@@ -85,12 +89,12 @@ function constrain(panel){
  if(rr.bottom>innerHeight-pad)panel.style.top=Math.max(pad,innerHeight-pad-rr.height)+'px';
 }
 function hide(panel,key){
- const c=cfg(key);c.hidden=true;save();sync(panel,key);panel.dispatchEvent(new CustomEvent('studio-window-close',{detail:{key}}));
+ const c=cfg(key);c.hidden=true;c.restorable=true;save();sync(panel,key);panel.dispatchEvent(new CustomEvent('studio-window-close',{detail:{key}}));
 }
 function bind(panel,key,title){
  const existed=Object.prototype.hasOwnProperty.call(prefs.windows,key),initiallyHidden=panel.hidden;
  addBar(panel,key,title);live.set(key,{panel,title});if(panel.dataset.studioWinBound){sync(panel,key);return panel}
- panel.dataset.studioWinBound='1';const c=cfg(key);if(!existed&&initiallyHidden){c.hidden=true;save()}let drag=null;const grip=panel.querySelector('[data-win-grip]');
+ panel.dataset.studioWinBound='1';const c=cfg(key);if(!existed&&initiallyHidden){c.hidden=true;c.restorable=false;save()}let drag=null;const grip=panel.querySelector('[data-win-grip]');
  panel.addEventListener('pointerdown',()=>bringToFront(panel),{capture:true});
  grip?.addEventListener('pointerdown',e=>{if(c.locked||c.docked)return;e.preventDefault();bringToFront(panel);const r=panel.getBoundingClientRect();drag={dx:e.clientX-r.left,dy:e.clientY-r.top};grip.setPointerCapture?.(e.pointerId);document.body.classList.add('studioWindowDragging')});
  grip?.addEventListener('pointermove',e=>{if(!drag)return;const vw=innerWidth,vh=innerHeight;panel.style.left=Math.max(4,Math.min(vw-panel.offsetWidth-4,e.clientX-drag.dx))+'px';panel.style.top=Math.max(topOffset(),Math.min(vh-40,e.clientY-drag.dy))+'px';panel.style.right='auto';panel.style.transform='none'});
@@ -110,9 +114,9 @@ export function enhanceStudioWindow(panel,{key,title}={}){
  const el=typeof panel==='string'?document.querySelector(panel):panel;if(!el)return null;
  return bind(el,key||el.id||'window',title||el.dataset.windowTitle||el.querySelector('h1,h2,h3,strong')?.textContent?.trim()||'Fenêtre');
 }
-export function showStudioWindow(key){const item=live.get(key);if(!item)return false;const c=cfg(key);c.hidden=false;save();sync(item.panel,key);bringToFront(item.panel);constrain(item.panel);return true}
+export function showStudioWindow(key){const item=live.get(key);if(!item)return false;const c=cfg(key);c.hidden=false;c.restorable=false;save();sync(item.panel,key);bringToFront(item.panel);constrain(item.panel);return true}
 export function restoreStudioWindow(key){return showStudioWindow(key)}
-export function restoreAllStudioWindows(){for(const [key,item] of live){const c=cfg(key);if(c.hidden){c.hidden=false;sync(item.panel,key)}}save();refreshRestoreTray()}
+export function restoreAllStudioWindows(){for(const [key,item] of live){const c=cfg(key);if(c.hidden&&c.restorable){c.hidden=false;c.restorable=false;sync(item.panel,key)}}save();refreshRestoreTray()}
 export function hideStudioWindow(key){const item=live.get(key);if(!item)return false;hide(item.panel,key);return true}
 export function bringStudioWindowToFront(panelOrKey){const panel=typeof panelOrKey==='string'?live.get(panelOrKey)?.panel:panelOrKey;if(!panel)return false;bringToFront(panel);return true}
 export function resetStudioWindows(){localStorage.removeItem(KEY);prefs=load();for(const [key,item] of live){sync(item.panel,key)}refreshRestoreTray()}
