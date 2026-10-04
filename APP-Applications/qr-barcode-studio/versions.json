@@ -1,13 +1,22 @@
 {
   "name": "QR & Barcode Studio",
   "current": "0.2.0",
-  "test": "2.2.0",
+  "test": "2.3.0",
   "versions": [
+    {
+      "version": "2.3.0",
+      "label": "QR & Barcode Studio 2.3.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe TEST Core 2.9 et audit avancé : options QR, SVG/PNG, HID, historique et scan image revalidés ; Color Picker mutualisé conservé."
+    },
     {
       "version": "2.2.0",
       "label": "QR & Barcode Studio 2.2.0 TEST",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Color Picker mutualisé via Studio Core color-control : HEX par défaut, bascule RGB/HSL, synchronisation visuelle et texte commune aux autres Studios. Moteurs QR/barcodes 2.1 conservés."
     },

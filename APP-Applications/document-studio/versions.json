@@ -1,14 +1,23 @@
 {
   "name": "Document Studio",
   "current": null,
-  "test": "1.0.0",
+  "test": "1.1.0",
   "versions": [
+    {
+      "version": "1.1.0",
+      "label": "Document Studio 1.1.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe TEST Core 2.9 : chargement/édition, statistiques, recherche, exports texte/HTML/DOCX/ODT et impression navigateur revalidés."
+    },
     {
       "version": "1.0.0",
       "label": "Document Studio 1.0.0 TEST",
       "date": "2026-10-03",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "MVP local-first : DOCX, ODT, TXT, Markdown, HTML et RTF simple ; exports DOCX/ODT/TXT/MD/HTML et PDF via navigateur. DOC legacy identifié mais non décodé nativement."
     }

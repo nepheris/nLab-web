@@ -1,13 +1,22 @@
 {
   "current": null,
-  "test": "2.1.0",
+  "test": "2.2.0",
   "versions": [
+    {
+      "version": "2.2.0",
+      "label": "Markdown Studio 2.2.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe TEST Core 2.9 et audit étendu : Markdown, YAML/front matter, HTML, sommaire, synchronisation et impression navigateur revalidés."
+    },
     {
       "version": "2.1.0",
       "label": "Markdown Studio 2.1.0 TEST",
       "date": "2026-10-03",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Scroll synchronisé édition/aperçu et export PDF via impression navigateur."
     },

@@ -1,13 +1,22 @@
 {
   "name": "Image Studio",
   "current": "0.2.1",
-  "test": "2.3.0",
+  "test": "2.4.0",
   "versions": [
+    {
+      "version": "2.4.0",
+      "label": "Image Studio 2.4.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe TEST Core 2.9 : sélection fichiers/dossiers enrichie, vues Texte/Icône/Preview, vignettes réelles, SVG filetype, suppression individuelle et rotation avant import ; fonctions Image Studio 2.3 conservées."
+    },
     {
       "version": "2.3.0",
       "label": "Image Studio 2.3.0 TEST",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Adoption du Core Input Picker (fichiers/dossiers/glisser-déposer), collection multi-images avec retrait, recadrage souris + valeurs, undo/reset, unités px/%/pt, format d'export source par défaut, responsive Core 2.8."
     },
