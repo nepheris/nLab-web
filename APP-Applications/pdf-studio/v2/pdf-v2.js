@@ -35,7 +35,6 @@ import{PdfObjectLayer}from'./object-layer.js';
 import{DriveService}from'../../_shared/studio-v2/drive-service.js';
 import{DocumentConversion}from'./document-conversion.js';
 import{bwipOptions,validatePayload}from'../../_shared/studio-v2/symbology-service.js';
-import{SYSTEM_STAMPS,createStampSvg,stampSvgToPngDataUrl,downloadStampSvg,stampSvgFileName}from'./stamp-svg-service.js';
 
 const runtimeVersion=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test',sourcePath:studioManifest.sourcePath});
 applyVersionDocumentMeta({studioName:studioManifest.name,studioVersion:runtimeVersion.studioVersion,studioStatus:runtimeVersion.studioStatus,coreVersion:runtimeVersion.coreVersion,build:runtimeVersion.build});
@@ -47,7 +46,6 @@ let objectLayer=null;
 const annotationBridge={exportBytes:()=>objectLayer?.hasObjects()?objectLayer.exportBytes():engine.baseBytes()};const pdfTools=new PDFTools({engine,annotations:annotationBridge,variables:templates}),advancedTools=new AdvancedPDFTools({engine,annotations:annotationBridge,variables:templates}),documentConversion=new DocumentConversion({engine,workspace:null,variables:templates});
 let undoStack=[],redoStack=[],loadedFiles=[],activeFileCapabilities=null,lastFeature=null,resizeWidth=null,cryptoSignatureState=null,assemblyItems=[],assemblySelectedIndex=-1,assemblyInsertFile=null;
 let activeInputLocation=null,activeInputHandle=null,activeOutputLocation=null,driveOutputFolder=null,archiveWorkspace=null,assemblySortUnmount=null,zipCompressionControl=null,redactionRasterControl=null,optDpiControl=null,optJpegControl=null,objectOpacityControl=null,objectPenWidthControl=null,signatureWidthControl=null,signatureOpacityControl=null,codeSizeControl=null,objectAssetPicker=null,stampAssetPicker=null;
-let generatedStampActive=false,generatedStampSvg='';
 function setValidatedButton(el,on,label=''){if(!el)return;el.classList.toggle('validatedChoice',!!on);el.setAttribute('aria-pressed',on?'true':'false');if(label)el.title=label}
 function renderDriveState(){
  const st=drive.state(),box=$('#googleDriveStatus');if(box)box.textContent=st.connected?'Google Drive connecté'+(st.user?.email?' · '+st.user.email:'')+(driveOutputFolder?.name?' · sortie : '+driveOutputFolder.name:''):'Google Drive non connecté.';
@@ -146,25 +144,7 @@ function syncStampDates(){
  const values={STAMP_DATE:$('#stampDate')?.value||todayValue(),DATE_A:$('#stampDateA')?.value||todayValue(),DATE_B:$('#stampDateB')?.value||todayValue(),DATE_C:$('#stampDateC')?.value||todayValue(),DATE_D:$('#stampDateD')?.value||todayValue()};
  templates.setValues(values);return values
 }
-function stampSvgColor(){return $('#stampSvgColor')?.value||'#316D9A'}
-function refreshStampSvgPreview(){
- if(!$('#stampSvgPreview'))return '';
- syncStampDates();
- const resolved=templates.resolve($('#stampSvgText')?.value||'VOTRE TEXTE',engine.fileName,outputContext()),shape=$('#stampSvgShape')?.value||'line';
- generatedStampSvg=createStampSvg({shape,text:resolved});
- const host=$('#stampSvgPreview');host.style.color=stampSvgColor();host.innerHTML=generatedStampSvg;
- const state=$('#stampSvgActiveState');if(state)state.textContent=generatedStampActive?'Tampon SVG actif · il sera utilisé au prochain placement.':'Aperçu prêt · cliquez sur « Utiliser ce tampon ».';
- return generatedStampSvg
-}
-async function saveGeneratedStampSvgAsset(){
- const svg=refreshStampSvgPreview();if(!svg)throw new Error('Aucun SVG à enregistrer.');
- const raw=$('#stampSvgText')?.value||'tampon',name=stampSvgFileName(raw),blob=new Blob([svg],{type:'image/svg+xml'});
- const a=await putPersonalAsset('stamp-image',blob,{name,meta:{label:name,variant:'stamp-svg',shape:$('#stampSvgShape')?.value||'line'}});
- addPersonalAssetRef('stamp-image',{assetId:a.id,name:a.name,label:name,type:'image/svg+xml',size:a.size,variant:'stamp-svg',createdAt:new Date().toISOString()});
- renderObjectAssetSelectors();stampAssetPicker?.render();generatedStampActive=false;$('#stampImageAsset').value=a.id;await refreshStampPreview();return a
-}
 async function stampImageData(){
- if(generatedStampActive){const svg=refreshStampSvgPreview();return stampSvgToPngDataUrl(svg,stampSvgColor(),2)}
  const id=$('#stampImageAsset')?.value;if(!id)return null;const a=await getPersonalAsset(id);if(!a?.blob)throw new Error('Image du tampon indisponible.');
  return objectLayer.setImageBlob(a.blob,'image')
 }
@@ -259,22 +239,14 @@ $('#deleteNamingPreset').onclick=()=>{const id=$('#namingPresetSelect').value;if
 
 
 for(const id of ['stampDate','stampDateA','stampDateB','stampDateC','stampDateD']){const el=$('#'+id);if(el&&!el.value)el.value=todayValue();el?.addEventListener('input',()=>refreshStampPreview().catch(()=>{}))}
-$('#stampTemplate')?.addEventListener('input',()=>refreshStampPreview().catch(()=>{}));$('#stampImageAsset')?.addEventListener('change',()=>{generatedStampActive=false;refreshStampSvgPreview();refreshStampPreview().catch(e=>setStatus(e.message))});
-$('#stampSvgShape')?.addEventListener('change',refreshStampSvgPreview);
-$('#stampSvgText')?.addEventListener('input',refreshStampSvgPreview);
-bindColorHexControl({colorInput:$('#stampSvgColor'),hexInput:$('#stampSvgColorHex'),onChange:()=>refreshStampSvgPreview()});
-$('[data-stamp-svg-preset]').forEach(b=>b.addEventListener('click',()=>{const item=SYSTEM_STAMPS.find(x=>x.id===b.dataset.stampSvgPreset);if(!item)return;$('#stampSvgShape').value=item.shape;$('#stampSvgText').value=item.text;$('#stampTemplate').value='';$('#stampImageAsset').value='';generatedStampActive=true;refreshStampSvgPreview();refreshStampPreview().catch(()=>{});setStatus('Tampon SVG « '+item.label+' » prêt à être placé.')})); 
-$('#useStampSvg')?.addEventListener('click',()=>{$('#stampTemplate').value='';$('#stampImageAsset').value='';generatedStampActive=true;refreshStampSvgPreview();refreshStampPreview().catch(()=>{});setStatus('Tampon SVG actif.')});
-$('#downloadStampSvg')?.addEventListener('click',()=>{const svg=refreshStampSvgPreview();downloadStampSvg(svg,stampSvgFileName($('#stampSvgText')?.value||'tampon'))});
-$('#saveStampSvgAsset')?.addEventListener('click',async()=>{try{await saveGeneratedStampSvgAsset();setStatus('Tampon SVG ajouté à la galerie personnelle.')}catch(e){setStatus(e.message)}});
-refreshStampSvgPreview();
+$('#stampTemplate')?.addEventListener('input',()=>refreshStampPreview().catch(()=>{}));$('#stampImageAsset')?.addEventListener('change',()=>refreshStampPreview().catch(e=>setStatus(e.message)));
 $('#importStampImage')?.addEventListener('click',()=>$('#stampImageInput').click());
 $('#stampImageInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{
  const a=await putPersonalAsset('stamp-image',file,{name:file.name,meta:{label:file.name,variant:'stamp-image'}}),ref={assetId:a.id,name:a.name,label:file.name,type:a.type,size:a.size,variant:'stamp-image',createdAt:new Date().toISOString()};
- addPersonalAssetRef('stamp-image',ref);renderObjectAssetSelectors();generatedStampActive=false;$('#stampImageAsset').value=a.id;refreshStampSvgPreview();await refreshStampPreview();setStatus('Image ajoutée à la bibliothèque « Images de tampons ».')
+ addPersonalAssetRef('stamp-image',ref);renderObjectAssetSelectors();$('#stampImageAsset').value=a.id;await refreshStampPreview();setStatus('Image ajoutée à la bibliothèque « Images de tampons ».')
 }catch(err){setStatus(err.message)}});
 $$('[data-stamp-mode]').forEach(b=>b.addEventListener('click',()=>{const mode=b.dataset.stampMode;$$('[data-stamp-mode]').forEach(x=>x.classList.toggle('active',x===b));$('#stampUsePanel').hidden=mode!=='use';$('#stampEditorPanel').hidden=mode!=='editor';if(mode==='editor')fillStampEditor(selectedStampTemplate())}));
-$('#stampPresetSelect')?.addEventListener('change',async()=>{const item=selectedStampTemplate();if(!item)return;generatedStampActive=false;refreshStampSvgPreview();$('#stampTemplate').value=item.template||'';$('#stampImageAsset').value=item.imageAssetId||'';fillStampEditor(item);await refreshStampPreview()});
+$('#stampPresetSelect')?.addEventListener('change',async()=>{const item=selectedStampTemplate();if(!item)return;$('#stampTemplate').value=item.template||'';$('#stampImageAsset').value=item.imageAssetId||'';fillStampEditor(item);await refreshStampPreview()});
 for(const id of ['stampEditorTemplate','stampEditorPrefix','stampEditorSuffix','stampEditorLabel','stampEditorCategory'])$('#'+id)?.addEventListener('input',refreshStampEditorPreview);
 for(const id of ['stampEditorPrefixEnabled','stampEditorSuffixEnabled','stampEditorImageAsset'])$('#'+id)?.addEventListener('change',refreshStampEditorPreview);
 $('#newStampPreset')?.addEventListener('click',()=>{ $('#stampPresetSelect').value='';fillStampEditor(null);setStatus('Nouveau tampon prêt à être édité.')});
@@ -287,9 +259,9 @@ $$('[data-stamp-example]').forEach(b=>b.addEventListener('click',()=>fillStampEd
 $('#exportStampJson')?.addEventListener('click',()=>downloadJson({schema:'nlab-pdf-stamps/v2',exportedAt:new Date().toISOString(),stamps:listPersonalTemplates('stamps')},'nlab-pdf-stamps-'+new Date().toISOString().slice(0,10)+'.json'));
 $('#importStampJson')?.addEventListener('click',()=>$('#stampJsonInput').click());
 $('#stampJsonInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const raw=JSON.parse(await file.text()),items=Array.isArray(raw)?raw:Array.isArray(raw.stamps)?raw.stamps:Array.isArray(raw.items)?raw.items:[];if(!items.length)throw new Error('Aucun tampon trouvé dans ce JSON.');for(const x of items){const item=normalizeStampItem(x);if(!String(item.id).startsWith('user-stamp-'))item.id='user-stamp-'+Date.now()+'-'+Math.random().toString(16).slice(2);savePersonalTemplate('stamps',item)}renderStampPresets();setStatus(items.length+' tampon(s) importé(s) / fusionné(s).')}catch(err){setStatus('Import tampons : '+err.message)}finally{e.target.value=''}});
-$('#activateStampTool')?.addEventListener('click',async()=>{try{syncStampDates();objectLayer.setStamp({template:$('#stampTemplate').value||'',imageData:await stampImageData(),color:stampSvgColor()});openToolSection('#sectionAnnotations');activateObjectTool('stamp')}catch(e){setStatus(e.message)}});
+$('#activateStampTool')?.addEventListener('click',async()=>{try{syncStampDates();objectLayer.setStamp({template:$('#stampTemplate').value||'',imageData:await stampImageData()});openToolSection('#sectionAnnotations');activateObjectTool('stamp')}catch(e){setStatus(e.message)}});
 $('#applyStampScope')?.addEventListener('click',async()=>{try{
- assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');syncStampDates();const stampDef=selectedStampTemplate();if($('#applyStampNamingRules')?.checked&&stampDef){if(stampDef.prefixEnabled)$('#namingPrefix').value=stampDef.prefix||'';if(stampDef.suffixEnabled)$('#namingSuffix').value=stampDef.suffix||'';updateNamingPreview();savePdfProfilePreferences()}objectLayer.setStamp({template:$('#stampTemplate').value||'',imageData:await stampImageData(),color:stampSvgColor()});
+ assertPdfMutationAllowed();if(!engine.pageCount)throw new Error('Chargez un PDF.');syncStampDates();const stampDef=selectedStampTemplate();if($('#applyStampNamingRules')?.checked&&stampDef){if(stampDef.prefixEnabled)$('#namingPrefix').value=stampDef.prefix||'';if(stampDef.suffixEnabled)$('#namingSuffix').value=stampDef.suffix||'';updateNamingPreview();savePdfProfilePreferences()}objectLayer.setStamp({template:$('#stampTemplate').value||'',imageData:await stampImageData()});
  const pages=toolPages('stampScope'),pos=$('#stampPosition').value;if(pos==='manual')throw new Error('Pour appliquer le tampon à une portée, choisissez une position prédéfinie. Utilisez « Placer manuellement » pour le placement libre.');const xy={ 'top-left':[6,7],'top-right':[65,7],'bottom-left':[6,82],'bottom-right':[65,82],center:[35,45]}[pos];
  for(const p of pages)objectLayer.addAt(p,xy[0],xy[1],'stamp');objectLayer.setTool('select');objectLayer.render();setStatus('Tampon ajouté sur '+pages.length+' page(s).')
 }catch(e){setStatus(e.message)}});
