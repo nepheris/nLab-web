@@ -1,4 +1,4 @@
-import{PDFEngine}from'../pdf-studio/v1/pdf-engine.js';
+import{PDFEngine}from'../../pdf-studio/v1/pdf-engine.js';
 const $=id=>document.getElementById(id),engine=new PDFEngine();let items=[],selected=-1;
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 async function pageCount(file){try{const d=await PDFLib.PDFDocument.load(await file.arrayBuffer(),{ignoreEncryption:true});return d.getPageCount()}catch{return 0}}
