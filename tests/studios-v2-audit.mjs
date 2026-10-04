@@ -20,6 +20,27 @@ async function core(id,path='v2/'){
  const x=await open(id,path);await x.p.waitForSelector('#nlabStudioV2Chrome',{timeout:30000});return x
 }
 try{
+ // Studio Core 2.9 Input Picker : vues, SVG, previews et rotation matérialisée.
+ {
+  const{p,errors}=await core('file-studio');
+  const imageBytes=await readFile('Library/demo/Images/demo-image-color.png'),pdfBytes=await readFile('Library/demo/Images/testNumregles.pdf');
+  await p.locator('#file-studio-open').click();await p.waitForSelector('#studioInputPicker:not([hidden])');
+  await p.locator('#studioInputFilesNative').setInputFiles([
+   {name:'picker-image.png',mimeType:'image/png',buffer:imageBytes},
+   {name:'picker-document.pdf',mimeType:'application/pdf',buffer:pdfBytes},
+   {name:'picker-inconnu.foo',mimeType:'application/octet-stream',buffer:Buffer.from('nLab generic file audit')}
+  ]);
+  await p.locator('[data-input-view="text"]').click();if((await p.locator('#studioInputList').getAttribute('data-view'))!=='text')fail('Input Picker vue Texte inactive');
+  await p.locator('[data-input-view="icon"]').click();await p.waitForFunction(()=>document.querySelector('#studioInputList')?.dataset.view==='icon');
+  const unknownIcon=await p.locator('.studioInputCard').filter({hasText:'picker-inconnu.foo'}).locator('.studioInputFileIcon').getAttribute('src');if(!/generic-document\.svg/.test(unknownIcon||''))fail('Input Picker fallback SVG générique absent');
+  await p.locator('[data-input-view="preview"]').click();await p.waitForFunction(()=>document.querySelector('#studioInputList')?.dataset.view==='preview');
+  await p.waitForFunction(()=>document.querySelectorAll('#studioInputList .studioInputThumb').length>=2&&/page/.test(document.querySelector('#studioInputList')?.textContent||''),null,{timeout:30000});
+  const pdfCard=p.locator('.studioInputPreviewCard').filter({hasText:'picker-document.pdf'});await pdfCard.locator('[data-input-rotate="90"]').click();
+  await p.locator('#studioInputConfirm').click();await p.waitForFunction(()=>document.querySelector('#studioInputPicker')?.hidden===true,null,{timeout:30000});
+  await p.waitForFunction(()=>/3 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
+  if(errors.length)fail('Input Picker Core 2.9: '+errors.join(' | '));results.push('core-input-picker-2.9');await p.close();
+ }
+
  // Image Studio : identité, watermark, manifest et reset collection.
  {
   const{p,errors}=await core('image-studio');
