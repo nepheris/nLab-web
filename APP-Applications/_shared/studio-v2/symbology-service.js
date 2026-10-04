@@ -38,3 +38,47 @@ export function validatePayload(id,value){
  if(id==='itf'&&v.length<2)return{ok:false,message:'ITF attend une donnée numérique.'};
  return{ok:true,value:v}
 }
+
+
+function qrOptions(value,common={}){
+ const size=Number(common.size)||360,margin=Number(common.margin)||0,fg=common.fg||'#000000',bg=common.bg||'#ffffff';
+ const gradient=common.gradient?{type:common.gradientType||'linear',rotation:Number(common.gradientRotation??Math.PI/4),colorStops:[{offset:0,color:fg},{offset:1,color:common.fg2||fg}]}:undefined;
+ return{
+  width:size,height:size,type:common.renderType||'svg',data:String(value||' '),margin,
+  qrOptions:{errorCorrectionLevel:common.ecc||'M'},
+  dotsOptions:{type:common.dots||'square',color:fg,gradient},
+  cornersSquareOptions:{type:common.corners||'square',color:common.cornerColor||fg},
+  cornersDotOptions:{type:common.cornerDots||'square',color:common.cornerDotColor||common.fg2||fg},
+  backgroundOptions:{color:common.transparent?'transparent':bg},
+  image:common.logo||undefined,
+  imageOptions:{hideBackgroundDots:common.hideBackgroundDots!==false,imageSize:Number(common.logoSize)||.24,margin:Number(common.logoMargin)||5,crossOrigin:'anonymous'}
+ }
+}
+function ensureQr(){if(typeof globalThis.QRCodeStyling!=='function')throw new Error('Moteur QR indisponible')}
+function ensureBwip(){if(!globalThis.bwipjs?.toCanvas)throw new Error('Moteur code-barres indisponible')}
+function canvasBlob(canvas,type='image/png',quality=.92){return new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Export image impossible')),type,quality))}
+export async function renderSymbology(host,id,value,options={}){
+ if(!host)throw new Error('Zone de rendu absente');host.innerHTML='';
+ const info=symbologyInfo(id),valid=validatePayload(id,value);if(!valid.ok)throw new Error(valid.message);
+ if(info.kind==='qr'){
+  ensureQr();const qr=new QRCodeStyling(qrOptions(valid.value,{...options,renderType:'svg'}));qr.append(host);return{kind:'qr',value:valid.value,instance:qr,host}
+ }
+ ensureBwip();const canvas=document.createElement('canvas');bwipjs.toCanvas(canvas,{...bwipOptions(id,valid.value,options),scale:Number(options.scale)||4});host.append(canvas);return{kind:'bar',value:valid.value,canvas,host}
+}
+export async function generateSymbologyBlob(id,value,options={},format='png'){
+ const info=symbologyInfo(id),valid=validatePayload(id,value);if(!valid.ok)throw new Error(valid.message);
+ const ext=String(format||'png').toLowerCase();
+ if(info.kind==='qr'){
+  ensureQr();const qr=new QRCodeStyling(qrOptions(valid.value,{...options,renderType:ext==='svg'?'svg':'canvas'}));const blob=await qr.getRawData(ext==='svg'?'svg':'png');if(!blob)throw new Error('Génération QR impossible');return{blob,value:valid.value,type:id,format:ext}
+ }
+ ensureBwip();
+ if(ext==='svg'&&typeof bwipjs.toSVG==='function'){
+  const svg=bwipjs.toSVG({...bwipOptions(id,valid.value,options),scale:Number(options.scale)||4});
+  return{blob:new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),value:valid.value,type:id,format:'svg'}
+ }
+ const canvas=document.createElement('canvas');bwipjs.toCanvas(canvas,{...bwipOptions(id,valid.value,options),scale:Number(options.scale)||4});
+ return{blob:await canvasBlob(canvas,'image/png'),value:valid.value,type:id,format:'png'}
+}
+export async function symbologyDataUrl(id,value,options={},format='png'){
+ const {blob,...meta}=await generateSymbologyBlob(id,value,options,format);const url=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(blob)});return{url,blob,...meta}
+}
