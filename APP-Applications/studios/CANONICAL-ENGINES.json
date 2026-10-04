@@ -1,0 +1,369 @@
+{
+  "schema": "nlab-canonical-engines/v1",
+  "updated": "2026-10-04",
+  "rule": "Before creating a Studio-local processing function, search this registry, Studio Core, upstream BRK and Web Framework capabilities. A capability shared by two or more Studios must have one canonical engine.",
+  "engines": [
+    {
+      "id": "input",
+      "module": "APP-Applications/_shared/studio-v2/input-service.js",
+      "capabilities": [
+        "normalize-files",
+        "accept-filter",
+        "read-text",
+        "read-json",
+        "read-bytes",
+        "url-input",
+        "input-description"
+      ],
+      "consumers": [
+        "all-specialized-studios"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "input-picker",
+      "module": "APP-Applications/_shared/studio-v2/input-picker.js",
+      "capabilities": [
+        "file-picker",
+        "folder-picker",
+        "drop",
+        "selection-remove"
+      ],
+      "consumers": [
+        "specialized-studios-v2"
+      ],
+      "status": "canonical-ui"
+    },
+    {
+      "id": "thumbnail",
+      "module": "APP-Applications/_shared/studio-v2/thumbnail-service.js",
+      "capabilities": [
+        "first-page-pdf-thumbnail",
+        "image-thumbnail",
+        "text-document-thumbnail",
+        "page-count",
+        "configurable-size"
+      ],
+      "consumers": [
+        "pdf-studio",
+        "input-picker-planned",
+        "collection-browser"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "image",
+      "module": "APP-Applications/_shared/studio-v2/image-service.js",
+      "upstream": [
+        "nepheris/nLab/Build/BRK-Brick/BRK114-image-engine-adapter"
+      ],
+      "capabilities": [
+        "rotate",
+        "flip-x",
+        "flip-y",
+        "resize",
+        "crop",
+        "deskew",
+        "grayscale",
+        "document-cleanup",
+        "binary-cleanup",
+        "raster-export"
+      ],
+      "consumers": [
+        "image-studio",
+        "scan-studio",
+        "input-picker-planned"
+      ],
+      "status": "canonical-browser"
+    },
+    {
+      "id": "pdf",
+      "module": "APP-Applications/pdf-studio/v1/pdf-engine.js",
+      "capabilities": [
+        "load",
+        "render-page",
+        "rotate-pages",
+        "add-page",
+        "move-page",
+        "duplicate-page",
+        "delete-pages",
+        "extract-pages",
+        "merge-pdf",
+        "insert-pdf",
+        "base-bytes"
+      ],
+      "consumers": [
+        "pdf-studio",
+        "merge-studio",
+        "pdf-sign"
+      ],
+      "status": "canonical-domain"
+    },
+    {
+      "id": "document-format",
+      "module": "APP-Applications/_shared/studio-v2/document-format-service.js",
+      "upstream": [
+        "nepheris/nLab/Build/BRK-Brick/BRK40-document-conversion-core"
+      ],
+      "capabilities": [
+        "read-docx",
+        "read-odt",
+        "write-docx",
+        "write-odt",
+        "structured-docx",
+        "rtf-text",
+        "text-html"
+      ],
+      "consumers": [
+        "document-studio",
+        "pdf-studio",
+        "dataset-generator-studio"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "tabular",
+      "module": "APP-Applications/_shared/studio-v2/tabular-service.js",
+      "capabilities": [
+        "csv-parse",
+        "csv-export",
+        "filter",
+        "sort",
+        "xlsx",
+        "ods",
+        "workbook-profile",
+        "json-table"
+      ],
+      "consumers": [
+        "data-studio",
+        "spreadsheet-studio",
+        "dataset-generator-studio",
+        "file-studio"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "download",
+      "module": "APP-Applications/_shared/studio-v2/download-service.js",
+      "capabilities": [
+        "blob",
+        "text",
+        "json",
+        "csv"
+      ],
+      "consumers": [
+        "document-studio",
+        "data-studio",
+        "spreadsheet-studio",
+        "dataset-generator-studio",
+        "file-studio",
+        "markdown-studio",
+        "pdf-studio",
+        "scan-studio",
+        "qr-barcode-studio"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "ocr",
+      "module": "APP-Applications/_shared/studio-v2/ocr-service.js",
+      "capabilities": [
+        "engine-resolution",
+        "tesseract-browser",
+        "language-detection",
+        "progress",
+        "diagnostics"
+      ],
+      "consumers": [
+        "ocr-studio",
+        "pdf-studio",
+        "scan-studio",
+        "dataset-generator-studio"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "symbology",
+      "module": "APP-Applications/_shared/studio-v2/symbology-service.js",
+      "capabilities": [
+        "qr",
+        "data-matrix",
+        "aztec",
+        "pdf417",
+        "code128",
+        "gs1-128",
+        "code39",
+        "ean13",
+        "ean8",
+        "upca",
+        "itf",
+        "codabar",
+        "validation",
+        "styled-qr",
+        "preview",
+        "png-export",
+        "svg-export"
+      ],
+      "consumers": [
+        "qr-barcode-studio",
+        "pdf-studio",
+        "dataset-generator-studio"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "color",
+      "module": "APP-Applications/_shared/studio-v2/color-control.js",
+      "capabilities": [
+        "hex",
+        "rgb",
+        "hsl",
+        "parse",
+        "format",
+        "picker"
+      ],
+      "consumers": [
+        "qr-barcode-studio",
+        "pdf-studio",
+        "markdown-studio-planned"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "dimensions",
+      "module": "APP-Applications/_shared/studio-v2/dimension-service.js",
+      "capabilities": [
+        "px",
+        "percent",
+        "pt",
+        "mm",
+        "conversion"
+      ],
+      "consumers": [
+        "image-studio",
+        "pdf-studio"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "formats",
+      "module": "APP-Applications/_shared/studio-v2/format-registry.js",
+      "capabilities": [
+        "detect-family",
+        "accept",
+        "label",
+        "filetype-icon",
+        "studio-routing"
+      ],
+      "consumers": [
+        "all-specialized-studios"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "template",
+      "module": "APP-Applications/_shared/studio-v2/template-engine.js",
+      "capabilities": [
+        "variables",
+        "naming",
+        "runtime-values"
+      ],
+      "consumers": [
+        "pdf-studio",
+        "file-studio"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "archive",
+      "module": "APP-Applications/_shared/studio-v2/archive-service.js",
+      "capabilities": [
+        "zip-create",
+        "zip-open",
+        "zip-entries"
+      ],
+      "consumers": [
+        "pdf-studio",
+        "file-workflows"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "identity",
+      "module": "APP-Applications/_shared/studio-v2/artifact-identity.js",
+      "capabilities": [
+        "artifact-id",
+        "sha256",
+        "manifest",
+        "manifest-verification"
+      ],
+      "consumers": [
+        "pdf-studio",
+        "image-studio",
+        "file-studio"
+      ],
+      "status": "canonical"
+    },
+    {
+      "id": "overlay",
+      "module": "APP-Applications/pdf-studio/v2/object-layer.js",
+      "capabilities": [
+        "add-object",
+        "move",
+        "resize",
+        "rotate",
+        "lock",
+        "delete",
+        "text",
+        "image",
+        "stamp",
+        "signature",
+        "highlight",
+        "redaction",
+        "pen"
+      ],
+      "consumers": [
+        "pdf-studio"
+      ],
+      "status": "domain-current-promotion-candidate"
+    },
+    {
+      "id": "markdown",
+      "module": "APP-Applications/_shared/studio-v2/markdown-engine.js",
+      "capabilities": [
+        "front-matter",
+        "yaml",
+        "render",
+        "headings",
+        "toc-anchors",
+        "word-count",
+        "editing-insert"
+      ],
+      "consumers": [
+        "markdown-studio"
+      ],
+      "status": "canonical-domain"
+    },
+    {
+      "id": "synthetic-data",
+      "module": "APP-Applications/_shared/studio-v2/synthetic-data-service.js",
+      "capabilities": [
+        "seeded-generation",
+        "schema-inference",
+        "datasets",
+        "documents",
+        "markdown",
+        "html"
+      ],
+      "consumers": [
+        "dataset-generator-studio"
+      ],
+      "status": "canonical-domain"
+    }
+  ],
+  "promotionRule": {
+    "twoOrMoreConsumers": "promote to Studio Core or an upstream BRK; Studios keep orchestration/UI only",
+    "domainSpecific": "may remain in the domain Studio engine when reuse outside the domain is not justified",
+    "derivedApps": "must call parent Studio engine; never fork processing logic"
+  }
+}
