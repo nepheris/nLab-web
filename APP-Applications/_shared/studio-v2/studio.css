@@ -919,7 +919,7 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 #studioContextHelpWindow.corePanelFixedLeft,
 #studioContextHelpWindow.corePanelFixedRight{width:min(470px,calc(100vw - 16px))!important}
 #studioContextHelpWindow{
-  z-index:650!important;
+  z-index:650;
 }
 #studioContextHelpWindow:not([hidden]){
   display:block;
