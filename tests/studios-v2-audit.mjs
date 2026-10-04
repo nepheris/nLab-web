@@ -151,8 +151,8 @@ try{
  // Demo Studio : redirection et corpus réellement chargé.
  {
   const p=await browser.newPage({viewport:{width:1360,height:900}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
-  await p.goto(base+'APP-Applications/demo-studio/',{waitUntil:'domcontentloaded',timeout:60000});await p.waitForURL(/Library\/demo\//,{timeout:10000});await p.waitForFunction(()=>document.querySelectorAll('#grid .card').length>10,null,{timeout:30000});await p.waitForFunction(()=>document.querySelectorAll('#packs .pack').length>5,null,{timeout:30000});
-  const cards=await p.locator('#grid .card').count(),packs=await p.locator('#packs .pack').count();if(cards<10||packs<5)fail('Demo Studio corpus incomplet');if(errors.length)fail('Demo Studio audit: '+errors.join(' | '));results.push('demo-studio+gallery');await p.close();
+  await p.goto(base+'APP-Applications/demo-studio/',{waitUntil:'domcontentloaded',timeout:60000});const redirected=await p.waitForURL(/Library\/demo\//,{timeout:10000}).then(()=>true).catch(()=>false);await p.waitForTimeout(2500);const demoState=await p.evaluate(()=>({url:location.href,cards:document.querySelectorAll('#grid .card').length,packs:document.querySelectorAll('#packs .pack').length,grid:document.querySelector('#grid')?.textContent||'',packText:document.querySelector('#packs')?.textContent||''}));if(!redirected||demoState.cards<10||demoState.packs<5)fail('Demo Studio incomplet · '+JSON.stringify(demoState));
+  const cards=demoState.cards,packs=demoState.packs;if(errors.length)fail('Demo Studio audit: '+errors.join(' | '));results.push('demo-studio+gallery');await p.close();
  }
 
  console.log(JSON.stringify({ok:true,results},null,2));
