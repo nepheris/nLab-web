@@ -35,7 +35,17 @@ try{
   const unknownIcon=await p.locator('.studioInputCard').filter({hasText:'picker-inconnu.foo'}).locator('.studioInputFileIcon').getAttribute('src');if(!/generic-document\.svg/.test(unknownIcon||''))fail('Input Picker fallback SVG générique absent');
   await p.locator('[data-input-view="preview"]').click();await p.waitForFunction(()=>document.querySelector('#studioInputList')?.dataset.view==='preview');
   await p.waitForFunction(()=>document.querySelectorAll('#studioInputList .studioInputThumb').length>=2&&/page/.test(document.querySelector('#studioInputList')?.textContent||''),null,{timeout:30000});
+  if((await p.locator('[data-input-select]').count())!==3)fail('Core Input 3.2 : cases de sélection absentes');
+  await p.locator('[data-input-select-none]').click();if((await p.locator('[data-input-select]:checked').count())!==0)fail('Core Input 3.2 : tout désélectionner inactif');
+  await p.locator('[data-input-select-all]').click();if((await p.locator('[data-input-select]:checked').count())!==3)fail('Core Input 3.2 : tout sélectionner inactif');
+  await p.locator('[data-input-sort]').selectOption('name');await p.locator('[data-input-sort-dir]').click();await p.locator('[data-input-group]').selectOption('type');
+  await p.locator('[data-input-thumb-scale]').fill('1.4');await p.locator('[data-input-thumb-scale]').dispatchEvent('input');
+  await p.locator('[data-input-text-scale]').fill('1.2');await p.locator('[data-input-text-scale]').dispatchEvent('input');
+  const collectionUi=await p.evaluate(()=>({groups:document.querySelectorAll('.studioInputGroup').length,thumb:getComputedStyle(document.querySelector('#studioInputList')).getPropertyValue('--input-thumb-scale').trim(),text:getComputedStyle(document.querySelector('#studioInputList')).getPropertyValue('--input-text-scale').trim(),confirm:document.querySelector('#studioInputConfirm')?.textContent||''}));
+  if(!collectionUi.groups||collectionUi.thumb!=='1.4'||collectionUi.text!=='1.2'||!/\(3\)/.test(collectionUi.confirm))fail('Core Input 3.2 : tri/groupement/échelle/sélection invalide · '+JSON.stringify(collectionUi));
   const pdfCard=p.locator('.studioInputPreviewCard').filter({hasText:'picker-document.pdf'});await pdfCard.locator('[data-input-rotate="90"]').click();
+  await p.locator('#studioInputCancel').click();await p.waitForFunction(()=>document.querySelector('#studioInputPicker')?.hidden===true,null,{timeout:3000});
+  await p.locator('#file-studio-open').click();await p.waitForSelector('#studioInputPicker:not([hidden])');if((await p.locator('[data-input-select]:checked').count())!==3)fail('Core Input 3.2 : collection session non conservée');
   await p.locator('#studioInputConfirm').click();await p.waitForFunction(()=>document.querySelector('#studioInputPicker')?.hidden===true,null,{timeout:30000});
   await p.waitForFunction(()=>/3 élément/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
   const core30=await p.evaluate(()=>({
@@ -44,7 +54,7 @@ try{
  restore:!!document.querySelector('#studioRestoreWindows'),
  settingsReset:!!document.querySelector('#studioCoreSettingsPanel')
 }));if(!core30.url||!core30.camera||!core30.restore)fail('Core 3.0 Input/Window affordances absentes : '+JSON.stringify(core30));
-if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push('core-input-picker-window-3.0');await p.close();
+if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push('core-input-collection-3.2');await p.close();
  }
 
  // Studio Core 3.1 : paramètres repliables + aide contextuelle gauche/libre/topmost.
