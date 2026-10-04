@@ -120,6 +120,25 @@
  <div class="signatureModeTabs" role="tablist"><button type="button" class="active" data-stamp-mode="use">Utiliser un tampon</button><button type="button" data-stamp-mode="editor">Éditeur de tampons</button></div>
  <div id="stampUsePanel">
   <label>Modèle enregistré<select id="stampPresetSelect"><option value="">Personnalisé</option></select></label>
+  <details open class="stampSvgBuilder"><summary>Bibliothèque SVG & matrices</summary>
+   <div class="statusBox">Tampons vectoriels monochromes sur fond transparent. La couleur utilise le sélecteur du Framework et les SVG restent basés sur <code>currentColor</code>.</div>
+   <div class="presetButtons" id="stampSvgPresetButtons">
+    <button type="button" data-stamp-svg-preset="paid">Payé</button>
+    <button type="button" data-stamp-svg-preset="paid-date">Payé le…</button>
+    <button type="button" data-stamp-svg-preset="archived">Archivé</button>
+    <button type="button" data-stamp-svg-preset="non-conforme">Non Conforme</button>
+    <button type="button" data-stamp-svg-preset="non-concerne">Non Concerné</button>
+    <button type="button" data-stamp-svg-preset="work-docs">Documents de travail</button>
+   </div>
+   <div class="grid2">
+    <label>Forme<select id="stampSvgShape"><option value="line">Une ligne</option><option value="multiline">Plusieurs lignes</option><option value="circle">Circulaire</option></select></label>
+    <label>Couleur<div class="colorHexControl"><input id="stampSvgColor" type="color" value="#316D9A"><input id="stampSvgColorHex" value="#316D9A" maxlength="7" spellcheck="false"></div></label>
+   </div>
+   <label>Texte du SVG<textarea id="stampSvgText" rows="3">VOTRE TEXTE</textarea></label>
+   <div id="stampSvgPreview" class="signatureAssetPreview"><span>Aperçu SVG</span></div>
+   <div id="stampSvgActiveState" class="statusBox">Aucun tampon SVG généré n’est actif.</div>
+   <div class="compactInputRow"><button id="useStampSvg" type="button">Utiliser ce tampon</button><button id="saveStampSvgAsset" type="button">Ajouter à la galerie</button><button id="downloadStampSvg" type="button">Exporter SVG</button></div>
+  </details>
   <label>Texte du tampon<textarea id="stampTemplate" rows="4">VALIDÉ
 {DISPLAY_NAME}
 {STAMP_DATE:DD/MM/YYYY}</textarea></label>
