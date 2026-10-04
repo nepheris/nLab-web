@@ -23,7 +23,8 @@ import{renderMarkdownFilePreview,renderPlainTextPreview}from'../../_shared/studi
 import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../../_shared/studio-v2/output-service.js';
 import{acceptAttribute,isSupportedFile,formatInfo}from'../../_shared/studio-v2/format-registry.js';
-import{enhanceStudioWindow}from'../../_shared/studio-v2/window-system.js';
+import{enhanceStudioWindow,showStudioWindow}from'../../_shared/studio-v2/window-system.js';
+import{openInputPicker,filesFromDrop}from'../../_shared/studio-v2/input-picker.js';
 import{mountPersonalProfileUI}from'../../_shared/studio-v2/personal-profile-ui.js';
 import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues,getPersonalAsset,putPersonalAsset,addPersonalAssetRef,listPersonalTemplates,savePersonalTemplate,removePersonalTemplate}from'../../_shared/studio-v2/personal-profile-service.js';
 import{listRecentLocations,rememberLocation,resolveRecentLocation}from'../../_shared/studio-v2/recent-locations-service.js';
@@ -708,18 +709,22 @@ async function saveZip({classify=false}={}){if(!engine.pageCount)return;const pd
  else{if(provider==='local'&&!output.handle)await ensureOutputDirectory();const old=output.handle;if(provider!=='local')output.handle=null;await output.saveZip([{name:pdfName,data:pdf}],zipName,{parts,level:zipCompressionControl?.value||6});output.handle=old}
  setStatus('ZIP enregistré : '+zipName);recordHistory({studio:'pdf-studio',type:'action',label:classify?'ZIP enregistré + classé':'ZIP enregistré',detail:classify?parts.join('/'):'',target:zipName})}
 
-$('#pickFile').onclick=()=>$('#fileInput').click();
-$('#fileInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputHandle=null;activeInputLocation={kind:'files',label:files.length===1?files[0].name:files.length+' fichiers'};setValidatedButton($('#pickFile'),true,activeInputLocation.label);setValidatedButton($('#pickFolder'),false);await loadFiles(files)}};
-async function chooseInputDirectory(){
- if(window.showDirectoryPicker){
-  const handle=await showDirectoryPicker({mode:'read'}),files=await collectDirectoryHandle(handle,{recursive:$('#recursiveFolders').checked});
-  activeInputHandle=handle;activeInputLocation=await rememberLocation('input',handle,{label:handle.name,path:handle.name});setValidatedButton($('#pickFolder'),true,'Dossier validé : '+handle.name);setValidatedButton($('#pickFile'),false);renderRecentLocationSelects();await loadFiles(files);return
- }
- $('#folderInput').click()
+async function openCoreInputPicker({preferFolder=false}={}){
+ const files=await openInputPicker({accept:acceptAttribute(),multiple:true,folders:true,url:true,camera:false,expandZip:true,view:'preview'});
+ if(!files?.length)return;
+ activeInputHandle=null;activeInputLocation={kind:preferFolder?'folder':'picker',label:files.length===1?files[0].name:files.length+' éléments'};
+ setValidatedButton($('#pickFile'),!preferFolder,activeInputLocation.label);setValidatedButton($('#pickFolder'),preferFolder,activeInputLocation.label);
+ await loadFiles(files)
 }
-$('#pickFolder').onclick=()=>chooseInputDirectory().catch(e=>setStatus(e.message));
+$('#pickFile').onclick=()=>openCoreInputPicker({preferFolder:false}).catch(e=>setStatus('Entrée : '+e.message));
+$('#pickFolder').onclick=()=>openCoreInputPicker({preferFolder:true}).catch(e=>setStatus('Entrée : '+e.message));
+$('#fileInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputHandle=null;activeInputLocation={kind:'files',label:files.length===1?files[0].name:files.length+' fichiers'};setValidatedButton($('#pickFile'),true,activeInputLocation.label);setValidatedButton($('#pickFolder'),false);await loadFiles(files)}};
 $('#folderInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputHandle=null;const root=files[0].webkitRelativePath?.split('/')[0]||'Dossier';activeInputLocation={kind:'folder',label:root};setValidatedButton($('#pickFolder'),true,'Dossier validé : '+root);setValidatedButton($('#pickFile'),false);await loadFiles(files)}};
-mountDropZone($('#inputDropZone'),{onFiles:async files=>{if(files.length){activeInputHandle=null;activeInputLocation={kind:'drop',label:files.length+' élément(s) déposé(s)'};$('#inputDropZone').classList.add('validatedDropZone');await loadFiles(files)}}});
+$('#inputDropZone').addEventListener('dragover',e=>{e.preventDefault();e.currentTarget.classList.add('drag')});
+$('#inputDropZone').addEventListener('dragleave',e=>e.currentTarget.classList.remove('drag'));
+$('#inputDropZone').addEventListener('drop',async e=>{e.preventDefault();e.currentTarget.classList.remove('drag');try{const files=await filesFromDrop(e.dataTransfer);if(files.length){activeInputHandle=null;activeInputLocation={kind:'drop',label:files.length+' élément(s) déposé(s)'};$('#inputDropZone').classList.add('validatedDropZone');await loadFiles(files)}}catch(err){setStatus('Entrée : '+err.message)}});
+$('#inputDropZone').addEventListener('click',()=>openCoreInputPicker({preferFolder:false}).catch(e=>setStatus('Entrée : '+e.message)));
+$('#inputDropZone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCoreInputPicker({preferFolder:false}).catch(err=>setStatus('Entrée : '+err.message))}});
 $('#loadRecentInput').onclick=async()=>{const id=$('#recentInputSelect').value;if(!id)return;try{const {item,handle}=await resolveRecentLocation('input',id,{mode:'read'}),files=await collectDirectoryHandle(handle,{recursive:$('#recursiveFolders').checked});activeInputHandle=handle;activeInputLocation=item;setValidatedButton($('#pickFolder'),true,'Entrée récente : '+item.label);setValidatedButton($('#pickFile'),false);$('#recentInputSelect').classList.add('validatedChoice');await loadFiles(files);setStatus('Entrée récente chargée : '+item.label)}catch(e){setStatus(e.message)}};
 $('#importLegacyConfig')?.addEventListener('click',()=>$('#legacyConfigInput').click());
 $('#legacyConfigInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const raw=JSON.parse(await file.text()),report=migrateLegacyPdfConfig(raw);loadPdfProfilePreferences();renderNamingPresets();renderStampPresets();renderObjectAssetSelectors();renderDriveState();updateNamingPreview();updateOutputPreview();$('#legacyConfigStatus').textContent=report.length?'Migration : '+report.join(' · '):'JSON reconnu mais aucun réglage migrable détecté.';setStatus('Ancienne configuration importée / fusionnée.')}catch(err){$('#legacyConfigStatus').textContent='Erreur : '+err.message;setStatus('Migration configuration : '+err.message)}finally{e.target.value=''}});
