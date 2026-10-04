@@ -725,3 +725,20 @@ body.studioMobileOptimized .inputDropZone{min-height:110px}
 @media(max-width:700px){
   body[data-responsive-preference="auto"]{--studio-font-scale:.95}
 }
+
+/* Studio Core Input Picker — text / icon / preview modes */
+.inputPickerSpacer{flex:1 1 auto}.inputPickerViews{display:inline-flex;gap:3px;padding:2px;border:1px solid var(--nlab-line);border-radius:7px;background:#f6f8fa}
+.inputPickerViews button{min-height:28px;height:28px;padding:3px 8px;font-size:9px}.inputPickerViews button.active{background:#dceefa;border-color:#7eafca;color:#145b84}
+.studioInputList[data-view="icon"],.studioInputList[data-view="preview"]{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));align-items:stretch;gap:7px;max-height:360px}
+.studioInputCard,.studioInputFolderCard{position:relative;display:grid;grid-template-rows:112px auto auto auto;gap:4px;min-width:0;border:1px solid #dce4ea;border-radius:9px;padding:6px;background:#fff}
+.studioInputCard strong,.studioInputFolderCard strong{font-size:9px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.studioInputCard>small,.studioInputFolderCard>small{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;font-size:8px;color:var(--nlab-muted);text-align:center}
+.studioInputVisual{position:relative;display:grid;place-items:center;min-height:112px;border-radius:7px;background:#f5f7f9;overflow:hidden}
+.studioInputFileIcon,.studioInputFolderIcon{width:58px;height:58px;object-fit:contain}.studioInputFolderIcon{width:68px;height:68px}
+.studioInputThumb{display:block;max-width:100%;max-height:104px;width:auto;height:auto;object-fit:contain;transition:transform .12s ease}.studioInputThumbLoading{font-size:9px;color:var(--nlab-muted)}
+.studioInputTypeBadge{position:absolute;left:5px;bottom:5px;padding:2px 5px;border-radius:999px;background:#17212ad9;color:#fff;font-size:7px;font-weight:800;letter-spacing:.04em}
+.studioInputItemActions{display:flex;justify-content:center;align-items:center;gap:3px}.studioInputItemActions button{min-width:27px;width:27px;height:27px;min-height:27px;padding:0;font-size:14px}
+.studioInputCard .studioInputItemActions,.studioInputFolderCard .studioInputItemActions{margin-top:1px}.studioInputItem .studioInputItemActions{justify-content:flex-end}
+.studioInputTextItem{grid-template-columns:28px minmax(0,1fr) auto}.studioInputTypeIcon{width:24px;height:24px;object-fit:contain}
+.themeDark .inputPickerViews{background:#171c20}.themeDark .inputPickerViews button.active{background:#27445a;color:#d9f0ff}.themeDark .studioInputCard,.themeDark .studioInputFolderCard{background:#20262c;border-color:#39434c}.themeDark .studioInputVisual{background:#171c20}
+@media(max-width:620px){.inputPickerSpacer{display:none}.inputPickerViews{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.studioInputList[data-view="icon"],.studioInputList[data-view="preview"]{grid-template-columns:repeat(2,minmax(0,1fr))}}

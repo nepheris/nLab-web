@@ -1,13 +1,22 @@
 {
   "name": "Data Studio",
   "current": "0.2.0",
-  "test": "2.2.0",
+  "test": "2.3.0",
   "versions": [
+    {
+      "version": "2.3.0",
+      "label": "Data Studio 2.3.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe TEST Core 2.9 : nouveau sélecteur mutualisé pour datasets et recette étendue des filtres, séparateurs CSV, BOM et exports."
+    },
     {
       "version": "2.2.0",
       "label": "Data Studio 2.2.0 TEST",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Adoption Studio Core 2.8 Input Picker : fichiers/dossiers, sélection de dataset actif, collection CSV/TSV/JSON, et accès explicite au Dataset Generator / Fixture Mirror."
     },
