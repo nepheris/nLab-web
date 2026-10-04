@@ -409,6 +409,26 @@
       "status": "canonical-ui"
     },
     {
+      "id": "panel-registry",
+      "module": "APP-Applications/_shared/studio-v2/panel-registry.js",
+      "capabilities": [
+        "panel-definition",
+        "priority",
+        "default-mode",
+        "restorable",
+        "escape-close",
+        "capability-flags",
+        "panel-discovery"
+      ],
+      "consumers": [
+        "studio-core",
+        "history-panel-planned",
+        "inspector-panel-planned",
+        "input-panel-planned"
+      ],
+      "status": "canonical-ui"
+    },
+    {
       "id": "window-manager",
       "module": "APP-Applications/_shared/studio-v2/window-system.js",
       "capabilities": [
@@ -420,7 +440,19 @@
         "scroll-x-y",
         "hide-restore",
         "normal-large",
-        "persistence"
+        "persistence",
+        "panel-mode-free",
+        "panel-mode-fixed-left",
+        "panel-mode-fixed-right",
+        "panel-mode-hidden",
+        "topmost-context-help",
+        "left-default-context-help",
+        "panel-registry",
+        "window-state-events",
+        "escape-close",
+        "keyboard-focus",
+        "hard-lock",
+        "window-state-query"
       ],
       "consumers": [
         "all-studios"
