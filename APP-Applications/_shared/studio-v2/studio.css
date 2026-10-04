@@ -948,3 +948,11 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 }
 
 .corePanelFixedLeft .studioWindowGrip,.corePanelFixedRight .studioWindowGrip{opacity:.35;pointer-events:none;cursor:not-allowed}
+
+
+/* Studio Core 3.1 — window accessibility and hard lock invariants */
+.studioWindow:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.studioWindowLocked{resize:none!important}
+.studioWindowLocked .studioWindowGrip{cursor:not-allowed;opacity:.45}
+.studioWindowBar button:focus-visible,.studioWindowRestoreTray button:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.studioWindowBar button:disabled{display:none!important}
