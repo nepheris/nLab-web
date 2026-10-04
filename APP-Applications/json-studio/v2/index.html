@@ -1,44 +1,105 @@
-<!doctype html><html lang="fr"><head><base href="../"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>nLab JSON Studio</title><link rel="stylesheet" href="../_shared/studio.css"><link rel="stylesheet" href="../_shared/studio-v2/studio.css"><style>
-.jsonLayout{display:grid;grid-template-columns:minmax(380px,.95fr) minmax(380px,1.05fr);gap:12px}.jsonEditor{min-height:610px;resize:vertical}.demoSelect{min-width:260px}.treeBox{font:11px ui-monospace,SFMono-Regular,Consolas,monospace;line-height:1.5;max-height:610px;overflow:auto;padding:8px;background:#fbfcfd;border:1px solid #dbe2e8;border-radius:8px}.treeBox details{margin-left:12px}.treeBox summary{cursor:pointer;padding:1px 3px;border-radius:4px}.treeBox summary:hover{background:#eef5fb}.treeKey{color:#095b91;font-weight:700}.treeType{color:#7a8894;font-size:9px}.treeString{color:#1d6d3c}.treeNumber{color:#8c4a00}.treeBool{color:#7952a8}.treeNull{color:#a12626}.queryBox pre{margin:6px 0 0;white-space:pre-wrap;word-break:break-word;max-height:160px;overflow:auto}.jsonStats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.jsonStats .kpi{min-width:0}.jsonStats .kpi b{font-size:15px}.tabbar{display:flex;gap:3px;margin-bottom:8px}.tabbar button.active{background:#e7f2fb;border-color:#85b2d4;color:#0b5f98;font-weight:800}.viewPane[hidden]{display:none!important}@media(max-width:950px){.jsonLayout{grid-template-columns:1fr}.jsonStats{grid-template-columns:repeat(2,1fr)}}
-</style></head><body data-studio="JSON Studio" data-icon="json" data-status="Alpha 0.2">
-<main class="wrap"><section class="hero"><div><div class="eyebrow">JSON · structure · validation · inspection</div><h1>JSON Studio</h1><p class="lead">Éditer, explorer et comparer la structure de JSON simples ou fortement imbriqués. Les démos métier ci-dessous proviennent de sous-ensembles publics des référentiels Recettes du Cœur.</p></div><div class="actions"><a class="btn" href="../../Library/demo/manifests/code-json.json">Manifest JSON</a><a class="btn" href="../../Library/demo/">Galerie démo</a></div></section>
+<!doctype html><html lang="fr"><head><base href="../"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>nLab JSON Studio</title>
+<link rel="stylesheet" href="../_shared/studio.css"><link rel="stylesheet" href="../_shared/studio-v2/studio.css">
+<style>
+.jsonLayout{display:grid;grid-template-columns:minmax(360px,.9fr) minmax(420px,1.1fr);gap:12px}.jsonEditor{min-height:610px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.demoSelect{min-width:250px}.devDemoWrap{display:flex;align-items:center;gap:5px;padding:3px 5px;border:1px solid #e8c875;border-radius:7px;background:#fff8e8}.devDemoWrap .devBadge{display:inline-flex!important}
+.treeBox{font:11px ui-monospace,SFMono-Regular,Consolas,monospace;line-height:1.45;max-height:610px;overflow:auto;padding:8px;background:#fbfcfd;border:1px solid #dbe2e8;border-radius:8px}.treeNode{margin-left:12px}.treeRow{display:flex;align-items:center;gap:5px;padding:2px 3px;border-radius:5px;min-height:25px}.treeRow:hover{background:#eef5fb}.treeRow.modified{outline:2px solid #d49a18;background:#fff5d9}.treeToggle{width:22px;height:22px;min-width:22px;padding:0}.treeToggle.blank{visibility:hidden}.treeKey{color:#095b91;font-weight:800}.treeType{color:#7a8894;font-size:9px}.treeValue{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:300px}.treeString{color:#1d6d3c}.treeNumber{color:#8c4a00}.treeBool{color:#7952a8}.treeNull{color:#a12626}.treeActions{display:flex;gap:2px;margin-left:auto}.treeActions button{min-width:24px;width:24px;height:24px;min-height:24px;padding:0;font-size:11px}.treeChildren[hidden]{display:none}
+.queryBox pre{margin:6px 0 0;white-space:pre-wrap;word-break:break-word;max-height:160px;overflow:auto}.jsonStats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.jsonStats .kpi{min-width:0}.jsonStats .kpi b{font-size:15px}.tabbar{display:flex;gap:3px;margin-bottom:8px;flex-wrap:wrap}.tabbar button.active{background:#e7f2fb;border-color:#85b2d4;color:#0b5f98;font-weight:800}.viewPane[hidden]{display:none!important}
+.flatTable,.jsonTable{width:100%;border-collapse:collapse;font-size:10px}.flatTable th,.flatTable td,.jsonTable th,.jsonTable td{border:1px solid #dce4ea;padding:5px 6px;text-align:left;vertical-align:top}.flatTable th,.jsonTable th{position:sticky;top:0;background:#eef4f8;z-index:2}.tableScroller{max-height:590px;overflow:auto}.pathCell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.tableEdit{cursor:pointer}
+.themeDark .devDemoWrap{background:#3a2d18;border-color:#8d6f2d}.themeDark .treeRow:hover{background:#263847}.themeDark .treeRow.modified{background:#4a391c}.themeDark .flatTable th,.themeDark .jsonTable th{background:#252c33}.themeDark .flatTable td,.themeDark .flatTable th,.themeDark .jsonTable td,.themeDark .jsonTable th{border-color:#39434c}
+@media(max-width:950px){.jsonLayout{grid-template-columns:1fr}.jsonStats{grid-template-columns:repeat(2,1fr)}} 
+</style></head><body data-studio="JSON Studio" data-icon="json" data-status="TEST">
+<main class="wrap">
+<section class="hero"><div><div class="eyebrow">JSON · structure · validation · édition graphique</div><h1>JSON Studio</h1><p class="lead">Une seule source JSON, plusieurs vues synchronisées : code, arbre éditable, tableau, vue à plat, structure et chemin.</p></div><div class="actions"><a class="btn" href="../../Library/demo/manifests/code-json.json">Manifest JSON</a><a class="btn" href="../../Library/demo/">Galerie démo</a></div></section>
 <section class="panel"><div class="toolbar">
 <input id="file" type="file" accept=".json,application/json">
-<select id="demo" class="demoSelect"><option value="">— Choisir une démo complexe —</option>
-<option value="../../Library/demo/source-drive/json/rdc-recettes-complexes-demo.json">RDC · Recettes complexes</option>
-<option value="../../Library/demo/source-drive/json/rdc-categories-recettes-demo.json">RDC · Catégories recettes</option>
-<option value="../../Library/demo/source-drive/json/rdc-relations-contenus-demo.json">RDC · Relations contenus</option>
-<option value="../../Library/demo/source-drive/json/rdc-saisonnalite-demo.json">RDC · Saisonnalité</option>
-<option value="../../Library/demo/source-drive/json/rdc-allergenes-demo.json">RDC · Allergènes</option>
-<option value="../../Library/demo/Data/dataset-validation-complet.json">Dataset validation complet</option></select>
-<button id="loadDemo">Charger</button><button id="format">Formater</button><button id="min">Minifier</button><button id="sort">Trier les clés</button><button id="copy">Copier</button><button id="save" class="primary">Exporter JSON</button></div></section>
+<div class="devDemoWrap" data-feature-status="development"><span class="devBadge">DEV</span><select id="demo" class="demoSelect"><option value="">— Jeu de test préchargé —</option>
+<option value="../../Library/demo/source-drive/json/rdc-recettes-complexes-demo.json">RDC · Recettes complexes</option><option value="../../Library/demo/source-drive/json/rdc-categories-recettes-demo.json">RDC · Catégories recettes</option><option value="../../Library/demo/source-drive/json/rdc-relations-contenus-demo.json">RDC · Relations contenus</option><option value="../../Library/demo/source-drive/json/rdc-saisonnalite-demo.json">RDC · Saisonnalité</option><option value="../../Library/demo/source-drive/json/rdc-allergenes-demo.json">RDC · Allergènes</option><option value="../../Library/demo/Data/dataset-validation-complet.json">Dataset validation complet</option></select><button id="loadDemo">Charger</button></div>
+<button id="format">Formater</button><button id="min">Minifier</button><button id="sort">Trier les clés</button><button id="copy">Copier</button><button id="save" class="primary">Exporter JSON</button></div></section>
 <div class="jsonLayout">
-<section class="panel"><div class="sectionTitle"><h2>Éditeur</h2><span id="validity" class="badge">Aucun document</span></div><textarea id="editor" class="jsonEditor" spellcheck="false" placeholder="Charge un JSON ou colle-le ici…"></textarea><div id="status" class="status">Prêt.</div></section>
-<section class="panel"><div class="tabbar"><button class="active" data-view="tree">Arbre</button><button data-view="stats">Structure</button><button data-view="query">Chemin</button></div>
+<section class="panel"><div class="sectionTitle"><h2>Éditeur code</h2><span id="validity" class="badge">Aucun document</span></div><textarea id="editor" class="jsonEditor" spellcheck="false" placeholder="Charge un JSON ou colle-le ici…"></textarea><div id="status" class="status">Prêt.</div></section>
+<section class="panel"><div class="tabbar"><button class="active" data-view="tree">Arbre</button><button data-view="table">Tableau</button><button data-view="flat">À plat</button><button data-view="stats">Structure</button><button data-view="query">Chemin</button></div>
 <div id="treePane" class="viewPane"><div id="tree" class="treeBox"><span class="muted">Charge un document JSON.</span></div></div>
-<div id="statsPane" class="viewPane" hidden><div id="stats" class="jsonStats"></div><div class="tip" style="margin-top:10px"><b>Clés racines</b><div id="topKeys" class="mono" style="margin-top:5px"></div></div><div class="tip" style="margin-top:8px"><b>À tester</b><br>Objets imbriqués, listes, valeurs nulles, structures métier, profondeur et sérialisation.</div></div>
-<div id="queryPane" class="viewPane queryBox" hidden><label>Chemin pointé, ex. <span class="mono">referentiel.donnees.0.nom</span></label><div class="row"><input id="path" value="referentiel.donnees.0"><button id="query">Lire</button></div><pre id="result" class="status mono">—</pre></div>
+<div id="tablePane" class="viewPane" hidden><div id="tableView" class="tableScroller"></div></div>
+<div id="flatPane" class="viewPane" hidden><div id="flatView" class="tableScroller"></div></div>
+<div id="statsPane" class="viewPane" hidden><div id="stats" class="jsonStats"></div><div class="tip" style="margin-top:10px"><b>Clés racines</b><div id="topKeys" class="mono" style="margin-top:5px"></div></div></div>
+<div id="queryPane" class="viewPane queryBox" hidden><label>Chemin pointé, ex. <span class="mono">referentiel.donnees.0.nom</span></label><div class="row"><input id="path" value=""><button id="query">Lire</button></div><pre id="result" class="status mono">—</pre></div>
 </section></div></main>
 <script>
-const $=id=>document.getElementById(id);let name='data.json',lastObj=null;
-function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+const $=id=>document.getElementById(id);let name='data.json',lastObj=null,lastChangedPath=[],openPaths=new Set(['']);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const encodePath=p=>encodeURIComponent(JSON.stringify(p)),decodePath=s=>JSON.parse(decodeURIComponent(s||'%5B%5D'));
+const pathText=p=>p.map((x,i)=>typeof x==='number'?('['+x+']'):(i?'.':'')+x).join('');
 function parse(){return JSON.parse($('editor').value)}
-function sorted(v){if(Array.isArray(v))return v.map(sorted);if(v&&typeof v==='object')return Object.fromEntries(Object.keys(v).sort((a,b)=>a.localeCompare(b,'fr')).map(k=>[k,sorted(v[k])]));return v}
-function analyze(v,d=0,s={objects:0,arrays:0,scalars:0,nulls:0,maxDepth:0,keys:0}){s.maxDepth=Math.max(s.maxDepth,d);if(v===null){s.nulls++;s.scalars++;return s}if(Array.isArray(v)){s.arrays++;v.forEach(x=>analyze(x,d+1,s));return s}if(typeof v==='object'){s.objects++;s.keys+=Object.keys(v).length;Object.values(v).forEach(x=>analyze(x,d+1,s));return s}s.scalars++;return s}
-function scalar(v){if(v===null)return '<span class="treeNull">null</span>';if(typeof v==='string')return '<span class="treeString">"'+esc(v.length>160?v.slice(0,157)+'…':v)+'"</span>';if(typeof v==='number')return '<span class="treeNumber">'+v+'</span>';if(typeof v==='boolean')return '<span class="treeBool">'+v+'</span>';return esc(v)}
-let treeBudget=5000;
-function node(v,key='',depth=0){if(--treeBudget<0)return '<div class="muted">… limite d’affichage atteinte</div>';const k=key!==''?'<span class="treeKey">'+esc(key)+'</span>: ':'';if(v===null||typeof v!=='object')return '<div>'+k+scalar(v)+'</div>';const isA=Array.isArray(v),entries=Object.entries(v),typ=isA?'Array['+v.length+']':'Object{'+entries.length+'}';if(depth>8)return '<div>'+k+'<span class="treeType">'+typ+' — profondeur masquée</span></div>';return '<details '+(depth<2?'open':'')+'><summary>'+k+'<span class="treeType">'+typ+'</span></summary>'+entries.map(([kk,x])=>node(x,kk,depth+1)).join('')+'</details>'}
-function refresh(msg='JSON valide.'){try{lastObj=parse();$('validity').textContent='JSON valide';$('validity').style.background='#e8f6ed';$('validity').style.color='#21633a';const s=analyze(lastObj);$('stats').innerHTML=[['Profondeur',s.maxDepth],['Objets',s.objects],['Tableaux',s.arrays],['Valeurs',s.scalars],['Clés',s.keys],['Null',s.nulls],['Taille',Math.round(new Blob([$('editor').value]).size/1024)+' Ko'],['Racine',Array.isArray(lastObj)?'Array':'Object']].map(([a,b])=>'<div class="kpi"><span>'+a+'</span><b>'+b+'</b></div>').join('');$('topKeys').textContent=lastObj&&typeof lastObj==='object'&&!Array.isArray(lastObj)?Object.keys(lastObj).join(' · '):'—';treeBudget=5000;$('tree').innerHTML=node(lastObj);$('status').textContent=msg}catch(e){lastObj=null;$('validity').textContent='JSON invalide';$('validity').style.background='#fff0ef';$('validity').style.color='#a12727';$('status').textContent='Erreur : '+e.message;$('tree').innerHTML='<span class="treeNull">'+esc(e.message)+'</span>'}}
-async function load(url,label){$('status').textContent='Chargement…';const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);$('editor').value=await r.text();name=(url.split('/').pop()||'demo.json');refresh((label||name)+' chargé.')}
-$('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;name=f.name;$('editor').value=await f.text();refresh(f.name+' · '+Math.round(f.size/1024)+' Ko')};
-$('loadDemo').onclick=()=>{if(!$('demo').value)return;$('loadDemo').disabled=true;load($('demo').value,$('demo').selectedOptions[0].textContent).catch(e=>$('status').textContent='Erreur : '+e.message).finally(()=>$('loadDemo').disabled=false)};
-$('demo').onchange=()=>{if($('demo').value)$('loadDemo').click()};
-$('format').onclick=()=>{try{$('editor').value=JSON.stringify(parse(),null,2);refresh('JSON formaté.')}catch(e){refresh()}};
-$('min').onclick=()=>{try{$('editor').value=JSON.stringify(parse());refresh('JSON minifié.')}catch(e){refresh()}};
-$('sort').onclick=()=>{try{$('editor').value=JSON.stringify(sorted(parse()),null,2);refresh('Clés triées récursivement.')}catch(e){refresh()}};
-$('copy').onclick=async()=>{await navigator.clipboard.writeText($('editor').value);$('status').textContent='JSON copié dans le presse-papiers.'};
-$('query').onclick=()=>{try{let v=parse();for(const p of $('path').value.split('.').filter(Boolean))v=v?.[/^\d+$/.test(p)?+p:p];$('result').textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}catch(e){$('result').textContent=e.message}};
+function typeOf(v){return v===null?'null':Array.isArray(v)?'array':typeof v}
+function clone(v){return structuredClone?structuredClone(v):JSON.parse(JSON.stringify(v))}
+function equal(a,b){try{return JSON.stringify(a)===JSON.stringify(b)}catch{return a===b}}
+function firstDiff(a,b,path=[]){
+ if(equal(a,b))return null;
+ if(typeOf(a)!==typeOf(b)||a===null||b===null||typeof a!=='object'||typeof b!=='object')return path;
+ const ak=Object.keys(a),bk=Object.keys(b);for(const k of new Set([...ak,...bk])){if(!(k in a)||!(k in b))return path.concat(Array.isArray(b)?Number(k):k);const d=firstDiff(a[k],b[k],path.concat(Array.isArray(b)?Number(k):k));if(d)return d}
+ return path
+}
+function getAt(obj,path){let v=obj;for(const p of path)v=v?.[p];return v}
+function parentAt(obj,path){return path.length?getAt(obj,path.slice(0,-1)):null}
+function scalarHtml(v){const t=typeOf(v),cls=t==='string'?'treeString':t==='number'?'treeNumber':t==='boolean'?'treeBool':t==='null'?'treeNull':'';const text=t==='string'?JSON.stringify(v):String(v);return '<span class="treeValue '+cls+'" title="'+esc(text)+'">'+esc(text)+'</span>'}
+function renderTreeNode(v,key,path,depth=0){
+ const t=typeOf(v),container=t==='array'||t==='object',pkey=pathText(path),isOpen=openPaths.has(pkey)||lastChangedPath.slice(0,path.length).every((x,i)=>x===path[i]),modified=equal(path,lastChangedPath);
+ let h='<div class="treeNode" data-tree-path="'+encodePath(path)+'"><div class="treeRow'+(modified?' modified':'')+'" data-tree-row="'+encodePath(path)+'">';
+ h+=container?'<button class="treeToggle" data-tree-toggle="'+encodePath(path)+'" title="'+(isOpen?'Replier':'Déplier')+'">'+(isOpen?'−':'+')+'</button>':'<button class="treeToggle blank" tabindex="-1">·</button>';
+ h+='<span class="treeKey">'+esc(key===null?'$':String(key))+'</span><span class="treeType">'+t+(container?' · '+(Array.isArray(v)?v.length:Object.keys(v).length):'')+'</span>';
+ if(!container)h+=scalarHtml(v);
+ h+='<span class="treeActions"><button title="Modifier" data-tree-edit="'+encodePath(path)+'">✎</button>';
+ if(container)h+='<button title="Ajouter un enfant" data-tree-child="'+encodePath(path)+'">＋</button>';
+ if(path.length)h+='<button title="Ajouter un frère / une sœur" data-tree-sibling="'+encodePath(path)+'">＋↔</button><button title="Supprimer" data-tree-delete="'+encodePath(path)+'">×</button>';
+ h+='</span></div>';
+ if(container){h+='<div class="treeChildren" '+(isOpen?'':'hidden')+'>';const entries=Array.isArray(v)?v.map((x,i)=>[i,x]):Object.entries(v);h+=entries.map(([k,x])=>renderTreeNode(x,k,path.concat(k),depth+1)).join('');h+='</div>'}
+ return h+'</div>'
+}
+function flatten(v,path=[],out=[]){const t=typeOf(v);if(t==='object'||t==='array'){const entries=t==='array'?v.map((x,i)=>[i,x]):Object.entries(v);if(!entries.length)out.push({path:pathText(path),type:t,value:t==='array'?'[]':'{}'});for(const [k,x] of entries)flatten(x,path.concat(k),out)}else out.push({path:pathText(path),type:t,value:v});return out}
+function renderFlat(obj){const rows=flatten(obj);$('flatView').innerHTML='<table class="flatTable"><thead><tr><th>Chemin</th><th>Type</th><th>Valeur</th></tr></thead><tbody>'+rows.map(r=>'<tr><td class="pathCell">'+esc(r.path||'$')+'</td><td>'+r.type+'</td><td>'+esc(typeof r.value==='string'?r.value:JSON.stringify(r.value))+'</td></tr>').join('')+'</tbody></table>'}
+function renderTable(obj){
+ let rows=Array.isArray(obj)?obj:(obj&&typeof obj==='object'&&Object.values(obj).find(Array.isArray))||null;
+ if(!rows||!rows.length||!rows.every(x=>x&&typeof x==='object'&&!Array.isArray(x))){$('tableView').innerHTML='<div class="status">La vue Tableau s’active quand la source (ou sa première collection) est une liste d’objets.</div>';return}
+ const keys=[...new Set(rows.flatMap(x=>Object.keys(x)))];$('tableView').innerHTML='<table class="jsonTable"><thead><tr><th>#</th>'+keys.map(k=>'<th>'+esc(k)+'</th>').join('')+'</tr></thead><tbody>'+rows.map((r,i)=>'<tr><td>'+i+'</td>'+keys.map(k=>'<td>'+esc(typeof r[k]==='object'?JSON.stringify(r[k]):String(r[k]??''))+'</td>').join('')+'</tr>').join('')+'</tbody></table>'
+}
+function walkStats(v,s={nodes:0,objects:0,arrays:0,depth:0},d=0){s.nodes++;s.depth=Math.max(s.depth,d);if(Array.isArray(v)){s.arrays++;v.forEach(x=>walkStats(x,s,d+1))}else if(v&&typeof v==='object'){s.objects++;Object.values(v).forEach(x=>walkStats(x,s,d+1))}return s}
+function focusChanged(){
+ if(!lastChangedPath.length)return;const row=document.querySelector('[data-tree-row="'+CSS.escape(encodePath(lastChangedPath))+'"]');if(row){row.scrollIntoView({block:'center',behavior:'smooth'});row.classList.add('modified')}
+}
+function refresh(msg='Mis à jour.',forcedPath=null){
+ try{const obj=parse(),diff=forcedPath??(lastObj===null?[]:firstDiff(lastObj,obj)||[]);lastChangedPath=diff;lastObj=clone(obj);$('validity').textContent='JSON valide';$('validity').className='badge';$('status').textContent=msg+(diff.length?' · '+pathText(diff):'');$('tree').innerHTML=renderTreeNode(obj,null,[]);renderFlat(obj);renderTable(obj);const s=walkStats(obj);$('stats').innerHTML=[['Nœuds',s.nodes],['Objets',s.objects],['Tableaux',s.arrays],['Profondeur',s.depth]].map(([a,b])=>'<div class="kpi"><span>'+a+'</span><b>'+b+'</b></div>').join('');$('topKeys').textContent=obj&&typeof obj==='object'&&!Array.isArray(obj)?Object.keys(obj).join(' · '):'—';setTimeout(focusChanged,0)
+ }catch(e){$('validity').textContent='JSON invalide';$('validity').className='badge error';$('status').textContent=e.message}
+}
+function commitObj(obj,path,msg){$('editor').value=JSON.stringify(obj,null,2);refresh(msg,path)}
+function parsePromptValue(raw){if(raw===null)return undefined;try{return JSON.parse(raw)}catch{return raw}}
+function editPath(path){
+ const obj=parse(),old=getAt(obj,path),raw=prompt('Nouvelle valeur JSON ou texte :',typeof old==='string'?old:JSON.stringify(old));if(raw===null)return;const value=parsePromptValue(raw);
+ if(!path.length){commitObj(value,[],'Racine modifiée.');return}const parent=parentAt(obj,path),k=path.at(-1);parent[k]=value;commitObj(obj,path,'Valeur modifiée.')
+}
+function addChild(path){
+ const obj=parse(),target=getAt(obj,path),raw=prompt('Valeur du nouvel élément (JSON ou texte) :','');if(raw===null)return;const value=parsePromptValue(raw);
+ if(Array.isArray(target)){target.push(value);commitObj(obj,path.concat(target.length-1),'Élément ajouté.');return}
+ if(target&&typeof target==='object'){const key=prompt('Nom de la nouvelle clé :','nouvelle_cle');if(!key)return;target[key]=value;commitObj(obj,path.concat(key),'Clé ajoutée.')}
+}
+function addSibling(path){
+ if(!path.length)return;const obj=parse(),parent=parentAt(obj,path),raw=prompt('Valeur du nouvel élément frère/sœur (JSON ou texte) :','');if(raw===null)return;const value=parsePromptValue(raw),k=path.at(-1);
+ if(Array.isArray(parent)){const at=Number(k)+1;parent.splice(at,0,value);commitObj(obj,path.slice(0,-1).concat(at),'Élément frère ajouté.');return}
+ const key=prompt('Nom de la nouvelle clé sœur :','nouvelle_cle');if(!key)return;parent[key]=value;commitObj(obj,path.slice(0,-1).concat(key),'Clé sœur ajoutée.')
+}
+function deletePath(path){if(!path.length||!confirm('Supprimer ce nœud ?'))return;const obj=parse(),parent=parentAt(obj,path),k=path.at(-1);if(Array.isArray(parent))parent.splice(Number(k),1);else delete parent[k];commitObj(obj,path.slice(0,-1),'Nœud supprimé.')}
+$('tree').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;for(const [attr,fn] of [['treeEdit',editPath],['treeChild',addChild],['treeSibling',addSibling],['treeDelete',deletePath]])if(b.dataset[attr]){fn(decodePath(b.dataset[attr]));return}if(b.dataset.treeToggle){const p=decodePath(b.dataset.treeToggle),k=pathText(p);openPaths.has(k)?openPaths.delete(k):openPaths.add(k);refresh('Vue arbre.',lastChangedPath)}});
+$('file').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;name=f.name;$('editor').value=await f.text();lastObj=null;refresh('Fichier chargé.')};
+document.addEventListener('studio-v2:input-picked',async e=>{if(e.detail?.studio!=='json-studio')return;const f=e.detail.files?.[0];if(!f)return;name=f.name;$('editor').value=await f.text();lastObj=null;refresh('Fichier chargé via Input Core.')});
+$('loadDemo').onclick=async()=>{const u=$('demo').value;if(!u)return;$('editor').value=await fetch(u).then(r=>r.text());name=u.split('/').pop();lastObj=null;refresh('Jeu DEV chargé.')};
+$('format').onclick=()=>{try{$('editor').value=JSON.stringify(parse(),null,2);refresh('JSON formaté.')}catch(e){$('status').textContent=e.message}};
+$('min').onclick=()=>{try{$('editor').value=JSON.stringify(parse());refresh('JSON minifié.')}catch(e){$('status').textContent=e.message}};
+function sortObj(v){if(Array.isArray(v))return v.map(sortObj);if(v&&typeof v==='object')return Object.fromEntries(Object.keys(v).sort().map(k=>[k,sortObj(v[k])]));return v}
+$('sort').onclick=()=>{try{commitObj(sortObj(parse()),[],'Clés triées.')}catch(e){$('status').textContent=e.message}};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('editor').value);$('status').textContent='Copié.'}catch{$('editor').select();document.execCommand?.('copy')}};
+$('query').onclick=()=>{try{let v=parse();const raw=$('path').value.trim();for(const p of raw.replace(/\[(\d+)\]/g,'.$1').split('.').filter(Boolean))v=v?.[/^\d+$/.test(p)?+p:p];$('result').textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}catch(e){$('result').textContent=e.message}};
 $('save').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([$('editor').value],{type:'application/json'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
-$('editor').addEventListener('input',()=>{clearTimeout(window.__jt);window.__jt=setTimeout(()=>refresh('Édition locale.'),350)});
-document.querySelector('.tabbar').onclick=e=>{const b=e.target.closest('button[data-view]');if(!b)return;document.querySelectorAll('.tabbar button').forEach(x=>x.classList.toggle('active',x===b));['tree','stats','query'].forEach(v=>$(v+'Pane').hidden=v!==b.dataset.view)};
-</script><script>window.NLAB_SPECIALIZED_V2={"manifest":{"id":"json-studio","sourcePath":"APP-Applications/json-studio/v2/index.html","name":"JSON Studio","subtitle":"JSON · structure · validation · inspection","homeHref":"../../","studiosHref":"../studios/","menus":[{"id":"home","label":"Accueil","scope":"core"},{"id":"tools","label":"Outils","scope":"studio"},{"id":"history","label":"Historique","scope":"core"},{"id":"help","label":"Aide","scope":"core"}],"ribbon":[{"id":"file","label":"Fichier","scope":"core","items":[{"id":"json-studio-open","action":"open","label":"Ouvrir","icon":"file","scope":"core","primary":true},{"id":"json-studio-demo","action":"demo","label":"Démo","icon":"command","scope":"core"},{"id":"json-studio-export","action":"export","label":"Exporter","icon":"save","scope":"core"}]}],"capabilities":[]},"actions":{"open":"#file","demo":"#loadDemo","export":"#save"},"channel":"test"};</script><script type="module" src="../_shared/studio-v2/bootstrap-specialized.js"></script></body></html>
+$('editor').addEventListener('input',()=>{clearTimeout(window.__jt);window.__jt=setTimeout(()=>refresh('Édition locale.'),300)});
+document.querySelector('.tabbar').onclick=e=>{const b=e.target.closest('button[data-view]');if(!b)return;document.querySelectorAll('.tabbar button').forEach(x=>x.classList.toggle('active',x===b));['tree','table','flat','stats','query'].forEach(v=>$(v+'Pane').hidden=v!==b.dataset.view)};
+</script>
+<script>window.NLAB_SPECIALIZED_V2={"manifest":{"id":"json-studio","sourcePath":"APP-Applications/json-studio/v2/index.html","name":"JSON Studio","subtitle":"JSON · structure · édition multi-vues","homeHref":"../../","studiosHref":"../studios/","inputPicker":{"accept":".json,application/json","multiple":false,"folders":true,"url":true},"menus":[{"id":"home","label":"Accueil","scope":"core"},{"id":"tools","label":"Outils","scope":"studio"},{"id":"history","label":"Historique","scope":"core"},{"id":"help","label":"Aide","scope":"core"}],"ribbon":[{"id":"file","label":"Fichier","scope":"core","items":[{"id":"json-studio-open","action":"open","label":"Ouvrir","icon":"file","scope":"core","primary":true},{"id":"json-studio-demo","action":"demo","label":"Démo DEV","icon":"command","scope":"studio","status":"development"},{"id":"json-studio-export","action":"export","label":"Exporter","icon":"save","scope":"core"}]}],"capabilities":[{"id":"core.input.file-folder-drop-url","status":"test"},{"id":"json.tree.edit","status":"test"},{"id":"json.views.flat-table","status":"test"},{"id":"json.views.sync","status":"test"}]},"actions":{"open":"#file","demo":"#loadDemo","export":"#save"},"channel":"test"};</script>
+<script type="module" src="../_shared/studio-v2/bootstrap-specialized.js"></script></body></html>
