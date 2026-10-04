@@ -26,11 +26,11 @@ function applyCleanup(ctx,w,h,mode='original'){
 export function renderImageTransformed(canvas,source,{rotation=0,deskew=0,flipX=false,flipY=false,cleanup='original',background=null}={}){
  if(!canvas||!source)throw new Error('Canvas ou image absent');
  const {width:sw,height:sh}=imageDimensions(source);if(!sw||!sh)throw new Error('Dimensions image invalides');
- const normalized=((Number(rotation)||0)%360+360)%360,quarter=normalized===90||normalized===270;
- const w=quarter?sh:sw,h=quarter?sw:sh,ctx=canvas.getContext('2d');
+ const total=(Number(rotation||0)+Number(deskew||0))*Math.PI/180,cos=Math.abs(Math.cos(total)),sin=Math.abs(Math.sin(total));
+ const w=Math.max(1,Math.ceil(sw*cos+sh*sin)),h=Math.max(1,Math.ceil(sw*sin+sh*cos)),ctx=canvas.getContext('2d');
  canvas.width=w;canvas.height=h;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,w,h);
  if(background){ctx.fillStyle=background;ctx.fillRect(0,0,w,h)}
- ctx.save();ctx.translate(w/2,h/2);ctx.rotate((Number(rotation||0)+Number(deskew||0))*Math.PI/180);ctx.scale(flipX?-1:1,flipY?-1:1);ctx.drawImage(source,-sw/2,-sh/2);ctx.restore();
+ ctx.save();ctx.translate(w/2,h/2);ctx.rotate(total);ctx.scale(flipX?-1:1,flipY?-1:1);ctx.drawImage(source,-sw/2,-sh/2);ctx.restore();
  applyCleanup(ctx,w,h,cleanup);return canvas
 }
 export function transformedCanvas(source,options={}){
