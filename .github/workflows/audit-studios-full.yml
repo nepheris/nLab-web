@@ -1,0 +1,32 @@
+name: Audit all Studios
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tests/studios-v2-audit.mjs'
+      - '.github/workflows/audit-studios-full.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Full Studio audit
+        run: |
+          python -m http.server 8774 --bind 127.0.0.1 >/tmp/nlab-studios-v2-audit-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8774/APP-Applications/studios/ >/dev/null && break
+            sleep 1
+          done
+          NLAB_BASE_URL=http://127.0.0.1:8774/ node tests/studios-v2-audit.mjs
