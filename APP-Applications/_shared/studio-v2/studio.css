@@ -792,3 +792,8 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 .inputPickerError{color:#a12626!important;font-weight:800}
 .themeDark .inputPickerError{color:#ff9c9c!important}
 @media(max-width:620px){.inputPickerUrlRow{grid-template-columns:1fr}.inputPickerUrlRow button{width:100%}}
+
+.sidebarGlobalControls #sidebarLock.locked{background:#a61f1f!important;color:#fff!important;border-color:#c84b4b!important}
+.sidebarRestoreTab{position:fixed;left:0;top:42%;z-index:405;border-radius:0 8px 8px 0!important;padding:10px 6px!important;writing-mode:vertical-rl;text-orientation:mixed;font-weight:800}
+.sidebarRestoreTab[hidden]{display:none!important}
+.sidebarLocked .sidebarResizer{cursor:not-allowed;opacity:.35;pointer-events:none}
