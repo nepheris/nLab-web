@@ -1,6 +1,8 @@
+import{hexToRgb}from'../../_shared/studio-v2/color-control.js';
+import{icon}from'../../_shared/studio-v2/icon-registry.js';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const uid=()=>globalThis.crypto?.randomUUID?.()||('obj-'+Date.now()+'-'+Math.random().toString(16).slice(2));
-function hexRgb(hex='#316D9A'){const h=String(hex).replace('#','').padEnd(6,'0');return{r:parseInt(h.slice(0,2),16)/255,g:parseInt(h.slice(2,4),16)/255,b:parseInt(h.slice(4,6),16)/255}}
+function hexRgb(hex='#316D9A'){const c=hexToRgb(hex)||{r:49,g:109,b:154};return{r:c.r/255,g:c.g/255,b:c.b/255}}
 function blobDataUrl(blob){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(blob)})}
 async function normalizedImageDataUrl(blob){
  if(!blob)return null;
@@ -10,10 +12,7 @@ async function normalizedImageDataUrl(blob){
   const canvas=document.createElement('canvas');canvas.width=img.naturalWidth||img.width;canvas.height=img.naturalHeight||img.height;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);return canvas.toDataURL('image/png')
  }finally{URL.revokeObjectURL(url)}
 }
-function miniSvg(name){
- const d={move:'<path d="M12 3v18M3 12h18M12 3l-3 3m3-3 3 3M12 21l-3-3m3 3 3-3M3 12l3-3m-3 3 3 3M21 12l-3-3m3 3-3 3"/>',rotate:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',lock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',unlock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 7-2.6"/>',delete:'<path d="M4 7h16M9 7V4h6v3M8 10v8M12 10v8M16 10v8M6 7l1 14h10l1-14"/>'}[name]||'';
- return '<svg viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>'
-}
+function miniSvg(name){const id={move:'move',rotate:'rotateRight',lock:'lock',unlock:'unlock',delete:'delete'}[name]||name;return icon(id,{label:''})}
 function dataUrlBytes(dataUrl){const [head,b64]=String(dataUrl).split(','),bin=atob(b64||''),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return{bytes:u,type:/png/i.test(head)?'png':'jpg'}}
 export class PdfObjectLayer extends EventTarget{
  constructor({engine,mainHost,templates}={}){super();this.engine=engine;this.mainHost=mainHost;this.templates=templates;this.tool='select';this.selectedId=null;this.style={color:'#316D9A',fontSize:12,opacity:1,penWidth:2,highlightColor:'#FFEB3B',redactionColor:'#000000'};this.text='Texte';this.imageData=null;this.imageKind='image';this.stamp={template:'VALIDÉ\n{DISPLAY_NAME}\n{STAMP_DATE:DD/MM/YYYY}',imageData:null,color:'#316D9A'};this.penDraft=null}
