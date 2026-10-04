@@ -108,9 +108,6 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   document.body.dataset.studio=manifest.id||'studio';
   document.body.dataset.studioVersion=versionInfo.version||'';
   document.body.dataset.studioCoreVersion=versionInfo.coreVersion||'';
-  document.documentElement.dataset.studio=manifest.id||'studio';
-  document.documentElement.dataset.studioVersion=versionInfo.version||'';
-  document.documentElement.dataset.studioCoreVersion=versionInfo.coreVersion||'';
   registerCapabilities(manifest);
   applyStudioSettings();
   const syncRibbonPersonalization=()=>{
