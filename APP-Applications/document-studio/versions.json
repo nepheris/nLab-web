@@ -1,14 +1,23 @@
 {
   "name": "Document Studio",
   "current": null,
-  "test": "1.1.0",
+  "test": "1.2.0",
   "versions": [
+    {
+      "version": "1.2.0",
+      "label": "Document Studio 1.2.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe Core 3.0 de cohérence visuelle : héritage clair/sombre renforcé et fenêtres Core homogènes ; fonctions de conversion avancées volontairement conservées pour une passe ultérieure."
+    },
     {
       "version": "1.1.0",
       "label": "Document Studio 1.1.0 TEST",
       "date": "2026-10-04",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe TEST Core 2.9 : chargement/édition, statistiques, recherche, exports texte/HTML/DOCX/ODT et impression navigateur revalidés."
     },
