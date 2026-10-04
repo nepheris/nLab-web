@@ -788,9 +788,10 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 
 /* Contextual help is always an overlay, never part of document flow. */
 #studioContextHelpWindow.floatingHelpWindow,#studioContextHelpWindow.studioWindow{
-  position:fixed!important;right:12px!important;top:calc(var(--studio-header-h) + 8px)!important;
-  left:auto!important;width:min(560px,calc(100vw - 24px))!important;max-height:min(76vh,760px)!important;
-  z-index:420!important;transform:none!important
+  position:fixed;
+  width:min(560px,calc(100vw - 24px));
+  max-height:min(76vh,760px);
+  z-index:650;
 }
 
 .inputPickerUrlRow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center}
@@ -877,19 +878,19 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 /* Shared Core panel placement. Free windows remain draggable and always float above the workspace. */
 #studioCoreSettingsPanel.corePanelFree,
 #studioContextHelpWindow.corePanelFree{
-  position:fixed!important;
-  top:calc(var(--studio-header-h) + 12px)!important;
-  right:auto!important;
-  transform:none!important;
+  position:fixed;
+  top:calc(var(--studio-header-h) + 12px);
+  right:auto;
+  transform:none;
 }
 #studioCoreSettingsPanel.corePanelFree{
-  left:max(12px,calc(50vw - 410px))!important;
+  left:max(12px,calc(50vw - 410px));
 }
 #studioContextHelpWindow.corePanelFree{
-  left:12px!important;
-  right:auto!important;
-  width:min(520px,calc(100vw - 24px))!important;
-  max-height:min(78vh,780px)!important;
+  left:12px;
+  right:auto;
+  width:min(520px,calc(100vw - 24px));
+  max-height:min(78vh,780px);
 }
 #studioCoreSettingsPanel.corePanelFixedLeft,
 #studioContextHelpWindow.corePanelFixedLeft{
@@ -945,3 +946,5 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
     max-height:none!important;
   }
 }
+
+.corePanelFixedLeft .studioWindowGrip,.corePanelFixedRight .studioWindowGrip{opacity:.35;pointer-events:none;cursor:not-allowed}
