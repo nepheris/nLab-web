@@ -762,14 +762,27 @@ function currentSidebarPane(){return $('[data-sidebar-pane].active')||$('#sideba
 function setCurrentPaneDetails(open){currentSidebarPane()?.querySelectorAll('details').forEach(x=>x.open=open)}
 $$('[data-sidebar-tab]').forEach(b=>b.onclick=()=>activateSidebarTab(b.dataset.sidebarTab));$('#sidebar-collapse-all').onclick=()=>setCurrentPaneDetails(false);$('#sidebar-expand-all').onclick=()=>setCurrentPaneDetails(true);
 let sidebarFloating=false;
+function syncSidebarLock(){
+ const locked=!!loadStudioSettings().sidebarLocked,b=$('#sidebarLock');if(!b)return;
+ b.classList.toggle('locked',locked);b.textContent=locked?'🔒 Verrouillé':'🔓 Déverrouillé';b.title=locked?'Déverrouiller le volet PDF Studio':'Verrouiller la largeur et la position du volet'
+}
+function syncSidebarHiddenState(){
+ const hidden=(loadStudioSettings().sidebarMode||'normal')==='hidden'||document.body.classList.contains('sidebarHidden');
+ $('#sidebarRestore').hidden=!hidden
+}
 function setSidebarFloating(on){
  const sidebar=$('#studioSidebar'),main=$('#studioMain');sidebarFloating=!!on;sidebar.classList.toggle('studioSidebarFloating',sidebarFloating);main.classList.toggle('sidebarDetached',sidebarFloating);$('#sidebarDetach').textContent=sidebarFloating?'↙ Réancrer':'↗ Détacher';
- if(sidebarFloating&&!sidebar.dataset.studioWinBound){enhanceStudioWindow(sidebar,{key:'pdf-sidebar',title:'PDF Studio · Outils'});sidebar.addEventListener('studio-window-dock',()=>setSidebarFloating(false));sidebar.addEventListener('studio-window-close',()=>{setSidebarFloating(false);main.classList.add('sidebarHidden');$('#sidebarRestore').hidden=false})}
+ if(sidebarFloating&&!sidebar.dataset.studioWinBound){enhanceStudioWindow(sidebar,{key:'pdf-sidebar',title:'PDF Studio · Outils'});sidebar.addEventListener('studio-window-dock',()=>setSidebarFloating(false));sidebar.addEventListener('studio-window-close',()=>{setSidebarFloating(false);saveStudioSettings({sidebarMode:'hidden'});syncSidebarHiddenState()})}
+ if(sidebarFloating)showStudioWindow('pdf-sidebar');
  if(!sidebarFloating){sidebar.classList.remove('studioWindowDocked');sidebar.style.left='';sidebar.style.top='';sidebar.style.right='';sidebar.style.width='';sidebar.style.height='';sidebar.style.transform=''}
 }
 $('#sidebarDetach').onclick=()=>setSidebarFloating(!sidebarFloating);
-$('#sidebarModeQuick').value=loadStudioSettings().sidebarMode||'normal';$('#sidebarModeQuick').addEventListener('change',()=>saveStudioSettings({sidebarMode:$('#sidebarModeQuick').value}));
-const resizer=$('#sidebarResizer');let resizing=false;resizer.addEventListener('pointerdown',e=>{resizing=true;resizeWidth=loadStudioSettings().sidebarWidth;resizer.setPointerCapture(e.pointerId)});resizer.addEventListener('pointermove',e=>{if(!resizing)return;resizeWidth=Math.max(220,Math.min(720,e.clientX-10));document.body.style.setProperty('--studio-sidebar-width',resizeWidth+'px')});resizer.addEventListener('pointerup',()=>{resizing=false;if(resizeWidth)saveStudioSettings({sidebarWidth:resizeWidth})});
+$('#sidebarLock').onclick=()=>{const s=loadStudioSettings();saveStudioSettings({sidebarLocked:!s.sidebarLocked});syncSidebarLock()};
+$('#sidebarModeQuick').value=loadStudioSettings().sidebarMode||'normal';$('#sidebarModeQuick').addEventListener('change',()=>{saveStudioSettings({sidebarMode:$('#sidebarModeQuick').value});syncSidebarHiddenState()});
+$('#sidebarRestore').onclick=()=>{saveStudioSettings({sidebarMode:'normal'});document.body.classList.remove('sidebarHidden');$('#sidebarModeQuick').value='normal';syncSidebarHiddenState()};
+document.addEventListener('studio-v2:settings-changed',()=>{syncSidebarLock();syncSidebarHiddenState()});
+const resizer=$('#sidebarResizer');let resizing=false;resizer.addEventListener('pointerdown',e=>{if(loadStudioSettings().sidebarLocked)return;resizing=true;resizeWidth=loadStudioSettings().sidebarWidth;resizer.setPointerCapture(e.pointerId)});resizer.addEventListener('pointermove',e=>{if(!resizing)return;resizeWidth=Math.max(220,Math.min(720,e.clientX-10));document.body.style.setProperty('--studio-sidebar-width',resizeWidth+'px')});resizer.addEventListener('pointerup',()=>{resizing=false;if(resizeWidth)saveStudioSettings({sidebarWidth:resizeWidth})});
+syncSidebarLock();syncSidebarHiddenState();
 
 function bindHelpCatalogActions(host){
  host?.querySelectorAll('[data-help-open]').forEach(b=>b.onclick=()=>document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.helpOpen,source:'help',element:b}})))
