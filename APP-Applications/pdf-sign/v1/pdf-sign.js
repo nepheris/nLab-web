@@ -2,6 +2,7 @@ import{mountStudioV2}from'../../_shared/studio-v2/frame.js';
 import{resolveStudioVersions,applyVersionDocumentMeta}from'../../_shared/studio-v2/version-service.js';
 import{PDFEngine,fileStem}from'../../pdf-studio/v1/pdf-engine.js';
 import{downloadBlob}from'../../_shared/studio-v2/download-service.js';
+import{canvasToBlob}from'../../_shared/studio-v2/image-service.js';
 import{listPersonalAssetRefs,getPersonalAsset,putPersonalAsset,addPersonalAssetRef}from'../../_shared/studio-v2/personal-profile-service.js';
 import{recordHistory}from'../../_shared/studio-v2/history.js';
 import studioManifest from'./studio-manifest.js';
@@ -83,7 +84,7 @@ canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.setPointerCa
 canvas.addEventListener('pointermove',e=>{if(!drawing)return;e.preventDefault();const p=point(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p});
 canvas.addEventListener('pointerup',()=>{drawing=false;last=null});canvas.addEventListener('pointercancel',()=>{drawing=false;last=null});
 $('#clearDraw').onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);
-$('#saveDraw').onclick=async()=>{try{const blob=await new Promise(r=>canvas.toBlob(r,'image/png'));if(!blob)throw new Error('Dessin indisponible.');const kind=$('#assetKind').value,label=(kind==='initials'?'Paraphe':'Signature')+' PDF Sign';await saveAssetBlob(blob,kind,label);status(label+' enregistré comme preset.')}catch(e){status(e.message)}};
+$('#saveDraw').onclick=async()=>{try{const blob=await canvasToBlob(canvas,'image/png');if(!blob)throw new Error('Dessin indisponible.');const kind=$('#assetKind').value,label=(kind==='initials'?'Paraphe':'Signature')+' PDF Sign';await saveAssetBlob(blob,kind,label);status(label+' enregistré comme preset.')}catch(e){status(e.message)}};
 
 document.addEventListener('studio-v2:action',e=>{const a=e.detail?.action;if(a==='openPdf')$('#fileInput').click();if(a==='applySignature'){$('#assetKind').value='signature';refreshAssets()};if(a==='applyInitials'){$('#assetKind').value='initials';refreshAssets()};if(a==='savePdf')savePdf().catch(x=>status(x.message))});
 await refreshAssets();await loadSourceFromQuery();
