@@ -360,6 +360,24 @@
       "category": "Zip",
       "size": 715,
       "sha256": "57fd9a6a36a4cd10a9a1c35a351d37acc9d510388415834cf821c08a54336c72"
+    },
+    {
+      "path": "files/demo-input/Images/Signatures/demo-signature-martin.png",
+      "category": "Images",
+      "size": 189192,
+      "sha256": "6e4f77684523c202ae5d86e9caa837c55d48b13ba0f289ec23bc5c3237908b85"
+    },
+    {
+      "path": "files/demo-input/Images/Signatures/demo-paraphe-dm.png",
+      "category": "Images",
+      "size": 166499,
+      "sha256": "7636fef3b5656519b951c5d80fff379cb8a2d7f133c2a0dde2e1457ef08e4b80"
+    },
+    {
+      "path": "files/demo-input/Images/Signatures/demo-signature-demo-corp.png",
+      "category": "Images",
+      "size": 413613,
+      "sha256": "207ef4842611ee842705fc1a7c3e0401c7dfdac5fec2d734f325d0c759d55c15"
     }
   ]
 }
