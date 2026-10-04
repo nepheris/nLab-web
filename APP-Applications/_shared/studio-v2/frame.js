@@ -1,6 +1,6 @@
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible,setStatus}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings,loadStudioSettings}from'./settings.js';
-import{enhanceStudioWindow}from'./window-system.js';
+import{enhanceStudioWindow,showStudioWindow,bringStudioWindowToFront,restoreAllStudioWindows}from'./window-system.js';
 import{mountHistoryUI,recordHistory}from'./history.js';
 import{icon}from'./icon-registry.js';
 import{registerCapabilities}from'./capability-registry.js';
@@ -62,7 +62,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
 </header>
 <nav class="studioMenu">
   ${(manifest.menus||[]).map((m,i)=>'<button class="scope-'+scopeClass(m)+(i===0?' active':'')+'" data-scope="'+scopeOf(m)+'" data-menu="'+esc(m.id)+'">'+esc(m.label)+'<small class="scopeBadge">'+scopeOf(m).toUpperCase()+'</small></button>').join('')}
-  <button id="studioVisibilityOpen" class="studioMenuUtility scope-core" data-scope="core" title="Afficher / masquer les menus et groupes du ruban">${icon('eye')}<span>Affichage</span></button>
+  <button id="studioVisibilityOpen" class="studioMenuUtility scope-core" data-scope="core" title="Afficher / masquer les menus et groupes du ruban">${icon('eye')}<span>Affichage</span></button><button id="studioRestoreWindows" class="studioMenuUtility scope-core" data-scope="core" title="Restaurer toutes les fenêtres masquées">${icon('window')}<span>Fenêtres</span></button>
 </nav>
 <div class="studioRibbon">
   ${(manifest.ribbon||[]).map(g=>'<div class="ribbonGroup scope-'+scopeClass(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
@@ -149,10 +149,11 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core'});
   const helpWindow=qs('#studioContextHelpWindow');
   if(helpWindow)enhanceStudioWindow(helpWindow,{key:'context-help',title:'Aide contextuelle'});
-  qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;settingsPanel.hidden=!settingsPanel.hidden;if(!settingsPanel.hidden){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));settingsPanel.style.zIndex='230'}});
+  qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;if(settingsPanel.hidden){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));showStudioWindow('core-settings')}else{bringStudioWindowToFront(settingsPanel)}});
   qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)settingsPanel.hidden=true});
   qs('#studioCommandOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-command-palette')));
   qs('#studioWorkflowOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-workflows')));
+  qs('#studioRestoreWindows')?.addEventListener('click',()=>restoreAllStudioWindows());
 
   const ribbon=qs('.studioRibbon');
   const mobileDock=qs('#studioMobileDock'),mobileBackdrop=qs('#studioMobileBackdrop'),touchTooltip=qs('#studioTouchTooltip');
@@ -180,7 +181,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
     if(action==='tools'){setMobileSidebar(!document.body.classList.contains('studioMobileSidebarOpen'));return}
     if(action==='ribbon'){document.body.classList.toggle('studioMobileRibbonExpanded');return}
     if(action==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
-    if(action==='settings'){const panel=qs('#studioCoreSettingsPanel');if(panel){panel.hidden=false;renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));panel.style.zIndex='280'}return}
+    if(action==='settings'){const panel=qs('#studioCoreSettingsPanel');if(panel){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));showStudioWindow('core-settings')}return}
   });
   mobileBackdrop?.addEventListener('click',closeMobileSurfaces);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.dataset.responsiveProfile==='mobile')closeMobileSurfaces()});
