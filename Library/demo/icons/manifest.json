@@ -1,0 +1,15 @@
+{
+  "schema": "nlab-icon-demo-corpus/v1",
+  "version": "1.0",
+  "source": "Library/demo/Images/nLab-Studio/Icon-Library",
+  "note": "Copies/aliases de démonstration des SVG canoniques ; currentColor lorsque supporté.",
+  "groups": {
+    "core/functions": 147,
+    "core/ui": 26,
+    "core/filetypes": 51,
+    "core/symbology": 10,
+    "studios": 22,
+    "pdf-studio/functions": 47,
+    "pdf-studio/ui": 23
+  }
+}
