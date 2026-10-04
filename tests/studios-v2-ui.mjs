@@ -21,7 +21,7 @@ try{
   const page=await browser.newPage({viewport:{width:1360,height:900}});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon|Failed to load resource/i.test(m.text()))errors.push(m.text())});
   await page.goto(base+'APP-Applications/'+id+'/v2/',{waitUntil:'domcontentloaded',timeout:60000});
-  await page.waitForSelector('#nlabStudioV2Chrome',{timeout:60000});
+  try{await page.waitForSelector('#nlabStudioV2Chrome',{timeout:60000})}catch(err){throw new Error(id+': chrome Core absent · '+(errors.length?errors.join(' | '):err.message))};
   for(const c of controls)await page.waitForSelector('#'+c,{timeout:15000}).catch(()=>{throw new Error(id+': contrôle #'+c+' absent')});
   if(errors.length)throw new Error(id+': erreurs navigateur: '+errors.join(' | '));
   const iconOk=await page.evaluate(()=>{const el=document.querySelector('.studioAppIcon');if(!el)return false;const s=getComputedStyle(el,'::after');return (s.maskImage&&s.maskImage!=='none')||(s.webkitMaskImage&&s.webkitMaskImage!=='none')});if(!iconOk)throw new Error(id+': icône Studio SVG/mask absente');
