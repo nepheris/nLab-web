@@ -1,3 +1,4 @@
+import{canvasToBlob}from'./image-service.js';
 const MAP={
  qrcode:{label:'QR',kind:'qr',bcid:'qrcode'},
  datamatrix:{label:'Data Matrix',kind:'bar',bcid:'datamatrix'},
@@ -56,7 +57,6 @@ function qrOptions(value,common={}){
 }
 function ensureQr(){if(typeof globalThis.QRCodeStyling!=='function')throw new Error('Moteur QR indisponible')}
 function ensureBwip(){if(!globalThis.bwipjs?.toCanvas)throw new Error('Moteur code-barres indisponible')}
-function canvasBlob(canvas,type='image/png',quality=.92){return new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Export image impossible')),type,quality))}
 export async function renderSymbology(host,id,value,options={}){
  if(!host)throw new Error('Zone de rendu absente');host.innerHTML='';
  const info=symbologyInfo(id),valid=validatePayload(id,value);if(!valid.ok)throw new Error(valid.message);
@@ -77,7 +77,7 @@ export async function generateSymbologyBlob(id,value,options={},format='png'){
   return{blob:new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),value:valid.value,type:id,format:'svg'}
  }
  const canvas=document.createElement('canvas');bwipjs.toCanvas(canvas,{...bwipOptions(id,valid.value,options),scale:Number(options.scale)||4});
- return{blob:await canvasBlob(canvas,'image/png'),value:valid.value,type:id,format:'png'}
+ return{blob:await canvasToBlob(canvas,'image/png'),value:valid.value,type:id,format:'png'}
 }
 export async function symbologyDataUrl(id,value,options={},format='png'){
  const {blob,...meta}=await generateSymbologyBlob(id,value,options,format);const url=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(blob)});return{url,blob,...meta}
