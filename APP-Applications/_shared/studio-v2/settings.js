@@ -111,6 +111,7 @@ export function renderStudioSettingsPanel(host){
   if(!host)return;
   const s=loadStudioSettings();
   host.innerHTML=`
+  <div class="coreSettingsDangerTop"><button type="button" data-core-pref="reset-ui-top">⚠ Réinitialiser l'interface</button><span>Restaure la disposition, les fenêtres et préférences du Studio Core.</span></div>
   <div class="coreSettingsGrid">
     <section>
       <h3>Apparence</h3>
@@ -283,9 +284,12 @@ export function renderStudioSettingsPanel(host){
   });
   host.querySelector('[data-core-pref="expand-ribbon"]')?.addEventListener('click',()=>{localStorage.setItem('nlab-studio-v2-ribbon-collapsed','0');location.reload()});
   host.querySelector('[data-core-pref="collapse-ribbon"]')?.addEventListener('click',()=>{localStorage.setItem('nlab-studio-v2-ribbon-collapsed','1');location.reload()});
-  host.querySelector('[data-core-pref="reset-ui"]')?.addEventListener('click',()=>{
+  const resetInterface=()=>{
+    if(!confirm("Réinitialiser complètement l’interface Studio Core ? Cette action efface les préférences de disposition, fenêtres et ruban."))return;
     localStorage.removeItem(KEY);
-    [...Object.keys(localStorage)].filter(k=>k.startsWith('nlab-studio-v2-')).forEach(k=>localStorage.removeItem(k));
+    [...Object.keys(localStorage)].filter(k=>k.startsWith('nlab-studio-v2-')||k.startsWith('nlab.inputPicker.')).forEach(k=>localStorage.removeItem(k));
     location.reload();
-  });
+  };
+  host.querySelector('[data-core-pref="reset-ui"]')?.addEventListener('click',resetInterface);
+  host.querySelector('[data-core-pref="reset-ui-top"]')?.addEventListener('click',resetInterface);
 }
