@@ -184,3 +184,17 @@ export function icon(name,{className='studioIcon',label=null}={}){
 }
 export function hasIcon(name){return !!ICONS[resolveName(name)]}
 export const iconNames=()=>[...new Set([...Object.keys(ICONS),...Object.keys(ALIASES)])];
+
+let themeCatalog=null;
+export function iconThemeCatalog(){return themeCatalog}
+export async function loadIconThemeCatalog(url=new URL('../../../assets/icons/themes/index.json',import.meta.url)){
+ const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('ICON_THEME_CATALOG_'+r.status);const catalog=await r.json();themeCatalog=catalog;
+ for(const theme of catalog.themes||[]){
+  if(theme.id==='nlab-line'||!theme.base){if(!THEMES.has(theme.id))THEMES.set(theme.id,{});continue}
+  const base=new URL(theme.base,url),overrides={};
+  const names=Array.isArray(theme.icons)?theme.icons:iconNames();
+  await Promise.all(names.map(async name=>{const canonical=resolveName(name);try{const rr=await fetch(new URL(canonical+'.svg',base),{cache:'no-store'});if(rr.ok)overrides[canonical]=await rr.text()}catch{}}));
+  registerIconTheme(theme.id,overrides)
+ }
+ return catalog
+}
