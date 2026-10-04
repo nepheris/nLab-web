@@ -149,7 +149,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   const settingsPanel=qs('#studioCoreSettingsPanel');
   if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core'});
   const helpWindow=qs('#studioContextHelpWindow');
-  if(helpWindow)enhanceStudioWindow(helpWindow,{key:'context-help',title:'Aide contextuelle'});
+  if(helpWindow)enhanceStudioWindow(helpWindow,{key:'context-help',title:'Aide contextuelle',topmost:true});
   const syncCorePanelModes=()=>{
     const s=loadStudioSettings();
     const applyMode=(panel,mode,kind)=>{
@@ -171,7 +171,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   syncCorePanelModes();
   document.addEventListener('studio-v2:settings-changed',syncCorePanelModes);
   qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));const s=loadStudioSettings();if(s.coreSettingsPanelMode==='hidden'){settingsPanel.classList.remove('corePanelFixedLeft','corePanelFixedRight');settingsPanel.classList.add('corePanelFree')}showStudioWindow('core-settings');bringStudioWindowToFront(settingsPanel)});
-  qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)settingsPanel.hidden=true});
+  qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)hideStudioWindow('core-settings')});
   qs('#studioCommandOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-command-palette')));
   qs('#studioWorkflowOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-workflows')));
   qs('#studioRestoreWindows')?.addEventListener('click',()=>restoreAllStudioWindows());
