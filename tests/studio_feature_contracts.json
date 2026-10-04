@@ -1,9 +1,9 @@
 {
   "schema": "nlab-studio-feature-contracts/v1",
-  "updated": "2026-10-03",
+  "updated": "2026-10-04",
   "studios": {
     "image-studio": {
-      "test": "2.3.0",
+      "test": "2.4.0",
       "required_ids": [
         "file",
         "demoSynthetic",
@@ -78,7 +78,7 @@
       ]
     },
     "ocr-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "file",
         "lang",
@@ -117,7 +117,7 @@
       ]
     },
     "code-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "file",
         "demo",
@@ -148,7 +148,7 @@
       ]
     },
     "json-studio": {
-      "test": "2.0.0",
+      "test": "2.1.0",
       "required_ids": [
         "file",
         "demo",
@@ -177,7 +177,7 @@
       ]
     },
     "data-studio": {
-      "test": "2.2.0",
+      "test": "2.3.0",
       "required_ids": [
         "file",
         "demoCsv",
@@ -221,7 +221,7 @@
       ]
     },
     "file-studio": {
-      "test": "2.2.0",
+      "test": "2.3.0",
       "required_ids": [
         "files",
         "folder",
@@ -253,7 +253,7 @@
       ]
     },
     "qr-barcode-studio": {
-      "test": "2.2.0",
+      "test": "2.3.0",
       "required_ids": [
         "symTabs",
         "value",
@@ -315,7 +315,7 @@
       ]
     },
     "markdown-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "metaTitle",
         "metaLang",
@@ -360,7 +360,7 @@
       ]
     },
     "dataset-generator-studio": {
-      "test": "2.2.0",
+      "test": "2.3.0",
       "required_ids": [
         "preset",
         "rows",
@@ -421,7 +421,7 @@
       ]
     },
     "pdf-studio": {
-      "test": "2.9.0",
+      "test": "2.10.0",
       "path": "APP-Applications/pdf-studio/v2/index.html",
       "runtime": "APP-Applications/pdf-studio/v2/pdf-v2.js",
       "required_ids": [
@@ -590,7 +590,7 @@
       }
     },
     "document-studio": {
-      "test": "1.0.0",
+      "test": "1.1.0",
       "required_ids": [
         "fileInput",
         "status",
@@ -622,7 +622,7 @@
       ]
     },
     "spreadsheet-studio": {
-      "test": "1.0.0",
+      "test": "1.1.0",
       "required_ids": [
         "fileInput",
         "sheetSelect",
@@ -657,7 +657,7 @@
       ]
     },
     "scan-studio": {
-      "test": "0.1.0",
+      "test": "0.2.0",
       "runtime": "APP-Applications/scan-studio/v2/v2-app.js",
       "required_ids": [
         "drop",
