@@ -59,8 +59,8 @@ if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push
   await p.locator('[data-setting="contextualHelpPanelMode"]').selectOption('free');
   await p.locator('#studioCoreSettingsClose').click();
   await p.locator('#studioContextHelpOpen').click();await p.waitForSelector('#studioContextHelpWindow:not([hidden])');
-  const help=await p.locator('#studioContextHelpWindow').evaluate(el=>{const r=el.getBoundingClientRect(),z=getComputedStyle(el).zIndex;return{left:r.left,top:r.top,z:Number(z)||0,mode:el.dataset.panelMode}});
-  if(help.left>40||help.z<600||help.mode!=='free')fail('Core 3.1 : aide contextuelle gauche/topmost/libre invalide · '+JSON.stringify(help));
+  const help=await p.locator('#studioContextHelpWindow').evaluate(el=>{const r=el.getBoundingClientRect(),z=getComputedStyle(el).zIndex;return{left:r.left,top:r.top,z:Number(z)||0,mode:el.dataset.panelMode,topmost:el.dataset.studioWindowTopmost}});
+  if(help.left>40||help.z<100000||help.mode!=='free'||help.topmost!=='1')fail('Core 3.1 : aide contextuelle gauche/topmost/libre invalide · '+JSON.stringify(help));
   if(errors.length)fail('Studio Core 3.1 settings/help: '+errors.join(' | '));results.push('core-settings-help-3.1');await p.close();
  }
 
