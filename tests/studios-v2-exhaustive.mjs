@@ -40,7 +40,7 @@ try{
   await p.locator('#demo').selectOption('../../Library/demo/Data/dataset-validation-complet.json');await p.locator('#loadDemo').click();await p.waitForFunction(()=>/JSON valide/.test(document.querySelector('#validity')?.textContent||''),null,{timeout:15000});
   const pretty=(await p.locator('#editor').inputValue()).length;await p.locator('#min').click();const mini=(await p.locator('#editor').inputValue()).length;if(!(mini<pretty))throw new Error('Minification JSON sans effet');
   await p.locator('[data-view="stats"]').click();if(await p.locator('#stats .kpi').count()<4)throw new Error('Stats JSON absentes');
-  await p.locator('[data-view="tree"]').click();if(await p.locator('#tree details').count()<1)throw new Error('Arbre JSON absent');
+  await p.locator('[data-view="tree"]').click();if(await p.locator('#tree .treeNode').count()<1||await p.locator('#tree [data-tree-toggle]').count()<1)throw new Error('Arbre JSON éditable absent');
   const root=await p.evaluate(()=>Object.keys(JSON.parse(document.querySelector('#editor').value))[0]||'');if(root){await p.locator('[data-view="query"]').click();await p.locator('#path').fill(root);await p.locator('#query').click();if((await p.locator('#result').textContent()).trim()==='—')throw new Error('Query JSON sans résultat')}
   await p.locator('#format').click();
  },{clipboard:true});
