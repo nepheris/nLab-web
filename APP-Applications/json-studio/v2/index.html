@@ -31,7 +31,7 @@ const encodePath=p=>encodeURIComponent(JSON.stringify(p)),decodePath=s=>JSON.par
 const pathText=p=>p.map((x,i)=>typeof x==='number'?('['+x+']'):(i?'.':'')+x).join('');
 function parse(){return JSON.parse($('editor').value)}
 function typeOf(v){return v===null?'null':Array.isArray(v)?'array':typeof v}
-function clone(v){return structuredClone?structuredClone(v):JSON.parse(JSON.stringify(v))}
+function clone(v){return typeof structuredClone==='function'?structuredClone(v):JSON.parse(JSON.stringify(v))}
 function equal(a,b){try{return JSON.stringify(a)===JSON.stringify(b)}catch{return a===b}}
 function firstDiff(a,b,path=[]){
  if(equal(a,b))return null;
