@@ -1,6 +1,6 @@
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible,setStatus}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings,loadStudioSettings}from'./settings.js';
-import{enhanceStudioWindow,showStudioWindow,bringStudioWindowToFront,restoreAllStudioWindows}from'./window-system.js';
+import{enhanceStudioWindow,showStudioWindow,hideStudioWindow,bringStudioWindowToFront,restoreAllStudioWindows}from'./window-system.js';
 import{mountHistoryUI,recordHistory}from'./history.js';
 import{icon,loadIconThemeCatalog}from'./icon-registry.js';
 import{registerCapabilities}from'./capability-registry.js';
@@ -8,6 +8,7 @@ import{mountCommandPalette}from'./command-palette.js';
 import{mountWorkflowUI}from'./workflow-ui.js';
 import{openStudio as openResolvedStudio}from'./studio-link-resolver.js';
 import{findFeature,renderContextualHelp}from'./help.js';
+import{registerCorePanel,getCorePanel,listCorePanels}from'./panel-registry.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
@@ -147,14 +148,40 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
     });
   });
   const settingsPanel=qs('#studioCoreSettingsPanel');
-  if(settingsPanel)enhanceStudioWindow(settingsPanel,{key:'core-settings',title:'Paramètres Studio Core'});
   const helpWindow=qs('#studioContextHelpWindow');
-  if(helpWindow)enhanceStudioWindow(helpWindow,{key:'context-help',title:'Aide contextuelle'});
-  qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;if(settingsPanel.hidden){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));showStudioWindow('core-settings')}else{bringStudioWindowToFront(settingsPanel)}});
-  qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)settingsPanel.hidden=true});
+  registerCorePanel({key:'core-settings',title:'Paramètres Studio Core',selector:'#studioCoreSettingsPanel',priority:'normal',defaultMode:'free',restorable:true,escapeCloses:true});
+  registerCorePanel({key:'context-help',title:'Aide contextuelle',selector:'#studioContextHelpWindow',priority:'topmost',defaultMode:'free',restorable:true,escapeCloses:true});
+  for(const def of listCorePanels()){
+    const panel=def.selector?qs(def.selector):null;if(!panel)continue;
+    enhanceStudioWindow(panel,{key:def.key,title:def.title,topmost:def.priority==='topmost',restorable:def.restorable,escapeCloses:def.escapeCloses,capabilities:def.capabilities});
+  }
+  const syncCorePanelModes=()=>{
+    const s=loadStudioSettings();
+    const applyMode=(panel,mode,kind)=>{
+      if(!panel)return;
+      panel.classList.remove('corePanelFree','corePanelFixedLeft','corePanelFixedRight');
+      panel.classList.add(mode==='fixed-left'?'corePanelFixedLeft':mode==='fixed-right'?'corePanelFixedRight':'corePanelFree');
+      panel.dataset.panelMode=mode||'free';
+      panel.dataset.panelRegistryKey=kind==='help'?'context-help':'core-settings';
+      if(mode==='hidden'){
+        panel.hidden=true;
+      }else if(!panel.hidden){
+        bringStudioWindowToFront(panel);
+      }
+      if(kind==='help')panel.classList.toggle('contextHelpDisabled',s.contextualHelpEnabled===false);
+    };
+    applyMode(settingsPanel,s.coreSettingsPanelMode||'free','settings');
+    applyMode(helpWindow,s.contextualHelpPanelMode||'free','help');
+    if(s.contextualHelpEnabled===false&&helpWindow)helpWindow.hidden=true;
+  };
+  syncCorePanelModes();
+  document.addEventListener('studio-v2:settings-changed',syncCorePanelModes);
+  qs('#studioCoreSettings')?.addEventListener('click',()=>{if(!settingsPanel)return;renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));const s=loadStudioSettings();if(s.coreSettingsPanelMode==='hidden'){settingsPanel.classList.remove('corePanelFixedLeft','corePanelFixedRight');settingsPanel.classList.add('corePanelFree')}showStudioWindow('core-settings');bringStudioWindowToFront(settingsPanel)});
+  qs('#studioCoreSettingsClose')?.addEventListener('click',()=>{if(settingsPanel)hideStudioWindow('core-settings')});
   qs('#studioCommandOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-command-palette')));
   qs('#studioWorkflowOpen')?.addEventListener('click',()=>document.dispatchEvent(new Event('studio-v2:open-workflows')));
   qs('#studioRestoreWindows')?.addEventListener('click',()=>restoreAllStudioWindows());
+  document.addEventListener('studio-v2:window-state',e=>{const d=e.detail||{};if(!d.key)return;document.body.dataset.lastCoreWindow=d.key;document.body.dataset.lastCoreWindowAction=d.action||''});
 
   const ribbon=qs('.studioRibbon');
   const mobileDock=qs('#studioMobileDock'),mobileBackdrop=qs('#studioMobileBackdrop'),touchTooltip=qs('#studioTouchTooltip');
@@ -182,7 +209,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
     if(action==='tools'){setMobileSidebar(!document.body.classList.contains('studioMobileSidebarOpen'));return}
     if(action==='ribbon'){document.body.classList.toggle('studioMobileRibbonExpanded');return}
     if(action==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
-    if(action==='settings'){const panel=qs('#studioCoreSettingsPanel');if(panel){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));showStudioWindow('core-settings')}return}
+    if(action==='settings'){const panel=qs('#studioCoreSettingsPanel');if(panel){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));showStudioWindow('core-settings');bringStudioWindowToFront(panel)}return}
   });
   mobileBackdrop?.addEventListener('click',closeMobileSurfaces);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.dataset.responsiveProfile==='mobile')closeMobileSurfaces()});
@@ -221,10 +248,10 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   let lastContextEl=null,lastContextFeature=null;
   const rememberContext=(el,feature=null)=>{if(el){lastContextEl=el;lastContextFeature=feature}};
   const showContextHelp=(el=lastContextEl,feature=lastContextFeature)=>{
-    const panel=helpWindow,body=qs('#studioContextHelpBody');
-    if(!panel||!body||!el)return;
+    const panel=helpWindow,body=qs('#studioContextHelpBody'),s=loadStudioSettings();
+    if(!panel||!body||!el||s.contextualHelpEnabled===false||s.contextualHelpPanelMode==='hidden')return;
     renderContextualHelp(body,el,{manifest,versionInfo,feature});
-    panel.hidden=false;panel.style.zIndex='240';
+    showStudioWindow('context-help');bringStudioWindowToFront(panel);
   };
   ribbon?.addEventListener('click',e=>{
     const b=e.target.closest('[data-studio-action]');if(!b)return;
@@ -240,7 +267,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   root.addEventListener('focusin',e=>{
     const el=e.target.closest?.('input,select,textarea,button');if(el&&!el.closest('#studioContextHelpWindow'))rememberContext(el,null);
   });
-  qs('#studioContextHelpOpen')?.addEventListener('click',()=>showContextHelp(lastContextEl||document.activeElement,lastContextFeature));
+  qs('#studioContextHelpOpen')?.addEventListener('click',()=>{const s=loadStudioSettings();if(!helpWindow||s.contextualHelpEnabled===false||s.contextualHelpPanelMode==='hidden')return;if(!helpWindow.hidden){hideStudioWindow('context-help');return}showContextHelp(lastContextEl||document.activeElement,lastContextFeature)});
 
   ribbon?.addEventListener('click',e=>{
     const b=e.target.closest('[data-studio-action]');if(!b)return;
