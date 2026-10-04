@@ -1,0 +1,24 @@
+{
+  "schema": "nlab-icon-set/v1",
+  "id": "nlab-line",
+  "label": "nLab Line",
+  "version": "1.0",
+  "default": true,
+  "monochrome": true,
+  "colorModel": "currentColor",
+  "filenameContract": "All icon sets must preserve the same relative paths and filenames.",
+  "families": {
+    "functions": "functions/",
+    "ui": "ui/",
+    "filetypes": "filetypes/",
+    "symbology": "symbology/",
+    "studios": "studios/"
+  },
+  "counts": {
+    "functions": 147,
+    "ui": 26,
+    "filetypes": 51,
+    "symbology": 10,
+    "studios": 22
+  }
+}
