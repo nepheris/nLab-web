@@ -1,13 +1,22 @@
 {
   "name": "File Studio",
   "current": "0.1.0",
-  "test": "2.2.0",
+  "test": "2.3.0",
   "versions": [
+    {
+      "version": "2.3.0",
+      "label": "File Studio 2.3.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Passe TEST Core 2.9 : vues Texte/Icône/Preview du sélecteur, dossiers et SVG canoniques ; SHA-256, identifiants nLab et manifests CSV/JSON revalidés."
+    },
     {
       "version": "2.2.0",
       "label": "File Studio 2.2.0 TEST",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Adoption Studio Core 2.8 Input Picker pour fichiers/dossiers/glisser-déposer, collection batch compacte, suppression individuelle et reset, renommage/empreintes/manifests conservés."
     },
