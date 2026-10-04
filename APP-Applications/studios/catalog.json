@@ -28,7 +28,7 @@
     {
       "id": "scan-studio",
       "name": "Scan Studio",
-      "status": "test-0.2.0",
+      "status": "test-0.3.0",
       "path": "../scan-studio/",
       "purpose": "Acquisition documentaire responsive : caméra/photo/fichiers, nettoyage, OCR partagé, organisation des pages et assemblage PDF.",
       "versions_path": "../scan-studio/versions.html",
@@ -138,7 +138,7 @@
     {
       "id": "document-studio",
       "name": "Document Studio",
-      "status": "test-1.1.0",
+      "status": "test-1.2.0",
       "path": "../document-studio/",
       "purpose": "Conversion et édition structurelle DOCX, ODT, TXT, Markdown, HTML et RTF simple, avec exports bureautiques locaux.",
       "versions_path": "../document-studio/versions.html",
@@ -149,7 +149,7 @@
     {
       "id": "spreadsheet-studio",
       "name": "Spreadsheet Studio",
-      "status": "test-1.1.0",
+      "status": "test-1.2.0",
       "path": "../spreadsheet-studio/",
       "purpose": "Lecture et conversion locale XLS/XLSX/ODS/CSV/TSV/JSON, sélection de feuille et exports tableur.",
       "versions_path": "../spreadsheet-studio/versions.html",
@@ -284,14 +284,14 @@
     "metadata": "versions registry + Git commit metadata",
     "responsive_contract": "mobile-tablet-desktop",
     "propagation": "shared Core/Engine capability changes are consumed by Studios; derived apps expose capability subsets",
-    "core_version": "2.9.0-test",
-    "test_generation": "2026-10-04-input-picker-audit-refresh"
+    "core_version": "3.0.0-test",
+    "test_generation": "2026-10-04-core-3.0-ui-input-history-icons"
   },
   "derived_apps": [
     {
       "id": "pdf-sign",
       "name": "nLab PDF Sign",
-      "status": "test-0.2.0",
+      "status": "test-0.3.0",
       "parent_studio": "pdf-studio",
       "path": "../pdf-sign/",
       "versions_path": "../pdf-sign/versions.html",
@@ -302,7 +302,7 @@
     {
       "id": "merge-studio",
       "name": "nLab Merge Studio",
-      "status": "test-0.2.0",
+      "status": "test-0.3.0",
       "parent_studio": "pdf-studio",
       "path": "../merge-studio/",
       "versions_path": "../merge-studio/versions.html",
