@@ -30,6 +30,9 @@ const DEFAULTS={
   ribbonRows:'auto',
   navPlacement:'header',
   contextualHelpMode:'explicit',
+  contextualHelpEnabled:true,
+  contextualHelpPanelMode:'free',
+  coreSettingsPanelMode:'free',
   sidebarLocked:false,
   thumbnailQuality:'light',
   collectionThumbnailSize:104,
@@ -95,6 +98,9 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   const requestedNav=settings.navPlacement||'header';
   b.dataset.navPlacement=(profile==='mobile'&&settings.mobileAutoOptimize!==false&&requestedNav==='header')?'separate':requestedNav;
   b.dataset.contextualHelpMode=settings.contextualHelpMode||'explicit';
+  b.dataset.contextualHelpPanelMode=settings.contextualHelpPanelMode||'free';
+  b.dataset.coreSettingsPanelMode=settings.coreSettingsPanelMode||'free';
+  b.classList.toggle('contextualHelpDisabled',settings.contextualHelpEnabled===false);
   b.classList.toggle('sidebarLocked',!!settings.sidebarLocked);
   b.dataset.thumbnailQuality=settings.thumbnailQuality||'light';
   b.style.setProperty('--collection-thumb-size',(Number(settings.collectionThumbnailSize)||104)+'px');
@@ -234,8 +240,11 @@ export function renderStudioSettingsPanel(host){
       <label class="field"><span>Largeur du volet</span><div class="settingsDualInput"><input type="range" min="220" max="720" step="10" data-setting="sidebarWidth"><input type="number" min="220" max="720" step="10" data-setting-number="sidebarWidth"></div></label>
       <label class="checkboxField"><input type="checkbox" data-setting="sidebarLocked"><span>Figer la largeur du volet</span></label>
       <label class="checkboxField"><input type="checkbox" data-setting="floatingWindows"><span>Fenêtres flottantes / ancrables</span></label>
+      <label class="field"><span>Fenêtre Paramètres Studio Core</span><select data-setting="coreSettingsPanelMode"><option value="free">Libre / déplaçable</option><option value="fixed-left">Fixe à gauche</option><option value="fixed-right">Fixe à droite</option><option value="hidden">Aucun / masqué</option></select></label>
       <label class="field"><span>Menus Studio</span><select data-setting="navPlacement"><option value="header">Dans la bande haute</option><option value="separate">Bande séparée</option><option value="hidden">Masqués</option></select></label>
-      <label class="field"><span>Aide contextuelle</span><select data-setting="contextualHelpMode"><option value="explicit">À la demande</option><option value="auto">Automatique</option></select></label>
+      <label class="checkboxField"><input type="checkbox" data-setting="contextualHelpEnabled"><span>Afficher l’aide contextuelle</span></label>
+      <label class="field"><span>Déclenchement de l’aide</span><select data-setting="contextualHelpMode"><option value="explicit">À la demande</option><option value="auto">Automatique</option></select></label>
+      <label class="field"><span>Fenêtre d’aide</span><select data-setting="contextualHelpPanelMode"><option value="free">Libre / déplaçable</option><option value="fixed-left">Fixe à gauche</option><option value="fixed-right">Fixe à droite</option><option value="hidden">Aucun / masqué</option></select></label>
       <label class="field"><span>Ruban</span><select data-setting="ribbonRows"><option value="auto">Auto</option><option value="one">1 ligne</option><option value="two">2 lignes</option></select></label>
       <label class="field"><span>Présentation du ruban</span><select data-setting="ribbonMode"><option value="auto">Auto</option><option value="full">Complet</option><option value="compact">Compact</option><option value="icons">Icônes seules</option><option value="primary">Actions principales</option></select></label>
       <div id="ribbon-action-settings"></div>
@@ -245,19 +254,36 @@ export function renderStudioSettingsPanel(host){
       <button data-core-pref="expand-ribbon">Déplier le ruban</button>
       <button data-core-pref="collapse-ribbon">Replier le ruban</button>
       <div id="ribbon-group-settings"></div>
-      <button data-core-pref="reset-ui">Réinitialiser l'interface</button>
     </section>
-  </div>`;
+  </div>
+  <div class="coreSettingsDangerBottom"><button type="button" data-core-pref="reset-ui">⚠ Réinitialiser l'interface</button><span>Même action qu’en haut du panneau.</span></div>`;
   host.querySelector('[data-setting="theme"]').value=s.theme;
-  for(const k of ['fontFamily','density','responsiveProfile','ribbonMode','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality','specializedStudioPolicy','navPlacement','contextualHelpMode']){const el=host.querySelector('[data-setting="'+k+'"]');if(el)el.value=s[k]}
+  for(const k of ['fontFamily','density','responsiveProfile','ribbonMode','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality','specializedStudioPolicy','navPlacement','contextualHelpMode','contextualHelpPanelMode','coreSettingsPanelMode']){const el=host.querySelector('[data-setting="'+k+'"]');if(el)el.value=s[k]}
   const iconThemeSelect=host.querySelector('[data-setting="iconTheme"]');if(iconThemeSelect)iconThemeSelect.value=s.iconTheme||'nlab-line';
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
   const sidebarNumber=host.querySelector('[data-setting-number="sidebarWidth"]');if(sidebarNumber)sidebarNumber.value=s.sidebarWidth;
   host.querySelector('[data-setting="collectionThumbnailSize"]').value=s.collectionThumbnailSize;
   const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';const thumbOut=host.querySelector('[data-thumbnail-size-value]');if(thumbOut)thumbOut.textContent=Math.round(Number(s.collectionThumbnailSize||104))+' px';
-  for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','mobileAutoOptimize','floatingWindows','headerVisible','headerShadow','headerBlur','sidebarLocked']){
+  for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','mobileAutoOptimize','floatingWindows','headerVisible','headerShadow','headerBlur','sidebarLocked','contextualHelpEnabled']){
     host.querySelector('[data-setting="'+k+'"]').checked=!!s[k];
+  }
+  const grid=host.querySelector('.coreSettingsGrid');
+  if(grid){
+    const toolbar=document.createElement('div');toolbar.className='coreSettingsAccordionToolbar';
+    toolbar.innerHTML='<button type="button" data-settings-expand-all>Tout déplier</button><button type="button" data-settings-collapse-all>Tout replier</button>';
+    grid.before(toolbar);
+    [...grid.querySelectorAll(':scope > section')].forEach((section,index)=>{
+      const title=section.querySelector(':scope > h3')?.textContent?.trim()||('Section '+(index+1));
+      section.querySelector(':scope > h3')?.remove();
+      const details=document.createElement('details');details.className='coreSettingsSection';details.open=index===0||title==='Interface & panneaux';
+      const summary=document.createElement('summary');summary.textContent=title;
+      const body=document.createElement('div');body.className='coreSettingsSectionBody';
+      while(section.firstChild)body.append(section.firstChild);
+      details.append(summary,body);section.replaceWith(details);
+    });
+    toolbar.querySelector('[data-settings-expand-all]').onclick=()=>grid.querySelectorAll('.coreSettingsSection').forEach(x=>x.open=true);
+    toolbar.querySelector('[data-settings-collapse-all]').onclick=()=>grid.querySelectorAll('.coreSettingsSection').forEach(x=>x.open=false);
   }
   const overrideHost=host.querySelector('#specialized-studio-overrides');
   if(overrideHost){(async()=>{try{const catalogUrl=new URL('../../studios/catalog.json',import.meta.url),r=await fetch(catalogUrl,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const data=await r.json(),current=loadStudioSettings().specializedStudioOverrides||{};overrideHost.innerHTML=(data.studios||[]).filter(x=>x.id!=='pdf-studio').map(x=>'<label class="field studioOverrideRow"><span>'+x.name+'</span><select data-studio-override="'+x.id+'"><option value="inherit">Hériter</option><option value="latest">Dernière version</option><option value="current">CURRENT</option><option value="test">TEST</option></select></label>').join('')||'<span class="muted">Aucun Studio spécialisé.</span>';overrideHost.querySelectorAll('[data-studio-override]').forEach(el=>{el.value=current[el.dataset.studioOverride]||'inherit';el.onchange=()=>{const s=loadStudioSettings(),next={...(s.specializedStudioOverrides||{}),[el.dataset.studioOverride]:el.value};saveStudioSettings({specializedStudioOverrides:next})}})}catch(e){overrideHost.textContent='Catalogue indisponible : '+e.message}})()}
