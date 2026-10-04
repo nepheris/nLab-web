@@ -588,3 +588,140 @@ body[data-studio="pdf-studio"] #previewPanel>summary,body[data-studio="pdf-studi
 .studioInputDrop{border:2px dashed #9fb2c0;border-radius:9px;padding:18px 10px;display:grid;place-items:center;gap:3px;text-align:center;background:#f8fafc;cursor:pointer}.studioInputDrop span{font-size:9px;color:var(--nlab-muted)}.studioInputDrop.dragover{border-color:#3282ca;background:#eef7fd}.studioInputDrop.loading{opacity:.65}
 .inputPickerMeta{display:flex;justify-content:space-between;gap:10px;font-size:9px;color:var(--nlab-muted)}.studioInputList{display:grid;gap:4px;max-height:280px;overflow:auto;scrollbar-gutter:stable}.studioInputItem{display:grid;grid-template-columns:24px minmax(0,1fr) 30px;gap:7px;align-items:center;border:1px solid #dce4ea;border-radius:7px;padding:5px 6px}.studioInputItem strong,.studioInputItem small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.studioInputItem small{font-size:8px;color:var(--nlab-muted)}.studioInputItem button{min-width:28px;width:28px;height:28px;min-height:28px;padding:0;color:#8b1e1e}.studioInputEmpty{padding:12px;border:1px dashed #cbd6de;border-radius:7px;text-align:center;color:var(--nlab-muted);font-size:9px}
 .themeDark .studioInputPicker{background:#20262c;border-color:#39434c}.themeDark .studioInputDrop{background:#1b2025;border-color:#4c6475}.themeDark .studioInputItem{border-color:#39434c}
+
+
+/* Studio Core 2.9 — responsive profiles, compact ribbon and mobile drawer */
+.ribbonBtnLabel{display:block;max-width:74px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ribbonDragging{opacity:.42}
+.ribbonFavorite::before{content:"";position:absolute;right:4px;top:4px;width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.45}
+[data-ribbon-mode="compact"] .ribbonBtn{height:42px;min-width:42px;flex-direction:row;gap:4px;padding:4px 6px}
+[data-ribbon-mode="compact"] .ribbonBtnLabel{font-size:9px;max-width:62px}
+[data-ribbon-mode="compact"] .ribbonLabel{font-size:7px}
+[data-ribbon-mode="icons"] .ribbonBtn,
+[data-ribbon-mode="primary"] .ribbonBtn{width:44px;min-width:44px;height:44px;padding:5px;gap:0}
+[data-ribbon-mode="icons"] .ribbonBtnLabel,
+[data-ribbon-mode="primary"] .ribbonBtnLabel,
+[data-ribbon-mode="icons"] .ribbonLabel,
+[data-ribbon-mode="primary"] .ribbonLabel{display:none}
+[data-ribbon-mode="icons"] .ribbonGroup,
+[data-ribbon-mode="primary"] .ribbonGroup{padding:0 3px;gap:2px}
+[data-ribbon-mode="primary"] .ribbonBtn:not(.primary):not(.ribbonFavorite){display:none}
+@supports selector(:has(*)){
+  [data-ribbon-mode="primary"] .ribbonGroup:not(:has(.ribbonBtn.primary,.ribbonBtn.ribbonFavorite)){display:none}
+}
+.ribbonBtn[data-tooltip]{position:relative}
+@media(hover:hover) and (pointer:fine){
+  .ribbonBtn[data-tooltip]:hover::after,.ribbonBtn[data-tooltip]:focus-visible::after{
+    content:attr(data-tooltip);position:absolute;left:50%;top:calc(100% + 6px);transform:translateX(-50%);
+    z-index:400;min-width:max-content;max-width:220px;padding:5px 7px;border-radius:6px;background:#17212a;color:#fff;
+    font-size:10px;font-weight:600;line-height:1.25;box-shadow:0 6px 18px #0003;pointer-events:none;
+  }
+}
+.ribbonFavoriteGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2px 8px;max-height:260px;overflow:auto;margin:6px 0}
+.studioMobileDock,.studioMobileBackdrop,.studioTouchTooltip{display:none}
+.studioTouchTooltip{position:fixed;z-index:500;width:200px;max-width:calc(100vw - 16px);padding:7px 9px;border-radius:7px;background:#17212a;color:#fff;font-size:11px;font-weight:700;line-height:1.25;text-align:center;box-shadow:0 8px 24px #0005;pointer-events:none}
+.studioTouchTooltip:not([hidden]){display:block}
+.studioMobileBackdrop:not([hidden]){display:block;position:fixed;inset:0;z-index:248;background:#0006;backdrop-filter:blur(1px)}
+
+body[data-responsive-profile="compact"]{
+  --studio-touch-target:40px;
+}
+body[data-responsive-profile="compact"] .studioGlobalNav a,
+body[data-responsive-profile="compact"] .studioNavAction{padding:6px 7px;font-size:10px}
+body[data-responsive-profile="compact"] .studioMain{gap:6px;padding:6px}
+body[data-responsive-profile="compact"] .studioSidebar{font-size:12px}
+
+body.studioMobileOptimized{
+  --studio-header-h:54px;
+  --studio-menu-h:36px;
+  --studio-ribbon-h:52px;
+  --studio-touch-target:46px;
+  padding-bottom:92px;
+}
+body.studioMobileOptimized .studioHeader,
+body.studioMobileOptimized .studioHeaderInner{height:var(--studio-header-h);min-height:var(--studio-header-h)}
+body.studioMobileOptimized .studioHeaderInner{width:calc(100% - 10px);gap:6px}
+body.studioMobileOptimized .studioLogo{width:54px}
+body.studioMobileOptimized .studioLogo img{width:54px}
+body.studioMobileOptimized .studioAppIcon{width:32px;height:32px}
+body.studioMobileOptimized .studioBrand b{font-size:14px;max-width:34vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.studioMobileOptimized .studioBrand small,
+body.studioMobileOptimized .studioHeaderMeta,
+body.studioMobileOptimized .studioGlobalNav{display:none!important}
+body.studioMobileOptimized .studioMenu{
+  position:sticky;top:var(--studio-header-h);z-index:99;width:100%;height:var(--studio-menu-h);min-height:var(--studio-menu-h);
+  padding:0 4px;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap;align-items:stretch;background:var(--nlab-panel,#fff);
+}
+body.studioMobileOptimized .studioMenu button{min-width:max-content;height:var(--studio-menu-h);min-height:var(--studio-menu-h);padding:4px 9px;font-size:10px}
+body.studioMobileOptimized .studioMenu .studioIcon{width:15px;height:15px}
+body.studioMobileOptimized .studioRibbon{
+  top:calc(var(--studio-header-h) + var(--studio-menu-h));min-height:var(--studio-ribbon-h);height:var(--studio-ribbon-h);
+  padding:4px 5px;gap:2px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;overscroll-behavior-x:contain;
+}
+body.studioMobileOptimized .ribbonGroup{scroll-snap-align:start}
+body.studioMobileOptimized .ribbonBtn{width:46px;min-width:46px;height:44px;min-height:44px;border-radius:8px}
+body.studioMobileOptimized .ribbonBtn .studioIcon{width:20px;height:20px}
+body.studioMobileOptimized .studioRibbonToggle{display:none}
+body.studioMobileOptimized.studioMobileRibbonExpanded .studioRibbon{height:auto;min-height:52px;max-height:136px;flex-wrap:wrap;overflow-y:auto}
+body.studioMobileOptimized.studioMobileRibbonExpanded .ribbonGroup{display:flex!important}
+body.studioMobileOptimized.studioMobileRibbonExpanded .ribbonBtn{display:flex!important}
+body.studioMobileOptimized .studioMain{display:block!important;padding:5px;min-height:0}
+body.studioMobileOptimized .studioMain>.viewer{width:100%;min-width:0}
+body.studioMobileOptimized .studioSidebar{
+  display:block!important;position:fixed!important;left:6px;right:6px;bottom:64px;top:auto!important;z-index:255;
+  width:auto!important;max-width:none!important;height:min(76vh,760px);max-height:calc(100dvh - 86px)!important;
+  overflow:auto!important;border-radius:14px 14px 10px 10px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px);
+  box-shadow:0 -16px 48px #0005;transform:translateY(calc(100% + 90px));transition:transform .22s ease;
+  resize:none!important;overscroll-behavior:contain;
+}
+body.studioMobileOptimized.studioMobileSidebarOpen .studioSidebar{transform:translateY(0)}
+body.studioMobileOptimized .studioSidebarRestore{display:none!important}
+body.studioMobileOptimized .sidebarResizer{display:none!important}
+body.studioMobileOptimized .studioSidebarFloating{left:6px!important;right:6px!important;bottom:64px!important;top:auto!important;width:auto!important;height:min(76vh,760px)!important;max-height:calc(100dvh - 86px)!important;resize:none!important}
+body.studioMobileOptimized .studioMobileDock{
+  display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:6px;right:6px;bottom:max(6px,env(safe-area-inset-bottom,6px));
+  z-index:270;min-height:56px;padding:4px;border:1px solid #b9c7d1;border-radius:13px;background:#fffffff2;
+  box-shadow:0 10px 32px #0004;backdrop-filter:blur(12px);
+}
+body.studioMobileOptimized .studioMobileDock button{
+  border:0;background:transparent;display:grid;grid-template-rows:24px auto;place-items:center;gap:1px;min-width:0;min-height:48px;padding:3px 4px;font-size:9px
+}
+body.studioMobileOptimized .studioMobileDock .studioIcon{width:20px;height:20px}
+body.studioMobileOptimized .studioStatus{bottom:68px;min-height:24px;height:auto;font-size:8px;padding:3px 6px}
+body.studioMobileOptimized .studioStatus .grow{display:none}
+body.studioMobileOptimized .coreSettingsPanel,
+body.studioMobileOptimized .floatingHelpWindow,
+body.studioMobileOptimized .ribbonContext.studioWindow,
+body.studioMobileOptimized .studioVisibilityPanel{
+  position:fixed!important;left:6px!important;right:6px!important;bottom:64px!important;top:auto!important;
+  width:auto!important;max-width:none!important;max-height:calc(88dvh - 64px)!important;border-radius:14px 14px 10px 10px!important;
+  z-index:280!important;transform:none!important;resize:none!important;overflow:auto!important;
+}
+body.studioMobileOptimized .coreSettingsGrid{grid-template-columns:1fr!important}
+body.studioMobileOptimized .coreSettingsGrid section:last-child{grid-column:auto!important}
+body.studioMobileOptimized .studioWindowBar{position:sticky;top:0;z-index:5}
+body.studioMobileOptimized .viewerToolbar,
+body.studioMobileOptimized .previewToolbar,
+body.studioMobileOptimized .compactBar,
+body.studioMobileOptimized .singleLineBar{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin}
+body.studioMobileOptimized .viewerToolbar>*,
+body.studioMobileOptimized .previewToolbar>*{flex:0 0 auto}
+body.studioMobileOptimized .viewerCard,
+body.studioMobileOptimized .previewPanel{border-radius:8px}
+body.studioMobileOptimized details>summary{min-height:42px;display:flex;align-items:center}
+body.studioMobileOptimized input,
+body.studioMobileOptimized select,
+body.studioMobileOptimized textarea{font-size:16px}
+body.studioMobileOptimized .pdfObjectMiniBar{transform:translateY(calc(-100% - 5px));max-width:calc(100vw - 24px);overflow-x:auto}
+body.studioMobileOptimized .pdfObjectMiniBar button,
+body.studioMobileOptimized .pdfObjectMove{width:34px;height:34px;min-width:34px;min-height:34px}
+body.studioMobileOptimized .pdfObjectResize{width:18px;height:18px;right:-10px;bottom:-10px}
+body.studioMobileOptimized .canvasStage{min-height:58dvh!important;padding:6px!important}
+body.studioMobileOptimized .previewGrid{max-height:28dvh!important}
+body.studioMobileOptimized .inputDropZone{min-height:110px}
+.themeDark.studioMobileOptimized .studioMobileDock{background:#20262cf2;border-color:#46515c}
+.themeDark .studioTouchTooltip{background:#eef3f6;color:#17212a}
+
+@media(max-width:700px){
+  body[data-responsive-preference="auto"]{--studio-font-scale:.95}
+}
