@@ -27,10 +27,20 @@
         "file-picker",
         "folder-picker",
         "drop",
-        "selection-remove"
+        "selection-remove",
+        "nested-folder-drop",
+        "zip-expand",
+        "url-import",
+        "camera-capture",
+        "view-text-icon-preview",
+        "rotation-before-import"
       ],
       "consumers": [
-        "specialized-studios-v2"
+        "specialized-studios-v2",
+        "pdf-sign",
+        "merge-studio",
+        "scan-studio",
+        "qr-barcode-studio"
       ],
       "status": "canonical-ui"
     },
@@ -67,12 +77,18 @@
         "grayscale",
         "document-cleanup",
         "binary-cleanup",
-        "raster-export"
+        "raster-export",
+        "free-rotation-bounds",
+        "brightness",
+        "contrast",
+        "levels",
+        "bw-threshold"
       ],
       "consumers": [
         "image-studio",
         "scan-studio",
-        "input-picker-planned"
+        "input-picker-planned",
+        "pdf-studio-image-import"
       ],
       "status": "canonical-browser"
     },
@@ -173,7 +189,9 @@
         "tesseract-browser",
         "language-detection",
         "progress",
-        "diagnostics"
+        "diagnostics",
+        "word-bounding-boxes",
+        "searchable-pdf-text-layer"
       ],
       "consumers": [
         "ocr-studio",
@@ -306,6 +324,23 @@
       "status": "canonical"
     },
     {
+      "id": "edit-history",
+      "module": "APP-Applications/_shared/studio-v2/edit-history.js",
+      "capabilities": [
+        "checkpoint",
+        "undo",
+        "redo",
+        "clear",
+        "state-snapshot"
+      ],
+      "consumers": [
+        "image-studio",
+        "scan-studio",
+        "future-specialized-studios"
+      ],
+      "status": "canonical-ui-state"
+    },
+    {
       "id": "overlay",
       "module": "APP-Applications/_shared/studio-v2/object-transform-service.js",
       "capabilities": [
@@ -355,6 +390,42 @@
         "dataset-generator-studio"
       ],
       "status": "canonical-domain"
+    },
+    {
+      "id": "icon-theme",
+      "module": "APP-Applications/_shared/studio-v2/icon-registry.js",
+      "catalog": "assets/icons/themes/index.json",
+      "capabilities": [
+        "semantic-icon-id",
+        "theme-folder",
+        "sparse-overrides",
+        "canonical-fallback",
+        "runtime-theme-selection"
+      ],
+      "consumers": [
+        "all-studios",
+        "library-demo-icon-gallery"
+      ],
+      "status": "canonical-ui"
+    },
+    {
+      "id": "window-manager",
+      "module": "APP-Applications/_shared/studio-v2/window-system.js",
+      "capabilities": [
+        "z-order",
+        "drag",
+        "dock-undock",
+        "lock",
+        "resize",
+        "scroll-x-y",
+        "hide-restore",
+        "normal-large",
+        "persistence"
+      ],
+      "consumers": [
+        "all-studios"
+      ],
+      "status": "canonical-ui"
     }
   ],
   "promotionRule": {
