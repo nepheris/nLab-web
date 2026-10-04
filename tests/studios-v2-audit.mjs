@@ -59,9 +59,15 @@ if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push
   await p.locator('[data-setting="contextualHelpPanelMode"]').selectOption('free');
   await p.locator('#studioCoreSettingsClose').click();
   await p.locator('#studioContextHelpOpen').click();await p.waitForSelector('#studioContextHelpWindow:not([hidden])');
-  const help=await p.locator('#studioContextHelpWindow').evaluate(el=>{const r=el.getBoundingClientRect(),z=getComputedStyle(el).zIndex;return{left:r.left,top:r.top,z:Number(z)||0,mode:el.dataset.panelMode,topmost:el.dataset.studioWindowTopmost}});
-  if(help.left>40||help.z<100000||help.mode!=='free'||help.topmost!=='1')fail('Core 3.1 : aide contextuelle gauche/topmost/libre invalide · '+JSON.stringify(help));
-  if(errors.length)fail('Studio Core 3.1 settings/help: '+errors.join(' | '));results.push('core-settings-help-3.1');await p.close();
+  const help=await p.locator('#studioContextHelpWindow').evaluate(el=>{const r=el.getBoundingClientRect(),z=getComputedStyle(el).zIndex;return{left:r.left,top:r.top,z:Number(z)||0,mode:el.dataset.panelMode,topmost:el.dataset.studioWindowTopmost,registry:el.dataset.panelRegistryKey,role:el.getAttribute('role'),tabIndex:el.tabIndex}});
+  if(help.left>40||help.z<100000||help.mode!=='free'||help.topmost!=='1'||help.registry!=='context-help'||help.role!=='dialog'||help.tabIndex!==-1)fail('Core 3.1 : aide contextuelle/registre/focus invalide · '+JSON.stringify(help));
+  await p.keyboard.press('Escape');await p.waitForFunction(()=>document.querySelector('#studioContextHelpWindow')?.hidden===true,null,{timeout:3000});
+  const hiddenState=await p.evaluate(()=>({last:document.body.dataset.lastCoreWindow,action:document.body.dataset.lastCoreWindowAction,tray:!document.querySelector('#studioWindowRestoreTray')?.hidden}));
+  if(hiddenState.last!=='context-help'||hiddenState.action!=='hide'||!hiddenState.tray)fail('Core 3.1 : événement hide/restauration fenêtre invalide · '+JSON.stringify(hiddenState));
+  await p.locator('#studioRestoreWindows').click();await p.waitForFunction(()=>document.querySelector('#studioContextHelpWindow')?.hidden===false,null,{timeout:3000});
+  const restored=await p.evaluate(()=>({last:document.body.dataset.lastCoreWindow,action:document.body.dataset.lastCoreWindowAction}));
+  if(restored.last!=='context-help'||restored.action!=='restore')fail('Core 3.1 : événement restore invalide · '+JSON.stringify(restored));
+  if(errors.length)fail('Studio Core 3.1 settings/help: '+errors.join(' | '));results.push('core-settings-help-panel-registry-3.1');await p.close();
  }
 
  // Image Studio : identité, watermark, manifest et reset collection.
