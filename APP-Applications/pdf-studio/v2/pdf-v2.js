@@ -23,7 +23,8 @@ import{renderMarkdownFilePreview,renderPlainTextPreview}from'../../_shared/studi
 import{TemplateEngine,templateVariableHelp}from'../../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../../_shared/studio-v2/output-service.js';
 import{acceptAttribute,isSupportedFile,formatInfo}from'../../_shared/studio-v2/format-registry.js';
-import{enhanceStudioWindow}from'../../_shared/studio-v2/window-system.js';
+import{enhanceStudioWindow,showStudioWindow}from'../../_shared/studio-v2/window-system.js';
+import{openInputPicker,filesFromDrop}from'../../_shared/studio-v2/input-picker.js';
 import{mountPersonalProfileUI}from'../../_shared/studio-v2/personal-profile-ui.js';
 import{loadPersonalProfile,updatePersonalProfile,profileTemplateValues,getPersonalAsset,putPersonalAsset,addPersonalAssetRef,listPersonalTemplates,savePersonalTemplate,removePersonalTemplate}from'../../_shared/studio-v2/personal-profile-service.js';
 import{listRecentLocations,rememberLocation,resolveRecentLocation}from'../../_shared/studio-v2/recent-locations-service.js';
@@ -708,18 +709,22 @@ async function saveZip({classify=false}={}){if(!engine.pageCount)return;const pd
  else{if(provider==='local'&&!output.handle)await ensureOutputDirectory();const old=output.handle;if(provider!=='local')output.handle=null;await output.saveZip([{name:pdfName,data:pdf}],zipName,{parts,level:zipCompressionControl?.value||6});output.handle=old}
  setStatus('ZIP enregistré : '+zipName);recordHistory({studio:'pdf-studio',type:'action',label:classify?'ZIP enregistré + classé':'ZIP enregistré',detail:classify?parts.join('/'):'',target:zipName})}
 
-$('#pickFile').onclick=()=>$('#fileInput').click();
-$('#fileInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputHandle=null;activeInputLocation={kind:'files',label:files.length===1?files[0].name:files.length+' fichiers'};setValidatedButton($('#pickFile'),true,activeInputLocation.label);setValidatedButton($('#pickFolder'),false);await loadFiles(files)}};
-async function chooseInputDirectory(){
- if(window.showDirectoryPicker){
-  const handle=await showDirectoryPicker({mode:'read'}),files=await collectDirectoryHandle(handle,{recursive:$('#recursiveFolders').checked});
-  activeInputHandle=handle;activeInputLocation=await rememberLocation('input',handle,{label:handle.name,path:handle.name});setValidatedButton($('#pickFolder'),true,'Dossier validé : '+handle.name);setValidatedButton($('#pickFile'),false);renderRecentLocationSelects();await loadFiles(files);return
- }
- $('#folderInput').click()
+async function openCoreInputPicker({preferFolder=false}={}){
+ const files=await openInputPicker({accept:acceptAttribute(),multiple:true,folders:true,url:true,camera:false,expandZip:true,view:'preview'});
+ if(!files?.length)return;
+ activeInputHandle=null;activeInputLocation={kind:preferFolder?'folder':'picker',label:files.length===1?files[0].name:files.length+' éléments'};
+ setValidatedButton($('#pickFile'),!preferFolder,activeInputLocation.label);setValidatedButton($('#pickFolder'),preferFolder,activeInputLocation.label);
+ await loadFiles(files)
 }
-$('#pickFolder').onclick=()=>chooseInputDirectory().catch(e=>setStatus(e.message));
+$('#pickFile').onclick=()=>openCoreInputPicker({preferFolder:false}).catch(e=>setStatus('Entrée : '+e.message));
+$('#pickFolder').onclick=()=>openCoreInputPicker({preferFolder:true}).catch(e=>setStatus('Entrée : '+e.message));
+$('#fileInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputHandle=null;activeInputLocation={kind:'files',label:files.length===1?files[0].name:files.length+' fichiers'};setValidatedButton($('#pickFile'),true,activeInputLocation.label);setValidatedButton($('#pickFolder'),false);await loadFiles(files)}};
 $('#folderInput').onchange=async e=>{const files=e.target.files||[];if(files.length){activeInputHandle=null;const root=files[0].webkitRelativePath?.split('/')[0]||'Dossier';activeInputLocation={kind:'folder',label:root};setValidatedButton($('#pickFolder'),true,'Dossier validé : '+root);setValidatedButton($('#pickFile'),false);await loadFiles(files)}};
-mountDropZone($('#inputDropZone'),{onFiles:async files=>{if(files.length){activeInputHandle=null;activeInputLocation={kind:'drop',label:files.length+' élément(s) déposé(s)'};$('#inputDropZone').classList.add('validatedDropZone');await loadFiles(files)}}});
+$('#inputDropZone').addEventListener('dragover',e=>{e.preventDefault();e.currentTarget.classList.add('drag')});
+$('#inputDropZone').addEventListener('dragleave',e=>e.currentTarget.classList.remove('drag'));
+$('#inputDropZone').addEventListener('drop',async e=>{e.preventDefault();e.currentTarget.classList.remove('drag');try{const files=await filesFromDrop(e.dataTransfer);if(files.length){activeInputHandle=null;activeInputLocation={kind:'drop',label:files.length+' élément(s) déposé(s)'};$('#inputDropZone').classList.add('validatedDropZone');await loadFiles(files)}}catch(err){setStatus('Entrée : '+err.message)}});
+$('#inputDropZone').addEventListener('click',()=>openCoreInputPicker({preferFolder:false}).catch(e=>setStatus('Entrée : '+e.message)));
+$('#inputDropZone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCoreInputPicker({preferFolder:false}).catch(err=>setStatus('Entrée : '+err.message))}});
 $('#loadRecentInput').onclick=async()=>{const id=$('#recentInputSelect').value;if(!id)return;try{const {item,handle}=await resolveRecentLocation('input',id,{mode:'read'}),files=await collectDirectoryHandle(handle,{recursive:$('#recursiveFolders').checked});activeInputHandle=handle;activeInputLocation=item;setValidatedButton($('#pickFolder'),true,'Entrée récente : '+item.label);setValidatedButton($('#pickFile'),false);$('#recentInputSelect').classList.add('validatedChoice');await loadFiles(files);setStatus('Entrée récente chargée : '+item.label)}catch(e){setStatus(e.message)}};
 $('#importLegacyConfig')?.addEventListener('click',()=>$('#legacyConfigInput').click());
 $('#legacyConfigInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const raw=JSON.parse(await file.text()),report=migrateLegacyPdfConfig(raw);loadPdfProfilePreferences();renderNamingPresets();renderStampPresets();renderObjectAssetSelectors();renderDriveState();updateNamingPreview();updateOutputPreview();$('#legacyConfigStatus').textContent=report.length?'Migration : '+report.join(' · '):'JSON reconnu mais aucun réglage migrable détecté.';setStatus('Ancienne configuration importée / fusionnée.')}catch(err){$('#legacyConfigStatus').textContent='Erreur : '+err.message;setStatus('Migration configuration : '+err.message)}finally{e.target.value=''}});
@@ -757,14 +762,27 @@ function currentSidebarPane(){return $('[data-sidebar-pane].active')||$('#sideba
 function setCurrentPaneDetails(open){currentSidebarPane()?.querySelectorAll('details').forEach(x=>x.open=open)}
 $$('[data-sidebar-tab]').forEach(b=>b.onclick=()=>activateSidebarTab(b.dataset.sidebarTab));$('#sidebar-collapse-all').onclick=()=>setCurrentPaneDetails(false);$('#sidebar-expand-all').onclick=()=>setCurrentPaneDetails(true);
 let sidebarFloating=false;
+function syncSidebarLock(){
+ const locked=!!loadStudioSettings().sidebarLocked,b=$('#sidebarLock');if(!b)return;
+ b.classList.toggle('locked',locked);b.textContent=locked?'🔒 Verrouillé':'🔓 Déverrouillé';b.title=locked?'Déverrouiller le volet PDF Studio':'Verrouiller la largeur et la position du volet'
+}
+function syncSidebarHiddenState(){
+ const hidden=(loadStudioSettings().sidebarMode||'normal')==='hidden'||document.body.classList.contains('sidebarHidden');
+ $('#sidebarRestore').hidden=!hidden
+}
 function setSidebarFloating(on){
  const sidebar=$('#studioSidebar'),main=$('#studioMain');sidebarFloating=!!on;sidebar.classList.toggle('studioSidebarFloating',sidebarFloating);main.classList.toggle('sidebarDetached',sidebarFloating);$('#sidebarDetach').textContent=sidebarFloating?'↙ Réancrer':'↗ Détacher';
- if(sidebarFloating&&!sidebar.dataset.studioWinBound){enhanceStudioWindow(sidebar,{key:'pdf-sidebar',title:'PDF Studio · Outils'});sidebar.addEventListener('studio-window-dock',()=>setSidebarFloating(false));sidebar.addEventListener('studio-window-close',()=>{setSidebarFloating(false);main.classList.add('sidebarHidden');$('#sidebarRestore').hidden=false})}
+ if(sidebarFloating&&!sidebar.dataset.studioWinBound){enhanceStudioWindow(sidebar,{key:'pdf-sidebar',title:'PDF Studio · Outils'});sidebar.addEventListener('studio-window-dock',()=>setSidebarFloating(false));sidebar.addEventListener('studio-window-close',()=>{setSidebarFloating(false);saveStudioSettings({sidebarMode:'hidden'});syncSidebarHiddenState()})}
+ if(sidebarFloating)showStudioWindow('pdf-sidebar');
  if(!sidebarFloating){sidebar.classList.remove('studioWindowDocked');sidebar.style.left='';sidebar.style.top='';sidebar.style.right='';sidebar.style.width='';sidebar.style.height='';sidebar.style.transform=''}
 }
 $('#sidebarDetach').onclick=()=>setSidebarFloating(!sidebarFloating);
-$('#sidebarModeQuick').value=loadStudioSettings().sidebarMode||'normal';$('#sidebarModeQuick').addEventListener('change',()=>saveStudioSettings({sidebarMode:$('#sidebarModeQuick').value}));
-const resizer=$('#sidebarResizer');let resizing=false;resizer.addEventListener('pointerdown',e=>{resizing=true;resizeWidth=loadStudioSettings().sidebarWidth;resizer.setPointerCapture(e.pointerId)});resizer.addEventListener('pointermove',e=>{if(!resizing)return;resizeWidth=Math.max(220,Math.min(720,e.clientX-10));document.body.style.setProperty('--studio-sidebar-width',resizeWidth+'px')});resizer.addEventListener('pointerup',()=>{resizing=false;if(resizeWidth)saveStudioSettings({sidebarWidth:resizeWidth})});
+$('#sidebarLock').onclick=()=>{const s=loadStudioSettings();saveStudioSettings({sidebarLocked:!s.sidebarLocked});syncSidebarLock()};
+$('#sidebarModeQuick').value=loadStudioSettings().sidebarMode||'normal';$('#sidebarModeQuick').addEventListener('change',()=>{saveStudioSettings({sidebarMode:$('#sidebarModeQuick').value});syncSidebarHiddenState()});
+$('#sidebarRestore').onclick=()=>{saveStudioSettings({sidebarMode:'normal'});document.body.classList.remove('sidebarHidden');$('#sidebarModeQuick').value='normal';syncSidebarHiddenState()};
+document.addEventListener('studio-v2:settings-changed',()=>{syncSidebarLock();syncSidebarHiddenState()});
+const resizer=$('#sidebarResizer');let resizing=false;resizer.addEventListener('pointerdown',e=>{if(loadStudioSettings().sidebarLocked)return;resizing=true;resizeWidth=loadStudioSettings().sidebarWidth;resizer.setPointerCapture(e.pointerId)});resizer.addEventListener('pointermove',e=>{if(!resizing)return;resizeWidth=Math.max(220,Math.min(720,e.clientX-10));document.body.style.setProperty('--studio-sidebar-width',resizeWidth+'px')});resizer.addEventListener('pointerup',()=>{resizing=false;if(resizeWidth)saveStudioSettings({sidebarWidth:resizeWidth})});
+syncSidebarLock();syncSidebarHiddenState();
 
 function bindHelpCatalogActions(host){
  host?.querySelectorAll('[data-help-open]').forEach(b=>b.onclick=()=>document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:b.dataset.helpOpen,source:'help',element:b}})))

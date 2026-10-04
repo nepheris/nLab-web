@@ -1,14 +1,23 @@
 {
   "name": "QR & Barcode Studio",
   "current": "0.2.0",
-  "test": "2.3.0",
+  "test": "2.4.0",
   "versions": [
+    {
+      "version": "2.4.0",
+      "label": "QR & Barcode Studio 2.4.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Core 3.0 : workflows Générer/Lire séparés, lecture via Input commun, aperçu zoomable et panneau Contenu synchronisé."
+    },
     {
       "version": "2.3.0",
       "label": "QR & Barcode Studio 2.3.0 TEST",
       "date": "2026-10-04",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe TEST Core 2.9 et audit avancé : options QR, SVG/PNG, HID, historique et scan image revalidés ; Color Picker mutualisé conservé."
     },

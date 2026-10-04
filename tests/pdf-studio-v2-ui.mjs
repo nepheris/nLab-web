@@ -15,12 +15,12 @@ try{
  await page.waitForSelector('#fileInput',{state:'attached',timeout:30000});
  await page.waitForTimeout(1200);if(errors.length)fail('Démarrage PDF V2 en erreur: '+errors.join(' | '));
  for(const id of ['sectionInput','sectionOutput','sectionPages','sectionAssembly','sectionStamps','sectionAnnotations','sectionOcr','sectionOptimize','sectionTranslate','sectionSignature','sectionCodes','sectionPageOutput','sectionConversion','sectionForms','sectionRedaction','sectionCompare','sectionBatch','sectionSecurity','sectionDiagnostics'])if(!await page.locator('#'+id).count())fail('Section V2 absente: '+id);
- // Fichier local : le contrôle est volontairement caché, mais doit accepter un fichier et déclencher le moteur.
- const fileChooserPromise=page.waitForEvent('filechooser');await page.locator('#pickFile').click();const fileChooser=await fileChooserPromise;await fileChooser.setFiles(fixture);
+ // Fichier local : passe par le Picker Core mutualisé.
+ await page.locator('#pickFile').click();await page.waitForSelector('#studioInputPicker:not([hidden])');await page.locator('#studioInputFilesNative').setInputFiles(fixture);await page.locator('#studioInputConfirm').click();
  await page.waitForFunction(()=>/\/\s*12/.test(document.querySelector('#pageInfo')?.textContent||''),null,{timeout:30000});
  if(!/pdf-studio-v1\.pdf/i.test(await page.locator('#sourceStatus').textContent()))fail('Ouverture fichier local non reflétée dans l’état');
- // Dossier : simule le fallback input webkitdirectory en injectant plusieurs fichiers.
- const folderChooserPromise=page.waitForEvent('filechooser');await page.locator('#pickFolder').click();const folderChooser=await folderChooserPromise;await folderChooser.setFiles(folderFixture);
+ // Dossier : même Picker Core, entrée dossier webkitdirectory.
+ await page.locator('#pickFolder').click();await page.waitForSelector('#studioInputPicker:not([hidden])');await page.locator('#studioInputFolderNative').setInputFiles(folderFixture);await page.locator('#studioInputConfirm').click();
  await page.waitForFunction(()=>/fichier/i.test(document.querySelector('#sourceStatus')?.textContent||'')||document.querySelectorAll('#fileCollection [data-collection-id]').length>=1,null,{timeout:30000});
  // Source distante : même moteur, via une URL HTTP/CORS accessible.
  const remoteUrl=new URL('/Library/demo/files/demo-input/Security/demo-redaction-secrets.pdf',url).href;

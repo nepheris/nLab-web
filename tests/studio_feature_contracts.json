@@ -3,7 +3,7 @@
   "updated": "2026-10-04",
   "studios": {
     "image-studio": {
-      "test": "2.4.0",
+      "test": "2.5.0",
       "required_ids": [
         "file",
         "demoSynthetic",
@@ -54,7 +54,14 @@
         "cropMouseMode",
         "cropCancel",
         "cropApplySelection",
-        "cropOverlay"
+        "cropOverlay",
+        "redoEdit",
+        "freeAngle",
+        "applyFreeRotation",
+        "zoomOut",
+        "zoomIn",
+        "zoomFit",
+        "zoomActual"
       ],
       "required_strings": [
         "studio-v2/studio.css",
@@ -74,7 +81,7 @@
         "image.collection.multi",
         "image.transform.crop.mouse",
         "image.units.px-percent-pt",
-        "image.history.undo-reset"
+        "image.history.undo-redo-reset"
       ]
     },
     "ocr-studio": {
@@ -117,7 +124,7 @@
       ]
     },
     "code-studio": {
-      "test": "2.2.0",
+      "test": "2.3.0",
       "required_ids": [
         "file",
         "demo",
@@ -132,7 +139,12 @@
         "cursor",
         "editor",
         "codeAddFiles",
-        "codeFiles"
+        "codeFiles",
+        "undo",
+        "redo",
+        "copyCode",
+        "pasteCode",
+        "replace"
       ],
       "required_strings": [
         "studio-v2/studio.css",
@@ -148,7 +160,7 @@
       ]
     },
     "json-studio": {
-      "test": "2.1.0",
+      "test": "2.2.0",
       "required_ids": [
         "file",
         "demo",
@@ -169,7 +181,11 @@
         "queryPane",
         "path",
         "query",
-        "result"
+        "result",
+        "tablePane",
+        "tableView",
+        "flatPane",
+        "flatView"
       ],
       "required_strings": [
         "studio-v2/studio.css",
@@ -253,7 +269,7 @@
       ]
     },
     "qr-barcode-studio": {
-      "test": "2.3.0",
+      "test": "2.4.0",
       "required_ids": [
         "symTabs",
         "value",
@@ -283,7 +299,15 @@
         "scanFile",
         "scanStatus",
         "clearHistory",
-        "history"
+        "history",
+        "zoomOut",
+        "zoomIn",
+        "zoomFit",
+        "zoomActual",
+        "zoomLabel",
+        "contentType",
+        "contentValue",
+        "copyContent"
       ],
       "required_strings": [
         "qr-code-styling",
@@ -421,7 +445,7 @@
       ]
     },
     "pdf-studio": {
-      "test": "2.10.0",
+      "test": "2.11.0",
       "path": "APP-Applications/pdf-studio/v2/index.html",
       "runtime": "APP-Applications/pdf-studio/v2/pdf-v2.js",
       "required_ids": [
@@ -533,7 +557,11 @@
         "applyBates",
         "pdfArtifactStatus",
         "generatePdfArtifact",
-        "exportPdfArtifact"
+        "exportPdfArtifact",
+        "sidebarLock",
+        "sidebarDetach",
+        "sidebarModeQuick",
+        "sidebarRestore"
       ],
       "required_runtime_strings": [
         "mountStudioV2",
@@ -590,7 +618,7 @@
       }
     },
     "document-studio": {
-      "test": "1.1.0",
+      "test": "1.2.0",
       "required_ids": [
         "fileInput",
         "status",
@@ -622,7 +650,7 @@
       ]
     },
     "spreadsheet-studio": {
-      "test": "1.1.0",
+      "test": "1.2.0",
       "required_ids": [
         "fileInput",
         "sheetSelect",
@@ -657,7 +685,7 @@
       ]
     },
     "scan-studio": {
-      "test": "0.2.0",
+      "test": "0.3.0",
       "runtime": "APP-Applications/scan-studio/v2/v2-app.js",
       "required_ids": [
         "drop",
@@ -680,7 +708,21 @@
         "status",
         "ocrOut",
         "canvas",
-        "downloadPage"
+        "downloadPage",
+        "selectAll",
+        "selectNone",
+        "undoScan",
+        "redoScan",
+        "resetLot",
+        "freeRotation",
+        "brightness",
+        "contrast",
+        "blackPoint",
+        "whitePoint",
+        "threshold",
+        "runOcrSelection",
+        "runOcrDocument",
+        "searchablePdf"
       ],
       "required_strings": [
         "studio-v2/studio.css",
@@ -702,7 +744,11 @@
         "scan.image.cleanup",
         "scan.image.deskew",
         "scan.ocr",
-        "scan.export.pdf"
+        "scan.export.pdf",
+        "scan.history.undo-redo",
+        "scan.image.adjustments",
+        "scan.ocr.page-selection-document",
+        "scan.export.pdf-searchable"
       ]
     }
   }

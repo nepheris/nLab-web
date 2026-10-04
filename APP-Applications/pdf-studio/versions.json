@@ -1,13 +1,22 @@
 {
   "current": "0.9.10",
-  "test": "2.10.0",
+  "test": "2.11.0",
   "versions": [
+    {
+      "version": "2.11.0",
+      "label": "PDF Studio 2.11.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Convergence Core 3.0 : entrée fichier/dossier/URL/ZIP/drop via Input Picker commun, volet verrouillable/restaurable/redimensionnable/détachable et héritage des nouvelles fenêtres/thèmes Core."
+    },
     {
       "version": "2.10.0",
       "label": "PDF Studio 2.10.0 TEST",
       "date": "2026-10-04",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe TEST Core 2.9 : nouveau Input Picker mutualisé Texte/Icône/Preview avec SVG canoniques, vignette image/page 1 PDF, métadonnées et rotations matérialisées ; conserve l’ensemble des capacités PDF 2.9 et le correctif Scan découvert par l’audit de flotte."
     },

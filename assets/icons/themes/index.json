@@ -1,0 +1,15 @@
+{
+  "schema": "nlab-icon-themes/v1",
+  "defaultTheme": "nlab-line",
+  "fallback": "nlab-line",
+  "convention": "A theme folder contains sparse SVG overrides named <semantic-icon-id>.svg. Missing files always fall back to nlab-line.",
+  "themes": [
+    {
+      "id": "nlab-line",
+      "label": "nLab Line — canonique",
+      "description": "Jeu canonique actuel. Fallback global de toutes les familles.",
+      "base": null,
+      "fallback": null
+    }
+  ]
+}

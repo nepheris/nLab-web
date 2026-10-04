@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "channel": "test",
-  "notes": "Studio Core 2.9 : Input Picker enrichi et mutualisé avec vues Texte / Icône / Preview, SVG filetype et dossier canoniques, vignette image réelle, aperçu page 1 PDF, nom complet + extension, taille Ko, nombre de pages PDF, suppression individuelle, rotation ±90° matérialisée sur images et toutes les pages PDF, vue persistante, plus les profils responsive/mobile et fenêtres Core de la base 2.8.",
+  "notes": "Studio Core 3.0 : Window Manager unifié (z-order, verrou rouge, détachement, taille, restauration des fenêtres masquées), thèmes clair/sombre renforcés, aide contextuelle overlay, Input Picker commun fichier/dossier/drop/ZIP/URL/photo, historique d’édition partagé, Image Engine enrichi et thèmes d’icônes avec fallback canonique.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }

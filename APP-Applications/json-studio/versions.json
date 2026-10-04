@@ -1,14 +1,23 @@
 {
   "name": "JSON Studio",
   "current": "0.2.0",
-  "test": "2.1.0",
+  "test": "2.2.0",
   "versions": [
+    {
+      "version": "2.2.0",
+      "label": "JSON Studio 2.2.0 TEST",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Core 3.0 : arbre éditable synchronisé avec le code, focus automatique sur la modification, ajout enfant/frère, suppression, vues Tableau et À plat, jeux de test marqués DEV et Input commun."
+    },
     {
       "version": "2.1.0",
       "label": "JSON Studio 2.1.0 TEST",
       "date": "2026-10-04",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe TEST Core 2.9 et recette étendue : chargement, validation, arbre, statistiques, lecture par chemin et export revalidés avec le nouveau sélecteur partagé."
     },

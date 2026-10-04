@@ -36,8 +36,8 @@ export async function recognizeImage(file,{language='auto',engine='auto',logger=
  }else if(typeof Tesseract.recognize==='function'){
   ret=await Tesseract.recognize(file,pack,{logger:logger||(()=>{})})
  }else throw new Error('API Tesseract.js indisponible');
- const text=String(ret?.data?.text||'').trim(),detected=detectLanguageFromText(text);
- return{text,engine:resolved.id,requestedLanguage:language,effectivePack:pack,detectedLanguage:detected.language,languageConfidence:detected.confidence,confidence:ret?.data?.confidence??null}
+ const text=String(ret?.data?.text||'').trim(),detected=detectLanguageFromText(text),words=(ret?.data?.words||[]).map(w=>({text:String(w.text||'').trim(),confidence:w.confidence??null,bbox:w.bbox?{x0:Number(w.bbox.x0)||0,y0:Number(w.bbox.y0)||0,x1:Number(w.bbox.x1)||0,y1:Number(w.bbox.y1)||0}:null})).filter(w=>w.text);
+ return{text,words,engine:resolved.id,requestedLanguage:language,effectivePack:pack,detectedLanguage:detected.language,languageConfidence:detected.confidence,confidence:ret?.data?.confidence??null}
 }
 export async function runOcr(file,options={}){
  return recognizeImage(file,options)
