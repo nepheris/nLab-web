@@ -16,13 +16,13 @@ function miniSvg(name){
 }
 function dataUrlBytes(dataUrl){const [head,b64]=String(dataUrl).split(','),bin=atob(b64||''),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return{bytes:u,type:/png/i.test(head)?'png':'jpg'}}
 export class PdfObjectLayer extends EventTarget{
- constructor({engine,mainHost,templates}={}){super();this.engine=engine;this.mainHost=mainHost;this.templates=templates;this.tool='select';this.selectedId=null;this.style={color:'#316D9A',fontSize:12,opacity:1,penWidth:2,highlightColor:'#FFEB3B',redactionColor:'#000000'};this.text='Texte';this.imageData=null;this.imageKind='image';this.stamp={template:'VALIDÉ\n{DISPLAY_NAME}\n{STAMP_DATE:DD/MM/YYYY}',imageData:null};this.penDraft=null}
+ constructor({engine,mainHost,templates}={}){super();this.engine=engine;this.mainHost=mainHost;this.templates=templates;this.tool='select';this.selectedId=null;this.style={color:'#316D9A',fontSize:12,opacity:1,penWidth:2,highlightColor:'#FFEB3B',redactionColor:'#000000'};this.text='Texte';this.imageData=null;this.imageKind='image';this.stamp={template:'VALIDÉ\n{DISPLAY_NAME}\n{STAMP_DATE:DD/MM/YYYY}',imageData:null,color:'#316D9A'};this.penDraft=null}
  setTool(tool){this.tool=tool||'select';this.render();this.dispatchEvent(new CustomEvent('toolchange',{detail:{tool:this.tool}}))}
  setStyle(next={}){this.style={...this.style,...next};this.render()}
  setText(text){this.text=String(text||'Texte')}
  async setImageBlob(blob,kind='image'){this.imageData=blob?await normalizedImageDataUrl(blob):null;this.imageKind=kind;return this.imageData}
  setImageData(dataUrl,kind='image'){this.imageData=dataUrl||null;this.imageKind=kind}
- setStamp({template,imageData}={}){if(template!=null)this.stamp.template=String(template);if(imageData!==undefined)this.stamp.imageData=imageData}
+ setStamp({template,imageData,color}={}){if(template!=null)this.stamp.template=String(template);if(imageData!==undefined)this.stamp.imageData=imageData;if(color)this.stamp.color=String(color)}
  hasObjects(){return this.engine.pageAnnotations&&[...this.engine.pageAnnotations.values()].some(a=>a?.length)}
  pointPct(ev,wrap){const r=wrap.getBoundingClientRect();return{x:clamp((ev.clientX-r.left)/r.width*100,0,99),y:clamp((ev.clientY-r.top)/r.height*100,0,99)}}
  add(page,obj){return this.engine.addAnnotation(page,{id:uid(),rotation:0,opacity:this.style.opacity,locked:false,...obj})}
@@ -30,7 +30,7 @@ export class PdfObjectLayer extends EventTarget{
   if(type==='text')return this.add(page,{type:'text',xPct:x,yPct:y,text:this.text,fontSize:this.style.fontSize,color:this.style.color,wPct:28});
   if(type==='highlight')return this.add(page,{type:'highlight',xPct:x,yPct:y,wPct:24,hPct:5,color:this.style.highlightColor,opacity:.35});
   if(type==='image'||type==='signature'){if(!this.imageData)throw new Error(type==='signature'?'Choisissez une signature ou un paraphe':'Choisissez une image');return this.add(page,{type,xPct:x,yPct:y,wPct:type==='signature'?24:22,dataUrl:this.imageData})}
-  if(type==='stamp'){const text=this.templates?.resolve?.(this.stamp.template,this.engine.fileName,{PAGE:page,PAGES:this.engine.pageCount})||this.stamp.template;return this.add(page,{type:'stamp',xPct:x,yPct:y,wPct:30,text,fontSize:this.style.fontSize,color:'#A1453F',imageDataUrl:this.stamp.imageData||null})}
+  if(type==='stamp'){const text=this.templates?.resolve?.(this.stamp.template,this.engine.fileName,{PAGE:page,PAGES:this.engine.pageCount})||this.stamp.template;return this.add(page,{type:'stamp',xPct:x,yPct:y,wPct:30,text,fontSize:this.style.fontSize,color:this.stamp.color||this.style.color||'#316D9A',imageDataUrl:this.stamp.imageData||null})}
   if(type==='redaction')return this.add(page,{type:'redaction',xPct:x,yPct:y,wPct:25,hPct:7,color:this.style.redactionColor||'#000000',opacity:1});
   return null
  }
