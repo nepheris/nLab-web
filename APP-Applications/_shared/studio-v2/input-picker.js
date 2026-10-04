@@ -2,7 +2,7 @@ import{enhanceStudioWindow}from'./window-system.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const asset=(group,name)=>new URL(`../../../assets/icons/${group}/${name}`,import.meta.url).href;
-const FILETYPE_ICONS=new Set(['7z','avif','bmp','csv','doc','docx','epub','flac','gif','heic','html','ico','jpeg','jpg','json','mp4','odp','ods','odt','parquet','pdf','png','ppt','pptx','sql','svg','tar','tif','tiff','tsv','txt','wav','webm','webp','xls','xlsx','xml','yaml','zip']);
+const FILETYPE_ICONS=new Set(['7z','avif','bmp','csv','doc','docx','epub','flac','gif','heic','html','ico','jpeg','jpg','json','markdown','mobi','mov','mp3','mp4','odp','ods','odt','parquet','pdf','png','ppt','pptx','sql','svg','tar','tif','tiff','tsv','txt','wav','webm','webp','xls','xlsx','xml','yaml','zip']);
 let state={files:[],options:{},resolve:null,view:'text',meta:new Map(),busy:false};
 let pdfJsPromise=null,pdfLibPromise=null;
 
