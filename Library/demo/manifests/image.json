@@ -45,21 +45,6 @@
       "path": "../files/demo-input/Images/demo-image-color.webp",
       "size": 16224,
       "sha256": "1e382e65305775985d93c1e86332ed75676f241ff4ab5340ff39fda36dab5ef4"
-    },
-    {
-      "path": "../files/demo-input/Images/Signatures/demo-signature-martin.png",
-      "size": 189192,
-      "sha256": "6e4f77684523c202ae5d86e9caa837c55d48b13ba0f289ec23bc5c3237908b85"
-    },
-    {
-      "path": "../files/demo-input/Images/Signatures/demo-paraphe-dm.png",
-      "size": 166499,
-      "sha256": "7636fef3b5656519b951c5d80fff379cb8a2d7f133c2a0dde2e1457ef08e4b80"
-    },
-    {
-      "path": "../files/demo-input/Images/Signatures/demo-signature-demo-corp.png",
-      "size": 413613,
-      "sha256": "207ef4842611ee842705fc1a7c3e0401c7dfdac5fec2d734f325d0c759d55c15"
     }
   ]
 }
