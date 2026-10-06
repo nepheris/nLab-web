@@ -17,7 +17,7 @@ export function registerCommand(def={}){
     shortLabel:norm(def.shortLabel||def.label||previous.shortLabel||previous.label||action),
     scope:norm(def.scope||previous.scope||'studio'),
     plugin:norm(def.plugin||previous.plugin||'studio-core'),
-    studio:norm(def.studio||previous.studio||document?.body?.dataset?.studio||'studio'),
+    studio:norm(def.studio||previous.studio||((typeof document!=='undefined'&&document.body?.dataset?.studio)||'studio')),
     status:norm(def.status||previous.status||'stable'),
     group:norm(def.group||previous.group||''),
     keywords:Array.isArray(def.keywords)?def.keywords:(previous.keywords||[]),
@@ -87,15 +87,15 @@ export async function executeCommand(commandOrId,{source='command-registry',cont
   const cmd=typeof commandOrId==='string'?(getCommand(commandOrId)||commandForAction(commandOrId)):commandOrId;
   if(!cmd)throw new Error('Commande inconnue : '+String(commandOrId));
   if(!canExecuteCommand(cmd,context)){
-    document?.dispatchEvent?.(new CustomEvent('studio-v2:command-blocked',{detail:{command:cmd,context,source}}));
+    if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:command-blocked',{detail:{command:cmd,context,source}}));
     return{ok:false,reason:'disabled',command:cmd};
   }
   const payload={action:cmd.action,commandId:cmd.id,command:cmd,context,source,...detail};
-  document?.dispatchEvent?.(new CustomEvent('studio-v2:before-command',{detail:payload}));
+  if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:before-command',{detail:payload}));
   let result;
   if(typeof cmd.handler==='function')result=await cmd.handler(payload);
-  else document?.dispatchEvent?.(new CustomEvent('studio-v2:action',{detail:payload}));
-  document?.dispatchEvent?.(new CustomEvent('studio-v2:command-executed',{detail:{...payload,result}}));
+  else if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:payload}));
+  if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:command-executed',{detail:{...payload,result}}));
   return{ok:true,command:cmd,result};
 }
 
