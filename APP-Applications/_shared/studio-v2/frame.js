@@ -9,6 +9,8 @@ import{mountWorkflowUI}from'./workflow-ui.js';
 import{openStudio as openResolvedStudio}from'./studio-link-resolver.js';
 import{findFeature,renderContextualHelp}from'./help.js';
 import{registerCorePanel,getCorePanel,listCorePanels}from'./panel-registry.js';
+import{mountPropertyInspector}from'./property-inspector.js';
+import{mountContextMenu}from'./context-menu.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
@@ -19,7 +21,8 @@ const CORE_RIBBON_GROUPS=[
     {id:'core-redo',action:'core.redo',label:'Rétablir',icon:'redo',scope:'core',featureId:'core.redo',capability:'core.redo',status:'stable',shortcut:'Ctrl+Y'}
   ]},
   {id:'core-command',label:'Commandes',scope:'core',items:[
-    {id:'core-command-palette',action:'core.commands',label:'Commandes',icon:'command',scope:'core',featureId:'core.commands',capability:'core.commands',status:'stable',primary:true,shortcut:'Ctrl+K'}
+    {id:'core-command-palette',action:'core.commands',label:'Commandes',icon:'command',scope:'core',featureId:'core.commands',capability:'core.commands',status:'stable',primary:true,shortcut:'Ctrl+K'},
+    {id:'core-properties',action:'core.properties',label:'Propriétés',icon:'settings',scope:'core',featureId:'core.properties',capability:'core.properties',status:'stable'}
   ]}
 ];
 function itemButton(it){
@@ -149,6 +152,8 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   document.addEventListener('studio-v2:settings-changed',syncRibbonPersonalization);
   mountHistoryUI();
   mountCommandPalette();
+  mountPropertyInspector();
+  mountContextMenu(root);
   mountWorkflowUI();
   bindStudioChrome();
   applyRibbonGroups();
