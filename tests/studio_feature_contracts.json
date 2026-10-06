@@ -3,7 +3,7 @@
   "updated": "2026-10-04",
   "studios": {
     "image-studio": {
-      "test": "2.5.0",
+      "test": "2.6.0",
       "required_ids": [
         "file",
         "demoSynthetic",
@@ -67,7 +67,8 @@
         "studio-v2/studio.css",
         "bootstrap-specialized.js",
         "image-service.js",
-        "download-service.js"
+        "download-service.js",
+        "undo-redo.js"
       ],
       "required_capabilities": [
         "image.transform.rotate",
