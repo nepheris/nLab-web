@@ -54,6 +54,7 @@ export function mountPropertyInspector(){
   const panel=ensure();render();
   document.addEventListener('studio-v2:context-changed',()=>{render();if(!panel.hidden)bringStudioWindowToFront(panel)});
   document.addEventListener('studio-v2:open-properties',()=>{render();showStudioWindow('property-inspector')});
+  document.addEventListener('studio-v2:action',e=>{if(e.detail?.action==='core.properties'){render();showStudioWindow('property-inspector')}});
   document.addEventListener('studio-v2:close-properties',()=>hideStudioWindow('property-inspector'));
   return panel;
 }
