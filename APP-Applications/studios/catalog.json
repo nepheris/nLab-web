@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studios-catalog/v2",
-  "updated": "2026-10-04",
+  "updated": "2026-10-06",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
     {
@@ -284,8 +284,8 @@
     "metadata": "versions registry + Git commit metadata",
     "responsive_contract": "mobile-tablet-desktop",
     "propagation": "shared Core/Engine capability changes are consumed by Studios; derived apps expose capability subsets",
-    "core_version": "3.0.0-test",
-    "test_generation": "2026-10-04-core-3.0-ui-input-history-icons"
+    "core_version": "3.3.0-test",
+    "test_generation": "2026-10-06-core-3.3-command-context-undo-properties"
   },
   "derived_apps": [
     {
@@ -302,7 +302,7 @@
     {
       "id": "merge-studio",
       "name": "nLab Merge Studio",
-      "status": "test-0.3.0",
+      "status": "test-0.4.0",
       "parent_studio": "pdf-studio",
       "path": "../merge-studio/",
       "versions_path": "../merge-studio/versions.html",
