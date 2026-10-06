@@ -4,7 +4,7 @@ let limit=200;
 const notify=(reason,entry=null)=>{
   const snapshot=getUndoRedoState();
   for(const fn of listeners){try{fn(snapshot,reason,entry)}catch(e){console.error(e)}}
-  document?.dispatchEvent?.(new CustomEvent('studio-v2:undo-redo-changed',{detail:{...snapshot,reason,entry}}));
+  if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:undo-redo-changed',{detail:{...snapshot,reason,entry}}));
 };
 
 function normalize(entry={}){
@@ -44,7 +44,7 @@ export async function undo(){
   const tx=undoStack.pop();if(!tx)return false;
   try{
     if(tx.undo)await tx.undo(tx);
-    else document?.dispatchEvent?.(new CustomEvent('studio-v2:undo-request',{detail:{transaction:tx}}));
+    else if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:undo-request',{detail:{transaction:tx}}));
     redoStack.push(tx);notify('undo',tx);return true;
   }catch(e){undoStack.push(tx);notify('undo-error',tx);throw e}
 }
@@ -53,7 +53,7 @@ export async function redo(){
   const tx=redoStack.pop();if(!tx)return false;
   try{
     if(tx.redo)await tx.redo(tx);
-    else document?.dispatchEvent?.(new CustomEvent('studio-v2:redo-request',{detail:{transaction:tx}}));
+    else if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:redo-request',{detail:{transaction:tx}}));
     undoStack.push(tx);notify('redo',tx);return true;
   }catch(e){redoStack.push(tx);notify('redo-error',tx);throw e}
 }
