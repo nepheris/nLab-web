@@ -9,8 +9,8 @@ function registerCoreCommands(){
   if(coreRegistered)return;
   coreRegistered=true;
   const core=[
-    {id:'core.undo',action:'core.undo',label:'Annuler',shortLabel:'Annuler',icon:'undo',scope:'core',plugin:'studio-core',status:'stable',group:'history',shortcut:'Ctrl+Z',keywords:['retour','historique'],priority:'primary'},
-    {id:'core.redo',action:'core.redo',label:'Rétablir',shortLabel:'Rétablir',icon:'redo',scope:'core',plugin:'studio-core',status:'stable',group:'history',shortcut:'Ctrl+Y / Ctrl+Maj+Z',keywords:['refaire','historique'],priority:'primary'},
+    {id:'core.undo',action:'core.undo',label:'Annuler',shortLabel:'Annuler',icon:'undo',scope:'core',plugin:'studio-core',status:'stable',group:'history',shortcut:'Ctrl+Z',keywords:['retour','historique'],priority:'primary',when:()=>globalThis.NLABStudioUndoRedo?.get?.().canUndo===true},
+    {id:'core.redo',action:'core.redo',label:'Rétablir',shortLabel:'Rétablir',icon:'redo',scope:'core',plugin:'studio-core',status:'stable',group:'history',shortcut:'Ctrl+Y / Ctrl+Maj+Z',keywords:['refaire','historique'],priority:'primary',when:()=>globalThis.NLABStudioUndoRedo?.get?.().canRedo===true},
     {id:'core.commands',action:'core.commands',label:'Palette de commandes',shortLabel:'Commandes',icon:'command',scope:'core',plugin:'studio-core',status:'stable',group:'navigation',shortcut:'Ctrl+K',keywords:['rechercher','palette','actions'],priority:'secondary'}
   ];
   for(const cmd of core){REG.set(cmd.id,cmd);registerCommand(cmd)}
