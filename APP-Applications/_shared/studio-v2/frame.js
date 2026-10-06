@@ -13,6 +13,15 @@ import{registerCorePanel,getCorePanel,listCorePanels}from'./panel-registry.js';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
 const scopeClass=x=>scopeOf(x)==='core'?'core':'studio';
+const CORE_RIBBON_GROUPS=[
+  {id:'core-history',label:'Historique',scope:'core',items:[
+    {id:'core-undo',action:'core.undo',label:'Annuler',icon:'undo',scope:'core',featureId:'core.undo',capability:'core.undo',status:'stable',shortcut:'Ctrl+Z'},
+    {id:'core-redo',action:'core.redo',label:'Rétablir',icon:'redo',scope:'core',featureId:'core.redo',capability:'core.redo',status:'stable',shortcut:'Ctrl+Y'}
+  ]},
+  {id:'core-command',label:'Commandes',scope:'core',items:[
+    {id:'core-command-palette',action:'core.commands',label:'Commandes',icon:'command',scope:'core',featureId:'core.commands',capability:'core.commands',status:'stable',primary:true,shortcut:'Ctrl+K'}
+  ]}
+];
 function itemButton(it){
   const scope=scopeOf(it),visualScope=scopeClass(it);
   const dev=it.status==='development';
@@ -67,7 +76,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   <button id="studioVisibilityOpen" class="studioMenuUtility scope-core" data-scope="core" title="Afficher / masquer les menus et groupes du ruban">${icon('eye')}<span>Affichage</span></button><button id="studioRestoreWindows" class="studioMenuUtility scope-core" data-scope="core" title="Restaurer toutes les fenêtres masquées">${icon('restore')}<span>Fenêtres</span></button>
 </nav>
 <div class="studioRibbon">
-  ${(manifest.ribbon||[]).map(g=>'<div class="ribbonGroup scope-'+scopeClass(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
+  ${[...CORE_RIBBON_GROUPS,...(manifest.ribbon||[])].map(g=>'<div class="ribbonGroup scope-'+scopeClass(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
   <button id="studioRibbonToggle" class="studioRibbonToggle scope-core" data-scope="core" title="Replier/déplier le ruban">⌃<small class="scopeBadge">CORE</small></button>
 </div>
 <div id="ribbonContext" class="ribbonContext scope-core" data-scope="core" hidden>
@@ -111,6 +120,14 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   document.body.dataset.studioVersion=versionInfo.version||'';
   document.body.dataset.studioCoreVersion=versionInfo.coreVersion||'';
   registerCapabilities(manifest);
+  const syncUndoRedoButtons=()=>{
+    const st=globalThis.NLABStudioUndoRedo?.get?.()||{canUndo:false,canRedo:false};
+    const undoBtn=qs('[data-studio-action="core.undo"]',chrome),redoBtn=qs('[data-studio-action="core.redo"]',chrome);
+    if(undoBtn){undoBtn.disabled=!st.canUndo;undoBtn.title=st.undoLabel?'Annuler : '+st.undoLabel:'Rien à annuler'}
+    if(redoBtn){redoBtn.disabled=!st.canRedo;redoBtn.title=st.redoLabel?'Rétablir : '+st.redoLabel:'Rien à rétablir'}
+  };
+  document.addEventListener('studio-v2:undo-redo-changed',syncUndoRedoButtons);
+  syncUndoRedoButtons();
   applyStudioSettings();
   const syncRibbonPersonalization=()=>{
     const settings=loadStudioSettings(),favorites=new Set(Array.isArray(settings.ribbonFavorites)?settings.ribbonFavorites:[]);
