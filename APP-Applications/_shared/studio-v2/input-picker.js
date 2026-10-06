@@ -1,4 +1,5 @@
 import{enhanceStudioWindow}from'./window-system.js';
+import{icon}from'./icon-registry.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const asset=(group,name)=>new URL(`../../../assets/icons/${group}/${name}`,import.meta.url).href;
@@ -139,7 +140,7 @@ function ensure(){
  '<div class="inputPickerCollectionBar"><button type="button" data-input-select-all>Tout sélectionner</button><button type="button" data-input-select-none>Tout désélectionner</button><span data-input-selection-count>0 sélectionné</span><label>Tri <select data-input-sort><option value="order">Ordre</option><option value="name">Nom</option><option value="path">Chemin</option><option value="type">Type</option><option value="size">Taille</option><option value="pages">Pages</option></select></label><button type="button" data-input-sort-dir title="Inverser le tri">A→Z</button><label>Grouper <select data-input-group><option value="none">Aucun</option><option value="folder">Dossier</option><option value="type">Type</option></select></label><label class="inputPickerScale">Vignettes <input data-input-thumb-scale type="range" min="0.7" max="1.8" step="0.1" value="1"><output data-input-thumb-output>100 %</output></label><label class="inputPickerScale">Texte <input data-input-text-scale type="range" min="0.8" max="1.5" step="0.1" value="1"><output data-input-text-output>100 %</output></label></div>'+
  '<input id="studioInputFilesNative" type="file" multiple hidden><input id="studioInputFolderNative" type="file" webkitdirectory multiple hidden><input id="studioInputCameraNative" type="file" accept="image/*" capture="environment" hidden>'+
  '<div class="inputPickerUrlRow"><input id="studioInputUrl" type="url" inputmode="url" placeholder="https://… image, PDF, texte, JSON…"><button id="studioInputUrlImport" type="button">Importer URL</button></div>'+
- '<div id="studioInputDrop" class="studioInputDrop" tabindex="0" role="button"><strong>Glisser-déposer</strong><span>Fichiers, dossiers ou ZIP</span></div>'+
+ '<button id="studioInputDrop" class="studioInputDrop studioInputDropCompact" type="button" aria-label="Ajouter par glisser-déposer ou parcourir les fichiers"><span class="studioInputDropIcon">'+icon('inputAcquire')+'</span><span class="studioInputDropText"><strong>Déposer ici</strong><small>Fichiers, dossiers ou ZIP</small></span></button>'+
  '<div class="inputPickerMeta"><strong id="studioInputCount">0 élément</strong><span id="studioInputAccept"></span></div>'+
  '<div id="studioInputList" class="studioInputList"></div>'+
  '<div class="inputPickerFooter"><button id="studioInputCancel" type="button">Annuler</button><button id="studioInputConfirm" class="primary" type="button">Utiliser la sélection</button></div>'+
