@@ -1,0 +1,25 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Studio Core 3.3 wiring smoke test</title><style>body{font:14px system-ui;margin:24px;max-width:800px}pre{padding:12px;background:#f4f6f8;border-radius:8px;white-space:pre-wrap}.ok{color:#176b35}.fail{color:#a22020}</style></head><body><h1>Studio Core 3.3 — smoke test</h1><p>Validation du raccordement Command / Context / Undo-Redo.</p><pre id="out">Exécution…</pre><script type="module">
+import{registerCommand,findCommands,canExecuteCommand,executeCommand}from'./command-registry.js';
+import{setSelection,clearSelection,getStudioContext,installContextSelectionBridge}from'./context-selection.js';
+import{pushUndoRedo,undo,redo,getUndoRedoState,clearUndoRedo,installUndoRedoBridge}from'./undo-redo.js';
+const out=document.querySelector('#out'),lines=[];let failures=0;
+const check=(name,ok)=>{lines.push((ok?'PASS ':'FAIL ')+name);if(!ok)failures++};
+try{
+ installContextSelectionBridge();installUndoRedoBridge();clearSelection('test');clearUndoRedo();
+ registerCommand({id:'test.needs-active',action:'test.needs-active',label:'Test active',when:'active'});
+ check('commande inactive sans sélection',!canExecuteCommand('test.needs-active',getStudioContext()));
+ const file=new File(['demo'],'demo.txt',{type:'text/plain'});
+ setSelection([file],{active:file,scope:'collection',kind:'file'},'test');
+ check('contexte actif publié',getStudioContext().active===file&&getStudioContext().selection.length===1);
+ check('commande active avec sélection',canExecuteCommand('test.needs-active',getStudioContext()));
+ check('commande trouvée par recherche',findCommands('Test active').some(x=>x.id==='test.needs-active'));
+ let value=1;
+ pushUndoRedo({label:'Transaction test',undo:()=>{value=0},redo:()=>{value=1}});
+ check('undo disponible',getUndoRedoState().canUndo===true);
+ await undo();check('undo exécuté',value===0&&getUndoRedoState().canRedo===true);
+ await redo();check('redo exécuté',value===1&&getUndoRedoState().canUndo===true);
+ let actionSeen=false;document.addEventListener('studio-v2:action',e=>{if(e.detail?.action==='test.needs-active')actionSeen=true},{once:true});
+ await executeCommand('test.needs-active',{source:'smoke-test'});check('commande routée vers studio-v2:action',actionSeen);
+}catch(e){failures++;lines.push('ERROR '+(e?.stack||e))}
+out.textContent=lines.join('\n')+'\n\n'+(failures?'FAILURES: '+failures:'ALL PASS');out.className=failures?'fail':'ok';document.title=(failures?'FAIL':'PASS')+' — Studio Core 3.3 smoke test';
+</script></body></html>
