@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "channel": "test",
-  "notes": "Studio Core 3.2 TEST : Input/Collection unifié avec sélection explicite, tout sélectionner/désélectionner, élément actif, tri ordre/nom/chemin/type/taille/pages, regroupement dossier/type, mise à l’échelle des vignettes et du texte, chemin et nombre de pages visibles, sélection utilisée explicitement et collection conservée pendant la session.",
+  "notes": "Studio Core 3.3 TEST : Command Core central, palette Ctrl+K contextuelle, Context/Selection Core et Undo/Redo Core. Les actions déclarées dans les manifests restent compatibles et deviennent des commandes réutilisables par le Ruban, la palette, les raccourcis et les futurs menus contextuels.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
