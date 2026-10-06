@@ -24,7 +24,9 @@ try{
  {
   const{p,errors}=await core('file-studio');
   const imageBytes=await readFile('Library/demo/Images/demo-image-color.png'),pdfBytes=await readFile('Library/demo/Images/testNumregles.pdf');
+  const launcher=await p.locator('#file-studio-open').evaluate(el=>({cls:el.className,svg:!!el.querySelector('.scopeIcon svg'),label:el.querySelector('.ribbonBtnLabel')?.textContent?.trim()||'',w:el.querySelector('.scopeIcon')?.getBoundingClientRect().width||0}));if(!/ribbonInputLauncher/.test(launcher.cls)||!launcher.svg||!/Ajouter \/ Choisir une entrée/.test(launcher.label)||launcher.w<30)fail('Core Input 3.2.1 : lanceur SVG commun absent ou trop petit · '+JSON.stringify(launcher));
   await p.locator('#file-studio-open').click();await p.waitForSelector('#studioInputPicker:not([hidden])');
+  const dropUi=await p.locator('#studioInputDrop').evaluate(el=>({compact:el.classList.contains('studioInputDropCompact'),svg:!!el.querySelector('svg'),h:el.getBoundingClientRect().height,text:el.textContent.trim()}));if(!dropUi.compact||!dropUi.svg||dropUi.h>90||!/Déposer ici/.test(dropUi.text))fail('Core Input 3.2.1 : tuile dépôt compacte SVG invalide · '+JSON.stringify(dropUi));
   await p.locator('#studioInputFilesNative').setInputFiles([
    {name:'picker-image.png',mimeType:'image/png',buffer:imageBytes},
    {name:'picker-document.pdf',mimeType:'application/pdf',buffer:pdfBytes},
@@ -54,7 +56,7 @@ try{
  restore:!!document.querySelector('#studioRestoreWindows'),
  settingsReset:!!document.querySelector('#studioCoreSettingsPanel')
 }));if(!core30.url||!core30.camera||!core30.restore)fail('Core 3.0 Input/Window affordances absentes : '+JSON.stringify(core30));
-if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push('core-input-collection-3.2');await p.close();
+if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push('core-input-collection-svg-launcher-3.2.1');await p.close();
  }
 
  // Studio Core 3.1 : paramètres repliables + aide contextuelle gauche/libre/topmost.
