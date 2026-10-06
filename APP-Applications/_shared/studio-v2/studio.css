@@ -980,3 +980,17 @@ body:not(.themeDark) .panel,body:not(.themeDark) .hero,body:not(.themeDark) .car
 .studioInputList[data-view="icon"] .studioInputGroupItems,.studioInputList[data-view="preview"] .studioInputGroupItems{grid-template-columns:repeat(auto-fill,minmax(calc(132px * var(--input-thumb-scale,1)),1fr))}
 .themeDark .inputPickerCollectionBar{background:#20262c;border-color:#46515c}.themeDark .studioInputGroup{border-color:#39434c}.themeDark .studioInputCard.active,.themeDark .studioInputItem.active{background:#27445a}
 @media(max-width:700px){.inputPickerCollectionBar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.inputPickerCollectionBar>span{grid-column:1/-1}.inputPickerScale{grid-column:1/-1}.inputPickerScale input{flex:1;min-width:0;width:auto}}
+
+
+/* Studio Core Input launcher 3.2.1 */
+.ribbonInputLauncher{min-width:86px!important;padding:5px 9px!important}
+.ribbonInputLauncher .scopeIcon{width:34px!important;height:34px!important;display:grid!important;place-items:center!important}
+.ribbonInputLauncher .scopeIcon .studioIcon{width:32px!important;height:32px!important}
+.ribbonInputLauncher .ribbonBtnLabel{font-weight:800;max-width:92px;line-height:1.05}
+.studioInputDropCompact{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-height:52px!important;height:auto!important;padding:7px 10px!important;text-align:left!important;border:1px dashed #9fb3c2!important;border-radius:8px!important;background:color-mix(in srgb,var(--nlab-panel,#fff) 95%,#7da5be 5%)!important}
+.studioInputDropCompact .studioInputDropIcon{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:7px;background:color-mix(in srgb,currentColor 7%,transparent)}
+.studioInputDropCompact .studioInputDropIcon .studioIcon{width:30px;height:30px}
+.studioInputDropCompact .studioInputDropText{display:flex;flex-direction:column;gap:1px;min-width:0}.studioInputDropCompact .studioInputDropText strong{font-size:10px}.studioInputDropCompact .studioInputDropText small{font-size:8px;color:var(--nlab-muted)}
+.studioInputDropCompact.dragover{outline:2px solid #2b78a6;outline-offset:2px;background:color-mix(in srgb,var(--nlab-panel,#fff) 84%,#4aa3d8 16%)!important}
+.themeDark .studioInputDropCompact{border-color:#536777!important;background:#222a31!important}
+body.studioMobileOptimized .ribbonInputLauncher .scopeIcon{width:38px!important;height:38px!important}
