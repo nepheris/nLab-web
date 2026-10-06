@@ -7,7 +7,7 @@ const freezeState=next=>Object.freeze({...next,selection:Object.freeze(cloneSele
 function emit(previous,source='api'){
   const detail={context:state,previous,source};
   for(const fn of listeners){try{fn(state,previous,source)}catch(e){console.error(e)}}
-  document?.dispatchEvent?.(new CustomEvent('studio-v2:context-changed',{detail}));
+  if(typeof document!=='undefined')document.dispatchEvent(new CustomEvent('studio-v2:context-changed',{detail}));
 }
 
 export function getStudioContext(){return state}
