@@ -4,7 +4,6 @@ import{pushUndoRedo}from'../../_shared/studio-v2/undo-redo.js';
 const $=id=>document.getElementById(id),engine=new PDFEngine();let items=[],selected=-1;
 const snapshot=()=>({items:[...items],selected});
 const restore=async snap=>{items=[...(snap?.items||[])];selected=Number.isInteger(snap?.selected)?snap.selected:-1;render();publishSelection('undo-redo');await previewSelected()};
-const transact=(label,before)=>pushUndoRedo({label,meta:{studio:'merge-studio'},undo:()=>restore(before),redo:()=>restore(snapshot())});
 function publishSelection(source='merge-studio'){const active=items[selected]||null;document.dispatchEvent(new CustomEvent('studio-v2:selection-change',{detail:{selection:active?[active]:[],active,scope:'collection',kind:'pdf',meta:{collectionSize:items.length,pages:items.reduce((n,x)=>n+x.pages,0)},source}}))}
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 const pageCount=file=>pdfPageCount(file)
