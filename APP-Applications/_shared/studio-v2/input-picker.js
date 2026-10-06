@@ -1,4 +1,5 @@
 import{enhanceStudioWindow}from'./window-system.js';
+import{pushUndoRedo}from'./undo-redo.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const asset=(group,name)=>new URL(`../../../assets/icons/${group}/${name}`,import.meta.url).href;
@@ -39,6 +40,21 @@ function isSelected(f){return state.selected.has(keyOf(f))}
 function selectedFiles(){return state.files.filter(isSelected)}
 function setAllSelected(value){state.selected=new Set(value?state.files.map(keyOf):[]);if(value&&!state.active&&state.files[0])state.active=keyOf(state.files[0])}
 function syncSession(){if(state.options.preserveSession===false)return;sessionFiles=[...state.files];sessionSelected=new Set(state.selected)}
+function publishSelection(source='input-picker'){
+ const selection=selectedFiles(),active=state.files.find(f=>keyOf(f)===state.active)||selection[0]||null;
+ document.dispatchEvent(new CustomEvent('studio-v2:selection-change',{detail:{selection,active,scope:'collection',kind:active?kindOf(active):'file',meta:{collectionSize:state.files.length},source}}))
+}
+function collectionSnapshot(){
+ return{files:[...state.files],selected:new Set(state.selected),active:state.active,rotations:new Map(state.files.map(f=>[keyOf(f),rotationOf(f)]))}
+}
+function restoreCollection(snapshot,source='undo-redo'){
+ state.files=[...(snapshot?.files||[])];state.selected=new Set(snapshot?.selected||[]);state.active=snapshot?.active||null;
+ for(const f of state.files)setRotation(f,snapshot?.rotations?.get(keyOf(f))||0);
+ syncSession();render(ensure());publishSelection(source);analyzeVisible()
+}
+function transactCollection(label,before,after){
+ pushUndoRedo({label,meta:{surface:'input-picker'},undo:()=>restoreCollection(before,'undo'),redo:()=>restoreCollection(after,'redo')})
+}
 function orderedFiles(){
  const rows=state.files.map((f,i)=>({f,i})),dir=state.sortDir==='desc'?-1:1;
  const val=(f)=>{const m=metaFor(f);if(state.sortBy==='name')return String(f.name||'').toLocaleLowerCase();if(state.sortBy==='path')return relativePathOf(f).toLocaleLowerCase();if(state.sortBy==='type')return typeLabel(f);if(state.sortBy==='size')return Number(f.size||0);if(state.sortBy==='pages')return Number(m.pages||0);return rows.findIndex(x=>x.f===f)};
@@ -149,11 +165,11 @@ function ensure(){
  host.querySelector('#studioInputPickFiles').onclick=()=>fileInput.click();host.querySelector('#studioInputPickFolder').onclick=()=>folderInput.click();host.querySelector('#studioInputPickCamera').onclick=()=>cameraInput.click();
  fileInput.onchange=async e=>await add([...e.target.files]);folderInput.onchange=async e=>await add([...e.target.files]);cameraInput.onchange=async e=>await add([...e.target.files]);
  host.querySelector('#studioInputUrlImport').onclick=async()=>{const input=host.querySelector('#studioInputUrl');state.error='';render(host);try{await add([await fileFromUrl(input.value)]);input.value=''}catch(e){state.error=e?.message||String(e);render(host)}};
- host.querySelector('#studioInputClear').onclick=()=>{state.files=[];state.selected.clear();state.active=null;state.meta.clear();syncSession();render(host)};
+ host.querySelector('#studioInputClear').onclick=()=>{if(!state.files.length)return;const before=collectionSnapshot();state.files=[];state.selected.clear();state.active=null;state.meta.clear();syncSession();render(host);publishSelection('clear');transactCollection('Vider la collection',before,collectionSnapshot())};
  host.querySelector('#studioInputCancel').onclick=()=>close(null);
  host.querySelector('#studioInputConfirm').onclick=async()=>{if(state.busy)return;const chosen=selectedFiles();state.busy=true;render(host);try{syncSession();close(await materializeSelection(chosen))}catch(e){state.busy=false;const a=host.querySelector('#studioInputAccept');if(a)a.textContent='Erreur : '+(e?.message||e);render(host)}};
  host.querySelector('.inputPickerViews').onclick=e=>{const b=e.target.closest('[data-input-view]');if(!b)return;state.view=b.dataset.inputView;try{localStorage.setItem('nlab.inputPicker.view',state.view)}catch{}render(host);analyzeVisible()};
- host.querySelector('[data-input-select-all]').onclick=()=>{setAllSelected(true);render(host)};host.querySelector('[data-input-select-none]').onclick=()=>{setAllSelected(false);render(host)};
+ host.querySelector('[data-input-select-all]').onclick=()=>{setAllSelected(true);syncSession();render(host);publishSelection('select-all')};host.querySelector('[data-input-select-none]').onclick=()=>{setAllSelected(false);syncSession();render(host);publishSelection('select-none')};
  host.querySelector('[data-input-sort]').onchange=e=>{state.sortBy=e.target.value;render(host)};host.querySelector('[data-input-sort-dir]').onclick=()=>{state.sortDir=state.sortDir==='asc'?'desc':'asc';render(host)};host.querySelector('[data-input-group]').onchange=e=>{state.groupBy=e.target.value;render(host)};
  host.querySelector('[data-input-thumb-scale]').oninput=e=>{state.thumbScale=Number(e.target.value)||1;render(host)};host.querySelector('[data-input-text-scale]').oninput=e=>{state.textScale=Number(e.target.value)||1;render(host)};
  drop.onclick=()=>fileInput.click();drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fileInput.click()}};
@@ -161,10 +177,10 @@ function ensure(){
  for(const ev of ['dragleave','drop'])drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('dragover')});
  drop.addEventListener('drop',async e=>{drop.classList.add('loading');try{await add(await filesFromDrop(e.dataTransfer))}finally{drop.classList.remove('loading')}});
  host.querySelector('#studioInputList').onclick=e=>{
-  const check=e.target.closest('[data-input-select]');if(check){const i=Number(check.dataset.inputSelect),f=state.files[i];if(!f)return;const k=keyOf(f);if(check.checked)state.selected.add(k);else state.selected.delete(k);state.active=k;syncSession();render(host);return}
-  const card=e.target.closest('[data-input-item]');if(card&&!e.target.closest('button,input,select,label')){const i=Number(card.dataset.inputItem),f=state.files[i];if(f){state.active=keyOf(f);render(host)}return}
-  const rm=e.target.closest('[data-input-remove]');if(rm){const i=Number(rm.dataset.inputRemove),f=state.files[i];if(f){state.meta.delete(keyOf(f));state.selected.delete(keyOf(f));if(state.active===keyOf(f))state.active=null}state.files.splice(i,1);syncSession();render(host);return}
-  const rot=e.target.closest('[data-input-rotate]');if(rot){const i=Number(rot.dataset.inputIndex),f=state.files[i];if(!f)return;setRotation(f,rotationOf(f)+Number(rot.dataset.inputRotate));render(host);return}
+  const check=e.target.closest('[data-input-select]');if(check){const i=Number(check.dataset.inputSelect),f=state.files[i];if(!f)return;const k=keyOf(f);if(check.checked)state.selected.add(k);else state.selected.delete(k);state.active=k;syncSession();render(host);publishSelection('selection');return}
+  const card=e.target.closest('[data-input-item]');if(card&&!e.target.closest('button,input,select,label')){const i=Number(card.dataset.inputItem),f=state.files[i];if(f){state.active=keyOf(f);render(host);publishSelection('active-item')}return}
+  const rm=e.target.closest('[data-input-remove]');if(rm){const i=Number(rm.dataset.inputRemove),f=state.files[i];if(!f)return;const before=collectionSnapshot();state.meta.delete(keyOf(f));state.selected.delete(keyOf(f));if(state.active===keyOf(f))state.active=null;state.files.splice(i,1);syncSession();render(host);publishSelection('remove');transactCollection('Retirer '+f.name,before,collectionSnapshot());return}
+  const rot=e.target.closest('[data-input-rotate]');if(rot){const i=Number(rot.dataset.inputIndex),f=state.files[i];if(!f)return;const before=collectionSnapshot(),delta=Number(rot.dataset.inputRotate);setRotation(f,rotationOf(f)+delta);render(host);publishSelection('rotate');transactCollection('Tourner '+f.name+' '+(delta>0?'+':'')+delta+'°',before,collectionSnapshot());return}
  };
  host.addEventListener('studio-window-close',()=>close(null));return host
 }
@@ -173,7 +189,7 @@ function accepted(f){
  const parts=a.split(',').map(x=>x.trim().toLowerCase()).filter(Boolean),name=String(f.name||'').toLowerCase(),type=String(f.type||'').toLowerCase();
  return parts.some(x=>x.startsWith('.')?name.endsWith(x):x.endsWith('/*')?type.startsWith(x.slice(0,-1)):type===x)
 }
-async function add(files){state.busy=true;state.error='';render(ensure());try{const normalized=await normalizeIncoming(files),next=normalized.filter(accepted);state.files=dedupe([...(state.options.multiple===false?[]:state.files),...next]);if(state.options.multiple===false&&state.files.length>1)state.files=state.files.slice(-1);for(const f of next)state.selected.add(keyOf(f));if(!state.active&&state.files[0])state.active=keyOf(state.files[0]);syncSession()}finally{state.busy=false;render(ensure());analyzeVisible()}}
+async function add(files){const before=collectionSnapshot();state.busy=true;state.error='';render(ensure());try{const normalized=await normalizeIncoming(files),next=normalized.filter(accepted);state.files=dedupe([...(state.options.multiple===false?[]:state.files),...next]);if(state.options.multiple===false&&state.files.length>1)state.files=state.files.slice(-1);for(const f of next)state.selected.add(keyOf(f));if(!state.active&&state.files[0])state.active=keyOf(state.files[0]);syncSession();publishSelection('add');if(next.length)transactCollection('Ajouter '+next.length+' élément'+(next.length>1?'s':''),before,collectionSnapshot())}finally{state.busy=false;render(ensure());analyzeVisible()}}
 function folderSummaries(){
  const m=new Map();for(const f of state.files){const root=folderRoot(f);if(!root)continue;const v=m.get(root)||{name:root,count:0,size:0};v.count++;v.size+=Number(f.size||0);m.set(root,v)}return[...m.values()]
 }
@@ -226,7 +242,7 @@ function close(value){const host=ensure();syncSession();host.hidden=true;const r
 export function openInputPicker(options={}){
  const host=ensure();let saved='text';try{saved=localStorage.getItem('nlab.inputPicker.view')||'text'}catch{}
  const preserve=options.preserveSession!==false,initial=Array.isArray(options.files)?options.files:(preserve?[...sessionFiles]:[]),sel=preserve?new Set([...sessionSelected].filter(k=>initial.some(f=>keyOf(f)===k))):new Set();if(!sel.size)for(const f of initial)sel.add(keyOf(f));
- state={files:initial,options:{multiple:true,folders:true,url:true,expandZip:true,accept:'',view:saved,preserveSession:true,...options},resolve:null,view:['text','icon','preview'].includes(options.view)?options.view:saved,meta:new Map(),busy:false,error:'',selected:sel,active:initial[0]?keyOf(initial[0]):null,sortBy:'order',sortDir:'asc',groupBy:'none',thumbScale:1,textScale:1};render(host);host.hidden=false;host.style.zIndex='260';analyzeVisible();return new Promise(resolve=>{state.resolve=resolve})
+ state={files:initial,options:{multiple:true,folders:true,url:true,expandZip:true,accept:'',view:saved,preserveSession:true,...options},resolve:null,view:['text','icon','preview'].includes(options.view)?options.view:saved,meta:new Map(),busy:false,error:'',selected:sel,active:initial[0]?keyOf(initial[0]):null,sortBy:'order',sortDir:'asc',groupBy:'none',thumbScale:1,textScale:1};render(host);publishSelection('open');host.hidden=false;host.style.zIndex='260';analyzeVisible();return new Promise(resolve=>{state.resolve=resolve})
 }
 export function mountInputPicker(){ensure();return{open:openInputPicker}}
 export{filesFromDrop,materializeSelection};
