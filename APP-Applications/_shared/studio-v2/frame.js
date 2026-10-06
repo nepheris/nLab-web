@@ -21,10 +21,13 @@ function itemButton(it){
   const status=it.status||'stable';
   const capability=it.capability||'';
   const domId=it.id||('studio-action-'+String(it.action||featureId).replace(/[^a-z0-9_-]+/gi,'-').toLowerCase());
+  const isInputLauncher=scope==='core'&&String(it.action||'')==='open';
+  const iconName=isInputLauncher?'inputAcquire':(it.icon||'command');
+  const label=isInputLauncher?(it.inputLabel||'Ajouter / Choisir une entrée'):(it.label||'');
   return '<button id="'+esc(domId)+'" data-ui-id="'+esc(featureId)+'"'+
-    ' class="ribbonBtn scope-'+visualScope+(it.primary?' primary':'')+(dev?' devFeatureBtn':'')+'"'+
-    ' data-scope="'+scope+'" data-plugin="'+esc(plugin)+'" data-feature-id="'+esc(featureId)+'" data-feature-status="'+esc(status)+'" data-capability="'+esc(capability)+'" data-studio-action="'+esc(it.action||it.id||'')+'" data-tooltip="'+esc(it.title||it.label||'')+'" aria-label="'+esc(it.title||it.label||'')+'" title="'+esc(it.title||it.label||'')+'">'+
-    '<span class="scopeIcon">'+icon(it.icon||'command')+'</span><span class="ribbonBtnLabel">'+esc(it.label||'')+'</span>'+
+    ' class="ribbonBtn scope-'+visualScope+(it.primary?' primary':'')+(isInputLauncher?' ribbonInputLauncher':'')+(dev?' devFeatureBtn':'')+'"'+
+    ' data-scope="'+scope+'" data-plugin="'+esc(plugin)+'" data-feature-id="'+esc(featureId)+'" data-feature-status="'+esc(status)+'" data-capability="'+esc(capability)+'" data-studio-action="'+esc(it.action||it.id||'')+'" data-tooltip="'+esc(it.title||label)+'" aria-label="'+esc(it.title||label)+'" title="'+esc(it.title||label)+'">'+
+    '<span class="scopeIcon">'+icon(iconName)+'</span><span class="ribbonBtnLabel">'+esc(label)+'</span>'+
     '<small class="scopeBadge">'+scope.toUpperCase()+'</small>'+(dev?'<small class="devBadge">DEV</small>':'')+'</button>';
 }
 export async function mountStudioV2({manifest,versionInfo={version:'',status:'TEST'},root=document.body}={}){
