@@ -1,13 +1,21 @@
 {
   "schema": "nlab-studio-versions/v2",
   "current": null,
-  "test": "0.3.0",
+  "test": "0.4.0",
   "versions": [
+    {
+      "version": "0.4.0",
+      "label": "nLab Merge Studio 0.4.0 TEST",
+      "current": false,
+      "status": "test",
+      "href": "./v1/",
+      "notes": "Validation Studio Core 3.3 : ajout, retrait, vidage et réordonnancement de la collection PDF raccordés à l’Undo/Redo Core global ; sélection publiée au Context/Selection Core."
+    },
     {
       "version": "0.3.0",
       "label": "nLab Merge Studio 0.3.0 TEST",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v1/",
       "notes": "Core 3.0 : collection via Input commun, suppression/ordre conservés et réordonnancement par glisser-déposer avant fusion, thème Core homogène."
     },
