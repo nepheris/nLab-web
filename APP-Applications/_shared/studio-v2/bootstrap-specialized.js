@@ -1,10 +1,14 @@
 import{mountStudioV2}from'./frame.js';
 import{resolveStudioVersions}from'./version-service.js';
 import{openInputPicker}from'./input-picker.js';
+import{installContextSelectionBridge}from'./context-selection.js';
+import{installUndoRedoBridge}from'./undo-redo.js';
 
 export async function bootstrapSpecializedStudioV2(config=window.NLAB_SPECIALIZED_V2||{}){
   const manifest=config.manifest||{};
   if(!manifest.id)throw new Error('NLAB_SPECIALIZED_V2.manifest.id requis');
+  installContextSelectionBridge();
+  installUndoRedoBridge();
   const versionInfo=await resolveStudioVersions({
     versionsHref:config.versionsHref||'../versions.json',
     coreVersionHref:config.coreVersionHref||'../../_shared/studio-v2/version.json',
