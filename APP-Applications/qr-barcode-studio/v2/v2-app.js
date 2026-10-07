@@ -20,7 +20,8 @@ async function setLogoFile(f){if(logoUrl)URL.revokeObjectURL(logoUrl);logoUrl=f?
 $('#logo').onchange=e=>setLogoFile(e.target.files?.[0]);
 $('#logo').addEventListener('click',async e=>{e.preventDefault();const files=await openInputPicker({accept:'image/*',multiple:false,folders:false,camera:true,url:true});if(files?.[0])setLogoFile(files[0])});
 $('#refreshPreview').onclick=render;
-$('#downloadPng').onclick=async()=>{try{const r=await generateSymbologyBlob(type,$('#value').value,common(),'png');downloadBlob(r.blob,'nlab-'+type+'.png')}catch(e){$('#status').textContent='Erreur export PNG : '+e.message}};
+function downloadDataUrl(url,name){const a=document.createElement('a');a.href=url;a.download=name;a.style.display='none';document.body.appendChild(a);a.click();a.remove()}
+$('#downloadPng').onclick=async()=>{try{if(rendered?.kind==='bar'&&rendered.canvas){downloadDataUrl(rendered.canvas.toDataURL('image/png'),'nlab-'+type+'.png');$('#status').textContent='PNG exporté depuis l’aperçu.';return}const r=await generateSymbologyBlob(type,$('#value').value,common(),'png');downloadBlob(r.blob,'nlab-'+type+'.png');$('#status').textContent='PNG exporté.'}catch(e){$('#status').textContent='Erreur export PNG : '+e.message}};
 $('#downloadSvg').onclick=async()=>{try{const r=await generateSymbologyBlob(type,$('#value').value,common(),'svg');downloadBlob(r.blob,'nlab-'+type+'.svg')}catch(e){$('#status').textContent='Erreur export SVG : '+e.message}};
 function addHist(v,kind='scan'){hist.unshift({at:new Date().toISOString(),v,kind});hist=hist.slice(0,100);localStorage.setItem('nlab-qr-history',JSON.stringify(hist));renderHistory()}
 function renderHistory(){$('#history').innerHTML=hist.length?hist.map(x=>'<div class="historyItem"><small>'+new Date(x.at).toLocaleString('fr-FR')+' · '+x.kind+'</small><b>'+String(x.v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))+'</b></div>').join(''):'<span class="hint">Aucun historique.</span>'}
