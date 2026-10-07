@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Licences & crédits — nLab Studios</title>
+<link rel="icon" href="../assets/branding/nlab-favicon.svg" type="image/svg+xml">
+<style>
+:root{--blue:#0057b8;--ink:#1f2933;--muted:#667582;--bg:#f4f6f8;--card:#fff;--line:#d9e0e6;--green:#21633a}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}a{color:var(--blue)}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.head{min-height:72px;display:flex;align-items:center;gap:14px}.logo img{width:92px;display:block}.head nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}.head nav a{text-decoration:none;padding:8px 10px;border-radius:8px}.head nav a:hover{background:#eef5fb}
+main{padding:34px 0 64px}.hero,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}.eyebrow{color:var(--blue);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.hero h1{font-size:clamp(32px,5vw,50px);margin:8px 0}.lead,.muted{color:var(--muted);line-height:1.55}.badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:#eaf6ee;color:var(--green);font-size:11px;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}.card{border:1px solid var(--line);border-radius:12px;padding:14px}.card h3{margin:3px 0 8px}.meta{font-size:12px;line-height:1.55;color:var(--muted)}.notice{border-left:4px solid var(--blue);padding:10px 14px;background:#f5faff;border-radius:8px}footer{background:#fff;border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-size:12px}
+@media(max-width:720px){.head nav a:not(.keep){display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap head"><a class="logo" href="../" aria-label="nLab"><img src="../assets/branding/nlab-wordmark.svg" alt="nLab"></a><strong>Licences & crédits</strong><nav><a class="keep" href="../APP-Applications/studios/">Studios</a><a href="../">nLab Web</a><a href="https://github.com/nepheris/nLab-web">GitHub</a></nav></div></header>
+<main class="wrap">
+<section class="hero">
+<div class="eyebrow">nLab Studios · informations légales</div>
+<h1>Licences & crédits</h1>
+<p class="lead">Une page unique pour la licence des composants développés pour nLab Studios et pour les licences des bibliothèques, moteurs et projets tiers utilisés par les Studios.</p>
+<span class="badge">Périmètre actuel : nLab Studios</span>
+</section>
+
+<section class="panel">
+<div class="eyebrow">Licence nLab</div>
+<h2>PolyForm Noncommercial License 1.0.0</h2>
+<p>Les éléments développés pour <strong>nLab Studios</strong> — Studio Core, Studios spécialisés et mini-applications dérivées — sont distribués sous la <strong>PolyForm Noncommercial License 1.0.0</strong>.</p>
+<div class="notice"><strong>Copyright notice</strong><br>Copyright © 2026 nLab contributors.<br><br><strong>Required Notice:</strong> Copyright © 2026 nLab contributors. nLab Studios is licensed under the PolyForm Noncommercial License 1.0.0.</div>
+<p>Les composants tiers ne sont pas relicenciés par nLab : chacun conserve sa licence, ses droits d'auteur et ses obligations d'attribution.</p>
+<p><a href="../LICENSE">Voir LICENSE</a> · <a href="https://polyformproject.org/licenses/noncommercial/1.0.0">Texte officiel de la licence</a></p>
+</section>
+
+<section class="panel">
+<div class="eyebrow">Composants tiers</div>
+<h2>Crédits, auteurs et licences d'origine</h2>
+<p class="muted">Chaque fiche indique le composant, la version utilisée, son auteur ou projet, le dépôt officiel, sa licence et les Studios concernés.</p>
+<div id="components" class="grid"><div class="card"><h3>Chargement…</h3></div></div>
+<p class="muted">Registre structuré : <a href="../THIRD_PARTY_COMPONENTS.json">THIRD_PARTY_COMPONENTS.json</a> · Notice GitHub : <a href="../THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a></p>
+</section>
+
+<section class="panel">
+<div class="eyebrow">Principe</div>
+<h2>Deux niveaux de licence</h2>
+<p><strong>Code nLab Studios :</strong> licence nLab Studios ci-dessus.</p>
+<p><strong>Composants tiers :</strong> leur licence d'origine reste applicable. Une bibliothèque MIT, BSD ou Apache ne devient pas PolyForm parce qu'elle est utilisée par nLab.</p>
+</section>
+
+<section class="panel">
+<div class="eyebrow">Portée</div>
+<h2>Première étape : les Studios</h2>
+<p class="muted">Cette page couvre actuellement Studio Core, les Studios spécialisés et leurs mini-applications dérivées. Les Briques, Frameworks et autres familles nLab seront ajoutés après leur propre audit.</p>
+</section>
+</main>
+<footer><div class="wrap">nLab Studios · Licences & crédits · Copyright © 2026 nLab contributors.</div></footer>
+<script>
+(async()=>{
+ const host=document.getElementById('components');
+ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ try{
+   const r=await fetch('../THIRD_PARTY_COMPONENTS.json',{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);
+   const data=await r.json();
+   host.innerHTML=(data.components||[]).map(c=>'<article class="card"><h3>'+esc(c.name)+' <small>'+esc(c.version||'')+'</small></h3><div class="meta"><div><b>Auteur / projet :</b> '+esc(c.author||'—')+'</div><div><b>Licence :</b> '+esc(c.license||'—')+'</div><div><b>Utilisé par :</b> '+esc((c.studios||[]).join(', ')||'—')+'</div></div><p><a href="'+esc(c.official_repo)+'">Dépôt officiel</a></p></article>').join('');
+ }catch(e){host.innerHTML='<div class="card"><h3>Registre indisponible</h3><p class="meta">'+esc(e.message||e)+'</p></div>'}
+})();
+</script>
+</body></html>
