@@ -19,10 +19,10 @@ $('#symTabs').onclick=e=>{const b=e.target.closest('[data-type]');if(!b)return;t
 async function setLogoFile(f){if(logoUrl)URL.revokeObjectURL(logoUrl);logoUrl=f?URL.createObjectURL(f):'';render()}
 $('#logo').onchange=e=>setLogoFile(e.target.files?.[0]);
 $('#logo').addEventListener('click',async e=>{e.preventDefault();const files=await openInputPicker({accept:'image/*',multiple:false,folders:false,camera:true,url:true});if(files?.[0])setLogoFile(files[0])});
-$('#refreshPreview').onclick=render;
 function downloadDataUrl(url,name){const a=document.createElement('a');a.href=url;a.download=name;a.style.display='none';document.body.appendChild(a);a.click();a.remove()}
-$('#downloadPng').onclick=async()=>{try{if(rendered?.kind==='bar'&&rendered.canvas){downloadDataUrl(rendered.canvas.toDataURL('image/png'),'nlab-'+type+'.png');$('#status').textContent='PNG exporté depuis l’aperçu.';return}const r=await generateSymbologyBlob(type,$('#value').value,common(),'png');downloadBlob(r.blob,'nlab-'+type+'.png');$('#status').textContent='PNG exporté.'}catch(e){$('#status').textContent='Erreur export PNG : '+e.message}};
-$('#downloadSvg').onclick=async()=>{try{const r=await generateSymbologyBlob(type,$('#value').value,common(),'svg');downloadBlob(r.blob,'nlab-'+type+'.svg')}catch(e){$('#status').textContent='Erreur export SVG : '+e.message}};
+async function exportPng(){try{if(rendered?.kind==='bar'&&rendered.canvas){downloadDataUrl(rendered.canvas.toDataURL('image/png'),'nlab-'+type+'.png');$('#status').textContent='PNG exporté depuis l’aperçu.';return}const r=await generateSymbologyBlob(type,$('#value').value,common(),'png');downloadBlob(r.blob,'nlab-'+type+'.png');$('#status').textContent='PNG exporté.'}catch(e){$('#status').textContent='Erreur export PNG : '+e.message}}
+async function exportSvg(){try{const r=await generateSymbologyBlob(type,$('#value').value,common(),'svg');downloadBlob(r.blob,'nlab-'+type+'.svg');$('#status').textContent='SVG exporté.'}catch(e){$('#status').textContent='Erreur export SVG : '+e.message}}
+document.addEventListener('studio-v2:action',e=>{const a=e.detail?.action;if(a==='refreshPreview')render();else if(a==='downloadPng')exportPng();else if(a==='downloadSvg')exportSvg();else if(a==='openDemo')window.open('../../Library/demo/','_blank')});
 function addHist(v,kind='scan'){hist.unshift({at:new Date().toISOString(),v,kind});hist=hist.slice(0,100);localStorage.setItem('nlab-qr-history',JSON.stringify(hist));renderHistory()}
 function renderHistory(){$('#history').innerHTML=hist.length?hist.map(x=>'<div class="historyItem"><small>'+new Date(x.at).toLocaleString('fr-FR')+' · '+x.kind+'</small><b>'+String(x.v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))+'</b></div>').join(''):'<span class="hint">Aucun historique.</span>'}
 $('#scan').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();const v=e.currentTarget.value.trim();if(!v)return;$('#scanStatus').textContent='HID : '+v;addHist(v,'HID');e.currentTarget.value=''}};
@@ -34,5 +34,4 @@ function applyZoom(){zoom=Math.max(.25,Math.min(3,zoom));$('#preview').style.tra
 $('#zoomIn').onclick=()=>{zoom+=.25;applyZoom()};$('#zoomOut').onclick=()=>{zoom-=.25;applyZoom()};$('#zoomActual').onclick=()=>{zoom=1;applyZoom()};$('#zoomFit').onclick=()=>{zoom=.75;applyZoom()};
 $('#copyContent').onclick=async()=>{try{await navigator.clipboard.writeText($('#contentValue').textContent||'')}catch{}};
 qsa('[data-workflow]').forEach(b=>b.addEventListener('click',()=>{const mode=b.dataset.workflow;qsa('[data-workflow]').forEach(x=>x.classList.toggle('active',x===b));$('.toolPanel').hidden=mode!=='generate';$('.scanPanel').hidden=mode!=='read';$('#previewType').textContent=mode==='read'?'Résultat de lecture':symbologyInfo(type).label;if(mode==='read')$('#contentType').textContent='En attente'}));
-$('#openDemo')?.addEventListener('click',()=>window.open('../../Library/demo/','_blank'));
 applyZoom();renderHistory();render();
