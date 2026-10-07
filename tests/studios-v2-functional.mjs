@@ -61,13 +61,27 @@ try{
  await studio('scan-studio',async p=>{
   await p.locator('#fileInput').setInputFiles(['Library/demo/files/demo-input/Images/demo-document-illustration.png','Library/demo/Images/demo-image-color.png']);
   await p.waitForFunction(()=>document.querySelectorAll('#pageList .pageItem').length===2,null,{timeout:15000});
-  await p.locator('#rotateRight').click();await p.locator('#cleanupMode').selectOption('gray');await p.locator('#applyCleanup').click();
+  const rotationBefore=await p.locator('#freeRotation').inputValue();
+  await p.locator('#rotateRight').click();
+  await p.waitForFunction(before=>document.querySelector('#freeRotation')?.value!==before,rotationBefore,{timeout:10000});
+  const rotationAfter=await p.locator('#freeRotation').inputValue();
+  await p.locator('#core-undo').click();
+  await p.waitForFunction(before=>document.querySelector('#freeRotation')?.value===before,rotationBefore,{timeout:10000});
+  await p.locator('#core-redo').click();
+  await p.waitForFunction(after=>document.querySelector('#freeRotation')?.value===after,rotationAfter,{timeout:10000});
+  await p.locator('#cleanupMode').selectOption('gray');await p.locator('#applyCleanup').click();
   const dl=p.waitForEvent('download');await p.locator('#downloadPage').click();if(!/\.png$/i.test((await dl).suggestedFilename()))throw new Error('Scan page PNG invalide');
  });
  await studio('ocr-studio',async p=>{
   await chooseFile(p,'#ocr-open','Library/demo/files/demo-input/Images/demo-document-illustration.png');await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
   await p.locator('#demo').click();await p.waitForFunction(()=>/Image chargée/.test(document.querySelector('#status')?.textContent||''),null,{timeout:15000});
-  await p.locator('#out').fill('OCR TEST');const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.txt$/i.test((await dl).suggestedFilename()))throw new Error('OCR TXT export invalide');
+  const ocrBefore=await p.locator('#out').inputValue();
+  await p.locator('#out').fill('OCR CORE TRANSACTION TEST');await p.waitForTimeout(400);
+  await p.locator('#core-undo').click();
+  await p.waitForFunction(before=>document.querySelector('#out')?.value===before,ocrBefore,{timeout:10000});
+  await p.locator('#core-redo').click();
+  await p.waitForFunction(()=>document.querySelector('#out')?.value==='OCR CORE TRANSACTION TEST',null,{timeout:10000});
+  const dl=p.waitForEvent('download');await p.locator('#save').click();if(!/\.txt$/i.test((await dl).suggestedFilename()))throw new Error('OCR TXT export invalide');
  });
  await studio('code-studio',async p=>{
   await p.locator('#code-studio-open').click();

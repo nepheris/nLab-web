@@ -7,7 +7,7 @@ export default {
   {id:'scan.capture.files',status:'test'},
   {id:'scan.pages.organize',status:'test',aliasOf:'scan.pages.organize-select'},
   {id:'scan.pages.organize-select',status:'test'},
-  {id:'scan.history.undo-redo',status:'test',engine:'studio-core.edit-history'},
+  {id:'scan.history.undo-redo',status:'test',engine:'studio-core.undo-redo'},
   {id:'scan.image.cleanup',status:'test',engine:'studio-core.image'},
   {id:'scan.image.deskew',status:'test',engine:'studio-core.image'},
   {id:'scan.image.adjustments',status:'test',engine:'studio-core.image'},

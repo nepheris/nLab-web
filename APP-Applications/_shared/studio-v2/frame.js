@@ -11,6 +11,8 @@ import{findFeature,renderContextualHelp}from'./help.js';
 import{registerCorePanel,getCorePanel,listCorePanels}from'./panel-registry.js';
 import{mountPropertyInspector}from'./property-inspector.js';
 import{mountContextMenu}from'./context-menu.js';
+import{installContextSelectionBridge}from'./context-selection.js';
+import{installUndoRedoBridge}from'./undo-redo.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
@@ -41,6 +43,8 @@ function itemButton(it){
 }
 export async function mountStudioV2({manifest,versionInfo={version:'',status:'TEST'},root=document.body}={}){
   if(!manifest)throw new Error('Manifest Studio V2 requis');
+  installContextSelectionBridge();
+  installUndoRedoBridge();
   try{await loadIconThemeCatalog()}catch(e){console.warn('Icon theme catalog unavailable',e)}
   root.querySelector('#nlabStudioV2Chrome')?.remove();
 

@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studio-feature-contracts/v1",
-  "updated": "2026-10-04",
+  "updated": "2026-10-07",
   "studios": {
     "image-studio": {
       "test": "2.6.0",
@@ -86,7 +86,7 @@
       ]
     },
     "ocr-studio": {
-      "test": "2.2.0",
+      "test": "2.3.0",
       "required_ids": [
         "file",
         "lang",
@@ -115,13 +115,15 @@
         "runOcr",
         "ocrDiagnostics",
         "ocr.language.auto",
-        "ocr.engine.registry"
+        "ocr.engine.registry",
+        "pushUndoRedo"
       ],
       "required_capabilities": [
         "ocr.image.text",
         "ocr.language.auto",
         "ocr.engine.registry",
-        "ocr.export.text"
+        "ocr.export.text",
+        "ocr.history.undo-redo"
       ]
     },
     "code-studio": {
@@ -689,7 +691,7 @@
       ]
     },
     "scan-studio": {
-      "test": "0.3.0",
+      "test": "0.4.0",
       "runtime": "APP-Applications/scan-studio/v2/v2-app.js",
       "required_ids": [
         "drop",
@@ -739,7 +741,8 @@
         "downloadBlob",
         "image-service.js",
         "renderImageTransformed",
-        "canvasToBlob"
+        "canvasToBlob",
+        "pushUndoRedo"
       ],
       "required_capabilities": [
         "scan.capture.camera",
