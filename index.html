@@ -1,2 +1,122 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="nLab Web — portail public des applications, briques et outils nLab."><title>nLab Web</title><link rel="icon" href="./assets/branding/nlab-favicon.svg" type="image/svg+xml"><style>:root{--blue:#0057b8;--ink:#1f2933;--muted:#667582;--bg:#f4f6f8;--card:#fff;--line:#d9e0e6;--soft:#eef5fb;--green:#21633a;--test:#765600}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}a{color:inherit}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}header{background:#fff;border-bottom:1px solid var(--line)}.head{min-height:76px;display:flex;align-items:center;gap:14px}.logo{width:92px;height:44px;display:flex;align-items:center}.logo img{display:block;width:92px;height:auto}.brand b{font-size:20px}.brand small{display:block;color:var(--muted);margin-top:2px}.head nav{margin-left:auto;display:flex;gap:8px}.head nav a{padding:8px 11px;text-decoration:none;color:#405160}main{padding:54px 0 70px}.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:28px;align-items:center}.eyebrow{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.hero h1{font-size:clamp(34px,5vw,60px);line-height:1.02;margin:10px 0 16px}.hero p{font-size:18px;line-height:1.55;color:#52616e}.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 15px;border-radius:9px;border:1px solid #b9c6d1;background:#fff;text-decoration:none;font-weight:700}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.test{background:#fff7d6;border-color:#e1bd43;color:var(--test)}.heroCard,.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}.status{display:inline-block;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.status.current{background:#eaf6ee;color:var(--green)}.status.test{background:#fff0b8;color:var(--test);margin-left:6px}.heroCard ul{padding-left:18px;color:#52616e;line-height:1.7}section{margin-top:58px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.card{text-decoration:none;display:flex;flex-direction:column;min-height:200px}.card p{color:#5a6976;line-height:1.5}.card .open{margin-top:auto;padding-top:18px;color:var(--blue);font-weight:800}footer{border-top:1px solid var(--line);background:#fff;color:#687683}.foot{padding:22px 0;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12px}@media(max-width:800px){.hero{grid-template-columns:1fr}.head nav{display:none}}</style></head><body><header><div class="wrap head"><a class="logo" href="./" aria-label="nLab Web"><img src="./assets/branding/nlab-wordmark.svg" alt="nLab"></a><div class="brand"><b>nLab Web</b><small>Portail public nLab</small></div><nav><a href="#applications">Applications</a><a href="./APP-Applications/studios/">Studios</a><a href="./Library/demo/">Démos</a><a href="./Info/">Info</a><a href="https://github.com/nepheris/nLab-web">GitHub</a></nav></div></header><main class="wrap"><div class="hero"><div><div class="eyebrow">Public · web · local-first</div><h1>Les outils nLab accessibles depuis un navigateur.</h1><p>nLab Web rassemble les applications explicitement rendues publiques, avec une route stable par produit, des versions de test séparées et un historique consultable.</p><div class="cta"><a class="btn primary" href="./APP-Applications/studios/">Découvrir nLab Studios</a><a class="btn" href="./APP-Applications/pdf-studio/app.html">Ouvrir PDF Studio CURRENT</a><a class="btn test" href="./APP-Applications/pdf-studio/app-0.9.21.html">Tester PDF Studio 0.9.21</a><a class="btn" href="./APP-Applications/pdf-studio/versions.html">Versions PDF Studio</a><a class="btn" href="./Library/demo/">Corpus démo nLab</a><a class="btn" href="https://github.com/nepheris/nLab-web">Voir le dépôt</a></div></div><aside class="heroCard"><span class="status current">CURRENT 0.9.10</span><span class="status test">TEST 0.9.21</span><h2>PDF Studio</h2><ul><li><code>/APP-Applications/pdf-studio/app.html</code> — version stable</li><li><code>/APP-Applications/pdf-studio/app-0.9.21.html</code> — version de test</li><li><code>/APP-Applications/pdf-studio/versions.html</code> — historique complet</li></ul></aside></div><section id="applications"><div class="eyebrow">Catalogue</div><h2>Applications publiques</h2><div class="grid"><a class="card" href="./APP-Applications/studios/"><span class="eyebrow">SUITE · 8 STUDIOS · LOCAL-FIRST</span><h3>nLab Studios</h3><p>PDF, Image, OCR, Code, JSON, Data, QR & Barcode et File Studio réunis dans une logique commune.</p><span class="open">Voir tous les Studios →</span></a><a class="card" href="./APP-Applications/pdf-studio/"><span class="eyebrow">APP · PDF · CURRENT 0.9.10 · TEST 0.9.21</span><h3>nLab PDF Studio</h3><p>Édition et traitement PDF local-first : pages, annotations, archives ZIP locales, portée commune multi-sélection, variables unifiées, workspace personnel Google Drive, nommage modulaire, signatures et fonctions documentaires.</p><span class="open">Voir le produit et ses versions →</span></a><a class="card" href="./Library/demo/"><span class="eyebrow">LIBRARY · DEMO CORPUS v3 · SYNTHÉTIQUE</span><h3>Galerie & jeux de test</h3><p>Preview Web, packs par Studio, QR/Data Matrix, calibration image, code/JSON et datasets CSV/XLSX riches.</p><span class="open">Explorer les démos →</span></a></div></section></main><footer><div class="wrap foot"><span>nLab Web · dépôt public</span><span>Powered by nLab · Synergies SVA SARL</span></div></footer></body></html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="nLab Web — portail public des applications, Studios et ressources nLab.">
+<title>nLab Web</title>
+<link rel="icon" href="./assets/branding/nlab-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./APP-Applications/_shared/site-shell.css">
+</head>
+<body>
+<header class="nlab-header">
+  <div class="nlab-wrap nlab-head">
+    <a class="nlab-logo" href="./" aria-label="nLab Web"><img src="./assets/branding/nlab-wordmark.svg" alt="nLab"></a>
+    <div class="nlab-brand"><b>nLab Web</b><small>Portail public · Framework partagé</small></div>
+    <nav class="nlab-nav" aria-label="Navigation principale">
+      <a href="#applications">Applications</a>
+      <a class="keep" href="./APP-Applications/studios/">Studios</a>
+      <a href="./Library/demo/">Démos</a>
+      <a href="./Info/">Info</a>
+      <a href="https://github.com/nepheris/nLab-web">GitHub</a>
+      <label class="desktop-only" title="Thème"><select data-shell-pref="theme" aria-label="Thème"><option value="auto">Auto</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label>
+    </nav>
+  </div>
+</header>
+
+<main class="nlab-wrap nlab-main">
+  <section class="nlab-hero">
+    <div class="nlab-hero-grid">
+      <div>
+        <div class="nlab-eyebrow">Public · web · local-first · Core partagé</div>
+        <h1>Les outils nLab, sur une architecture commune.</h1>
+        <p class="nlab-lead">Le portail public regroupe les Studios et applications explicitement publiés. Les versions, statuts et liens sont résolus depuis les registres canoniques au lieu d’être recopiés dans la page.</p>
+        <div class="nlab-actions">
+          <a class="nlab-btn primary" href="./APP-Applications/studios/">Ouvrir nLab Studios</a>
+          <a class="nlab-btn" href="./Library/demo/">Corpus démo nLab</a>
+          <a class="nlab-btn" href="./Info/">Architecture publique</a>
+        </div>
+      </div>
+      <aside>
+        <div class="nlab-eyebrow">État public</div>
+        <h2 id="headlineProduct">Chargement…</h2>
+        <div id="headlineBadges"></div>
+        <div class="nlab-kpi">
+          <div><b id="studioCount">—</b><small>Studios catalogués</small></div>
+          <div><b id="currentCount">—</b><small>avec CURRENT</small></div>
+          <div><b id="testCount">—</b><small>avec TEST</small></div>
+        </div>
+        <div class="nlab-actions" id="headlineActions"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="applications" class="nlab-section">
+    <div class="nlab-eyebrow">Catalogue</div>
+    <h2>Applications publiques</h2>
+    <div class="nlab-grid" id="applicationGrid">
+      <article class="nlab-card"><div class="nlab-status-line">Chargement</div><h3>Catalogue nLab…</h3><p class="nlab-muted">Lecture des registres publics.</p></article>
+    </div>
+  </section>
+
+  <section class="nlab-panel">
+    <div class="nlab-eyebrow">Interface partagée</div>
+    <h2>Préférences communes</h2>
+    <p class="nlab-muted">Le thème et le mode d’affichage utilisent désormais le même stockage partagé que le Framework. Les pages qui adoptent le shell nLab héritent des mêmes préférences.</p>
+    <div class="nlab-actions">
+      <button class="nlab-btn" type="button" data-shell-view="cards">Vue cartes</button>
+      <button class="nlab-btn" type="button" data-shell-view="list">Vue liste</button>
+      <button class="nlab-btn" type="button" data-shell-pref-reset>Réinitialiser l’interface</button>
+    </div>
+  </section>
+</main>
+
+<footer class="nlab-footer"><div class="nlab-wrap nlab-foot"><span>nLab Web · dépôt public</span><span>Powered by nLab · Synergies SVA SARL</span></div></footer>
+
+<script>
+window.NLabAppShellConfig={sharedStorageKey:'nlab:application-shell:shared-prefs:v2',localStorageKey:'nlab:site:portal:prefs:v1'};
+</script>
+<script src="./FRMW-Frameworks/Web-Framework/runtime/application-shell-runtime.js"></script>
+<script type="module">
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const grid=document.querySelector('#applicationGrid');
+async function json(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(url+' '+r.status);return r.json()}
+try{
+  const catalog=await json('./APP-Applications/studios/catalog.json');
+  const enriched=await Promise.all((catalog.studios||[]).map(async s=>{
+    try{
+      const vr=await json('./APP-Applications/'+s.id+'/versions.json');
+      const by=new Map((vr.versions||[]).map(v=>[String(v.version),v]));
+      return{...s,current:vr.current?by.get(String(vr.current)):null,test:vr.test?by.get(String(vr.test)):null};
+    }catch{return{...s,current:null,test:null}}
+  }));
+  document.querySelector('#studioCount').textContent=enriched.length;
+  document.querySelector('#currentCount').textContent=enriched.filter(x=>x.current).length;
+  document.querySelector('#testCount').textContent=enriched.filter(x=>x.test).length;
+
+  const pdf=enriched.find(x=>x.id==='pdf-studio')||enriched[0];
+  if(pdf){
+    document.querySelector('#headlineProduct').textContent=pdf.name||'nLab Studios';
+    const badges=[];
+    if(pdf.current)badges.push('<span class="nlab-badge current">CURRENT '+esc(pdf.current.version)+'</span>');
+    if(pdf.test)badges.push('<span class="nlab-badge test">TEST '+esc(pdf.test.version)+'</span>');
+    document.querySelector('#headlineBadges').innerHTML=badges.join(' ');
+    const actions=[];
+    if(pdf.current)actions.push('<a class="nlab-btn primary" href="./APP-Applications/'+esc(pdf.id)+'/'+esc(pdf.current.href||'./')+'">Ouvrir CURRENT</a>');
+    if(pdf.test)actions.push('<a class="nlab-btn test" href="./APP-Applications/'+esc(pdf.id)+'/'+esc(pdf.test.href||'./')+'">Ouvrir TEST</a>');
+    actions.push('<a class="nlab-btn" href="./APP-Applications/'+esc(pdf.id)+'/versions.html">Versions</a>');
+    document.querySelector('#headlineActions').innerHTML=actions.join('');
+  }
+
+  const cards=[
+    {k:'SUITE',title:'nLab Studios',text:'Hub canonique des Studios avec politiques CURRENT / TEST et historique de versions.',href:'./APP-Applications/studios/',open:'Voir les Studios →'},
+    {k:'LIBRARY',title:'Corpus démo nLab',text:'Jeux de données et fichiers synthétiques communs pour démonstration et non-régression.',href:'./Library/demo/',open:'Explorer les démos →'},
+    {k:'FRAMEWORK',title:'Studio Core & Web Framework',text:'Shell, commandes, contexte, Undo/Redo, panneaux et capacités mutualisées entre familles de Studios.',href:'./FRMW-Frameworks/Web-Framework/',open:'Voir le Framework public →'}
+  ];
+  grid.innerHTML=cards.map(c=>'<a class="nlab-card" href="'+esc(c.href)+'"><div class="nlab-status-line">'+esc(c.k)+'</div><h3>'+esc(c.title)+'</h3><p class="nlab-muted">'+esc(c.text)+'</p><span class="nlab-open">'+esc(c.open)+'</span></a>').join('');
+}catch(e){
+  grid.innerHTML='<article class="nlab-card"><div class="nlab-eyebrow">Erreur</div><h3>Catalogue indisponible</h3><p class="nlab-muted">'+esc(e.message||e)+'</p></article>';
+}
+</script>
+</body>
+</html>
