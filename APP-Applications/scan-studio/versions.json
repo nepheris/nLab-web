@@ -1,14 +1,23 @@
 {
   "name": "Scan Studio",
   "current": null,
-  "test": "0.3.0",
+  "test": "0.4.0",
   "versions": [
+    {
+      "version": "0.4.0",
+      "label": "Scan Studio 0.4.0 TEST",
+      "date": "2026-10-07",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Propagation famille Acquisition documentaire : pages, ordre, sélection, nettoyage, ajustements et OCR raccordés au Context/Selection et Undo/Redo Core globaux."
+    },
     {
       "version": "0.3.0",
       "label": "Scan Studio 0.3.0 TEST",
       "date": "2026-10-04",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Core 3.0 : Input commun, sélection de pages, Undo/Redo, rotation libre, réglages image partagés, OCR page/sélection/document et PDF sélection avec couche OCR recherchable."
     },
