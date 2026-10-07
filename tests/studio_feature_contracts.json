@@ -125,7 +125,7 @@
       ]
     },
     "code-studio": {
-      "test": "2.3.0",
+      "test": "2.4.0",
       "required_ids": [
         "file",
         "demo",
@@ -157,7 +157,8 @@
         "code.collection.multi",
         "code.edit.ace",
         "code.search",
-        "code.export.text"
+        "code.export.text",
+        "code.undo-redo"
       ]
     },
     "json-studio": {
@@ -194,7 +195,7 @@
       ]
     },
     "data-studio": {
-      "test": "2.3.0",
+      "test": "2.4.0",
       "required_ids": [
         "file",
         "demoCsv",
@@ -234,11 +235,12 @@
         "data.collection.multi",
         "data.filter.sort",
         "data.export.multi-format",
-        "data.fixture.handoff"
+        "data.fixture.handoff",
+        "data.history.undo-redo"
       ]
     },
     "file-studio": {
-      "test": "2.3.0",
+      "test": "2.4.0",
       "required_ids": [
         "files",
         "folder",
@@ -266,7 +268,8 @@
         "file.batch.collection",
         "file.rename.preview",
         "file.identity.sha256",
-        "file.manifest.export"
+        "file.manifest.export",
+        "file.history.undo-redo"
       ]
     },
     "qr-barcode-studio": {
