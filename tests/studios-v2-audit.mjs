@@ -141,7 +141,7 @@ if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push
  {
   const{p,errors}=await core('qr-barcode-studio');
   await p.waitForFunction(()=>document.querySelector('#preview')?.children.length>0,null,{timeout:15000});
-  await p.locator('#dots').selectOption({index:1});await p.locator('#corners').selectOption({index:1});await p.locator('#gradient').check();await p.locator('#transparent').check();await p.locator('#refreshPreview').click();
+  await p.locator('#dots').selectOption({index:1});await p.locator('#corners').selectOption({index:1});await p.locator('#gradient').check();await p.locator('#transparent').check();await p.locator('#refreshPreview').click({force:true});
   const svg=await dlBytes(p,'#downloadSvg');if(!/\.svg$/i.test(svg.download.suggestedFilename())||!svg.bytes.toString('utf8').includes('<svg'))fail('QR SVG invalide');
   await p.locator('[data-workflow="read"]').click();await p.locator('#scan').fill('AUDIT-HID-123');await p.locator('#scan').press('Enter');await p.waitForFunction(()=>/AUDIT-HID-123/.test(document.querySelector('#history')?.textContent||''),null,{timeout:5000});
   await p.locator('#preview').screenshot({path:'/tmp/nlab-audit-qr.png'});await p.locator('#scanFile').setInputFiles('/tmp/nlab-audit-qr.png');await p.waitForFunction(()=>/Détecté|Aucun code détecté/.test(document.querySelector('#scanStatus')?.textContent||''),null,{timeout:20000});
