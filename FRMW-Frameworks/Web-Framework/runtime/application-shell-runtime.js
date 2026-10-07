@@ -63,6 +63,18 @@
     apply();
   }
 
+  function ensureHeaderThemeControl(){
+    if(CONFIG.headerThemeControl===false)return;
+    if(q('[data-shell-pref="theme"]'))return;
+    const nav=q('.nlab-nav');if(!nav)return;
+    const label=document.createElement('label');
+    label.className='nlab-theme-control';
+    label.title='Thème';
+    label.setAttribute('aria-label','Thème');
+    label.innerHTML='<span class="nlab-theme-control-label">Thème</span><select data-shell-pref="theme" aria-label="Thème"><option value="auto">Auto</option><option value="light">Clair</option><option value="dark">Sombre</option></select>';
+    nav.append(label);
+  }
+
   function bindPreferences(){
     qa('[data-shell-pref]').forEach(el=>{
       if(el.dataset.nlabReady)return;el.dataset.nlabReady='1';
@@ -170,7 +182,7 @@
   }
 
   function boot(){
-    apply();bindPreferences();bindFoldables();bindWindows();bindAutoHide();bindKeyboard();
+    ensureHeaderThemeControl();apply();bindPreferences();bindFoldables();bindWindows();bindAutoHide();bindKeyboard();
     matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(sharedPrefs.theme==='auto')apply()});
     addEventListener('storage',e=>{
       if(e.key===SHARED_STORE){
@@ -187,7 +199,8 @@
     boot,apply,
     get preferences(){return {...clone(sharedPrefs),folds:clone(localPrefs.folds)}},
     setPreference:writePref,
-    resetWindow
+    resetWindow,
+    ensureHeaderThemeControl
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
