@@ -275,7 +275,7 @@
       ]
     },
     "qr-barcode-studio": {
-      "test": "2.4.0",
+      "test": "2.4.1",
       "required_ids": [
         "symTabs",
         "value",
