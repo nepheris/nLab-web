@@ -1,6 +1,7 @@
 export default {
  homeHref:'../../',studiosHref:'../studios/',
  id:'markdown-studio',
+ capabilities:[{id:'markdown.edit.source',status:'stable'},{id:'markdown.yaml.frontmatter',status:'stable'},{id:'markdown.history.undo-redo',status:'test',engine:'studio-core.undo-redo'}],
  sourcePath:'APP-Applications/markdown-studio/v2/index.html',name:'Markdown Studio',subtitle:'Éditeur texte structuré transversal',
  menus:[{id:'edit',label:'Édition'},{id:'split',label:'Édition + aperçu'},{id:'preview',label:'Lecture'},{id:'yaml',label:'YAML'},{id:'help',label:'Aide'}],
  ribbon:[
