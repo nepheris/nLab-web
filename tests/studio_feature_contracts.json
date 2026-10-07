@@ -275,7 +275,7 @@
       ]
     },
     "qr-barcode-studio": {
-      "test": "2.4.0",
+      "test": "2.4.1",
       "required_ids": [
         "symTabs",
         "value",
@@ -345,7 +345,7 @@
       ]
     },
     "markdown-studio": {
-      "test": "2.2.0",
+      "test": "2.3.0",
       "required_ids": [
         "metaTitle",
         "metaLang",
@@ -386,7 +386,13 @@
         "exportHtml",
         "switchMode",
         "studio-v2:action",
-        "printPdf"
+        "printPdf",
+        "pushUndoRedo"
+      ],
+      "required_capabilities": [
+        "markdown.edit.source",
+        "markdown.yaml.frontmatter",
+        "markdown.history.undo-redo"
       ]
     },
     "dataset-generator-studio": {
@@ -624,7 +630,7 @@
       }
     },
     "document-studio": {
-      "test": "1.2.0",
+      "test": "1.3.0",
       "required_ids": [
         "fileInput",
         "status",
@@ -652,11 +658,17 @@
         "writeOdt",
         "printPdf",
         "document-format-service.js",
-        "download-service.js"
+        "download-service.js",
+        "pushUndoRedo"
+      ],
+      "required_capabilities": [
+        "document.edit.text",
+        "document.convert.office",
+        "document.history.undo-redo"
       ]
     },
     "spreadsheet-studio": {
-      "test": "1.2.0",
+      "test": "1.3.0",
       "required_ids": [
         "fileInput",
         "sheetSelect",
@@ -687,7 +699,13 @@
         "workbookFromCsv",
         "workbookBlob",
         "tabular-service.js",
-        "download-service.js"
+        "download-service.js",
+        "pushUndoRedo"
+      ],
+      "required_capabilities": [
+        "spreadsheet.workbook.read",
+        "spreadsheet.view.sheet-search",
+        "spreadsheet.history.undo-redo"
       ]
     },
     "scan-studio": {

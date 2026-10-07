@@ -38,8 +38,8 @@ Pour chaque vague :
 | PDF / composition | PDF Studio, Merge Studio, PDF Sign | Core partagé en place ; Merge validé transactionnel |
 | Image / visuel | Image Studio | transactionnel Core validé |
 | Code / données / fichiers | Code Studio, Data Studio, File Studio | transactionnel Core validé |
-| Acquisition documentaire | Scan Studio, OCR Studio | vague en cours |
-| Édition documentaire | Markdown Studio, Document Studio, Spreadsheet Studio | prochaine vague |
+| Acquisition documentaire | Scan Studio, OCR Studio | propagée et validée |
+| Édition documentaire | Markdown Studio, Document Studio, Spreadsheet Studio | vague en cours |
 | Génération / symbologie | Dataset Generator, QR & Barcode | à propager après édition documentaire |
 | Apps dérivées | PDF Sign et futures mini-apps | héritage par sous-ensemble de capacités |
 | Média / archives | Audio, Video, Archive | développement ultérieur |
