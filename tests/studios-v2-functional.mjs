@@ -169,6 +169,13 @@ try{
  await studio('markdown-studio',async p=>{
   await chooseFile(p,'#openMd','Library/demo/files/demo-input/Code/demo-markdown.md');await p.waitForFunction(()=>/demo-markdown\.md/i.test(document.querySelector('#docName')?.textContent||''),null,{timeout:15000});
   await p.waitForFunction(()=>document.querySelector('#mdEditor')?.value.length>20,null,{timeout:15000});
+  const mdBefore=await p.locator('#mdEditor').inputValue();
+  await p.locator('#mdEditor').fill(mdBefore+'\n\nNLAB MARKDOWN TXN TEST');
+  await p.waitForTimeout(400);
+  await p.locator('#core-undo').click();
+  await p.waitForFunction(before=>document.querySelector('#mdEditor')?.value===before,mdBefore,{timeout:10000});
+  await p.locator('#core-redo').click();
+  await p.waitForFunction(()=>document.querySelector('#mdEditor')?.value.includes('NLAB MARKDOWN TXN TEST'),null,{timeout:10000});
   await p.locator('#insertTable').click();if(!(await p.locator('#mdEditor').inputValue()).includes('| Colonne 1 |'))throw new Error('Insertion Markdown inactive');
   const dl=p.waitForEvent('download');await p.locator('#saveMd').click();if(!/\.md$/i.test((await dl).suggestedFilename()))throw new Error('Markdown export invalide');
  });
@@ -179,11 +186,28 @@ try{
 
  await studio('document-studio',async p=>{
   await chooseFile(p,'#openDocument','Library/demo/files/demo-input/Code/demo-markdown.md');await p.waitForFunction(()=>document.querySelector('#editor')?.value.length>20,null,{timeout:15000});
+  const docBefore=await p.locator('#editor').inputValue();
+  await p.locator('#editor').fill(docBefore+'\nNLAB DOCUMENT TXN TEST');
+  await p.waitForTimeout(400);
+  await p.locator('#core-undo').click();
+  await p.waitForFunction(before=>document.querySelector('#editor')?.value===before,docBefore,{timeout:10000});
+  await p.locator('#core-redo').click();
+  await p.waitForFunction(()=>document.querySelector('#editor')?.value.includes('NLAB DOCUMENT TXN TEST'),null,{timeout:10000});
   const d1=p.waitForEvent('download');await p.locator('#exportDocx').click();if(!/\.docx$/i.test((await d1).suggestedFilename()))throw new Error('Document DOCX export invalide');
   const d2=p.waitForEvent('download');await p.locator('#exportOdt').click();if(!/\.odt$/i.test((await d2).suggestedFilename()))throw new Error('Document ODT export invalide');
  });
  await studio('spreadsheet-studio',async p=>{
   await chooseFile(p,'#openSheet','Library/demo/Data/dataset-validation-complet.csv');await p.waitForFunction(()=>document.querySelector('#dims')?.textContent!=='0 × 0',null,{timeout:15000});
+  const dimsBefore=(await p.locator('#dims').textContent())||'';
+  await p.locator('#search').fill('__NO_MATCH_SHEET_TXN__');
+  await p.waitForTimeout(350);
+  const dimsFiltered=(await p.locator('#dims').textContent())||'';
+  if(dimsFiltered===dimsBefore)throw new Error('Spreadsheet: recherche sans effet');
+  await p.locator('#core-undo').click();
+  await p.waitForFunction(before=>(document.querySelector('#dims')?.textContent||'')===before,dimsBefore,{timeout:10000});
+  await p.locator('#core-redo').click();
+  await p.waitForFunction(filtered=>(document.querySelector('#dims')?.textContent||'')===filtered,dimsFiltered,{timeout:10000});
+  await p.locator('#core-undo').click();
   const d=p.waitForEvent('download');await p.locator('#exportJson').click();if(!/\.json$/i.test((await d).suggestedFilename()))throw new Error('Spreadsheet JSON export invalide');
  });
  console.log(JSON.stringify({ok:true,studios:results},null,2));
