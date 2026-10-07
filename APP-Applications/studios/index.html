@@ -52,7 +52,7 @@
   <section class="nlab-section">
     <div class="nlab-eyebrow">Studios disponibles</div>
     <div id="studioGrid" class="nlab-grid" style="margin-top:14px">
-      <article class="nlab-card"><div class="nlab-status-line">Chargement</div><h2>Studios…</h2><p class="nlab-muted">Lecture du catalogue et des registres de versions.</p></article>
+      <article class="nlab-card card"><div class="nlab-status-line">Chargement</div><h2>Studios…</h2><p class="nlab-muted">Lecture du catalogue et des registres de versions.</p></article>
     </div>
   </section>
 
@@ -108,7 +108,7 @@ window.NLabAppShellConfig={sharedStorageKey:'nlab:application-shell:shared-prefs
    const selected=choose(s,current,test,currentHref,testHref),openBtn=selected?'<a class="nlab-btn primary" href="'+esc(selected.href)+'">Ouvrir '+esc(selected.label)+' '+esc(selected.v)+'</a>':'<span class="nlab-btn disabled">Ouvrir —</span>';
    const ov=overrides[s.id]||'inherit',override='<select class="studioOverride" data-studio="'+esc(s.id)+'" title="Override de version"><option value="inherit"'+(ov==='inherit'?' selected':'')+'>Hériter</option><option value="latest"'+(ov==='latest'?' selected':'')+'>Dernière</option><option value="current"'+(ov==='current'?' selected':'')+'>CURRENT</option><option value="test"'+(ov==='test'?' selected':'')+'>TEST</option></select>';
    const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';
-   return '<article class="nlab-card">'+icon+'<div class="nlab-status-line">'+esc(icons[s.id]||'STUDIO')+' · '+esc(String(s.status||'').replace(/-/g,' '))+'</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Studio nLab.')+'</p><div class="nlab-actions">'+openBtn+currentBtn+testBtn+'<a class="nlab-btn" href="'+esc(versionsHref)+'">Versions</a>'+override+'</div></article>'
+   return '<article class="nlab-card card">'+icon+'<div class="nlab-status-line">'+esc(icons[s.id]||'STUDIO')+' · '+esc(String(s.status||'').replace(/-/g,' '))+'</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Studio nLab.')+'</p><div class="nlab-actions">'+openBtn+currentBtn+testBtn+'<a class="nlab-btn" href="'+esc(versionsHref)+'">Versions</a>'+override+'</div></article>'
   }));
   grid.innerHTML=cards.join('');
   grid.querySelectorAll('.studioOverride').forEach(sel=>sel.addEventListener('change',()=>{const id=sel.dataset.studio;if(sel.value==='inherit')delete overrides[id];else overrides[id]=sel.value;localStorage.setItem(overrideKey,JSON.stringify(overrides));location.reload()}));
@@ -117,7 +117,7 @@ window.NLabAppShellConfig={sharedStorageKey:'nlab:application-shell:shared-prefs
   derived.innerHTML=(data.derived_apps||[]).map(s=>{
    const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';
    const base=new URL(s.path,location.href).href,versionsHref=resolve(location.href,s.versions_path||'');
-   return '<article class="nlab-card">'+icon+'<div class="nlab-status-line">'+esc(icons[s.id]||'APP')+' · DÉRIVÉ DE '+esc(String(s.parent_studio||'STUDIO').toUpperCase())+'</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Mini-app dérivée nLab.')+'</p><div class="nlab-actions"><a class="nlab-btn primary" href="'+esc(base)+'">Ouvrir TEST</a>'+(versionsHref?'<a class="nlab-btn" href="'+esc(versionsHref)+'">Versions</a>':'')+'</div></article>'
+   return '<article class="nlab-card card">'+icon+'<div class="nlab-status-line">'+esc(icons[s.id]||'APP')+' · DÉRIVÉ DE '+esc(String(s.parent_studio||'STUDIO').toUpperCase())+'</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Mini-app dérivée nLab.')+'</p><div class="nlab-actions"><a class="nlab-btn primary" href="'+esc(base)+'">Ouvrir TEST</a>'+(versionsHref?'<a class="nlab-btn" href="'+esc(versionsHref)+'">Versions</a>':'')+'</div></article>'
   }).join('')||'<p class="nlab-muted">Aucune app dérivée.</p>';
 
   const dev=document.getElementById('developmentGrid');
@@ -125,7 +125,7 @@ window.NLabAppShellConfig={sharedStorageKey:'nlab:application-shell:shared-prefs
 
   globalPolicy.addEventListener('change',()=>{localStorage.setItem(policyKey,globalPolicy.value);location.reload()});
   document.getElementById('clearOverrides').onclick=()=>{overrides={};localStorage.removeItem(overrideKey);location.reload()};
- }catch(e){grid.innerHTML='<article class="nlab-card"><div class="nlab-eyebrow">Erreur</div><h2>Catalogue indisponible</h2><p class="nlab-muted">'+esc(e.message||e)+'</p></article>'}
+ }catch(e){grid.innerHTML='<article class="nlab-card card"><div class="nlab-eyebrow">Erreur</div><h2>Catalogue indisponible</h2><p class="nlab-muted">'+esc(e.message||e)+'</p></article>'}
 })();
 </script>
 </body>
