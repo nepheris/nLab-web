@@ -1,0 +1,249 @@
+{
+  "schema": "nlab-third-party-components/v1",
+  "scope": "nLab Studios",
+  "updated": "2026-10-07",
+  "nlab_license": {
+    "name": "PolyForm Noncommercial License 1.0.0",
+    "url": "https://polyformproject.org/licenses/noncommercial/1.0.0",
+    "copyright_notice": "Copyright © 2026 nLab contributors."
+  },
+  "components": [
+    {
+      "name": "pdf-lib",
+      "version": "1.17.1",
+      "author": "Andrew Dillon / pdf-lib contributors",
+      "official_repo": "https://github.com/Hopding/pdf-lib",
+      "license": "MIT",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "studios": [
+        "pdf-studio",
+        "pdf-sign",
+        "merge-studio"
+      ]
+    },
+    {
+      "name": "PDF.js",
+      "version": "3.11.174",
+      "author": "Mozilla and contributors",
+      "official_repo": "https://github.com/mozilla/pdf.js",
+      "license": "Apache-2.0",
+      "runtime_sources": [
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"
+      ],
+      "studios": [
+        "pdf-studio",
+        "pdf-sign",
+        "merge-studio"
+      ]
+    },
+    {
+      "name": "Mammoth.js",
+      "version": "1.8.0",
+      "author": "Michael Williamson / contributors",
+      "official_repo": "https://github.com/mwilliamson/mammoth.js",
+      "license": "BSD-2-Clause",
+      "runtime_sources": [
+        "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"
+      ],
+      "studios": [
+        "pdf-studio",
+        "document-studio"
+      ]
+    },
+    {
+      "name": "JSZip",
+      "version": "3.10.1",
+      "author": "Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso / contributors",
+      "official_repo": "https://github.com/Stuk/jszip",
+      "license": "MIT OR GPL-3.0",
+      "selected_terms": "MIT",
+      "runtime_sources": [
+        "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+      ],
+      "studios": [
+        "pdf-studio"
+      ]
+    },
+    {
+      "name": "SheetJS CE",
+      "version": "0.18.5",
+      "author": "SheetJS",
+      "official_repo": "https://git.sheetjs.com/SheetJS/sheetjs",
+      "license": "Apache-2.0",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
+      ],
+      "studios": [
+        "pdf-studio",
+        "data-studio",
+        "spreadsheet-studio"
+      ]
+    },
+    {
+      "name": "Tesseract.js",
+      "version": "7.x / 5.x path",
+      "author": "Project Naptha / contributors",
+      "official_repo": "https://github.com/naptha/tesseract.js",
+      "license": "Apache-2.0",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.min.js",
+        "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"
+      ],
+      "studios": [
+        "ocr-studio",
+        "pdf-studio",
+        "scan-studio"
+      ]
+    },
+    {
+      "name": "Tesseract OCR",
+      "version": "engine dependency",
+      "author": "Tesseract OCR contributors",
+      "official_repo": "https://github.com/tesseract-ocr/tesseract",
+      "license": "Apache-2.0",
+      "runtime_sources": [],
+      "studios": [
+        "ocr-studio",
+        "pdf-studio",
+        "scan-studio"
+      ]
+    },
+    {
+      "name": "qr-code-styling",
+      "version": "1.9.2",
+      "author": "Denys Kozak",
+      "official_repo": "https://github.com/kozakdenys/qr-code-styling",
+      "license": "MIT",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"
+      ],
+      "studios": [
+        "qr-barcode-studio",
+        "pdf-studio"
+      ]
+    },
+    {
+      "name": "bwip-js",
+      "version": "4.11.4",
+      "author": "Mark Warren / contributors",
+      "official_repo": "https://github.com/metafloor/bwip-js",
+      "license": "MIT",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/bwip-js@4.11.4/dist/bwip-js-min.js"
+      ],
+      "studios": [
+        "qr-barcode-studio",
+        "pdf-studio"
+      ]
+    },
+    {
+      "name": "html5-qrcode",
+      "version": "2.3.8",
+      "author": "Minhaz / contributors",
+      "official_repo": "https://github.com/mebjas/html5-qrcode",
+      "license": "Apache-2.0",
+      "runtime_sources": [
+        "https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"
+      ],
+      "studios": [
+        "qr-barcode-studio"
+      ]
+    },
+    {
+      "name": "Ace / ace-builds",
+      "version": "1.44.0",
+      "author": "Ajax.org B.V. / Ace contributors",
+      "official_repo": "https://github.com/ajaxorg/ace",
+      "license": "BSD-3-Clause",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/ace-builds@1.44.0/src-min-noconflict/ace.js"
+      ],
+      "studios": [
+        "code-studio"
+      ]
+    },
+    {
+      "name": "Papa Parse",
+      "version": "5.7.0",
+      "author": "Matthew Holt / contributors",
+      "official_repo": "https://github.com/mholt/PapaParse",
+      "license": "MIT",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/papaparse@5.7.0/papaparse.min.js"
+      ],
+      "studios": [
+        "data-studio"
+      ]
+    },
+    {
+      "name": "Marked",
+      "version": "18.0.6",
+      "author": "MarkedJS contributors",
+      "official_repo": "https://github.com/markedjs/marked",
+      "license": "MIT",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/marked@18.0.6/marked.min.js"
+      ],
+      "studios": [
+        "markdown-studio"
+      ]
+    },
+    {
+      "name": "DOMPurify",
+      "version": "3.4.16",
+      "author": "Cure53 / contributors",
+      "official_repo": "https://github.com/cure53/DOMPurify",
+      "license": "Apache-2.0 OR MPL-2.0",
+      "selected_terms": "Apache-2.0",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"
+      ],
+      "studios": [
+        "markdown-studio"
+      ]
+    },
+    {
+      "name": "js-yaml",
+      "version": "4.1.0",
+      "author": "nodeca / contributors",
+      "official_repo": "https://github.com/nodeca/js-yaml",
+      "license": "MIT",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"
+      ],
+      "studios": [
+        "markdown-studio"
+      ]
+    },
+    {
+      "name": "pdfstudio",
+      "version": "0.4.0",
+      "author": "Fayaz Ahmed / contributors",
+      "official_repo": "https://github.com/fayazara/pdfstudio",
+      "license": "Apache-2.0",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/pdfstudio@0.4.0/dist/index.js",
+        "https://cdn.jsdelivr.net/npm/pdfstudio@0.4.0/dist/wasm/qpdf.wasm"
+      ],
+      "studios": [
+        "pdf-studio"
+      ]
+    },
+    {
+      "name": "qpdf",
+      "version": "bundled WebAssembly dependency via pdfstudio",
+      "author": "qpdf contributors",
+      "official_repo": "https://github.com/qpdf/qpdf",
+      "license": "Apache-2.0",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/pdfstudio@0.4.0/dist/wasm/qpdf.wasm"
+      ],
+      "studios": [
+        "pdf-studio"
+      ]
+    }
+  ]
+}
