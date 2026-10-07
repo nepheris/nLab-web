@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths:
       - 'tests/studios-v2-audit.mjs'
+      - 'tests/site-shell-smoke.mjs'
+      - 'index.html'
+      - 'APP-Applications/studios/**'
+      - 'APP-Applications/_shared/site-shell.css'
+      - 'FRMW-Frameworks/Web-Framework/runtime/**'
       - '.github/workflows/audit-studios-full.yml'
   workflow_dispatch:
 
@@ -30,3 +35,13 @@ jobs:
             sleep 1
           done
           NLAB_BASE_URL=http://127.0.0.1:8774/ node tests/studios-v2-audit.mjs
+      - name: Public site shell smoke
+        run: |
+          python -m http.server 8775 --bind 127.0.0.1 >/tmp/nlab-site-shell-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8775/ >/dev/null && break
+            sleep 1
+          done
+          NLAB_BASE_URL=http://127.0.0.1:8775/ node tests/site-shell-smoke.mjs

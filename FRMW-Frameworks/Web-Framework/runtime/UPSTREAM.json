@@ -1,0 +1,9 @@
+{
+  "schema": "nlab-public-framework-mirror/v1",
+  "source_repository": "nepheris/nLab-Web-Framework",
+  "source_path": "dev/framework/components/application-shell-runtime.js",
+  "source_sha": "348888ba4ff9a75c1b0edc44b3421edd4760fdf3",
+  "mirrored_at": "2026-10-07",
+  "canonical": false,
+  "purpose": "Public runtime mirror for nLab-web static delivery. Canonical source remains nLab-Web-Framework."
+}
