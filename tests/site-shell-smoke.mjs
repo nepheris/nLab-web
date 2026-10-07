@@ -11,9 +11,10 @@ try{
     theme:document.documentElement.dataset.theme,
     count:Number(document.querySelector('#studioCount')?.textContent||0),
     headline:document.querySelector('#headlineProduct')?.textContent||'',
-    hardcoded:/0\.9\.21/.test(document.body.textContent||'')
+    hardcoded:/0\.9\.21/.test(document.body.textContent||''),
+    themeControls:document.querySelectorAll('.nlab-header [data-shell-pref="theme"]').length
   }));
-  if(!root.shell||!root.theme||root.count<5||!root.headline||root.hardcoded)throw new Error('Portail public invalide: '+JSON.stringify(root));
+  if(!root.shell||!root.theme||root.count<5||!root.headline||root.hardcoded||root.themeControls!==1)throw new Error('Portail public invalide: '+JSON.stringify(root));
   await page.selectOption('[data-shell-pref="theme"]','dark');
   await page.waitForFunction(()=>document.documentElement.dataset.theme==='dark');
   await page.goto(base+'APP-Applications/studios/',{waitUntil:'domcontentloaded',timeout:60000});
@@ -22,9 +23,10 @@ try{
     shell:!!window.NLabApplicationShell,
     theme:document.documentElement.dataset.theme,
     cards:document.querySelectorAll('#studioGrid .nlab-card').length,
-    buttons:document.querySelectorAll('#studioGrid .nlab-btn.primary').length
+    buttons:document.querySelectorAll('#studioGrid .nlab-btn.primary').length,
+    themeControls:document.querySelectorAll('.nlab-header [data-shell-pref="theme"]').length
   }));
-  if(!hub.shell||hub.theme!=='dark'||hub.cards<5||hub.buttons<3)throw new Error('Hub Studios invalide: '+JSON.stringify(hub));
+  if(!hub.shell||hub.theme!=='dark'||hub.cards<5||hub.buttons<3||hub.themeControls!==1)throw new Error('Hub Studios invalide: '+JSON.stringify(hub));
   await page.click('[data-shell-view="list"]');
   await page.waitForFunction(()=>document.body.dataset.shellView==='list');
   await page.goto(base,{waitUntil:'domcontentloaded',timeout:60000});
