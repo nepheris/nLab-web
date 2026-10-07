@@ -80,10 +80,10 @@ try{
   await p.locator('#demo').click();
   await p.waitForFunction(()=>/demo-script\.js/i.test(document.querySelector('#tab')?.textContent||''),null,{timeout:15000});
   const codeBefore=await p.evaluate(()=>ace.edit('editor').getValue());
-  await p.evaluate(()=>ace.edit('editor').setValue('const transactional = true;\n',-1));
+  await p.evaluate(before=>ace.edit('editor').setValue(before+'\n// NLAB_TXN_CORE_TEST\n',-1),codeBefore);
   await p.waitForTimeout(450);
   const codeChanged=await p.evaluate(()=>ace.edit('editor').getValue());
-  if(codeChanged===codeBefore)throw new Error('Code Studio: édition sans effet');
+  if(codeChanged===codeBefore||!codeChanged.includes('NLAB_TXN_CORE_TEST'))throw new Error('Code Studio: édition sans effet');
   await p.locator('#core-undo').click();
   await p.waitForFunction(before=>ace.edit('editor').getValue()===before,codeBefore,{timeout:10000});
   await p.locator('#core-redo').click();
