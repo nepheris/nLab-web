@@ -42,6 +42,7 @@ try{
   if(JSON.stringify(mergeOrderMoved)===JSON.stringify(mergeOrderBefore))throw new Error('Merge Studio: réordonnancement sans effet');
   await p.locator('#core-undo').click();
   await p.waitForFunction(order=>JSON.stringify([...document.querySelectorAll('#mergeList .mergeItem strong')].map(x=>x.textContent))===JSON.stringify(order),mergeOrderBefore,{timeout:10000});
+  await p.waitForFunction(()=>document.querySelector('#core-redo')?.disabled===false,null,{timeout:10000});
   await p.locator('#core-redo').click();
   await p.waitForFunction(order=>JSON.stringify([...document.querySelectorAll('#mergeList .mergeItem strong')].map(x=>x.textContent))===JSON.stringify(order),mergeOrderMoved,{timeout:10000});
   await p.locator('[data-remove-merge="2"]').click();
