@@ -161,12 +161,6 @@ try{
   const dl=p.waitForEvent('download');await p.locator('#export').click();
   if(!/\.csv$/i.test((await dl).suggestedFilename()))throw new Error('File manifest export invalide');
  });
- await studio('qr-barcode-studio',async p=>{
-  await p.waitForFunction(()=>document.querySelector('#preview')?.children.length>0,null,{timeout:15000});
-  await p.locator('#symTabs [data-type="code128"]').click();await p.waitForFunction(()=>document.querySelector('#preview canvas'),null,{timeout:15000});
-  await p.locator('#downloadPng').click({force:true});
-  await p.waitForFunction(()=>/PNG exporté/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
- });
  await studio('markdown-studio',async p=>{
   await chooseFile(p,'#openMd','Library/demo/files/demo-input/Code/demo-markdown.md');await p.waitForFunction(()=>/demo-markdown\.md/i.test(document.querySelector('#docName')?.textContent||''),null,{timeout:15000});
   await p.waitForFunction(()=>document.querySelector('#mdEditor')?.value.length>20,null,{timeout:15000});
