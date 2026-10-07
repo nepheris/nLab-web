@@ -1,6 +1,7 @@
 export default {
  homeHref:'../../',studiosHref:'../studios/',
  id:'spreadsheet-studio',
+ capabilities:[{id:'spreadsheet.workbook.read',status:'test'},{id:'spreadsheet.view.sheet-search',status:'test'},{id:'spreadsheet.history.undo-redo',status:'test',engine:'studio-core.undo-redo'}],
  sourcePath:'APP-Applications/spreadsheet-studio/v2/index.html',name:'Spreadsheet Studio',subtitle:'XLSX · XLS · ODS · CSV · JSON',
  menus:[{id:'data',label:'Classeur'},{id:'export',label:'Export'},{id:'help',label:'Aide'}],
  ribbon:[
