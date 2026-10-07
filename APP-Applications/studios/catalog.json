@@ -284,8 +284,8 @@
     "metadata": "versions registry + Git commit metadata",
     "responsive_contract": "mobile-tablet-desktop",
     "propagation": "Core capabilities are validated by family waves: pilot Studio -> second surface -> functional Undo/Redo tests -> full audit -> merge -> next family.",
-    "core_version": "3.3.0-test",
-    "test_generation": "2026-10-07-acquisition-family-scan-ocr-core-transactions"
+    "core_version": "3.3.1-test",
+    "test_generation": "2026-10-07-core-3.3.1-acquisition-family-bridge-fix"
   },
   "derived_apps": [
     {
