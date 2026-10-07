@@ -1,6 +1,7 @@
 export default {
  homeHref:'../../',studiosHref:'../studios/',
  id:'document-studio',
+ capabilities:[{id:'document.edit.text',status:'test'},{id:'document.convert.office',status:'test'},{id:'document.history.undo-redo',status:'test',engine:'studio-core.undo-redo'}],
  sourcePath:'APP-Applications/document-studio/v2/index.html',name:'Document Studio',subtitle:'DOCX · ODT · TXT · Markdown · HTML',
  menus:[{id:'edit',label:'Document'},{id:'preview',label:'Aperçu'},{id:'help',label:'Aide'}],
  ribbon:[
