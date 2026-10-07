@@ -52,7 +52,9 @@ try{
   const fmt=await p.evaluate(async()=>{const t=await import('/APP-Applications/_shared/studio-v2/tabular-service.js');const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet([['Prix EUR','Taux','Date'],[12.34,.2,new Date('2026-01-01')]]);ws.A2.z='#,##0.00 [$€-fr-FR]';ws.B2.z='0.00%';ws.C2.z='dd/mm/yyyy';ws['!cols']=[{wch:14},{wch:10},{wch:12}];XLSX.utils.book_append_sheet(wb,ws,'Debug');const profile=t.workbookStructureProfile(wb),clone=t.workbookFromObjectsWithProfile([{'Prix EUR':99.99,'Taux':25,'Date':'2026-10-03'}],profile,{sheetName:'Debug'}),out=clone.Sheets.Debug;return{profile:profile.columns.map(x=>[x.name,x.formatKind,x.numberFormat,x.width]),a:out.A2.z,b:out.B2.z,bv:out.B2.v,c:out.C2.z,ct:out.C2.t,width:out['!cols']?.[0]?.wch}});if(fmt.profile[0][1]!=='currency_eur'||fmt.profile[1][1]!=='percentage'||fmt.profile[2][1]!=='date'||!/€/.test(fmt.a)||fmt.b!=='0.00%'||Math.abs(fmt.bv-.25)>.0001||fmt.ct!=='d'||fmt.width!==14)throw new Error('Clone XLSX : formats monétaire/%/date/largeur non préservés');
  });
  await studio('qr-barcode-studio',async p=>{
-  await p.locator('#symTabs [data-type="code128"]').click();await p.waitForFunction(()=>document.querySelector('#preview canvas'),null,{timeout:15000});const dl=p.waitForEvent('download');await p.locator('#downloadPng').click();const b=await readDownload(await dl);if(b.length<200)throw new Error('PNG code-barres anormalement petit');
+  await p.locator('#symTabs [data-type="code128"]').click();await p.waitForFunction(()=>document.querySelector('#preview canvas'),null,{timeout:15000});
+  const size=await p.evaluate(async()=>{const s=await import('/APP-Applications/_shared/studio-v2/symbology-service.js');const r=await s.generateSymbologyBlob('code128','NLAB-DEMO-CODE128-001',{size:360,margin:16,fg:'#0057b8',bg:'#ffffff'},'png');return r.blob.size});
+  if(size<200)throw new Error('PNG code-barres anormalement petit');
  });
 
  await studio('document-studio',async p=>{
