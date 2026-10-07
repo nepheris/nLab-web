@@ -1,14 +1,23 @@
 {
   "name": "File Studio",
   "current": "0.1.0",
-  "test": "2.3.0",
+  "test": "2.4.0",
   "versions": [
+    {
+      "version": "2.4.0",
+      "label": "File Studio 2.4.0 TEST",
+      "date": "2026-10-07",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Collection, règles de renommage et calculs d’empreintes raccordés au Studio Core 3.3 : transactions Undo/Redo et contexte File partagé."
+    },
     {
       "version": "2.3.0",
       "label": "File Studio 2.3.0 TEST",
       "date": "2026-10-04",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe TEST Core 2.9 : vues Texte/Icône/Preview du sélecteur, dossiers et SVG canoniques ; SHA-256, identifiants nLab et manifests CSV/JSON revalidés."
     },

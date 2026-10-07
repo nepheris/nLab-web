@@ -1,14 +1,23 @@
 {
   "name": "Data Studio",
   "current": "0.2.0",
-  "test": "2.3.0",
+  "test": "2.4.0",
   "versions": [
+    {
+      "version": "2.4.0",
+      "label": "Data Studio 2.4.0 TEST",
+      "date": "2026-10-07",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Dataset, filtres et tris raccordés au Studio Core 3.3 : état Data restaurable par Undo/Redo Core et contexte dataset publié au Context/Selection Core."
+    },
     {
       "version": "2.3.0",
       "label": "Data Studio 2.3.0 TEST",
       "date": "2026-10-04",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Passe TEST Core 2.9 : nouveau sélecteur mutualisé pour datasets et recette étendue des filtres, séparateurs CSV, BOM et exports."
     },
