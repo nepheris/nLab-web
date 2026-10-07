@@ -72,6 +72,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
       <a class="scope-core" data-scope="core" href="${esc(manifest.studiosHref||'../studios-v2/')}">Studios</a>
       <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Library/demo/')}">Démos</a>
       <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Info/')}">Info</a>
+      <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Info/licenses.html')}">À propos & licence</a>
       <a class="scope-core" data-scope="core" href="https://github.com/nepheris/nLab-web">GitHub</a>
       <button id="studioCommandOpen" class="studioNavAction scope-core" data-scope="core" title="Rechercher une commande (Ctrl+K)">⌕ Commandes</button><button id="studioWorkflowOpen" class="studioNavAction scope-core" data-scope="core" title="Workflows enregistrés">Workflows</button><button id="studioContextHelpOpen" class="studioNavAction scope-core" data-scope="core" title="Aide contextuelle">? Aide</button><button id="studioCoreSettings" class="studioNavAction scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
       <a class="studioNavAction scope-core" data-scope="core" href="${esc(manifest.versionsHref||'./versions.html')}">Versions</a>
