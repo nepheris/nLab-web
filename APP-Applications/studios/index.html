@@ -1,23 +1,93 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="nLab Studios — hub public des Studios nLab, versions CURRENT, TEST et historiques.">
-<title>nLab Studios</title><link rel="icon" href="../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
+<title>nLab Studios</title>
+<link rel="icon" href="../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../_shared/site-shell.css">
 <style>
-:root{--blue:#0057b8;--ink:#1f2933;--muted:#667582;--bg:#f4f6f8;--card:#fff;--line:#d9e0e6;--green:#21633a;--test:#765600}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}a{color:inherit}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
-header{height:76px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}.head{height:76px;display:flex;align-items:center;gap:14px}.logo{width:92px;height:44px;display:flex;align-items:center}.logo img{display:block;width:92px}.brand b{display:block;font-size:20px}.brand small{display:block;color:var(--muted);margin-top:2px}.head nav{margin-left:auto;display:flex;align-items:center;gap:8px}.head nav a{padding:8px 11px;border-radius:8px;text-decoration:none;color:#405160}.head nav a:hover{background:#eef5fb;color:var(--blue)}
-main{padding:34px 0 64px}.hero,.panel,.card{background:#fff;border:1px solid var(--line);border-radius:16px}.hero{padding:24px;margin-bottom:18px}.eyebrow{color:var(--blue);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.hero h1{font-size:clamp(32px,5vw,52px);margin:8px 0 10px}.lead,.muted{color:var(--muted);line-height:1.55}.badges,.actions{display:flex;gap:8px;flex-wrap:wrap}.badge{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900}.badge.local{background:#eaf6ee;color:var(--green)}.badge.alpha{background:#fff0b8;color:var(--test)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}.card{padding:18px;display:flex;flex-direction:column;min-height:210px}.studioIcon{width:42px;height:42px;border-radius:10px;background:var(--blue);display:block;margin-bottom:8px;position:relative;color:#fff}.studioIcon::after{content:"";position:absolute;inset:8px;background:currentColor;-webkit-mask:var(--studio-icon) center/contain no-repeat;mask:var(--studio-icon) center/contain no-repeat}.devGrid{margin-top:14px}.devCard{background:#fffdf5;border-color:#ead79a}.devCard .studioIcon{background:#765600}.card h2{margin:7px 0 8px;font-size:20px}.card p{margin:0 0 14px}.actions{margin-top:auto}.btn{display:inline-flex;align-items:center;justify-content:center;padding:9px 12px;border:1px solid #b9c6d1;border-radius:8px;background:#fff;text-decoration:none;font-weight:800;font-size:12px}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.test{background:#fff7d6;border-color:#e1bd43;color:var(--test)}.btn.disabled{opacity:.55;pointer-events:none}.panel{padding:18px;margin-top:18px}.statusLine{font-size:10px;font-weight:800;color:#536675;text-transform:uppercase;letter-spacing:.05em}
-footer{border-top:1px solid var(--line);background:#fff}.foot{padding:20px 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
-@media(max-width:800px){.head nav a:not(.keep){display:none}.brand small{max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
-</style></head><body>
-<header><div class="wrap head"><a class="logo" href="../../" aria-label="nLab Web"><img src="../../assets/branding/nlab-wordmark.svg" alt="nLab"></a><div class="brand"><b>nLab Studios</b><small>Hub unique · CURRENT, TEST et versions historiques</small></div><nav><a href="../../">nLab Web</a><a class="keep" href="../../Library/demo/">Démos</a><a href="../../Info/">Info</a><a href="https://github.com/nepheris/nLab-web">GitHub</a></nav></div></header>
-<main class="wrap"><section class="hero"><div class="eyebrow">Suite publique · local-first · hub canonique</div><h1>nLab Studios</h1><p class="lead">Une seule page pour accéder aux Studios, à leur version CURRENT, à leur version TEST et à l’historique complet. Les briques communes sont progressivement regroupées dans Studio Core.</p><div class="badges"><span class="badge local">Traitement local prioritaire</span><span class="badge alpha">Versions TEST isolées</span></div>
-<div class="actions" style="margin-top:14px"><label class="btn">Version par défaut&nbsp;<select id="globalPolicy" style="border:0;background:transparent"><option value="latest">Dernière disponible</option><option value="current">CURRENT</option><option value="test">TEST</option></select></label><button class="btn" id="clearOverrides" type="button">Réinitialiser overrides</button></div>
-<p class="muted" id="policyHelp">La politique choisit le bouton « Ouvrir » de chaque Studio. Un override peut être défini Studio par Studio.</p></section>
-<section id="studioGrid" class="grid"><article class="card"><div class="eyebrow">Chargement</div><h2>Studios…</h2><p class="muted">Lecture du catalogue et des registres de versions.</p></article></section>
-<section class="panel"><div class="eyebrow">Apps dérivées</div><h2>Outils simplifiés issus des Studios</h2><p class="muted">Ces mini-apps n’embarquent pas un second moteur : elles exposent un sous-ensemble de capacités d’un Studio spécialisé et peuvent renvoyer vers le Studio complet.</p><div id="derivedGrid" class="grid devGrid"></div></section>
-<section class="panel"><div class="eyebrow">Validation & démonstration</div><h2>Corpus commun nLab</h2><p class="muted">Le corpus synthétique commun sert à la fois de galerie, de jeu de conversion, de validation fonctionnelle et de base de non-régression. Chaque Studio peut exposer un sous-ensemble ciblé sans créer un corpus parallèle.</p><div class="actions"><a class="btn primary" href="../../Library/demo/">Ouvrir le corpus démo</a><a class="btn" href="../../Library/demo/manifests/index.json">Manifests par Studio</a><a class="btn" href="./catalog.json">Catalogue JSON</a></div></section><section class="panel"><div class="eyebrow">Développement</div><h2>Fonctions et Studios différés</h2><p class="muted">Ces éléments restent volontairement hors validation humaine actuelle mais sont conservés dans le backlog visible.</p><div id="developmentGrid" class="grid devGrid"></div></section>
-</main><footer><div class="wrap foot"><span>nLab Studios · hub public canonique</span><span>nLab Web</span></div></footer>
+.studioIcon{width:42px;height:42px;border-radius:10px;background:var(--nlab-brand);display:block;margin-bottom:8px;position:relative;color:#fff}
+.studioIcon::after{content:"";position:absolute;inset:8px;background:currentColor;-webkit-mask:var(--studio-icon) center/contain no-repeat;mask:var(--studio-icon) center/contain no-repeat}
+.devCard{background:color-mix(in srgb,var(--nlab-card) 92%,#fff7d6 8%);border-color:#ead79a}.devCard .studioIcon{background:#765600}
+.studioOverride{border:1px solid var(--nlab-line);border-radius:8px;background:var(--nlab-card);color:var(--nlab-ink);padding:7px 9px;font:inherit;font-size:12px}
+</style>
+</head>
+<body>
+<header class="nlab-header">
+  <div class="nlab-wrap nlab-head">
+    <a class="nlab-logo" href="../../" aria-label="nLab Web"><img src="../../assets/branding/nlab-wordmark.svg" alt="nLab"></a>
+    <div class="nlab-brand"><b>nLab Studios</b><small>Hub canonique · CURRENT, TEST et historiques</small></div>
+    <nav class="nlab-nav" aria-label="Navigation principale">
+      <a href="../../">nLab Web</a>
+      <a class="keep" href="../../Library/demo/">Démos</a>
+      <a href="../../Info/">Info</a>
+      <a href="https://github.com/nepheris/nLab-web">GitHub</a>
+      <label class="desktop-only"><select data-shell-pref="theme" aria-label="Thème"><option value="auto">Auto</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label>
+    </nav>
+  </div>
+</header>
+
+<main class="nlab-wrap nlab-main">
+  <section class="nlab-hero">
+    <div class="nlab-eyebrow">Suite publique · local-first · Studio Core partagé</div>
+    <h1>nLab Studios</h1>
+    <p class="nlab-lead">Un point d’entrée unique pour ouvrir les Studios, choisir CURRENT ou TEST, consulter les historiques et conserver les mêmes préférences d’interface entre les pages.</p>
+    <div class="nlab-actions">
+      <label class="nlab-btn">Version par défaut&nbsp;
+        <select id="globalPolicy" style="border:0;background:transparent;color:inherit">
+          <option value="latest">Dernière disponible</option>
+          <option value="current">CURRENT</option>
+          <option value="test">TEST</option>
+        </select>
+      </label>
+      <button class="nlab-btn" id="clearOverrides" type="button">Réinitialiser overrides</button>
+      <button class="nlab-btn" type="button" data-shell-view="cards">Vue cartes</button>
+      <button class="nlab-btn" type="button" data-shell-view="list">Vue liste</button>
+    </div>
+    <p class="nlab-muted" id="policyHelp">La politique choisit le bouton « Ouvrir » de chaque Studio. Un override peut être défini Studio par Studio.</p>
+  </section>
+
+  <section class="nlab-section">
+    <div class="nlab-eyebrow">Studios disponibles</div>
+    <div id="studioGrid" class="nlab-grid" style="margin-top:14px">
+      <article class="nlab-card"><div class="nlab-status-line">Chargement</div><h2>Studios…</h2><p class="nlab-muted">Lecture du catalogue et des registres de versions.</p></article>
+    </div>
+  </section>
+
+  <section class="nlab-panel">
+    <div class="nlab-eyebrow">Apps dérivées</div>
+    <h2>Outils simplifiés issus des Studios</h2>
+    <p class="nlab-muted">Ces mini-apps exposent un sous-ensemble de capacités d’un Studio spécialisé et renvoient vers le Studio complet lorsque nécessaire.</p>
+    <div id="derivedGrid" class="nlab-grid" style="margin-top:14px"></div>
+  </section>
+
+  <section class="nlab-panel">
+    <div class="nlab-eyebrow">Validation & démonstration</div>
+    <h2>Corpus commun nLab</h2>
+    <p class="nlab-muted">Le corpus synthétique commun sert de galerie, jeu de conversion, validation fonctionnelle et base de non-régression.</p>
+    <div class="nlab-actions">
+      <a class="nlab-btn primary" href="../../Library/demo/">Ouvrir le corpus démo</a>
+      <a class="nlab-btn" href="../../Library/demo/manifests/index.json">Manifests par Studio</a>
+      <a class="nlab-btn" href="./catalog.json">Catalogue JSON</a>
+    </div>
+  </section>
+
+  <section class="nlab-panel">
+    <div class="nlab-eyebrow">Développement</div>
+    <h2>Fonctions et Studios différés</h2>
+    <p class="nlab-muted">Ces éléments restent hors validation humaine actuelle mais sont conservés dans le backlog visible.</p>
+    <div id="developmentGrid" class="nlab-grid" style="margin-top:14px"></div>
+  </section>
+</main>
+
+<footer class="nlab-footer"><div class="nlab-wrap nlab-foot"><span>nLab Studios · hub public canonique</span><span>Studio Core + Web Framework</span></div></footer>
+
+<script>
+window.NLabAppShellConfig={sharedStorageKey:'nlab:application-shell:shared-prefs:v2',localStorageKey:'nlab:site:studios:prefs:v1'};
+</script>
+<script src="../../FRMW-Frameworks/Web-Framework/runtime/application-shell-runtime.js"></script>
 <script>
 (async()=>{
  const grid=document.getElementById('studioGrid'),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),resolve=(base,href)=>{try{return new URL(href,base).href}catch{return href}};
@@ -33,22 +103,30 @@ footer{border-top:1px solid var(--line);background:#fff}.foot{padding:20px 0;dis
    let current=null,test=null;const registryUrl=s.version_registry||('../'+s.id+'/versions.json');
    try{const vr=await fetch(registryUrl,{cache:'no-store'});if(vr.ok){const registry=await vr.json(),by=new Map((registry.versions||[]).map(v=>[String(v.version),v]));current=registry.current?by.get(String(registry.current)):null;test=registry.test?by.get(String(registry.test)):null}}catch{}
    const studioBase=new URL(s.path,location.href).href,currentHref=current?resolve(studioBase,current.href||'./'):null,testHref=test?resolve(studioBase,test.href||'./'):null,versionsHref=resolve(location.href,s.versions_path||('../'+s.id+'/versions.html'));
-   const currentBtn=current?'<a class="btn" href="'+esc(currentHref)+'">CURRENT '+esc(current.version)+'</a>':'<span class="btn disabled">CURRENT —</span>';
-   const testBtn=test?'<a class="btn test" href="'+esc(testHref)+'">TEST '+esc(test.version)+'</a>':'<span class="btn disabled">TEST —</span>';
-   const selected=choose(s,current,test,currentHref,testHref),openBtn=selected?'<a class="btn primary" href="'+esc(selected.href)+'">Ouvrir '+esc(selected.label)+' '+esc(selected.v)+'</a>':'<span class="btn disabled">Ouvrir —</span>';
+   const currentBtn=current?'<a class="nlab-btn" href="'+esc(currentHref)+'">CURRENT '+esc(current.version)+'</a>':'<span class="nlab-btn disabled">CURRENT —</span>';
+   const testBtn=test?'<a class="nlab-btn test" href="'+esc(testHref)+'">TEST '+esc(test.version)+'</a>':'<span class="nlab-btn disabled">TEST —</span>';
+   const selected=choose(s,current,test,currentHref,testHref),openBtn=selected?'<a class="nlab-btn primary" href="'+esc(selected.href)+'">Ouvrir '+esc(selected.label)+' '+esc(selected.v)+'</a>':'<span class="nlab-btn disabled">Ouvrir —</span>';
    const ov=overrides[s.id]||'inherit',override='<select class="studioOverride" data-studio="'+esc(s.id)+'" title="Override de version"><option value="inherit"'+(ov==='inherit'?' selected':'')+'>Hériter</option><option value="latest"'+(ov==='latest'?' selected':'')+'>Dernière</option><option value="current"'+(ov==='current'?' selected':'')+'>CURRENT</option><option value="test"'+(ov==='test'?' selected':'')+'>TEST</option></select>';
-   const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';return '<article class="card">'+icon+'<div class="statusLine">'+esc(icons[s.id]||'STUDIO')+' · '+esc(String(s.status||'').replace(/-/g,' '))+'</div><h2>'+esc(s.name)+'</h2><p class="muted">'+esc(s.purpose||'Studio nLab.')+'</p><div class="actions">'+openBtn+currentBtn+testBtn+'<a class="btn" href="'+esc(versionsHref)+'">Versions</a>'+override+'</div></article>'
+   const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';
+   return '<article class="nlab-card">'+icon+'<div class="nlab-status-line">'+esc(icons[s.id]||'STUDIO')+' · '+esc(String(s.status||'').replace(/-/g,' '))+'</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Studio nLab.')+'</p><div class="nlab-actions">'+openBtn+currentBtn+testBtn+'<a class="nlab-btn" href="'+esc(versionsHref)+'">Versions</a>'+override+'</div></article>'
   }));
   grid.innerHTML=cards.join('');
   grid.querySelectorAll('.studioOverride').forEach(sel=>sel.addEventListener('change',()=>{const id=sel.dataset.studio;if(sel.value==='inherit')delete overrides[id];else overrides[id]=sel.value;localStorage.setItem(overrideKey,JSON.stringify(overrides));location.reload()}));
+
   const derived=document.getElementById('derivedGrid');
   derived.innerHTML=(data.derived_apps||[]).map(s=>{
    const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';
    const base=new URL(s.path,location.href).href,versionsHref=resolve(location.href,s.versions_path||'');
-   return '<article class="card">'+icon+'<div class="statusLine">'+esc(icons[s.id]||'APP')+' · DÉRIVÉ DE '+esc(String(s.parent_studio||'STUDIO').toUpperCase())+'</div><h2>'+esc(s.name)+'</h2><p class="muted">'+esc(s.purpose||'Mini-app dérivée nLab.')+'</p><div class="actions"><a class="btn primary" href="'+esc(base)+'">Ouvrir TEST</a>'+(versionsHref?'<a class="btn" href="'+esc(versionsHref)+'">Versions</a>':'')+'</div></article>'
-  }).join('')||'<p class="muted">Aucune app dérivée.</p>';
-  const dev=document.getElementById('developmentGrid');dev.innerHTML=(data.future||[]).map(s=>{const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';return '<article class="card devCard">'+icon+'<div class="statusLine">DÉVELOPPEMENT</div><h2>'+esc(s.name)+'</h2><p class="muted">'+esc(s.purpose||'Fonction en développement.')+'</p><div class="actions"><span class="btn disabled">Après validation humaine</span></div></article>'}).join('')||'<p class="muted">Aucun chantier différé.</p>';
-  globalPolicy.addEventListener('change',()=>{localStorage.setItem(policyKey,globalPolicy.value);location.reload()});document.getElementById('clearOverrides').onclick=()=>{overrides={};localStorage.removeItem(overrideKey);location.reload()};
- }catch(e){grid.innerHTML='<article class="card"><div class="eyebrow">Erreur</div><h2>Catalogue indisponible</h2><p class="muted">'+esc(e.message||e)+'</p></article>'}
+   return '<article class="nlab-card">'+icon+'<div class="nlab-status-line">'+esc(icons[s.id]||'APP')+' · DÉRIVÉ DE '+esc(String(s.parent_studio||'STUDIO').toUpperCase())+'</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Mini-app dérivée nLab.')+'</p><div class="nlab-actions"><a class="nlab-btn primary" href="'+esc(base)+'">Ouvrir TEST</a>'+(versionsHref?'<a class="nlab-btn" href="'+esc(versionsHref)+'">Versions</a>':'')+'</div></article>'
+  }).join('')||'<p class="nlab-muted">Aucune app dérivée.</p>';
+
+  const dev=document.getElementById('developmentGrid');
+  dev.innerHTML=(data.future||[]).map(s=>{const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';return '<article class="nlab-card devCard">'+icon+'<div class="nlab-status-line">DÉVELOPPEMENT</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Fonction en développement.')+'</p><div class="nlab-actions"><span class="nlab-btn disabled">Après validation humaine</span></div></article>'}).join('')||'<p class="nlab-muted">Aucun chantier différé.</p>';
+
+  globalPolicy.addEventListener('change',()=>{localStorage.setItem(policyKey,globalPolicy.value);location.reload()});
+  document.getElementById('clearOverrides').onclick=()=>{overrides={};localStorage.removeItem(overrideKey);location.reload()};
+ }catch(e){grid.innerHTML='<article class="nlab-card"><div class="nlab-eyebrow">Erreur</div><h2>Catalogue indisponible</h2><p class="nlab-muted">'+esc(e.message||e)+'</p></article>'}
 })();
-</script></body></html>
+</script>
+</body>
+</html>
