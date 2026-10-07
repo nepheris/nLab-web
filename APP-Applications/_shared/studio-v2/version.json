@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "channel": "test",
-  "notes": "Studio Core 3.3 TEST : Command Core central partagé par Ruban, palette Ctrl+K et menus contextuels ; Context/Selection Core ; Property Inspector Core ; Undo/Redo transactionnel. Le Core Input/Collection publie la sélection commune et raccorde ajout, retrait, vidage et rotation aux transactions Undo/Redo. Smoke test de câblage inclus.",
+  "notes": "Studio Core 3.3.1 TEST : installation des bridges Context/Selection et Undo/Redo déplacée dans mountStudioV2 afin que les Studios montés directement bénéficient du même routage que bootstrap-specialized ; Command Core, Ruban, Ctrl+K, menus contextuels et transactions restent inchangés.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
