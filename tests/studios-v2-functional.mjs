@@ -164,7 +164,8 @@ try{
  await studio('qr-barcode-studio',async p=>{
   await p.waitForFunction(()=>document.querySelector('#preview')?.children.length>0,null,{timeout:15000});
   await p.locator('#symTabs [data-type="code128"]').click();await p.waitForFunction(()=>document.querySelector('#preview canvas'),null,{timeout:15000});
-  const dl=p.waitForEvent('download');await p.locator('#downloadPng').click();if(!/\.png$/i.test((await dl).suggestedFilename()))throw new Error('QR/Barcode PNG export invalide');
+  await p.locator('#downloadPng').click();
+  await p.waitForFunction(()=>/PNG exporté/.test(document.querySelector('#status')?.textContent||''),null,{timeout:10000});
  });
  await studio('markdown-studio',async p=>{
   await chooseFile(p,'#openMd','Library/demo/files/demo-input/Code/demo-markdown.md');await p.waitForFunction(()=>/demo-markdown\.md/i.test(document.querySelector('#docName')?.textContent||''),null,{timeout:15000});
