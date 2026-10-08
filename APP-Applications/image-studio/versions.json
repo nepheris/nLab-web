@@ -99,7 +99,7 @@
       "status": "historical",
       "href": "./history/0.2.1/",
       "notes": "Correctif : chemins du corpus de démonstration/calibration réparés après réorganisation de Library/demo. Fonctions de rotation, miroir, redimensionnement, export et calibration inchangées. · Snapshot historique isolé dans main pour compatibilité.",
-      "isolation": "compat-runtime"
+      "isolation": "native"
     },
     {
       "version": "0.2.0",
@@ -109,7 +109,7 @@
       "status": "historical",
       "href": "./history/0.2.0/",
       "notes": "Version publiée lors de l’introduction du registre commun Studio. Rotation, miroir, redimensionnement, export et calibration/mesure. · Snapshot historique isolé dans main pour compatibilité.",
-      "isolation": "compat-runtime"
+      "isolation": "native"
     }
   ]
 }
