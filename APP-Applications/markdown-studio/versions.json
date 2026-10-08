@@ -1,15 +1,24 @@
 {
-  "current": null,
-  "test": "2.3.0",
+  "current": "2.3.0",
+  "test": "2.3.1",
   "versions": [
     {
-      "version": "2.3.0",
-      "label": "Markdown Studio 2.3.0 TEST",
-      "date": "2026-10-07",
+      "version": "2.3.1",
+      "label": "markdown-studio 2.3.1 TEST",
+      "date": "2026-10-08",
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Propagation famille édition documentaire : contenu Markdown, insertion, YAML/front matter et chargement raccordés au Context/Selection et Undo/Redo Core globaux."
+      "notes": "Snapshot TEST suivant la promotion de 2.3.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+    },
+    {
+      "version": "2.3.0",
+      "label": "Markdown Studio 2.3.0 CURRENT",
+      "date": "2026-10-07",
+      "current": true,
+      "status": "current",
+      "href": "./v2/?channel=current",
+      "notes": "Propagation famille édition documentaire : contenu Markdown, insertion, YAML/front matter et chargement raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P2."
     },
     {
       "version": "2.2.0",

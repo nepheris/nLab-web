@@ -4,7 +4,7 @@ import{readWorkbook,workbookFromCsv,workbookFromJson,workbookToRows,rowsToObject
 import{downloadBlob,downloadJson,downloadCsv}from'../../_shared/studio-v2/download-service.js';
 import studioManifest from'./studio-manifest.js';
 import{pushUndoRedo}from'../../_shared/studio-v2/undo-redo.js';
-const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
+const VERSION_INFO=await resolveStudioVersions({versionsHref:new URL('../versions.json',import.meta.url).href,coreVersionHref:new URL('../../_shared/studio-v2/version.json',import.meta.url).href,channel:'test'});
 await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
 const $=s=>document.querySelector(s);let wb=XLSX.utils.book_new(),bookName='classeur.xlsx',rows=[],txnMute=false,lastView=null,viewTxnTimer=null;
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}

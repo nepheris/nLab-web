@@ -7,7 +7,7 @@ import{openInputPicker,filesFromDrop}from'../../_shared/studio-v2/input-picker.j
 import{pushUndoRedo,undo as coreUndo,redo as coreRedo,getUndoRedoState}from'../../_shared/studio-v2/undo-redo.js';
 import manifest from'./studio-manifest.js';
 
-const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test',sourcePath:manifest.sourcePath});
+const VERSION_INFO=await resolveStudioVersions({versionsHref:new URL('../versions.json',import.meta.url).href,coreVersionHref:new URL('../../_shared/studio-v2/version.json',import.meta.url).href,channel:'test',sourcePath:manifest.sourcePath});
 applyVersionDocumentMeta({studioName:manifest.name,studioVersion:VERSION_INFO.version,studioStatus:VERSION_INFO.status,coreVersion:VERSION_INFO.coreVersion,build:VERSION_INFO.build});
 await mountStudioV2({manifest,versionInfo:VERSION_INFO});
 
