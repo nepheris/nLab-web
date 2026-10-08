@@ -129,3 +129,18 @@ Studios : Scan, Markdown, Dataset Generator, Document, Spreadsheet.
 - aucune suppression de fichier historique versionné n’est encore faite dans cette sous-passe.
 
 Après validation de P2, **PDF Studio devient la seule famille conservant une CURRENT historique pré-V2**.
+
+
+## Vague P2 — conservation de l’historique
+
+Règle ajoutée après promotion CURRENT :
+- toute entrée `versions.json` marquée `historical` doit conserver un lien exécutable ;
+- les versions pré-Core/Alpha sont isolées sous `history/<version>/` avec provenance Git ;
+- les versions Studio V2 historiques utilisent `?version=<version>&channel=historical` et le resolver doit afficher exactement la version demandée avec statut `HISTORICAL`;
+- les snapshots pré-Core conservent leurs anciens assets via un `<base>` compatible ;
+- aucune suppression physique n’est autorisée si `tests/studio-history-compat.mjs` ne couvre pas et ne valide pas la version.
+
+Les snapshots et leur provenance sont décrits dans :
+`APP-Applications/studios/reconciliation/HISTORY-SNAPSHOT-PROVENANCE-2026-10-08.json`.
+
+Cette politique permet de mettre toute l’architecture moderne dans `main` tout en gardant les anciennes versions isolées et accessibles.
