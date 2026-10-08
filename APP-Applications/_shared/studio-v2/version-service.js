@@ -11,11 +11,12 @@ export async function resolveStudioVersions({
  repo='nepheris/nLab-web',
  ref='main'
 }={}){
- const out={...fallback};const requested=new URLSearchParams(location.search).get('version');out.requestedVersion=requested;
+ const out={...fallback};const params=new URLSearchParams(location.search),requested=params.get('version'),requestedChannel=params.get('channel');out.requestedVersion=requested;
+ const effectiveChannel=['current','test'].includes(String(requestedChannel||'').toLowerCase())?String(requestedChannel).toLowerCase():channel;
  try{
   const reg=await json(versionsHref),known=Array.isArray(reg.versions)?reg.versions:[];
-  const active=new Set([reg.test,reg.current].filter(Boolean));const candidate=requested&&active.has(requested)?requested:(reg[channel]||reg.test||reg.current||known[0]?.version||'');
-  const item=known.find(v=>v.version===candidate);out.studioVersion=candidate;out.studioStatus=String(item?.status||channel||'test').toUpperCase()
+  const active=new Set([reg.test,reg.current].filter(Boolean));const candidate=requested&&active.has(requested)?requested:(reg[effectiveChannel]||reg.test||reg.current||known[0]?.version||'');
+  const item=known.find(v=>v.version===candidate);out.studioVersion=candidate;out.studioStatus=String(item?.status||effectiveChannel||'test').toUpperCase()
  }catch{}
  try{const core=await json(coreVersionHref);out.coreVersion=core.version||''}catch{}
  out.build=await resolveBuildMetadata({
