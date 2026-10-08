@@ -762,64 +762,9 @@ document.querySelectorAll('.card[data-tool]').forEach(b=>b.onclick=()=>openTool(
     syncSidebarDock();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init0910,{once:true});else init0910();
-})();
-</script>
-<style id="alpha0911Styles">
-/* Alpha 0.9.12 — ergonomie compacte et états explicites */
-[hidden]{display:none!important}
-.topbar{display:none!important}
-.layout{--sidebar-width:430px;grid-template-columns:var(--sidebar-width) minmax(0,1fr)!important;align-items:start}
-.sidebarPanel{position:sticky!important;top:8px!important;height:calc(100vh - 16px)!important;max-height:calc(100vh - 16px)!important;overflow:auto!important;padding-top:10px!important}
-.sidebarResizer{right:-8px!important;width:16px!important;z-index:25!important;background:transparent!important}
-.sidebarResizer::after{content:"";position:absolute;top:12px;bottom:12px;left:7px;width:2px;border-radius:2px;background:#c7d2dc;transition:.15s}
-.sidebarResizer:hover::after,.sidebarResizer.dragging::after{background:#0057b8;width:4px;left:6px}
-#sidebarCycle,#sidebarExpand,#sidebarModeHint{display:none!important}
-.sidebarFoldControls{position:sticky;top:0;z-index:22;background:#fff;padding:5px 0 8px;display:grid!important;grid-template-columns:auto 1fr 1fr;gap:5px;border-bottom:1px solid #e5e9ed}
-.sidebarFoldControls #backHome{grid-column:1;white-space:nowrap}
-.sidebarFoldControls .sidebarTitleCompact{grid-column:2/4;align-self:center;font-weight:800;color:#263746;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sidebarFoldControls #sidebarShowHistory{grid-column:1/-1}
-.sidebarFileDock{position:sticky!important;top:82px!important;z-index:21!important;background:#f8fafc!important}
-.editorRibbon{position:sticky;top:0;z-index:35;background:#fff;border:1px solid #d9e0e6;border-radius:10px 10px 0 0;padding:5px 7px;gap:4px;min-height:42px;box-shadow:0 3px 12px #00000010}
-.ribbonTab{opacity:.62;transition:.12s;white-space:nowrap}
-.ribbonTab.active,.ribbonTab[aria-pressed="true"]{opacity:1;background:#e8f2fb!important;border-color:#7caed3!important;color:#0f5689!important;box-shadow:inset 0 -2px 0 #0057b8}
-.ribbonTab:not(.active)[aria-pressed="false"]{background:#fff!important}
-.ribbonHint{display:none!important}
-.editorToolbar{border-radius:0!important;margin-top:0!important}
-.editorToolGroup[hidden],.saveToolGroup[hidden],.navigationToolGroup[hidden],#pageToolGroup[hidden],#documentToolGroup[hidden],#historyToolGroup[hidden],#objectToolGroup[hidden]{display:none!important}
-.googleDriveGate{order:80;margin-left:auto!important;display:inline-flex!important;align-items:center!important;gap:5px!important;padding:4px 7px!important;border:1px solid #e3c65e!important;border-radius:7px!important;background:#fff4c4!important;color:#6d5200!important;max-width:320px}
-.googleDriveGate.connected{background:#eaf7ee!important;border-color:#8bc89d!important;color:#1f6636!important}
-.googleDriveGate .gateState{max-width:175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px!important;font-weight:700}
-.googleDriveGate button{padding:4px 6px!important;font-size:10px!important;white-space:nowrap}
-.toolbarMasterToggle{order:90;margin-left:0!important;white-space:nowrap}
-.notificationHub{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 8px;margin:5px 0 7px;border:1px solid #d6e0e9;border-radius:8px;background:#f8fbfd;min-height:38px}
-.notificationHub::before{content:"Notifications";font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:#657786;margin-right:3px}
-.notificationHub .docReady,.notificationHub .statusPill{font-size:11px!important;padding:5px 7px!important;margin:0!important}
-.notificationHub .editorContextBar{display:flex!important;margin:0!important;padding:4px 7px!important;border:0!important;background:transparent!important;min-height:auto!important;flex:1 1 320px}
-.notificationHub .editorContextBar[hidden]{display:none!important}
-.notificationHub .editorContextBar svg{width:16px;height:16px}
-.notificationHub .toast{position:static!important;transform:none!important;opacity:1!important;display:none!important;margin:0!important;box-shadow:none!important;padding:5px 8px!important;font-size:11px!important}
-.notificationHub .toast.show{display:inline-flex!important}
-.demoBanner.workspaceInfoBar{margin:9px 0 0!important;font-size:11px!important;padding:7px 9px!important;background:#fff8dd!important}
-.navigationToolGroup{gap:4px!important}
-.navigationToolGroup button{padding:5px 7px!important;min-width:31px}
-.navigationToolGroup .navText{font-size:10px}
-#zoomRange{width:90px!important}
-@media(max-width:1450px){.navigationToolGroup .navText{display:none!important}.navigationToolGroup button{width:32px;padding:5px!important}.navigationToolGroup #pageInfo{font-size:10px}.editorToolLabel{display:none}.ribbonTab{font-size:10px;padding:6px 7px}.googleDriveGate .gateState{max-width:110px}}
-@media(max-width:1120px){.ribbonTab svg{margin-right:0!important}.ribbonTab{font-size:0!important;width:34px}.ribbonTab svg{width:17px!important}.googleDriveGate .gateState{display:none}.toolbarMasterToggle{font-size:0!important;width:34px}.toolbarMasterToggle::before{content:"▴";font-size:14px}.toolbarsCollapsed .toolbarMasterToggle::before{content:"▾"}}
-.quickHighlighterStrip{display:inline-flex;align-items:center;gap:4px;padding:2px 5px;border-left:1px solid #d5dde4}
-.quickHighlighterStrip button{width:26px;height:26px;padding:0;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px #aab6c1}
-.quickHighlighterStrip button.active{box-shadow:0 0 0 2px #315a78}
-.stampDateGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:7px 0}
-.stampDateGrid label{font-size:10px;font-weight:700;color:#536474}.stampDateGrid input{margin-top:3px}
-.stampBuilder{margin:9px 0;padding:9px;border:1px solid #d9e2e9;border-radius:8px;background:#fbfcfd}
-.stampBuilder h4{margin:0 0 6px;font-size:12px}.stampBuilder .checkline{display:inline-flex;margin-right:7px}
-.stampVarButtons{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}.stampVarButtons button{padding:4px 6px;font-size:10px}
-.formFill0911{margin-top:9px;border-top:1px solid #e1e6ea;padding-top:8px}.formFill0911 .fillRow{display:grid;grid-template-columns:minmax(110px,.65fr) minmax(0,1fr);gap:6px;align-items:center;margin:5px 0}.formFill0911 .fillRow label{font-size:10px;font-weight:700;overflow:hidden;text-overflow:ellipsis}.formFill0911 input,.formFill0911 select{font-size:11px;padding:5px}
-.convertQuickGroup{display:inline-flex;gap:3px;align-items:center;border-left:1px solid #d4dce3;padding-left:5px}
-.convertQuickGroup button{font-size:10px;padding:5px 7px}
-.signaturePrivacyGate:not(.ok){background:#fff4c4!important;border-color:#e3c65e!important;color:#6d5200!important}
-.textAlignStrip{display:inline-flex;gap:2px}.textAlignStrip button{min-width:30px;padding:4px 6px}.textAlignStrip button.active{background:#e7f1fb;border-color:#6da4d0;color:#164f7d}
-</style><script id="alpha0912Runtime">
+
+
+// =================== Alpha 0.9.12 enhancements (lexically bound to main runtime) ===================
 (()=>{
 'use strict';
 const VERSION='Alpha 0.9.12';
@@ -838,8 +783,8 @@ function applyRibbon0911(notify=false){
   document.querySelectorAll('[data-ribbon-tab]').forEach(b=>{const on=sec.has(b.dataset.ribbonTab);b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));b.title=`${on?'Masquer':'Afficher'} la barre ${b.textContent.trim()}`});
   if(notify)toast([...sec].length?'Ruban mis à jour':'Toutes les barres du ruban sont masquées');
 }
-window.applyRibbonVisibility=applyRibbon0911;
-window.toggleRibbonSection=function(tab){const sec=ensureRibbonSet();sec.has(tab)?sec.delete(tab):sec.add(tab);applyRibbon0911(true)};
+applyRibbonVisibility=applyRibbon0911;
+toggleRibbonSection=function(tab){const sec=ensureRibbonSet();sec.has(tab)?sec.delete(tab):sec.add(tab);applyRibbon0911(true)};
 
 // 2) Organisation écran / notifications / auth
 function buildNotificationHub(){
@@ -1045,7 +990,66 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 // =================== /Alpha 0.9.12 =====================
 
 })();
+// =================== /Alpha 0.9.12 enhancements ===================
+
+})();
 </script>
+<style id="alpha0911Styles">
+/* Alpha 0.9.12 — ergonomie compacte et états explicites */
+[hidden]{display:none!important}
+.topbar{display:none!important}
+.layout{--sidebar-width:430px;grid-template-columns:var(--sidebar-width) minmax(0,1fr)!important;align-items:start}
+.sidebarPanel{position:sticky!important;top:8px!important;height:calc(100vh - 16px)!important;max-height:calc(100vh - 16px)!important;overflow:auto!important;padding-top:10px!important}
+.sidebarResizer{right:-8px!important;width:16px!important;z-index:25!important;background:transparent!important}
+.sidebarResizer::after{content:"";position:absolute;top:12px;bottom:12px;left:7px;width:2px;border-radius:2px;background:#c7d2dc;transition:.15s}
+.sidebarResizer:hover::after,.sidebarResizer.dragging::after{background:#0057b8;width:4px;left:6px}
+#sidebarCycle,#sidebarExpand,#sidebarModeHint{display:none!important}
+.sidebarFoldControls{position:sticky;top:0;z-index:22;background:#fff;padding:5px 0 8px;display:grid!important;grid-template-columns:auto 1fr 1fr;gap:5px;border-bottom:1px solid #e5e9ed}
+.sidebarFoldControls #backHome{grid-column:1;white-space:nowrap}
+.sidebarFoldControls .sidebarTitleCompact{grid-column:2/4;align-self:center;font-weight:800;color:#263746;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sidebarFoldControls #sidebarShowHistory{grid-column:1/-1}
+.sidebarFileDock{position:sticky!important;top:82px!important;z-index:21!important;background:#f8fafc!important}
+.editorRibbon{position:sticky;top:0;z-index:35;background:#fff;border:1px solid #d9e0e6;border-radius:10px 10px 0 0;padding:5px 7px;gap:4px;min-height:42px;box-shadow:0 3px 12px #00000010}
+.ribbonTab{opacity:.62;transition:.12s;white-space:nowrap}
+.ribbonTab.active,.ribbonTab[aria-pressed="true"]{opacity:1;background:#e8f2fb!important;border-color:#7caed3!important;color:#0f5689!important;box-shadow:inset 0 -2px 0 #0057b8}
+.ribbonTab:not(.active)[aria-pressed="false"]{background:#fff!important}
+.ribbonHint{display:none!important}
+.editorToolbar{border-radius:0!important;margin-top:0!important}
+.editorToolGroup[hidden],.saveToolGroup[hidden],.navigationToolGroup[hidden],#pageToolGroup[hidden],#documentToolGroup[hidden],#historyToolGroup[hidden],#objectToolGroup[hidden]{display:none!important}
+.googleDriveGate{order:80;margin-left:auto!important;display:inline-flex!important;align-items:center!important;gap:5px!important;padding:4px 7px!important;border:1px solid #e3c65e!important;border-radius:7px!important;background:#fff4c4!important;color:#6d5200!important;max-width:320px}
+.googleDriveGate.connected{background:#eaf7ee!important;border-color:#8bc89d!important;color:#1f6636!important}
+.googleDriveGate .gateState{max-width:175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px!important;font-weight:700}
+.googleDriveGate button{padding:4px 6px!important;font-size:10px!important;white-space:nowrap}
+.toolbarMasterToggle{order:90;margin-left:0!important;white-space:nowrap}
+.notificationHub{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 8px;margin:5px 0 7px;border:1px solid #d6e0e9;border-radius:8px;background:#f8fbfd;min-height:38px}
+.notificationHub::before{content:"Notifications";font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:#657786;margin-right:3px}
+.notificationHub .docReady,.notificationHub .statusPill{font-size:11px!important;padding:5px 7px!important;margin:0!important}
+.notificationHub .editorContextBar{display:flex!important;margin:0!important;padding:4px 7px!important;border:0!important;background:transparent!important;min-height:auto!important;flex:1 1 320px}
+.notificationHub .editorContextBar[hidden]{display:none!important}
+.notificationHub .editorContextBar svg{width:16px;height:16px}
+.notificationHub .toast{position:static!important;transform:none!important;opacity:1!important;display:none!important;margin:0!important;box-shadow:none!important;padding:5px 8px!important;font-size:11px!important}
+.notificationHub .toast.show{display:inline-flex!important}
+.demoBanner.workspaceInfoBar{margin:9px 0 0!important;font-size:11px!important;padding:7px 9px!important;background:#fff8dd!important}
+.navigationToolGroup{gap:4px!important}
+.navigationToolGroup button{padding:5px 7px!important;min-width:31px}
+.navigationToolGroup .navText{font-size:10px}
+#zoomRange{width:90px!important}
+@media(max-width:1450px){.navigationToolGroup .navText{display:none!important}.navigationToolGroup button{width:32px;padding:5px!important}.navigationToolGroup #pageInfo{font-size:10px}.editorToolLabel{display:none}.ribbonTab{font-size:10px;padding:6px 7px}.googleDriveGate .gateState{max-width:110px}}
+@media(max-width:1120px){.ribbonTab svg{margin-right:0!important}.ribbonTab{font-size:0!important;width:34px}.ribbonTab svg{width:17px!important}.googleDriveGate .gateState{display:none}.toolbarMasterToggle{font-size:0!important;width:34px}.toolbarMasterToggle::before{content:"▴";font-size:14px}.toolbarsCollapsed .toolbarMasterToggle::before{content:"▾"}}
+.quickHighlighterStrip{display:inline-flex;align-items:center;gap:4px;padding:2px 5px;border-left:1px solid #d5dde4}
+.quickHighlighterStrip button{width:26px;height:26px;padding:0;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px #aab6c1}
+.quickHighlighterStrip button.active{box-shadow:0 0 0 2px #315a78}
+.stampDateGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:7px 0}
+.stampDateGrid label{font-size:10px;font-weight:700;color:#536474}.stampDateGrid input{margin-top:3px}
+.stampBuilder{margin:9px 0;padding:9px;border:1px solid #d9e2e9;border-radius:8px;background:#fbfcfd}
+.stampBuilder h4{margin:0 0 6px;font-size:12px}.stampBuilder .checkline{display:inline-flex;margin-right:7px}
+.stampVarButtons{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}.stampVarButtons button{padding:4px 6px;font-size:10px}
+.formFill0911{margin-top:9px;border-top:1px solid #e1e6ea;padding-top:8px}.formFill0911 .fillRow{display:grid;grid-template-columns:minmax(110px,.65fr) minmax(0,1fr);gap:6px;align-items:center;margin:5px 0}.formFill0911 .fillRow label{font-size:10px;font-weight:700;overflow:hidden;text-overflow:ellipsis}.formFill0911 input,.formFill0911 select{font-size:11px;padding:5px}
+.convertQuickGroup{display:inline-flex;gap:3px;align-items:center;border-left:1px solid #d4dce3;padding-left:5px}
+.convertQuickGroup button{font-size:10px;padding:5px 7px}
+.signaturePrivacyGate:not(.ok){background:#fff4c4!important;border-color:#e3c65e!important;color:#6d5200!important}
+.textAlignStrip{display:inline-flex;gap:2px}.textAlignStrip button{min-width:30px;padding:4px 6px}.textAlignStrip button.active{background:#e7f1fb;border-color:#6da4d0;color:#164f7d}
+</style>
 <script id="nlabDemoCorpusV2">
 (()=>{
   const MANIFEST_URL='../../Library/demo/demo-manifest.json';
