@@ -3,7 +3,7 @@
   "family": "function-icons",
   "label": "Function Icons",
   "description": "Actions métier partagées et futures.",
-  "updated": "2026-10-03",
+  "updated": "2026-10-08",
   "style": {
     "viewBox": "0 0 24 24",
     "strokeWidth": 1.7,
@@ -1102,6 +1102,34 @@
       "status": "active",
       "planned": false,
       "aliases": []
+    },
+    {
+      "id": "inputAcquire",
+      "label": "Input Acquire",
+      "file": "../function-icons/input-acquire.svg",
+      "family": "function-icons",
+      "description": "Point d’entrée commun pour ajouter ou choisir une source dans les Studios.",
+      "usage": [
+        "Studio Core V2",
+        "Input Picker",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "input",
+        "acquire",
+        "file",
+        "folder",
+        "drop"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "input",
+        "input_acquire",
+        "acquire",
+        "drop_input"
+      ]
     },
     {
       "id": "italic",
