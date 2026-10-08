@@ -68,8 +68,8 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v2/?version=0.2.0&channel=historical",
-      "notes": "Éditeur navigateur multi-langages basé sur Ace, recherche, coloration et sauvegarde locale.",
+      "href": "./history/0.2.0/",
+      "notes": "Éditeur navigateur multi-langages basé sur Ace, recherche, coloration et sauvegarde locale. · Snapshot historique isolé dans main pour compatibilité.",
       "isolation": "compat-runtime"
     }
   ]
