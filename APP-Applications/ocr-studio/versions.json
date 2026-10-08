@@ -18,7 +18,7 @@
       "date": "2026-10-07",
       "current": true,
       "status": "current",
-      "href": "./v2/",
+      "href": "./v2/?channel=current",
       "notes": "Propagation famille Acquisition documentaire : source, résultat OCR et édition du texte raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
