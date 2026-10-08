@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studios-catalog/v2",
-  "updated": "2026-10-07",
+  "updated": "2026-10-08",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
     {
@@ -284,8 +284,8 @@
     "metadata": "versions registry + Git commit metadata",
     "responsive_contract": "mobile-tablet-desktop",
     "propagation": "Core capabilities are validated by family waves: pilot Studio -> second surface -> functional Undo/Redo tests -> full audit -> merge -> next family.",
-    "core_version": "3.3.1-test",
-    "test_generation": "2026-10-07-document-editing-family-markdown-document-spreadsheet"
+    "core_version": "3.4.0-test",
+    "test_generation": "2026-10-08-legacy-recovery-viewer-input-launcher"
   },
   "derived_apps": [
     {

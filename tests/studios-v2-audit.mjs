@@ -24,7 +24,9 @@ try{
  {
   const{p,errors}=await core('file-studio');
   const imageBytes=await readFile('Library/demo/Images/demo-image-color.png'),pdfBytes=await readFile('Library/demo/Images/testNumregles.pdf');
+  const launcher=await p.locator('#file-studio-open').evaluate(el=>({cls:el.className,svg:!!el.querySelector('.scopeIcon svg'),label:el.querySelector('.ribbonBtnLabel')?.textContent?.trim()||'',w:el.querySelector('.scopeIcon')?.getBoundingClientRect().width||0}));if(!/ribbonInputLauncher/.test(launcher.cls)||!launcher.svg||!/Ajouter \/ Choisir une entrée/.test(launcher.label)||launcher.w<30)fail('Core Input 3.4 : lanceur SVG commun absent ou trop petit · '+JSON.stringify(launcher));
   await p.locator('#file-studio-open').click();await p.waitForSelector('#studioInputPicker:not([hidden])');
+  const dropUi=await p.locator('#studioInputDrop').evaluate(el=>({compact:el.classList.contains('studioInputDropCompact'),svg:!!el.querySelector('svg'),h:el.getBoundingClientRect().height,text:el.textContent.trim()}));if(!dropUi.compact||!dropUi.svg||dropUi.h>90||!/Déposer ici/.test(dropUi.text))fail('Core Input 3.4 : tuile dépôt compacte SVG invalide · '+JSON.stringify(dropUi));
   await p.locator('#studioInputFilesNative').setInputFiles([
    {name:'picker-image.png',mimeType:'image/png',buffer:imageBytes},
    {name:'picker-document.pdf',mimeType:'application/pdf',buffer:pdfBytes},
@@ -54,7 +56,7 @@ try{
  restore:!!document.querySelector('#studioRestoreWindows'),
  settingsReset:!!document.querySelector('#studioCoreSettingsPanel')
 }));if(!core30.url||!core30.camera||!core30.restore)fail('Core 3.0 Input/Window affordances absentes : '+JSON.stringify(core30));
-if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push('core-input-collection-3.2');await p.close();
+if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push('core-input-collection-svg-launcher-3.4');await p.close();
  }
 
  // Studio Core 3.1 : paramètres repliables + aide contextuelle gauche/libre/topmost.
@@ -87,7 +89,11 @@ if(errors.length)fail('Input Picker Core 3.0: '+errors.join(' | '));results.push
   await p.locator('#studioInputFilesNative').setInputFiles('Library/demo/Images/demo-image-color.png');await p.locator('#studioInputConfirm').click();
   await p.waitForFunction(()=>!/Aucune image/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
   await reveal(p,'#artifactGenerate');await p.locator('#artifactGenerate').click();await p.waitForFunction(()=>/SHA-256/.test(document.querySelector('#artifactIdentityStatus')?.textContent||''),null,{timeout:15000});
-  if(!(await p.locator('#redoEdit').count())||!(await p.locator('#freeAngle').count())||!(await p.locator('#zoomIn').count()))fail('Image Studio 3.0 : Undo/Redo, rotation libre ou zoom absent');await reveal(p,'#watermarkApply');await p.locator('#watermarkText').fill('AUDIT {ID}');await p.locator('#watermarkPosition').selectOption('bottom-right');await p.locator('#watermarkOpacity').fill('40');await p.locator('#watermarkRotation').fill('-15');await p.locator('#watermarkApply').click();
+  if(!(await p.locator('#redoEdit').count())||!(await p.locator('#freeAngle').count())||!(await p.locator('#imageViewerCore [data-viewer-plus]').count()))fail('Image Studio 3.4 : Undo/Redo, rotation libre ou Viewer Core absent');
+  await p.locator('#imageViewerCore [data-viewer-percent]').fill('175');await p.locator('#imageViewerCore [data-viewer-percent]').press('Enter');await p.waitForFunction(()=>document.querySelector('#canvasWrap')?.style.transform.includes('1.75'),null,{timeout:3000});
+  await p.locator('#imageViewerCore [data-viewer-fit]').click();await p.waitForFunction(()=>document.querySelector('#imageViewerCore [data-viewer-state]')?.textContent==='Ajusté',null,{timeout:3000});
+  await p.locator('#imageViewerCore [data-viewer-actual]').click();const viewerState=await p.evaluate(()=>({value:document.querySelector('#imageViewerCore [data-viewer-percent]')?.value,state:document.querySelector('#imageViewerCore [data-viewer-state]')?.textContent,transform:document.querySelector('#canvasWrap')?.style.transform}));if(viewerState.value!=='100'||viewerState.state!=='100 %'||!String(viewerState.transform).includes('scale(1)'))fail('Viewer Core 3.4 : édition/fit/100% invalide · '+JSON.stringify(viewerState));
+  await reveal(p,'#watermarkApply');await p.locator('#watermarkText').fill('AUDIT {ID}');await p.locator('#watermarkPosition').selectOption('bottom-right');await p.locator('#watermarkOpacity').fill('40');await p.locator('#watermarkRotation').fill('-15');await p.locator('#watermarkApply').click();
   const man=await dlBytes(p,'#artifactManifest');if(!/\.json$/i.test(man.download.suggestedFilename())||man.bytes.length<100)fail('Image Studio manifest invalide');
   await p.locator('#clearImages').click();await p.waitForFunction(()=>document.querySelectorAll('#imageList .imageItem').length===0,null,{timeout:10000});
   if(errors.length)fail('Image Studio audit: '+errors.join(' | '));results.push('image-studio+advanced');await p.close();

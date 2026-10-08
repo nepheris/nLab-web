@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.3.1",
+  "version": "3.4.0",
   "channel": "test",
-  "notes": "Studio Core 3.3.1 TEST : installation des bridges Context/Selection et Undo/Redo déplacée dans mountStudioV2 afin que les Studios montés directement bénéficient du même routage que bootstrap-specialized ; Command Core, Ruban, Ctrl+K, menus contextuels et transactions restent inchangés.",
+  "notes": "Studio Core 3.4.0 TEST : récupération Legacy contrôlée du Viewer Core (zoom ±, pourcentage éditable, Ajuster, 100 %, presets, état synchronisé) et du launcher d’acquisition canonique avec icône inputAcquire et tuile de dépôt compacte ; Core 3.3.1 Command/Context/Undo-Redo conservé.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
