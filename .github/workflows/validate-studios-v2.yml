@@ -23,6 +23,7 @@ on:
       - 'tests/studios-v2-roundtrip.mjs'
       - 'tests/studios-v2-exhaustive.mjs'
       - 'tests/studios-v2-audit.mjs'
+      - 'tests/studio-current-compat.mjs'
       - 'tests/studio_feature_contracts.json'
       - 'tests/validate_studio_features.py'
       - 'tests/validate_studio_registries.py'
@@ -33,6 +34,7 @@ on:
       - 'APP-Applications/**'
       - 'tests/studios-v2-ui.mjs'
       - 'tests/studios-v2-audit.mjs'
+      - 'tests/studio-current-compat.mjs'
       - 'tests/validate_studio_registries.py'
       - 'tests/validate_studio_features.py'
       - 'tests/studio_feature_contracts.json'
@@ -97,6 +99,17 @@ jobs:
             sleep 1
           done
           NLAB_BASE_URL=http://127.0.0.1:8771/ node tests/studios-v2-functional.mjs
+
+      - name: CURRENT compatibility routes
+        run: |
+          python -m http.server 8776 --bind 127.0.0.1 >/tmp/nlab-studio-current-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8776/APP-Applications/studios/ >/dev/null && break
+            sleep 1
+          done
+          NLAB_BASE_URL=http://127.0.0.1:8776/ node tests/studio-current-compat.mjs
 
       - name: Full Studio audit
         run: |
