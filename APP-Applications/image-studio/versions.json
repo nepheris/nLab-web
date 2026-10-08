@@ -18,7 +18,7 @@
       "date": "2026-10-08",
       "current": true,
       "status": "current",
-      "href": "./v2/",
+      "href": "./v2/?channel=current",
       "notes": "Récupération Legacy #48 : remplacement du zoom local par Viewer Core 3.4 (−/%,+/Ajuster/100 %/presets) avec synchronisation de l’aperçu. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
