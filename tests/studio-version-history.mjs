@@ -20,6 +20,15 @@ try{
       try{
         response=await page.goto(target,{waitUntil:'domcontentloaded',timeout:60000});
         if(!response||response.status()>=400)throw new Error('HTTP '+(response?.status()??'none'));
+        // PDF 0.9.10 est un snapshot natif compact : le premier document charge les chunks,
+        // décompresse le runtime puis document.write() le vrai snapshot. Attendre ce second cycle
+        // évite d'attribuer à tort au snapshot une erreur pendant la transition du loader.
+        if(id==='pdf-studio'&&String(v.version)==='0.9.10'){
+          await page.waitForFunction(()=>!document.body?.textContent?.includes('Chargement de Alpha 0.9.10'),null,{timeout:15000});
+          await page.waitForTimeout(500);
+        }else if(v.isolation==='native'){
+          await page.waitForTimeout(150);
+        }
         if(v.isolation==='compat-runtime'){
           await page.waitForTimeout(250);
           const state=await page.evaluate(()=>({
