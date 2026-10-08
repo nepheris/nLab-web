@@ -10,7 +10,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Snapshot TEST suivant la promotion de 2.7.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+      "notes": "Snapshot TEST suivant la promotion de 2.7.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes.",
+      "isolation": "test-runtime"
     },
     {
       "version": "2.7.0",
@@ -19,7 +20,8 @@
       "current": true,
       "status": "current",
       "href": "./v2/?channel=current",
-      "notes": "Récupération Legacy #48 : remplacement du zoom local par Viewer Core 3.4 (−/%,+/Ajuster/100 %/presets) avec synchronisation de l’aperçu. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
+      "notes": "Récupération Legacy #48 : remplacement du zoom local par Viewer Core 3.4 (−/%,+/Ajuster/100 %/presets) avec synchronisation de l’aperçu. · Promue CURRENT après validation fonctionnelle et migration Legacy P1.",
+      "isolation": "current-runtime"
     },
     {
       "version": "2.6.0",
@@ -27,8 +29,9 @@
       "date": "2026-10-06",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Validation Studio Core 3.3 : transformations et collection raccordées à l’Undo/Redo Core global ; boutons locaux Annuler/Rétablir alignés sur la pile Core ; sélection Image publiée au Context/Selection Core."
+      "href": "./v2/?version=2.6.0&channel=historical",
+      "notes": "Validation Studio Core 3.3 : transformations et collection raccordées à l’Undo/Redo Core global ; boutons locaux Annuler/Rétablir alignés sur la pile Core ; sélection Image publiée au Context/Selection Core.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.5.0",
@@ -36,8 +39,9 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Core 3.0 : Undo/Redo partagé, rotation libre sans rognage, zoom Ajuster/Taille réelle, import photo/URL et thème Core renforcé."
+      "href": "./v2/?version=2.5.0&channel=historical",
+      "notes": "Core 3.0 : Undo/Redo partagé, rotation libre sans rognage, zoom Ajuster/Taille réelle, import photo/URL et thème Core renforcé.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.4.0",
@@ -45,24 +49,27 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe TEST Core 2.9 : sélection fichiers/dossiers enrichie, vues Texte/Icône/Preview, vignettes réelles, SVG filetype, suppression individuelle et rotation avant import ; fonctions Image Studio 2.3 conservées."
+      "href": "./v2/?version=2.4.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 : sélection fichiers/dossiers enrichie, vues Texte/Icône/Preview, vignettes réelles, SVG filetype, suppression individuelle et rotation avant import ; fonctions Image Studio 2.3 conservées.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.3.0",
       "label": "Image Studio 2.3.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Adoption du Core Input Picker (fichiers/dossiers/glisser-déposer), collection multi-images avec retrait, recadrage souris + valeurs, undo/reset, unités px/%/pt, format d'export source par défaut, responsive Core 2.8."
+      "href": "./v2/?version=2.3.0&channel=historical",
+      "notes": "Adoption du Core Input Picker (fichiers/dossiers/glisser-déposer), collection multi-images avec retrait, recadrage souris + valeurs, undo/reset, unités px/%/pt, format d'export source par défaut, responsive Core 2.8.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.2.0",
       "label": "Image Studio 2.2.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Héritage Studio Core responsive, capacités Image déclarées, version runtime issue du registre/metadata au lieu d'une chaîne codée en dur, fonctions rotation/miroir/resize/crop/watermark/calibration/empreinte conservées."
+      "href": "./v2/?version=2.2.0&channel=historical",
+      "notes": "Héritage Studio Core responsive, capacités Image déclarées, version runtime issue du registre/metadata au lieu d'une chaîne codée en dur, fonctions rotation/miroir/resize/crop/watermark/calibration/empreinte conservées.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.0",
@@ -70,8 +77,9 @@
       "date": "2026-10-03",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Crop, watermark texte, identifiant invisible expérimental LSB et manifest SHA-256 nLab."
+      "href": "./v2/?version=2.1.0&channel=historical",
+      "notes": "Crop, watermark texte, identifiant invisible expérimental LSB et manifest SHA-256 nLab.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.0",
@@ -79,8 +87,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Réécriture TEST sur Studio Core V2. Fonctionnalités métier de la version précédente conservées, chrome commun V2, paramètres Core, historique partagé et routage inter-Studio. CURRENT précédent conservé pour validation de non-régression avant bascule."
+      "href": "./v2/?version=2.0.0&channel=historical",
+      "notes": "Réécriture TEST sur Studio Core V2. Fonctionnalités métier de la version précédente conservées, chrome commun V2, paramètres Core, historique partagé et routage inter-Studio. CURRENT précédent conservé pour validation de non-régression avant bascule.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.2.1",
@@ -88,8 +97,9 @@
       "date": "2026-09-30",
       "current": false,
       "status": "historical",
-      "href": "./",
-      "notes": "Correctif : chemins du corpus de démonstration/calibration réparés après réorganisation de Library/demo. Fonctions de rotation, miroir, redimensionnement, export et calibration inchangées."
+      "href": "./v2/?version=0.2.1&channel=historical",
+      "notes": "Correctif : chemins du corpus de démonstration/calibration réparés après réorganisation de Library/demo. Fonctions de rotation, miroir, redimensionnement, export et calibration inchangées.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.2.0",
@@ -97,8 +107,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./",
-      "notes": "Version publiée lors de l’introduction du registre commun Studio. Rotation, miroir, redimensionnement, export et calibration/mesure."
+      "href": "./v2/?version=0.2.0&channel=historical",
+      "notes": "Version publiée lors de l’introduction du registre commun Studio. Rotation, miroir, redimensionnement, export et calibration/mesure.",
+      "isolation": "compat-runtime"
     }
   ]
 }
