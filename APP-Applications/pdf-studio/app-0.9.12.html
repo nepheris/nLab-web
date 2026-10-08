@@ -838,8 +838,8 @@ function applyRibbon0911(notify=false){
   document.querySelectorAll('[data-ribbon-tab]').forEach(b=>{const on=sec.has(b.dataset.ribbonTab);b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));b.title=`${on?'Masquer':'Afficher'} la barre ${b.textContent.trim()}`});
   if(notify)toast([...sec].length?'Ruban mis à jour':'Toutes les barres du ruban sont masquées');
 }
-applyRibbonVisibility=applyRibbon0911;
-toggleRibbonSection=function(tab){const sec=ensureRibbonSet();sec.has(tab)?sec.delete(tab):sec.add(tab);applyRibbon0911(true)};
+window.applyRibbonVisibility=applyRibbon0911;
+window.toggleRibbonSection=function(tab){const sec=ensureRibbonSet();sec.has(tab)?sec.delete(tab):sec.add(tab);applyRibbon0911(true)};
 
 // 2) Organisation écran / notifications / auth
 function buildNotificationHub(){
