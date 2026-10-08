@@ -91,6 +91,16 @@ def main() -> int:
                 )
             if status == "historical" and version in active:
                 fail(f"{studio_id}: historical version {version} is referenced by an active pointer", errors)
+            if status == "historical":
+                isolation = str(item.get("isolation") or "")
+                href = str(item.get("href") or "")
+                if isolation not in {"native", "compat-runtime"}:
+                    fail(f"{studio_id}: historical {version} missing valid isolation", errors)
+                if isolation == "compat-runtime":
+                    if f"version={version}" not in href or "channel=historical" not in href:
+                        fail(f"{studio_id}: historical {version} compat-runtime href is not explicit: {href!r}", errors)
+                if isolation == "native" and href in {"./", "./v1/", "./v2/"}:
+                    fail(f"{studio_id}: historical {version} native href is ambiguous: {href!r}", errors)
 
         catalog_registry = studio.get("version_registry")
         expected_suffix = f"../{studio_id}/versions.json"
@@ -132,6 +142,14 @@ def main() -> int:
                 continue
             if str(item.get("status") or "").lower() != channel:
                 fail(f"{app_id}: {pointer} selected as {channel} but status={item.get('status')!r}", errors)
+        for version, item in by_version.items():
+            if str(item.get("status") or "").lower() == "historical":
+                isolation = str(item.get("isolation") or "")
+                href = str(item.get("href") or "")
+                if isolation not in {"native", "compat-runtime"}:
+                    fail(f"{app_id}: historical {version} missing valid isolation", errors)
+                if isolation == "compat-runtime" and (f"version={version}" not in href or "channel=historical" not in href):
+                    fail(f"{app_id}: historical {version} compat-runtime href is not explicit: {href!r}", errors)
         if any("date" in item for item in versions):
             fail(f"{app_id}: mutable release date must not be hard-coded in versions[]", errors)
 

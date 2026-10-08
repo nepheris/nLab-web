@@ -9,7 +9,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Convergence Core 3.0 : entrée fichier/dossier/URL/ZIP/drop via Input Picker commun, volet verrouillable/restaurable/redimensionnable/détachable et héritage des nouvelles fenêtres/thèmes Core."
+      "notes": "Convergence Core 3.0 : entrée fichier/dossier/URL/ZIP/drop via Input Picker commun, volet verrouillable/restaurable/redimensionnable/détachable et héritage des nouvelles fenêtres/thèmes Core.",
+      "isolation": "test-runtime"
     },
     {
       "version": "2.10.0",
@@ -17,32 +18,36 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe TEST Core 2.9 : nouveau Input Picker mutualisé Texte/Icône/Preview avec SVG canoniques, vignette image/page 1 PDF, métadonnées et rotations matérialisées ; conserve l’ensemble des capacités PDF 2.9 et le correctif Scan découvert par l’audit de flotte."
+      "href": "./v2/?version=2.10.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 : nouveau Input Picker mutualisé Texte/Icône/Preview avec SVG canoniques, vignette image/page 1 PDF, métadonnées et rotations matérialisées ; conserve l’ensemble des capacités PDF 2.9 et le correctif Scan découvert par l’audit de flotte.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.9.0",
       "label": "PDF Studio 2.9.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe UX de stabilisation : Core 2.8, aide contextuelle en fenêtre flottante, navigation intégrée, workspace document prioritaire, fenêtres contraintes/scrollables, contrôles SVG d'objets, suppression/verrouillage/déplacement et édition texte par double-clic."
+      "href": "./v2/?version=2.9.0&channel=historical",
+      "notes": "Passe UX de stabilisation : Core 2.8, aide contextuelle en fenêtre flottante, navigation intégrée, workspace document prioritaire, fenêtres contraintes/scrollables, contrôles SVG d'objets, suppression/verrouillage/déplacement et édition texte par double-clic.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.8.0",
       "label": "PDF Studio 2.8.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Studio Core responsive 2.7 et première convergence Engine : génération des codes 1D/2D via le registre symbology partagé, gamme étendue QR/Data Matrix/Aztec/PDF417/Code128/GS1/Code39/EAN/UPC/ITF/Codabar. CURRENT reste inchangé."
+      "href": "./v2/?version=2.8.0&channel=historical",
+      "notes": "Studio Core responsive 2.7 et première convergence Engine : génération des codes 1D/2D via le registre symbology partagé, gamme étendue QR/Data Matrix/Aztec/PDF417/Code128/GS1/Code39/EAN/UPC/ITF/Codabar. CURRENT reste inchangé.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.7.0",
       "label": "PDF Studio 2.7.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe Studio Platform V3 : métadonnées version/build reliées au registre et au commit Git via Studio Core 2.5, source canonique déclarée dans le manifest, compatibilité avec le premier dérivé nLab PDF Sign. Les capacités PDF restent portées par le même moteur ; CURRENT 0.9.10 reste inchangé."
+      "href": "./v2/?version=2.7.0&channel=historical",
+      "notes": "Passe Studio Platform V3 : métadonnées version/build reliées au registre et au commit Git via Studio Core 2.5, source canonique déclarée dans le manifest, compatibilité avec le premier dérivé nLab PDF Sign. Les capacités PDF restent portées par le même moteur ; CURRENT 0.9.10 reste inchangé.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.6.0",
@@ -50,8 +55,9 @@
       "date": "2026-10-03",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Watermark PDF, Bates numbering et manifest documentaire SHA-256, en plus des fonctions 2.5.0."
+      "href": "./v2/?version=2.6.0&channel=historical",
+      "notes": "Watermark PDF, Bates numbering et manifest documentaire SHA-256, en plus des fonctions 2.5.0.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.5.0",
@@ -59,8 +65,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Seconde passe de convergence : ouverture depuis URL HTTPS/CORS vers le moteur commun, Google Drive optionnel via OAuth drive.file + Picker multi-fichiers, choix d’un dossier Drive de sortie et upload, destination même dossier source lorsque le navigateur fournit un handle de dossier, workspace ZIP éditable restauré (réinjection, export ZIP modifié, extraction dossier), migration/fusion des anciens JSON 0.9.x/1.x vers le profil V2 (identité, nommage, classement, tampons, OAuth). Conserve les restaurations 2.4.0 : DOCX/ODT, batch métadonnées, Fit page, historique JSON, signature dessinée, QR en-tête/pied et éditeur avancé de tampons. Drive live reste dépendant d’un Client ID/API Key valides et des origines OAuth autorisées."
+      "href": "./v2/?version=2.5.0&channel=historical",
+      "notes": "Seconde passe de convergence : ouverture depuis URL HTTPS/CORS vers le moteur commun, Google Drive optionnel via OAuth drive.file + Picker multi-fichiers, choix d’un dossier Drive de sortie et upload, destination même dossier source lorsque le navigateur fournit un handle de dossier, workspace ZIP éditable restauré (réinjection, export ZIP modifié, extraction dossier), migration/fusion des anciens JSON 0.9.x/1.x vers le profil V2 (identité, nommage, classement, tampons, OAuth). Conserve les restaurations 2.4.0 : DOCX/ODT, batch métadonnées, Fit page, historique JSON, signature dessinée, QR en-tête/pied et éditeur avancé de tampons. Drive live reste dépendant d’un Client ID/API Key valides et des origines OAuth autorisées.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.4.0",
@@ -68,8 +75,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe de récupération fonctionnelle historique 0.9.x/1.x : conversions DOCX/ODT restaurées, batch de nettoyage métadonnées, Fit page, export JSON de l’historique, signature dessinée, QR variable en en-tête/pied, formulaires et batch promus en TEST. Tampons restructurés en Utiliser / Éditeur avec catégories, exemples, préfixe/suffixe de nommage, copie/édition/suppression, import/export JSON compatible avec les champs historiques et aperçu du nom de sortie. Google Drive/OAuth, sortie même dossier source et comparaison visuelle restent à converger."
+      "href": "./v2/?version=2.4.0&channel=historical",
+      "notes": "Passe de récupération fonctionnelle historique 0.9.x/1.x : conversions DOCX/ODT restaurées, batch de nettoyage métadonnées, Fit page, export JSON de l’historique, signature dessinée, QR variable en en-tête/pied, formulaires et batch promus en TEST. Tampons restructurés en Utiliser / Éditeur avec catégories, exemples, préfixe/suffixe de nommage, copie/édition/suppression, import/export JSON compatible avec les champs historiques et aperçu du nom de sortie. Google Drive/OAuth, sortie même dossier source et comparaison visuelle restent à converger.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.3.0",
@@ -77,8 +85,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe UX/architecture complète : contrôles Core Preset+slider bidirectionnels (ZIP, DPI, JPEG, opacité, épaisseur, taille), sortie classique/ZIP avec DEFLATE 1–9, paramètres Core de résolution des Studios spécialisés (Dernière/CURRENT/TEST + overrides), galerie d’assets hiérarchisée avec previews/édition/drag-drop, objets PDF manipulables avec mini-barre, ruban contextuel, color picker + HEX, dates de tampon regroupées, QR/Data Matrix/Code128/GS1/EAN via moteur partagé, conversion vers/depuis PDF, recadrage replacé dans Pages, caviardage partagé avec le moteur de rectangles + rasterisation commune, comparaison PDF A/B, sécurité en sous-rubriques, aide contextuelle/catalogue complet, recherche de fonctions, sidebar détachable/redimensionnable, groupes et tailles de vignettes, et preview Markdown isolée avec fallback sans crash. Formulaires avancés et Batch restent en DÉVELOPPEMENT ; signature PAdES digitale/certifiée dépend toujours du service DSS configuré."
+      "href": "./v2/?version=2.3.0&channel=historical",
+      "notes": "Passe UX/architecture complète : contrôles Core Preset+slider bidirectionnels (ZIP, DPI, JPEG, opacité, épaisseur, taille), sortie classique/ZIP avec DEFLATE 1–9, paramètres Core de résolution des Studios spécialisés (Dernière/CURRENT/TEST + overrides), galerie d’assets hiérarchisée avec previews/édition/drag-drop, objets PDF manipulables avec mini-barre, ruban contextuel, color picker + HEX, dates de tampon regroupées, QR/Data Matrix/Code128/GS1/EAN via moteur partagé, conversion vers/depuis PDF, recadrage replacé dans Pages, caviardage partagé avec le moteur de rectangles + rasterisation commune, comparaison PDF A/B, sécurité en sous-rubriques, aide contextuelle/catalogue complet, recherche de fonctions, sidebar détachable/redimensionnable, groupes et tailles de vignettes, et preview Markdown isolée avec fallback sans crash. Formulaires avancés et Batch restent en DÉVELOPPEMENT ; signature PAdES digitale/certifiée dépend toujours du service DSS configuré.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.2.0",
@@ -86,8 +95,9 @@
       "date": "2026-09-30",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Remise en état fonctionnelle V2 : sélecteurs entrée/sortie et dossiers récents portables, états validés, drag-and-drop Core et fusion réordonnable, presets historiques de nommage et tampons, variables communes enrichies, objets interactifs Texte/Surlignage/Stylo/Image/Tampon/Signature avec déplacement-redimensionnement-rotation-verrouillage, tampons composites avec images/logos, OCR, optimisation, traduction, QR, conversion, en-têtes/pieds, recadrage, formulaires, caviardage, comparaison, métadonnées éditables, trois modes de signature, protection/déverrouillage AES-256 local via qpdf WASM, historique/propriétés rationalisés. Batch et rotation libre de page restent volontairement en développement."
+      "href": "./v2/?version=2.2.0&channel=historical",
+      "notes": "Remise en état fonctionnelle V2 : sélecteurs entrée/sortie et dossiers récents portables, états validés, drag-and-drop Core et fusion réordonnable, presets historiques de nommage et tampons, variables communes enrichies, objets interactifs Texte/Surlignage/Stylo/Image/Tampon/Signature avec déplacement-redimensionnement-rotation-verrouillage, tampons composites avec images/logos, OCR, optimisation, traduction, QR, conversion, en-têtes/pieds, recadrage, formulaires, caviardage, comparaison, métadonnées éditables, trois modes de signature, protection/déverrouillage AES-256 local via qpdf WASM, historique/propriétés rationalisés. Batch et rotation libre de page restent volontairement en développement.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.4",
@@ -95,8 +105,9 @@
       "date": "2026-09-30",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Ajout d’Assembler/Fusionner : fusion ordonnée de plusieurs PDF sélectionnés, prise en compte de la version modifiée du document courant, insertion d’un PDF avant/après la page active ou au début/à la fin, extraction des pages sélectionnées, ordre manuel Monter/Descendre/Retirer et avertissement sur les signatures cryptographiques lors de la création d’un nouveau PDF."
+      "href": "./v2/?version=2.1.4&channel=historical",
+      "notes": "Ajout d’Assembler/Fusionner : fusion ordonnée de plusieurs PDF sélectionnés, prise en compte de la version modifiée du document courant, insertion d’un PDF avant/après la page active ou au début/à la fin, extraction des pages sélectionnées, ordre manuel Monter/Descendre/Retirer et avertissement sur les signatures cryptographiques lors de la création d’un nouveau PDF.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.3",
@@ -104,8 +115,9 @@
       "date": "2026-09-30",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Profil personnel 1.3 avec prénom/nom/initiales et format d’identité, bibliothèques multi-signatures, paraphes, logos, images de tampons et images personnelles exportables en ZIP. Ajout des trois modes PDF Signature visuelle / digitale / certifiée, preview de signature, moteur d’incrustation visuelle, passerelle DSS/PAdES, suivi des modifications post-signature, et affichage dynamique des versions PDF Studio/Studio Core."
+      "href": "./v2/?version=2.1.3&channel=historical",
+      "notes": "Profil personnel 1.3 avec prénom/nom/initiales et format d’identité, bibliothèques multi-signatures, paraphes, logos, images de tampons et images personnelles exportables en ZIP. Ajout des trois modes PDF Signature visuelle / digitale / certifiée, preview de signature, moteur d’incrustation visuelle, passerelle DSS/PAdES, suivi des modifications post-signature, et affichage dynamique des versions PDF Studio/Studio Core.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.2",
@@ -113,8 +125,9 @@
       "date": "2026-09-30",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Profil personnel sécurisé : choix Appareil local / Session privée, assets de signature/paraphe chiffrés AES-GCM en session, effacement/verrouillage de session, bibliothèques multi-signatures et multi-paraphes avec variante et valeur par défaut, ZIP compatible."
+      "href": "./v2/?version=2.1.2&channel=historical",
+      "notes": "Profil personnel sécurisé : choix Appareil local / Session privée, assets de signature/paraphe chiffrés AES-GCM en session, effacement/verrouillage de session, bibliothèques multi-signatures et multi-paraphes avec variante et valeur par défaut, ZIP compatible.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.1",
@@ -122,8 +135,9 @@
       "date": "2026-09-30",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Ajout du profil personnel nLab local-first : variables personnelles, signature/paraphe, modèles et préférences Studio exportables/importables via ZIP avec manifest, contrôle d’intégrité, prévisualisation Fusionner/Remplacer et restauration des préférences portables."
+      "href": "./v2/?version=2.1.1&channel=historical",
+      "notes": "Ajout du profil personnel nLab local-first : variables personnelles, signature/paraphe, modèles et préférences Studio exportables/importables via ZIP avec manifest, contrôle d’intégrité, prévisualisation Fusionner/Remplacer et restauration des préférences portables.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.0",
@@ -131,8 +145,9 @@
       "date": "2026-09-30",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Nouvelle base de convergence UX/Core : navigateur de fichiers avec miniatures légères, tri/groupement/navigation, registre multi-format, aperçu rapide PDF/images/texte/Markdown/CSV/DOCX/ODT/XLSX selon moteur disponible, organisation des pages compacte avec zoom de vignettes, actions par vignette et tuile Ajouter, Undo/Redo et historique filtrable, sortie PDF/ZIP + classement, nommage dynamique par variables, ruban complet avec SVG historiques, visibilité/ruban configurables et fenêtres Core flottantes."
+      "href": "./v2/?version=2.1.0&channel=historical",
+      "notes": "Nouvelle base de convergence UX/Core : navigateur de fichiers avec miniatures légères, tri/groupement/navigation, registre multi-format, aperçu rapide PDF/images/texte/Markdown/CSV/DOCX/ODT/XLSX selon moteur disponible, organisation des pages compacte avec zoom de vignettes, actions par vignette et tuile Ajouter, Undo/Redo et historique filtrable, sortie PDF/ZIP + classement, nommage dynamique par variables, ruban complet avec SVG historiques, visibilité/ruban configurables et fenêtres Core flottantes.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.2",
@@ -140,8 +155,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe de convergence cumulative 0.9.x/1.0.x : 20 sections du volet gauche restaurées, panneau type classeur à onglets, drag & drop, volet redimensionnable, preview/vignettes et viewer multipage communs, sélection/réorganisation de pages, navigation et zoom saisissables, nombre libre de pages par largeur, bibliothèque SVG centrale, CapabilityRegistry, StudioContext inter-Studio, PipelineService, détection de capacités par type de fichier, lazy rendering, auto-tests, palette globale Ctrl/Cmd+K, workflows enregistrables, personnalisation des groupes du ruban et repères UI/IDs enrichis. Les fonctions non encore reconnectées restent visibles en DEV."
+      "href": "./v2/?version=2.0.2&channel=historical",
+      "notes": "Passe de convergence cumulative 0.9.x/1.0.x : 20 sections du volet gauche restaurées, panneau type classeur à onglets, drag & drop, volet redimensionnable, preview/vignettes et viewer multipage communs, sélection/réorganisation de pages, navigation et zoom saisissables, nombre libre de pages par largeur, bibliothèque SVG centrale, CapabilityRegistry, StudioContext inter-Studio, PipelineService, détection de capacités par type de fichier, lazy rendering, auto-tests, palette globale Ctrl/Cmd+K, workflows enregistrables, personnalisation des groupes du ruban et repères UI/IDs enrichis. Les fonctions non encore reconnectées restent visibles en DEV.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.1",
@@ -149,8 +165,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe Studio Core V2 de micro-gestion : historique rapide configurable à 5/10/15/20 éléments, historique complet commun aux Studios, recherche, filtres et regroupement date/Studio/type, favoris/épinglage, préférences persistantes, IDs stables, journalisation des fichiers et actions PDF, et possibilité de rejouer les actions sûres. Les éléments plus anciens restent accessibles au-delà de la limite d’affichage rapide."
+      "href": "./v2/?version=2.0.1&channel=historical",
+      "notes": "Passe Studio Core V2 de micro-gestion : historique rapide configurable à 5/10/15/20 éléments, historique complet commun aux Studios, recherche, filtres et regroupement date/Studio/type, favoris/épinglage, préférences persistantes, IDs stables, journalisation des fichiers et actions PDF, et possibilité de rejouer les actions sûres. Les éléments plus anciens restent accessibles au-delà de la limite d’affichage rapide.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.0",
@@ -158,8 +175,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Nouvelle architecture Studio Core V2 unique + plugin PDF. Header, menus, ruban, paramètres, thèmes, fenêtres, repères CORE/STUDIO/DEV et layout proviennent du Core partagé. PDF V2 réutilise le moteur PDF existant via un adapter. Première base opérationnelle : ouverture locale, aperçu, navigation, zoom, rotation, ajout/suppression de pages et enregistrement. Les fonctions non encore migrées sont marquées DÉVELOPPEMENT."
+      "href": "./v2/?version=2.0.0&channel=historical",
+      "notes": "Nouvelle architecture Studio Core V2 unique + plugin PDF. Header, menus, ruban, paramètres, thèmes, fenêtres, repères CORE/STUDIO/DEV et layout proviennent du Core partagé. PDF V2 réutilise le moteur PDF existant via un adapter. Première base opérationnelle : ouverture locale, aperçu, navigation, zoom, rotation, ajout/suppression de pages et enregistrement. Les fonctions non encore migrées sont marquées DÉVELOPPEMENT.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "1.0.3",
@@ -167,8 +185,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Sortie refondue : format séparé de la destination (PDF / conserver format d'origine / ZIP), Drive conservé comme destination DÉVELOPPEMENT, suppression du bouton Drive redondant, actions Enregistrer / Enregistrer sous / Enregistrer + classer, aperçu d'état de sortie, et variables de date enrichies avec mois/jours numériques ou texte FR/EN."
+      "href": "./v1/?version=1.0.3&channel=historical",
+      "notes": "Sortie refondue : format séparé de la destination (PDF / conserver format d'origine / ZIP), Drive conservé comme destination DÉVELOPPEMENT, suppression du bouton Drive redondant, actions Enregistrer / Enregistrer sous / Enregistrer + classer, aperçu d'état de sortie, et variables de date enrichies avec mois/jours numériques ou texte FR/EN.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "1.0.2",
@@ -176,8 +195,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Workspace fichiers avec vignettes optionnelles PDF/image, menu supérieur élargi, groupes de ruban masquables, synchronisation outil/ruban/panneau détaillé, historique Undo/Redo par snapshots, comparaison séparée du batch, badges développement, et moteur d’objet commun pour déplacement, redimensionnement, rotation, verrouillage, opacité et suppression."
+      "href": "./v1/?version=1.0.2&channel=historical",
+      "notes": "Workspace fichiers avec vignettes optionnelles PDF/image, menu supérieur élargi, groupes de ruban masquables, synchronisation outil/ruban/panneau détaillé, historique Undo/Redo par snapshots, comparaison séparée du batch, badges développement, et moteur d’objet commun pour déplacement, redimensionnement, rotation, verrouillage, opacité et suppression.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "1.0.1",
@@ -185,8 +205,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Revue opérateur V1 : aide contextuelle variables/paramètres, séparation source/fichiers sélectionnés, navigation fichier précédent/suivant, tri du workspace, restauration tuile ajouter page/corbeille/drag-drop pages, statuts développement pour fonctions externes, et convergence planifiée avec OCR Studio, Code Studio et Image Studio."
+      "href": "./v1/?version=1.0.1&channel=historical",
+      "notes": "Revue opérateur V1 : aide contextuelle variables/paramètres, séparation source/fichiers sélectionnés, navigation fichier précédent/suivant, tri du workspace, restauration tuile ajouter page/corbeille/drag-drop pages, statuts développement pour fonctions externes, et convergence planifiée avec OCR Studio, Code Studio et Image Studio.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "1.0.0",
@@ -194,8 +215,9 @@
       "date": "2026-09-28",
       "current": false,
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Réécriture majeure autonome : framework Studio V1 commun, branding nLab, entrée locale/Drive fichiers multiples/dossiers/ZIP, module fichiers sélectionnés, sorties/classification à templates, nommage code, portée multi-pages avec cases, annotations/images/tampons/signatures, historique persistant et ruban contextuel, en-têtes/pieds variables + QR, OCR séparé de l’optimisation, conversions PDF↔DOCX/ODT/TXT/images, traduction bilingue, formulaires, caviardage, comparaison/batch et package portable 1.0. Aucun runtime 0.9.x."
+      "href": "./v1/?version=1.0.0&channel=historical",
+      "notes": "Réécriture majeure autonome : framework Studio V1 commun, branding nLab, entrée locale/Drive fichiers multiples/dossiers/ZIP, module fichiers sélectionnés, sorties/classification à templates, nommage code, portée multi-pages avec cases, annotations/images/tampons/signatures, historique persistant et ruban contextuel, en-têtes/pieds variables + QR, OCR séparé de l’optimisation, conversions PDF↔DOCX/ODT/TXT/images, traduction bilingue, formulaires, caviardage, comparaison/batch et package portable 1.0. Aucun runtime 0.9.x.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.9.25",
@@ -204,7 +226,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.25.html",
-      "notes": "TEST de remise en visibilité : contrôles persistants pour les cases à cocher sur les vignettes, portée Page en cours / Pages cochées / Tout le document, catégorie 0 Configuration regroupant variables nommées, préconfiguration JSON, espace personnel et 5 dates, presets entrée/sortie par défaut sur Choix manuel avec bouton Charger, activation explicite du mode de sortie, sortie même dossier que la source, panneau gauche redimensionnable/compact/masquable avec restauration, navigation nLab Web / Studios / PDF Studio et identité visuelle nLab Web."
+      "notes": "TEST de remise en visibilité : contrôles persistants pour les cases à cocher sur les vignettes, portée Page en cours / Pages cochées / Tout le document, catégorie 0 Configuration regroupant variables nommées, préconfiguration JSON, espace personnel et 5 dates, presets entrée/sortie par défaut sur Choix manuel avec bouton Charger, activation explicite du mode de sortie, sortie même dossier que la source, panneau gauche redimensionnable/compact/masquable avec restauration, navigation nLab Web / Studios / PDF Studio et identité visuelle nLab Web.",
+      "isolation": "native"
     },
     {
       "version": "0.9.24",
@@ -213,7 +236,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.24.html",
-      "notes": "TEST fonctionnelle : sélection explicite des pages par cases à cocher dans les vignettes, portée page courante / pages cochées / tout le document, chargement résilient des modules, menus Fichier/Historique/Objets/Outils/Connexion, section 0 Configuration & espace personnel, section de nommage préfixes/suffixes, visibilité Traduction BRK104 et 5 dates, suppression des contrôles Démo d’entrée, sortie même dossier source, ZIP en sortie et accès au dossier Google Drive nLab/PDF Studio/Documents. Numéro de version et date proviennent uniquement de versions.json."
+      "notes": "TEST fonctionnelle : sélection explicite des pages par cases à cocher dans les vignettes, portée page courante / pages cochées / tout le document, chargement résilient des modules, menus Fichier/Historique/Objets/Outils/Connexion, section 0 Configuration & espace personnel, section de nommage préfixes/suffixes, visibilité Traduction BRK104 et 5 dates, suppression des contrôles Démo d’entrée, sortie même dossier source, ZIP en sortie et accès au dossier Google Drive nLab/PDF Studio/Documents. Numéro de version et date proviennent uniquement de versions.json.",
+      "isolation": "native"
     },
     {
       "version": "0.9.23",
@@ -222,7 +246,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.23.html",
-      "notes": "TEST corrective : conserve BRK104 traduction bilingue et les fonctions 0.9.21/0.9.22, ajoute le correctif GitHub Pages .nojekyll pour publier APP-Applications/_shared, supprime les surcharges DSS inter-runtime qui provoquaient une ReferenceError et remet en cohérence l’entrée TEST. CURRENT reste 0.9.10."
+      "notes": "TEST corrective : conserve BRK104 traduction bilingue et les fonctions 0.9.21/0.9.22, ajoute le correctif GitHub Pages .nojekyll pour publier APP-Applications/_shared, supprime les surcharges DSS inter-runtime qui provoquaient une ReferenceError et remet en cohérence l’entrée TEST. CURRENT reste 0.9.10.",
+      "isolation": "native"
     },
     {
       "version": "0.9.22",
@@ -231,7 +256,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.22.html",
-      "notes": "TEST : intégration BRK104 PDF Bilingual Translator. Ajoute traduction bilingue EN/FR/DE/ES, original intact + traduction, mode côte à côte avec ratios 1/3–2/3, 50/50, 2/3–1/3 et inversion gauche/droite, ainsi que mode double-page/livre avec original sur page paire ou impaire. Traduction via launcher nLab Apps Script, Translator API navigateur ou endpoint HTTP configurable."
+      "notes": "TEST : intégration BRK104 PDF Bilingual Translator. Ajoute traduction bilingue EN/FR/DE/ES, original intact + traduction, mode côte à côte avec ratios 1/3–2/3, 50/50, 2/3–1/3 et inversion gauche/droite, ainsi que mode double-page/livre avec original sur page paire ou impaire. Traduction via launcher nLab Apps Script, Translator API navigateur ou endpoint HTTP configurable.",
+      "isolation": "native"
     },
     {
       "version": "0.9.21",
@@ -240,7 +266,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.21.html",
-      "notes": "TEST : workspace ZIP local éditable avec restitution ZIP ou extraction vers dossier, portée commune nLab basée sur BRK105 (page courante / sélection Ctrl-Cmd-Maj / tout le document), portée appliquée à rotation, tampons, optimisation, OCR, extraction et suppression, correction du routage de sortie à côté de la source, et aperçu DPI/JPEG avec profils discrets."
+      "notes": "TEST : workspace ZIP local éditable avec restitution ZIP ou extraction vers dossier, portée commune nLab basée sur BRK105 (page courante / sélection Ctrl-Cmd-Maj / tout le document), portée appliquée à rotation, tampons, optimisation, OCR, extraction et suppression, correction du routage de sortie à côté de la source, et aperçu DPI/JPEG avec profils discrets.",
+      "isolation": "native"
     },
     {
       "version": "0.9.20",
@@ -249,7 +276,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.20.html",
-      "notes": "TEST : consolidation UX de la lignée 0.9.19. Ajoute des identifiants stables par annotation avec type et horodatage dans l’historique, un accès direct aux objets présents, un bouton d’effacement du tracé sélectionné, des indications plus visibles pour le texte enrichi et une aide OAuth Google avec origine autorisée à copier. Conserve les 5 dates de tampon, variables communes, surligneurs rapides, rotation image, previews, caviardage préparatoire et workspace Google des versions précédentes."
+      "notes": "TEST : consolidation UX de la lignée 0.9.19. Ajoute des identifiants stables par annotation avec type et horodatage dans l’historique, un accès direct aux objets présents, un bouton d’effacement du tracé sélectionné, des indications plus visibles pour le texte enrichi et une aide OAuth Google avec origine autorisée à copier. Conserve les 5 dates de tampon, variables communes, surligneurs rapides, rotation image, previews, caviardage préparatoire et workspace Google des versions précédentes.",
+      "isolation": "native"
     },
     {
       "version": "0.9.19",
@@ -258,7 +286,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.19.html",
-      "notes": "TEST : configuration globale canonique dans app-config.v1.json, bibliothèque de tampons centralisée, workspace personnel unique, syntaxe de variables commune aux tampons/préfixes/suffixes/noms/textes/en-têtes, formats date/heure/timestamp configurables, cinq dates de tampon visibles avec leur format, bouton de connexion Google dans le bandeau, sélection de compte et stockage Drive visible. APP13 reste découplé de l’authentification Google Drive."
+      "notes": "TEST : configuration globale canonique dans app-config.v1.json, bibliothèque de tampons centralisée, workspace personnel unique, syntaxe de variables commune aux tampons/préfixes/suffixes/noms/textes/en-têtes, formats date/heure/timestamp configurables, cinq dates de tampon visibles avec leur format, bouton de connexion Google dans le bandeau, sélection de compte et stockage Drive visible. APP13 reste découplé de l’authentification Google Drive.",
+      "isolation": "native"
     },
     {
       "version": "0.9.18",
@@ -267,7 +296,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.18.html",
-      "notes": "TEST : moteur unique de variables {VARIABLE} / {VARIABLE:FORMAT} avec formats date/heure/timestamp, workspace JSON unique et hiérarchique, migration depuis les réglages précédents, connexion Google avec sélection de compte et scope drive.file, création d’un dossier visible Mon Drive/nLab/PDF Studio avec Signatures/Documents/Exports, synchronisation du workspace et des signatures, et option de copie automatique des PDF exportés vers Drive."
+      "notes": "TEST : moteur unique de variables {VARIABLE} / {VARIABLE:FORMAT} avec formats date/heure/timestamp, workspace JSON unique et hiérarchique, migration depuis les réglages précédents, connexion Google avec sélection de compte et scope drive.file, création d’un dossier visible Mon Drive/nLab/PDF Studio avec Signatures/Documents/Exports, synchronisation du workspace et des signatures, et option de copie automatique des PDF exportés vers Drive.",
+      "isolation": "native"
     },
     {
       "version": "0.9.17",
@@ -276,7 +306,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.17.html",
-      "notes": "TEST : espace personnel étendu avec profil synchronisable dans Google Drive appData, initiales et signature/paraphe par défaut, tampons favoris, sources/sorties favorites avec handles locaux, extensions favorites, règles modulaires de préfixe/suffixe combinables et personnalisables, association de ces règles aux tampons et aide avancée Tampons. Conserve le générateur 5 dates A/B/C/D, JSON privé et passerelle DSS 6.5 de la 0.9.16."
+      "notes": "TEST : espace personnel étendu avec profil synchronisable dans Google Drive appData, initiales et signature/paraphe par défaut, tampons favoris, sources/sorties favorites avec handles locaux, extensions favorites, règles modulaires de préfixe/suffixe combinables et personnalisables, association de ces règles aux tampons et aide avancée Tampons. Conserve le générateur 5 dates A/B/C/D, JSON privé et passerelle DSS 6.5 de la 0.9.16.",
+      "isolation": "native"
     },
     {
       "version": "0.9.16",
@@ -285,7 +316,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.16.html",
-      "notes": "TEST : générateur de tampon toujours visible avec guide, Date du tampon + Dates A/B/C/D, variables insérables dans le texte, préfixe/suffixe et aperçus ; dates également dans la barre contextuelle. Ajoute un espace personnel pour éditer/importer/exporter/synchroniser le JSON de tampons via Google Drive appData et une passerelle configurable vers un service privé DSS 6.5 pour validation/extension PAdES."
+      "notes": "TEST : générateur de tampon toujours visible avec guide, Date du tampon + Dates A/B/C/D, variables insérables dans le texte, préfixe/suffixe et aperçus ; dates également dans la barre contextuelle. Ajoute un espace personnel pour éditer/importer/exporter/synchroniser le JSON de tampons via Google Drive appData et une passerelle configurable vers un service privé DSS 6.5 pour validation/extension PAdES.",
+      "isolation": "native"
     },
     {
       "version": "0.9.15",
@@ -294,7 +326,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.15.html",
-      "notes": "TEST : tampons avec date principale + Dates A/B/C/D indépendantes et modifiables, variables de date réutilisables dans le texte et le nom de fichier, option explicite de préfixe/suffixe lors de l’enregistrement, prévisualisation du nom final et régénération du tampon sélectionné. Compatible avec les règles de nommage 0.9.14."
+      "notes": "TEST : tampons avec date principale + Dates A/B/C/D indépendantes et modifiables, variables de date réutilisables dans le texte et le nom de fichier, option explicite de préfixe/suffixe lors de l’enregistrement, prévisualisation du nom final et régénération du tampon sélectionné. Compatible avec les règles de nommage 0.9.14.",
+      "isolation": "native"
     },
     {
       "version": "0.9.14",
@@ -303,7 +336,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.14.html",
-      "notes": "TEST / RC2 : correctif de chargement interne du runtime, texte enrichi par sélection, historique typé/horodaté, tampon avec date du tampon + Dates A/B/C et préfixe/suffixe appliqués au nom de sortie, surligneurs rapides + couleurs personnelles + surlignage texte PDF, stylo synchronisé, rotation image, aperçus fichiers, modèles de sortie enrichis, caviardage préparatoire et configuration locale de l’espace personnel Google pour signatures/paraphes."
+      "notes": "TEST / RC2 : correctif de chargement interne du runtime, texte enrichi par sélection, historique typé/horodaté, tampon avec date du tampon + Dates A/B/C et préfixe/suffixe appliqués au nom de sortie, surligneurs rapides + couleurs personnelles + surlignage texte PDF, stylo synchronisé, rotation image, aperçus fichiers, modèles de sortie enrichis, caviardage préparatoire et configuration locale de l’espace personnel Google pour signatures/paraphes.",
+      "isolation": "native"
     },
     {
       "version": "0.9.13",
@@ -312,7 +346,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.13.html",
-      "notes": "TEST / RC : bouton Debug en un clic avec rapport sanitise, journal des fetch/erreurs, chargement direct du corpus démo avec secours ZIP et lien vers la galerie."
+      "notes": "TEST / RC : bouton Debug en un clic avec rapport sanitise, journal des fetch/erreurs, chargement direct du corpus démo avec secours ZIP et lien vers la galerie.",
+      "isolation": "native"
     },
     {
       "version": "0.9.12",
@@ -321,7 +356,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.12.html",
-      "notes": "Ancienne RC : classement programmable, tampons Date A/B/C, QR avancé/Data Matrix, comparaison d’arborescences et corpus démo ZIP."
+      "notes": "Ancienne RC : classement programmable, tampons Date A/B/C, QR avancé/Data Matrix, comparaison d’arborescences et corpus démo ZIP.",
+      "isolation": "native"
     },
     {
       "version": "0.9.11",
@@ -330,7 +366,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.11.html",
-      "notes": "Ancienne RC : ruban corrigé, interface compacte, notifications centralisées, panneau redimensionnable, tampons Date A/B/C, PDF→image et formulaires enrichis."
+      "notes": "Ancienne RC : ruban corrigé, interface compacte, notifications centralisées, panneau redimensionnable, tampons Date A/B/C, PDF→image et formulaires enrichis.",
+      "isolation": "native"
     },
     {
       "version": "0.9.10",
@@ -339,7 +376,8 @@
       "current": true,
       "status": "current",
       "href": "./app-0.9.10.html",
-      "notes": "CURRENT stable : panneau gauche pleine hauteur, navigation fichiers persistante, barres repliables, tampons sans date."
+      "notes": "CURRENT stable : panneau gauche pleine hauteur, navigation fichiers persistante, barres repliables, tampons sans date.",
+      "isolation": "current-runtime"
     },
     {
       "version": "0.9.9",
@@ -348,7 +386,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.9.html",
-      "notes": "Version historique : confidentialité Google Drive pour les fonctions personnelles et intégration Image Studio."
+      "notes": "Version historique : confidentialité Google Drive pour les fonctions personnelles et intégration Image Studio.",
+      "isolation": "native"
     },
     {
       "version": "0.9.8",
@@ -357,7 +396,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.9.8.html",
-      "notes": "Version de compatibilité précédente, conservée pour comparaison."
+      "notes": "Version de compatibilité précédente, conservée pour comparaison.",
+      "isolation": "native"
     }
   ]
 }

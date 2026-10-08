@@ -10,7 +10,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Snapshot TEST suivant la promotion de 1.3.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+      "notes": "Snapshot TEST suivant la promotion de 1.3.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes.",
+      "isolation": "test-runtime"
     },
     {
       "version": "1.3.0",
@@ -19,7 +20,8 @@
       "current": true,
       "status": "current",
       "href": "./v2/?channel=current",
-      "notes": "Propagation famille édition documentaire : contenu texte, chargement de document et contexte actif raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P2."
+      "notes": "Propagation famille édition documentaire : contenu texte, chargement de document et contexte actif raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P2.",
+      "isolation": "current-runtime"
     },
     {
       "version": "1.2.0",
@@ -27,8 +29,9 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe Core 3.0 de cohérence visuelle : héritage clair/sombre renforcé et fenêtres Core homogènes ; fonctions de conversion avancées volontairement conservées pour une passe ultérieure."
+      "href": "./v2/?version=1.2.0&channel=historical",
+      "notes": "Passe Core 3.0 de cohérence visuelle : héritage clair/sombre renforcé et fenêtres Core homogènes ; fonctions de conversion avancées volontairement conservées pour une passe ultérieure.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "1.1.0",
@@ -36,8 +39,9 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe TEST Core 2.9 : chargement/édition, statistiques, recherche, exports texte/HTML/DOCX/ODT et impression navigateur revalidés."
+      "href": "./v2/?version=1.1.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 : chargement/édition, statistiques, recherche, exports texte/HTML/DOCX/ODT et impression navigateur revalidés.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "1.0.0",
@@ -45,8 +49,9 @@
       "date": "2026-10-03",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "MVP local-first : DOCX, ODT, TXT, Markdown, HTML et RTF simple ; exports DOCX/ODT/TXT/MD/HTML et PDF via navigateur. DOC legacy identifié mais non décodé nativement."
+      "href": "./v2/?version=1.0.0&channel=historical",
+      "notes": "MVP local-first : DOCX, ODT, TXT, Markdown, HTML et RTF simple ; exports DOCX/ODT/TXT/MD/HTML et PDF via navigateur. DOC legacy identifié mais non décodé nativement.",
+      "isolation": "compat-runtime"
     }
   ]
 }
