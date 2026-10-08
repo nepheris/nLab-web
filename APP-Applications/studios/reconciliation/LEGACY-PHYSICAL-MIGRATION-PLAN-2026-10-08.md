@@ -99,3 +99,20 @@ Un fichier/dossier Legacy ne peut être supprimé que si :
 **NO-GO : suppression globale immédiate des racines Legacy encore utilisées par CURRENT.**
 
 La prochaine action structurante est la promotion contrôlée des V2 validées vers CURRENT, famille par famille, avec stubs d’URL, puis purge physique des anciennes implémentations.
+
+
+## Vague P1 engagée — promotion CURRENT sans rupture d’URL
+
+Branche : `legacy-migration-p1-promote-v2-current`.
+
+Principe appliqué :
+- l’ancienne racine publique `APP-Applications/<studio>/` est conservée ;
+- cette racine devient un stub de compatibilité vers `v2/?channel=current` ;
+- `/v2/` sans paramètre reste le canal TEST ;
+- le moteur V2 n’est pas dupliqué ;
+- la version V2 précédemment TEST devient CURRENT ;
+- un nouveau snapshot patch devient TEST pour poursuivre le développement.
+
+Studios de la vague : Image, Code, JSON, Data, File, OCR, QR & Barcode.
+
+La suppression des anciens fichiers métier hors `index.html` n’est pas incluse dans cette sous-passe : elle ne commencera qu’après validation de la route CURRENT/TEST et inventaire des références entrantes.

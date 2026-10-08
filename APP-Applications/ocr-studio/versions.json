@@ -1,16 +1,25 @@
 {
   "name": "OCR Studio",
-  "current": "0.1.0",
-  "test": "2.3.0",
+  "current": "2.3.0",
+  "test": "2.3.1",
   "versions": [
     {
-      "version": "2.3.0",
-      "label": "OCR Studio 2.3.0 TEST",
-      "date": "2026-10-07",
+      "version": "2.3.1",
+      "label": "OCR Studio 2.3.1 TEST",
+      "date": "2026-10-08",
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Propagation famille Acquisition documentaire : source, résultat OCR et édition du texte raccordés au Context/Selection et Undo/Redo Core globaux."
+      "notes": "Snapshot TEST suivant la promotion de 2.3.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+    },
+    {
+      "version": "2.3.0",
+      "label": "OCR Studio 2.3.0 CURRENT",
+      "date": "2026-10-07",
+      "current": true,
+      "status": "current",
+      "href": "./v2/?channel=current",
+      "notes": "Propagation famille Acquisition documentaire : source, résultat OCR et édition du texte raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
       "version": "2.2.0",
@@ -42,8 +51,8 @@
       "version": "0.1.0",
       "label": "OCR Studio Alpha 0.1",
       "date": "2026-09-29",
-      "current": true,
-      "status": "current",
+      "current": false,
+      "status": "historical",
       "href": "./",
       "notes": "Première version suivie dans le registre commun Studio. OCR local navigateur et export texte."
     }
