@@ -62,3 +62,27 @@ Avant tout déplacement ou suppression :
 
 - `inputAcquire` est maintenant présent à la fois dans le registre runtime, `assets/icons/functions/` et la bibliothèque canonique `Library/demo/Images/nLab-Studio/Icon-Library/function-icons/`.
 - La PR #59 est considérée supersédée par la récupération fusionnée #58 + ce complément Icon Library.
+
+
+## Retrait des branches de travail — 2026-10-08
+
+Les branches ci-dessous ont leur contenu validé, fusionné ou récupéré. Leur ancien HEAD est conservé ici avant réalignement sur `main`.
+
+| Branche | Ancien HEAD | Statut |
+|---|---|---|
+| `studio-core-3.3-command-context-undo` | `7a4c9580cbdb254565bf3410170302aafdb35904` | PR #50 fusionnée |
+| `studio-core-3.4-transactional-studios` | `7a25138ee79f863ec2c01c2ec354e7067bd35dd8` | PR #51 fusionnée |
+| `studio-core-3.5-code-data-file-transactions` | `091edcb0c9dca8400716a3e306b6d740e1c04dce` | PR #52 fusionnée |
+| `studio-core-3.6-acquisition-family` | `2028ff275b207facfc94c0b660761ef708f3f845` | PR #53 fusionnée |
+| `studio-core-3.7-document-editing-family-v2` | `945ecc4784f252665884c513ef739b70c684a2b5` | PR #54 fusionnée |
+| `site-refactor-1-shared-shell-dynamic-portal` | `6b502104b1129677b813075e104766bcdb299b41` | PR #55 fusionnée |
+| `site-refactor-2-header-theme-control` | `709120a1cfec8d751b1dc88b5522ee94e48a437d` | PR #56 fusionnée |
+| `reconcile-legacy-validation-2026-10-07` | `d4c3586336872331c645d853759410723ccae8c2` | PR #57 fusionnée |
+| `legacy-recovery-1-viewer-input-launcher` | `ba663714d23583657bf5769a5f19004e4e50d9b2` | PR #58 fusionnée |
+| `legacy-recovery-base-2026-10-08` | `05fbe43def120d6d334fcb6e7e0a5edfb2094fb2` | PR #59 supersédée par #58 + #60 |
+| `legacy-recovery-1-icon-library-complete` | `676d51fa31be0f225f9c26c92e6cb46a342f1e0c` | PR #60 fusionnée |
+| `audit-functions-canonical-2026-10-04` | `a58a034b05637bfc8e86b634053320984d956e39` | PR #41 archivée dans le dépôt |
+| `test/core-viewer-3.3` | `eceeeba9c2a2d5b364db0e9fcf9a5f1f9adc9de8` | Legacy #48 récupéré dans Core 3.4 |
+| `test/core-input-launcher-3.2.1` | `d258e6f2d8c8041b6b3a5b3e2a52ab02a02dbfbd` | Legacy #49 récupéré dans Core 3.4 |
+
+Règle : ces refs peuvent être réalignées sur `main` sans perdre de capacité fonctionnelle ; les anciennes versions restent traçables par les SHA ci-dessus et les PR GitHub.
