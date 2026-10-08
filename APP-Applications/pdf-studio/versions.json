@@ -385,9 +385,9 @@
       "date": "2026-09-16",
       "current": false,
       "status": "historical",
-      "href": "./app-0.9.9.html",
-      "notes": "Version historique : confidentialité Google Drive pour les fonctions personnelles et intégration Image Studio.",
-      "isolation": "native"
+      "href": "./v2/?version=0.9.9&channel=historical",
+      "notes": "Version historique : confidentialité Google Drive pour les fonctions personnelles et intégration Image Studio. · Le snapshot natif app-0.9.9.html est conservé dans main ; le lien officiel utilise le runtime V2 de compatibilité pour les navigateurs actuels.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.9.8",
