@@ -727,41 +727,6 @@ bindUserConfigUi();autoLoadUserConfig();bindSidebar();S.fileHistory=loadFileHist
 function setAllSidebarSections(open){document.querySelectorAll('#sidebarPanel details.toolSection').forEach(d=>d.open=open);toast(open?'Toutes les sections sont dépliées':'Toutes les sections sont pliées')}
 function openSidebarHistory(){const d=$('sidebarHistorySection');if(!d)return;d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'});renderHistoryMenu()}
 document.querySelectorAll('.card[data-tool]').forEach(b=>b.onclick=()=>openTool(b.dataset.tool));$('backHome').onclick=()=>{E.workspace.classList.remove('active');E.home.classList.add('active')};E.date.value=today();E.date.oninput=updatePath;E.tpl.oninput=updatePath;$('recursiveInput').onchange=()=>run(applyRecursionChange);$('loadDemoPreset').onclick=e=>run(loadDemoInput,e.currentTarget);$('setDefaultSource').onclick=e=>run(()=>setDefaultHandle('source'),e.currentTarget);$('setDefaultDestination').onclick=e=>run(()=>setDefaultHandle('dest'),e.currentTarget);$('sourcePreset').onchange=e=>{if(e.target.value==='demo')run(loadDemoInput);else if(e.target.value==='default')run(reuseSource)};$('destinationPreset').onchange=e=>{if(e.target.value==='default')run(reuseDest)};$('outputMode').onchange=()=>{updatePath();document.querySelectorAll('[data-output-mode-card]').forEach(x=>x.classList.toggle('active',x.dataset.outputModeCard===$('outputMode').value))};document.querySelectorAll('[data-output-mode-card]').forEach(b=>b.onclick=()=>{const m=$('outputMode');m.value=b.dataset.outputModeCard;m.dispatchEvent(new Event('change'))});$('operationFolderName').oninput=updatePath;$('archiveGranularity')?.addEventListener('change',updatePath);$('preserveSourceTreeDate').onchange=updatePath;$('appendOperationSuffix').onchange=updatePath;['suffixDpi','suffixJpeg','suffixOcr','suffixGray','suffixAnnot','suffixFusion'].forEach(id=>$(id)?.addEventListener('change',updatePath));bindUiPrefs();$('sidebarExpandAll')?.addEventListener('click',()=>setAllSidebarSections(true));$('sidebarCollapseAll')?.addEventListener('click',()=>setAllSidebarSections(false));$('sidebarShowHistory')?.addEventListener('click',openSidebarHistory);$('historySidebarToggle')?.addEventListener('click',openSidebarHistory);$('viewColumns')?.addEventListener('change',e=>setViewColumns(e.target.value));$('quickOutputMode')?.addEventListener('change',e=>{if($('outputMode')){$('outputMode').value=e.target.value;$('outputMode').dispatchEvent(new Event('change'))}showSaveOptions('classify')});$('quickArchiveGranularity')?.addEventListener('change',e=>{if($('archiveGranularity')){$('archiveGranularity').value=e.target.value;$('archiveGranularity').dispatchEvent(new Event('change'))}showSaveOptions('classify')});$('quickPreserveTree')?.addEventListener('change',e=>{if($('preserveSourceTreeDate')){$('preserveSourceTreeDate').checked=e.target.checked;$('preserveSourceTreeDate').dispatchEvent(new Event('change'))}showSaveOptions('classify')});$('quickOperationFolder')?.addEventListener('input',e=>{if($('operationFolderName')){$('operationFolderName').value=e.target.value;$('operationFolderName').dispatchEvent(new Event('input'))}showSaveOptions('classify')});$('firstPage').onclick=()=>run(firstPage);$('lastPage').onclick=()=>run(lastPage);$('zoom100').onclick=e=>run(setZoom100,e.currentTarget);$('fitWidth').onclick=e=>run(fitWidth,e.currentTarget);$('fitPage').onclick=e=>run(fitPage,e.currentTarget);$('saveQuick')?.addEventListener('click',e=>{showSaveOptions('save');run(saveClassic,e.currentTarget)});$('saveAsQuick')?.addEventListener('click',e=>{showSaveOptions('as');run(saveAsFinal,e.currentTarget)});$('saveClassifiedQuick')?.addEventListener('click',e=>{showSaveOptions('classify');run(saveClassifiedFinal,e.currentTarget)});$('openOutputOptions')?.addEventListener('click',()=>{const d=$('outputSection');if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}});$('saveAsName')?.addEventListener('change',()=>showSaveOptions('as'));$('fileExplorerToggle')?.addEventListener('click',()=>{S.fileExplorerOpen=!S.fileExplorerOpen;queue()});$('filesSelectAll')?.addEventListener('click',()=>{S.mergeSelected=new Set(S.files.map((_,i)=>i));queue()});$('filesSelectNone')?.addEventListener('click',()=>{S.mergeSelected.clear();queue()});$('previousFile').onclick=()=>setCurrent(S.index-1);$('nextFile').onclick=()=>setCurrent(S.index+1);$('prevPage').onclick=()=>{if(S.page>1){S.page--;render()}};$('nextPage').onclick=()=>{if(S.pdfjs&&S.page<S.pdfjs.numPages){S.page++;render()}};$('zoomOut').onclick=()=>{S.zoom=Math.max(.5,S.zoom-.1);$('zoomRange').value=S.zoom;render()};$('zoomIn').onclick=()=>{S.zoom=Math.min(2.5,S.zoom+.1);$('zoomRange').value=S.zoom;render()};$('zoomRange').oninput=e=>{S.zoom=+e.target.value;render()};$('refreshPreview').onclick=()=>run(refreshPreview);$('googleDriveConnect')?.addEventListener('click',connectGoogleDrive);$('googleDriveDisconnect')?.addEventListener('click',disconnectGoogleDrive);$('imageSourceRotLeft')?.addEventListener('click',()=>run(()=>rotatePage(-90)));$('imageSourceRotRight')?.addEventListener('click',()=>run(()=>rotatePage(90)));$('imageSourceExportPdf')?.addEventListener('click',()=>run(exportCurrentImageAsPdf));setGoogleDriveUi();document.addEventListener('keydown',e=>{const typing=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)||document.activeElement?.isContentEditable;if((e.ctrlKey||e.metaKey)&&!typing){if(e.key.toLowerCase()==='z'&&!e.shiftKey){e.preventDefault();undoAnnotation();return}if((e.key.toLowerCase()==='z'&&e.shiftKey)||e.key.toLowerCase()==='y'){e.preventDefault();redoAnnotation();return}}if(!typing&&S.tool==='pdf'&&!e.ctrlKey&&!e.metaKey&&!e.altKey){const k=e.key.toLowerCase(),map={v:'select',n:'nativeText',t:'text',s:'stamp',h:'highlight',p:'pen',i:'image',q:'qrFree',r:'redactOp',f:'formOp',g:'signatureOp',e:'eraser'};if(map[k]){e.preventDefault();setEditorTool(map[k]);return}}if((e.key==='Delete'||e.key==='Backspace')&&S.selectedAnn&&!typing){e.preventDefault();deleteAnnotation()}});$('exportRegistry').onclick=()=>{const blob=new Blob([JSON.stringify(S.registry,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(TOOLS[S.tool]?.registry||`${PROFILE.storagePrefix||'nlab-pdf'}-registry`)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
-})();
-</script>
-<script id="alpha0910Runtime">
-(()=>{
-  'use strict';
-  const PREF_KEY='nlab-pdf-studio-0910-toolbars-collapsed';
-  function fileNameSafe(){try{return current()?.name||'Aucun fichier'}catch(_){return 'Aucun fichier'}}
-  function syncSidebarDock(){
-    const total=(typeof S!=='undefined'&&Array.isArray(S.files))?S.files.length:0;
-    const idx=total?Math.max(0,Math.min(S.index||0,total-1)):0;
-    const name=document.getElementById('sidebarCurrentFile'),count=document.getElementById('sidebarFileCounter');
-    const prev=document.getElementById('previousFileDock'),next=document.getElementById('nextFileDock');
-    if(name){name.textContent=fileNameSafe();name.title=fileNameSafe()}
-    if(count)count.textContent=total?`${idx+1} / ${total}`:'0 / 0';
-    if(prev)prev.disabled=!total||idx<=0;if(next)next.disabled=!total||idx>=total-1;
-  }
-  function setToolbarsCollapsed(collapsed,{persist=true}={}){
-    const zone=document.querySelector('.documentZone'),b=document.getElementById('toolbarMasterToggle');
-    if(!zone||!b)return;zone.classList.toggle('toolbarsCollapsed',!!collapsed);b.setAttribute('aria-expanded',String(!collapsed));b.textContent=collapsed?'▾ Déplier les barres':'▴ Replier les barres';b.title=collapsed?'Afficher les barres d’outils':'Masquer les barres d’outils';
-    if(persist)try{localStorage.setItem(PREF_KEY,collapsed?'1':'0')}catch(_){}
-  }
-  function init0910(){
-    const prev=document.getElementById('previousFileDock'),next=document.getElementById('nextFileDock'),exp=document.getElementById('sidebarExplorerDock'),master=document.getElementById('toolbarMasterToggle');
-    prev?.addEventListener('click',()=>document.getElementById('previousFile')?.click());
-    next?.addEventListener('click',()=>document.getElementById('nextFile')?.click());
-    exp?.addEventListener('click',()=>document.getElementById('fileExplorerToggle')?.click());
-    master?.addEventListener('click',()=>setToolbarsCollapsed(!document.querySelector('.documentZone')?.classList.contains('toolbarsCollapsed')));
-    let collapsed=false;try{collapsed=localStorage.getItem(PREF_KEY)==='1'}catch(_){}
-    setToolbarsCollapsed(collapsed,{persist:false});
-    const q=document.getElementById('fileQueue');if(q)new MutationObserver(syncSidebarDock).observe(q,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});
-    document.addEventListener('click',()=>setTimeout(syncSidebarDock,0),true);
-    document.addEventListener('change',()=>setTimeout(syncSidebarDock,0),true);
-    syncSidebarDock();
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init0910,{once:true});else init0910();
 
 
 // =================== Alpha 0.9.12 enhancements (lexically bound to main runtime) ===================
@@ -991,6 +956,45 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 })();
 // =================== /Alpha 0.9.12 enhancements ===================
+
+})();
+</script>
+<script id="alpha0910Runtime">
+(()=>{
+  'use strict';
+  const PREF_KEY='nlab-pdf-studio-0910-toolbars-collapsed';
+  function fileNameSafe(){try{return current()?.name||'Aucun fichier'}catch(_){return 'Aucun fichier'}}
+  function syncSidebarDock(){
+    const total=(typeof S!=='undefined'&&Array.isArray(S.files))?S.files.length:0;
+    const idx=total?Math.max(0,Math.min(S.index||0,total-1)):0;
+    const name=document.getElementById('sidebarCurrentFile'),count=document.getElementById('sidebarFileCounter');
+    const prev=document.getElementById('previousFileDock'),next=document.getElementById('nextFileDock');
+    if(name){name.textContent=fileNameSafe();name.title=fileNameSafe()}
+    if(count)count.textContent=total?`${idx+1} / ${total}`:'0 / 0';
+    if(prev)prev.disabled=!total||idx<=0;if(next)next.disabled=!total||idx>=total-1;
+  }
+  function setToolbarsCollapsed(collapsed,{persist=true}={}){
+    const zone=document.querySelector('.documentZone'),b=document.getElementById('toolbarMasterToggle');
+    if(!zone||!b)return;zone.classList.toggle('toolbarsCollapsed',!!collapsed);b.setAttribute('aria-expanded',String(!collapsed));b.textContent=collapsed?'▾ Déplier les barres':'▴ Replier les barres';b.title=collapsed?'Afficher les barres d’outils':'Masquer les barres d’outils';
+    if(persist)try{localStorage.setItem(PREF_KEY,collapsed?'1':'0')}catch(_){}
+  }
+  function init0910(){
+    const prev=document.getElementById('previousFileDock'),next=document.getElementById('nextFileDock'),exp=document.getElementById('sidebarExplorerDock'),master=document.getElementById('toolbarMasterToggle');
+    prev?.addEventListener('click',()=>document.getElementById('previousFile')?.click());
+    next?.addEventListener('click',()=>document.getElementById('nextFile')?.click());
+    exp?.addEventListener('click',()=>document.getElementById('fileExplorerToggle')?.click());
+    master?.addEventListener('click',()=>setToolbarsCollapsed(!document.querySelector('.documentZone')?.classList.contains('toolbarsCollapsed')));
+    let collapsed=false;try{collapsed=localStorage.getItem(PREF_KEY)==='1'}catch(_){}
+    setToolbarsCollapsed(collapsed,{persist:false});
+    const q=document.getElementById('fileQueue');if(q)new MutationObserver(syncSidebarDock).observe(q,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});
+    document.addEventListener('click',()=>setTimeout(syncSidebarDock,0),true);
+    document.addEventListener('change',()=>setTimeout(syncSidebarDock,0),true);
+    syncSidebarDock();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init0910,{once:true});else init0910();
+
+
+
 
 })();
 </script>
