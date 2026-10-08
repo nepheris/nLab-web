@@ -14,7 +14,6 @@ const legacyControls={
 
 const browser=await chromium.launch({headless:true});
 try{
- const page=await browser.newPage({viewport:{width:1280,height:800}});
  const checked=[];
  for(const id of studios){
    const regRes=await fetch(base+'APP-Applications/'+id+'/versions.json');
@@ -22,6 +21,7 @@ try{
    const reg=await regRes.json();
    const historical=(reg.versions||[]).filter(v=>String(v.status).toLowerCase()==='historical');
    for(const v of historical){
+     const page=await browser.newPage({viewport:{width:1280,height:800}});
      const url=new URL(v.href,base+'APP-Applications/'+id+'/').href;
      const errors=[];
      const onErr=e=>errors.push(String(e?.message||e));
@@ -42,8 +42,9 @@ try{
        }
      }
      page.off('pageerror',onErr);
-     if(errors.length)throw new Error(id+' '+v.version+' pageerror: '+errors.join(' | '));
+     if(errors.length){await page.close();throw new Error(id+' '+v.version+' pageerror: '+errors.join(' | '))}
      checked.push({studio:id,version:String(v.version),href:v.href});
+     await page.close();
    }
  }
  console.log(JSON.stringify({ok:true,count:checked.length,checked},null,2));
