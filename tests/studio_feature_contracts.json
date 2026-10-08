@@ -3,7 +3,7 @@
   "updated": "2026-10-08",
   "studios": {
     "image-studio": {
-      "test": "2.7.0",
+      "test": "2.7.1",
       "required_ids": [
         "file",
         "demoSynthetic",
@@ -85,7 +85,7 @@
       ]
     },
     "ocr-studio": {
-      "test": "2.3.0",
+      "test": "2.3.1",
       "required_ids": [
         "file",
         "lang",
@@ -126,7 +126,7 @@
       ]
     },
     "code-studio": {
-      "test": "2.4.0",
+      "test": "2.4.1",
       "required_ids": [
         "file",
         "demo",
@@ -163,7 +163,7 @@
       ]
     },
     "json-studio": {
-      "test": "2.2.0",
+      "test": "2.2.1",
       "required_ids": [
         "file",
         "demo",
@@ -196,7 +196,7 @@
       ]
     },
     "data-studio": {
-      "test": "2.4.0",
+      "test": "2.4.1",
       "required_ids": [
         "file",
         "demoCsv",
@@ -241,7 +241,7 @@
       ]
     },
     "file-studio": {
-      "test": "2.4.0",
+      "test": "2.4.1",
       "required_ids": [
         "files",
         "folder",
@@ -274,7 +274,7 @@
       ]
     },
     "qr-barcode-studio": {
-      "test": "2.4.1",
+      "test": "2.4.2",
       "required_ids": [
         "symTabs",
         "value",
