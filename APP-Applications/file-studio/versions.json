@@ -18,7 +18,7 @@
       "date": "2026-10-07",
       "current": true,
       "status": "current",
-      "href": "./v2/",
+      "href": "./v2/?channel=current",
       "notes": "Collection, règles de renommage et calculs d’empreintes raccordés au Studio Core 3.3 : transactions Undo/Redo et contexte File partagé. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
