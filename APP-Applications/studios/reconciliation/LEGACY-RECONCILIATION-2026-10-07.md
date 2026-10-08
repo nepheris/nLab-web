@@ -101,3 +101,30 @@ Les branches ci-dessous ont leur contenu validé, fusionné ou récupéré. Leur
 | `test/core-input-launcher-3.2.1` | `d258e6f2d8c8041b6b3a5b3e2a52ab02a02dbfbd` | Legacy #49 récupéré dans Core 3.4 |
 
 Règle : ces refs peuvent être réalignées sur `main` sans perdre de capacité fonctionnelle ; les anciennes versions restent traçables par les SHA ci-dessus et les PR GitHub.
+
+
+## Compatibilité historique conservée — P2
+
+La vague `legacy-migration-p2-isolate-history` est fusionnée dans `main` et publiée sur `gh-pages`.
+
+### Garanties
+
+- les versions CURRENT/TEST modernes restent sur le runtime partagé ;
+- les versions V2 historiques utilisent `channel=historical` avec identité de version explicite ;
+- les versions pré-Core/Alpha sont isolées sous `history/<version>/` ;
+- la provenance des snapshots est conservée dans `HISTORY-SNAPSHOT-PROVENANCE-2026-10-08.json` ;
+- la gate `Historical version URLs` valide l'ensemble des URLs de versions déclarées ;
+- la gate `Historical version compatibility` valide les snapshots et runtimes historiques migrés ;
+- PDF 0.9.10 reste CURRENT natif et compatible ; PDF 0.9.9 conserve son snapshot natif mais utilise le runtime V2 de compatibilité comme lien officiel.
+
+### Assets Legacy à conserver
+
+Ces fichiers ne sont plus considérés comme dette à purger immédiatement : ils deviennent **couche de compatibilité historique** tant qu'un snapshot les référence.
+
+- `APP-Applications/_shared/studio.css`
+- `APP-Applications/_shared/studio-shell.js`
+- `APP-Applications/_shared/studio-v1/`
+- `APP-Applications/qr-barcode-studio/qr-barcode.js` tant que les pages historiques QR l'utilisent
+- runtimes PDF 0.9.x explicitement couverts par les tests de publication
+
+Règle : un asset de cette liste ne pourra être supprimé qu'après migration de tous ses consommateurs historiques et passage vert des deux gates historiques.
