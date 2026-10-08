@@ -10,7 +10,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Snapshot TEST suivant la promotion de 2.2.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+      "notes": "Snapshot TEST suivant la promotion de 2.2.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes.",
+      "isolation": "test-runtime"
     },
     {
       "version": "2.2.0",
@@ -19,7 +20,8 @@
       "current": true,
       "status": "current",
       "href": "./v2/?channel=current",
-      "notes": "Core 3.0 : arbre éditable synchronisé avec le code, focus automatique sur la modification, ajout enfant/frère, suppression, vues Tableau et À plat, jeux de test marqués DEV et Input commun. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
+      "notes": "Core 3.0 : arbre éditable synchronisé avec le code, focus automatique sur la modification, ajout enfant/frère, suppression, vues Tableau et À plat, jeux de test marqués DEV et Input commun. · Promue CURRENT après validation fonctionnelle et migration Legacy P1.",
+      "isolation": "current-runtime"
     },
     {
       "version": "2.1.0",
@@ -27,8 +29,9 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe TEST Core 2.9 et recette étendue : chargement, validation, arbre, statistiques, lecture par chemin et export revalidés avec le nouveau sélecteur partagé."
+      "href": "./v2/?version=2.1.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 et recette étendue : chargement, validation, arbre, statistiques, lecture par chemin et export revalidés avec le nouveau sélecteur partagé.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.0",
@@ -36,8 +39,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Réécriture TEST sur Studio Core V2. Fonctionnalités métier de la version précédente conservées, chrome commun V2, paramètres Core, historique partagé et routage inter-Studio. CURRENT précédent conservé pour validation de non-régression avant bascule."
+      "href": "./v2/?version=2.0.0&channel=historical",
+      "notes": "Réécriture TEST sur Studio Core V2. Fonctionnalités métier de la version précédente conservées, chrome commun V2, paramètres Core, historique partagé et routage inter-Studio. CURRENT précédent conservé pour validation de non-régression avant bascule.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.2.0",
@@ -45,8 +49,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./",
-      "notes": "Formatage, validation, tri, navigation et export JSON."
+      "href": "./v2/?version=0.2.0&channel=historical",
+      "notes": "Formatage, validation, tri, navigation et export JSON.",
+      "isolation": "compat-runtime"
     }
   ]
 }
