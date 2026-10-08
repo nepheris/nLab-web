@@ -1,0 +1,38 @@
+name: Export PDF 0.9.10 snapshot
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'APP-Applications/pdf-studio/app-0.9.10.html'
+      - 'APP-Applications/pdf-studio/runtime/**'
+      - 'tests/export-pdf0910-snapshot.mjs'
+      - '.github/workflows/export-pdf0910-snapshot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Export reconstructed snapshot
+        run: |
+          python -m http.server 8781 --bind 127.0.0.1 >/tmp/nlab-pdf0910-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8781/APP-Applications/pdf-studio/app-0.9.10.html >/dev/null && break
+            sleep 1
+          done
+          NLAB_BASE_URL=http://127.0.0.1:8781/ node tests/export-pdf0910-snapshot.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pdf-studio-0910-reconstructed
+          path: tmp/pdf-studio-0.9.10.snapshot.*
+          if-no-files-found: error
