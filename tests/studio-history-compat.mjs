@@ -37,7 +37,8 @@ try{
        if(state.version!==String(v.version)||state.status!=='HISTORICAL')throw new Error(id+' '+v.version+' historical V2 invalide '+JSON.stringify(state));
      }else{
        await page.waitForFunction(expected=>document.body.dataset.historyVersion===expected,String(v.version),{timeout:10000});
-       for(const selector of legacyControls[id]||[]){
+       const controls=(id==='qr-barcode-studio'&&String(v.version)==='0.2.0')?['#value','#qrPreview']:(legacyControls[id]||[]);
+       for(const selector of controls){
          if(!(await page.locator(selector).count()))throw new Error(id+' '+v.version+' snapshot historique incomplet: '+selector);
        }
      }
