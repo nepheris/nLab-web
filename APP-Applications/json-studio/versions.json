@@ -49,8 +49,8 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v2/?version=0.2.0&channel=historical",
-      "notes": "Formatage, validation, tri, navigation et export JSON.",
+      "href": "./history/0.2.0/",
+      "notes": "Formatage, validation, tri, navigation et export JSON. · Snapshot historique isolé dans main pour compatibilité.",
       "isolation": "compat-runtime"
     }
   ]
