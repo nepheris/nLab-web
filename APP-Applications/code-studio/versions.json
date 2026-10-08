@@ -70,7 +70,7 @@
       "status": "historical",
       "href": "./history/0.2.0/",
       "notes": "Éditeur navigateur multi-langages basé sur Ace, recherche, coloration et sauvegarde locale. · Snapshot historique isolé dans main pour compatibilité.",
-      "isolation": "compat-runtime"
+      "isolation": "native"
     }
   ]
 }
