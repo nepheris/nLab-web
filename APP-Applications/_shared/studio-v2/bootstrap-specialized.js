@@ -10,8 +10,8 @@ export async function bootstrapSpecializedStudioV2(config=window.NLAB_SPECIALIZE
   installContextSelectionBridge();
   installUndoRedoBridge();
   const versionInfo=await resolveStudioVersions({
-    versionsHref:config.versionsHref||'../versions.json',
-    coreVersionHref:config.coreVersionHref||'../../_shared/studio-v2/version.json',
+    versionsHref:config.versionsHref||'./versions.json',
+    coreVersionHref:config.coreVersionHref||'../_shared/studio-v2/version.json',
     channel:config.channel||'test',
     buildHref:config.buildHref||manifest.buildHref||'build.json',
     sourcePath:config.sourcePath||manifest.sourcePath||'',

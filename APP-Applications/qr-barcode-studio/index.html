@@ -1,36 +1,8 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>nLab QR & Barcode Studio</title>
-<link rel="icon" type="image/svg+xml" href="../../assets/branding/nlab-favicon.svg">
-<link rel="stylesheet" href="../_shared/studio-v1/studio.css">
-<style>
-.codeMain{display:grid;grid-template-columns:360px minmax(0,1fr) 320px;gap:12px;padding:12px}.toolPanel,.previewPanel,.scanPanel{background:#fff;border:1px solid var(--nlab-line);border-radius:10px;padding:12px;box-shadow:var(--nlab-shadow-soft)}.symTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.symTabs button.active{background:var(--nlab-brand);color:#fff;border-color:var(--nlab-brand)}.previewStage{min-height:560px;display:grid;place-items:center;background:#f3f5f7;border-radius:9px}.previewCard{background:#fff;padding:24px;border-radius:12px;min-width:300px;min-height:300px;display:grid;place-items:center}.previewCard canvas,.previewCard svg{max-width:100%;max-height:520px}.colorStack{display:grid;gap:8px}.colorCtl{display:grid;grid-template-columns:44px 1fr;gap:7px;align-items:center}.colorCtl input[type=color]{width:44px;height:34px;padding:2px}.dropZone{border:2px dashed #9eb3c3;border-radius:9px;padding:18px;text-align:center;background:#f8fbfd}.dropZone.drag{border-color:var(--nlab-brand);background:#eef6fb}.typeSection[hidden]{display:none}.scanResult{word-break:break-all}.two{display:grid;grid-template-columns:1fr 1fr;gap:6px}@media(max-width:1100px){.codeMain{grid-template-columns:1fr 1fr}.scanPanel{grid-column:1/-1}}@media(max-width:760px){.codeMain{grid-template-columns:1fr}.scanPanel{grid-column:auto}}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bwip-js@4.11.4/dist/bwip-js-min.js"></script>
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-</head><body>
-<header class="studioHeader"><a class="studioBrand" href="../../"><img src="../../assets/branding/nlab-wordmark.svg" alt="nLab"><span class="studioBrandText"><strong>QR & Barcode Studio</strong><small>nLab Studios · version <span data-version>—</span></small></span></a><div class="studioHeaderRight"><span class="studioPill local">● local-first</span><span class="studioPill test" data-version-status>TEST</span><a class="btn" href="../studios/">Studios</a><a class="btn" href="./versions.html">Versions</a></div></header>
-<nav class="studioMenu"><button class="active">Génération</button><button>Scanner</button><button>Démos</button><button>Historique</button><button>Aide</button></nav>
-<div class="studioRibbon"><div class="ribbonGroup"><button class="ribbonBtn primary" id="refreshPreview">↻<span>Actualiser</span></button><button class="ribbonBtn" id="downloadPng">PNG<span>PNG</span></button><button class="ribbonBtn" id="downloadSvg">SVG<span>SVG</span></button><span class="ribbonLabel">Aperçu</span></div><div class="ribbonGroup"><button class="ribbonBtn" id="openDemo">🧪<span>Corpus démo</span></button><span class="ribbonLabel">Données</span></div></div>
-<main class="codeMain">
-<section class="toolPanel">
-<h2>Type de code</h2><div class="symTabs" id="symTabs">
-<button data-type="qrcode" class="active">QR</button><button data-type="datamatrix">Data Matrix</button><button data-type="code128">Code 128</button><button data-type="gs1-128">GS1-128</button><button data-type="ean13">EAN-13</button><button data-type="ean8">EAN-8</button></div>
-<label class="field"><span>Donnée encodée</span><textarea id="value" rows="4">https://nepheris.github.io/nLab-web/</textarea></label>
-<div id="qrOptions" class="typeSection"><div class="sectionSubhead">Options QR</div><div class="two"><label class="field"><span>Points</span><select id="dots"><option>square</option><option selected>rounded</option><option>dots</option><option>classy</option><option>classy-rounded</option><option>extra-rounded</option></select></label><label class="field"><span>Coins</span><select id="corners"><option>square</option><option selected>extra-rounded</option><option>dot</option></select></label><label class="field"><span>Centre coins</span><select id="cornerDots"><option>square</option><option selected>dot</option></select></label><label class="field"><span>Correction</span><select id="ecc"><option>L</option><option>M</option><option selected>Q</option><option>H</option></select></label></div><label class="checkboxField"><input id="gradient" type="checkbox" checked><span>Gradient couleur 1 → couleur 2</span></label><label class="field"><span>Logo central</span><input id="logo" type="file" accept="image/*"></label></div>
-<div class="sectionSubhead">Dimensions</div><div class="two"><label class="field"><span>Taille</span><input id="size" type="number" min="160" max="1000" value="360"></label><label class="field"><span>Marge</span><input id="margin" type="number" min="0" max="80" value="16"></label></div>
-<div class="sectionSubhead">Couleurs</div>
-<label class="field"><span>Format d'affichage</span><select id="colorMode"><option value="hex" selected>Hexadécimal</option><option value="rgb">RGB</option><option value="hsl">HSL</option></select></label>
-<div class="colorStack">
-<label class="field"><span>Couleur 1</span><div class="colorCtl"><input id="fg" type="color" value="#0057b8"><input id="fgText" value="#0057b8"></div></label>
-<label class="field"><span>Couleur 2</span><div class="colorCtl"><input id="fg2" type="color" value="#1f2933"><input id="fg2Text" value="#1f2933"></div></label>
-<label class="field"><span>Fond</span><div class="colorCtl"><input id="bg" type="color" value="#ffffff"><input id="bgText" value="#ffffff"></div></label>
-</div>
-<label class="checkboxField" id="transparentWrap"><input id="transparent" type="checkbox"><span>Fond transparent</span></label>
-<div id="status" class="statusBox">Prêt.</div>
-</section>
-<section class="previewPanel"><div class="viewerToolbar"><strong>Aperçu unique</strong><span class="spacer"></span><span id="previewType">QR Code</span></div><div class="previewStage"><div id="preview" class="previewCard"></div></div></section>
-<section class="scanPanel"><h2>Scanner / lire un fichier</h2><div class="field"><span>Lecteur HID</span><input id="scan" placeholder="Scanner ici puis Entrée"></div><div id="dropZone" class="dropZone">Glisser-déposer une image ici<br><small>ou</small><br><button id="pickImage">Choisir une image</button><input id="scanFile" type="file" accept="image/*" hidden></div><div id="scanStatus" class="statusBox scanResult">Aucun scan.</div><div class="sectionSubhead">Historique local</div><button id="clearHistory">Effacer</button><div id="history" class="historyList"></div></section>
-</main>
-<div class="studioStatus"><span class="statusDot"></span><span>QR & Barcode Studio</span><span class="grow">Studio Core V1</span></div>
-<script type="module" src="./qr-barcode.js"></script></body></html>
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR & Barcode Studio — nLab</title><meta name="robots" content="noindex">
+<style>body{font-family:Arial,sans-serif;max-width:760px;margin:64px auto;padding:0 20px;color:#1f2933}a{color:#0057b8}</style></head><body>
+<h1>QR & Barcode Studio</h1><p>Cette URL historique reste compatible. Ouverture de la version CURRENT sur Studio Core.</p>
+<p><a id="currentStudioLink" href="./v2/?channel=current">Ouvrir QR & Barcode Studio</a></p>
+<script>(()=>{const u=new URL('./v2/',location.href);u.searchParams.set('channel','current');const incoming=new URLSearchParams(location.search);for(const [k,v] of incoming){if(k!=='channel'&&k!=='version')u.searchParams.append(k,v)}u.hash=location.hash;location.replace(u.href)})();</script>
+</body></html>
