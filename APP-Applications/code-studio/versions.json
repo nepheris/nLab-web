@@ -10,7 +10,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Snapshot TEST suivant la promotion de 2.4.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+      "notes": "Snapshot TEST suivant la promotion de 2.4.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes.",
+      "isolation": "test-runtime"
     },
     {
       "version": "2.4.0",
@@ -19,7 +20,8 @@
       "current": true,
       "status": "current",
       "href": "./v2/?channel=current",
-      "notes": "Éditeur Ace raccordé au Studio Core 3.3 : transactions groupées de contenu, sélection/contexte Code partagé et boutons Annuler/Rétablir pilotés par l’Undo/Redo Core. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
+      "notes": "Éditeur Ace raccordé au Studio Core 3.3 : transactions groupées de contenu, sélection/contexte Code partagé et boutons Annuler/Rétablir pilotés par l’Undo/Redo Core. · Promue CURRENT après validation fonctionnelle et migration Legacy P1.",
+      "isolation": "current-runtime"
     },
     {
       "version": "2.3.0",
@@ -27,8 +29,9 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Core 3.0 : Input commun, détection automatique du langage depuis le chemin/nom, thème Ace synchronisé, Undo/Redo, copier/coller, rechercher et remplacer."
+      "href": "./v2/?version=2.3.0&channel=historical",
+      "notes": "Core 3.0 : Input commun, détection automatique du langage depuis le chemin/nom, thème Ace synchronisé, Undo/Redo, copier/coller, rechercher et remplacer.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.2.0",
@@ -36,16 +39,18 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe TEST Core 2.9 : nouveau sélecteur mutualisé Texte/Icône/Preview pour collections de fichiers/dossiers, avec SVG type de fichier et persistance du mode d’affichage."
+      "href": "./v2/?version=2.2.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 : nouveau sélecteur mutualisé Texte/Icône/Preview pour collections de fichiers/dossiers, avec SVG type de fichier et persistance du mode d’affichage.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.0",
       "label": "Code Studio 2.1.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Adoption Studio Core 2.8 Input Picker : fichier/dossier/glisser-déposer, collection multi-fichiers navigable, capacités explicites, éditeur Ace et exports conservés."
+      "href": "./v2/?version=2.1.0&channel=historical",
+      "notes": "Adoption Studio Core 2.8 Input Picker : fichier/dossier/glisser-déposer, collection multi-fichiers navigable, capacités explicites, éditeur Ace et exports conservés.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.0",
@@ -53,8 +58,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Réécriture TEST sur Studio Core V2. Fonctionnalités métier de la version précédente conservées, chrome commun V2, paramètres Core, historique partagé et routage inter-Studio. CURRENT précédent conservé pour validation de non-régression avant bascule."
+      "href": "./v2/?version=2.0.0&channel=historical",
+      "notes": "Réécriture TEST sur Studio Core V2. Fonctionnalités métier de la version précédente conservées, chrome commun V2, paramètres Core, historique partagé et routage inter-Studio. CURRENT précédent conservé pour validation de non-régression avant bascule.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.2.0",
@@ -62,8 +68,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./",
-      "notes": "Éditeur navigateur multi-langages basé sur Ace, recherche, coloration et sauvegarde locale."
+      "href": "./v2/?version=0.2.0&channel=historical",
+      "notes": "Éditeur navigateur multi-langages basé sur Ace, recherche, coloration et sauvegarde locale.",
+      "isolation": "compat-runtime"
     }
   ]
 }
