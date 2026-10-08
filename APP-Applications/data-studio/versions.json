@@ -18,7 +18,7 @@
       "date": "2026-10-07",
       "current": true,
       "status": "current",
-      "href": "./v2/",
+      "href": "./v2/?channel=current",
       "notes": "Dataset, filtres et tris raccordés au Studio Core 3.3 : état Data restaurable par Undo/Redo Core et contexte dataset publié au Context/Selection Core. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
