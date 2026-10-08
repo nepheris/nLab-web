@@ -1,0 +1,2619 @@
+{
+  "schema": "nlab-icon-manifest/v1",
+  "family": "function-icons",
+  "label": "Function Icons",
+  "description": "Actions métier partagées et futures.",
+  "updated": "2026-10-08",
+  "style": {
+    "viewBox": "0 0 24 24",
+    "strokeWidth": 1.7,
+    "colorMode": "currentColor",
+    "fill": "none",
+    "linecap": "round",
+    "linejoin": "round"
+  },
+  "icons": [
+    {
+      "id": "active",
+      "label": "Active",
+      "file": "../function-icons/active.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Active.",
+      "usage": [],
+      "tags": [
+        "function",
+        "active"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "add",
+      "label": "Add",
+      "file": "../function-icons/add.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Add.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "add"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "addPage",
+      "label": "Add Page",
+      "file": "../function-icons/add-page.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Add Page.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "add",
+        "page"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "add-page"
+      ]
+    },
+    {
+      "id": "alignCenter",
+      "label": "Align Center",
+      "file": "../function-icons/align-center.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Align Center.",
+      "usage": [],
+      "tags": [
+        "function",
+        "align",
+        "center"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "align-center"
+      ]
+    },
+    {
+      "id": "alignLeft",
+      "label": "Align Left",
+      "file": "../function-icons/align-left.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Align Left.",
+      "usage": [],
+      "tags": [
+        "function",
+        "align",
+        "left"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "align-left"
+      ]
+    },
+    {
+      "id": "alignRight",
+      "label": "Align Right",
+      "file": "../function-icons/align-right.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Align Right.",
+      "usage": [],
+      "tags": [
+        "function",
+        "align",
+        "right"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "align-right"
+      ]
+    },
+    {
+      "id": "batch",
+      "label": "Batch",
+      "file": "../function-icons/batch.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Batch.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "batch"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "bates",
+      "label": "Bates",
+      "file": "../function-icons/bates.svg",
+      "family": "function-icons",
+      "description": "Numérotation séquentielle Bates des pages.",
+      "usage": [],
+      "tags": [
+        "function",
+        "bates"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "bold",
+      "label": "Bold",
+      "file": "../function-icons/bold.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Bold.",
+      "usage": [],
+      "tags": [
+        "function",
+        "bold"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "bookmark",
+      "label": "Bookmark",
+      "file": "../function-icons/bookmark.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Bookmark.",
+      "usage": [],
+      "tags": [
+        "function",
+        "bookmark"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "calendar",
+      "label": "Calendar",
+      "file": "../function-icons/calendar.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Calendar.",
+      "usage": [],
+      "tags": [
+        "function",
+        "calendar"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "camera",
+      "label": "Camera",
+      "file": "../function-icons/camera.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Camera.",
+      "usage": [],
+      "tags": [
+        "function",
+        "camera"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "certificate",
+      "label": "Certificate",
+      "file": "../function-icons/certificate.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Certificate.",
+      "usage": [],
+      "tags": [
+        "function",
+        "certificate"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "check",
+      "label": "Check",
+      "file": "../function-icons/check.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Check.",
+      "usage": [],
+      "tags": [
+        "function",
+        "check"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "classify",
+      "label": "Classify",
+      "file": "../function-icons/classify.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Classify.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "classify"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "clear",
+      "label": "Clear",
+      "file": "../function-icons/clear.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Clear.",
+      "usage": [],
+      "tags": [
+        "function",
+        "clear"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "clock",
+      "label": "Clock",
+      "file": "../function-icons/clock.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Clock.",
+      "usage": [],
+      "tags": [
+        "function",
+        "clock"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "close",
+      "label": "Close",
+      "file": "../function-icons/close.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Close.",
+      "usage": [],
+      "tags": [
+        "function",
+        "close"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud",
+      "file": "../function-icons/cloud.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Cloud.",
+      "usage": [],
+      "tags": [
+        "function",
+        "cloud"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "cloudDownload",
+      "label": "Cloud Download",
+      "file": "../function-icons/cloud-download.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Cloud Download.",
+      "usage": [],
+      "tags": [
+        "function",
+        "cloud",
+        "download"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "cloud-download"
+      ]
+    },
+    {
+      "id": "cloudUpload",
+      "label": "Cloud Upload",
+      "file": "../function-icons/cloud-upload.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Cloud Upload.",
+      "usage": [],
+      "tags": [
+        "function",
+        "cloud",
+        "upload"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "cloud-upload"
+      ]
+    },
+    {
+      "id": "collapse",
+      "label": "Collapse",
+      "file": "../function-icons/collapse.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Collapse.",
+      "usage": [],
+      "tags": [
+        "function",
+        "collapse"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "color_picker",
+      "label": "Color Picker",
+      "file": "../function-icons/color-picker.svg",
+      "family": "function-icons",
+      "description": "Sélecteur de couleur / pipette partagé par le Web Framework et les applications nLab.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "CuisineX",
+        "P005 et sites nLab"
+      ],
+      "tags": [
+        "function",
+        "color",
+        "picker",
+        "eyedropper",
+        "pipette"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "colorPicker",
+        "eyedropper",
+        "pipette"
+      ]
+    },
+    {
+      "id": "command",
+      "label": "Command",
+      "file": "../function-icons/command.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Command.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "command"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "compare",
+      "label": "Compare",
+      "file": "../function-icons/compare.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Compare.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "compare"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "compress",
+      "label": "Compress",
+      "file": "../function-icons/compress.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Compress.",
+      "usage": [],
+      "tags": [
+        "function",
+        "compress"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "convert",
+      "label": "Convert",
+      "file": "../function-icons/convert.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Convert.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "convert"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "copy",
+      "label": "Copy",
+      "file": "../function-icons/copy.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Copy.",
+      "usage": [],
+      "tags": [
+        "function",
+        "copy"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "crop",
+      "label": "Crop",
+      "file": "../function-icons/crop.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Crop.",
+      "usage": [
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "crop"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "database",
+      "label": "Database",
+      "file": "../function-icons/database.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Database.",
+      "usage": [],
+      "tags": [
+        "function",
+        "database"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "decompress",
+      "label": "Decompress",
+      "file": "../function-icons/decompress.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Decompress.",
+      "usage": [],
+      "tags": [
+        "function",
+        "decompress"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "delete",
+      "label": "Delete",
+      "file": "../function-icons/delete.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Delete.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "delete"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "download",
+      "label": "Download",
+      "file": "../function-icons/download.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Download.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "download"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "dragHandle",
+      "label": "Drag Handle",
+      "file": "../function-icons/drag-handle.svg",
+      "family": "function-icons",
+      "description": "Poignée de déplacement par glisser-déposer.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "drag",
+        "handle"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "drag-handle"
+      ]
+    },
+    {
+      "id": "duplicate",
+      "label": "Duplicate",
+      "file": "../function-icons/duplicate.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Duplicate.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "duplicate"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "edit",
+      "label": "Edit",
+      "file": "../function-icons/edit.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Edit.",
+      "usage": [],
+      "tags": [
+        "function",
+        "edit"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "file": "../function-icons/error.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Error.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "error"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "expand",
+      "label": "Expand",
+      "file": "../function-icons/expand.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Expand.",
+      "usage": [],
+      "tags": [
+        "function",
+        "expand"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "externalLink",
+      "label": "External Link",
+      "file": "../function-icons/external-link.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction External Link.",
+      "usage": [],
+      "tags": [
+        "function",
+        "external",
+        "link"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "external-link"
+      ]
+    },
+    {
+      "id": "extract",
+      "label": "Extract",
+      "file": "../function-icons/extract.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Extract.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "extract"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "eye",
+      "label": "Eye",
+      "file": "../function-icons/eye.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Eye.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "eye"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "eyeOff",
+      "label": "Eye Off",
+      "file": "../function-icons/eye-off.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Eye Off.",
+      "usage": [],
+      "tags": [
+        "function",
+        "eye",
+        "off"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "eye-off"
+      ]
+    },
+    {
+      "id": "file",
+      "label": "File",
+      "file": "../function-icons/file.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction File.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "file"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "filter",
+      "label": "Filter",
+      "file": "../function-icons/filter.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Filter.",
+      "usage": [
+        "data-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "filter"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "fingerprint",
+      "label": "Fingerprint",
+      "file": "../function-icons/fingerprint.svg",
+      "family": "function-icons",
+      "description": "Identifier un artefact par empreinte.",
+      "usage": [
+        "file-studio",
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "fingerprint"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "fitPage",
+      "label": "Fit Page",
+      "file": "../function-icons/fit-page.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Fit Page.",
+      "usage": [],
+      "tags": [
+        "function",
+        "fit",
+        "page"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "fit-page"
+      ]
+    },
+    {
+      "id": "fitWidth",
+      "label": "Fit Width",
+      "file": "../function-icons/fit-width.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Fit Width.",
+      "usage": [],
+      "tags": [
+        "function",
+        "fit",
+        "width"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "fit-width"
+      ]
+    },
+    {
+      "id": "folder",
+      "label": "Folder",
+      "file": "../function-icons/folder.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Folder.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "folder"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "folderClosed",
+      "label": "Folder Closed",
+      "file": "../function-icons/folder-closed.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Folder Closed.",
+      "usage": [
+        "file-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "folder",
+        "closed"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "folder-closed"
+      ]
+    },
+    {
+      "id": "folderOpen",
+      "label": "Folder Open",
+      "file": "../function-icons/folder-open.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Folder Open.",
+      "usage": [
+        "file-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "folder",
+        "open"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "folder-open"
+      ]
+    },
+    {
+      "id": "formField",
+      "label": "Form Field",
+      "file": "../function-icons/form-field.svg",
+      "family": "function-icons",
+      "description": "Champ de formulaire.",
+      "usage": [],
+      "tags": [
+        "function",
+        "form",
+        "field"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "form-field"
+      ]
+    },
+    {
+      "id": "forms",
+      "label": "Forms",
+      "file": "../function-icons/forms.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Forms.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "forms"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "fullscreen",
+      "label": "Fullscreen",
+      "file": "../function-icons/fullscreen.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Fullscreen.",
+      "usage": [],
+      "tags": [
+        "function",
+        "fullscreen"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "grid",
+      "label": "Grid",
+      "file": "../function-icons/grid.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Grid.",
+      "usage": [],
+      "tags": [
+        "function",
+        "grid"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "hash",
+      "label": "Hash",
+      "file": "../function-icons/hash.svg",
+      "family": "function-icons",
+      "description": "Calculer ou afficher une empreinte de hachage.",
+      "usage": [
+        "file-studio",
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "hash"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "headerFooter",
+      "label": "Header Footer",
+      "file": "../function-icons/header-footer.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Header Footer.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "header",
+        "footer"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "header-footer"
+      ]
+    },
+    {
+      "id": "help",
+      "label": "Help",
+      "file": "../function-icons/help.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Help.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "help"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "highlight",
+      "label": "Highlight",
+      "file": "../function-icons/highlight.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Highlight.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "highlight"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "history",
+      "label": "History",
+      "file": "../function-icons/history.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction History.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "history"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "home",
+      "label": "Home",
+      "file": "../function-icons/home.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Home.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "home"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "image",
+      "label": "Image",
+      "file": "../function-icons/image.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Image.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "image"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "inactive",
+      "label": "Inactive",
+      "file": "../function-icons/inactive.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Inactive.",
+      "usage": [],
+      "tags": [
+        "function",
+        "inactive"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "info",
+      "label": "Info",
+      "file": "../function-icons/info.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Info.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "info"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "inputAcquire",
+      "label": "Input Acquire",
+      "file": "../function-icons/input-acquire.svg",
+      "family": "function-icons",
+      "description": "Point d’entrée commun pour ajouter ou choisir une source dans les Studios.",
+      "usage": [
+        "Studio Core V2",
+        "Input Picker",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "input",
+        "acquire",
+        "file",
+        "folder",
+        "drop"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "input",
+        "input_acquire",
+        "acquire",
+        "drop_input"
+      ]
+    },
+    {
+      "id": "italic",
+      "label": "Italic",
+      "file": "../function-icons/italic.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Italic.",
+      "usage": [],
+      "tags": [
+        "function",
+        "italic"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "link",
+      "label": "Link",
+      "file": "../function-icons/link.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Link.",
+      "usage": [],
+      "tags": [
+        "function",
+        "link"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "list",
+      "label": "List",
+      "file": "../function-icons/list.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction List.",
+      "usage": [],
+      "tags": [
+        "function",
+        "list"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "listBulleted",
+      "label": "List Bulleted",
+      "file": "../function-icons/list-bulleted.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction List Bulleted.",
+      "usage": [],
+      "tags": [
+        "function",
+        "list",
+        "bulleted"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "list-bulleted"
+      ]
+    },
+    {
+      "id": "listNumbered",
+      "label": "List Numbered",
+      "file": "../function-icons/list-numbered.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction List Numbered.",
+      "usage": [],
+      "tags": [
+        "function",
+        "list",
+        "numbered"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "list-numbered"
+      ]
+    },
+    {
+      "id": "lock",
+      "label": "Lock",
+      "file": "../function-icons/lock.svg",
+      "family": "function-icons",
+      "description": "Verrouiller ou signaler un état verrouillé.",
+      "usage": [
+        "pdf-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "lock"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "manifest",
+      "label": "Manifest",
+      "file": "../function-icons/manifest.svg",
+      "family": "function-icons",
+      "description": "Afficher ou exporter le manifest d’un artefact.",
+      "usage": [
+        "file-studio",
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "manifest"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "merge",
+      "label": "Merge",
+      "file": "../function-icons/merge.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Merge.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "merge"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "metadata",
+      "label": "Metadata",
+      "file": "../function-icons/metadata.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Metadata.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "metadata"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "microphone",
+      "label": "Microphone",
+      "file": "../function-icons/microphone.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Microphone.",
+      "usage": [],
+      "tags": [
+        "function",
+        "microphone"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "minus",
+      "label": "Minus",
+      "file": "../function-icons/minus.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Minus.",
+      "usage": [],
+      "tags": [
+        "function",
+        "minus"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "more",
+      "label": "More",
+      "file": "../function-icons/more.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction More.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "more"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "move",
+      "label": "Move",
+      "file": "../function-icons/move.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Move.",
+      "usage": [
+        "Studio Core V2",
+        "pdf-studio",
+        "image-studio"
+      ],
+      "tags": [
+        "function",
+        "move"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "mute",
+      "label": "Mute",
+      "file": "../function-icons/mute.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Mute.",
+      "usage": [],
+      "tags": [
+        "function",
+        "mute"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "next",
+      "label": "Next",
+      "file": "../function-icons/next.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Next.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "next"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "ocr",
+      "label": "Ocr",
+      "file": "../function-icons/ocr.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Ocr.",
+      "usage": [
+        "pdf-studio",
+        "ocr-studio"
+      ],
+      "tags": [
+        "function",
+        "ocr"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "optimize",
+      "label": "Optimize",
+      "file": "../function-icons/optimize.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Optimize.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "optimize"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "page",
+      "label": "Page",
+      "file": "../function-icons/page.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Page.",
+      "usage": [],
+      "tags": [
+        "function",
+        "page"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "pages",
+      "label": "Pages",
+      "file": "../function-icons/pages.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Pages.",
+      "usage": [],
+      "tags": [
+        "function",
+        "pages"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "paragraph",
+      "label": "Paragraph",
+      "file": "../function-icons/paragraph.svg",
+      "family": "function-icons",
+      "description": "Représenter ou insérer un paragraphe structuré.",
+      "usage": [
+        "document-studio",
+        "markdown-studio"
+      ],
+      "tags": [
+        "function",
+        "paragraph"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "paragraphAdd",
+      "label": "Paragraph Add",
+      "file": "../function-icons/paragraph-add.svg",
+      "family": "function-icons",
+      "description": "Ajouter un paragraphe.",
+      "usage": [],
+      "tags": [
+        "function",
+        "paragraph",
+        "add"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "paragraph-add"
+      ]
+    },
+    {
+      "id": "paste",
+      "label": "Paste",
+      "file": "../function-icons/paste.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Paste.",
+      "usage": [],
+      "tags": [
+        "function",
+        "paste"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "pause",
+      "label": "Pause",
+      "file": "../function-icons/pause.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Pause.",
+      "usage": [],
+      "tags": [
+        "function",
+        "pause"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "pen",
+      "label": "Pen",
+      "file": "../function-icons/pen.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Pen.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "pen"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "pin",
+      "label": "Pin",
+      "file": "../function-icons/pin.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Pin.",
+      "usage": [],
+      "tags": [
+        "function",
+        "pin"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "play",
+      "label": "Play",
+      "file": "../function-icons/play.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Play.",
+      "usage": [],
+      "tags": [
+        "function",
+        "play"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "plus",
+      "label": "Plus",
+      "file": "../function-icons/plus.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Plus.",
+      "usage": [],
+      "tags": [
+        "function",
+        "plus"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "preview",
+      "label": "Preview",
+      "file": "../function-icons/preview.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Preview.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "preview"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "previous",
+      "label": "Previous",
+      "file": "../function-icons/previous.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Previous.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "previous"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "print",
+      "label": "Print",
+      "file": "../function-icons/print.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Print.",
+      "usage": [],
+      "tags": [
+        "function",
+        "print"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "qr",
+      "label": "Qr",
+      "file": "../function-icons/qr.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Qr.",
+      "usage": [
+        "pdf-studio",
+        "qr-barcode-studio"
+      ],
+      "tags": [
+        "function",
+        "qr"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "quote",
+      "label": "Quote",
+      "file": "../function-icons/quote.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Quote.",
+      "usage": [],
+      "tags": [
+        "function",
+        "quote"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "redaction",
+      "label": "Redaction",
+      "file": "../function-icons/redaction.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Redaction.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "redaction"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "redo",
+      "label": "Redo",
+      "file": "../function-icons/redo.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Redo.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "redo"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "refresh",
+      "label": "Refresh",
+      "file": "../function-icons/refresh.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Refresh.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "refresh"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "rename",
+      "label": "Rename",
+      "file": "../function-icons/rename.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Rename.",
+      "usage": [],
+      "tags": [
+        "function",
+        "rename"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "reset",
+      "label": "Reset",
+      "file": "../function-icons/reset.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Reset.",
+      "usage": [],
+      "tags": [
+        "function",
+        "reset"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "restore",
+      "label": "Restore",
+      "file": "../function-icons/restore.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Restore.",
+      "usage": [],
+      "tags": [
+        "function",
+        "restore"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "rotateFree",
+      "label": "Rotate Free",
+      "file": "../function-icons/rotate-free.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Rotate Free.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "rotate",
+        "free"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "rotate-free"
+      ]
+    },
+    {
+      "id": "rotateLeft",
+      "label": "Rotate Left",
+      "file": "../function-icons/rotate-left.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Rotate Left.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "rotate",
+        "left"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "rotate-left"
+      ]
+    },
+    {
+      "id": "rotateRight",
+      "label": "Rotate Right",
+      "file": "../function-icons/rotate-right.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Rotate Right.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "rotate",
+        "right"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "rotate-right"
+      ]
+    },
+    {
+      "id": "save",
+      "label": "Save",
+      "file": "../function-icons/save.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Save.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "save"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "scan",
+      "label": "Scan",
+      "file": "../function-icons/scan.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Scan.",
+      "usage": [],
+      "tags": [
+        "function",
+        "scan"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "search",
+      "label": "Search",
+      "file": "../function-icons/search.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Search.",
+      "usage": [
+        "data-studio",
+        "document-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "search"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "file": "../function-icons/security.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Security.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "security"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "file": "../function-icons/settings.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Settings.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "settings"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "share",
+      "label": "Share",
+      "file": "../function-icons/share.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Share.",
+      "usage": [],
+      "tags": [
+        "function",
+        "share"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "signature",
+      "label": "Signature",
+      "file": "../function-icons/signature.svg",
+      "family": "function-icons",
+      "description": "Signer visuellement ou cryptographiquement un document.",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "function",
+        "signature"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "sortAsc",
+      "label": "Sort Asc",
+      "file": "../function-icons/sort-asc.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Sort Asc.",
+      "usage": [
+        "data-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "sort",
+        "asc"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "sort-asc"
+      ]
+    },
+    {
+      "id": "sortAZ",
+      "label": "Sort A → Z",
+      "file": "../function-icons/sort-az.svg",
+      "family": "function-icons",
+      "description": "Icône partagée Sort A → Z.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "sort",
+        "ascending",
+        "az"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "sort-az",
+        "sort_az"
+      ]
+    },
+    {
+      "id": "sortDesc",
+      "label": "Sort Desc",
+      "file": "../function-icons/sort-desc.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Sort Desc.",
+      "usage": [
+        "data-studio",
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "function",
+        "sort",
+        "desc"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "sort-desc"
+      ]
+    },
+    {
+      "id": "sortZA",
+      "label": "Sort Z → A",
+      "file": "../function-icons/sort-za.svg",
+      "family": "function-icons",
+      "description": "Icône partagée Sort Z → A.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "sort",
+        "descending",
+        "za"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "sort-za",
+        "sort_za"
+      ]
+    },
+    {
+      "id": "split",
+      "label": "Split",
+      "file": "../function-icons/split.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Split.",
+      "usage": [],
+      "tags": [
+        "function",
+        "split"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "stamp",
+      "label": "Stamp",
+      "file": "../function-icons/stamp.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Stamp.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "stamp"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "star",
+      "label": "Star",
+      "file": "../function-icons/star.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Star.",
+      "usage": [],
+      "tags": [
+        "function",
+        "star"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "stop",
+      "label": "Stop",
+      "file": "../function-icons/stop.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Stop.",
+      "usage": [],
+      "tags": [
+        "function",
+        "stop"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "success",
+      "label": "Success",
+      "file": "../function-icons/success.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Success.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "success"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "sync",
+      "label": "Sync",
+      "file": "../function-icons/sync.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Sync.",
+      "usage": [],
+      "tags": [
+        "function",
+        "sync"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "table",
+      "label": "Table",
+      "file": "../function-icons/table.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Table.",
+      "usage": [],
+      "tags": [
+        "function",
+        "table"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "tag",
+      "label": "Tag",
+      "file": "../function-icons/tag.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Tag.",
+      "usage": [],
+      "tags": [
+        "function",
+        "tag"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "text",
+      "label": "Text",
+      "file": "../function-icons/text.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Text.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "text"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "toggleOff",
+      "label": "Toggle Off",
+      "file": "../function-icons/toggle-off.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Toggle Off.",
+      "usage": [],
+      "tags": [
+        "function",
+        "toggle",
+        "off"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "toggle-off"
+      ]
+    },
+    {
+      "id": "toggleOn",
+      "label": "Toggle On",
+      "file": "../function-icons/toggle-on.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Toggle On.",
+      "usage": [],
+      "tags": [
+        "function",
+        "toggle",
+        "on"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "toggle-on"
+      ]
+    },
+    {
+      "id": "translate",
+      "label": "Translate",
+      "file": "../function-icons/translate.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Translate.",
+      "usage": [
+        "pdf-studio",
+        "translation-studio"
+      ],
+      "tags": [
+        "function",
+        "translate"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "underline",
+      "label": "Underline",
+      "file": "../function-icons/underline.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Underline.",
+      "usage": [],
+      "tags": [
+        "function",
+        "underline"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "undo",
+      "label": "Undo",
+      "file": "../function-icons/undo.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Undo.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "undo"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "unlink",
+      "label": "Unlink",
+      "file": "../function-icons/unlink.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Unlink.",
+      "usage": [],
+      "tags": [
+        "function",
+        "unlink"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "unlock",
+      "label": "Unlock",
+      "file": "../function-icons/unlock.svg",
+      "family": "function-icons",
+      "description": "Déverrouiller ou signaler un état ouvert.",
+      "usage": [
+        "pdf-studio",
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "unlock"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "unpin",
+      "label": "Unpin",
+      "file": "../function-icons/unpin.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Unpin.",
+      "usage": [],
+      "tags": [
+        "function",
+        "unpin"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "update",
+      "label": "Update",
+      "file": "../function-icons/update.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Update.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "update"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "upload",
+      "label": "Upload",
+      "file": "../function-icons/upload.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Upload.",
+      "usage": [
+        "Studio Core V2",
+        "Google Workspace"
+      ],
+      "tags": [
+        "function",
+        "upload"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "viewCalendar",
+      "label": "View Calendar",
+      "file": "../function-icons/view-calendar.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Calendar.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "calendar"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-calendar",
+        "view_calendar"
+      ]
+    },
+    {
+      "id": "viewDependency",
+      "label": "View Dependency",
+      "file": "../function-icons/view-dependency.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Dependency.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "dependency",
+        "graph"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-dependency",
+        "view_dependency"
+      ]
+    },
+    {
+      "id": "viewGantt",
+      "label": "View Gantt",
+      "file": "../function-icons/view-gantt.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Gantt.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "gantt"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-gantt",
+        "view_gantt"
+      ]
+    },
+    {
+      "id": "viewGanttHierarchy",
+      "label": "View Gantt Hierarchy",
+      "file": "../function-icons/view-gantt-hierarchy.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Gantt Hierarchy.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "gantt",
+        "hierarchy"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-gantt-hierarchy",
+        "view_gantt_hierarchy"
+      ]
+    },
+    {
+      "id": "viewKanban",
+      "label": "View Kanban",
+      "file": "../function-icons/view-kanban.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Kanban.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "kanban"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-kanban",
+        "view_kanban"
+      ]
+    },
+    {
+      "id": "viewTimeline",
+      "label": "View Timeline",
+      "file": "../function-icons/view-timeline.svg",
+      "family": "function-icons",
+      "description": "Icône partagée View Timeline.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés",
+        "P005",
+        "CuisineX"
+      ],
+      "tags": [
+        "function",
+        "view",
+        "timeline"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": [
+        "view-timeline",
+        "view_timeline"
+      ]
+    },
+    {
+      "id": "volume",
+      "label": "Volume",
+      "file": "../function-icons/volume.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Volume.",
+      "usage": [],
+      "tags": [
+        "function",
+        "volume"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "warning",
+      "label": "Warning",
+      "file": "../function-icons/warning.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Warning.",
+      "usage": [
+        "Studio Core V2"
+      ],
+      "tags": [
+        "function",
+        "warning"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "watermark",
+      "label": "Watermark",
+      "file": "../function-icons/watermark.svg",
+      "family": "function-icons",
+      "description": "Ajouter ou représenter un watermark.",
+      "usage": [],
+      "tags": [
+        "function",
+        "watermark"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "workflow",
+      "label": "Workflow",
+      "file": "../function-icons/workflow.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Workflow.",
+      "usage": [
+        "pdf-studio",
+        "automation-studio"
+      ],
+      "tags": [
+        "function",
+        "workflow"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "zip",
+      "label": "Zip",
+      "file": "../function-icons/zip.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Zip.",
+      "usage": [
+        "Studio Core V2",
+        "Studios spécialisés"
+      ],
+      "tags": [
+        "function",
+        "zip"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "zoomIn",
+      "label": "Zoom In",
+      "file": "../function-icons/zoom-in.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Zoom In.",
+      "usage": [],
+      "tags": [
+        "function",
+        "zoom",
+        "in"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "zoom-in"
+      ]
+    },
+    {
+      "id": "zoomOut",
+      "label": "Zoom Out",
+      "file": "../function-icons/zoom-out.svg",
+      "family": "function-icons",
+      "description": "Action ou fonction Zoom Out.",
+      "usage": [],
+      "tags": [
+        "function",
+        "zoom",
+        "out"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": [
+        "zoom-out"
+      ]
+    }
+  ]
+}

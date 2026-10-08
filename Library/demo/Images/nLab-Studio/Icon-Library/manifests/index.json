@@ -1,0 +1,59 @@
+{
+  "schema": "nlab-icon-library/v1",
+  "name": "nLab Studio Icon Library",
+  "updated": "2026-10-03",
+  "root": "Library/demo/Images/nLab-Studio/Icon-Library",
+  "principles": [
+    "mono-color",
+    "currentColor",
+    "transparent",
+    "round-linecap",
+    "round-linejoin",
+    "small-size-legibility"
+  ],
+  "families": [
+    {
+      "id": "studio-icons",
+      "label": "Studio Icons",
+      "manifest": "./studio-icons.json",
+      "count": 22,
+      "description": "Identités visuelles des Studios actuels et planifiés."
+    },
+    {
+      "id": "function-icons",
+      "label": "Function Icons",
+      "manifest": "./function-icons.json",
+      "count": 147,
+      "description": "Actions métier partagées et futures."
+    },
+    {
+      "id": "filetype-icons",
+      "label": "Filetype Icons",
+      "manifest": "./filetype-icons.json",
+      "count": 51,
+      "description": "Types et familles de fichiers."
+    },
+    {
+      "id": "ui-icons",
+      "label": "Ui Icons",
+      "manifest": "./ui-icons.json",
+      "count": 26,
+      "description": "Contrôles, états et micro-interactions UI."
+    },
+    {
+      "id": "symbology-icons",
+      "label": "Symbology Icons",
+      "manifest": "./symbology-icons.json",
+      "count": 10,
+      "description": "QR et codes-barres."
+    }
+  ],
+  "counts": {
+    "total": 256,
+    "studio-icons": 22,
+    "function-icons": 147,
+    "filetype-icons": 51,
+    "ui-icons": 26,
+    "symbology-icons": 10
+  }
+}

@@ -1,0 +1,415 @@
+{
+  "schema": "nlab-icon-manifest/v1",
+  "family": "studio-icons",
+  "label": "Studio Icons",
+  "description": "Identités visuelles des Studios actuels et planifiés.",
+  "updated": "2026-10-03",
+  "style": {
+    "viewBox": "0 0 64 64",
+    "strokeWidth": 3,
+    "colorMode": "currentColor",
+    "fill": "none",
+    "linecap": "round",
+    "linejoin": "round"
+  },
+  "icons": [
+    {
+      "id": "archive-studio",
+      "label": "Archive Studio",
+      "file": "../studio-icons/archive-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Archive Studio.",
+      "usage": [
+        "archive-studio"
+      ],
+      "tags": [
+        "studio",
+        "archive",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "audio-studio",
+      "label": "Audio Studio",
+      "file": "../studio-icons/audio-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Audio Studio.",
+      "usage": [
+        "audio-studio"
+      ],
+      "tags": [
+        "studio",
+        "audio",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "automation-studio",
+      "label": "Automation Studio",
+      "file": "../studio-icons/automation-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Automation Studio.",
+      "usage": [
+        "automation-studio"
+      ],
+      "tags": [
+        "studio",
+        "automation",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "camp-studio",
+      "label": "Camp Studio",
+      "file": "../studio-icons/camp-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Camp Studio.",
+      "usage": [
+        "camp-studio"
+      ],
+      "tags": [
+        "studio",
+        "camp",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "code-studio",
+      "label": "Code Studio",
+      "file": "../studio-icons/code-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Code Studio.",
+      "usage": [
+        "code-studio"
+      ],
+      "tags": [
+        "studio",
+        "code",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "data-studio",
+      "label": "Data Studio",
+      "file": "../studio-icons/data-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Data Studio.",
+      "usage": [
+        "data-studio"
+      ],
+      "tags": [
+        "studio",
+        "data",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "dataset-generator-studio",
+      "label": "Dataset Generator Studio",
+      "file": "../studio-icons/dataset-generator-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Dataset Generator Studio.",
+      "usage": [
+        "dataset-generator-studio"
+      ],
+      "tags": [
+        "studio",
+        "dataset",
+        "generator",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "demo-studio",
+      "label": "Demo Studio",
+      "file": "../studio-icons/demo-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Demo Studio.",
+      "usage": [
+        "demo-studio"
+      ],
+      "tags": [
+        "studio",
+        "demo",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "document-studio",
+      "label": "Document Studio",
+      "file": "../studio-icons/document-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Document Studio.",
+      "usage": [
+        "document-studio"
+      ],
+      "tags": [
+        "studio",
+        "document",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "duo-studio",
+      "label": "Duo Studio",
+      "file": "../studio-icons/duo-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Duo Studio.",
+      "usage": [
+        "duo-studio"
+      ],
+      "tags": [
+        "studio",
+        "duo",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "file-studio",
+      "label": "File Studio",
+      "file": "../studio-icons/file-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de File Studio.",
+      "usage": [
+        "file-studio"
+      ],
+      "tags": [
+        "studio",
+        "file",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "future-studio",
+      "label": "Future Studio",
+      "file": "../studio-icons/future-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Future Studio.",
+      "usage": [
+        "future-studio"
+      ],
+      "tags": [
+        "studio",
+        "future",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "image-studio",
+      "label": "Image Studio",
+      "file": "../studio-icons/image-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Image Studio.",
+      "usage": [
+        "image-studio"
+      ],
+      "tags": [
+        "studio",
+        "image",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "json-studio",
+      "label": "Json Studio",
+      "file": "../studio-icons/json-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Json Studio.",
+      "usage": [
+        "json-studio"
+      ],
+      "tags": [
+        "studio",
+        "json",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "markdown-studio",
+      "label": "Markdown Studio",
+      "file": "../studio-icons/markdown-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Markdown Studio.",
+      "usage": [
+        "markdown-studio"
+      ],
+      "tags": [
+        "studio",
+        "markdown",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "ocr-studio",
+      "label": "Ocr Studio",
+      "file": "../studio-icons/ocr-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Ocr Studio.",
+      "usage": [
+        "ocr-studio"
+      ],
+      "tags": [
+        "studio",
+        "ocr",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "pdf-studio",
+      "label": "Pdf Studio",
+      "file": "../studio-icons/pdf-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Pdf Studio.",
+      "usage": [
+        "pdf-studio"
+      ],
+      "tags": [
+        "studio",
+        "pdf",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "presentation-studio",
+      "label": "Presentation Studio",
+      "file": "../studio-icons/presentation-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Presentation Studio.",
+      "usage": [
+        "presentation-studio"
+      ],
+      "tags": [
+        "studio",
+        "presentation",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "qr-barcode-studio",
+      "label": "Qr Barcode Studio",
+      "file": "../studio-icons/qr-barcode-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Qr Barcode Studio.",
+      "usage": [
+        "qr-barcode-studio"
+      ],
+      "tags": [
+        "studio",
+        "qr",
+        "barcode",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "spreadsheet-studio",
+      "label": "Spreadsheet Studio",
+      "file": "../studio-icons/spreadsheet-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Spreadsheet Studio.",
+      "usage": [
+        "spreadsheet-studio"
+      ],
+      "tags": [
+        "studio",
+        "spreadsheet",
+        "studio"
+      ],
+      "status": "active",
+      "planned": false,
+      "aliases": []
+    },
+    {
+      "id": "translation-studio",
+      "label": "Translation Studio",
+      "file": "../studio-icons/translation-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Translation Studio.",
+      "usage": [
+        "translation-studio"
+      ],
+      "tags": [
+        "studio",
+        "translation",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    },
+    {
+      "id": "video-studio",
+      "label": "Video Studio",
+      "file": "../studio-icons/video-studio.svg",
+      "family": "studio-icons",
+      "description": "Identité visuelle de Video Studio.",
+      "usage": [
+        "video-studio"
+      ],
+      "tags": [
+        "studio",
+        "video",
+        "studio"
+      ],
+      "status": "planned",
+      "planned": true,
+      "aliases": []
+    }
+  ]
+}
