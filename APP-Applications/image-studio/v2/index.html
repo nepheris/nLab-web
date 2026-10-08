@@ -37,7 +37,7 @@
  </details>
 </aside>
 <section class="panel">
- <div class="sectionTitle"><h2>Aperçu</h2><span id="imageMeta" class="badge">Aucune image</span></div><div class="toolbar"><button id="zoomOut" type="button">−</button><button id="zoomIn" type="button">+</button><button id="zoomFit" type="button">Ajuster</button><button id="zoomActual" type="button">Taille réelle</button><span id="zoomValue" class="badge">Ajusté</span></div>
+ <div class="sectionTitle"><h2>Aperçu</h2><span id="imageMeta" class="badge">Aucune image</span></div><div id="imageViewerCore" class="toolbar" data-core-viewer-controls data-viewer-id="image-studio" data-min="25" data-max="400" data-step="25" data-presets="25,50,75,100,150,200"></div>
  <div id="canvasStage" class="canvasStage"><div id="canvasWrap" class="canvasWrap"><canvas id="cv" width="1000" height="700"></canvas><div id="cropOverlay" class="cropOverlay" hidden></div></div></div>
  <div class="toolbar"><span id="msg" class="small">Choisissez une image.</span></div>
 </section>
@@ -49,7 +49,8 @@ import{fileToDataUrl,transformedCanvas,resizeCanvas,cropCanvas,canvasToBlob}from
 import{downloadBlob}from'../_shared/studio-v2/download-service.js';
 import{createEditHistory}from'../_shared/studio-v2/edit-history.js';
 import{pushUndoRedo,undo as coreUndo,redo as coreRedo}from'../_shared/studio-v2/undo-redo.js';
-const $=id=>document.getElementById(id),cv=$('cv'),ctx=cv.getContext('2d'),overlay=$('cropOverlay'),stage=$('canvasStage');let items=[],active=-1,img=null,ratio=1,meas=[],measureMode=false,pts=[],cropMode=false,cropStart=null,cropRect=null,artifactId='',artifactManifest=null,zoom=1,fitMode=true;
+import{mountViewerControls}from'../_shared/studio-v2/viewer-control.js';
+const $=id=>document.getElementById(id),cv=$('cv'),ctx=cv.getContext('2d'),overlay=$('cropOverlay'),stage=$('canvasStage');let items=[],active=-1,img=null,ratio=1,meas=[],measureMode=false,pts=[],cropMode=false,cropStart=null,cropRect=null,artifactId='',artifactManifest=null,zoom=1,fitMode=true,viewerControls=null;
 const state=()=>items[active]||null;
 const itemId=()=>globalThis.crypto?.randomUUID?.()||('img-'+Date.now()+'-'+Math.random().toString(16).slice(2));
 const itemById=id=>items.find(x=>x.id===id)||null;
@@ -86,8 +87,9 @@ $('undoMeasure').onclick=()=>{meas.pop();pts=[];renderCal();drawBase()};$('clear
 $('artifactGenerate').onclick=async()=>{const s=state();if(!s)return;const blob=await (await fetch(s.src)).blob();artifactId=generateArtifactId('IMG');artifactManifest=await buildArtifactManifest({blob,id:artifactId,studio:'image-studio',studioVersion:document.body.dataset.studioVersion||'',source:s.name,operations:['current-image']});$('artifactIdentityStatus').textContent=artifactId+' · SHA-256 '+artifactManifest.sha256.slice(0,16)+'…'};
 $('artifactEmbed').onclick=async()=>{if(!artifactId)await $('artifactGenerate').onclick();if(!artifactId)return;drawBase();const payload='NLABID:'+artifactId+'\0',bits=[];for(const ch of payload)for(let i=7;i>=0;i--)bits.push((ch.charCodeAt(0)>>i)&1);const im=ctx.getImageData(0,0,cv.width,cv.height);for(let i=0;i<bits.length&&i*4<im.data.length;i++)im.data[i*4]=(im.data[i*4]&254)|bits[i];ctx.putImageData(im,0,0);commitCanvas(state().name,'image/png');$('artifactIdentityStatus').textContent=artifactId+' · ID invisible inscrit'};
 $('artifactManifest').onclick=()=>{if(artifactManifest)downloadManifest(artifactManifest,(state()?.name||'image').replace(/\.[^.]+$/,'')+'.manifest.json')};
-function applyViewZoom(){const wrap=$('canvasWrap');cv.style.maxWidth=fitMode?'100%':'none';wrap.style.transform='scale('+zoom+')';wrap.style.transformOrigin='center center';$('zoomValue').textContent=fitMode&&zoom===1?'Ajusté':Math.round(zoom*100)+' %'}
-$('zoomIn').onclick=()=>{fitMode=false;zoom=Math.min(4,zoom+.25);applyViewZoom()};$('zoomOut').onclick=()=>{fitMode=false;zoom=Math.max(.25,zoom-.25);applyViewZoom()};$('zoomFit').onclick=()=>{fitMode=true;zoom=1;applyViewZoom()};$('zoomActual').onclick=()=>{fitMode=false;zoom=1;applyViewZoom()};
+function applyViewZoom(){const wrap=$('canvasWrap');cv.style.maxWidth=fitMode?'100%':'none';wrap.style.transform='scale('+zoom+')';wrap.style.transformOrigin='center center';viewerControls?.sync({zoom:zoom*100,fit:fitMode})}
+viewerControls=mountViewerControls($('#imageViewerCore'),{value:100,min:25,max:400,step:25,presets:[25,50,75,100,150,200]});
+document.addEventListener('studio-v2:viewer-command-global',e=>{const d=e.detail||{};if(d.viewerId!=='image-studio')return;if(d.action==='fit'){fitMode=true;zoom=1}else if(d.action==='actual'){fitMode=false;zoom=1}else if(d.action==='zoom'){fitMode=false;zoom=Math.max(.25,Math.min(4,Number(d.ratio)||1))}applyViewZoom()});
 $('openPicker').onclick=()=>document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:'open',source:'image-ui'}}));$('file').onchange=e=>addFiles(e.target.files);$('clearImages').onclick=()=>{if(!items.length)return;const before=[...items],beforeActive=active;items=[];active=-1;const after=[...items],afterActive=active;renderList();loadActive();publishSelection('clear');pushUndoRedo({label:'Vider les images',meta:{studio:'image-studio'},undo:()=>{items=[...before];active=beforeActive;renderList();loadActive();publishSelection('undo')},redo:()=>{items=[...after];active=afterActive;renderList();loadActive();publishSelection('redo')}})};
 document.addEventListener('studio-v2:input-picked',e=>{if(e.detail?.studio==='image-studio')addFiles(e.detail.files)});
 async function addDemo(url,name){const blob=await fetch(url).then(r=>r.blob()),file=new File([blob],name,{type:blob.type||'image/png'});addFiles([file])}

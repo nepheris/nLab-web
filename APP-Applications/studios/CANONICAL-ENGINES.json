@@ -1,6 +1,6 @@
 {
   "schema": "nlab-canonical-engines/v1",
-  "updated": "2026-10-04",
+  "updated": "2026-10-08",
   "rule": "Before creating a Studio-local processing function, search this registry, Studio Core, upstream BRK and Web Framework capabilities. A capability shared by two or more Studios must have one canonical engine.",
   "engines": [
     {
@@ -44,7 +44,9 @@
         "session-collection",
         "selected-materialization",
         "relative-path-display",
-        "page-count-display"
+        "page-count-display",
+        "ribbon-acquisition-launcher",
+        "compact-drop-tile"
       ],
       "consumers": [
         "specialized-studios-v2",
@@ -72,6 +74,29 @@
         "input-picker"
       ],
       "status": "canonical"
+    },
+    {
+      "id": "viewer",
+      "module": "APP-Applications/_shared/studio-v2/viewer-control.js",
+      "capabilities": [
+        "zoom-in",
+        "zoom-out",
+        "editable-percent",
+        "fit",
+        "actual-100",
+        "zoom-presets",
+        "bounded-zoom",
+        "viewer-command-events",
+        "state-sync",
+        "mobile-toolbar"
+      ],
+      "consumers": [
+        "image-studio",
+        "pdf-studio-planned",
+        "scan-studio-planned",
+        "qr-barcode-studio-planned"
+      ],
+      "status": "canonical-ui"
     },
     {
       "id": "image",

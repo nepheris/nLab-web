@@ -1,9 +1,9 @@
 {
   "schema": "nlab-studio-feature-contracts/v1",
-  "updated": "2026-10-07",
+  "updated": "2026-10-08",
   "studios": {
     "image-studio": {
-      "test": "2.6.0",
+      "test": "2.7.0",
       "required_ids": [
         "file",
         "demoSynthetic",
@@ -58,17 +58,15 @@
         "redoEdit",
         "freeAngle",
         "applyFreeRotation",
-        "zoomOut",
-        "zoomIn",
-        "zoomFit",
-        "zoomActual"
+        "imageViewerCore"
       ],
       "required_strings": [
         "studio-v2/studio.css",
         "bootstrap-specialized.js",
         "image-service.js",
         "download-service.js",
-        "undo-redo.js"
+        "undo-redo.js",
+        "viewer-control.js"
       ],
       "required_capabilities": [
         "image.transform.rotate",
@@ -82,7 +80,8 @@
         "image.collection.multi",
         "image.transform.crop.mouse",
         "image.units.px-percent-pt",
-        "image.history.undo-redo-reset"
+        "image.history.undo-redo-reset",
+        "image.view.zoom"
       ]
     },
     "ocr-studio": {

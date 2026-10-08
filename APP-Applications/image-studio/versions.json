@@ -1,14 +1,23 @@
 {
   "name": "Image Studio",
   "current": "0.2.1",
-  "test": "2.6.0",
+  "test": "2.7.0",
   "versions": [
+    {
+      "version": "2.7.0",
+      "label": "Image Studio 2.7.0 TEST",
+      "date": "2026-10-08",
+      "current": false,
+      "status": "test",
+      "href": "./v2/",
+      "notes": "Récupération Legacy #48 : remplacement du zoom local par Viewer Core 3.4 (−/%,+/Ajuster/100 %/presets) avec synchronisation de l’aperçu."
+    },
     {
       "version": "2.6.0",
       "label": "Image Studio 2.6.0 TEST",
       "date": "2026-10-06",
       "current": false,
-      "status": "test",
+      "status": "historical",
       "href": "./v2/",
       "notes": "Validation Studio Core 3.3 : transformations et collection raccordées à l’Undo/Redo Core global ; boutons locaux Annuler/Rétablir alignés sur la pile Core ; sélection Image publiée au Context/Selection Core."
     },

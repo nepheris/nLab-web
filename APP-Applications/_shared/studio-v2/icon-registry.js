@@ -48,6 +48,7 @@ next:'<svg viewBox="0 0 24 24"><path d="m10 6 6 6-6 6"/></svg>',
 more:'<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>'
 ,
 upload:'<svg viewBox="0 0 24 24"><path d="M12 17V5M7 10l5-5 5 5"/><path d="M5 17v3h14v-3"/></svg>',
+inputAcquire:'<svg viewBox="0 0 24 24"><path d="M4 7h5l2 2h9v9H4z"/><path d="M12 4v9M8.5 9.5 12 13l3.5-3.5"/><path d="M3 20h18"/></svg>',
 download:'<svg viewBox="0 0 24 24"><path d="M12 5v12M7 12l5 5 5-5"/><path d="M5 20h14"/></svg>',
 refresh:'<svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 1 5"/><path d="M20 5v6h-6"/></svg>',
 update:'<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5"/><path d="M18 3v5h-5"/><path d="M20 12a8 8 0 0 1-14 5"/><path d="M6 21v-5h5"/></svg>',
@@ -155,7 +156,8 @@ const ALIASES={
   sort_az:'sortAZ',sort_za:'sortZA',
   view_kanban:'viewKanban',view_gantt:'viewGantt',
   view_gantt_hierarchy:'viewGanttHierarchy',view_calendar:'viewCalendar',
-  view_timeline:'viewTimeline',view_dependency:'viewDependency'
+  view_timeline:'viewTimeline',view_dependency:'viewDependency',
+  input:'inputAcquire',input_acquire:'inputAcquire',acquire:'inputAcquire',drop_input:'inputAcquire'
 };
 const THEMES=new Map([['nlab-line',{}]]);
 let activeTheme='nlab-line';
