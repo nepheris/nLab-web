@@ -28,7 +28,7 @@
     {
       "id": "scan-studio",
       "name": "Scan Studio",
-      "status": "test-0.4.0",
+      "status": "current+test",
       "path": "../scan-studio/",
       "purpose": "Acquisition documentaire responsive : caméra/photo/fichiers, nettoyage, OCR partagé, organisation des pages et assemblage PDF.",
       "versions_path": "../scan-studio/versions.html",
@@ -105,7 +105,7 @@
     {
       "id": "markdown-studio",
       "name": "Markdown Studio",
-      "status": "test-2.3.0",
+      "status": "current+test",
       "path": "../markdown-studio/",
       "purpose": "Éditeur Markdown transversal V1 : source, aperçu HTML, sommaire, YAML/front matter et exports.",
       "versions": "./markdown",
@@ -138,7 +138,7 @@
     {
       "id": "document-studio",
       "name": "Document Studio",
-      "status": "test-1.3.0",
+      "status": "current+test",
       "path": "../document-studio/",
       "purpose": "Conversion et édition structurelle DOCX, ODT, TXT, Markdown, HTML et RTF simple, avec exports bureautiques locaux.",
       "versions_path": "../document-studio/versions.html",
@@ -149,7 +149,7 @@
     {
       "id": "spreadsheet-studio",
       "name": "Spreadsheet Studio",
-      "status": "test-1.3.0",
+      "status": "current+test",
       "path": "../spreadsheet-studio/",
       "purpose": "Lecture et conversion locale XLS/XLSX/ODS/CSV/TSV/JSON, sélection de feuille et exports tableur.",
       "versions_path": "../spreadsheet-studio/versions.html",
@@ -285,7 +285,7 @@
     "responsive_contract": "mobile-tablet-desktop",
     "propagation": "Core capabilities are validated by family waves: pilot Studio -> second surface -> functional Undo/Redo tests -> full audit -> merge -> next family.",
     "core_version": "3.4.0-test",
-    "test_generation": "2026-10-08-legacy-migration-p1-current-channel"
+    "test_generation": "2026-10-08-legacy-migration-p2-current-channel"
   },
   "derived_apps": [
     {

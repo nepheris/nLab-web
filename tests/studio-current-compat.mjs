@@ -8,7 +8,12 @@ const studios=[
  ['data-studio','2.4.0','2.4.1'],
  ['file-studio','2.4.0','2.4.1'],
  ['ocr-studio','2.3.0','2.3.1'],
- ['qr-barcode-studio','2.4.1','2.4.2']
+ ['qr-barcode-studio','2.4.1','2.4.2'],
+ ['scan-studio','0.4.0','0.4.1'],
+ ['markdown-studio','2.3.0','2.3.1'],
+ ['dataset-generator-studio','2.3.0','2.3.1'],
+ ['document-studio','1.3.0','1.3.1'],
+ ['spreadsheet-studio','1.3.0','1.3.1']
 ];
 
 const browser=await chromium.launch({headless:true});

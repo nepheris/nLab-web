@@ -1,16 +1,25 @@
 {
   "name": "Scan Studio",
-  "current": null,
-  "test": "0.4.0",
+  "current": "0.4.0",
+  "test": "0.4.1",
   "versions": [
     {
-      "version": "0.4.0",
-      "label": "Scan Studio 0.4.0 TEST",
-      "date": "2026-10-07",
+      "version": "0.4.1",
+      "label": "Scan Studio 0.4.1 TEST",
+      "date": "2026-10-08",
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Propagation famille Acquisition documentaire : pages, ordre, sélection, nettoyage, ajustements et OCR raccordés au Context/Selection et Undo/Redo Core globaux."
+      "notes": "Snapshot TEST suivant la promotion de 0.4.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+    },
+    {
+      "version": "0.4.0",
+      "label": "Scan Studio 0.4.0 CURRENT",
+      "date": "2026-10-07",
+      "current": true,
+      "status": "current",
+      "href": "./v2/?channel=current",
+      "notes": "Propagation famille Acquisition documentaire : pages, ordre, sélection, nettoyage, ajustements et OCR raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P2."
     },
     {
       "version": "0.3.0",

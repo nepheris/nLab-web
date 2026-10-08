@@ -4,7 +4,7 @@ import{readDocx,readOdt,extractRtfText,writeDocx,writeOdt,textToHtml}from'../../
 import{downloadBlob,downloadText}from'../../_shared/studio-v2/download-service.js';
 import studioManifest from'./studio-manifest.js';
 import{pushUndoRedo}from'../../_shared/studio-v2/undo-redo.js';
-const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
+const VERSION_INFO=await resolveStudioVersions({versionsHref:new URL('../versions.json',import.meta.url).href,coreVersionHref:new URL('../../_shared/studio-v2/version.json',import.meta.url).href,channel:'test'});
 await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
 const $=s=>document.querySelector(s),editor=$('#editor'),preview=$('#preview');let fileName='nouveau.txt',format='txt',txnMute=false,textTxnTimer=null,lastState=null;
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));

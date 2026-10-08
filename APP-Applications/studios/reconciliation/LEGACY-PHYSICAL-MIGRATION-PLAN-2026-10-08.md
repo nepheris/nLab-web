@@ -116,3 +116,16 @@ Principe appliqué :
 Studios de la vague : Image, Code, JSON, Data, File, OCR, QR & Barcode.
 
 La suppression des anciens fichiers métier hors `index.html` n’est pas incluse dans cette sous-passe : elle ne commencera qu’après validation de la route CURRENT/TEST et inventaire des références entrantes.
+
+
+## Vague P2 engagée — fin des racines V1 hors PDF
+
+Studios : Scan, Markdown, Dataset Generator, Document, Spreadsheet.
+
+- leur V2 validée devient CURRENT ;
+- un snapshot patch distinct reste TEST ;
+- toutes les racines publiques deviennent des stubs vers `v2/?channel=current` ;
+- les anciennes interfaces V1 de Markdown et Dataset Generator ne sont plus servies à la racine ;
+- aucune suppression de fichier historique versionné n’est encore faite dans cette sous-passe.
+
+Après validation de P2, **PDF Studio devient la seule famille conservant une CURRENT historique pré-V2**.

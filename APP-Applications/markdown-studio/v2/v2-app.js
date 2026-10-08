@@ -7,7 +7,7 @@ import{icon}from'../../_shared/studio-v2/icon-registry.js';
 import{downloadBlob}from'../../_shared/studio-v2/download-service.js';
 import{pushUndoRedo}from'../../_shared/studio-v2/undo-redo.js';
 
-const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test'});
+const VERSION_INFO=await resolveStudioVersions({versionsHref:new URL('../versions.json',import.meta.url).href,coreVersionHref:new URL('../../_shared/studio-v2/version.json',import.meta.url).href,channel:'test'});
 await mountStudioV2({manifest:studioManifest,versionInfo:VERSION_INFO});
 const $=s=>document.querySelector(s), qsa=s=>[...document.querySelectorAll(s)];
 const engine=new MarkdownEngine();
