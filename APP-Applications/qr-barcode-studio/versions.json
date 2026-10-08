@@ -18,7 +18,7 @@
       "date": "2026-10-07",
       "current": true,
       "status": "current",
-      "href": "./v2/",
+      "href": "./v2/?channel=current",
       "notes": "Stabilisation découverte pendant la propagation bureautique : export PNG des codes-barres directement depuis le canvas d’aperçu afin de conserver le geste utilisateur et fiabiliser le téléchargement navigateur. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
