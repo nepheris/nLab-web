@@ -1,0 +1,65 @@
+{
+  "schema": "nlab-studio-history-provenance/v1",
+  "updated": "2026-10-08",
+  "policy": {
+    "pre_core": "Snapshot HTML isolé dans main avec base URL conservant les assets d'origine.",
+    "studio_v2": "Runtime V2 partagé en mode channel=historical ; numéro historique explicite, sans promotion vers CURRENT/TEST.",
+    "caveat": "Les snapshots pré-Core visent la fidélité fonctionnelle. Les historiques V2 utilisent le moteur de compatibilité V2 courant plutôt qu'une duplication complète de chaque ancien Core partagé."
+  },
+  "snapshots": [
+    {
+      "studio": "image-studio",
+      "version": "0.2.1",
+      "source_ref": "9053286fda2b54e04fa857568ee61fc58024ebbe",
+      "path": "APP-Applications/image-studio/history/0.2.1/"
+    },
+    {
+      "studio": "image-studio",
+      "version": "0.2.0",
+      "source_ref": "feat/nlab-studios-alpha-20260922-v2",
+      "path": "APP-Applications/image-studio/history/0.2.0/"
+    },
+    {
+      "studio": "code-studio",
+      "version": "0.2.0",
+      "source_ref": "9053286fda2b54e04fa857568ee61fc58024ebbe",
+      "path": "APP-Applications/code-studio/history/0.2.0/"
+    },
+    {
+      "studio": "json-studio",
+      "version": "0.2.0",
+      "source_ref": "9053286fda2b54e04fa857568ee61fc58024ebbe",
+      "path": "APP-Applications/json-studio/history/0.2.0/"
+    },
+    {
+      "studio": "data-studio",
+      "version": "0.2.0",
+      "source_ref": "9053286fda2b54e04fa857568ee61fc58024ebbe",
+      "path": "APP-Applications/data-studio/history/0.2.0/"
+    },
+    {
+      "studio": "file-studio",
+      "version": "0.1.0",
+      "source_ref": "9053286fda2b54e04fa857568ee61fc58024ebbe",
+      "path": "APP-Applications/file-studio/history/0.1.0/"
+    },
+    {
+      "studio": "ocr-studio",
+      "version": "0.1.0",
+      "source_ref": "9053286fda2b54e04fa857568ee61fc58024ebbe",
+      "path": "APP-Applications/ocr-studio/history/0.1.0/"
+    },
+    {
+      "studio": "qr-barcode-studio",
+      "version": "0.3.0",
+      "source_ref": "9053286fda2b54e04fa857568ee61fc58024ebbe",
+      "path": "APP-Applications/qr-barcode-studio/history/0.3.0/"
+    },
+    {
+      "studio": "qr-barcode-studio",
+      "version": "0.2.0",
+      "source_ref": "existing-versioned-page",
+      "path": "APP-Applications/qr-barcode-studio/app-0.2.0.html"
+    }
+  ]
+}

@@ -77,9 +77,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v2/?version=0.3.0&channel=historical",
-      "notes": "Migration Studio Core V1. Aperçu unique avec rafraîchissement, outils contextuels QR/Data Matrix/Code128/GS1-128/EAN-13/EAN-8, couleurs en lignes séparées avec HEX par défaut et affichage RGB/HSL, scan HID et lecture d’images par sélection ou glisser-déposer.",
-      "isolation": "compat-runtime"
+      "href": "./history/0.3.0/",
+      "notes": "Migration Studio Core V1. Aperçu unique avec rafraîchissement, outils contextuels QR/Data Matrix/Code128/GS1-128/EAN-13/EAN-8, couleurs en lignes séparées avec HEX par défaut et affichage RGB/HSL, scan HID et lecture d’images par sélection ou glisser-déposer. · Snapshot historique isolé dans main pour compatibilité.",
+      "isolation": "native"
     },
     {
       "version": "0.2.0",

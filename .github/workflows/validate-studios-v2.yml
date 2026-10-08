@@ -24,6 +24,7 @@ on:
       - 'tests/studios-v2-exhaustive.mjs'
       - 'tests/studios-v2-audit.mjs'
       - 'tests/studio-current-compat.mjs'
+      - 'tests/studio-history-compat.mjs'
       - 'tests/studio-version-history.mjs'
       - 'tests/studio_feature_contracts.json'
       - 'tests/validate_studio_features.py'
@@ -123,6 +124,17 @@ jobs:
             sleep 1
           done
           NLAB_BASE_URL=http://127.0.0.1:8777/ node tests/studio-version-history.mjs
+
+      - name: Historical version compatibility
+        run: |
+          python -m http.server 8777 --bind 127.0.0.1 >/tmp/nlab-studio-history-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8777/APP-Applications/studios/ >/dev/null && break
+            sleep 1
+          done
+          NLAB_BASE_URL=http://127.0.0.1:8777/ node tests/studio-history-compat.mjs
 
       - name: Full Studio audit
         run: |

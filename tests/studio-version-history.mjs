@@ -8,11 +8,11 @@ const ids=[...(catalog.studios||[]).map(x=>x.id),...(catalog.derived_apps||[]).m
 const browser=await chromium.launch({headless:true});
 const results=[];
 try{
-  const page=await browser.newPage({viewport:{width:1280,height:800}});
   for(const id of ids){
     const regPath=path.join(root,'APP-Applications',id,'versions.json');
     let reg;try{reg=JSON.parse(await fs.readFile(regPath,'utf8'))}catch{continue}
     for(const v of reg.versions||[]){
+      const page=await browser.newPage({viewport:{width:1280,height:800}});
       const href=String(v.href||'./');
       const target=new URL('APP-Applications/'+id+'/'+href,base).href;
       const errs=[];const onErr=e=>errs.push(e.message);page.on('pageerror',onErr);
@@ -36,7 +36,7 @@ try{
         results.push({id,version:String(v.version),status:v.status,isolation:v.isolation||'',href,ok:true});
       }catch(e){
         results.push({id,version:String(v.version),status:v.status,isolation:v.isolation||'',href,ok:false,error:String(e?.message||e)});
-      }finally{page.off('pageerror',onErr)}
+      }finally{page.off('pageerror',onErr);await page.close()}
     }
   }
 }finally{await browser.close()}
