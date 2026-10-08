@@ -16,8 +16,8 @@
 | #17 | `pdf-studio-0.9.19-runtime-fix` | **SUPERSÉDÉE** | Correctifs PDF 0.9.19 antérieurs au pipeline PDF V1/V2 et aux tests actuels. | Conserver la branche comme archive PDF historique. |
 | #23 | `feat/pdf-studio-0.9.25-ui-rebuild` | **SUPERSÉDÉE** | Reconstruction PDF 0.9.25 remplacée par les versions et contrats PDF plus récents. | Conserver la branche comme archive PDF historique. |
 | #41 | `audit-functions-canonical-2026-10-04` | **ARCHIVÉE / RÉCUPÉRÉE** | Audit utile mais daté ; son contenu est récupéré dans le dépôt sans le rendre canonique. | Voir `AUDIT-FUNCTIONS-CANONICAL-2026-10-04-ARCHIVE.md`. |
-| #48 | `test/core-viewer-3.3` | **CANDIDAT LEGACY À RÉINTÉGRER** | Contient un `viewer-control.js` absent de `main` : zoom +/−, %, Ajuster, 100 %, presets, événements et état. | Reconcevoir sur le Core actuel ; ne pas fusionner la PR telle quelle. |
-| #49 | `test/core-input-launcher-3.2.1` | **CANDIDAT LEGACY À RÉINTÉGRER** | Contient le grand lanceur SVG d’acquisition `inputAcquire` et la tuile de dépôt compacte, absents de `main` sous cette forme. | Reprendre le vocabulaire/icône et l’UX sur le Core actuel ; ne pas fusionner la PR telle quelle. |
+| #48 | `test/core-viewer-3.3` | **RÉCUPÉRÉ SUR BASE 2026-10-08** | `viewer-control.js` récupéré et raccordé au Core actuel : zoom +/−, %, Ajuster, 100 %, presets, événements et état. | Récupération sélective sur `legacy-recovery-base-2026-10-08`; ancienne PR non fusionnée. |
+| #49 | `test/core-input-launcher-3.2.1` | **RÉCUPÉRÉ SUR BASE 2026-10-08** | Le lanceur SVG `inputAcquire` et la tuile de dépôt compacte sont remontés dans le Core actuel. | Récupération sélective sur `legacy-recovery-base-2026-10-08`; ancienne PR non fusionnée. |
 
 ## Points déjà validés et à considérer clos
 
@@ -45,7 +45,7 @@ Avant tout déplacement ou suppression :
 1. inventorier les URLs publiques critiques ;
 2. inventorier les références entrantes vers les chemins candidats ;
 3. classifier chaque candidat : canonique / historique utile / legacy référencé / legacy remplaçable / obsolète prouvé ;
-4. récupérer d’abord les capacités Legacy encore utiles (#48 Viewer, #49 Input launcher) ;
+4. ~~récupérer d’abord les capacités Legacy encore utiles (#48 Viewer, #49 Input launcher)~~ — **FAIT sur la base de récupération 2026-10-08** ;
 5. créer la table ancienne URL → URL canonique → compatibilité → test ;
 6. exécuter les tests de non-régression ;
 7. seulement ensuite supprimer ou déplacer par petits lots.
@@ -57,3 +57,14 @@ Avant tout déplacement ou suppression :
 **GO pour ouvrir la phase de récupération Legacy.**
 
 **NO-GO pour une purge destructive ou une migration physique globale tant que les gates ci-dessus ne sont pas satisfaites.**
+
+
+## Base de récupération 2026-10-08
+
+Branche : `legacy-recovery-base-2026-10-08`
+
+Capacités remontées sans fusionner les anciennes PR :
+- #48 → Viewer Core canonique `APP-Applications/_shared/studio-v2/viewer-control.js`, premier consommateur : Image Studio.
+- #49 → identifiant d’icône sémantique `inputAcquire`, grand lanceur d’entrée dans le ruban Core et tuile de dépôt compacte du Picker.
+
+Principe : récupération fonctionnelle sélective sur la tête actuelle de `main`; aucune réécriture de l’historique et aucune purge destructive à ce stade.
