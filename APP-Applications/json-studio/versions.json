@@ -1,16 +1,25 @@
 {
   "name": "JSON Studio",
-  "current": "0.2.0",
-  "test": "2.2.0",
+  "current": "2.2.0",
+  "test": "2.2.1",
   "versions": [
     {
-      "version": "2.2.0",
-      "label": "JSON Studio 2.2.0 TEST",
-      "date": "2026-10-04",
+      "version": "2.2.1",
+      "label": "JSON Studio 2.2.1 TEST",
+      "date": "2026-10-08",
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Core 3.0 : arbre éditable synchronisé avec le code, focus automatique sur la modification, ajout enfant/frère, suppression, vues Tableau et À plat, jeux de test marqués DEV et Input commun."
+      "notes": "Snapshot TEST suivant la promotion de 2.2.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+    },
+    {
+      "version": "2.2.0",
+      "label": "JSON Studio 2.2.0 CURRENT",
+      "date": "2026-10-04",
+      "current": true,
+      "status": "current",
+      "href": "./v2/",
+      "notes": "Core 3.0 : arbre éditable synchronisé avec le code, focus automatique sur la modification, ajout enfant/frère, suppression, vues Tableau et À plat, jeux de test marqués DEV et Input commun. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
       "version": "2.1.0",
@@ -34,8 +43,8 @@
       "version": "0.2.0",
       "label": "JSON Studio Alpha 0.2",
       "date": "2026-09-29",
-      "current": true,
-      "status": "current",
+      "current": false,
+      "status": "historical",
       "href": "./",
       "notes": "Formatage, validation, tri, navigation et export JSON."
     }
