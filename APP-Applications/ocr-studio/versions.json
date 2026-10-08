@@ -58,9 +58,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./v2/?version=0.1.0&channel=historical",
-      "notes": "Première version suivie dans le registre commun Studio. OCR local navigateur et export texte.",
-      "isolation": "compat-runtime"
+      "href": "./history/0.1.0/",
+      "notes": "Première version suivie dans le registre commun Studio. OCR local navigateur et export texte. · Snapshot historique isolé dans main pour compatibilité.",
+      "isolation": "native"
     }
   ]
 }

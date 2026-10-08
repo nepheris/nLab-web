@@ -25,7 +25,14 @@ html=html
  .replace(/(^|[;\n])\s*renderEditorOptions\s*=\s*/g,'$1window.renderEditorOptions=')
  .replace(/(^|[;\n])\s*newTextAnn\s*=\s*/g,'$1window.newTextAnn=')
  .replace(/(^|[;\n])\s*selectAnn\s*=\s*/g,'$1window.selectAnn=')
- .replace(/(^|[;\n])\s*renderAnns\s*=\s*/g,'$1window.renderAnns=');
+ .replace(/(^|[;\n])\s*renderAnns\s*=\s*/g,'$1window.renderAnns=')
+ .replace(/\bapplyRibbonVisibility\s*\(/g,'window.applyRibbonVisibility(')
+ .replace(/\btoggleRibbonSection\s*\(/g,'window.toggleRibbonSection(')
+ .replace(/\brenderEditorOptions\s*\(/g,'window.renderEditorOptions(')
+ .replace(/\bnewTextAnn\s*\(/g,'window.newTextAnn(')
+ .replace(/\bselectAnn\s*\(/g,'window.selectAnn(')
+ .replace(/\brenderAnns\s*\(/g,'window.renderAnns(');
+html=html.replace(/<head>/i,'<head><script>(function(){var n=["applyRibbonVisibility","toggleRibbonSection","renderEditorOptions","newTextAnn","selectAnn","renderAnns"];n.forEach(function(k){if(typeof window[k]!=="function")window[k]=function(){};});})();<\\/script>');
 document.open();document.write(html);document.close();
 }catch(e){console.error(e);const x=document.getElementById('err');if(x)x.innerHTML='<div class="err"><b>Échec du chargement.</b><br>'+String(e.message||e)+'</div>';}})();
 </script></body></html>
