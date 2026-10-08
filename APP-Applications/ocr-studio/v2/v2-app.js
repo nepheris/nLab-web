@@ -19,7 +19,7 @@ const manifest={
   {id:'ocr-save',action:'save',label:'Exporter',icon:'save',scope:'core'}
  ]}]
 };
-const VERSION_INFO=await resolveStudioVersions({versionsHref:'../versions.json',coreVersionHref:'../../_shared/studio-v2/version.json',channel:'test',sourcePath:manifest.sourcePath});
+const VERSION_INFO=await resolveStudioVersions({versionsHref:'./versions.json',coreVersionHref:'../_shared/studio-v2/version.json',channel:'test',sourcePath:manifest.sourcePath});
 applyVersionDocumentMeta({studioName:manifest.name,studioVersion:VERSION_INFO.version,studioStatus:VERSION_INFO.status,coreVersion:VERSION_INFO.coreVersion,build:VERSION_INFO.build});
 await mountStudioV2({manifest,versionInfo:VERSION_INFO});
 const $=s=>document.querySelector(s);let source=null,sourceName='',txnMute=false,textTxnTimer=null,lastText='';
