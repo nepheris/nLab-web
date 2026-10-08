@@ -18,7 +18,7 @@
       "date": "2026-10-04",
       "current": true,
       "status": "current",
-      "href": "./v2/",
+      "href": "./v2/?channel=current",
       "notes": "Core 3.0 : arbre éditable synchronisé avec le code, focus automatique sur la modification, ajout enfant/frère, suppression, vues Tableau et À plat, jeux de test marqués DEV et Input commun. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
