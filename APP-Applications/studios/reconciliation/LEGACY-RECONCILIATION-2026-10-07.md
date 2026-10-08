@@ -101,3 +101,14 @@ Les branches ci-dessous ont leur contenu validé, fusionné ou récupéré. Leur
 | `test/core-input-launcher-3.2.1` | `d258e6f2d8c8041b6b3a5b3e2a52ab02a02dbfbd` | Legacy #49 récupéré dans Core 3.4 |
 
 Règle : ces refs peuvent être réalignées sur `main` sans perdre de capacité fonctionnelle ; les anciennes versions restent traçables par les SHA ci-dessus et les PR GitHub.
+
+## Historique exécutable — gate 128/128
+
+PR #66 a normalisé les versions historiques dans `main` :
+- snapshots autonomes marqués `native` ;
+- historiques sur moteur partagé marqués `compat-runtime` avec URL versionnée explicite ;
+- support des versions historiques ajouté aux services de version Studio V1 et V2 ;
+- gate CI ouvrant toutes les URLs de versions ;
+- 128/128 entrées validées au moment de la fusion.
+
+Cette gate est désormais préalable à toute purge ou déplacement de fichiers historiques.

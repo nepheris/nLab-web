@@ -129,3 +129,29 @@ Studios : Scan, Markdown, Dataset Generator, Document, Spreadsheet.
 - aucune suppression de fichier historique versionné n’est encore faite dans cette sous-passe.
 
 Après validation de P2, **PDF Studio devient la seule famille conservant une CURRENT historique pré-V2**.
+
+## Gate historique validée — 2026-10-08
+
+La passe d'isolation historique PR #66 a établi une gate automatique couvrant **128 versions enregistrées**.
+
+Résultat validé avant fusion :
+- 128/128 URLs de versions ouvrables ;
+- aucune erreur JavaScript non tolérée au chargement ;
+- CURRENT compatibility routes vertes ;
+- V2 TEST vertes ;
+- PDF V1/V2 et snapshots PDF 0.9.x vérifiés ;
+- PDF 0.9.10 CURRENT réparé sans changer son URL ;
+- PDF 0.9.12 historique réparé par réintégration de ses extensions dans le scope de son runtime natif.
+
+### Types d'isolation
+
+- `native` : snapshot autonome réel. Son fichier reste une dépendance publique tant qu'il figure dans `versions.json`.
+- `compat-runtime` : ancienne version logique exposée par un moteur partagé avec URL explicite `?version=<x>&channel=historical`.
+- `current-runtime` : implémentation active CURRENT.
+- `test-runtime` : implémentation active TEST.
+
+### Règle de purge complémentaire
+
+Un fichier portant une version `native` ne peut pas être supprimé tant que son entrée existe dans le registre public.
+Une version `compat-runtime` ne justifie pas une copie physique du moteur : son identité et sa route sont maintenues par le service de version partagé.
+Toute future version historique doit satisfaire `tests/studio-version-history.mjs`.
