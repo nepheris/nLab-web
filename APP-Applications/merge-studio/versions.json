@@ -9,30 +9,34 @@
       "current": false,
       "status": "test",
       "href": "./v1/",
-      "notes": "Validation Studio Core 3.3 : ajout, retrait, vidage et réordonnancement de la collection PDF raccordés à l’Undo/Redo Core global ; sélection publiée au Context/Selection Core."
+      "notes": "Validation Studio Core 3.3 : ajout, retrait, vidage et réordonnancement de la collection PDF raccordés à l’Undo/Redo Core global ; sélection publiée au Context/Selection Core.",
+      "isolation": "test-runtime"
     },
     {
       "version": "0.3.0",
       "label": "nLab Merge Studio 0.3.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Core 3.0 : collection via Input commun, suppression/ordre conservés et réordonnancement par glisser-déposer avant fusion, thème Core homogène."
+      "href": "./v1/?version=0.3.0&channel=historical",
+      "notes": "Core 3.0 : collection via Input commun, suppression/ordre conservés et réordonnancement par glisser-déposer avant fusion, thème Core homogène.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.2.0",
       "label": "nLab Merge Studio 0.2.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Passe TEST Core 2.9 : nouveau Input Picker fichiers/dossiers/glisser-déposer avec vues Texte/Icône/Preview, rotation PDF matérialisée avant fusion, ordre/retrait/preview/fusion conservés."
+      "href": "./v1/?version=0.2.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 : nouveau Input Picker fichiers/dossiers/glisser-déposer avec vues Texte/Icône/Preview, rotation PDF matérialisée avant fusion, ordre/retrait/preview/fusion conservés.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.1.0",
       "label": "nLab Merge Studio 0.1.0 TEST",
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Mini-app dérivée de PDF Studio : fichiers/dossiers/glisser-déposer via Studio Core, ordre de fusion, suppression, aperçu et fusion PDF via le moteur PDF partagé."
+      "href": "./v1/?version=0.1.0&channel=historical",
+      "notes": "Mini-app dérivée de PDF Studio : fichiers/dossiers/glisser-déposer via Studio Core, ordre de fusion, suppression, aperçu et fusion PDF via le moteur PDF partagé.",
+      "isolation": "compat-runtime"
     }
   ]
 }
