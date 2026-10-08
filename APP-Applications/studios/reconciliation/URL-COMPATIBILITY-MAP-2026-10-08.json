@@ -1,0 +1,1041 @@
+{
+  "schema": "nlab-url-compatibility-map/v1",
+  "generated": "2026-10-08",
+  "base_commit": "2b56b4bfc4e4748fa99b71bdf80053cfcd0e88b8",
+  "source_of_truth": [
+    "APP-Applications/studios/catalog.json",
+    "APP-Applications/*/versions.json"
+  ],
+  "rules": {
+    "main": "canonical validated development",
+    "gh_pages": "generated publication only; never reconcile manually",
+    "registry_route": "a target declared by a versions registry is not purgeable without a compatibility alias and a test",
+    "historical_pdf": "PDF 0.9.x physical pages and the runtime chain they fetch are KEEP_REFERENCED",
+    "external_backlinks": "unknown by repository inspection; preserve public historical URLs unless a redirect/alias strategy is validated"
+  },
+  "counts": {
+    "registries": 16,
+    "version_records": 116,
+    "unique_route_targets": 45,
+    "pdf_09_physical_routes": 18
+  },
+  "canonical_entry_points": [
+    {
+      "name": "nLab Web",
+      "public_path": "/nLab-web/"
+    },
+    {
+      "name": "nLab Studios hub",
+      "public_path": "/nLab-web/APP-Applications/studios/"
+    },
+    {
+      "name": "Studios catalog",
+      "public_path": "/nLab-web/APP-Applications/studios/catalog.json"
+    }
+  ],
+  "registries": [
+    {
+      "id": "pdf-studio",
+      "name": "PDF Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/pdf-studio/versions.json",
+      "current": "0.9.10",
+      "test": "2.11.0",
+      "entry_public_path": "/nLab-web/APP-Applications/pdf-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/pdf-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/v2/",
+          "versions": [
+            "2.11.0",
+            "2.10.0",
+            "2.9.0",
+            "2.8.0",
+            "2.7.0",
+            "2.6.0",
+            "2.5.0",
+            "2.4.0",
+            "2.3.0",
+            "2.2.0",
+            "2.1.4",
+            "2.1.3",
+            "2.1.2",
+            "2.1.1",
+            "2.1.0",
+            "2.0.2",
+            "2.0.1",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./v1/"
+          ],
+          "target": "APP-Applications/pdf-studio/v1/index.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/v1/",
+          "versions": [
+            "1.0.3",
+            "1.0.2",
+            "1.0.1",
+            "1.0.0"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.25.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.25.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.25.html",
+          "versions": [
+            "0.9.25"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.24.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.24.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.24.html",
+          "versions": [
+            "0.9.24"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.23.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.23.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.23.html",
+          "versions": [
+            "0.9.23"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.22.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.22.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.22.html",
+          "versions": [
+            "0.9.22"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.21.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.21.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.21.html",
+          "versions": [
+            "0.9.21"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.20.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.20.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.20.html",
+          "versions": [
+            "0.9.20"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.19.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.19.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.19.html",
+          "versions": [
+            "0.9.19"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.18.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.18.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.18.html",
+          "versions": [
+            "0.9.18"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.17.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.17.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.17.html",
+          "versions": [
+            "0.9.17"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.16.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.16.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.16.html",
+          "versions": [
+            "0.9.16"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.15.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.15.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.15.html",
+          "versions": [
+            "0.9.15"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.14.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.14.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.14.html",
+          "versions": [
+            "0.9.14"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.13.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.13.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.13.html",
+          "versions": [
+            "0.9.13"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.12.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.12.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.12.html",
+          "versions": [
+            "0.9.12"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.11.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.11.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.11.html",
+          "versions": [
+            "0.9.11"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.10.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.10.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.10.html",
+          "versions": [
+            "0.9.10"
+          ],
+          "statuses": [
+            "current"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.9.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.9.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.9.html",
+          "versions": [
+            "0.9.9"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        },
+        {
+          "hrefs": [
+            "./app-0.9.8.html"
+          ],
+          "target": "APP-Applications/pdf-studio/app-0.9.8.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-studio/app-0.9.8.html",
+          "versions": [
+            "0.9.8"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "historical_referenced_physical",
+          "action": "KEEP_REFERENCED"
+        }
+      ]
+    },
+    {
+      "id": "image-studio",
+      "name": "Image Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/image-studio/versions.json",
+      "current": "0.2.1",
+      "test": "2.7.0",
+      "entry_public_path": "/nLab-web/APP-Applications/image-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/image-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/image-studio/v2/",
+          "versions": [
+            "2.7.0",
+            "2.6.0",
+            "2.5.0",
+            "2.4.0",
+            "2.3.0",
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/image-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/image-studio/",
+          "versions": [
+            "0.2.1",
+            "0.2.0"
+          ],
+          "statuses": [
+            "current",
+            "historical"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "scan-studio",
+      "name": "Scan Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/scan-studio/versions.json",
+      "current": null,
+      "test": "0.4.0",
+      "entry_public_path": "/nLab-web/APP-Applications/scan-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/scan-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/scan-studio/v2/",
+          "versions": [
+            "0.4.0",
+            "0.3.0",
+            "0.2.0",
+            "0.1.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "ocr-studio",
+      "name": "OCR Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/ocr-studio/versions.json",
+      "current": "0.1.0",
+      "test": "2.3.0",
+      "entry_public_path": "/nLab-web/APP-Applications/ocr-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/ocr-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/ocr-studio/v2/",
+          "versions": [
+            "2.3.0",
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/ocr-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/ocr-studio/",
+          "versions": [
+            "0.1.0"
+          ],
+          "statuses": [
+            "current"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "code-studio",
+      "name": "Code Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/code-studio/versions.json",
+      "current": "0.2.0",
+      "test": "2.4.0",
+      "entry_public_path": "/nLab-web/APP-Applications/code-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/code-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/code-studio/v2/",
+          "versions": [
+            "2.4.0",
+            "2.3.0",
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/code-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/code-studio/",
+          "versions": [
+            "0.2.0"
+          ],
+          "statuses": [
+            "current"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "json-studio",
+      "name": "JSON Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/json-studio/versions.json",
+      "current": "0.2.0",
+      "test": "2.2.0",
+      "entry_public_path": "/nLab-web/APP-Applications/json-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/json-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/json-studio/v2/",
+          "versions": [
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/json-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/json-studio/",
+          "versions": [
+            "0.2.0"
+          ],
+          "statuses": [
+            "current"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "data-studio",
+      "name": "Data Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/data-studio/versions.json",
+      "current": "0.2.0",
+      "test": "2.4.0",
+      "entry_public_path": "/nLab-web/APP-Applications/data-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/data-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/data-studio/v2/",
+          "versions": [
+            "2.4.0",
+            "2.3.0",
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/data-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/data-studio/",
+          "versions": [
+            "0.2.0"
+          ],
+          "statuses": [
+            "current"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "qr-barcode-studio",
+      "name": "QR & Barcode Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/qr-barcode-studio/versions.json",
+      "current": "0.2.0",
+      "test": "2.4.1",
+      "entry_public_path": "/nLab-web/APP-Applications/qr-barcode-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/qr-barcode-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/qr-barcode-studio/v2/",
+          "versions": [
+            "2.4.1",
+            "2.4.0",
+            "2.3.0",
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/qr-barcode-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/qr-barcode-studio/",
+          "versions": [
+            "0.3.0"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./app-0.2.0.html"
+          ],
+          "target": "APP-Applications/qr-barcode-studio/app-0.2.0.html",
+          "public_path": "/nLab-web/APP-Applications/qr-barcode-studio/app-0.2.0.html",
+          "versions": [
+            "0.2.0"
+          ],
+          "statuses": [
+            "current"
+          ],
+          "classification": "registry_target",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "file-studio",
+      "name": "File Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/file-studio/versions.json",
+      "current": "0.1.0",
+      "test": "2.4.0",
+      "entry_public_path": "/nLab-web/APP-Applications/file-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/file-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/file-studio/v2/",
+          "versions": [
+            "2.4.0",
+            "2.3.0",
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/file-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/file-studio/",
+          "versions": [
+            "0.1.0"
+          ],
+          "statuses": [
+            "current"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "markdown-studio",
+      "name": "Markdown Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/markdown-studio/versions.json",
+      "current": null,
+      "test": "2.3.0",
+      "entry_public_path": "/nLab-web/APP-Applications/markdown-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/markdown-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/markdown-studio/v2/",
+          "versions": [
+            "2.3.0",
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/markdown-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/markdown-studio/",
+          "versions": [
+            "1.0.0"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "demo-studio",
+      "name": "Demo Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/demo-studio/versions.json",
+      "current": "1.0.0",
+      "test": null,
+      "entry_public_path": "/nLab-web/APP-Applications/demo-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "../../Library/demo/"
+          ],
+          "target": "Library/demo/index.html",
+          "public_path": "/nLab-web/Library/demo/",
+          "versions": [
+            "1.0.0"
+          ],
+          "statuses": [
+            "current"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "dataset-generator-studio",
+      "name": "Dataset Generator Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/dataset-generator-studio/versions.json",
+      "current": null,
+      "test": "2.3.0",
+      "entry_public_path": "/nLab-web/APP-Applications/dataset-generator-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/dataset-generator-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/dataset-generator-studio/v2/",
+          "versions": [
+            "2.3.0",
+            "2.2.0",
+            "2.1.0",
+            "2.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        },
+        {
+          "hrefs": [
+            "./"
+          ],
+          "target": "APP-Applications/dataset-generator-studio/index.html",
+          "public_path": "/nLab-web/APP-Applications/dataset-generator-studio/",
+          "versions": [
+            "0.2.0",
+            "0.1.0"
+          ],
+          "statuses": [
+            "historical"
+          ],
+          "classification": "canonical_or_shared_entry",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "document-studio",
+      "name": "Document Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/document-studio/versions.json",
+      "current": null,
+      "test": "1.3.0",
+      "entry_public_path": "/nLab-web/APP-Applications/document-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/document-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/document-studio/v2/",
+          "versions": [
+            "1.3.0",
+            "1.2.0",
+            "1.1.0",
+            "1.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "spreadsheet-studio",
+      "name": "Spreadsheet Studio",
+      "kind": "studio",
+      "registry": "APP-Applications/spreadsheet-studio/versions.json",
+      "current": null,
+      "test": "1.3.0",
+      "entry_public_path": "/nLab-web/APP-Applications/spreadsheet-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v2/"
+          ],
+          "target": "APP-Applications/spreadsheet-studio/v2/index.html",
+          "public_path": "/nLab-web/APP-Applications/spreadsheet-studio/v2/",
+          "versions": [
+            "1.3.0",
+            "1.2.0",
+            "1.1.0",
+            "1.0.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "pdf-sign",
+      "name": "nLab PDF Sign",
+      "kind": "derived_app",
+      "registry": "APP-Applications/pdf-sign/versions.json",
+      "current": null,
+      "test": "0.3.0",
+      "entry_public_path": "/nLab-web/APP-Applications/pdf-sign/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v1/"
+          ],
+          "target": "APP-Applications/pdf-sign/v1/index.html",
+          "public_path": "/nLab-web/APP-Applications/pdf-sign/v1/",
+          "versions": [
+            "0.3.0",
+            "0.2.0",
+            "0.1.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    },
+    {
+      "id": "merge-studio",
+      "name": "nLab Merge Studio",
+      "kind": "derived_app",
+      "registry": "APP-Applications/merge-studio/versions.json",
+      "current": null,
+      "test": "0.4.0",
+      "entry_public_path": "/nLab-web/APP-Applications/merge-studio/",
+      "routes": [
+        {
+          "hrefs": [
+            "./v1/"
+          ],
+          "target": "APP-Applications/merge-studio/v1/index.html",
+          "public_path": "/nLab-web/APP-Applications/merge-studio/v1/",
+          "versions": [
+            "0.4.0",
+            "0.3.0",
+            "0.2.0",
+            "0.1.0"
+          ],
+          "statuses": [
+            "test",
+            "historical"
+          ],
+          "classification": "shared_version_target",
+          "action": "KEEP_ROUTE"
+        }
+      ]
+    }
+  ],
+  "verified_legacy": {
+    "recovery_pr": {
+      "number": 58,
+      "result": "MERGED_GREEN",
+      "core": "3.4.0-test",
+      "image_studio": "2.7.0-test",
+      "checks": [
+        "Audit all Studios",
+        "Validate PDF Studio public",
+        "Validate specialized Studios V2"
+      ]
+    },
+    "pdf_09": {
+      "range": "0.9.8..0.9.25",
+      "physical_routes_verified": 18,
+      "all_physical_routes_present": true,
+      "latest_chain": "0.9.25",
+      "runtime_dependencies_verified_present": true,
+      "decision": "KEEP_REFERENCED"
+    },
+    "stale_prs": [
+      {
+        "pr": 1,
+        "decision": "SUPERSEDED_BRANCH_HISTORY"
+      },
+      {
+        "pr": 17,
+        "decision": "SUPERSEDED_BRANCH_HISTORY; runtime files used by public historical pages remain in main"
+      },
+      {
+        "pr": 23,
+        "decision": "SUPERSEDED_BRANCH_HISTORY; app-0.9.25 remains referenced and must stay"
+      },
+      {
+        "pr": 41,
+        "decision": "ARCHIVED_RECOVERED"
+      },
+      {
+        "pr": 48,
+        "decision": "RECOVERED_IN_CORE_3.4"
+      },
+      {
+        "pr": 49,
+        "decision": "RECOVERED_IN_CORE_3.4"
+      },
+      {
+        "pr": 59,
+        "decision": "CLOSED_SUPERSEDED_BY_58"
+      }
+    ]
+  },
+  "purge_policy": {
+    "safe_now": [
+      "branch-only artifacts already absent from main",
+      "duplicate recovery PR/branch lineage after archival policy decision"
+    ],
+    "keep": [
+      "all versions.json targets",
+      "PDF 0.9.8..0.9.25 pages",
+      "runtime files fetched by those pages",
+      "canonical v1/v2 targets",
+      "generated publication branch managed only by workflow"
+    ],
+    "destructive_gate": "NO_GO for deleting or moving any registry-referenced public path; first provide alias/redirect compatibility and non-regression test"
+  }
+}
