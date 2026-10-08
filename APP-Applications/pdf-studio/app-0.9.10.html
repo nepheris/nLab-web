@@ -26,6 +26,7 @@ html=html
  .replace(/(^|[;\n])\s*newTextAnn\s*=\s*/g,'$1window.newTextAnn=')
  .replace(/(^|[;\n])\s*selectAnn\s*=\s*/g,'$1window.selectAnn=')
  .replace(/(^|[;\n])\s*renderAnns\s*=\s*/g,'$1window.renderAnns=');
+html=html.replace(/<head>/i,'<head><script>(function(){var n=["applyRibbonVisibility","toggleRibbonSection","renderEditorOptions","newTextAnn","selectAnn","renderAnns"];n.forEach(function(k){if(typeof window[k]!=="function")window[k]=function(){};});})();<\\/script>');
 document.open();document.write(html);document.close();
 }catch(e){console.error(e);const x=document.getElementById('err');if(x)x.innerHTML='<div class="err"><b>Échec du chargement.</b><br>'+String(e.message||e)+'</div>';}})();
 </script></body></html>
