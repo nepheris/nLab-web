@@ -37,7 +37,7 @@
  </details>
 </aside>
 <section class="panel">
- <div class="sectionTitle"><h2>Aperçu</h2><span id="imageMeta" class="badge">Aucune image</span></div><div id="imageViewerCore" class="toolbar" data-core-viewer-controls data-viewer-id="image-studio" data-min="25" data-max="400" data-step="25" data-value="100" data-presets="25,50,75,100,150,200"></div>
+ <div class="sectionTitle"><h2>Aperçu</h2><span id="imageMeta" class="badge">Aucune image</span></div><div id="imageViewerCore" class="toolbar" data-core-viewer-controls data-viewer-id="image-studio" data-min="25" data-max="400" data-step="25" data-value="100" data-presets="25,50,75,100,150,200"></div><span hidden aria-hidden="true"><button id="zoomOut" type="button" tabindex="-1">−</button><button id="zoomIn" type="button" tabindex="-1">+</button><button id="zoomFit" type="button" tabindex="-1">Ajuster</button><button id="zoomActual" type="button" tabindex="-1">100 %</button><span id="zoomValue"></span></span>
  <div id="canvasStage" class="canvasStage"><div id="canvasWrap" class="canvasWrap"><canvas id="cv" width="1000" height="700"></canvas><div id="cropOverlay" class="cropOverlay" hidden></div></div></div>
  <div class="toolbar"><span id="msg" class="small">Choisissez une image.</span></div>
 </section>
@@ -88,6 +88,11 @@ $('artifactEmbed').onclick=async()=>{if(!artifactId)await $('artifactGenerate').
 $('artifactManifest').onclick=()=>{if(artifactManifest)downloadManifest(artifactManifest,(state()?.name||'image').replace(/\.[^.]+$/,'')+'.manifest.json')};
 function applyViewZoom(){const wrap=$('canvasWrap');cv.style.maxWidth=fitMode?'100%':'none';wrap.style.transform='scale('+zoom+')';wrap.style.transformOrigin='center center';document.querySelector('#imageViewerCore')?.__viewerApi?.sync({zoom:zoom*100,fit:fitMode})}
 document.addEventListener('studio-v2:viewer-command-global',e=>{const d=e.detail||{};if(d.viewerId!=='image-studio')return;if(d.action==='fit'){fitMode=true;zoom=1}else if(d.action==='actual'){fitMode=false;zoom=1}else if(d.action==='zoom'){fitMode=false;zoom=Math.max(.25,Math.min(4,Number(d.ratio)||1))}applyViewZoom()});
+function viewerApi(){return document.querySelector('#imageViewerCore')?.__viewerApi}
+$('zoomIn').onclick=()=>{const a=viewerApi(),s=a?.getState?.();a?.setZoom?.((s?.zoom||100)+25)};
+$('zoomOut').onclick=()=>{const a=viewerApi(),s=a?.getState?.();a?.setZoom?.((s?.zoom||100)-25)};
+$('zoomFit').onclick=()=>viewerApi()?.fit?.();
+$('zoomActual').onclick=()=>viewerApi()?.actual?.();
 $('openPicker').onclick=()=>document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:'open',source:'image-ui'}}));$('file').onchange=e=>addFiles(e.target.files);$('clearImages').onclick=()=>{if(!items.length)return;const before=[...items],beforeActive=active;items=[];active=-1;const after=[...items],afterActive=active;renderList();loadActive();publishSelection('clear');pushUndoRedo({label:'Vider les images',meta:{studio:'image-studio'},undo:()=>{items=[...before];active=beforeActive;renderList();loadActive();publishSelection('undo')},redo:()=>{items=[...after];active=afterActive;renderList();loadActive();publishSelection('redo')}})};
 document.addEventListener('studio-v2:input-picked',e=>{if(e.detail?.studio==='image-studio')addFiles(e.detail.files)});
 async function addDemo(url,name){const blob=await fetch(url).then(r=>r.blob()),file=new File([blob],name,{type:blob.type||'image/png'});addFiles([file])}
