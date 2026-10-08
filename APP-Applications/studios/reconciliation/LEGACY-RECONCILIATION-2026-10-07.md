@@ -50,10 +50,23 @@ Avant tout déplacement ou suppression :
 6. exécuter les tests de non-régression ;
 7. seulement ensuite supprimer ou déplacer par petits lots.
 
+## Avancement passe 2 — 2026-10-08
+
+- Récupération #48/#49 : **FAIT** via PR #58, Core 3.4.0 TEST / Image Studio 2.7.0 TEST.
+- Validations PR #58 : **3/3 workflows verts**.
+- Inventaire URL : **FAIT** — 16 registres, 116 entrées de versions, 45 cibles distinctes.
+- PDF Legacy physique : **18/18 routes 0.9.8→0.9.25 présentes** ; chaîne de dépendances 0.9.25 vérifiée présente.
+- Cartographie détaillée : `URL-COMPATIBILITY-MAP-2026-10-08.md` + `URL-COMPATIBILITY-MAP-2026-10-08.json`.
+- Règle de purge : **KEEP_REFERENCED** pour toute cible de registre ; un déplacement exige alias/redirect + test.
+- PR #59 : fermée sans merge car supersédée par #58.
+- `inputAcquire` : miroir ajouté à la bibliothèque iconographique canonique et à son manifest.
+
 ## Décision de passe
 
 **GO pour clore la passe architecture / propagation / shell.**
 
 **GO pour ouvrir la phase de récupération Legacy.**
 
-**NO-GO pour une purge destructive ou une migration physique globale tant que les gates ci-dessus ne sont pas satisfaites.**
+**GO pour poursuivre la nouvelle base web sur le main post-#58.**
+
+**NO-GO pour supprimer ou déplacer une URL encore référencée par un registre ; ces chemins restent derrière une couche de compatibilité jusqu’à mise en place d’aliases/redirects testés.**
