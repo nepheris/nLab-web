@@ -285,7 +285,7 @@
     "responsive_contract": "mobile-tablet-desktop",
     "propagation": "Core capabilities are validated by family waves: pilot Studio -> second surface -> functional Undo/Redo tests -> full audit -> merge -> next family.",
     "core_version": "3.4.0-test",
-    "test_generation": "2026-10-08-legacy-recovery-viewer-input-launcher"
+    "test_generation": "2026-10-08-legacy-migration-p1-current-channel"
   },
   "derived_apps": [
     {
