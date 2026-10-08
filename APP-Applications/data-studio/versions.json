@@ -1,16 +1,25 @@
 {
   "name": "Data Studio",
-  "current": "0.2.0",
-  "test": "2.4.0",
+  "current": "2.4.0",
+  "test": "2.4.1",
   "versions": [
     {
-      "version": "2.4.0",
-      "label": "Data Studio 2.4.0 TEST",
-      "date": "2026-10-07",
+      "version": "2.4.1",
+      "label": "Data Studio 2.4.1 TEST",
+      "date": "2026-10-08",
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Dataset, filtres et tris raccordés au Studio Core 3.3 : état Data restaurable par Undo/Redo Core et contexte dataset publié au Context/Selection Core."
+      "notes": "Snapshot TEST suivant la promotion de 2.4.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+    },
+    {
+      "version": "2.4.0",
+      "label": "Data Studio 2.4.0 CURRENT",
+      "date": "2026-10-07",
+      "current": true,
+      "status": "current",
+      "href": "./v2/",
+      "notes": "Dataset, filtres et tris raccordés au Studio Core 3.3 : état Data restaurable par Undo/Redo Core et contexte dataset publié au Context/Selection Core. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
     },
     {
       "version": "2.3.0",
@@ -51,8 +60,8 @@
       "version": "0.2.0",
       "label": "Data Studio Alpha 0.2",
       "date": "2026-09-29",
-      "current": true,
-      "status": "current",
+      "current": false,
+      "status": "historical",
       "href": "./",
       "notes": "CSV/JSON, aperçu tabulaire, profil de colonnes et export."
     }
