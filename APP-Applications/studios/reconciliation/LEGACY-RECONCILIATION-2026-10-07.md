@@ -17,7 +17,7 @@
 | #23 | `feat/pdf-studio-0.9.25-ui-rebuild` | **SUPERSÉDÉE** | Reconstruction PDF 0.9.25 remplacée par les versions et contrats PDF plus récents. | Conserver la branche comme archive PDF historique. |
 | #41 | `audit-functions-canonical-2026-10-04` | **ARCHIVÉE / RÉCUPÉRÉE** | Audit utile mais daté ; son contenu est récupéré dans le dépôt sans le rendre canonique. | Voir `AUDIT-FUNCTIONS-CANONICAL-2026-10-04-ARCHIVE.md`. |
 | #48 | `test/core-viewer-3.3` | **RÉCUPÉRÉ DANS CORE 3.4** | Viewer Core repris sur le Core actuel : zoom +/−, %, Ajuster, 100 %, presets, événements et état. | Branche historique conservée jusqu’à la purge finale. |
-| #49 | `test/core-input-launcher-3.2.1` | **RÉCUPÉRÉ DANS CORE 3.4** | Grand lanceur SVG `inputAcquire` et tuile de dépôt compacte repris sur le Core actuel. | Branche historique conservée jusqu’à la purge finale. |
+| #49 | `test/core-input-launcher-3.2.1` | **RÉCUPÉRÉ DANS CORE 3.4** | Grand lanceur SVG `inputAcquire`, tuile de dépôt compacte et asset de l’Icon Library repris sur le Core actuel. | Branche historique conservée jusqu’à la purge finale. |
 
 ## Points déjà validés et à considérer clos
 
@@ -57,3 +57,8 @@ Avant tout déplacement ou suppression :
 **GO pour ouvrir la phase de récupération Legacy.**
 
 **NO-GO pour une purge destructive ou une migration physique globale tant que les gates ci-dessus ne sont pas satisfaites.**
+
+## Complément récupération Legacy 1
+
+- `inputAcquire` est maintenant présent à la fois dans le registre runtime, `assets/icons/functions/` et la bibliothèque canonique `Library/demo/Images/nLab-Studio/Icon-Library/function-icons/`.
+- La PR #59 est considérée supersédée par la récupération fusionnée #58 + ce complément Icon Library.
