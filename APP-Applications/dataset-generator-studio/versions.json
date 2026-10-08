@@ -10,7 +10,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Snapshot TEST suivant la promotion de 2.3.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+      "notes": "Snapshot TEST suivant la promotion de 2.3.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes.",
+      "isolation": "test-runtime"
     },
     {
       "version": "2.3.0",
@@ -19,23 +20,26 @@
       "current": true,
       "status": "current",
       "href": "./v2/?channel=current",
-      "notes": "Passe TEST Core 2.9 et audit étendu : schéma custom, génération document, clone riche et exports revalidés. · Promue CURRENT après validation fonctionnelle et migration Legacy P2."
+      "notes": "Passe TEST Core 2.9 et audit étendu : schéma custom, génération document, clone riche et exports revalidés. · Promue CURRENT après validation fonctionnelle et migration Legacy P2.",
+      "isolation": "current-runtime"
     },
     {
       "version": "2.2.0",
       "label": "Dataset Generator Studio 2.2.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Clone riche de structure : CSV/JSON/XLSX avec conservation des formats utiles au debug (devise, pourcentage, date, décimales, largeur), DOCX/ODT/PDF/images avec analyse structurelle, OCR partagé pour les images, génération de documents fictifs indépendants et preset RecipeX."
+      "href": "./v2/?version=2.2.0&channel=historical",
+      "notes": "Clone riche de structure : CSV/JSON/XLSX avec conservation des formats utiles au debug (devise, pourcentage, date, décimales, largeur), DOCX/ODT/PDF/images avec analyse structurelle, OCR partagé pour les images, génération de documents fictifs indépendants et preset RecipeX.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.0",
       "label": "Dataset Generator Studio 2.1.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Fixtures synthétiques V2.1 : schémas tabulaires configurables avec types métier et symbologies, génération de documents structurés H1/H2/H3 + Lorem/tableaux/illustrations, exports JSON/CSV/XLSX/Markdown/HTML/DOCX/PDF, et clonage structure-only depuis CSV/JSON/XLSX sans recopier les valeurs source."
+      "href": "./v2/?version=2.1.0&channel=historical",
+      "notes": "Fixtures synthétiques V2.1 : schémas tabulaires configurables avec types métier et symbologies, génération de documents structurés H1/H2/H3 + Lorem/tableaux/illustrations, exports JSON/CSV/XLSX/Markdown/HTML/DOCX/PDF, et clonage structure-only depuis CSV/JSON/XLSX sans recopier les valeurs source.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.0",
@@ -43,8 +47,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion."
+      "href": "./v2/?version=2.0.0&channel=historical",
+      "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.2.0",
@@ -52,8 +57,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./",
-      "notes": "Premier générateur navigateur opérationnel sur Studio Core V1 : presets synthétiques, seed reproductible, choix de colonnes, aperçu tabulaire et exports JSON, CSV, XLSX et Markdown. Les générateurs avancés existants côté scripts restent à intégrer à l’interface."
+      "href": "./v2/?version=0.2.0&channel=historical",
+      "notes": "Premier générateur navigateur opérationnel sur Studio Core V1 : presets synthétiques, seed reproductible, choix de colonnes, aperçu tabulaire et exports JSON, CSV, XLSX et Markdown. Les générateurs avancés existants côté scripts restent à intégrer à l’interface.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.1.0",
@@ -61,8 +67,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./",
-      "notes": "Interface Alpha/POC au-dessus des générateurs existants. Les moteurs Python produisent déjà images de calibration, code, QR/Data Matrix/Code128, datasets CSV/JSON/XLSX, fichiers de test, comparaisons, manifests et ZIP. L’exécution navigateur reste à développer."
+      "href": "./v2/?version=0.1.0&channel=historical",
+      "notes": "Interface Alpha/POC au-dessus des générateurs existants. Les moteurs Python produisent déjà images de calibration, code, QR/Data Matrix/Code128, datasets CSV/JSON/XLSX, fichiers de test, comparaisons, manifests et ZIP. L’exécution navigateur reste à développer.",
+      "isolation": "compat-runtime"
     }
   ]
 }

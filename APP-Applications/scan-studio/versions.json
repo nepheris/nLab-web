@@ -10,7 +10,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Snapshot TEST suivant la promotion de 0.4.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+      "notes": "Snapshot TEST suivant la promotion de 0.4.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes.",
+      "isolation": "test-runtime"
     },
     {
       "version": "0.4.0",
@@ -19,7 +20,8 @@
       "current": true,
       "status": "current",
       "href": "./v2/?channel=current",
-      "notes": "Propagation famille Acquisition documentaire : pages, ordre, sélection, nettoyage, ajustements et OCR raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P2."
+      "notes": "Propagation famille Acquisition documentaire : pages, ordre, sélection, nettoyage, ajustements et OCR raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P2.",
+      "isolation": "current-runtime"
     },
     {
       "version": "0.3.0",
@@ -27,8 +29,9 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Core 3.0 : Input commun, sélection de pages, Undo/Redo, rotation libre, réglages image partagés, OCR page/sélection/document et PDF sélection avec couche OCR recherchable."
+      "href": "./v2/?version=0.3.0&channel=historical",
+      "notes": "Core 3.0 : Input commun, sélection de pages, Undo/Redo, rotation libre, réglages image partagés, OCR page/sélection/document et PDF sélection avec couche OCR recherchable.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.2.0",
@@ -36,16 +39,18 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe TEST validée par audit complet : correction de l’assemblage PDF multipage, restauration de la page active après export, gestion d’erreur de page image et héritage Studio Core 2.9."
+      "href": "./v2/?version=0.2.0&channel=historical",
+      "notes": "Passe TEST validée par audit complet : correction de l’assemblage PDF multipage, restauration de la page active après export, gestion d’erreur de page image et héritage Studio Core 2.9.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.1.0",
       "label": "Scan Studio 0.1.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Première webapp d'acquisition documentaire responsive : caméra/photo/fichiers, pages multiples, rotation, deskew manuel, nettoyage document, OCR partagé, assemblage PDF et export images."
+      "href": "./v2/?version=0.1.0&channel=historical",
+      "notes": "Première webapp d'acquisition documentaire responsive : caméra/photo/fichiers, pages multiples, rotation, deskew manuel, nettoyage document, OCR partagé, assemblage PDF et export images.",
+      "isolation": "compat-runtime"
     }
   ]
 }

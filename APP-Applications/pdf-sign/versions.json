@@ -9,22 +9,25 @@
       "current": false,
       "status": "test",
       "href": "./v1/",
-      "notes": "Core 3.0 : import PDF/signature via Input commun avec photo/URL, aperçu, placement libre déplaçable et redimensionnable, thème Core homogène."
+      "notes": "Core 3.0 : import PDF/signature via Input commun avec photo/URL, aperçu, placement libre déplaçable et redimensionnable, thème Core homogène.",
+      "isolation": "test-runtime"
     },
     {
       "version": "0.2.0",
       "label": "nLab PDF Sign 0.2.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Passe TEST Core 2.9 et recette réelle : dessin/import de signature, preset personnel, application page courante/toutes pages et export PDF signé revalidés."
+      "href": "./v1/?version=0.2.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 et recette réelle : dessin/import de signature, preset personnel, application page courante/toutes pages et export PDF signé revalidés.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.1.0",
       "label": "nLab PDF Sign 0.1.0 TEST",
       "status": "historical",
-      "href": "./v1/",
-      "notes": "Premier dérivé minimal de PDF Studio V2 : charger/précharger un PDF, signer/parapher avec presets, télécharger le PDF signé, et escalader vers PDF Studio pour les fonctions avancées."
+      "href": "./v1/?version=0.1.0&channel=historical",
+      "notes": "Premier dérivé minimal de PDF Studio V2 : charger/précharger un PDF, signer/parapher avec presets, télécharger le PDF signé, et escalader vers PDF Studio pour les fonctions avancées.",
+      "isolation": "compat-runtime"
     }
   ]
 }

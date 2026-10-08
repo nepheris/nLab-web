@@ -10,7 +10,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Snapshot TEST suivant la promotion de 2.4.1 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+      "notes": "Snapshot TEST suivant la promotion de 2.4.1 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes.",
+      "isolation": "test-runtime"
     },
     {
       "version": "2.4.1",
@@ -19,7 +20,8 @@
       "current": true,
       "status": "current",
       "href": "./v2/?channel=current",
-      "notes": "Stabilisation découverte pendant la propagation bureautique : export PNG des codes-barres directement depuis le canvas d’aperçu afin de conserver le geste utilisateur et fiabiliser le téléchargement navigateur. · Promue CURRENT après validation fonctionnelle et migration Legacy P1."
+      "notes": "Stabilisation découverte pendant la propagation bureautique : export PNG des codes-barres directement depuis le canvas d’aperçu afin de conserver le geste utilisateur et fiabiliser le téléchargement navigateur. · Promue CURRENT après validation fonctionnelle et migration Legacy P1.",
+      "isolation": "current-runtime"
     },
     {
       "version": "2.4.0",
@@ -27,8 +29,9 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Core 3.0 : workflows Générer/Lire séparés, lecture via Input commun, aperçu zoomable et panneau Contenu synchronisé."
+      "href": "./v2/?version=2.4.0&channel=historical",
+      "notes": "Core 3.0 : workflows Générer/Lire séparés, lecture via Input commun, aperçu zoomable et panneau Contenu synchronisé.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.3.0",
@@ -36,24 +39,27 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe TEST Core 2.9 et audit avancé : options QR, SVG/PNG, HID, historique et scan image revalidés ; Color Picker mutualisé conservé."
+      "href": "./v2/?version=2.3.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 et audit avancé : options QR, SVG/PNG, HID, historique et scan image revalidés ; Color Picker mutualisé conservé.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.2.0",
       "label": "QR & Barcode Studio 2.2.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Color Picker mutualisé via Studio Core color-control : HEX par défaut, bascule RGB/HSL, synchronisation visuelle et texte commune aux autres Studios. Moteurs QR/barcodes 2.1 conservés."
+      "href": "./v2/?version=2.2.0&channel=historical",
+      "notes": "Color Picker mutualisé via Studio Core color-control : HEX par défaut, bascule RGB/HSL, synchronisation visuelle et texte commune aux autres Studios. Moteurs QR/barcodes 2.1 conservés.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.0",
       "label": "QR & Barcode Studio 2.1.0 TEST",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Studio Core responsive et registre de symbologies partagé. Ajoute Aztec, PDF417, Code39, UPC-A, ITF et Codabar aux QR/Data Matrix/Code128/GS1/EAN, avec validation de payload et metadata build communes."
+      "href": "./v2/?version=2.1.0&channel=historical",
+      "notes": "Studio Core responsive et registre de symbologies partagé. Ajoute Aztec, PDF417, Code39, UPC-A, ITF et Codabar aux QR/Data Matrix/Code128/GS1/EAN, avec validation de payload et metadata build communes.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.0",
@@ -61,8 +67,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion."
+      "href": "./v2/?version=2.0.0&channel=historical",
+      "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.3.0",
@@ -70,8 +77,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./",
-      "notes": "Migration Studio Core V1. Aperçu unique avec rafraîchissement, outils contextuels QR/Data Matrix/Code128/GS1-128/EAN-13/EAN-8, couleurs en lignes séparées avec HEX par défaut et affichage RGB/HSL, scan HID et lecture d’images par sélection ou glisser-déposer."
+      "href": "./v2/?version=0.3.0&channel=historical",
+      "notes": "Migration Studio Core V1. Aperçu unique avec rafraîchissement, outils contextuels QR/Data Matrix/Code128/GS1-128/EAN-13/EAN-8, couleurs en lignes séparées avec HEX par défaut et affichage RGB/HSL, scan HID et lecture d’images par sélection ou glisser-déposer.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "0.2.0",
@@ -80,7 +88,8 @@
       "current": false,
       "status": "historical",
       "href": "./app-0.2.0.html",
-      "notes": "QR, Data Matrix, Code128, EAN, personnalisation et lecteur HID."
+      "notes": "QR, Data Matrix, Code128, EAN, personnalisation et lecteur HID.",
+      "isolation": "native"
     }
   ]
 }
