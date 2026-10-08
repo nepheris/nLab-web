@@ -9,7 +9,8 @@
       "current": false,
       "status": "test",
       "href": "./v2/",
-      "notes": "Snapshot TEST suivant la promotion de 2.3.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes."
+      "notes": "Snapshot TEST suivant la promotion de 2.3.0 en CURRENT ; même moteur V2 partagé, canal TEST conservé pour les évolutions suivantes.",
+      "isolation": "test-runtime"
     },
     {
       "version": "2.3.0",
@@ -18,7 +19,8 @@
       "current": true,
       "status": "current",
       "href": "./v2/?channel=current",
-      "notes": "Propagation famille édition documentaire : contenu Markdown, insertion, YAML/front matter et chargement raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P2."
+      "notes": "Propagation famille édition documentaire : contenu Markdown, insertion, YAML/front matter et chargement raccordés au Context/Selection et Undo/Redo Core globaux. · Promue CURRENT après validation fonctionnelle et migration Legacy P2.",
+      "isolation": "current-runtime"
     },
     {
       "version": "2.2.0",
@@ -26,8 +28,9 @@
       "date": "2026-10-04",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Passe TEST Core 2.9 et audit étendu : Markdown, YAML/front matter, HTML, sommaire, synchronisation et impression navigateur revalidés."
+      "href": "./v2/?version=2.2.0&channel=historical",
+      "notes": "Passe TEST Core 2.9 et audit étendu : Markdown, YAML/front matter, HTML, sommaire, synchronisation et impression navigateur revalidés.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.1.0",
@@ -35,8 +38,9 @@
       "date": "2026-10-03",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Scroll synchronisé édition/aperçu et export PDF via impression navigateur."
+      "href": "./v2/?version=2.1.0&channel=historical",
+      "notes": "Scroll synchronisé édition/aperçu et export PDF via impression navigateur.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.0.0",
@@ -44,8 +48,9 @@
       "date": "2026-10-01",
       "current": false,
       "status": "historical",
-      "href": "./v2/",
-      "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion."
+      "href": "./v2/?version=2.0.0&channel=historical",
+      "notes": "Réécriture native Studio Core V2. Les fonctions de la version précédente sont reprises dans le runtime V2 ; ancienne version conservée dans l’historique/CURRENT pour validation comparative avant promotion.",
+      "isolation": "compat-runtime"
     },
     {
       "version": "1.0.0",
@@ -53,8 +58,9 @@
       "date": "2026-09-29",
       "current": false,
       "status": "historical",
-      "href": "./",
-      "notes": "Premier Studio V1 transversal : édition Markdown, preview HTML sécurisé, vue scindée, sommaire dynamique, insertion tableaux/images/liens, styles simples, YAML/front matter, export MD/HTML/YAML. Mode WYSIWYG avancé marqué DÉVELOPPEMENT."
+      "href": "./v2/?version=1.0.0&channel=historical",
+      "notes": "Premier Studio V1 transversal : édition Markdown, preview HTML sécurisé, vue scindée, sommaire dynamique, insertion tableaux/images/liens, styles simples, YAML/front matter, export MD/HTML/YAML. Mode WYSIWYG avancé marqué DÉVELOPPEMENT.",
+      "isolation": "compat-runtime"
     }
   ]
 }
