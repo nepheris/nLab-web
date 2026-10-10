@@ -41,11 +41,11 @@ function syncType(){
 }
 function siteCode(site){return String(site||'SITE').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z]/g,'').toUpperCase().slice(0,4).padEnd(4,'X')}
 function suggestId(){
- if(!device||device.id&&device.id!=='NOUVEL-APPAREIL')return;
+ if(!device||device.id&&!device._generatedId&&device.id!=='NOUVEL-APPAREIL')return;
  const site=siteCode(document.getElementById('field-site')?.value||device.site);
  const cold=device.familleFroid==='congelateur'?'NEG':'POS';
  const form=({verticale:'ARM',horizontale:'COF',vitrine:'VIT',comptoir:'TAB',chambre:'CHF'})[device.forme]||'GEN';
- device.id=site+'-'+cold+'-'+form+'-001';
+ device.id=site+'-'+cold+'-'+form+'-001';device._generatedId=true;
  const e=document.getElementById('field-id');if(e)e.value=device.id;
 }
 function defaultDetails(){
