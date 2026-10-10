@@ -316,7 +316,8 @@
       "status": "mvp-test-0.6",
       "parent_studio": "studio-hub",
       "path": "../guide-froid/",
-      "purpose": "Application spécialisée autonome de diagnostic pédagogique frigorifique et rapports HTML/PDF, avec documentation UML. Appareils de démonstration, sans stockage partagé."
+      "purpose": "Application spécialisée autonome de diagnostic pédagogique frigorifique et rapports HTML/PDF, avec documentation UML. Appareils de démonstration, sans stockage partagé.",
+      "icon": "../../assets/studios/guide-froid.svg"
     }
   ]
 }
