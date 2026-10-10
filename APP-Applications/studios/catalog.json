@@ -309,6 +309,14 @@
       "version_registry": "../merge-studio/versions.json",
       "icon": "../../assets/studios/merge-studio.svg",
       "purpose": "Mini-app responsive dérivée de PDF Studio : charger des PDF par fichier, dossier ou glisser-déposer, réordonner, retirer, prévisualiser et fusionner via le moteur PDF partagé."
+    },
+    {
+      "id": "guide-froid",
+      "name": "Guide Froid — MVP",
+      "status": "mvp-test-0.6",
+      "parent_studio": "studio-hub",
+      "path": "../guide-froid/",
+      "purpose": "Application spécialisée autonome de diagnostic pédagogique frigorifique et rapports HTML/PDF, avec documentation UML. Appareils de démonstration, sans stockage partagé."
     }
   ]
 }
