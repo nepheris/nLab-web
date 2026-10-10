@@ -66,7 +66,7 @@ function suggestId(){
  const site=siteCode(document.getElementById('field-site')?.value||device.site);
  const cold=device.familleFroid==='congelateur'?'NEG':'POS';
  const form=({verticale:'ARM',horizontale:'COF',vitrine:'VIT',comptoir:'TAB',chambre:'CHF'})[device.forme]||'GEN';
- device.id=site+'-'+cold+'-'+form+'-001';device._generatedId=true;
+ device.id=cold+'-'+form+'-001';device._generatedId=true;
  const e=document.getElementById('field-id');if(e)e.value=device.id;
 }
 function defaultDetails(){
@@ -137,7 +137,7 @@ function zip(entries){const locals=[],central=[];let pos=0,n=0;for(const [path,r
 function download(blob,name){const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000)}
 function readForm(){for(const k of fields){if(visualStages.some(x=>x.key===k)||k==='typeEquipement')continue;const el=$('field-'+k);if(el)device[k]=el.value;}device.codeSite=siteCode(device.site);device.visites=Array.isArray(device.visites)?device.visites:[];return device}
 function renderTypePreview(){
- const chosen=$('field-typeEquipement')?.value||'';
+ const chosen=device.typeEquipement||'';
  const item=categories.find(c=>c[0]===chosen),name=item?.[1]||'Choisir un type pour afficher une silhouette générique';
  const horizontal=/coffre|table|iles/.test(chosen),room=/chambre/.test(chosen),glass=/vitrine/.test(chosen);
  const shape=room?'<rect x="8" y="13" width="76" height="65" rx="3"/><path d="M49 13v65M55 19h22v53H55M13 20h29v50H13"/><path d="M58 44h15"/>':horizontal?'<rect x="5" y="34" width="84" height="40" rx="5"/><path d="M7 42h80M10 75v5M83 75v5M45 42v29"/>':'<rect x="24" y="5" width="46" height="76" rx="5"/><path d="M24 27h46M32 11v12M32 35v37"/>' ;
@@ -171,4 +171,4 @@ $('saveVisit').onclick=async()=>{if(!device)return;readForm();const vid='VIS-'+D
 $('exportZip').onclick=exportZip;$('exportJson').onclick=()=>device&&download(new Blob([JSON.stringify(readForm(),null,2)],{type:'application/json'}),(device.id||'appareil')+'.json');$('printVisit').onclick=()=>report((device?.visites||[]).length-1);$('printSheet').onclick=()=>report(0,true);$('visitDate').value=new Date().toISOString().slice(0,10);
 
 // Accueil orienté parcours : pré-sélection sans chargement automatique de données privées.
-const intent=new URLSearchParams(location.search).get('mode');if(intent==='new')$('newDevice').focus();else if(intent==='import')$('importZip').focus();else if(intent==='visit')$('status').textContent='Pour saisir une visite, importer le ZIP de l’appareil ou créer sa fiche, puis renseigner la section 3.';
+const intent=new URLSearchParams(location.search).get('mode');if(intent==='new')$('newDevice').focus();else if(intent==='import')$('importZip').focus();else if(intent==='demo')$('demoDevice').focus();else if(intent==='visit')$('status').textContent='Pour saisir une visite, importer le ZIP de l’appareil ou créer sa fiche, puis renseigner la section 3.';
