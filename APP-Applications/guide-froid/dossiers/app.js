@@ -7,9 +7,9 @@ const categories=[
 const usages=['Fruits et légumes','Produits frais / produits laitiers','Fromages','Beurre et matières grasses','Viandes et produits protéiques','Poissons et produits de la mer','Produits surgelés','Produits préparés / repas','Réserve distribution','Stockage temporaire / transit','Boissons','Réfrigérateur des bénévoles','Congélateur des bénévoles','Conservation des dons','Autre / usage mixte'];
 let device=null,docs=new Map();
 const visualStages=[
- {key:'familleFroid',label:'1 · Quel froid ?',items:[['frigo','Réfrigérateur','fridge'],['congelateur','Congélateur','freezer'],['chambre','Chambre froide','room'],['inconnu','Je ne sais pas','unknown']]},
+ {key:'familleFroid',label:'1 · Quel froid ?',items:[['frigo','Froid positif','fridge'],['congelateur','Froid négatif','freezer']]},
  {key:'forme',label:'2 · Quelle forme ?',items:[['verticale','Armoire verticale','vertical'],['horizontale','Coffre horizontal','chest'],['vitrine','Vitrine','glass'],['comptoir','Table / comptoir','counter'],['chambre','Chambre froide','room']]},
- {key:'nombrePortes',label:'3 · Combien de portes ?',items:[['1','Une','single'],['2','Deux','double'],['3+','Trois ou plus','triple'],['sans-porte','Sans porte classique','open']]},
+ {key:'nombrePortes',label:'3 · Combien de portes ?',items:[['1','Une','single'],['2','Deux','double'],['3','Trois','triple']]},
  {key:'ouverture',label:'4 · Comment s’ouvre-t-il ?',items:[['battante','Porte battante','hinge'],['coulissante','Porte / vitre coulissante','slide'],['relevable','Couvercle relevable','lid'],['aucune','Autre / non visible','unknown']]},
  {key:'vitrage',label:'5 · Porte ou couvercle',items:[['pleine','Plein','solid'],['vitree','Vitré','glass'],['mixte','Mixte','mix'],['inconnu','Non déterminé','unknown']]}
 ];
@@ -22,23 +22,55 @@ function shapeSvg(key){
 function accepted(stage){
  const v=device;
  if(stage.key==='forme'){
-  if(v.familleFroid==='chambre')return stage.items.filter(x=>x[0]==='chambre');
-  if(v.familleFroid==='frigo')return stage.items.filter(x=>['verticale','vitrine','comptoir'].includes(x[0]));
-  if(v.familleFroid==='congelateur')return stage.items.filter(x=>['verticale','horizontale','vitrine'].includes(x[0]));
+  if(v.familleFroid==='frigo')return stage.items.filter(x=>['verticale','vitrine','comptoir','chambre'].includes(x[0]));
+  if(v.familleFroid==='congelateur')return stage.items.filter(x=>['verticale','horizontale','vitrine','chambre'].includes(x[0]));
  }
  if(stage.key==='ouverture'){
   const permitted=v.forme==='horizontale'?['coulissante','relevable','aucune']:v.forme==='chambre'?['battante','coulissante','aucune']:['battante','coulissante','aucune'];
   return stage.items.filter(x=>permitted.includes(x[0]));
  }
- if(stage.key==='nombrePortes'&&v.forme==='chambre')return stage.items.filter(x=>['1','2','3+'].includes(x[0]));
+ 
  return stage.items;
 }
 function syncType(){
  const f=device.familleFroid,shape=device.forme;
- const t=f==='chambre'?(device.vitrage==='inconnu'?'chambre-positive':'chambre-positive'):
+ const t=shape==='chambre'?(f==='congelateur'?'chambre-negative':'chambre-positive'):
  f==='congelateur'?(shape==='horizontale'?'congel-coffre':shape==='vitrine'?'congel-vitrine':'congel-armoire'):
  f==='frigo'?(shape==='comptoir'?'frigo-table':shape==='vitrine'?'frigo-vitrine':'frigo-armoire'):'';
  if(t){device.typeEquipement=t;const e=$('field-typeEquipement');if(e)e.value=t;}
+}
+function siteCode(site){return String(site||'SITE').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z]/g,'').toUpperCase().slice(0,4).padEnd(4,'X')}
+function suggestId(){
+ if(!device||device.id&&!device._generatedId&&device.id!=='NOUVEL-APPAREIL')return;
+ const site=siteCode(document.getElementById('field-site')?.value||device.site);
+ const cold=device.familleFroid==='congelateur'?'NEG':'POS';
+ const form=({verticale:'ARM',horizontale:'COF',vitrine:'VIT',comptoir:'TAB',chambre:'CHF'})[device.forme]||'GEN';
+ device.id=site+'-'+cold+'-'+form+'-001';device._generatedId=true;
+ const e=document.getElementById('field-id');if(e)e.value=device.id;
+}
+function defaultDetails(){
+ if(!device.forme)return;
+ device.nombrePortes='1';
+ device.ouverture=device.forme==='horizontale'?'relevable':'battante';
+ device.vitrage=device.forme==='vitrine'?'vitree':'pleine';
+}
+function graphicFor(stageKey,value){
+ const doorCount=stageKey==='nombrePortes'?Number(value):Math.min(3,Number(device.nombrePortes)||1);
+ const glass=stageKey==='vitrage'?value==='vitree':device.vitrage==='vitree';
+ const horizontal=stageKey==='forme'?value==='horizontale':device.forme==='horizontale';
+ const room=stageKey==='forme'?value==='chambre':device.forme==='chambre';
+ const sliding=stageKey==='ouverture'?value==='coulissante':device.ouverture==='coulissante';
+ let art='';
+ if(room){
+ art='<path d="M7 22L35 7H94V72L67 87H7Z M7 22H67V87 M67 22L94 7 M67 22V87"/>';
+ }else if(horizontal){
+ art='<rect x="7" y="35" width="88" height="45" rx="4"/><path d="M7 42h88M13 80v5M89 80v5"/>';
+ }else art='<rect x="22" y="5" width="64" height="78" rx="4"/>';
+ const left=room?18:horizontal?12:28,right=room?58:horizontal?90:80,top=room?28:horizontal?42:12,bottom=room?79:horizontal?73:76,span=(right-left)/doorCount;
+ for(let i=0;i<doorCount;i++){const x=left+i*span;art+='<rect x="'+(x+1)+'" y="'+top+'" width="'+(span-2)+'" height="'+(bottom-top)+'" rx="1"/>';if(glass)art+='<rect x="'+(x+4)+'" y="'+(top+5)+'" width="'+(span-8)+'" height="'+(bottom-top-10)+'"/>';if(!horizontal)art+='<path d="M'+(sliding?x+span/2:x+span-5)+' '+(top+22)+'v13"/>';}
+ if(stageKey==='ouverture'&&value==='relevable')art+='<path d="M8 35L20 19H93L95 35"/>';
+ if(stageKey==='ouverture'&&value==='coulissante')art+='<path d="M32 32h35m-7-6 7 6-7 6"/>';
+ return '<svg viewBox="0 0 102 94" aria-hidden="true">'+art+'</svg>';
 }
 function renderWizard(){
  const area=$('visualSelector');if(!area||!device)return;
@@ -46,14 +78,18 @@ function renderWizard(){
  for(const stage of visualStages){
   if(!visible)break;
   const opts=accepted(stage),active=device[stage.key]||'';
-  parts.push('<section class="gf-wizard-step"><h3>'+safe(stage.label)+'</h3><div class="gf-wizard-options">'+opts.map(o=>'<button type="button" class="gf-choice" data-stage="'+safe(stage.key)+'" data-value="'+safe(o[0])+'" aria-pressed="'+(active===o[0])+'">'+shapeSvg(o[2])+'<span>'+safe(o[1])+'</span></button>').join('')+'</div></section>');
+  const quantity=stage.key==='nombrePortes'?' · portes ou couvercles':'';
+  parts.push('<section class="gf-wizard-step"><h3>'+safe(stage.label+quantity)+'</h3><div class="gf-wizard-options">'+opts.map(o=>'<button type="button" class="gf-choice" data-stage="'+safe(stage.key)+'" data-value="'+safe(o[0])+'" aria-pressed="'+(active===o[0])+'">'+graphicFor(stage.key,o[0])+'<span>'+safe(o[1])+'</span></button>').join('')+'</div></section>');
   visible=!!active;
  }
- area.innerHTML=parts.join('')+'<p class="gf-visual-summary">Description : <strong>'+safe([device.familleFroid,device.forme,device.nombrePortes&&device.nombrePortes+' porte(s)',device.ouverture,device.vitrage].filter(Boolean).join(' · ')||'Choisissez le type d’appareil')+'</strong></p>';
+ const desc=[device.familleFroid==='frigo'?'Froid positif':device.familleFroid==='congelateur'?'Froid négatif':'',device.forme,device.nombrePortes&&device.nombrePortes+' porte(s)/couvercle(s)',device.ouverture,device.vitrage].filter(Boolean);
+ area.innerHTML=parts.join('')+'<p class="gf-visual-summary">Configuration : <strong>'+safe(desc.join(' · ')||'Sélectionnez froid positif ou négatif')+'</strong></p>';
  area.querySelectorAll('button[data-stage]').forEach(b=>b.onclick=()=>{
-  const key=b.dataset.stage,index=visualStages.findIndex(x=>x.key===key);
-  device[key]=b.dataset.value;
-  for(const later of visualStages.slice(index+1))device[later.key]='';
+  const key=b.dataset.stage,old=device[key];device[key]=b.dataset.value;
+  if(key==='familleFroid'&&old!==device[key]){device.forme='';device.nombrePortes='';device.ouverture='';device.vitrage='';}
+  if(key==='forme'&&old!==device[key])defaultDetails();
+  if(key==='ouverture'&&device.forme==='horizontale'&&device.ouverture==='battante')device.ouverture='relevable';
+  if(key==='forme'||key==='familleFroid')suggestId();
   syncType();renderWizard();renderTypePreview();
  });
 }
@@ -77,7 +113,7 @@ function crc32(data){let c=0xffffffff;for(const v of data){c^=v;for(let k=0;k<8;
 const w16=(a,n)=>a.push(n&255,n>>>8&255),w32=(a,n)=>{w16(a,n);w16(a,n>>>16)};
 function zip(entries){const locals=[],central=[];let pos=0,n=0;for(const [path,raw]of entries){const b=typeof raw==='string'?E.encode(raw):raw,name=E.encode(path),crc=crc32(b),h=[];w32(h,0x04034b50);w16(h,20);w16(h,0x800);w16(h,0);w16(h,0);w16(h,0);w32(h,crc);w32(h,b.length);w32(h,b.length);w16(h,name.length);w16(h,0);locals.push(new Uint8Array(h),name,b);const c=[];w32(c,0x02014b50);w16(c,20);w16(c,20);w16(c,0x800);w16(c,0);w16(c,0);w16(c,0);w32(c,crc);w32(c,b.length);w32(c,b.length);w16(c,name.length);for(let i=0;i<4;i++)w16(c,0);w32(c,0);w32(c,pos);central.push(new Uint8Array(c),name);pos+=h.length+name.length+b.length;n++}const length=central.reduce((s,b)=>s+b.length,0),tail=[];w32(tail,0x06054b50);w16(tail,0);w16(tail,0);w16(tail,n);w16(tail,n);w32(tail,length);w32(tail,pos);w16(tail,0);return new Blob([...locals,...central,new Uint8Array(tail)],{type:'application/zip'})}
 function download(blob,name){const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000)}
-function readForm(){for(const k of fields){if(visualStages.some(x=>x.key===k))continue;device[k]=$('field-'+k).value;}device.visites=Array.isArray(device.visites)?device.visites:[];return device}
+function readForm(){for(const k of fields){if(visualStages.some(x=>x.key===k)||k==='typeEquipement')continue;const el=$('field-'+k);if(el)device[k]=el.value;}device.codeSite=siteCode(device.site);device.visites=Array.isArray(device.visites)?device.visites:[];return device}
 function renderTypePreview(){
  const chosen=$('field-typeEquipement')?.value||'';
  const item=categories.find(c=>c[0]===chosen),name=item?.[1]||'Choisir un type pour afficher une silhouette générique';
@@ -86,11 +122,11 @@ function renderTypePreview(){
  const details=glass?'<path d="M40 36h25v37H40M43 48h18M43 60h18"/>':'';
  $('typePreview').innerHTML='<svg viewBox="0 0 94 90" aria-hidden="true">'+shape+details+'</svg><div><strong>'+safe(name)+'</strong><span class="gf-hint">Illustration schématique générique, non contractuelle et indépendante du fabricant.</span></div>';
 }
-function render(){if(!device)return;$('workspace').hidden=false;$('deviceForm').innerHTML=fields.map((k,i)=>'<label>'+safe(labels[i])+(k==='typeEquipement'?'<select id="field-'+k+'"><option value="">Choisir un type</option>'+categories.map(c=>'<option value="'+safe(c[0])+'" '+(device[k]===c[0]?'selected':'')+'>'+safe(c[1])+'</option>').join('')+'</select>':k==='familleUsage'?'<select id="field-'+k+'"><option value="">Choisir une utilisation</option>'+usages.map(v=>'<option '+(device[k]===v?'selected':'')+'>'+safe(v)+'</option>').join('')+'</select>':'<input id="field-'+k+'" value="'+safe(device[k]||'')+'">')+'</label>').join('');$('visitSite').value=device.site||'';$('field-typeEquipement').addEventListener('change',renderTypePreview);renderTypePreview();renderWizard();renderHistory();renderDocs()}
+function render(){if(!device)return;$('workspace').hidden=false;$('deviceForm').innerHTML=fields.filter(k=>!visualStages.some(x=>x.key===k)&&k!=='typeEquipement').map(k=>'<label>'+safe(labels[fields.indexOf(k)])+(k==='typeEquipement'?'<select id="field-'+k+'"><option value="">Choisir un type</option>'+categories.map(c=>'<option value="'+safe(c[0])+'" '+(device[k]===c[0]?'selected':'')+'>'+safe(c[1])+'</option>').join('')+'</select>':k==='familleUsage'?'<select id="field-'+k+'"><option value="">Choisir une utilisation</option>'+usages.map(v=>'<option '+(device[k]===v?'selected':'')+'>'+safe(v)+'</option>').join('')+'</select>':'<input id="field-'+k+'" value="'+safe(device[k]||'')+'">')+'</label>').join('');$('visitSite').value=device.site||'';$('field-site')?.addEventListener('input',()=>{device.site=$('field-site').value;if(device._generatedId)suggestId()});renderTypePreview();renderWizard();renderHistory();renderDocs()}
 function renderHistory(){const list=device.visites||[];$('history').innerHTML='<h3>Historique ('+list.length+')</h3>'+list.map((v,i)=>'<article><strong>'+safe(v.date)+' · '+safe(v.type)+' · '+safe(v.site)+'</strong><p>'+safe(v.observations)+'</p><p>Réalisé : '+safe(v.actions)+'</p><p>À prévoir : '+safe(v.aPrevoir)+'</p><button type="button" data-i="'+i+'">Consulter / PDF</button></article>').join('');$('history').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>report(Number(b.dataset.i)))}
 function renderDocs(){$('docList').innerHTML='';for(const [name,b]of docs){const li=document.createElement('li');li.textContent=name+' ('+Math.ceil(b.length/1024)+' Ko) ';const remove=document.createElement('button');remove.type='button';remove.textContent='Retirer';remove.onclick=()=>{docs.delete(name);renderDocs()};li.append(remove);$('docList').append(li)}}
 function standalone(d){const rows=fields.map((k,i)=>'<p><strong>'+safe(labels[i])+' :</strong> '+safe(d[k]||'Non renseigné')+'</p>').join('');const history=(d.visites||[]).map(v=>'<section><h3>'+safe(v.date)+' · '+safe(v.type)+'</h3><p>Site : '+safe(v.site)+'</p><p>Observations : '+safe(v.observations)+'</p><p>Réalisé : '+safe(v.actions)+'</p><p>À prévoir : '+safe(v.aPrevoir)+'</p></section>').join('');const links=[...docs.keys()].map(n=>'<li><a href="documents/'+encodeURIComponent(n)+'">'+safe(n)+'</a></li>').join('');return '<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>'+safe(d.title||d.id)+'</title><style>body{font:16px/1.5 Arial;max-width:950px;padding:25px;margin:auto}section{border:1px solid #ccd;padding:15px;margin:12px 0;border-radius:8px}@media print{button{display:none}}</style></head><body><button onclick="print()">Imprimer / PDF</button><h1>'+safe(d.title||d.id)+'</h1><section><h2>Appareil</h2>'+rows+'</section><section><h2>Documents</h2><ul>'+links+'</ul></section><h2>Visites et diagnostics</h2>'+history+'</body></html>'}
-function exportZip(){if(!device)return;const d=readForm(),id=(d.id||'APPAREIL').replace(/[^a-zA-Z0-9_-]/g,'_'),entries=new Map([['appareil.json',JSON.stringify(d,null,2)],['manifest.json',JSON.stringify({schema:'nlab.guide-froid.package/1.1',id,documents:[...docs.keys()],visites:d.visites.length},null,2)],['index.html',standalone(d)]]);for(const [name,data]of docs)entries.set('documents/'+name,data);download(zip(entries),id+'.zip');setStatus('ZIP exporté : '+id+'.zip. Les modifications ne sont conservées qu’après téléchargement.')}
+function exportZip(){if(!device)return;if(!device.familleFroid||!device.forme){setStatus('Choisir froid positif ou négatif puis la forme avant export.');return;}const d=readForm(),id=(d.id||'APPAREIL').replace(/[^a-zA-Z0-9_-]/g,'_'),entries=new Map([['appareil.json',JSON.stringify(d,null,2)],['manifest.json',JSON.stringify({schema:'nlab.guide-froid.package/1.1',id,documents:[...docs.keys()],visites:d.visites.length},null,2)],['index.html',standalone(d)]]);for(const [name,data]of docs)entries.set('documents/'+name,data);download(zip(entries),id+'.zip');setStatus('ZIP exporté : '+id+'.zip. Les modifications ne sont conservées qu’après téléchargement.')}
 function report(index,onlySheet=false){if(!device)return;const d=readForm(),v=d.visites[index];if(!onlySheet&&!v){setStatus('Enregistrer une visite avant de générer le rapport.');return}let body=onlySheet?'<h2>Fiche appareil</h2>'+fields.map((k,i)=>'<p><b>'+safe(labels[i])+' :</b> '+safe(d[k])+'</p>').join(''):'<h2>'+safe(v.type)+' — '+safe(v.date)+'</h2><p>Site : '+safe(v.site)+'</p><h3>Observations</h3><p>'+safe(v.observations)+'</p><h3>Opérations réalisées</h3><p>'+safe(v.actions)+'</p><h3>Actions à prévoir</h3><p>'+safe(v.aPrevoir)+'</p>';const html='<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Rapport Guide Froid</title><style>body{font:16px/1.5 Arial;margin:30px auto;max-width:850px}h1{border-bottom:2px solid #16709a}p{white-space:pre-wrap}@media print{button{display:none}}</style></head><body><button onclick="print()">Enregistrer PDF</button><h1>Guide Froid · '+safe(d.title||d.id)+'</h1><p>Fabricant : '+safe(d.fabricant)+' · Modèle : '+safe(d.modele)+'</p>'+body+'<p><small>Compte rendu descriptif ; une vérification non réalisée ne vaut pas validation technique ou sanitaire.</small></p></body></html>';const w=window.open('','_blank');if(!w){setStatus('Autoriser les fenêtres contextuelles pour imprimer.');return}w.document.open();w.document.write(html);w.document.close()}
 $('importZip').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const map=await unzip(file),key=[...map.keys()].find(x=>/(^|\/)appareil\.json$/i.test(x));if(!key)throw Error('appareil.json introuvable');const prefix=key.slice(0,-'appareil.json'.length);device=JSON.parse(D.decode(map.get(key)));docs=new Map();for(const [name,b]of map)if(name.startsWith(prefix+'documents/')&&name!==prefix+'documents/')docs.set(name.slice((prefix+'documents/').length),b);render();setStatus('Appareil importé : '+(device.title||device.id)+'. '+docs.size+' document(s).')}catch(err){setStatus('Import impossible : '+err.message)}};
 $('importJson').onchange=async e=>{try{device=JSON.parse(await e.target.files[0].text());docs=new Map();render();setStatus('JSON importé. Compléter les éventuels documents manquants.')}catch(err){setStatus('JSON invalide : '+err.message)}};
