@@ -1,0 +1,19 @@
+/* nLab common visual skin v1 — extends canonical site-shell.css.
+   Legacy page components remain scoped, so Studios and functionality are not changed. */
+:root{--blue:var(--nlab-brand);--bg:var(--nlab-bg);--ink:var(--nlab-ink);--muted:var(--nlab-muted);--line:var(--nlab-line);--card:var(--nlab-card);--primary:var(--nlab-brand)}
+body{background:var(--nlab-bg)!important;color:var(--nlab-ink)!important;font-family:Inter,Arial,Helvetica,sans-serif!important}
+body>header,.guide-header{background:var(--nlab-card)!important;color:var(--nlab-ink)!important;border-bottom:1px solid var(--nlab-line)!important;box-shadow:0 4px 18px rgba(31,41,51,.06);padding-top:12px!important;padding-bottom:12px!important}
+body>header a,.guide-header a{color:var(--nlab-muted)!important}
+body>header a:hover,.guide-header a:hover{color:var(--nlab-brand)!important}
+.nlab-crossnav{min-height:60px;gap:9px}.nl ab{color:inherit}
+.guide-header h1,.hero h1{color:var(--nlab-ink)!important}
+.guide-header p,.hero p,.muted,.hint,.small{color:var(--nlab-muted)!important}
+.guide-header .nlab-crossnav{border-bottom-color:var(--nlab-line)}
+.guide-header{position:relative;top:auto}
+body main .menu,body main .panel,body main .hero,body main .card,body main .pack,body main .nlab-card{background:var(--nlab-card)!important;border-color:var(--nlab-line)!important;color:var(--nlab-ink)!important}
+body main button,body main .btn{font-family:inherit}
+body main button.primary,body main .btn.primary{background:var(--nlab-brand)!important;border-color:var(--nlab-brand)!important;color:#fff!important}
+body footer{border-top:1px solid var(--nlab-line);color:var(--nlab-muted);background:var(--nlab-card)}
+:root[data-theme="dark"]{color-scheme:dark}
+:root[data-theme="dark"] body main input,:root[data-theme="dark"] body main select,:root[data-theme="dark"] body main textarea,:root[data-theme="dark"] body main button:not(.primary){background:var(--nlab-card);color:var(--nlab-ink);border-color:var(--nlab-line)}
+@media(max-width:720px){.nlab-crossnav{min-height:unset;justify-content:flex-start}.guide-header{padding-left:15px!important;padding-right:15px!important}}
