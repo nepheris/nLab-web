@@ -34,3 +34,28 @@ body footer{border-top:1px solid var(--nlab-line);color:var(--nlab-muted);backgr
 :root[data-theme="dark"] body>header a:hover,.guide-header a:hover{color:#91c5ff!important}
 :root[data-theme="dark"] body footer{background:var(--nlab-card)!important;color:var(--nlab-muted)!important}
 :root[data-theme="dark"] body main :is(.warn,.devCard){background:#382e20!important;color:#f3d6a8!important;border-color:#75592e!important}
+
+/* Guide Froid: dark-mode overrides for legacy fixed-color widgets.
+   Scoped to body.guide-froid-page; never affects light mode or other Studios. */
+:root[data-theme="dark"] body.guide-froid-page{
+ --bg:var(--nlab-bg);--ink:var(--nlab-ink);--muted:var(--nlab-muted);--line:var(--nlab-line);
+ --pale:#263f4c;--primary:#70b9f5;
+}
+:root[data-theme="dark"] body.guide-froid-page :is(.collapsible,.collapsible summary,.figure,.drop,.mini-upload,.file-tag,.model,.manufacturer,.test-card){
+ background:var(--nlab-card)!important;color:var(--nlab-ink)!important;border-color:#657586!important;
+}
+:root[data-theme="dark"] body.guide-froid-page .collapsible summary{background:#303b48!important}
+:root[data-theme="dark"] body.guide-froid-page :is(.figure,.mini-upload,.drop,.file-tag){background:#283645!important}
+:root[data-theme="dark"] body.guide-froid-page .note{background:#273e4b!important;color:#e8f3ff!important;border-left-color:#71c4ff!important}
+:root[data-theme="dark"] body.guide-froid-page :is(.note.warn,.image-warning){background:#453421!important;color:#ffe5b4!important;border-left-color:#f1b65e!important}
+:root[data-theme="dark"] body.guide-froid-page :is(.active,.chips button.active,.menu button.active){background:#234e70!important;color:#fff!important;border-color:#8acbff!important}
+:root[data-theme="dark"] body.guide-froid-page :is(.report strong,.manufacturer a,.links a,.docnav,a:not(.nlab-logo)){color:#9fd1ff}
+:root[data-theme="dark"] body.guide-froid-page :is(.progress,.drop.hover){background:#304355!important}
+:root[data-theme="dark"] body.guide-froid-page .progress>div{background:#7bc4f4!important}
+:root[data-theme="dark"] body.guide-froid-page :is(button,select,input,textarea):focus-visible,
+:root[data-theme="dark"] body.guide-froid-page a:focus-visible{outline:2px solid #a6d8ff;outline-offset:2px}
+@media print{
+ :root[data-theme="dark"] body.guide-froid-page,
+ :root[data-theme="dark"] body.guide-froid-page :is(.panel,.report,.collapsible,.report section){background:#fff!important;color:#111!important}
+ :root[data-theme="dark"] body.guide-froid-page .report strong{color:#173a55!important}
+}
