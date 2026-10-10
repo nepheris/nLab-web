@@ -8,7 +8,7 @@ const LABEL={cards:'Cartes',tiles:'Vignettes',list:'Liste',table:'Tableau'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const read=()=>{try{const x=localStorage.getItem(KEY);return VALID.includes(x)?x:'cards'}catch{return'cards'}};
 let view=read();
-const targets=()=>['applicationGrid','studioGrid','derivedGrid','developmentGrid','nl-apps','nl-future'].map(id=>document.getElementById(id)).filter(Boolean);
+const targets=()=>['applicationGrid','studioGrid','derivedGrid','developmentGrid','nl-apps','nl-derived','nl-future'].map(id=>document.getElementById(id)).filter(Boolean);
 function paint(){
  for(const el of targets()){
   for(const x of VALID)el.classList.remove('nlcatalog-'+x);
