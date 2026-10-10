@@ -17,3 +17,20 @@ body footer{border-top:1px solid var(--nlab-line);color:var(--nlab-muted);backgr
 :root[data-theme="dark"]{color-scheme:dark}
 :root[data-theme="dark"] body main input,:root[data-theme="dark"] body main select,:root[data-theme="dark"] body main textarea,:root[data-theme="dark"] body main button:not(.primary){background:var(--nlab-card);color:var(--nlab-ink);border-color:var(--nlab-line)}
 @media(max-width:720px){.nlab-crossnav{min-height:unset;justify-content:flex-start}.guide-header{padding-left:15px!important;padding-right:15px!important}}
+
+/* WCAG-oriented contrast and component surfaces for legacy public pages. */
+:root[data-theme="dark"]{--blue:#8bbcff;--green:#99dfab}
+:root[data-theme="dark"] body main .hero,:root[data-theme="dark"] body main .panel,:root[data-theme="dark"] body main .card,:root[data-theme="dark"] body main .pack,:root[data-theme="dark"] body main .menu,:root[data-theme="dark"] body main .test-card,:root[data-theme="dark"] body main .report{background:var(--nlab-card)!important;color:var(--nlab-ink)!important;border-color:var(--nlab-line)!important}
+:root[data-theme="dark"] body main :is(p,li,span,div,label,h1,h2,h3,h4,strong){color:inherit}
+:root[data-theme="dark"] body main :is(.muted,.hint,.small,.lead,.path,.body p){color:var(--nlab-muted)!important}
+:root[data-theme="dark"] body main a:not(.btn){color:#91c5ff}
+:root[data-theme="dark"] body main :is(.notice,.empty,.techpreview,.preview,.path,.note){background:var(--nlab-soft)!important;color:var(--nlab-ink)!important;border-color:var(--nlab-line)!important}
+:root[data-theme="dark"] body main :is(.badge,.kind,.eyebrow){color:#91c5ff!important}
+:root[data-theme="dark"] body main button:not(.primary),:root[data-theme="dark"] body main .btn:not(.primary),:root[data-theme="dark"] body main .fileActions a{background:var(--nlab-card)!important;color:var(--nlab-ink)!important;border-color:var(--nlab-line)!important}
+:root[data-theme="dark"] body main :is(input,textarea,select){background:#252e39!important;color:#f1f5fa!important;border-color:#657586!important}
+:root[data-theme="dark"] body main input::placeholder{color:#b4c1d0!important}
+:root[data-theme="dark"] body>header,.guide-header{background:var(--nlab-card)!important}
+:root[data-theme="dark"] body>header a,.guide-header a{color:#c2d0dc!important}
+:root[data-theme="dark"] body>header a:hover,.guide-header a:hover{color:#91c5ff!important}
+:root[data-theme="dark"] body footer{background:var(--nlab-card)!important;color:var(--nlab-muted)!important}
+:root[data-theme="dark"] body main :is(.warn,.devCard){background:#382e20!important;color:#f3d6a8!important;border-color:#75592e!important}
