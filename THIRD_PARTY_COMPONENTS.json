@@ -1,7 +1,7 @@
 {
   "schema": "nlab-third-party-components/v1",
   "scope": "nLab Studios",
-  "updated": "2026-10-07",
+  "updated": "2026-10-10",
   "nlab_license": {
     "name": "PolyForm Noncommercial License 1.0.0",
     "url": "https://polyformproject.org/licenses/noncommercial/1.0.0",
@@ -244,6 +244,37 @@
       "studios": [
         "pdf-studio"
       ]
+    },
+    {
+      "name": "Mermaid",
+      "version": "11 (prototype CDN non figé)",
+      "author": "Mermaid contributors",
+      "official_repo": "https://github.com/mermaid-js/mermaid",
+      "official_site": "https://mermaid.js.org/",
+      "editor": "https://mermaid.live/",
+      "license": "MIT",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"
+      ],
+      "studios": [
+        "guide-froid",
+        "Web Framework (intégration prévue)"
+      ],
+      "usage": "Rendu UML SVG des diagrammes Markdown, strict securityLevel; prototype approuvé."
+    },
+    {
+      "name": "QRCode.js",
+      "version": "1.0.0 (header)",
+      "author": "David Shim",
+      "official_repo": "https://github.com/davidshimjs/qrcodejs",
+      "license": "MIT",
+      "runtime_sources": [
+        "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"
+      ],
+      "studios": [
+        "nLab Web shared header"
+      ],
+      "usage": "Génération locale dans le navigateur du QR de la page courante."
     }
   ]
 }
