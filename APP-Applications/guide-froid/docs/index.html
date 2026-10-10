@@ -1,0 +1,62 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guide Froid · Documentation UML</title><style>body{font:16px/1.65 system-ui,Arial,sans-serif;max-width:980px;margin:0 auto;padding:24px;color:#19384a;background:#f8fbfd}header{padding:22px;background:#173a55;color:white;border-radius:14px}section{background:white;padding:22px;border:1px solid #d7e1ed;border-radius:12px;margin:16px 0}pre{background:#eaf1f6;padding:17px;overflow:auto;white-space:pre-wrap;border-radius:8px}a{color:#14678f}small{opacity:.7}</style></head><body><header><h1>Guide Froid · Documentation UML</h1><p>Fonctionnement, données, composants et périmètre du MVP autonome</p></header><p><a href="../index.html">← Revenir au guide</a> · <a href="UML.md" download>Télécharger UML.md</a></p><h1>Guide Froid — Documentation du MVP</h1><p>**Statut :** démonstrateur autonome, appareils fictifs. **Principe directeur :** le guide pédagogique de diagnostic et le rapport d&#x27;incident restent le cœur de l&#x27;application. La fiche appareil est un complément documentaire léger, sans fonctions d&#x27;ERP, de comptabilité ou de logiciel SAV.</p><h2>1. Parcours utilisateur — diagramme d&#x27;activités</h2><section><h2>Diagramme Mermaid / UML</h2><pre>flowchart TD
+    A[Accueil Guide Froid] --&gt; B{Appareil connu ?}
+    B --&gt;|ID, QR ou liste| C[Ouvrir la fiche et préremplir les champs]
+    B --&gt;|Non| D[Diagnostic libre]
+    C --&gt; E[Confirmer ou corriger l&#x27;identification]
+    D --&gt; F[Identification partielle et facultative]
+    E --&gt; G[Constat et symptôme]
+    F --&gt; G
+    G --&gt; H[Explication pédagogique et rappel d&#x27;hygiène si approprié]
+    H --&gt; I[Questions et tests simples]
+    I --&gt; J{Test possible ?}
+    J --&gt;|Oui| K[Résultat prédéfini + observation libre + photo]
+    J --&gt;|Non, inconnu, autre| L[Consigner sans bloquer]
+    K --&gt; M[Rapport HTML et PDF]
+    L --&gt; M
+    M --&gt; N{Appareil enregistré ?}
+    N --&gt;|Oui| O[Ajouter le PDF comme document étiqueté sur la fiche]
+    N --&gt;|Non| P[Conserver le PDF libre; rattacher éventuellement plus tard]</pre><small>Le fichier UML.md contient les définitions source des diagrammes.</small></section><h2>2. Modèle de données UML minimal</h2><section><h2>Diagramme Mermaid / UML</h2><pre>classDiagram
+    class Appareil {
+      +string id
+      +string nomLocal
+      +string type
+      +string site
+      +string fabricant
+      +string modeleReference
+      +string numeroSerie
+      +string dateAchat
+      +string dateMiseEnService
+      +string pageConstructeurUrl
+      +string noticeUrl
+      +string ficheUrl
+    }
+    class Document {
+      +string id
+      +string appareilId
+      +date dateDocument
+      +string nom
+      +string nomFichier
+      +string description
+      +string[] categories
+      +string[] etiquettes
+      +string typeMime
+      +string cheminOuUrl
+    }
+    class RapportDiagnostic {
+      +string idRapport
+      +string appareilIdOptionnel
+      +date dateControle
+      +string observations
+      +string fichierPdf
+    }
+    Appareil &quot;1&quot; --&gt; &quot;0..*&quot; Document : contient
+    RapportDiagnostic &quot;0..*&quot; --&gt; &quot;0..1&quot; Appareil : rattachement facultatif
+    RapportDiagnostic &quot;1&quot; --&gt; &quot;1&quot; Document : export PDF</pre><small>Le fichier UML.md contient les définitions source des diagrammes.</small></section><p>**Pas de tables Incident, Intervention ou Maintenance distinctes à maintenir :** ce sont des *catégories de documents* et non des modules métier autonomes. L&#x27;historique résulte du tri par date de la bibliothèque documentaire.</p><h2>3. Composants — séparation du code et des données</h2><section><h2>Diagramme Mermaid / UML</h2><pre>flowchart LR
+    UI[Interface HTML autonome] --&gt; DIAG[Guide et questions adaptatives]
+    UI --&gt; FICHE[Fiche appareil]
+    FICHE --&gt; INVENTAIRE[(Inventaire fictif JSON)]
+    FICHE --&gt; DOCS[Documents et étiquettes]
+    DIAG --&gt; RAPPORT[Rapport HTML/PDF]
+    RAPPORT --&gt; DOCS
+    DOCS --&gt; EXPORT[Ouverture, téléchargement, ZIP]
+    EXPORT --&gt; STORAGE[Stockage local exportable / futur SharePoint]</pre><small>Le fichier UML.md contient les définitions source des diagrammes.</small></section><p>Les dépendances nécessaires au MVP doivent pouvoir voyager avec son dossier. Le futur adaptateur SharePoint remplace uniquement le stockage ; les questionnaires et les fiches ne doivent pas dépendre de SharePoint pour s&#x27;afficher.</p><h2>4. Fiche appareil : seulement l&#x27;essentiel</h2><p>• ID fictif stable (`DEMO-FROID-001`), nom local libre.</p><p>• Type, fabricant, modèle ou référence, numéro de série, site actuel et emplacement.</p><p>• Dates d&#x27;achat et de mise en service **si connues**, sans obligation.</p><p>• Photographie générale et plaque signalétique (documents catégorisés).</p><p>• **Liens web facultatifs** : site ou page constructeur, fiche produit, notice d&#x27;utilisation, documentation complémentaire. Valider les liens HTTP(S) avant affichage ; jamais d&#x27;URL construite arbitrairement.</p><p>• QR code : URL canonique `index.html?appareil=DEMO-FROID-001` une fois hébergé ; le QR n&#x27;est utile que si cette URL et l&#x27;inventaire sont disponibles. Pas de fausse URL ou de QR censé fonctionner hors hébergement.</p><h2>5. Documents de l&#x27;appareil : bibliothèque sans ERP</h2><p>Chaque document a **date, nom, nom de fichier, description facultative, catégorie(s), étiquette(s), fichier ou URL**, et l&#x27;ID de l&#x27;appareil. Catégories proposées : `notice`, `photo`, `plaque`, `diagnostic`, `incident`, `intervention`, `temperature`, `facture`, `garantie`, `autre`. Une même pièce peut porter plusieurs catégories et étiquettes libres.</p><p>La page présente cartes, vignettes, liste et tableau ; recherche et filtres par catégorie, étiquette, date ou nom. Visualiser si le navigateur le permet, sinon télécharger ; exporter une pièce ou les pièces sélectionnées en ZIP.</p><p>**Exemple** : le diagnostic du 10/10/2026 est un PDF ajouté avec `categories: [&quot;diagnostic&quot;, &quot;incident&quot;]`, sans création de dossier SAV ou de registre d&#x27;incident séparé.</p><h2>6. Comportement du diagnostic</h2><p>L&#x27;utilisateur peut débuter sans appareil, saisir uniquement ce qu&#x27;il sait, ou ouvrir une fiche par ID/QR et confirmer ses données préremplies. Les réponses `Je ne sais pas`, `Je ne peux pas vérifier`, `Autre / à préciser` et `Non concerné` ne bloquent jamais. Chaque vérification comprend : objectif, matériel, méthode sans démontage, résultat prédéfini, observation libre, fichiers associés.</p><p>En cas de température anormale, le guide rappelle de se référer au guide et aux procédures d&#x27;hygiène applicables pour la conduite à tenir sur les produits ; il ne reproduit ni seuils ni décisions de conformité.</p><p>Rapport : HTML lisible, export PDF avec images si possibles. Fusion directe de PDF annexes = amélioration encore à finaliser ; tant qu&#x27;elle n&#x27;est pas effective, ne pas prétendre qu&#x27;un PDF global contient tous les originaux.</p><h2>7. Périmètre et séquençage</h2><p>**MVP actuel :** rapport de diagnostic pédagogique, tests, pièces jointes, export. **Prochain incrément :** inventaire fictif, fiche appareil et bibliothèque documentaire catégorisée, préremplissage et QR après hébergement. **Plus tard :** stockage documentaire SharePoint, inventaire réel progressif, suivi qualité/traçabilité si décidé.</p><p>Les inventaires fictifs et sauvegardes doivent rester exportables/importables. Un site HTML statique ne peut pas modifier à lui seul le dossier SharePoint partagé de tous les utilisateurs.</p><h2>8. Critères de validation</h2><p>1. Diagnostic sans enregistrement d&#x27;appareil.</p><p>2. Diagnostic à partir d&#x27;un ID existant sans ressaisie.</p><p>3. Aucun blocage lorsqu&#x27;un champ ou une pièce manque.</p><p>4. Export PDF conservant les résultats et observations des tests.</p><p>5. Ajout d&#x27;un PDF d&#x27;incident dans la bibliothèque documentaire de l&#x27;appareil.</p><p>6. Filtres multi-étiquettes et téléchargement individuel/ZIP.</p><p>7. Ouverture d&#x27;une notice externe sans perdre le travail en cours.</p><p>8. Déplacement du dossier complet sans dépendance au Studio Hub.</p><p>**L&#x27;architecture décrite est la cible documentée ; elle ne signifie pas que chaque fonctionnalité est déjà codée et validée.**</p></body></html>
