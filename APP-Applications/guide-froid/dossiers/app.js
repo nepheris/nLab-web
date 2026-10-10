@@ -1,7 +1,7 @@
 'use strict';
 const $=id=>document.getElementById(id),E=new TextEncoder(),D=new TextDecoder();
-const fields=['id','title','site','fabricant','modele','gamme','reference','numero','date','fluide','volume','provenance','notice'];
-const labels=['Identifiant appareil','Désignation','Site','Fabricant','Modèle','Gamme','Référence','Numéro de série','Date / fabrication','Fluide frigorifique','Capacité brute / nette','Provenance','Lien notice'];
+const fields=['id','title','site','fabricant','modele','gamme','utilisation','reference','numero','date','fluide','volume','provenance','notice'];
+const labels=['Identifiant appareil','Désignation','Site','Fabricant','Modèle','Gamme','Utilisation / activité de l’appareil','Référence','Numéro de série','Date / fabrication','Fluide frigorifique','Capacité brute / nette','Provenance','Lien notice'];
 let device=null,docs=new Map();
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const setStatus=s=>$('status').textContent=s;
@@ -35,3 +35,6 @@ $('newDevice').onclick=()=>{device={id:'NOUVEL-APPAREIL',title:'Nouvel appareil'
 $('documents').onchange=async e=>{if(!device)return;for(const f of e.target.files){if(f.name.includes('/')||f.name.includes('\\')||f.name==='.'||f.name==='..')continue;docs.set(f.name,new Uint8Array(await f.arrayBuffer()))}renderDocs();e.target.value=''};
 $('saveVisit').onclick=()=>{if(!device)return;readForm();device.visites.push({id:'VIS-'+Date.now(),date:$('visitDate').value||new Date().toISOString().slice(0,10),site:$('visitSite').value,type:$('visitType').value,observations:$('observations').value,actions:$('actions').value,aPrevoir:$('todo').value});renderHistory();['observations','actions','todo'].forEach(k=>$(k).value='');setStatus('Visite ajoutée en mémoire : exporter le ZIP pour la conserver.')};
 $('exportZip').onclick=exportZip;$('exportJson').onclick=()=>device&&download(new Blob([JSON.stringify(readForm(),null,2)],{type:'application/json'}),(device.id||'appareil')+'.json');$('printVisit').onclick=()=>report((device?.visites||[]).length-1);$('printSheet').onclick=()=>report(0,true);$('visitDate').value=new Date().toISOString().slice(0,10);
+
+// Accueil orienté parcours : pré-sélection sans chargement automatique de données privées.
+const intent=new URLSearchParams(location.search).get('mode');if(intent==='new')$('newDevice').focus();else if(intent==='import')$('importZip').focus();else if(intent==='visit')$('status').textContent='Pour saisir une visite, importer le ZIP de l’appareil ou créer sa fiche, puis renseigner la section 3.';
