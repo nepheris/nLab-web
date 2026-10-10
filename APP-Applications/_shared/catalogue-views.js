@@ -37,7 +37,7 @@ async function supplementary(){
  controls(derived,'Applications');
  const future=section('Développements à venir','nl-future','Projets en préparation, distincts des applications effectivement publiées.');
  const items=[...(d.future||[])];
- if(!items.some(x=>/guide.froid/i.test(String(x.name||''))))items.push({name:'Guide Froid — MVP',purpose:'Diagnostic pédagogique et rapport PDF. Publication dédiée en préparation.'});
+ /* Guide Froid is now registered under derived_apps; no development placeholder. */
  future.innerHTML=items.map(s=>'<article class="nlab-card"><div class="nlab-status-line">EN DÉVELOPPEMENT</div><h3>'+esc(s.name)+'</h3><p class="nlab-muted">'+esc(s.purpose||'Projet en préparation.')+'</p></article>').join('');
  controls(future,'Développements');
  paint();
