@@ -1,0 +1,16 @@
+/* nLab page coherence: minimal shared visual baseline for Demo, Info, Guide Froid.
+   Does not change Studio runtime or data models. */
+:root{--nlab-brand:#0057b8;--nlab-common-ink:#1f2933;--nlab-common-muted:#607181;--nlab-common-line:#d8e0e7;--nlab-common-bg:#f3f5f7}
+body{font-family:Inter,Arial,Helvetica,sans-serif}
+.nlab-crossnav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.nlab-crossnav img{display:block;width:100px;height:auto}
+.nlab-crossnav a{color:inherit;text-decoration:none;padding:7px 9px;border-radius:8px;font-weight:600}
+.nlab-crossnav a:hover{background:#eaf2fb;color:#0057b8}
+.guide-header{background:#fff!important;color:#1f2933!important;border-bottom:1px solid #d8e0e7;padding:14px max(20px,calc((100vw - 1050px)/2))!important}
+.guide-header h1{color:#0057b8;margin-top:8px!important}
+.guide-header p{color:#607181!important}
+.guide-header .nlab-crossnav{border-bottom:1px solid #e3e8ef;padding-bottom:9px}
+.guide-error{background:#fff0ec;border:1px solid #af402e;color:#842e22;padding:14px 20px;margin:16px auto;max-width:1050px;border-radius:9px}
+.guide-error[hidden]{display:none}
+.guide-header~main .primary{background:#0057b8;border-color:#0057b8}
+@media(max-width:650px){.nlab-crossnav{gap:5px}.nlab-crossnav a{padding:5px 7px;font-size:13px}}
