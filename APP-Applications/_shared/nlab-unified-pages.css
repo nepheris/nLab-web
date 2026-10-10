@@ -5,7 +5,7 @@ body{background:var(--nlab-bg)!important;color:var(--nlab-ink)!important;font-fa
 body>header,.guide-header{background:var(--nlab-card)!important;color:var(--nlab-ink)!important;border-bottom:1px solid var(--nlab-line)!important;box-shadow:0 4px 18px rgba(31,41,51,.06);padding-top:12px!important;padding-bottom:12px!important}
 body>header a,.guide-header a{color:var(--nlab-muted)!important}
 body>header a:hover,.guide-header a:hover{color:var(--nlab-brand)!important}
-.nlab-crossnav{min-height:60px;gap:9px}.nl ab{color:inherit}
+.nlab-crossnav{min-height:60px;gap:9px}
 .guide-header h1,.hero h1{color:var(--nlab-ink)!important}
 .guide-header p,.hero p,.muted,.hint,.small{color:var(--nlab-muted)!important}
 .guide-header .nlab-crossnav{border-bottom-color:var(--nlab-line)}
