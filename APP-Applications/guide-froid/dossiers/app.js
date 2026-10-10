@@ -21,9 +21,9 @@ function renderUsage(){
 }
 
 const visualStages=[
- {key:'familleFroid',label:'1 · Quel froid ?',items:[['frigo','Froid positif','fridge'],['congelateur','Froid négatif','freezer']]},
+ {key:'familleFroid',label:'1 · Quel froid ?',items:[['frigo','Froid positif (frigo)','fridge'],['congelateur','Froid négatif (congélateur)','freezer']]},
  {key:'forme',label:'2 · Quelle forme ?',items:[['verticale','Armoire verticale','vertical'],['horizontale','Coffre horizontal','chest'],['vitrine','Vitrine','glass'],['comptoir','Table / comptoir','counter'],['chambre','Chambre froide','room']]},
- {key:'nombrePortes',label:'3 · Combien de portes ?',items:[['1','Une','single'],['2','Deux','double'],['3','Trois','triple']]},
+ {key:'nombrePortes',label:'3 · Combien de portes ?',items:[['1','Une','single'],['2','Deux','double'],['3','Trois portes ou plus','triple']]},
  {key:'ouverture',label:'4 · Comment s’ouvre-t-il ?',items:[['battante','Porte battante','hinge'],['coulissante','Porte / vitre coulissante','slide'],['relevable','Couvercle relevable','lid'],['aucune','Autre / non visible','unknown']]},
  {key:'vitrage',label:'5 · Porte ou couvercle',items:[['pleine','Plein','solid'],['vitree','Vitré','glass'],['mixte','Mixte','mix'],['inconnu','Non déterminé','unknown']]}
 ];
@@ -69,6 +69,7 @@ function defaultDetails(){
  device.vitrage=device.forme==='vitrine'?'vitree':'pleine';
 }
 function graphicFor(stageKey,value){
+ if(stageKey==='familleFroid')return value==='frigo'?'<svg viewBox="0 0 102 94" aria-hidden="true"><rect x="28" y="6" width="46" height="79" rx="6"/><path d="M28 35h46M66 20v10M66 49v11"/><path d="M17 60q-9 -7 0 -14m-7 -5q-9 -7 0 -14"/><text x="50" y="66" text-anchor="middle" font-size="14" stroke="none" fill="currentColor">+°</text></svg>':'<svg viewBox="0 0 102 94" aria-hidden="true"><rect x="28" y="6" width="46" height="79" rx="6"/><path d="M28 35h46M66 20v10M66 49v11M51 43v32M35 59h32M40 48l22 22M62 48L40 70"/><text x="51" y="25" text-anchor="middle" font-size="14" stroke="none" fill="currentColor">−°</text></svg>';
  const doorCount=stageKey==='nombrePortes'?Number(value):Math.min(3,Number(device.nombrePortes)||1);
  const glass=stageKey==='vitrage'?value==='vitree':device.vitrage==='vitree';
  const horizontal=stageKey==='forme'?value==='horizontale':device.forme==='horizontale';
@@ -76,7 +77,7 @@ function graphicFor(stageKey,value){
  const sliding=stageKey==='ouverture'?value==='coulissante':device.ouverture==='coulissante';
  let art='';
  if(room){
- art='<path d="M7 22L35 7H94V72L67 87H7Z M7 22H67V87 M67 22L94 7 M67 22V87"/>';
+ art='<path d="M7 22L35 7H94V72L67 87H7Z M7 22H67V87 M67 22L94 7 M67 22V87"/><path d="M12 78h51"/>';
  }else if(horizontal){
  art='<rect x="7" y="35" width="88" height="45" rx="4"/><path d="M7 42h88M13 80v5M89 80v5"/>';
  }else art='<rect x="22" y="5" width="64" height="78" rx="4"/>';
@@ -136,7 +137,7 @@ function renderTypePreview(){
  const details=glass?'<path d="M40 36h25v37H40M43 48h18M43 60h18"/>':'';
  $('typePreview').innerHTML='<svg viewBox="0 0 94 90" aria-hidden="true">'+shape+details+'</svg><div><strong>'+safe(name)+'</strong><span class="gf-hint">Illustration schématique générique, non contractuelle et indépendante du fabricant.</span></div>';
 }
-function render(){if(!device)return;$('workspace').hidden=false;$('deviceForm').innerHTML=fields.filter(k=>!visualStages.some(x=>x.key===k)&&k!=='typeEquipement'&&k!=='familleUsage'&&k!=='utilisation').map(k=>'<label>'+safe(labels[fields.indexOf(k)])+(k==='typeEquipement'?'<select id="field-'+k+'"><option value="">Choisir un type</option>'+categories.map(c=>'<option value="'+safe(c[0])+'" '+(device[k]===c[0]?'selected':'')+'>'+safe(c[1])+'</option>').join('')+'</select>':k==='familleUsage'?'<select id="field-'+k+'"><option value="">Choisir une utilisation</option>'+usages.map(v=>'<option '+(device[k]===v?'selected':'')+'>'+safe(v)+'</option>').join('')+'</select>':'<input id="field-'+k+'" value="'+safe(device[k]||'')+'">')+'</label>').join('');$('visitSite').value=device.site||'';$('field-site')?.addEventListener('input',()=>{device.site=$('field-site').value;if(device._generatedId)suggestId()});renderTypePreview();renderWizard();renderUsage();renderHistory();renderDocs();renderPhotoSlots();$('visitFiles').onchange=e=>addVisitFiles([...e.target.files]);const drop=$('visitDrop');drop.ondragover=e=>{e.preventDefault()};drop.ondrop=e=>{e.preventDefault();addVisitFiles([...e.dataTransfer.files])};renderVisitFiles()}
+function render(){if(!device)return;$('workspace').hidden=false;$('deviceForm').innerHTML=fields.filter(k=>!visualStages.some(x=>x.key===k)&&k!=='typeEquipement'&&k!=='familleUsage'&&k!=='utilisation').map(k=>'<label>'+safe(labels[fields.indexOf(k)])+(k==='typeEquipement'?'<select id="field-'+k+'"><option value="">Choisir un type</option>'+categories.map(c=>'<option value="'+safe(c[0])+'" '+(device[k]===c[0]?'selected':'')+'>'+safe(c[1])+'</option>').join('')+'</select>':k==='familleUsage'?'<select id="field-'+k+'"><option value="">Choisir une utilisation</option>'+usages.map(v=>'<option '+(device[k]===v?'selected':'')+'>'+safe(v)+'</option>').join('')+'</select>':'<input id="field-'+k+'" value="'+safe(device[k]||'')+'">')+'</label>').join('');$('visitSite').value=device.site||'';$('field-site')?.addEventListener('input',()=>{device.site=$('field-site').value;if($('visitSite'))$('visitSite').value=device.site;if(device._generatedId)suggestId()});renderTypePreview();renderWizard();renderUsage();renderHistory();renderDocs();renderPhotoSlots();$('visitFiles').onchange=e=>addVisitFiles([...e.target.files]);const drop=$('visitDrop');drop.ondragover=e=>{e.preventDefault()};drop.ondrop=e=>{e.preventDefault();addVisitFiles([...e.dataTransfer.files])};renderVisitFiles()}
 function renderHistory(){const list=device.visites||[];$('history').innerHTML='<h3>Historique ('+list.length+')</h3>'+list.map((v,i)=>'<article><strong>'+safe(v.date)+' · '+safe(v.type)+' · '+safe(v.site)+'</strong><p>'+safe(v.observations)+'</p><p>Réalisé : '+safe(v.actions)+'</p><p>À prévoir : '+safe(v.aPrevoir)+'</p><button type="button" data-i="'+i+'">Consulter / PDF</button></article>').join('');$('history').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>report(Number(b.dataset.i)))}
 function photoIcon(which){return which==='plate'?'<rect x="17" y="19" width="66" height="52" rx="5"/><path d="M28 33h44M28 44h31M28 55h38"/>':which==='inside'?'<path d="M22 9h46v74H22zM32 30h31M32 53h31M74 14l12 10v54l-12-7z"/>':'<rect x="25" y="7" width="48" height="76" rx="5"/><path d="M26 35h46M65 21v12M65 49v13"/>'}
 function renderPhotoSlots(){
