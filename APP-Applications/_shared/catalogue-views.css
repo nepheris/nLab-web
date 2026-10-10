@@ -17,3 +17,5 @@
 .nlcatalog-tiles>.nlab-card .nlab-btn{font-size:11px;padding:6px}
 .nlcatalog-section{margin-top:26px}
 @media(max-width:850px){.nlcatalog-list>.nlab-card,.nlcatalog-table>.nlab-card{grid-template-columns:1fr;gap:6px}.nlcatalog-list>.nlab-card .nlab-actions,.nlcatalog-table>.nlab-card .nlab-actions{justify-content:flex-start}}
+
+.nlcatalog-tiles{grid-template-columns:repeat(auto-fill,minmax(var(--catalog-tile-size,170px),1fr))!important}.nlab-catalog-icon{display:block;width:44px;height:44px;object-fit:contain;margin:0 0 8px}.nlcatalog-settings{border:1px solid var(--nlab-line);border-radius:8px;padding:6px 9px;color:var(--nlab-ink);background:var(--nlab-card)}.nlcatalog-settings summary{cursor:pointer;font-size:12px}.nlcatalog-settings label{display:flex;gap:8px;align-items:center;font-size:12px;margin:8px 0}.nlcatalog-settings select{background:var(--nlab-card);color:var(--nlab-ink);border:1px solid var(--nlab-line)}
