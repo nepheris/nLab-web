@@ -6,7 +6,7 @@ const VALID=['cards','tiles','list','table'];
 const ICON={cards:'▦',tiles:'▤',list:'☷',table:'▥'};
 const LABEL={cards:'Cartes',tiles:'Vignettes',list:'Liste',table:'Tableau'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const read=()=>{try{const x=localStorage.getItem(KEY);return VALID.includes(x)?x:'cards'}catch{return'cards'}};
+const read=()=>{try{const x=localStorage.getItem(KEY);return VALID.includes(x)?x:'tiles'}catch{return'tiles'}};
 let view=read();
 const targets=()=>['applicationGrid','studioGrid','derivedGrid','developmentGrid','nl-apps','nl-derived','nl-future'].map(id=>document.getElementById(id)).filter(Boolean);
 function paint(){
@@ -18,7 +18,12 @@ function paint(){
 }
 function controls(container,title){
  if(!container||container.previousElementSibling?.classList.contains('nlcatalog-toolbar'))return;
- const bar=document.createElement('div');bar.className='nlcatalog-toolbar';bar.setAttribute('role','group');bar.setAttribute('aria-label','Mode d’affichage : '+title);
+ const bar=document.createElement('div');bar.className='nlcatalog-toolbar';
+ const settings=document.createElement('details');settings.className='nlcatalog-settings';settings.innerHTML='<summary>⚙ Vue</summary><label>Format <input type="range" min="120" max="310" step="10" value="'+(localStorage.getItem('nlab:catalogue:tile-size')||'170')+'" aria-label="Taille des vignettes"></label><label>Tri <select aria-label="Tri"><option value="default">Par défaut</option><option value="az">A → Z</option><option value="za">Z → A</option></select></label>';bar.append(settings);
+ settings.querySelector('input').addEventListener('input',e=>{container.style.setProperty('--catalog-tile-size',e.target.value+'px');localStorage.setItem('nlab:catalogue:tile-size',e.target.value)});
+ container.style.setProperty('--catalog-tile-size',(localStorage.getItem('nlab:catalogue:tile-size')||'170')+'px');
+ settings.querySelector('select').addEventListener('change',e=>{const mode=e.target.value;const children=[...container.children];if(mode==='default'){children.sort((a,b)=>(Number(a.dataset.originalOrder)||0)-(Number(b.dataset.originalOrder)||0))}else children.sort((a,b)=>{const x=a.querySelector('h2,h3')?.textContent||'',y=b.querySelector('h2,h3')?.textContent||'';return mode==='az'?x.localeCompare(y,'fr'):y.localeCompare(x,'fr')});container.replaceChildren(...children)});
+ new MutationObserver(()=>[...container.children].forEach((x,i)=>{if(!x.dataset.originalOrder)x.dataset.originalOrder=String(i+1)})).observe(container,{childList:true});bar.setAttribute('role','group');bar.setAttribute('aria-label','Mode d’affichage : '+title);
  const caption=document.createElement('span');caption.className='nlcatalog-label';caption.textContent='Affichage · '+title;bar.append(caption);
  for(const val of VALID){const b=document.createElement('button');b.type='button';b.dataset.nlcatalogView=val;b.title='Vue '+LABEL[val];b.textContent=ICON[val]+' '+LABEL[val];b.onclick=()=>{view=val;try{localStorage.setItem(KEY,val)}catch{}paint()};bar.append(b)}
  container.before(bar);paint();
