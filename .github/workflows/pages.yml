@@ -368,6 +368,13 @@ jobs:
             done
             test "${ok}" -eq 1
           }
+          # Guide Froid: prevent silent 404 regressions on GitHub Pages.
+          test -s APP-Applications/guide-froid/index.html
+          test -s APP-Applications/guide-froid/docs/index.html
+          grep -q '"id": "guide-froid"' APP-Applications/studios/catalog.json
+          smoke_fetch "APP-Applications/guide-froid/index.html" /tmp/nlab-guide-froid.html
+          smoke_fetch "APP-Applications/guide-froid/docs/index.html" /tmp/nlab-guide-froid-uml.html
+          grep -q 'Guide Froid' /tmp/nlab-guide-froid.html
           smoke_fetch "APP-Applications/_shared/selection-scope.js" /tmp/nlab-selection-scope.js
           smoke_fetch "APP-Applications/_shared/archive-workspace.js" /tmp/nlab-archive-workspace.js
           smoke_fetch "APP-Applications/pdf-studio/app-0.9.25.html" /tmp/nlab-pdf-studio-0925.html
