@@ -1,0 +1,19 @@
+/* Shared catalogue views — additive, independent of Studio CURRENT/TEST logic. */
+.nlcatalog-toolbar{display:flex;gap:6px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin:12px 0}
+.nlcatalog-toolbar .nlcatalog-label{font-size:12px;opacity:.75;margin-right:auto}
+.nlcatalog-toolbar button{border:1px solid var(--nlab-line);border-radius:8px;background:var(--nlab-card);color:var(--nlab-ink);padding:7px 10px;cursor:pointer;font:inherit;font-size:12px}
+.nlcatalog-toolbar button[aria-pressed="true"]{outline:2px solid var(--nlab-brand);outline-offset:1px}
+.nlcatalog-list,.nlcatalog-table{display:flex!important;flex-direction:column!important;gap:7px!important}
+.nlcatalog-list>.nlab-card,.nlcatalog-table>.nlab-card{display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(180px,2fr) auto;gap:10px;align-items:center;margin:0;min-width:0}
+.nlcatalog-list>.nlab-card h2,.nlcatalog-list>.nlab-card h3,.nlcatalog-table>.nlab-card h2,.nlcatalog-table>.nlab-card h3{font-size:1rem;margin:0}
+.nlcatalog-list>.nlab-card p,.nlcatalog-table>.nlab-card p{margin:0}
+.nlcatalog-list>.nlab-card .nlab-actions,.nlcatalog-table>.nlab-card .nlab-actions{justify-content:flex-end;flex-wrap:wrap}
+.nlcatalog-table>.nlab-card{border-radius:2px;padding:10px 12px}
+.nlcatalog-table>.nlab-card:nth-child(even){background:var(--nlab-panel,var(--nlab-card))}
+.nlcatalog-tiles{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))!important;gap:10px!important}
+.nlcatalog-tiles>.nlab-card{padding:12px!important}
+.nlcatalog-tiles>.nlab-card p{display:none}
+.nlcatalog-tiles>.nlab-card .nlab-actions{gap:4px}
+.nlcatalog-tiles>.nlab-card .nlab-btn{font-size:11px;padding:6px}
+.nlcatalog-section{margin-top:26px}
+@media(max-width:850px){.nlcatalog-list>.nlab-card,.nlcatalog-table>.nlab-card{grid-template-columns:1fr;gap:6px}.nlcatalog-list>.nlab-card .nlab-actions,.nlcatalog-table>.nlab-card .nlab-actions{justify-content:flex-start}}
