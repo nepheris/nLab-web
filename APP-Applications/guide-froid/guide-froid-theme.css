@@ -1,0 +1,53 @@
+/* Guide Froid dark contrast v0.6.2; independent from the site shell.
+   Loaded AFTER the shared shell. Light mode intentionally unchanged. */
+:root[data-theme="dark"] body.guide-froid-page {
+ --primary:#24669c;
+ --pale:#263e4b;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(.panel,.menu,.collapsible,.collapsible>.inside,.test-card,.model,.manufacturer,.report) {
+ background:#202a34!important;color:#eef4fa!important;border-color:#596b7b!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main .collapsible summary {
+ background:#344554!important;color:#f4f8ff!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(.drop,.mini-upload,.file-tag,.figure) {
+ background:#2a3d4b!important;color:#eff6fc!important;border-color:#7791a6!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(.small,.hint) {
+ color:#c2d1df!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(input,select,textarea) {
+ background:#172631!important;color:#f5faff!important;border:1px solid #8299ac!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(input,textarea)::placeholder {
+ color:#becbd8!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main button:not(.primary):not(.active) {
+ background:#334452!important;color:#f5f8fc!important;border-color:#8299ac!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(button.primary,.primary) {
+ background:#165f9b!important;color:#fff!important;border-color:#89caff!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(button.active,.chips button.active,.menu button.active) {
+ background:#225780!important;color:#fff!important;border-color:#9ad3ff!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(.note,.image-warning) {
+ background:#234458!important;color:#f1f8ff!important;border-left-color:#7bd2ff!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main :is(.warn,.note.warn,.image-warning) {
+ background:#493521!important;color:#fff0d1!important;border-left-color:#ffcc6e!important;
+}
+:root[data-theme="dark"] body.guide-froid-page main .report strong{color:#acd8ff!important}
+:root[data-theme="dark"] body.guide-froid-page main a{color:#9ed4ff!important}
+:root[data-theme="dark"] body.guide-froid-page main a:hover{color:#d8edff!important}
+:root[data-theme="dark"] body.guide-froid-page main .progress{background:#455767!important}
+:root[data-theme="dark"] body.guide-froid-page main .progress>div{background:#86d0ff!important}
+:root[data-theme="dark"] body.guide-froid-page main :focus-visible {
+ outline:3px solid #ffcf76!important;outline-offset:2px;
+}
+@media print {
+ :root[data-theme="dark"] body.guide-froid-page main :is(.panel,.menu,.collapsible,.collapsible>.inside,.test-card,.model,.manufacturer,.report,.note,.warn,.image-warning) {
+ background:#fff!important;color:#111!important;border-color:#aaa!important;
+ }
+ :root[data-theme="dark"] body.guide-froid-page main .report strong {color:#173a55!important}
+}
