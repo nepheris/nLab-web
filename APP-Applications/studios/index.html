@@ -12,7 +12,7 @@
 .studioIcon::after{content:"";position:absolute;inset:8px;background:currentColor;-webkit-mask:var(--studio-icon) center/contain no-repeat;mask:var(--studio-icon) center/contain no-repeat}
 .devCard{background:color-mix(in srgb,var(--nlab-card) 92%,#fff7d6 8%);border-color:#ead79a}.devCard .studioIcon{background:#765600}
 .studioOverride{border:1px solid var(--nlab-line);border-radius:8px;background:var(--nlab-card);color:var(--nlab-ink);padding:7px 9px;font:inherit;font-size:12px}
-</style>
+.dev-detail{border-top:1px solid var(--nlab-line);padding-top:10px;margin-top:12px}.dev-detail summary{cursor:pointer;color:var(--nlab-brand);font-weight:700}.devCard .studioIcon{background:#986d0a}@media(prefers-color-scheme:dark){.devCard .studioIcon{background:#c99736}}</style>
 <link rel="stylesheet" href="../_shared/catalogue-views.css">
 <link rel="stylesheet" href="../_shared/nlab-page-actions.css"></head>
 <body>
@@ -121,7 +121,7 @@ window.NLabAppShellConfig={sharedStorageKey:'nlab:application-shell:shared-prefs
   }).join('')||'<p class="nlab-muted">Aucune app dérivée.</p>';
 
   const dev=document.getElementById('developmentGrid');
-  dev.innerHTML=(data.future||[]).map(s=>{const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';return '<article class="nlab-card devCard">'+icon+'<div class="nlab-status-line">DÉVELOPPEMENT</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Fonction en développement.')+'</p><div class="nlab-actions"><span class="nlab-btn disabled">Après validation humaine</span></div></article>'}).join('')||'<p class="nlab-muted">Aucun chantier différé.</p>';
+  dev.innerHTML=(data.future||[]).map(s=>{const icon=s.icon?'<div class="studioIcon" style="--studio-icon:url(\''+esc(resolve(location.href,s.icon))+'\')"></div>':'';return '<article class="nlab-card devCard">'+icon+'<div class="nlab-status-line">DÉVELOPPEMENT</div><h2>'+esc(s.name)+'</h2><p class="nlab-muted">'+esc(s.purpose||'Fonction en développement.')+'</p><details class="dev-detail"><summary>Découvrir le projet</summary><p class="nlab-muted">'+esc(s.purpose||'Fonction en développement ; périmètre à préciser avant validation humaine.')+'</p><p class="nlab-muted">Statut : développement différé. Cette présentation ne constitue pas une version utilisable ni une validation de lancement.</p><span class="nlab-btn disabled">Ouverture après validation humaine</span></details></article>'}).join('')||'<p class="nlab-muted">Aucun chantier différé.</p>';
 
   globalPolicy.addEventListener('change',()=>{localStorage.setItem(policyKey,globalPolicy.value);location.reload()});
   document.getElementById('clearOverrides').onclick=()=>{overrides={};localStorage.removeItem(overrideKey);location.reload()};
