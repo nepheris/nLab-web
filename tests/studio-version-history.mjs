@@ -46,7 +46,11 @@ try{
       const page=await browser.newPage({viewport:{width:1280,height:800}});
       const href=String(v.href||'./');
       const target=new URL('APP-Applications/'+id+'/'+href,base).href;
-      const errs=[];const onErr=e=>errs.push(e.message);page.on('pageerror',onErr);
+      const errs=[];const assetErrors=[];
+      const onErr=e=>errs.push(e.message);
+      const onResponse=r=>{if(r.status()>=400&&r.url().startsWith(new URL(base).origin))assetErrors.push({status:r.status(),url:r.url()});};
+      const onRequestFailed=req=>{if(req.url().startsWith(new URL(base).origin))assetErrors.push({failure:req.failure()?.errorText||'request-failed',url:req.url()});};
+      page.on('pageerror',onErr);page.on('response',onResponse);page.on('requestfailed',onRequestFailed);
       let response=null;
       try{
         response=await page.goto(target,{waitUntil:'domcontentloaded',timeout:60000});
@@ -64,10 +68,11 @@ try{
           }
         }
         if(errs.length)throw new Error('JS '+errs.join(' | '));
+        if(assetErrors.length)throw new Error('Local asset HTTP/network failure '+JSON.stringify(assetErrors.slice(0,12)));
         results.push({id,version:String(v.version),status:v.status,isolation:v.isolation||'',href,ok:true});
       }catch(e){
         results.push({id,version:String(v.version),status:v.status,isolation:v.isolation||'',href,ok:false,error:String(e?.message||e)});
-      }finally{page.off('pageerror',onErr);await page.close()}
+      }finally{page.off('pageerror',onErr);page.off('response',onResponse);page.off('requestfailed',onRequestFailed);await page.close()}
     }
   }
 }finally{if(browser)await browser.close()}
