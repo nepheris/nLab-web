@@ -123,12 +123,12 @@ async function unzip(file){
  const b=new Uint8Array(await file.arrayBuffer());let end=b.length-22;while(end>=0&&u32(b,end)!==0x06054b50)end--;if(end<0)throw Error('ZIP non reconnu');
  const count=u16(b,end+10);if(count>1000)throw Error('Archive trop volumineuse');let p=u32(b,end+16),out=new Map(),total=0;
  for(let i=0;i<count;i++){if(u32(b,p)!==0x02014b50)throw Error('Annuaire ZIP invalide');
- const method=u16(b,p+10),csize=u32(b,p+20),size=u32(b,p+24),nl=u16(b,p+28),el=u16(b,p+30),cl=u16(b,p+32),at=u32(b,p+42),name=D.decode(b.subarray(p+46,p+46+nl));p+=46+nl+el+cl;
+ const method=u16(b,p+10),expectedCrc=u32(b,p+16),csize=u32(b,p+20),size=u32(b,p+24),nl=u16(b,p+28),el=u16(b,p+30),cl=u16(b,p+32),at=u32(b,p+42),name=D.decode(b.subarray(p+46,p+46+nl));p+=46+nl+el+cl;
  if(name.endsWith('/'))continue;if(name.startsWith('/')||name.includes('\\')||name.split('/').includes('..')||size>80e6||(total+=size)>250e6)throw Error('Chemin ou taille ZIP non autorisé');
  if(u32(b,at)!==0x04034b50)throw Error('Entrée ZIP invalide');
  const start=at+30+u16(b,at+26)+u16(b,at+28);let value=b.slice(start,start+csize);
  if(method===8){if(!('DecompressionStream'in window))throw Error('Décompression ZIP indisponible dans ce navigateur');value=new Uint8Array(await new Response(new Blob([value]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer())}else if(method!==0)throw Error('Compression ZIP non prise en charge');
- if(value.length!==size)throw Error('Taille ZIP incohérente');out.set(name,value);
+ if(value.length!==size)throw Error('Taille ZIP incohérente');if(crc32(value)!==expectedCrc)throw Error('Contrôle CRC invalide pour '+name);if(out.has(name))throw Error('Entrée ZIP en doublon : '+name);out.set(name,value);
  }return out;
 }
 function crc32(data){let c=0xffffffff;for(const v of data){c^=v;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1}return(c^0xffffffff)>>>0}
