@@ -7,18 +7,17 @@ document.addEventListener('DOMContentLoaded',async()=>{
  const name=code=>(TESTS.find(x=>x[0]===code)||[code,'Contrôle'])[1];
  const safe=s=>String(s).replace(/["<>\r\n]/g,' ').slice(0,105);
  const lines=['flowchart TD','start(["Constat : '+safe(d[1])+'"])','context["Observer, photographier et noter les circonstances"]','start --> context'];
- let prev='context';
+ const prev='context';
  codes.forEach((code,i)=>{
    const decision='D'+i,check='T'+i;
    lines.push(decision+'{"'+safe('Une anomalie est-elle visible au contrôle '+code+' ?')+'"}');
    lines.push(check+'["'+safe(code+' · '+name(code))+'"]');
-   lines.push(prev+' --> '+check);
+   if(i===0)lines.push(prev+' --> '+check);
    lines.push(check+' --> '+decision);
    lines.push('click '+check+' "test.html?id='+encodeURIComponent(code)+'" "Fiche '+code+'" _blank');
    if(i<codes.length-1)lines.push(decision+' -->|Non ou indéterminé| T'+(i+1));
    else lines.push(decision+' -->|Non ou indéterminé| escalate');
    lines.push(decision+' -->|Oui| document');
-   prev=decision;
  });
  if(!codes.length)lines.push('context --> document');
  lines.push('document["Consigner le constat, le test et les photos"]');
