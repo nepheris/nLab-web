@@ -8,6 +8,7 @@ const preflightOnly=process.env.NLAB_PREFLIGHT_ONLY==='1';
 const browser=preflightOnly?null:await (await import('playwright')).chromium.launch({headless:true});
 const results=[];
 const missingRegistries=[];
+const unversionedFound=[];
 const malformedRegistries=[];
 const observedVersionKeys=new Set();
 let registryEntryCount=0;
@@ -16,11 +17,16 @@ const intentionallyUnversioned=new Set(['guide-froid']);
 try{
   for(const id of ids){
     const regPath=path.join(root,'APP-Applications',id,'versions.json');
-    let reg;try{reg=JSON.parse(await fs.readFile(regPath,'utf8'))}catch(e){
-      if(!intentionallyUnversioned.has(id))missingRegistries.push({id,path:regPath,error:String(e?.message||e)});
+    let raw;
+    try{raw=await fs.readFile(regPath,'utf8')}
+    catch(e){
+      if(e?.code==='ENOENT'&&intentionallyUnversioned.has(id)){unversionedFound.push(id);continue;}
+      missingRegistries.push({id,path:regPath,error:String(e?.message||e)});
       continue;
     }
-    if(!Array.isArray(reg.versions)){
+    let reg;
+    try{reg=JSON.parse(raw)}catch(e){malformedRegistries.push({id,error:'Invalid registry JSON: '+String(e?.message||e)});continue;}
+    if(!reg||!Array.isArray(reg.versions)){
       malformedRegistries.push({id,error:'versions must be an array'});
       continue;
     }
@@ -69,5 +75,5 @@ const failed=results.filter(x=>!x.ok);
 if(registryEntryCount!==expectedVersionCount)failed.push({id:'registry-count',ok:false,error:`Expected ${expectedVersionCount} registered versions, got ${registryEntryCount}`});
 for(const missing of missingRegistries)failed.push({...missing,ok:false,error:'Required versions.json missing: '+missing.path});
 for(const malformed of malformedRegistries)failed.push({...malformed,ok:false});
-console.log(JSON.stringify({ok:failed.length===0,total:results.length,registryEntryCount,mode:preflightOnly?'PREFLIGHT_STATIC':'BROWSER',failed,results},null,2));
+console.log(JSON.stringify({ok:failed.length===0,total:results.length,registryEntryCount,unversionedFound,mode:preflightOnly?'PREFLIGHT_STATIC':'BROWSER',failed,results},null,2));
 if(failed.length)process.exit(1);
