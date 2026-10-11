@@ -17,3 +17,12 @@ Date : 2026-10-11. Branche de développement : main.
 5. Tester Chrome et Firefox, retour au dossier, expiration de transfert et anciennes enveloppes v1.
 
 **État : B02 PARTIAL.** Le transfert des métadonnées existe ; le transfert des binaires et la recette graphique restent ouverts.
+
+## Implémentation suivante — 11/10/2026
+- Handoff v3 créé dans l'atelier : transfert fiche complète, visites, inventaire, référence temporaire UUID.
+- Copies binaires déposées avant navigation dans IndexedDB (`nlab-guide-froid-handoff`, store `sessions`), sans serveur ; aucune donnée binaire placée dans sessionStorage.
+- Le diagnostic accepte toujours v1 et v2 et sait accepter v3 ; un volet permet d'accéder aux fichiers binaires par un lien `Voir / télécharger`.
+- Les transferts de plus de 4 heures sont refusés côté lecture. Cela n'implique pas une purge physique automatique des anciennes données IndexedDB ; purge et restauration du dossier côté atelier restent à construire.
+- Contrôle de syntaxe du JS atelier et des scripts inline du diagnostic : PASS. **Aucune recette graphique navigateur pour B02 v3.**
+
+**État B02 : PARTIAL avancé**. À prouver : ouvrir des images et PDF depuis le diagnostic, retour au dossier et comportement après réimport, contrôle Chrome/Firefox, absence de perte et nettoyage IndexedDB.
