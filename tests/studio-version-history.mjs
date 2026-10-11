@@ -12,7 +12,7 @@ const unversionedFound=[];
 const malformedRegistries=[];
 const observedVersionKeys=new Set();
 let registryEntryCount=0;
-const expectedVersionCount=Number(process.env.NLAB_EXPECTED_STUDIO_VERSIONS||128);
+const expectedVersionCount=Number(process.env.NLAB_EXPECTED_STUDIO_VERSIONS||130);
 const intentionallyUnversioned=new Set(['guide-froid']);
 try{
   for(const id of ids){
