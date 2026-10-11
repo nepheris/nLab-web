@@ -125,8 +125,8 @@ async function unzip(file){
  for(let i=0;i<count;i++){if(u32(b,p)!==0x02014b50)throw Error('Annuaire ZIP invalide');
  const method=u16(b,p+10),expectedCrc=u32(b,p+16),csize=u32(b,p+20),size=u32(b,p+24),nl=u16(b,p+28),el=u16(b,p+30),cl=u16(b,p+32),at=u32(b,p+42),name=D.decode(b.subarray(p+46,p+46+nl));p+=46+nl+el+cl;
  if(name.endsWith('/'))continue;if(name.startsWith('/')||name.includes('\\')||name.split('/').includes('..')||size>80e6||(total+=size)>250e6)throw Error('Chemin ou taille ZIP non autorisé');
- if(u32(b,at)!==0x04034b50)throw Error('Entrée ZIP invalide');
- const start=at+30+u16(b,at+26)+u16(b,at+28);let value=b.slice(start,start+csize);
+ if(at+30>b.length||u32(b,at)!==0x04034b50)throw Error('Entrée ZIP invalide');
+ const start=at+30+u16(b,at+26)+u16(b,at+28);if(start+csize>b.length)throw Error('Données ZIP tronquées');let value=b.slice(start,start+csize);
  if(method===8){if(!('DecompressionStream'in window))throw Error('Décompression ZIP indisponible dans ce navigateur');value=new Uint8Array(await new Response(new Blob([value]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer())}else if(method!==0)throw Error('Compression ZIP non prise en charge');
  if(value.length!==size)throw Error('Taille ZIP incohérente');if(crc32(value)!==expectedCrc)throw Error('Contrôle CRC invalide pour '+name);if(out.has(name))throw Error('Entrée ZIP en doublon : '+name);out.set(name,value);
  }return out;
