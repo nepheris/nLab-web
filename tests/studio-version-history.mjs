@@ -1,4 +1,3 @@
-import{chromium}from'playwright';
 const fs=await import('node:fs/promises');
 const path=await import('node:path');
 const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8777/';
@@ -6,7 +5,7 @@ const root=process.cwd();
 const catalog=JSON.parse(await fs.readFile(path.join(root,'APP-Applications/studios/catalog.json'),'utf8'));
 const ids=[...(catalog.studios||[]).map(x=>x.id),...(catalog.derived_apps||[]).map(x=>x.id)];
 const preflightOnly=process.env.NLAB_PREFLIGHT_ONLY==='1';
-const browser=preflightOnly?null:await chromium.launch({headless:true});
+const browser=preflightOnly?null:await (await import('playwright')).chromium.launch({headless:true});
 const results=[];
 const missingRegistries=[];
 const malformedRegistries=[];
