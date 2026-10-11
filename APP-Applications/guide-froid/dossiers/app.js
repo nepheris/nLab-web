@@ -182,5 +182,12 @@ function markUnsaved(){pendingExport=true}
 window.addEventListener('beforeunload',e=>{if(!pendingExport)return;e.preventDefault();e.returnValue=''});
 document.querySelectorAll('a[href]').forEach(a=>a.addEventListener('click',e=>{if(!pendingExport||e.defaultPrevented||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||a.target==='_blank')return;if(!confirm('Des modifications de cet appareil ne sont pas encore enregistrées dans un ZIP. Quitter cette page sans les exporter ?'))e.preventDefault()}));
 
+// B05 — Universal Input : acquisition canonique (fichiers, dossiers et glisser-déposer).
+const universalHost=$('universalDeviceInput');
+if(universalHost&&window.NLabUniversalInput?.create){
+ window.NLabUniversalInput.create({host:universalHost,target:'guide-froid-device-documents',multiple:true,folder:true,dragdrop:true,camera:false,codeScan:false,hid:false});
+ const legacy=$('deviceDrop');if(legacy)legacy.hidden=true;
+}else if(universalHost){universalHost.textContent='Sélecteur commun indisponible ; utiliser les contrôles de repli ci-dessous.'}
+
 // Accueil orienté parcours : pré-sélection sans chargement automatique de données privées.
 const intent=new URLSearchParams(location.search).get('mode');if(intent==='new')$('newDevice').focus();else if(intent==='import')$('importZip').focus();else if(intent==='demo'){const id=new URLSearchParams(location.search).get('id');if(id&&demoSamples[id]){openDemo(id);$('demoDevice').value=id;}else $('demoDevice').focus();}else if(intent==='visit')$('status').textContent='Pour saisir une visite, importer le ZIP de l’appareil ou créer sa fiche, puis renseigner la section 3.';
