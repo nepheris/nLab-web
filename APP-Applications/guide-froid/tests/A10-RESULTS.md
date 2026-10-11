@@ -21,3 +21,6 @@ Test technique ciblé et reproductible sur les fonctions du moteur ; non équiva
 
 ## Décision
 A10 = PARTIAL. A11 = NO-GO tant que la recette de navigateur et les scénarios de non-régression ne sont pas achevés. Ne pas déployer `gh-pages`.
+
+## Recette utilisateur de l'atelier V2 — 11/10/2026
+Résultat communiqué : **PARTIAL**, sans précision sur la fonctionnalité bloquante. Ce retour n'autorise ni PASS ni diagnostic d'une panne spécifique. Deux défauts de gestion d'état constatés par lecture du code ont été corrigés dans l'atelier de test et dans main : marquage du dossier comme modifié après ajout d'une photo ; remise à zéro des pièces jointes de visite en attente lors d'un changement de dossier. **A10 reste PARTIAL** jusqu'au cycle interface export/réimport documenté.
