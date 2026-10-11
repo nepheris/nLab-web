@@ -57,7 +57,7 @@ try{
         response=await page.goto(target,{waitUntil:'domcontentloaded',timeout:60000});
         if(!response||response.status()>=400)throw new Error('HTTP '+(response?.status()??'none'));
         if(v.isolation==='compat-runtime'){
-          await page.waitForTimeout(250);
+          await page.waitForFunction(()=>Boolean(document.documentElement.dataset.studioVersion||document.body?.dataset.studioVersion),null,{timeout:5000}).catch(()=>{});
           const state=await page.evaluate(()=>({
             version:document.documentElement.dataset.studioVersion||document.body.dataset.studioVersion||'',
             title:document.title,
