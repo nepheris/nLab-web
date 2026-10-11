@@ -17,3 +17,27 @@ html{scroll-behavior:smooth}body{background:var(--gf-bg);color:var(--gf-ink)}a{c
 :root[data-theme="dark"] body .gf-global-nav{box-shadow:0 2px 12px #0004!important}
 :root[data-theme="dark"] body .gf-global-nav a[aria-current="page"]{color:#fff!important;background:#30698d!important}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="dark"]){--gf-bg:#152331;--gf-surface:#203342;--gf-ink:#edf4fa;--gf-muted:#b4c9da;--gf-primary:#94cefa;--gf-line:#4a6477;color-scheme:dark}}
+
+/* Unified readability for TEST pages, overriding earlier page-specific styles. */
+html:not([data-theme="dark"]) body .gf-global-nav,
+html[data-theme="light"] body .gf-global-nav{background:#e7f2fa!important;color:#1a3850!important}
+html:not([data-theme="dark"]) body .gf-global-nav a,
+html[data-theme="light"] body .gf-global-nav a{color:#154e74!important}
+html:not([data-theme="dark"]) body .gf-global-nav a:hover,
+html:not([data-theme="dark"]) body .gf-global-nav a[aria-current="page"],
+html[data-theme="light"] body .gf-global-nav a:hover,
+html[data-theme="light"] body .gf-global-nav a[aria-current="page"]{background:#175e85!important;color:white!important}
+html[data-theme="dark"] body,
+html[data-theme="dark"] body main{color:#eaf4fc!important;background:#132333!important}
+html[data-theme="dark"] body .gf-global-nav{background:#223e54!important;color:#ecf7ff!important;border-color:#65849a!important}
+html[data-theme="dark"] body .gf-global-nav small{color:#e1edf7!important}
+html[data-theme="dark"] body .gf-global-nav a{color:#dcf2ff!important}
+html[data-theme="dark"] body main :is(a,a:visited){color:#b6e4ff}
+html[data-theme="dark"] body main :is(a:hover,a:focus-visible){color:#fff!important}
+html[data-theme="dark"] body main :is(.panel,.gf-uml-output,.diagram,.gf-test-illustration){background:#203748!important;color:#ecf5fd!important;border:1px solid #66859b!important}
+html[data-theme="dark"] body main :is(.warn,.gf-uml-fallback){background:#3a3425!important;color:#ffe9b6!important;border-color:#ddae58!important}
+html[data-theme="dark"] body main :is(input,select,textarea){background:#152e41!important;color:#f6fcff!important;border:1px solid #92adbf!important}
+html[data-theme="dark"] body main :is(pre,code){color:#e7f5ff}
+html[data-theme="dark"] body main :is(th){background:#2b4d62!important;color:white!important}
+html[data-theme="dark"] body main :is(td){color:#f1f8ff!important}
+.gf-uml-output:focus-within,.diagram:focus-within{outline:2px solid var(--gf-focus);outline-offset:2px}
