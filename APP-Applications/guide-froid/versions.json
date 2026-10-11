@@ -20,9 +20,9 @@
       "date": "2026-10-11",
       "status": "current",
       "current": true,
-      "href": "./current/",
+      "href": "./index.html",
       "notes": "Version historique actuelle préservée : saisie appareil, documents, photos, rapport imprimable et navigation avancée.",
-      "isolation": "current-snapshot"
+      "isolation": "legacy-current-preserved"
     }
   ]
 }
