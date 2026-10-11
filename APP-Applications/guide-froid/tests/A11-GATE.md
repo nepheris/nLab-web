@@ -44,3 +44,6 @@ Résultat déclaré : **PASS**. Import STORE : `POS-ARM-001`, 2 visites, 2 docum
 
 ## Recette A11 DEFLATE — 11 octobre 2026, après correction
 Retour utilisateur : **Chrome PASS ; Firefox FAIL**. Aucun message détaillé fourni pour Firefox. Ne pas inférer la cause. A07 DEFLATE est **PARTIAL / cross-browser FAIL**, Firefox à diagnostiquer avec nom du fichier, message exact, méthode ZIP et version du navigateur. Chrome PASS déclaré. A11 reste **NO-GO**. Préparer une preview de l'atelier V2 pour recette A10 UI sans remplacer l'application publique.
+
+## Recette atelier V2 — 11/10/2026
+Résultat utilisateur : **PARTIAL**, observations : aucune précision. Il n'est pas possible d'attribuer ce PARTIAL à une panne précise. Les correctifs de suivi des photos et d'isolation des pièces de visite sont intégrés sur main et la page labo. Rejouer uniquement les contrôles A10 encore non prouvés : création appareil + une photo + document, visite, export, réimport et comptage. En cas d'erreur, relever **étape, message affiché, navigateur**, sans données privées. A11 demeure **NO-GO** ; Firefox DEFLATE demeure **FAIL déclaré** sans diagnostic détaillé.
