@@ -153,6 +153,27 @@ def main() -> int:
         if any("date" in item for item in versions):
             fail(f"{app_id}: mutable release date must not be hard-coded in versions[]", errors)
 
+        # Guide Froid: verify links before allowing deployment (404 regression).
+        if app_id == "guide-froid":
+            base_dir = ROOT / "APP-Applications" / app_id
+            required = [
+                "index.html", "versions.html", "versions.json",
+                "diagnostic-v5/index.html", "diagnostic-v5/investigation.html",
+                "diagnostic-v5/test.html", "diagnostic-v5/bibliotheque.html",
+                "diagnostic-v5/data.js", "diagnostic-v5/style.css",
+            ]
+            for name in required:
+                if not (base_dir / name).is_file():
+                    fail(f"{app_id}: missing publication entry {name}", errors)
+            for item in versions:
+                href = str(item.get("href") or "")
+                if not href.startswith("./") or "?" in href or "#" in href:
+                    fail(f"{app_id}: expected local version href, got {href!r}", errors)
+                    continue
+                target = (base_dir / href[2:]).resolve()
+                if not target.is_file() or not target.is_relative_to(base_dir.resolve()):
+                    fail(f"{app_id}: version {item.get('version')} points to missing file {href!r}", errors)
+
     if errors:
         print("Studio registry validation: FAIL", file=sys.stderr)
         for err in errors:
