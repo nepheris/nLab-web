@@ -46,6 +46,7 @@ function accepted(stage){
   if(v.familleFroid==='frigo')return stage.items.filter(x=>['verticale','vitrine','comptoir','chambre'].includes(x[0]));
   if(v.familleFroid==='congelateur')return stage.items.filter(x=>['verticale','horizontale','vitrine','chambre'].includes(x[0]));
  }
+ if(stage.key==='vitrage'&&v.forme==='chambre')return [['pleine','Porte pleine','solid']];
  if(stage.key==='ouverture'){
   const permitted=v.forme==='horizontale'?['coulissante','relevable','aucune']:v.forme==='chambre'?['battante','coulissante','aucune']:['battante','coulissante','aucune'];
   return stage.items.filter(x=>permitted.includes(x[0]));
@@ -84,7 +85,9 @@ function graphicFor(stageKey,value){
  const sliding=stageKey==='ouverture'?value==='coulissante':device.ouverture==='coulissante';
  let art='';
  if(room){
- art='<path d="M7 22L35 7H94V72L67 87H7Z M7 22H67V87 M67 22L94 7 M67 22V87"/><path d="M12 78h51"/>';
+ const entry='<path d="M7 22L35 7H94V72L67 87H7Z M7 22H67V87 M67 22L94 7 M67 22V87"/><rect x="18" y="34" width="20" height="45" rx="1"/><path d="M35 55v10"/>';
+ const exit=doorCount>1?'<rect x="76" y="19" width="13" height="45" rx="1"/><path d="M78 42v8"/>':'';
+ return '<svg viewBox="0 0 102 94" role="img" aria-label="Chambre froide générique, porte avant'+(doorCount>1?' et porte arrière':'')+'">'+entry+exit+'</svg>';
  }else if(horizontal){
  art='<rect x="7" y="35" width="88" height="45" rx="4"/><path d="M7 42h88M13 80v5M89 80v5"/>';
  }else art='<rect x="22" y="5" width="64" height="78" rx="4"/>';
@@ -109,9 +112,9 @@ function renderWizard(){
  area.querySelectorAll('button[data-stage]').forEach(b=>b.onclick=()=>{
   const key=b.dataset.stage,old=device[key];device[key]=b.dataset.value;
   if(key==='familleFroid'&&old!==device[key]){device.forme='';device.nombrePortes='';device.ouverture='';device.vitrage='';}
-  if(key==='forme'&&old!==device[key])defaultDetails();
+  if(key==='forme'&&old!==device[key])defaultDetails();if(device.forme==='chambre')device.vitrage='pleine';
   if(key==='ouverture'&&device.forme==='horizontale'&&device.ouverture==='battante')device.ouverture='relevable';
-  if(key==='forme'||key==='familleFroid')suggestId();
+  if(key==='forme'||key==='familleFroid')suggestId();markUnsaved();
   syncType();renderWizard();renderTypePreview();
  });
 }
