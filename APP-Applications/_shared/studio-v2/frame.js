@@ -60,7 +60,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
       <img src="${esc(manifest.logoHref||'../../assets/branding/nlab-wordmark.svg')}" alt="nLab">
     </a>
     <div class="studioIdentity">
-      <span class="studioAppIcon" style="--studio-icon:url('${esc(manifest.studioIconHref||('../../assets/studios/'+manifest.id+'.svg'))}')" aria-hidden="true"></span>
+      <span class="studioAppIcon" style="--studio-icon:url('${esc(manifest.studioIconHref||(new URL('../../../assets/studios/'+manifest.id+'.svg',import.meta.url).href))}')" aria-hidden="true"></span>
       <div class="studioBrand">
       <b>${esc(manifest.name)}</b>
       <small>${esc(manifest.subtitle||'nLab Studio')}${versionInfo.version?' · v'+esc(versionInfo.version):''}</small>
