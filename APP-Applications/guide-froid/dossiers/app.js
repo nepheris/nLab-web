@@ -79,7 +79,7 @@ function graphicFor(stageKey,value){
  if(stageKey==='familleFroid')return value==='frigo'?'<svg viewBox="0 0 102 94" aria-hidden="true"><rect x="28" y="6" width="46" height="79" rx="6"/><path d="M28 35h46M66 20v10M66 49v11"/><path d="M17 60q-9 -7 0 -14m-7 -5q-9 -7 0 -14"/><text x="50" y="66" text-anchor="middle" font-size="14" stroke="none" fill="currentColor">+°</text></svg>':'<svg viewBox="0 0 102 94" aria-hidden="true"><rect x="28" y="6" width="46" height="79" rx="6"/><path d="M28 35h46M66 20v10M66 49v11M51 43v32M35 59h32M40 48l22 22M62 48L40 70"/><text x="51" y="25" text-anchor="middle" font-size="14" stroke="none" fill="currentColor">−°</text></svg>';
  const doorCount=stageKey==='nombrePortes'?Number(value):Math.min(3,Number(device.nombrePortes)||1);
  const glass=stageKey==='vitrage'?value==='vitree':device.vitrage==='vitree';
- const horizontal=stageKey==='forme'?value==='horizontale':device.forme==='horizontale';
+ const horizontal=stageKey==='forme'?value==='horizontale'||value==='comptoir':device.forme==='horizontale'||device.forme==='comptoir';
  const room=stageKey==='forme'?value==='chambre':device.forme==='chambre';
  const sliding=stageKey==='ouverture'?value==='coulissante':device.ouverture==='coulissante';
  let art='';
@@ -92,7 +92,7 @@ function graphicFor(stageKey,value){
  for(let i=0;i<doorCount;i++){const x=left+i*span;art+='<rect x="'+(x+1)+'" y="'+top+'" width="'+(span-2)+'" height="'+(bottom-top)+'" rx="1"/>';if(glass)art+='<rect x="'+(x+4)+'" y="'+(top+5)+'" width="'+(span-8)+'" height="'+(bottom-top-10)+'"/>';if(!horizontal)art+='<path d="M'+(sliding?x+span/2:x+span-5)+' '+(top+22)+'v13"/>';}
  if(stageKey==='ouverture'&&value==='relevable')art+='<path d="M8 35L20 19H93L95 35"/>';
  if(stageKey==='ouverture'&&value==='coulissante')art+='<path d="M32 32h35m-7-6 7 6-7 6"/>';
- return '<svg viewBox="0 0 102 94" aria-hidden="true">'+art+'</svg>';
+ return '<svg viewBox="0 0 102 94" role="img" aria-label="Schéma générique de configuration frigorifique">'+art+'</svg>';
 }
 function renderWizard(){
  const area=$('visualSelector');if(!area||!device)return;
@@ -105,7 +105,7 @@ function renderWizard(){
   visible=!!active;
  }
  const desc=[device.familleFroid==='frigo'?'Froid positif':device.familleFroid==='congelateur'?'Froid négatif':'',device.forme,device.nombrePortes&&device.nombrePortes+' porte(s)/couvercle(s)',device.ouverture,device.vitrage].filter(Boolean);
- area.innerHTML=parts.join('')+'<p class="gf-visual-summary">Configuration : <strong>'+safe(desc.join(' · ')||'Sélectionnez froid positif ou négatif')+'</strong></p>';
+ area.innerHTML='<p class="gf-hint">Schémas SVG génériques : silhouettes indicatives, pas des dessins contractuels du fabricant.</p>'+parts.join('')+'<p class="gf-visual-summary">Configuration : <strong>'+safe(desc.join(' · ')||'Sélectionnez froid positif ou négatif')+'</strong></p>';
  area.querySelectorAll('button[data-stage]').forEach(b=>b.onclick=()=>{
   const key=b.dataset.stage,old=device[key];device[key]=b.dataset.value;
   if(key==='familleFroid'&&old!==device[key]){device.forme='';device.nombrePortes='';device.ouverture='';device.vitrage='';}
@@ -196,7 +196,7 @@ $('launchDiagnostic').onclick=()=>{if(!device)return;const d=readForm();const sn
 $('newDevice').onclick=()=>{pendingExport=true;pendingVisitDocs=[];device={id:'NOUVEL-APPAREIL',title:'Nouvel appareil',site:'',visites:[],schema:'nlab.guide-froid.appareil/1.0'};docs=new Map();render();setStatus('Nouvel appareil créé. Exporter le ZIP après modification.')};
 $('clearDocumentSelection').onclick=()=>{if(!device)return;if(!confirm('Vider tous les documents et photos de cet appareil dans la session en cours ? Le ZIP déjà téléchargé restera inchangé.'))return;docs.clear();device.photos={};pendingVisitDocs=[];for(const v of device.visites||[])if(Array.isArray(v.pieces))v.pieces=[];for(const key of ['documents','deviceFolder','visitFiles'])if($(key))$(key).value='';renderDocs();renderPhotoSlots();renderVisitFiles();markUnsaved();setStatus('Sélection remise à zéro. Ajouter de nouveaux fichiers puis exporter le ZIP.')};
 $('documents').onchange=async e=>{await appendDeviceFiles([...e.target.files]);e.target.value=''};$('deviceFolder').onchange=async e=>{await appendDeviceFiles([...e.target.files]);e.target.value=''};const deviceDrop=$('deviceDrop');deviceDrop.ondragover=e=>e.preventDefault();deviceDrop.ondrop=async e=>{e.preventDefault();await appendDeviceFiles([...e.dataTransfer.files])};
-$('saveVisit').onclick=async()=>{if(!device)return;readForm();const nextVisit=1+Math.max(0,...device.visites.map(v=>Number(v.numero)||0));const vid='VIS-'+String(nextVisit).padStart(4,'0');const pieces=[];for(let i=0;i<pendingVisitDocs.length;i++){const file=pendingVisitDocs[i],key='visites/'+vid+'/'+String(i+1).padStart(3,'0')+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');pieces.push(key);docs.set(key,new Uint8Array(await file.arrayBuffer()))}device.visites.push({id:vid,numero:nextVisit,pieces,date:$('visitDate').value||new Date().toISOString().slice(0,10),site:$('visitSite').value,type:$('visitType').value,observations:$('observations').value,actions:$('actions').value,aPrevoir:$('todo').value});pendingVisitDocs=[];markUnsaved();renderVisitFiles();renderHistory();['observations','actions','todo'].forEach(k=>$(k).value='');setStatus('Visite ajoutée en mémoire : exporter le ZIP pour la conserver.')};
+$('saveVisit').onclick=async()=>{if(!device)return;readForm();const nextVisit=1+Math.max(device.visites.length,...device.visites.map(v=>Number(v.numero)||Number(String(v.id||'').match(/^VIS-(\d+)$/)?.[1])||0));const vid='VIS-'+String(nextVisit).padStart(4,'0');const pieces=[];for(let i=0;i<pendingVisitDocs.length;i++){const file=pendingVisitDocs[i],key='visites/'+vid+'/'+String(i+1).padStart(3,'0')+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');pieces.push(key);docs.set(key,new Uint8Array(await file.arrayBuffer()))}device.visites.push({id:vid,numero:nextVisit,pieces,date:$('visitDate').value||new Date().toISOString().slice(0,10),site:$('visitSite').value,type:$('visitType').value,observations:$('observations').value,actions:$('actions').value,aPrevoir:$('todo').value});pendingVisitDocs=[];markUnsaved();renderVisitFiles();renderHistory();['observations','actions','todo'].forEach(k=>$(k).value='');setStatus('Visite ajoutée en mémoire : exporter le ZIP pour la conserver.')};
 $('exportZip').onclick=exportZip;$('exportJson').onclick=()=>device&&download(new Blob([JSON.stringify(readForm(),null,2)],{type:'application/json'}),(device.id||'appareil')+'.json');$('printVisit').onclick=()=>report((device?.visites||[]).length-1);$('printSheet').onclick=()=>report(0,true);$('visitDate').value=new Date().toISOString().slice(0,10);
 
 
