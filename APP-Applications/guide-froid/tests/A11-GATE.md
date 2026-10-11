@@ -35,3 +35,9 @@ Résultat déclaré : **PASS**. Import STORE : `POS-ARM-001`, 2 visites, 2 docum
 - Le texte transmis contient `IMPORT OK` pour l'appareil `POS-ARM-001`, une visite, deux documents, `SENTINEL-42`, et les trois lignes PASS des tests STORE/conservation/CRC.
 - **Limite de preuve :** le texte fourni ne contient pas la sortie attendue de la section 5, à savoir `PASS · DEFLATE décompressé, CRC vérifié`, ni le détail du fichier DEFLATE sélectionné. Conserver l'état **PASS déclaré / preuve spécifique DEFLATE à compléter**, pas PASS attesté.
 - Firefox et le parcours complet de l'atelier restent non validés. A11 demeure NO-GO pour clôture globale.
+
+## Retour Chrome + Firefox — 11/10/2026
+- Les deux navigateurs ont affiché PASS pour ZIP STORE, conservation et rejet CRC.
+- Firefox 157.0 : FAIL en section 5 avec `Ce ZIP ne contient pas d’entrée DEFLATE (méthode 8)`.
+- Vérification indépendante du pack de référence : `A11_reference_DEFLATE.zip` utilise bien la méthode 8 pour ses quatre entrées ; `A11_reference_STORE.zip` utilise la méthode 0. Le fichier effectivement sélectionné dans Firefox n'a pas été communiqué. **Cause probable, non prouvée : mauvais ZIP choisi.**
+- Le labo public a été modifié pour afficher le nom du fichier et indiquer le ZIP attendu. **A07 DEFLATE navigateur reste NON VALIDÉ** ; refaire les tests ciblés Chrome et Firefox.
