@@ -8,6 +8,8 @@ const ids=[...(catalog.studios||[]).map(x=>x.id),...(catalog.derived_apps||[]).m
 const browser=await chromium.launch({headless:true});
 const results=[];
 const missingRegistries=[];
+const malformedRegistries=[];
+const observedVersionKeys=new Set();
 const expectedVersionCount=Number(process.env.NLAB_EXPECTED_STUDIO_VERSIONS||128);
 const intentionallyUnversioned=new Set(['guide-froid']);
 try{
@@ -17,7 +19,21 @@ try{
       if(!intentionallyUnversioned.has(id))missingRegistries.push({id,path:regPath,error:String(e?.message||e)});
       continue;
     }
-    for(const v of reg.versions||[]){
+    if(!Array.isArray(reg.versions)){
+      malformedRegistries.push({id,error:'versions must be an array'});
+      continue;
+    }
+    for(const v of reg.versions){
+      const versionKey=id+':'+String(v.version||'');
+      if(!v.version||!v.href||!['current','test','historical'].includes(v.status)){
+        malformedRegistries.push({id,version:v.version,error:'Missing version/href or invalid status'});
+        continue;
+      }
+      if(observedVersionKeys.has(versionKey)){
+        malformedRegistries.push({id,version:v.version,error:'Duplicate studio/version identity'});
+        continue;
+      }
+      observedVersionKeys.add(versionKey);
       const page=await browser.newPage({viewport:{width:1280,height:800}});
       const href=String(v.href||'./');
       const target=new URL('APP-Applications/'+id+'/'+href,base).href;
@@ -49,5 +65,6 @@ try{
 const failed=results.filter(x=>!x.ok);
 if(results.length!==expectedVersionCount)failed.push({id:'registry-count',ok:false,error:`Expected ${expectedVersionCount} version entries, got ${results.length}`});
 for(const missing of missingRegistries)failed.push({...missing,ok:false,error:'Required versions.json missing: '+missing.path});
+for(const malformed of malformedRegistries)failed.push({...malformed,ok:false});
 console.log(JSON.stringify({ok:failed.length===0,total:results.length,failed,results},null,2));
 if(failed.length)process.exit(1);
