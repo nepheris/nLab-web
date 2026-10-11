@@ -29,3 +29,9 @@ La passe B comporte déjà des développements sur main, mais son avancement ne 
 ## Retour utilisateur — 11 octobre 2026 — laboratoire A11
 Résultat déclaré : **PASS**. Import STORE : `POS-ARM-001`, 2 visites, 2 documents, champ historique `SENTINEL-42`. Tests automatiques : `PASS · ZIP STORE et documents`, `PASS · Conservation des champs et visites`, `PASS · ZIP corrompu rejeté` avec erreur CRC sur `documents/visites/VIS-001/temoin.txt`.
 **Portée :** validation utilisateur du laboratoire ZIP STORE et des contrôles automatiques affichés. **Ne prouve pas** DEFLATE dans le navigateur, l'interface atelier intégrale, ni la compatibilité d'un ancien ZIP réel. La passe A reste partielle et son gate final reste NO-GO tant que ces critères ne sont pas exécutés.
+
+## Retour Chromium DEFLATE déclaré — 11 octobre 2026
+- L'utilisateur signale **PASS** sur Chromium pour le test DEFLATE.
+- Le texte transmis contient `IMPORT OK` pour l'appareil `POS-ARM-001`, une visite, deux documents, `SENTINEL-42`, et les trois lignes PASS des tests STORE/conservation/CRC.
+- **Limite de preuve :** le texte fourni ne contient pas la sortie attendue de la section 5, à savoir `PASS · DEFLATE décompressé, CRC vérifié`, ni le détail du fichier DEFLATE sélectionné. Conserver l'état **PASS déclaré / preuve spécifique DEFLATE à compléter**, pas PASS attesté.
+- Firefox et le parcours complet de l'atelier restent non validés. A11 demeure NO-GO pour clôture globale.
