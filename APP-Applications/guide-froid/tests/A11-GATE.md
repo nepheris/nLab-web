@@ -41,3 +41,6 @@ Résultat déclaré : **PASS**. Import STORE : `POS-ARM-001`, 2 visites, 2 docum
 - Firefox 157.0 : FAIL en section 5 avec `Ce ZIP ne contient pas d’entrée DEFLATE (méthode 8)`.
 - Vérification indépendante du pack de référence : `A11_reference_DEFLATE.zip` utilise bien la méthode 8 pour ses quatre entrées ; `A11_reference_STORE.zip` utilise la méthode 0. Le fichier effectivement sélectionné dans Firefox n'a pas été communiqué. **Cause probable, non prouvée : mauvais ZIP choisi.**
 - Le labo public a été modifié pour afficher le nom du fichier et indiquer le ZIP attendu. **A07 DEFLATE navigateur reste NON VALIDÉ** ; refaire les tests ciblés Chrome et Firefox.
+
+## Recette A11 DEFLATE — 11 octobre 2026, après correction
+Retour utilisateur : **Chrome PASS ; Firefox FAIL**. Aucun message détaillé fourni pour Firefox. Ne pas inférer la cause. A07 DEFLATE est **PARTIAL / cross-browser FAIL**, Firefox à diagnostiquer avec nom du fichier, message exact, méthode ZIP et version du navigateur. Chrome PASS déclaré. A11 reste **NO-GO**. Préparer une preview de l'atelier V2 pour recette A10 UI sans remplacer l'application publique.
