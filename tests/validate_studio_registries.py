@@ -180,6 +180,15 @@ def main() -> int:
             print(f" - {err}", file=sys.stderr)
         return 1
 
+    # Validate the integrated Guide Froid TEST before Pages publish.
+    import subprocess
+    gf_audit = ROOT / "tests" / "validate_guide_froid_test.py"
+    if gf_audit.is_file():
+        gf_check = subprocess.run([sys.executable, str(gf_audit)], cwd=ROOT, check=False)
+        if gf_check.returncode:
+            print("Guide Froid TEST audit blocked publication", file=sys.stderr)
+            return 1
+
     print(f"Studio registry validation: OK ({len(studios)} Studios, {len(derived_apps)} derived apps)")
     return 0
 
