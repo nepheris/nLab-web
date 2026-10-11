@@ -62,6 +62,30 @@ if node:
         result=subprocess.run([node,'--check',str(BASE/js)],capture_output=True,text=True,check=False)
         check(result.returncode==0,'JavaScript syntax invalid: '+js+' '+result.stderr[:260])
 
+# Single canonical stylesheet contract across the complete Guide Froid TEST suite.
+css_pages=[
+    'test-integrated.html','versions.html',
+    'diagnostic-v5/index.html','diagnostic-v5/recherche.html',
+    'diagnostic-v5/investigation.html','diagnostic-v5/uml.html',
+    'diagnostic-v5/test.html','diagnostic-v5/bibliotheque.html',
+    'dossiers/index.html','notices/index.html','notices/polar/index.html',
+    'docs/index.html','appareils/index.html',
+    'appareils/nangis-polar.html','appareils/nangis-stock-1.html',
+    'appareils/nangis-stock-2.html','appareils/provins-c.html'
+]
+for page in css_pages:
+    markup=read(BASE/page)
+    sheets=re.findall(r'<link\\b[^>]*rel=["\\x27]stylesheet["\\x27][^>]*>',markup,re.I)
+    check(len(sheets)==1 and 'guide-froid-unified.css' in sheets[0],
+          'page must load exactly one canonical CSS: '+page)
+    check(not re.search(r'<style\\b',markup,re.I),
+          'inline style block not migrated: '+page)
+css=read(BASE/'guide-froid-unified.css')
+check('data-theme="dark"' in css and 'data-theme="light"' in css,
+      'canonical CSS must include light/dark theme treatment')
+check('data-gf-page="gfh8"' in css and 'data-gf-page="gf7"' in css,
+      'historical and investigation scoped rules missing')
+
 if failures:
     print('Guide Froid TEST audit: FAIL',file=sys.stderr)
     for failure in failures: print(' - '+failure,file=sys.stderr)
