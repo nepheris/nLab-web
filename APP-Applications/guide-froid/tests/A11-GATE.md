@@ -25,3 +25,7 @@ La passe B comporte déjà des développements sur main, mais son avancement ne 
 - En cas de FAIL : créer une tâche corrective A06/A07/A10 et recommencer les scénarios concernés.
 - En cas de PASS documentés pour tous les critères : A11 GO, reprendre validation B01 → B09.
 - Tant qu'une preuve obligatoire manque : A11 NO-GO ; aucun déploiement de la V2 sur gh-pages.
+
+## Retour utilisateur — 11 octobre 2026 — laboratoire A11
+Résultat déclaré : **PASS**. Import STORE : `POS-ARM-001`, 2 visites, 2 documents, champ historique `SENTINEL-42`. Tests automatiques : `PASS · ZIP STORE et documents`, `PASS · Conservation des champs et visites`, `PASS · ZIP corrompu rejeté` avec erreur CRC sur `documents/visites/VIS-001/temoin.txt`.
+**Portée :** validation utilisateur du laboratoire ZIP STORE et des contrôles automatiques affichés. **Ne prouve pas** DEFLATE dans le navigateur, l'interface atelier intégrale, ni la compatibilité d'un ancien ZIP réel. La passe A reste partielle et son gate final reste NO-GO tant que ces critères ne sont pas exécutés.
