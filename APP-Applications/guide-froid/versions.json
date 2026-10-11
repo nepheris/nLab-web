@@ -7,7 +7,6 @@
     {
       "version": "1.0.0",
       "label": "Guide Froid 1.0.0 TEST — Diagnostic guidé",
-      "date": "2026-10-11",
       "status": "test",
       "current": false,
       "href": "./diagnostic-v5/index.html",
@@ -17,7 +16,6 @@
     {
       "version": "0.6.1",
       "label": "Guide Froid 0.6.1 CURRENT — Diagnostic et dossier appareil",
-      "date": "2026-10-11",
       "status": "current",
       "current": true,
       "href": "./index.html",
