@@ -2,16 +2,25 @@
   "schema": "nlab-studio-versions/v1",
   "name": "Guide Froid",
   "current": "0.6.1",
-  "test": "1.0.0",
+  "test": "1.1.0",
   "versions": [
+    {
+      "version": "1.1.0",
+      "label": "Guide Froid 1.1.0 TEST — Guide intégré",
+      "status": "test",
+      "current": false,
+      "href": "./test-integrated.html",
+      "notes": "Application historique complète sans iframe, tableau des défauts intégré, investigations et fiches de tests accessibles en onglets séparés ; validation à poursuivre.",
+      "isolation": "test-runtime"
+    },
     {
       "version": "1.0.0",
       "label": "Guide Froid 1.0.0 TEST — Diagnostic guidé",
-      "status": "test",
+      "status": "historical",
       "current": false,
       "href": "./diagnostic-v5/index.html",
       "notes": "Tableau des défauts à 4 colonnes, 17 investigations, liens vers tests illustrés, bibliothèque et relevé JSON. Pas encore validé en navigateur.",
-      "isolation": "test-runtime"
+      "isolation": "native"
     },
     {
       "version": "0.6.1",
