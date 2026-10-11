@@ -32,7 +32,8 @@ const visualStages=[
  {key:'forme',label:'2 · Quelle forme ?',items:[['verticale','Armoire verticale','vertical'],['horizontale','Coffre horizontal','chest'],['vitrine','Vitrine','glass'],['comptoir','Table / comptoir','counter'],['chambre','Chambre froide','room']]},
  {key:'nombrePortes',label:'3 · Combien de portes ?',items:[['1','Une','single'],['2','Deux','double'],['3','Trois portes ou plus','triple']]},
  {key:'ouverture',label:'4 · Comment s’ouvre-t-il ?',items:[['battante','Porte battante','hinge'],['coulissante','Porte / vitre coulissante','slide'],['relevable','Couvercle relevable','lid'],['aucune','Autre / non visible','unknown']]},
- {key:'vitrage',label:'5 · Porte ou couvercle',items:[['pleine','Plein','solid'],['vitree','Vitré','glass'],['mixte','Mixte','mix'],['inconnu','Non déterminé','unknown']]}
+ {key:'vitrage',label:'5 · Porte ou couvercle',items:[['pleine','Plein','solid'],['vitree','Vitré','glass'],['mixte','Mixte','mix'],['inconnu','Non déterminé','unknown']]},
+ {key:'rideauxLaniere',label:'6 · Rideaux souples à lanières PVC (chambre froide)',items:[['oui','Présents','solid'],['non','Absents','unknown'],['inconnu','Non déterminé','unknown']]}
 ];
 function shapeSvg(key){
  const horiz=['chest','counter','slide','lid','open'].includes(key),room=key==='room',glass=['glass','mix'].includes(key);
@@ -102,17 +103,18 @@ function renderWizard(){
  let visible=true;const parts=[];
  for(const stage of visualStages){
   if(!visible)break;
+  if(stage.key==='rideauxLaniere'&&device.forme!=='chambre')continue;
   const opts=accepted(stage),active=device[stage.key]||'';
   const quantity=stage.key==='nombrePortes'?' · portes ou couvercles':'';
   parts.push('<section class="gf-wizard-step"><h3>'+safe(stage.label+quantity)+'</h3><div class="gf-wizard-options">'+opts.map(o=>'<button type="button" class="gf-choice" data-stage="'+safe(stage.key)+'" data-value="'+safe(o[0])+'" aria-pressed="'+(active===o[0])+'">'+graphicFor(stage.key,o[0])+'<span>'+safe(o[1])+'</span></button>').join('')+'</div></section>');
   visible=!!active;
  }
- const desc=[device.familleFroid==='frigo'?'Froid positif':device.familleFroid==='congelateur'?'Froid négatif':'',device.forme,device.nombrePortes&&device.nombrePortes+' porte(s)/couvercle(s)',device.ouverture,device.vitrage].filter(Boolean);
+ const desc=[device.familleFroid==='frigo'?'Froid positif':device.familleFroid==='congelateur'?'Froid négatif':'',device.forme,device.nombrePortes&&device.nombrePortes+' porte(s)/couvercle(s)',device.ouverture,device.vitrage,device.forme==='chambre'&&device.rideauxLaniere?'Rideaux PVC : '+device.rideauxLaniere:''].filter(Boolean);
  area.innerHTML='<p class="gf-hint">Schémas SVG génériques : silhouettes indicatives, pas des dessins contractuels du fabricant.</p>'+parts.join('')+'<p class="gf-visual-summary">Configuration : <strong>'+safe(desc.join(' · ')||'Sélectionnez froid positif ou négatif')+'</strong></p>';
  area.querySelectorAll('button[data-stage]').forEach(b=>b.onclick=()=>{
   const key=b.dataset.stage,old=device[key];device[key]=b.dataset.value;
   if(key==='familleFroid'&&old!==device[key]){device.forme='';device.nombrePortes='';device.ouverture='';device.vitrage='';}
-  if(key==='forme'&&old!==device[key])defaultDetails();if(device.forme==='chambre')device.vitrage='pleine';
+  if(key==='forme'&&old!==device[key]){defaultDetails();device.rideauxLaniere='';}if(device.forme==='chambre')device.vitrage='pleine';
   if(key==='ouverture'&&device.forme==='horizontale'&&device.ouverture==='battante')device.ouverture='relevable';
   if(key==='forme'||key==='familleFroid')suggestId();markUnsaved();
   syncType();renderWizard();renderTypePreview();
