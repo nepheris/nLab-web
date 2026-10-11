@@ -1,0 +1,27 @@
+name: Studios History Preflight
+on:
+  pull_request:
+    paths:
+      - 'APP-Applications/studios/catalog.json'
+      - 'APP-Applications/**/versions.json'
+      - 'tests/studio-version-history.mjs'
+      - '.github/workflows/studios-history-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  registry-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate all Studio version registry entries without browser
+        env:
+          NLAB_PREFLIGHT_ONLY: '1'
+          NLAB_EXPECTED_STUDIO_VERSIONS: '128'
+        run: node tests/studio-version-history.mjs
