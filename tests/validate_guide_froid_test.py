@@ -48,6 +48,15 @@ for key,entry in image_records.items():
     check(key in tests,'illustration refers to unknown test '+key)
     if entry.get('status')=='published':
         check((BASE/'assets/tests'/entry['path']).is_file(), 'published image absent '+key)
+# Syntax validation when Node.js is available in the publishing environment.
+import shutil, subprocess
+node=shutil.which('node')
+if node:
+    for js in ['attachments-test.js','guide-test-nav.js',
+               'diagnostic-v5/data.js','diagnostic-v5/mermaid-investigation.js']:
+        result=subprocess.run([node,'--check',str(BASE/js)],capture_output=True,text=True,check=False)
+        check(result.returncode==0,'JavaScript syntax invalid: '+js+' '+result.stderr[:260])
+
 if failures:
     print('Guide Froid TEST audit: FAIL',file=sys.stderr)
     for failure in failures: print(' - '+failure,file=sys.stderr)
