@@ -1,0 +1,26 @@
+{
+  "schema": "nlab-studio-versions/v1",
+  "name": "Guide Froid",
+  "current": "0.6.1",
+  "test": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "label": "Guide Froid 1.0.0 TEST — Diagnostic guidé",
+      "status": "test",
+      "current": false,
+      "href": "./diagnostic-v5/index.html",
+      "notes": "Tableau des défauts à 4 colonnes, 17 investigations, liens vers tests illustrés, bibliothèque et relevé JSON. Pas encore validé en navigateur.",
+      "isolation": "test-runtime"
+    },
+    {
+      "version": "0.6.1",
+      "label": "Guide Froid 0.6.1 CURRENT — Diagnostic et dossier appareil",
+      "status": "current",
+      "current": true,
+      "href": "./index.html",
+      "notes": "Version historique actuelle préservée : saisie appareil, documents, photos, rapport imprimable et navigation avancée.",
+      "isolation": "legacy-current-preserved"
+    }
+  ]
+}
