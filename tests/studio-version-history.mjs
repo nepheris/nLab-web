@@ -7,10 +7,16 @@ const catalog=JSON.parse(await fs.readFile(path.join(root,'APP-Applications/stud
 const ids=[...(catalog.studios||[]).map(x=>x.id),...(catalog.derived_apps||[]).map(x=>x.id)];
 const browser=await chromium.launch({headless:true});
 const results=[];
+const missingRegistries=[];
+const expectedVersionCount=Number(process.env.NLAB_EXPECTED_STUDIO_VERSIONS||128);
+const intentionallyUnversioned=new Set(['guide-froid']);
 try{
   for(const id of ids){
     const regPath=path.join(root,'APP-Applications',id,'versions.json');
-    let reg;try{reg=JSON.parse(await fs.readFile(regPath,'utf8'))}catch{continue}
+    let reg;try{reg=JSON.parse(await fs.readFile(regPath,'utf8'))}catch(e){
+      if(!intentionallyUnversioned.has(id))missingRegistries.push({id,path:regPath,error:String(e?.message||e)});
+      continue;
+    }
     for(const v of reg.versions||[]){
       const page=await browser.newPage({viewport:{width:1280,height:800}});
       const href=String(v.href||'./');
@@ -41,5 +47,7 @@ try{
   }
 }finally{await browser.close()}
 const failed=results.filter(x=>!x.ok);
+if(results.length!==expectedVersionCount)failed.push({id:'registry-count',ok:false,error:`Expected ${expectedVersionCount} version entries, got ${results.length}`});
+for(const missing of missingRegistries)failed.push({...missing,ok:false,error:'Required versions.json missing: '+missing.path});
 console.log(JSON.stringify({ok:failed.length===0,total:results.length,failed,results},null,2));
 if(failed.length)process.exit(1);
