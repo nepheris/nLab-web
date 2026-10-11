@@ -24,3 +24,7 @@ A10 = PARTIAL. A11 = NO-GO tant que la recette de navigateur et les scénarios d
 
 ## Recette utilisateur de l'atelier V2 — 11/10/2026
 Résultat communiqué : **PARTIAL**, sans précision sur la fonctionnalité bloquante. Ce retour n'autorise ni PASS ni diagnostic d'une panne spécifique. Deux défauts de gestion d'état constatés par lecture du code ont été corrigés dans l'atelier de test et dans main : marquage du dossier comme modifié après ajout d'une photo ; remise à zéro des pièces jointes de visite en attente lors d'un changement de dossier. **A10 reste PARTIAL** jusqu'au cycle interface export/réimport documenté.
+
+## Recette finale utilisateur — 11 octobre 2026
+L'utilisateur confirme avoir testé **toutes les fonctionnalités de l'atelier** sur **Firefox et Google Chrome** et les avoir validées. Confirmation additionnelle explicite : **réimport du ZIP fonctionnel**. Les contrôles précédemment rapportés « export ZIP Firefox = PASS » et « glisser-déposer Firefox = PASS » sont conservés.
+**Décision A10 : PASS — parcours fonctionnel validé par l'utilisateur dans les deux navigateurs** (atelier isolé A11). Ces résultats de recette prévalent sur l'ancien PARTIAL cité plus haut ; ne pas considérer les anciennes mentions PARTIAL comme l'état courant. Les fichiers de test et traces détaillées ne sont pas joints à cette confirmation.
