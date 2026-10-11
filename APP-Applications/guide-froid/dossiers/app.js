@@ -148,11 +148,11 @@ function render(){if(!device)return;$('workspace').hidden=false;$('deviceForm').
 // GF2-A06 : projection non destructive des anciens et nouveaux contrats vers les champs de l'atelier.
 function normalizeImportedDevice(source){
  if(!source||typeof source!=='object'||Array.isArray(source))throw Error('Fiche appareil invalide');
- const src=source.appareil&&typeof source.appareil==='object'?source.appareil:source;
+ const src=source.appareil&&typeof source.appareil==='object'&&!Array.isArray(source.appareil)?source.appareil:source;
  const config=src.configuration||{},site=src.site||'',uses=src.usages||{};
  const d={...src};
  if(typeof site==='object')d.site=site.code||site.libelleLocal||'';
- const mappings={title:src.designationLocale,manufacturer:src.fabricant,fabricant:src.brand,modele:src.model,numero:src.numeroSerie||src.serial,volumeBrut:src.capaciteBruteLitres,volumeNet:src.capaciteNetteLitres,familleFroid:config.froid,forme:config.forme,nombrePortes:config.nombreAcces,ouverture:config.ouverture,vitrage:config.vitrage,typeEquipement:config.typeEquipement};
+ const mappings={title:src.designationLocale,fabricant:src.fabricant||src.brand,modele:src.model,numero:src.numeroSerie||src.serial,volumeBrut:src.capaciteBruteLitres,volumeNet:src.capaciteNetteLitres,familleFroid:config.froid,forme:config.forme,nombrePortes:config.nombreAcces,ouverture:config.ouverture,vitrage:config.vitrage,typeEquipement:config.typeEquipement};
  for(const [key,value]of Object.entries(mappings))if((d[key]===undefined||d[key]==='')&&value!==undefined)d[key]=value;
  if(d.fonctionsUsage===undefined&&Array.isArray(uses.fonctions))d.fonctionsUsage=uses.fonctions;
  if(d.denrees===undefined&&Array.isArray(uses.denrees))d.denrees=uses.denrees;
@@ -161,6 +161,7 @@ function normalizeImportedDevice(source){
  if(!Array.isArray(d.visites))d.visites=Array.isArray(source.visites)?source.visites:[];
  // Source intégrale : conserver sans effacer ni réécrire les champs inconnus lors du round-trip.
  if(source.appareil)d.extensionsLegacy={...(d.extensionsLegacy||{}),importRoot:source};
+ // Les clés non reconnues restent directement dans d et ne sont jamais supprimées.
  return d;
 }
 function renderNotices(){const root=$('deviceNotices');if(!root||!device)return;const url=String(device.notice||'').trim();let safeUrl='';try{const parsed=new URL(url);if(['https:','http:'].includes(parsed.protocol))safeUrl=parsed.href}catch(_){}root.innerHTML='<p><strong>Fabricant :</strong> '+safe(device.fabricant||'Non renseigné')+' · <strong>Modèle :</strong> '+safe(device.modele||'Non renseigné')+'</p>'+(safeUrl?'<p><a target="_blank" rel="noopener noreferrer" href="'+safe(safeUrl)+'">Ouvrir la notice associée ↗</a></p>':'<p>Aucune notice associée pour le moment. Ajouter son URL dans la fiche appareil.</p>')+'<p><a href="../notices/" target="_blank" rel="noopener noreferrer">Annuaire des notices et fabricants ↗</a></p>'}
