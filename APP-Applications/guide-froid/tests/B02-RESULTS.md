@@ -26,3 +26,6 @@ Date : 2026-10-11. Branche de développement : main.
 - Contrôle de syntaxe du JS atelier et des scripts inline du diagnostic : PASS. **Aucune recette graphique navigateur pour B02 v3.**
 
 **État B02 : PARTIAL avancé**. À prouver : ouvrir des images et PDF depuis le diagnostic, retour au dossier et comportement après réimport, contrôle Chrome/Firefox, absence de perte et nettoyage IndexedDB.
+
+## Laboratoire web isolé B02 — 11/10/2026
+Une recette navigateur est désormais accessible via `https://nepheris.github.io/nLab-web/APP-Applications/guide-froid/atelier-a11/` et `https://nepheris.github.io/nLab-web/APP-Applications/guide-froid/diagnostic-a11/`. Le code de l'atelier de recette a été synchronisé avec le transfert v3 d'`main` et redirige vers le diagnostic isolé. Ce diagnostic reçoit les références et relit les blobs depuis IndexedDB dans le même navigateur et la même origine. Contrôle de syntaxe des scripts : PASS. **Aucun test utilisateur réel B02 exécuté à ce stade.** Recette : importer ou créer appareil fictif, ajouter image et PDF, ouvrir diagnostic, vérifier boutons Voir/télécharger, revenir à atelier, confirmer dossier toujours réimportable et ZIP sauvegardé. Réserve : le retour au dossier exige encore un réimport ZIP ; pas de restauration automatique de session, ni purge IndexedDB.
