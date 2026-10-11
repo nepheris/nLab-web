@@ -47,3 +47,13 @@ Retour utilisateur : **Chrome PASS ; Firefox FAIL**. Aucun message détaillé fo
 
 ## Recette atelier V2 — 11/10/2026
 Résultat utilisateur : **PARTIAL**, observations : aucune précision. Il n'est pas possible d'attribuer ce PARTIAL à une panne précise. Les correctifs de suivi des photos et d'isolation des pièces de visite sont intégrés sur main et la page labo. Rejouer uniquement les contrôles A10 encore non prouvés : création appareil + une photo + document, visite, export, réimport et comptage. En cas d'erreur, relever **étape, message affiché, navigateur**, sans données privées. A11 demeure **NO-GO** ; Firefox DEFLATE demeure **FAIL déclaré** sans diagnostic détaillé.
+
+## Recette complémentaire demandée — fichiers, visites et index autonome
+Demandes intégrées sur `main` et `gh-pages/APP-Applications/guide-froid/atelier-a11` :
+- Prévisualisation des images dans la liste ; bouton d'aperçu PDF intégré ; lien Voir pour les autres documents.
+- Import multiple, dossiers et glisser-déposer via Universal Input avec repli ; bouton de remise à zéro confirmé.
+- Numérotation séquentielle des visites `VIS-0001`, `VIS-0002`, etc., calculée à partir de l'historique déjà chargé, y compris sans numéro explicite. Les pièces jointes des visites ne remplacent plus les homonymes d'une sélection en attente.
+- Export ZIP : `index.html` liste les documents, conserve des liens relatifs après extraction, et inclut les images jusqu'à 2 Mo pour leur aperçu et l'impression PDF ; les autres fichiers restent accessibles sous forme de liens.
+- Les SVG sont explicitement annoncés comme schématiques/génériques ; les silhouettes restent à faire valider visuellement.
+
+**Tests à faire avant DONE :** importer au moins deux images, un PDF et un autre fichier ; ouvrir/retirer/vider/réimporter ; créer trois visites successives (même jour et jours distincts) avec pièces jointes homonymes ; ZIP → réimport ; extraire et ouvrir le `index.html` ; imprimer en PDF et vérifier les images et la liste documentaire. Évaluer Chrome et Firefox. A11 reste **NO-GO** jusqu'aux contrôles de compatibilité obligatoires, notamment Firefox DEFLATE.
