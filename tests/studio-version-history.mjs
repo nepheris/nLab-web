@@ -5,11 +5,13 @@ const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8777/';
 const root=process.cwd();
 const catalog=JSON.parse(await fs.readFile(path.join(root,'APP-Applications/studios/catalog.json'),'utf8'));
 const ids=[...(catalog.studios||[]).map(x=>x.id),...(catalog.derived_apps||[]).map(x=>x.id)];
-const browser=await chromium.launch({headless:true});
+const preflightOnly=process.env.NLAB_PREFLIGHT_ONLY==='1';
+const browser=preflightOnly?null:await chromium.launch({headless:true});
 const results=[];
 const missingRegistries=[];
 const malformedRegistries=[];
 const observedVersionKeys=new Set();
+let registryEntryCount=0;
 const expectedVersionCount=Number(process.env.NLAB_EXPECTED_STUDIO_VERSIONS||128);
 const intentionallyUnversioned=new Set(['guide-froid']);
 try{
@@ -23,6 +25,7 @@ try{
       malformedRegistries.push({id,error:'versions must be an array'});
       continue;
     }
+    registryEntryCount+=reg.versions.length;
     for(const v of reg.versions){
       const versionKey=id+':'+String(v.version||'');
       if(!v.version||!v.href||!['current','test','historical'].includes(v.status)){
@@ -34,6 +37,7 @@ try{
         continue;
       }
       observedVersionKeys.add(versionKey);
+      if(preflightOnly){results.push({id,version:String(v.version),status:v.status,isolation:v.isolation||'',href:v.href,ok:true,preflightOnly:true});continue;}
       const page=await browser.newPage({viewport:{width:1280,height:800}});
       const href=String(v.href||'./');
       const target=new URL('APP-Applications/'+id+'/'+href,base).href;
@@ -61,10 +65,10 @@ try{
       }finally{page.off('pageerror',onErr);await page.close()}
     }
   }
-}finally{await browser.close()}
+}finally{if(browser)await browser.close()}
 const failed=results.filter(x=>!x.ok);
-if(results.length!==expectedVersionCount)failed.push({id:'registry-count',ok:false,error:`Expected ${expectedVersionCount} version entries, got ${results.length}`});
+if(registryEntryCount!==expectedVersionCount)failed.push({id:'registry-count',ok:false,error:`Expected ${expectedVersionCount} registered versions, got ${registryEntryCount}`});
 for(const missing of missingRegistries)failed.push({...missing,ok:false,error:'Required versions.json missing: '+missing.path});
 for(const malformed of malformedRegistries)failed.push({...malformed,ok:false});
-console.log(JSON.stringify({ok:failed.length===0,total:results.length,failed,results},null,2));
+console.log(JSON.stringify({ok:failed.length===0,total:results.length,registryEntryCount,mode:preflightOnly?'PREFLIGHT_STATIC':'BROWSER',failed,results},null,2));
 if(failed.length)process.exit(1);
