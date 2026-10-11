@@ -120,7 +120,9 @@ def main() -> int:
             continue
         seen_ids.add(app_id)
         parent = app.get("parent_studio")
-        if not parent or parent not in {s.get("id") for s in studios}:
+        # A derived application may belong to a concrete Studio or the transversal Studio Hub.
+        # 'studio-hub' is a catalog-level parent, not a standalone Studio entry.
+        if not parent or parent not in ({s.get("id") for s in studios} | {"studio-hub"}):
             fail(f"{app_id}: invalid parent_studio {parent!r}", errors)
         registry_path = ROOT / "APP-Applications" / app_id / "versions.json"
         if not registry_path.exists():
