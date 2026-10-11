@@ -47,7 +47,7 @@ try{
       const href=String(v.href||'./');
       const target=new URL('APP-Applications/'+id+'/'+href,base).href;
       const errs=[];const assetErrors=[];const optionalMetadata404=[];
-      const isOptionalMetadata=r=>r.status()===404&&new URL(r.url()).pathname.endsWith('/build.json');
+      const isOptionalMetadata=r=>{if(r.status()!==404)return false;const path=new URL(r.url()).pathname;return path.endsWith('/build.json')||(id==='pdf-studio'&&v.isolation==='native'&&path==='/APP-Applications/pdf-studio/config/user-config.json');};
       const onErr=e=>errs.push(e.message);
       const onResponse=r=>{if(r.status()>=400&&r.url().startsWith(new URL(base).origin)){if(isOptionalMetadata(r))optionalMetadata404.push(r.url());else assetErrors.push({status:r.status(),url:r.url()});}};
       const onRequestFailed=req=>{if(req.url().startsWith(new URL(base).origin))assetErrors.push({failure:req.failure()?.errorText||'request-failed',url:req.url()});};
