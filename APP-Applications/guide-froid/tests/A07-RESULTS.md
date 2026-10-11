@@ -24,3 +24,10 @@ A07 = PARTIAL. Les tests STORE / CRC / archive tronquée ont réussi, mais DEFLA
 2. Vérifier l'intégrité, la duplication de noms, les caractères UTF-8, les sous-dossiers et la non-perte.
 3. Exécuter A10 complet : export → import → modification → pièces jointes → export → réimport.
 4. Décider A11 GO/NO-GO avec preuves.
+
+## Complément — 11/10/2026, DEFLATE
+- Fixtures ZIP générées avec Python `zipfile`, modes `ZIP_DEFLATED` et `ZIP_STORED`, fichiers `appareil.json` et `documents/témoin.txt`.
+- Fonctions `unzip` et `crc32` reprises du code `main`, exécutées avec API Web Streams natives de Node.js v22 (`DecompressionStream('deflate-raw')`).
+- Résultats : **DEFLATE PASS (2/2 fichiers)**, **STORE PASS (2/2 fichiers)** ; caractères accentués préservés.
+- Un lancement de Chromium headless a expiré dans l’environnement. **Ce test ne prouve pas la compatibilité navigateur réelle.**
+- Décision : A07 **PARTIAL**, pending tests Chromium/Firefox réels et essais d'intégration utilisateur.
