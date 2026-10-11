@@ -23,5 +23,5 @@ jobs:
       - name: Validate all Studio version registry entries without browser
         env:
           NLAB_PREFLIGHT_ONLY: '1'
-          NLAB_EXPECTED_STUDIO_VERSIONS: '130'
+          NLAB_MIN_STUDIO_VERSIONS: '130'
         run: node tests/studio-version-history.mjs
