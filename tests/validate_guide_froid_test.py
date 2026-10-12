@@ -105,7 +105,7 @@ for page in css_pages:
 css=read(BASE/'guide-froid-unified.css')
 check('data-theme="dark"' in css and 'data-theme="light"' in css,
       'canonical CSS must include light/dark theme treatment')
-check('data-gf-page="gfh8"' in css and 'data-gf-page="gf7"' in css,
+check('data-gf-page="gfh6"' in css and 'data-gf-page="gf7"' in css,
       'historical and investigation scoped rules missing')
 
 if failures:
