@@ -62,6 +62,28 @@ if node:
         result=subprocess.run([node,'--check',str(BASE/js)],capture_output=True,text=True,check=False)
         check(result.returncode==0,'JavaScript syntax invalid: '+js+' '+result.stderr[:260])
 
+# Runtime catalogue checks: 17 investigations and valid test references.
+if node:
+    js_check = r"""
+const fs=require('fs'),vm=require('vm');
+const base=process.argv[1],ctx={document:{addEventListener(){}}};
+vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(base+'/diagnostic-v5/data.js','utf8')+
+  '\\nthis.__catalogue={DEFECTS,TESTS};',ctx);
+const {DEFECTS,TESTS}=ctx.__catalogue;
+const ids=new Set(TESTS.map(t=>t[0]));
+if(DEFECTS.length!==17)throw Error('Expected 17 investigation diagrams, found '+DEFECTS.length);
+if(ids.size!==TESTS.length)throw Error('Duplicate test IDs');
+for(const d of DEFECTS){
+ if(!d[0]||!d[1]||!d[4])throw Error('Incomplete defect: '+d[0]);
+ for(const id of d[3].split(',').filter(Boolean))
+  if(!ids.has(id))throw Error('Unknown test '+id+' in '+d[0]);
+}
+console.log('17 investigations / '+TESTS.length+' tests: OK');
+"""
+    runtime=subprocess.run([node,'-e',js_check,str(BASE)],capture_output=True,text=True,check=False)
+    check(runtime.returncode==0,'Catalogue runtime: '+runtime.stderr[:450])
+
 # Single canonical stylesheet contract across the complete Guide Froid TEST suite.
 css_pages=[
     'test-integrated.html','versions.html',
