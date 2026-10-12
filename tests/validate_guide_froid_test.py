@@ -102,6 +102,7 @@ for page in css_pages:
           'page must load exactly one canonical CSS: '+page)
     check(not re.search(r'<style\\b',markup,re.I),
           'inline style block not migrated: '+page)
+    check('guide-test-nav.js' in markup, 'shared navigation missing: '+page)
 css=read(BASE/'guide-froid-unified.css')
 check('data-theme="dark"' in css and 'data-theme="light"' in css,
       'canonical CSS must include light/dark theme treatment')
