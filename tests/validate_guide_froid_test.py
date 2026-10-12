@@ -69,7 +69,7 @@ const fs=require('fs'),vm=require('vm');
 const base=process.argv[1],ctx={document:{addEventListener(){}}};
 vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(base+'/diagnostic-v5/data.js','utf8')+
-  '\\nthis.__catalogue={DEFECTS,TESTS};',ctx);
+  '\nthis.__catalogue={DEFECTS,TESTS};',ctx);
 const {DEFECTS,TESTS}=ctx.__catalogue;
 const ids=new Set(TESTS.map(t=>t[0]));
 if(DEFECTS.length!==17)throw Error('Expected 17 investigation diagrams, found '+DEFECTS.length);
