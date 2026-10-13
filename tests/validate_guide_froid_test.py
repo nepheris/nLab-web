@@ -26,7 +26,7 @@ for version, item in by.items():
 for path in ['test-integrated.html','attachments-test.js','guide-test-nav.js','guide-test-shared.css',
              'diagnostic-v5/index.html','diagnostic-v5/recherche.html','diagnostic-v5/investigation.html',
              'diagnostic-v5/mermaid-investigation.js','diagnostic-v5/bibliotheque.html','diagnostic-v5/test.html',
-             'diagnostic-v5/uml.html','diagnostic-v5/uml-catalog.js','diagnostic-v5/data.js','diagnostic-v5/style.css']:
+             'diagnostic-v5/uml.html','diagnostic-v5/uml-catalog.js','integrated-investigation.js','diagnostic-v5/data.js','diagnostic-v5/style.css']:
     read(BASE/path)
 diag=read(APP/'mermaid-investigation.js')
 check('flowchart TD' in diag and 'click ' in diag,'Mermaid or click link support missing')
@@ -43,6 +43,12 @@ for page in ['test-integrated.html','versions.html','diagnostic-v5/recherche.htm
 check('drive.google.com/file/d/' not in data,'test sheets still embed Google Drive')
 uml=read(APP/'uml.html')
 check('<iframe' not in uml, 'UML catalog must render natively without iframe')
+integrated=read(BASE/'test-integrated.html')
+check('id="gfInvestigationPanel"' in integrated and 'integrated-investigation.js' in integrated,
+      'one-page investigation panel missing')
+check('data-investigation-id' in integrated, 'defect table must open investigations in-page')
+check('gfSideMenuContent' in integrated, 'collapsible common sidebar missing')
+check('flowchart TD' in read(BASE/'integrated-investigation.js'), 'Mermaid renderer missing in integrated page')
 check('uml-catalog.js' in uml, 'UML catalog script missing')
 check('mermaid.render(' in read(APP/'uml-catalog.js'), 'UML diagrams are not rendered')
 manifest=json.loads(read(BASE/'assets/tests/manifest.json') or '{}')
@@ -58,7 +64,7 @@ node=shutil.which('node')
 if node:
     for js in ['attachments-test.js','guide-test-nav.js',
                'diagnostic-v5/data.js','diagnostic-v5/mermaid-investigation.js',
-               'diagnostic-v5/uml-catalog.js']:
+               'diagnostic-v5/uml-catalog.js','integrated-investigation.js']:
         result=subprocess.run([node,'--check',str(BASE/js)],capture_output=True,text=True,check=False)
         check(result.returncode==0,'JavaScript syntax invalid: '+js+' '+result.stderr[:260])
 
