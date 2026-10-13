@@ -3,63 +3,63 @@
   "base": "./assets/tests/",
   "images": {
     "TC-04": {
-      "path": "TC-04.png",
-      "status": "pending-binary-upload",
+      "path": "TC-04.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "TC-05": {
-      "path": "TC-05.png",
-      "status": "pending-binary-upload",
+      "path": "TC-05.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "TC-06": {
-      "path": "TC-06.png",
-      "status": "pending-binary-upload",
+      "path": "TC-06.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "TC-07": {
-      "path": "TC-07.png",
-      "status": "pending-binary-upload",
+      "path": "TC-07.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "TC-08": {
-      "path": "TC-08.png",
-      "status": "pending-binary-upload",
+      "path": "TC-08.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "TC-09": {
-      "path": "TC-09.png",
-      "status": "pending-binary-upload",
+      "path": "TC-09.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "TC-10": {
-      "path": "TC-10.png",
-      "status": "pending-binary-upload",
+      "path": "TC-10.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "TC-11": {
-      "path": "TC-11.png",
-      "status": "pending-binary-upload",
+      "path": "TC-11.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "TC-12": {
-      "path": "TC-12.png",
-      "status": "pending-binary-upload",
+      "path": "TC-12.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "FN-01": {
-      "path": "FN-01.png",
-      "status": "pending-binary-upload",
+      "path": "FN-01.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "FN-02": {
-      "path": "FN-02.png",
-      "status": "pending-binary-upload",
+      "path": "FN-02.webp",
+      "status": "ready-for-upload",
       "validated": true
     },
     "FN-03": {
-      "path": "FN-03.png",
-      "status": "pending-binary-upload",
+      "path": "FN-03.webp",
+      "status": "ready-for-upload",
       "validated": true
     }
   },
@@ -68,5 +68,7 @@
     "TC-14",
     "TC-15",
     "TC-16"
-  ]
+  ],
+  "format": "webp",
+  "source": "Approved Guide Froid test images; converted to WebP, optimized for public website"
 }
