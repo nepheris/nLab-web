@@ -4,62 +4,62 @@
   "images": {
     "TC-04": {
       "path": "TC-04.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "TC-05": {
       "path": "TC-05.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "TC-06": {
       "path": "TC-06.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "TC-07": {
       "path": "TC-07.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "TC-08": {
       "path": "TC-08.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "TC-09": {
       "path": "TC-09.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "TC-10": {
       "path": "TC-10.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "TC-11": {
       "path": "TC-11.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "TC-12": {
       "path": "TC-12.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "FN-01": {
       "path": "FN-01.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "FN-02": {
       "path": "FN-02.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     },
     "FN-03": {
       "path": "FN-03.webp",
-      "status": "ready-for-upload",
+      "status": "webp-generated-on-deploy",
       "validated": true
     }
   },
@@ -70,5 +70,5 @@
     "TC-16"
   ],
   "format": "webp",
-  "source": "Approved Guide Froid test images; converted to WebP, optimized for public website"
+  "source": "Originals imported from private Drive into GitHub main; public WebP generated in Pages build"
 }
