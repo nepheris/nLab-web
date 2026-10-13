@@ -345,6 +345,10 @@ jobs:
 
           # Sync the public site while preserving the existing .github directory.
           rsync -a --delete --exclude='.git' --exclude='.github/' ./ /tmp/nlab-gh-pages/
+          # Guide Froid: serve optimized WebP images instead of original 24 MB PNG sources.
+          python -m pip install --quiet Pillow
+          python /tmp/nlab-gh-pages/APP-Applications/guide-froid/build_webp.py
+          find /tmp/nlab-gh-pages/APP-Applications/guide-froid/assets/tests -maxdepth 1 -name '*.png' -delete
           touch /tmp/nlab-gh-pages/.nojekyll
           cd /tmp/nlab-gh-pages
           git add -A
