@@ -313,3 +313,26 @@ html[data-theme="light"] body :is(.panel,.gf-gallery,#gfMatrix,#gfIntegratedDiag
 .gf-global-nav a[aria-current="page"]{font-weight:800}
 .gf-global-nav a:focus-visible{outline:3px solid #eca72f!important;outline-offset:2px}
 @media(max-width:700px){.gf-global-nav{width:calc(100% - 20px)}.gf-uml-output svg,.diagram svg{max-width:none;min-width:640px}.gf-uml-output,.diagram{overflow-x:auto}}
+
+/* Guide Froid integrated TEST: one-page workspace, single canonical CSS */
+html[data-gf-page="gf0"] #gfMatrix,
+html[data-gf-page="gf0"] #gfInvestigationPanel{max-width:1150px;margin:16px auto;padding:20px;background:var(--gf-surface,#fff);color:var(--gf-ink,#172b3d);border:1px solid var(--gf-line,#bbccdb);border-radius:14px}
+html[data-gf-page="gf0"] #gfMatrix tbody tr{cursor:pointer}
+html[data-gf-page="gf0"] #gfMatrix tbody tr:focus-within{outline:2px solid #efb84b;outline-offset:-2px}
+html[data-gf-page="gf0"] .gf-invest-diagram{overflow-x:auto;overflow-y:hidden;border:1px solid var(--gf-line,#aabbcc);border-radius:12px;padding:15px;background:var(--gf-surface,#fff)}
+html[data-gf-page="gf0"] .gf-invest-diagram svg{display:block;margin:auto;width:100%;min-width:620px;height:auto}
+html[data-gf-page="gf0"] .gf-invest-diagram svg path,html[data-gf-page="gf0"] .gf-invest-diagram svg .flowchart-link{stroke:#426d89!important;stroke-width:2.4px!important}
+html[data-gf-page="gf0"] .gf-invest-diagram svg marker path{fill:#426d89!important;stroke:#426d89!important}
+html[data-gf-page="gf0"] .gf-panel-head{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+html[data-gf-page="gf0"] .gf-eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gf-muted)}
+html[data-gf-page="gf0"] .gf-test-links{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+html[data-gf-page="gf0"] .gf-test-links a{display:inline-block;border:1px solid var(--gf-line);padding:8px 10px;border-radius:8px}
+html[data-gf-page="gf0"] .gf-side-menu{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto;align-self:start}
+html[data-gf-page="gf0"] #gfSideMenuContent{display:flex;flex-direction:column;gap:5px}
+html[data-gf-page="gf0"] #gfSideMenuContent[hidden]{display:none}
+html[data-gf-page="gf0"] #gfSideMenuContent a{padding:8px;text-decoration:none}
+html[data-gf-page="gf0"] .gf-menu-label{margin:13px 5px 3px;font-size:.78rem;font-weight:750;letter-spacing:.05em;text-transform:uppercase;color:var(--gf-muted)}
+html[data-theme="dark"][data-gf-page="gf0"] .gf-invest-diagram{background:#1c3346!important;color:#ebf5fd!important;border-color:#7795ab}
+html[data-theme="dark"][data-gf-page="gf0"] .gf-invest-diagram svg path,html[data-theme="dark"][data-gf-page="gf0"] .gf-invest-diagram svg .flowchart-link{stroke:#a9d4f4!important}
+html[data-theme="dark"][data-gf-page="gf0"] .gf-invest-diagram svg marker path{fill:#a9d4f4!important;stroke:#a9d4f4!important}
+@media(max-width:900px){html[data-gf-page="gf0"] .gf-side-menu{position:static;max-height:none}}
