@@ -5,7 +5,7 @@ export async function checkStudioCoreWindows(browser,base){
  try{
   await page.goto(base+'APP-Applications/studios/',{waitUntil:'domcontentloaded',timeout:60000});
   const checks=await page.evaluate(async()=>{
-   const core=await import('/APP-Applications/_shared/studio-v2/window-system.js');
+   const core=await import(new URL('../_shared/studio-v2/window-system.js',location.href).href);
    const ok=(test,message)=>{if(!test)throw Error('Studio Core Window: '+message)};
    const key='core-window-regression',panel=document.createElement('section');
    panel.id=key;panel.tabIndex=-1;panel.innerHTML='<h2>Fenêtre de test</h2><p>Contenu vérifiable</p>';
