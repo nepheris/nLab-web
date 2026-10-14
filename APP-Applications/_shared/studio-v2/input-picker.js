@@ -143,9 +143,16 @@ async function readDirectory(entry,path=''){
  const out=[];for(const child of entries){if(child.isFile)out.push(await fileEntry(child,path));else if(child.isDirectory)out.push(...await readDirectory(child,path+child.name+'/'))}return out
 }
 async function filesFromDrop(dt){
- const items=[...(dt?.items||[])],out=[];if(items.length&&items.some(x=>x.webkitGetAsEntry)){
-  for(const item of items){const entry=item.webkitGetAsEntry?.();if(!entry)continue;if(entry.isFile)out.push(await fileEntry(entry,''));else if(entry.isDirectory)out.push(...await readDirectory(entry,entry.name+'/'))}
- }else out.push(...[...(dt?.files||[])]);
+ const items=[...(dt?.items||[])],out=[];
+ if(items.length){
+  for(const item of items){
+   const entry=item.webkitGetAsEntry?.();
+   if(entry?.isFile)out.push(await fileEntry(entry,''));
+   else if(entry?.isDirectory)out.push(...await readDirectory(entry,entry.name+'/'));
+   else{const file=item.getAsFile?.();if(file)out.push(file)}
+  }
+ }
+ if(!out.length)out.push(...[...(dt?.files||[])]);
  return dedupe(out)
 }
 function ensure(){
