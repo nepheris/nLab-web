@@ -5,7 +5,7 @@ export async function checkStudioCoreViewer(browser,base){
  try{
   await page.goto(base+'APP-Applications/studios/',{waitUntil:'domcontentloaded',timeout:60000});
   const checks=await page.evaluate(async()=>{
-   const {mountViewerControls}=await import('/APP-Applications/_shared/studio-v2/viewer-control.js');
+   const {mountViewerControls}=await import(new URL('../_shared/studio-v2/viewer-control.js',location.href).href);
    const ok=(test,message)=>{if(!test)throw Error('Studio Core Viewer: '+message)};
    const host=document.createElement('div');host.dataset.viewerId='core-regression';document.body.append(host);
    const events=[];document.addEventListener('studio-v2:viewer-command-global',e=>{if(e.detail.viewerId==='core-regression')events.push(e.detail.action)});
