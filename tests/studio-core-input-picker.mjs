@@ -43,11 +43,12 @@ export async function checkStudioCoreInputPicker(browser,base){
    input.dispatchEvent(new Event('change',{bubbles:true}));
    const awaitCount=async target=>{for(let i=0;i<100&&count()<target;i++)await new Promise(done=>setTimeout(done,20));ok(count()===target,'expected '+target+' files after import, received '+count())};
    await awaitCount(1);
+   ok(input.value==='','native file input was not reset after import');
    const drag=new DataTransfer();drag.items.add(new File(['drop'],'drop.txt',{type:'text/plain'}));
    root.querySelector('#studioInputDrop').dispatchEvent(new DragEvent('drop',{bubbles:true,cancelable:true,dataTransfer:drag}));
    await awaitCount(2);
    root.querySelector('#studioInputCancel').click();ok(await native===null,'cancel after native/drag import');
-   return ['null-entry-fallback','fallback-dedupe','directory-path','collection','select-none','select-all','remove','clear','cancel','session-isolation','confirm','native-input','drag-drop-ui'];
+   return ['null-entry-fallback','fallback-dedupe','directory-path','collection','select-none','select-all','remove','clear','cancel','session-isolation','confirm','native-input','input-reset','drag-drop-ui'];
   });
   if(errors.length)throw Error('Studio Core picker page errors: '+errors.join(' | '));
   return{component:'studio-core-input-picker',checks};
