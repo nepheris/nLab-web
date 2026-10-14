@@ -5,7 +5,7 @@ export async function checkStudioCoreUndoRedoBrowser(browser,base){
  try{
   await page.goto(base+'APP-Applications/studios/',{waitUntil:'domcontentloaded',timeout:60000});
   const checks=await page.evaluate(async()=>{
-   const core=await import('/APP-Applications/_shared/studio-v2/undo-redo.js');
+   const core=await import(new URL('../_shared/studio-v2/undo-redo.js',location.href).href);
    const ok=(condition,message)=>{if(!condition)throw Error('Studio Core Undo/Redo: '+message)};
    core.clearUndoRedo();core.installUndoRedoBridge();
    let value=1;core.pushUndoRedo({label:'keyboard',undo(){value=0},redo(){value=1}});
