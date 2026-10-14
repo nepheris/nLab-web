@@ -5,6 +5,8 @@ on:
       - 'APP-Applications/studios/catalog.json'
       - 'APP-Applications/**/versions.json'
       - 'tests/studio-version-history.mjs'
+      - 'tests/studio-core-undo-redo.mjs'
+      - 'APP-Applications/_shared/studio-v2/undo-redo.js'
       - '.github/workflows/studios-history-preflight.yml'
   workflow_dispatch:
 
@@ -25,3 +27,6 @@ jobs:
           NLAB_PREFLIGHT_ONLY: '1'
           NLAB_MIN_STUDIO_VERSIONS: '130'
         run: node tests/studio-version-history.mjs
+
+      - name: Core Undo/Redo transaction tests
+        run: node tests/studio-core-undo-redo.mjs
