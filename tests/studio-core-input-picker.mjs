@@ -5,7 +5,7 @@ export async function checkStudioCoreInputPicker(browser,base){
  try{
   await page.goto(base+'APP-Applications/studios/',{waitUntil:'domcontentloaded',timeout:60000});
   const checks=await page.evaluate(async()=>{
-   const {filesFromDrop,openInputPicker}=await import('/APP-Applications/_shared/studio-v2/input-picker.js');
+   const {filesFromDrop,openInputPicker}=await import(new URL('../_shared/studio-v2/input-picker.js',location.href).href);
    const ok=(condition,message)=>{if(!condition)throw Error('Studio Core Input Picker: '+message)};
    const a=new File(['a'],'a.txt',{type:'text/plain',lastModified:1});
    const b=new File(['b'],'b.txt',{type:'text/plain',lastModified:2});
