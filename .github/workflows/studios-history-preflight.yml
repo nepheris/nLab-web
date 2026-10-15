@@ -1,5 +1,8 @@
 name: Studios History Preflight
 on:
+  push:
+    branches:
+      - studios-history-test-hardening-2026-10-11
   pull_request:
     paths:
       - 'APP-Applications/studios/catalog.json'
@@ -56,3 +59,29 @@ jobs:
 
       - name: Preserve all historical routes and CURRENT pointers
         run: node tests/studios-preservation-gate.mjs
+
+  hub-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium acceptance dependency
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Serve local Studio pages
+        run: |
+          python3 -m http.server 8770 --bind 127.0.0.1 > /tmp/nlab-studios-http.log 2>&1 &
+          echo $! > /tmp/nlab-studios-http.pid
+          sleep 2
+          curl --fail http://127.0.0.1:8770/APP-Applications/studios/ > /dev/null
+      - name: Hub H06 H07 H08 Chromium acceptance
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+        run: node tests/studios-hub-smoke.mjs
+      - name: HTTP server log on failure
+        if: failure()
+        run: tail -100 /tmp/nlab-studios-http.log || true
