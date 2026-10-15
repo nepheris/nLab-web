@@ -5,6 +5,8 @@ on:
       - 'APP-Applications/studios/catalog.json'
       - 'APP-Applications/**/versions.json'
       - 'tests/studio-version-history.mjs'
+      - 'tests/fixtures/studios-preservation-baseline.json'
+      - 'tests/studios-preservation-gate.mjs'
       - 'tests/studio-version-resolver.mjs'
       - 'APP-Applications/_shared/studio-v2/version-service.js'
       - 'tests/studio-core-undo-redo.mjs'
@@ -51,3 +53,6 @@ jobs:
 
       - name: Verify Studio version resolver contract
         run: node tests/studio-version-resolver.mjs
+
+      - name: Preserve all historical routes and CURRENT pointers
+        run: node tests/studios-preservation-gate.mjs
