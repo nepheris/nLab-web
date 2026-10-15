@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import {normalizeHex,hexToRgb,rgbToHex,rgbToHsl,hslToRgb} from '../APP-Applications/_shared/studio-v2/color-picker.js';
+import {readFile} from 'node:fs/promises';
+const source=await readFile(new URL('../APP-Applications/_shared/studio-v2/color-picker.js',import.meta.url),'utf8');
+const {normalizeHex,hexToRgb,rgbToHex,rgbToHsl,hslToRgb}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
 assert.equal(normalizeHex('#abc'),'#AABBCC');
 assert.equal(normalizeHex('abcdef'),'#ABCDEF');
 assert.equal(normalizeHex('#invalid'),null);
