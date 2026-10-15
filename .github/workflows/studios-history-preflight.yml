@@ -8,6 +8,11 @@ on:
       - 'tests/studio-core-undo-redo.mjs'
       - 'tests/studio-core-colors.mjs'
       - 'APP-Applications/_shared/studio-v2/color-picker.js'
+      - 'tests/studio-core-*.mjs'
+      - 'APP-Applications/_shared/studio-v2/studio.css'
+      - 'APP-Applications/_shared/studio-v2/window-system.js'
+      - 'APP-Applications/_shared/studio-v2/viewer-control.js'
+      - 'APP-Applications/_shared/studio-v2/input-picker.js'
       - 'APP-Applications/_shared/studio-v2/undo-redo.js'
       - '.github/workflows/studios-history-preflight.yml'
   workflow_dispatch:
@@ -35,3 +40,9 @@ jobs:
 
       - name: Core color conversion unit tests
         run: node tests/studio-core-colors.mjs
+
+      - name: Core source and test syntax
+        run: |
+          for file in APP-Applications/_shared/studio-v2/{input-picker,viewer-control,window-system,undo-redo,color-picker}.js tests/studio-core-*.mjs; do
+            node --check "$file"
+          done
