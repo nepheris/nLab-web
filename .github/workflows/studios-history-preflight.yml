@@ -6,6 +6,8 @@ on:
       - 'APP-Applications/**/versions.json'
       - 'tests/studio-version-history.mjs'
       - 'tests/studio-core-undo-redo.mjs'
+      - 'tests/studio-core-colors.mjs'
+      - 'APP-Applications/_shared/studio-v2/color-picker.js'
       - 'APP-Applications/_shared/studio-v2/undo-redo.js'
       - '.github/workflows/studios-history-preflight.yml'
   workflow_dispatch:
@@ -30,3 +32,6 @@ jobs:
 
       - name: Core Undo/Redo transaction tests
         run: node tests/studio-core-undo-redo.mjs
+
+      - name: Core color conversion unit tests
+        run: node tests/studio-core-colors.mjs
