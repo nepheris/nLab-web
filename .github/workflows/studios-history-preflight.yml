@@ -5,6 +5,8 @@ on:
       - 'APP-Applications/studios/catalog.json'
       - 'APP-Applications/**/versions.json'
       - 'tests/studio-version-history.mjs'
+      - 'tests/studio-version-resolver.mjs'
+      - 'APP-Applications/_shared/studio-v2/version-service.js'
       - 'tests/studio-core-undo-redo.mjs'
       - 'tests/studio-core-colors.mjs'
       - 'APP-Applications/_shared/studio-v2/color-picker.js'
@@ -46,3 +48,6 @@ jobs:
           for file in APP-Applications/_shared/studio-v2/{input-picker,viewer-control,window-system,undo-redo,color-picker}.js tests/studio-core-*.mjs; do
             node --check "$file"
           done
+
+      - name: Verify Studio version resolver contract
+        run: node tests/studio-version-resolver.mjs
