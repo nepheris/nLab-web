@@ -202,7 +202,7 @@
 .responsiveTestSimulator .rt-monitor-header .rt-monitor-actions a{font-size:11px;min-height:33px;padding:4px 7px}
 .responsiveTestSimulator .rt-monitor-header .rt-address-fields{
  display:flex;position:absolute;top:calc(100% + 6px);left:0;z-index:12;
- width:min(520px,calc(100vw - 36px));min-width:min(260px,calc(100vw - 36px));
+ width:min(780px,calc(100vw - 36px));min-width:min(260px,calc(100vw - 36px));
  padding:10px;border:1px solid var(--rt-line);border-radius:10px;
  background:var(--rt-surface);box-shadow:0 14px 38px rgba(14,36,56,.25);
  margin:0;gap:7px;
