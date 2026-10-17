@@ -46,6 +46,13 @@ jobs:
         env:
           NLAB_BASE_URL: http://127.0.0.1:8770/
         run: node tests/studios-core-smoke.mjs
+      - name: Install Google Chrome stable for Linux
+        run: npx playwright install chrome
+      - name: Studio Core Chrome stable acceptance
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/studios-core-smoke.mjs
       - name: Local HTTP diagnostics on failure
         if: failure()
         run: tail -120 /tmp/studio-core-http.log || true
