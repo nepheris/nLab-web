@@ -21,19 +21,14 @@ export function mountThemeButtons(host=document){
  });
  const onStorage=event=>{if(event.key===KEY)sync()};
  window.addEventListener('storage',onStorage);
- let header=null;
- const attachHeader=()=>{
-  header=document.querySelector('[data-shell-pref="theme"]');
-  header?.addEventListener('change',sync);
-  sync();
- };
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',attachHeader,{once:true});
- else attachHeader();
+ // Delegation also handles the header select inserted later by nLab at DOMContentLoaded.
+ // The shell handles the select change first, then this bubble listener refreshes pressed states.
+ const onHeaderChange=event=>{if(event.target?.matches?.('[data-shell-pref="theme"]'))sync()};
+ document.addEventListener('change',onHeaderChange);
  sync();
  return ()=>{
   for(const off of listeners)off();
   window.removeEventListener('storage',onStorage);
-  document.removeEventListener('DOMContentLoaded',attachHeader);
-  header?.removeEventListener('change',sync);
+  document.removeEventListener('change',onHeaderChange);
  };
 }
