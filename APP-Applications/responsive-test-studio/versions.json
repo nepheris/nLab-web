@@ -1,16 +1,25 @@
 {
   "name": "Responsive Test Studio",
   "current": null,
-  "test": "0.1.0",
+  "test": "0.2.0",
   "versions": [
     {
-      "version": "0.1.0",
-      "label": "Responsive Test Studio 0.1.0 TEST",
-      "current": false,
+      "version": "0.2.0",
+      "label": "Responsive Test Studio 0.2.0 TEST",
       "status": "test",
+      "current": false,
       "href": "./",
       "isolation": "test-runtime",
-      "notes": "Studio autonome de prévisualisation de pages dans un iframe CSS ; ordinateurs, tablettes et téléphones, portrait/paysage, dimensions sur mesure, profil par défaut local. Ne simule pas Android OS."
+      "notes": "Thèmes nLab clair/sombre/auto, mode double portrait-paysage côte à côte, iframe CSS indépendant par orientation, rechargement au changement de format, zoom et dimensions personnalisées."
+    },
+    {
+      "version": "0.1.0",
+      "label": "Responsive Test Studio 0.1.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.1.0/",
+      "isolation": "native",
+      "notes": "Premier Studio de prévisualisation responsive par iframe, formats prédéfinis, orientations et palette flottante. Instantané autonome préservé."
     }
   ]
 }
