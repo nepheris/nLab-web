@@ -91,21 +91,3 @@ body.coreLab[data-layout="compact"] .lab-stage-section,body.coreLab[data-layout=
 body.coreLab[data-layout="compact"] .lab-bottom{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:190;grid-template-columns:repeat(4,minmax(0,1fr));background:#fff;border-top:1px solid #c4d4df;padding:7px 8px calc(7px + env(safe-area-inset-bottom,0px))}
 body.coreLab[data-layout="compact"] .lab-bottom button{display:grid;place-items:center;min-height:51px;padding:5px}
 body.coreLab[data-layout="compact"] .lab-bottom span{font-size:20px}
-
-/* Responsive simulator host above the standalone Core Lab. */
-.coreLab .lab-simulator-area{max-width:1390px;margin:20px auto 0;padding:0 16px}
-.coreLab .lab-simulator-area details{border:1px solid #b9cedc;background:#f8fbfd;border-radius:15px;padding:11px 14px}
-.coreLab .lab-simulator-area summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:#234c6c;font-size:15px;padding:8px 6px}
-.coreLab .lab-simulator-area summary::-webkit-details-marker{display:none}
-.coreLab .lab-simulator-area summary span{margin-left:auto}
-html[data-sim-embed="1"] .coreLab .lab-simulator-area{display:none!important}
-html[data-sim-embed="1"] .coreLab .lab-header{position:static}
-html[data-sim-embed="1"] .coreLab .lab-main{padding-top:12px}
-html[data-sim-embed="1"] .coreLab .lab-context{display:none}
-@media(max-width:760px){.coreLab .lab-simulator-area{padding:0 10px;margin-top:10px}.coreLab .lab-simulator-area details{padding:6px}}
-
-/* Keep the parent mobile dock from blocking a scaled test frame.
-   The embedded Core itself retains its own mobile action dock. */
-@media(max-width:760px){
- html:not([data-sim-embed="1"]) body.coreLab:has(#lab-simulator-panel[open]) > .lab-bottom{display:none!important}
-}
