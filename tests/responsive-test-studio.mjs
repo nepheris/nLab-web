@@ -105,7 +105,7 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('[data-rt-family="desktop"]').click();
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
   await equals(1280,800,'default desktop 1280x800');
-  const presets=page.locator('[data-rt-desktop-resolution] option');
+  const presets=page.locator('[data-rt-resolution] option');
   pass('desktop-only resolution catalogue',await presets.count()===21 && await page.locator('[data-rt-family="desktop"]').getAttribute('aria-pressed')==='true');
   await page.locator('[data-rt-resolution]').selectOption('640x480');
   await equals(640,480,'VGA standard 4:3');
