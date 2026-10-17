@@ -3,6 +3,8 @@
 Studio autonome de développement web et de vérification des interfaces responsive. **Distinct du Studio Core Lab**, mais réutilisable pour tester ce Lab et les autres Studios.
 
 ## Utiliser
+- L'interface est une **page de test à part entière** : barre URL, iframe centré dans un cadre de dimensions précises et palette de réglages flottante, réductible et déplaçable sur ordinateur. La palette est repliée par défaut sur les écrans étroits.
+- Changer de format, largeur, hauteur ou orientation ne remplace pas l'URL ouverte, ni ne recharge la page testée : seuls les dimensions du cadre changent. Le zoom « Ajuster » ne modifie pas le viewport CSS.
 - Ouvrir `APP-Applications/responsive-test-studio/` depuis un serveur HTTP du dépôt (ou une publication TEST validée).
 - Saisir l'URL à tester puis **Charger dans l'iframe**. Exemples directs : Hub Studios, PDF Studio, Image Studio, Scan Studio. La page conserve les mêmes données et règles que son URL originale ; aucun code métier n'est recopié.
 - Profils : ordinateur 1440×900 paysage, tablette 768×1024 portrait / 1024×768 paysage, téléphone 393×852 portrait / 852×393 paysage, petit téléphone 360×800 portrait / 800×360 paysage.
