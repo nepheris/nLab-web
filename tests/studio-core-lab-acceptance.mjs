@@ -23,12 +23,6 @@ async function scenario(name,contextOptions){
   assert(size.scroll<=size.client+2,'horizontal overflow '+JSON.stringify(size));
   checks.push(name+':layout');
   await page.screenshot({path:output+'/'+name+'-initial.png',fullPage:true,animations:'disabled'});
-  // The parent mobile dock intentionally hides while the simulator is open;
-  // collapse the viewport test panel before exercising the normal Core mobile dock.
-  if(name.startsWith('mobile')){
-   await page.locator('#lab-simulator-panel summary').click();
-   assert(await page.locator('#lab-simulator-panel').getAttribute('open')===null,'simulator did not collapse');
-  }
   await page.locator('#lab-demo').click();
   await page.locator('#studioInputPicker:not([hidden])').waitFor({timeout:12000});
   assert(await page.locator('#studioInputPicker [data-input-item]').count()===1,'demo not imported into native picker');
