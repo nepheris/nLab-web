@@ -46,7 +46,7 @@ async function scenario(name,viewport,emulateTouch=false){
   await equals(420,880,'default restored after reload');
   if(emulateTouch){
    const touch=await page.evaluate(()=>({points:navigator.maxTouchPoints,coarse:matchMedia('(pointer: coarse)').matches}));
-   pass('touch emulation environment',touch.points>0&&touch.coarse);
+   pass('touch emulation API exposure',touch.points>0); // pointer:coarse depends on headless host input devices
    await page.locator('[data-rt-device]').selectOption('phone');
    await page.locator('[data-rt-rotate]').tap();
    await equals(852,393,'tap rotation to phone landscape');
