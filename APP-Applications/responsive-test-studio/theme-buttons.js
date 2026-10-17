@@ -1,22 +1,39 @@
-/* Single-click theme buttons backed by the existing shared nLab application shell. */
-(()=>{
- 'use strict';
- const controls=[...document.querySelectorAll('[data-rt-theme]')];
- if(!controls.length)return;
+/** Palette theme buttons use the existing shared nLab theme setting; no duplicated theme engine. */
+export function mountThemeButtons(host=document){
+ const controls=[...host.querySelectorAll('[data-rt-theme]')];
  const shell=window.NLabApplicationShell;
- if(!shell)return;
+ if(!controls.length||!shell)return ()=>{};
  const KEY='nlab:application-shell:shared-prefs:v2';
- const modes=new Set(['auto','light','dark']);
- const synchronize=()=>{
-  const selected=modes.has(shell.preferences.theme)?shell.preferences.theme:'auto';
-  controls.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.rtTheme===selected)));
+ const valid=new Set(['auto','light','dark']);
+ const sync=()=>{
+  const selected=valid.has(shell.preferences.theme)?shell.preferences.theme:'auto';
+  for(const button of controls)button.setAttribute('aria-pressed',String(button.dataset.rtTheme===selected));
  };
- controls.forEach(button=>button.addEventListener('click',()=>{
-  const selected=button.dataset.rtTheme;
-  if(!modes.has(selected))return;
-  shell.setPreference('theme',selected);
-  synchronize();
- }));
- window.addEventListener('storage',event=>{if(event.key===KEY)synchronize()});
- synchronize();
-})();
+ const listeners=controls.map(button=>{
+  const action=()=>{
+   const next=button.dataset.rtTheme;
+   if(!valid.has(next))return;
+   shell.setPreference('theme',next);
+   sync();
+  };
+  button.addEventListener('click',action);
+  return ()=>button.removeEventListener('click',action);
+ });
+ const onStorage=event=>{if(event.key===KEY)sync()};
+ window.addEventListener('storage',onStorage);
+ let header=null;
+ const attachHeader=()=>{
+  header=document.querySelector('[data-shell-pref="theme"]');
+  header?.addEventListener('change',sync);
+  sync();
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',attachHeader,{once:true});
+ else attachHeader();
+ sync();
+ return ()=>{
+  for(const off of listeners)off();
+  window.removeEventListener('storage',onStorage);
+  document.removeEventListener('DOMContentLoaded',attachHeader);
+  header?.removeEventListener('change',sync);
+ };
+}
