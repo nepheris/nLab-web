@@ -40,29 +40,58 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  let state=initial||{preset:'phone',orientation:'portrait',width:393,height:852};
  let scaleMode='fit';
  let currentUrl=null;
- root.innerHTML=`<div class="rt-top"><div class="rt-preset">
- <label>Appareil <select data-rt-device><option value="desktop">Ordinateur</option><option value="tablet">Tablette</option><option value="phone">Téléphone</option><option value="small">Petit téléphone</option><option value="custom">Personnalisé</option></select></label>
- <fieldset class="rt-orientation"><legend>Orientation</legend><label><input type="radio" name="rt-orientation" value="portrait" checked> Portrait</label><label><input type="radio" name="rt-orientation" value="landscape"> Paysage</label></fieldset>
- <label>Largeur <input data-rt-width type="number" inputmode="numeric" min="240" max="2560" step="1">px</label>
- <label>Hauteur <input data-rt-height type="number" inputmode="numeric" min="240" max="2560" step="1">px</label>
- <button type="button" data-rt-default title="Mémoriser cet écran comme format initial">★ Par défaut</button>
- <button type="button" data-rt-rotate title="Échanger les orientations">↻ Pivoter</button>
- <label>Échelle <select data-rt-scale><option value="fit">Ajuster</option><option value="1">100 %</option><option value="0.75">75 %</option><option value="0.5">50 %</option><option value="0.25">25 %</option></select></label>
- </div><div class="rt-address">
- <label for="rt-target-url">Page à tester</label><input id="rt-target-url" data-rt-url type="url" spellcheck="false" placeholder="https://exemple.fr ou ../studios/" autocomplete="off">
- <button data-rt-load type="button">Charger dans l’iframe</button><button data-rt-reload type="button">Actualiser</button><a data-rt-open target="_blank" rel="noopener noreferrer">Ouvrir dans un onglet ↗</a>
- </div><div role="status" aria-live="polite" class="rt-message" data-rt-message></div></div>
- <div class="rt-monitor"><div class="rt-metrics" data-rt-metrics></div><div class="rt-scroll" data-rt-scroll><div class="rt-stage" data-rt-stage>
- <div class="rt-device-frame" data-rt-frame-box><div class="rt-chrome"><span aria-hidden="true">●</span><span data-rt-address-label>Prévisualisation</span><span>⋯</span></div>
- <div class="rt-viewport" data-rt-viewport><iframe data-rt-frame title="Page web testée en résolution simulée" loading="eager" referrerpolicy="no-referrer"></iframe></div>
- </div></div></div></div>
- <p class="rt-note">Le simulateur limite la largeur et la hauteur CSS d’un iframe, pas les API d’un véritable appareil Android. Certains sites interdisent leur chargement en iframe : ouvrez-les dans un onglet.</p>`;
- const query=s=>root.querySelector(s),ui={device:query('[data-rt-device]'),width:query('[data-rt-width]'),height:query('[data-rt-height]'),scale:query('[data-rt-scale]'),message:query('[data-rt-message]'),url:query('[data-rt-url]'),open:query('[data-rt-open]'),frame:query('[data-rt-frame]'),frameBox:query('[data-rt-frame-box]'),viewport:query('[data-rt-viewport]'),scroll:query('[data-rt-scroll]'),stage:query('[data-rt-stage]'),metrics:query('[data-rt-metrics]'),label:query('[data-rt-address-label]')};
+ root.innerHTML=\`<div class="rt-workspace" data-rt-workspace>
+ <div class="rt-address" role="group" aria-label="Adresse du site à prévisualiser">
+  <label for="rt-target-url">URL à tester</label>
+  <input id="rt-target-url" data-rt-url type="url" spellcheck="false" placeholder="https://exemple.fr ou ../studios/" autocomplete="off">
+  <button type="button" data-rt-load>Afficher</button>
+  <button type="button" data-rt-reload title="Actualiser le site testé">↻ Actualiser</button>
+  <a data-rt-open target="_blank" rel="noopener noreferrer" title="Ouvrir l'URL dans un autre onglet">↗ Onglet</a>
+  <button type="button" data-rt-show-settings aria-controls="rt-settings" aria-expanded="true">⚙ Réglages</button>
+ </div>
+ <div role="status" aria-live="polite" class="rt-message" data-rt-message></div>
+ <div class="rt-monitor" data-rt-monitor>
+  <div class="rt-metrics" data-rt-metrics></div>
+  <div class="rt-scroll" data-rt-scroll>
+   <div class="rt-stage" data-rt-stage>
+    <div class="rt-device-frame" data-rt-frame-box>
+     <div class="rt-chrome"><span aria-hidden="true">●</span><span data-rt-address-label>Prévisualisation</span><span>⋯</span></div>
+     <div class="rt-viewport" data-rt-viewport><iframe data-rt-frame title="Site web à tester en résolution simulée" loading="eager" referrerpolicy="no-referrer"></iframe></div>
+    </div>
+   </div>
+  </div>
+  <aside class="rt-top" id="rt-settings" data-rt-panel data-collapsed="false" aria-label="Réglages de l'écran simulé">
+   <div class="rt-panel-head" data-rt-panel-head>
+    <strong>⚙ Réglages d'écran</strong>
+    <button type="button" data-rt-collapse aria-controls="rt-screen-fields" aria-expanded="true">Réduire</button>
+   </div>
+   <div class="rt-panel-fields" id="rt-screen-fields" data-rt-panel-fields>
+    <div class="rt-preset">
+     <label>Appareil <select data-rt-device><option value="desktop">Ordinateur</option><option value="tablet">Tablette</option><option value="phone">Téléphone</option><option value="small">Petit téléphone</option><option value="custom">Personnalisé</option></select></label>
+     <fieldset class="rt-orientation"><legend>Orientation</legend><label><input type="radio" name="rt-orientation" value="portrait" checked> Portrait</label><label><input type="radio" name="rt-orientation" value="landscape"> Paysage</label></fieldset>
+    </div>
+    <div class="rt-preset">
+     <label>Largeur <input data-rt-width type="number" inputmode="numeric" min="240" max="2560" step="1">px</label>
+     <label>Hauteur <input data-rt-height type="number" inputmode="numeric" min="240" max="2560" step="1">px</label>
+    </div>
+    <div class="rt-preset">
+     <label>Échelle <select data-rt-scale><option value="fit">Ajuster</option><option value="1">100 %</option><option value="0.75">75 %</option><option value="0.5">50 %</option><option value="0.25">25 %</option></select></label>
+     <button type="button" data-rt-rotate title="Permuter portrait et paysage">↻ Pivoter</button>
+     <button type="button" data-rt-default title="Mémoriser ce format dans ce navigateur">★ Par défaut</button>
+    </div>
+   </div>
+  </aside>
+ </div>
+ <p class="rt-note">Aperçu en dimensions CSS réelles : le zoom n'altère pas le viewport de l'iframe. Cette prévisualisation ne simule pas les API Android, les permissions natives ou le navigateur tactile. Des sites peuvent interdire l'iframe via CSP ou X-Frame-Options.</p>
+</div>\`;
+ const query=s=>root.querySelector(s),ui={device:query('[data-rt-device]'),width:query('[data-rt-width]'),height:query('[data-rt-height]'),scale:query('[data-rt-scale]'),message:query('[data-rt-message]'),url:query('[data-rt-url]'),open:query('[data-rt-open]'),frame:query('[data-rt-frame]'),frameBox:query('[data-rt-frame-box]'),viewport:query('[data-rt-viewport]'),scroll:query('[data-rt-scroll]'),stage:query('[data-rt-stage]'),metrics:query('[data-rt-metrics]'),label:query('[data-rt-address-label]'),workspace:query('[data-rt-workspace]'),monitor:query('[data-rt-monitor]'),panel:query('[data-rt-panel]'),panelHead:query('[data-rt-panel-head]'),settingsButton:query('[data-rt-show-settings]'),collapseButton:query('[data-rt-collapse]')};
  const message=t=>{ui.message.textContent=t};
  const update=()=>{
   const w=state.width,h=state.height;
-  const maxW=Math.max(120,ui.scroll.clientWidth-24);
-  const scale=scaleMode==='fit'?clamp(Math.min(1,maxW/(w+16),720/(h+42)),.12,1):Number(scaleMode);
+  const reserved=ui.workspace.dataset.panelOpen==='true'&&window.matchMedia('(min-width:1100px)').matches?348:0;
+  const maxW=Math.max(120,ui.scroll.clientWidth-reserved-36);
+  const maxH=Math.max(160,ui.scroll.clientHeight-36);
+  const scale=scaleMode==='fit'?clamp(Math.min(1,maxW/(w+16),maxH/(h+42)),.12,1):Number(scaleMode);
   ui.frameBox.style.width=w+16+'px';ui.frameBox.style.height=h+42+'px';ui.frameBox.style.transform='scale('+scale+')';
   ui.viewport.style.width=ui.frame.style.width=w+'px';ui.viewport.style.height=ui.frame.style.height=h+'px';
   ui.stage.style.width=Math.ceil((w+16)*scale)+'px';ui.stage.style.height=Math.ceil((h+42)*scale)+'px';
@@ -98,6 +127,32 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   message(external?'Domaine externe : affichage dépendant des protections iframe (CSP / X-Frame-Options). La page interne ne peut pas être inspectée.':'Chargement du site local dans l’iframe…');
   return true;
  };
+ const setPanelOpen=open=>{
+  ui.panel.dataset.collapsed=open?'false':'true';
+  ui.workspace.dataset.panelOpen=String(open);
+  ui.settingsButton.setAttribute('aria-expanded',String(open));
+  ui.collapseButton.setAttribute('aria-expanded',String(open));
+  ui.collapseButton.textContent=open?'Réduire':'Déployer';
+  update();
+ };
+ ui.settingsButton.addEventListener('click',()=>setPanelOpen(ui.panel.dataset.collapsed==='true'));
+ ui.collapseButton.addEventListener('click',()=>setPanelOpen(ui.panel.dataset.collapsed==='true'));
+ // Optional pointer drag: the palette moves inside the preview surface, not inside the tested iframe.
+ let drag=null;
+ ui.panelHead.addEventListener('pointerdown',event=>{
+  if(event.button!==0||event.target.closest('button,a,input,select')||window.matchMedia('(max-width:640px)').matches)return;
+  const bounds=ui.monitor.getBoundingClientRect(),rect=ui.panel.getBoundingClientRect();
+  drag={x:event.clientX,y:event.clientY,left:rect.left-bounds.left,top:rect.top-bounds.top};
+  ui.panelHead.setPointerCapture(event.pointerId);
+ });
+ ui.panelHead.addEventListener('pointermove',event=>{
+  if(!drag)return;
+  const left=clamp(drag.left+event.clientX-drag.x,8,Math.max(8,ui.monitor.clientWidth-ui.panel.offsetWidth-8));
+  const top=clamp(drag.top+event.clientY-drag.y,8,Math.max(8,ui.monitor.clientHeight-ui.panel.offsetHeight-8));
+  ui.panel.style.left=left+'px';ui.panel.style.right='auto';ui.panel.style.top=top+'px';
+ });
+ for(const type of ['pointerup','pointercancel','lostpointercapture'])ui.panelHead.addEventListener(type,()=>{drag=null});
+ setPanelOpen(!window.matchMedia('(max-width:760px)').matches);
  ui.device.addEventListener('change',()=>setPreset(ui.device.value));
  root.querySelectorAll('input[name="rt-orientation"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked)setOrientation(r.value)}));
  for(const input of [ui.width,ui.height])input.addEventListener('change',()=>setDimensions(ui.width.value,ui.height.value));
