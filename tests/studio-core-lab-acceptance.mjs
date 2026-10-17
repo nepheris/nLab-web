@@ -47,7 +47,8 @@ async function scenario(name,contextOptions){
   await page.locator('#lab-window-button').click();
   assert(await page.locator('#lab-floating-window').isVisible(),'window restoration failed');
   checks.push(name+':window');
-  if(name==='mobile'){
+  if(name.startsWith('mobile')){
+   await page.locator('#lab-layout').selectOption('compact');
    assert(await page.locator('.lab-bottom').isVisible(),'touch toolbar hidden');
    const touch=await page.locator('.lab-bottom button').first().evaluate(e=>{const r=e.getBoundingClientRect();return {w:r.width,h:r.height}});
    assert(touch.w>=44&&touch.h>=44,'touch target too small: '+JSON.stringify(touch));
@@ -70,6 +71,8 @@ async function scenario(name,contextOptions){
 try{
  await scenario('desktop',{viewport:{width:1366,height:850},deviceScaleFactor:1});
  await scenario('mobile',{viewport:{width:393,height:852},deviceScaleFactor:2,isMobile:true,hasTouch:true});
+ await scenario('mobile-small',{viewport:{width:360,height:800},deviceScaleFactor:2,isMobile:true,hasTouch:true});
+ await scenario('mobile-landscape',{viewport:{width:844,height:390},deviceScaleFactor:2,isMobile:true,hasTouch:true});
 }finally{await browser.close()}
 await fs.writeFile(output+'/results.json',JSON.stringify({browser:channel||'chromium',checks,errors,mobile_is_emulation:true},null,2));
 console.log(JSON.stringify({kind:'core-lab-visual-acceptance',browser:channel||'chromium',checks,errors},null,2));
