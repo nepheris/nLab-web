@@ -1,32 +1,58 @@
+/* Reusable URL-in-iframe responsive preview; settings overlay never belongs to the tested page. */
 .responsiveTestSimulator{color:#18364d;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 .responsiveTestSimulator *{box-sizing:border-box}
-.responsiveTestSimulator .rt-top{background:#fff;border:1px solid #ccdce6;border-radius:15px;padding:15px}
-.responsiveTestSimulator .rt-preset,.responsiveTestSimulator .rt-address{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
-.responsiveTestSimulator .rt-address{border-top:1px solid #dbe6ee;padding-top:12px;margin-top:12px}
-.responsiveTestSimulator label:not(.rt-orientation label){display:inline-flex;align-items:center;gap:6px;font-size:13px;flex-wrap:wrap;font-weight:600}
+.responsiveTestSimulator .rt-workspace{position:relative;min-width:0}
+.responsiveTestSimulator .rt-address{display:flex;align-items:center;flex-wrap:wrap;gap:9px;padding:12px;background:#fff;border:1px solid #cadbe6;border-radius:13px}
+.responsiveTestSimulator label{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600}
 .responsiveTestSimulator button,.responsiveTestSimulator select,.responsiveTestSimulator input,.responsiveTestSimulator a{font:inherit}
-.responsiveTestSimulator button,.responsiveTestSimulator a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 12px;border:1px solid #abc0d0;border-radius:9px;background:#fff;color:#244960;cursor:pointer;text-decoration:none}
+.responsiveTestSimulator button,.responsiveTestSimulator a{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:7px 10px;border:1px solid #abc0d0;border-radius:9px;background:#fff;color:#244960;cursor:pointer;text-decoration:none;white-space:nowrap}
 .responsiveTestSimulator button:hover,.responsiveTestSimulator a:hover{background:#eaf4fb}
-.responsiveTestSimulator select,.responsiveTestSimulator input{min-height:44px;border:1px solid #abc0d0;border-radius:9px;background:#fff;color:#18364d;padding:8px;max-width:100%}
-.responsiveTestSimulator input[type=number]{width:78px;font-variant-numeric:tabular-nums}
-.responsiveTestSimulator input[type=url]{min-width:240px;flex:1}
-.responsiveTestSimulator .rt-address>label{white-space:nowrap}
+.responsiveTestSimulator select,.responsiveTestSimulator input{min-height:40px;border:1px solid #abc0d0;border-radius:9px;background:#fff;color:#18364d;padding:7px;max-width:100%}
+.responsiveTestSimulator input[type=number]{width:79px;font-variant-numeric:tabular-nums}
+.responsiveTestSimulator input[type=url]{min-width:220px;flex:1 1 360px}
 .responsiveTestSimulator [data-rt-load]{background:#1e619a;color:#fff;border-color:#1e619a;font-weight:700}
-.responsiveTestSimulator fieldset{padding:4px 9px;border:1px solid #d7e2eb;border-radius:9px;display:flex;gap:10px;min-height:44px;align-items:center}
-.responsiveTestSimulator legend{color:#38576a;font-weight:700;font-size:11px;padding:0 3px}
-.responsiveTestSimulator fieldset label{display:flex;align-items:center;gap:4px;white-space:nowrap}
-.responsiveTestSimulator input[type=radio]{accent-color:#1e619a;min-height:0;margin:0}
-.responsiveTestSimulator .rt-message{min-height:20px;margin-top:10px;font-size:12px;color:#506b7c}
-.responsiveTestSimulator .rt-monitor{background:#f2f6fa;border:1px solid #cbdce7;border-radius:15px;padding:12px;margin-top:14px}
-.responsiveTestSimulator .rt-metrics{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:#305875;padding:5px 4px 10px}
-.responsiveTestSimulator .rt-scroll{width:100%;min-width:0;min-height:250px;overflow:auto;border:1px solid #d1e0eb;border-radius:11px;padding:12px;display:flex;justify-content:center;align-items:flex-start;background:repeating-linear-gradient(45deg,#ebf3f8,#ebf3f8 13px,#e5eef5 13px,#e5eef5 26px)}
-.responsiveTestSimulator .rt-stage{position:relative;flex:none;min-width:0}
+.responsiveTestSimulator [data-rt-load]:hover{background:#174c78}
+.responsiveTestSimulator [data-rt-show-settings]{background:#e7f2fa}
+.responsiveTestSimulator .rt-message{min-height:22px;padding:3px 8px 1px;font-size:12px;color:#49677a}
+.responsiveTestSimulator .rt-monitor{position:relative;background:#f2f6fa;border:1px solid #cbdce7;border-radius:15px;padding:8px;min-width:0}
+.responsiveTestSimulator .rt-metrics{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:#305875;min-height:34px;padding:6px 9px}
+.responsiveTestSimulator .rt-scroll{width:100%;height:clamp(390px,calc(100dvh - 260px),950px);min-width:0;overflow:auto;border:1px solid #d1e0eb;border-radius:11px;padding:15px;display:flex;justify-content:flex-start;align-items:flex-start;background:repeating-linear-gradient(45deg,#edf4f9,#edf4f9 13px,#e5eef5 13px,#e5eef5 26px)}
+.responsiveTestSimulator .rt-stage{position:relative;flex:none;min-width:0;margin:auto}
 .responsiveTestSimulator .rt-device-frame{position:absolute;top:0;left:0;transform-origin:top left;background:#21374e;border:8px solid #21374e;border-radius:18px;box-shadow:0 12px 40px #17344840;overflow:hidden}
 .responsiveTestSimulator .rt-chrome{height:26px;background:#dfe8f0;color:#385974;display:flex;align-items:center;justify-content:space-between;padding:0 8px;gap:12px;font-size:11px}
 .responsiveTestSimulator .rt-chrome span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .responsiveTestSimulator .rt-chrome span:first-child{color:#169160}
 .responsiveTestSimulator .rt-viewport{background:#fff;overflow:hidden}
 .responsiveTestSimulator .rt-viewport iframe{display:block;border:0;background:#fff}
-.responsiveTestSimulator .rt-note{margin:10px 4px;color:#506b7e;font-size:12px}
+.responsiveTestSimulator .rt-top{position:absolute;z-index:3;top:52px;right:17px;width:min(340px,calc(100% - 34px));background:#fff;border:1px solid #bed3e0;border-radius:12px;box-shadow:0 16px 42px #183c5b33;overflow:hidden}
+.responsiveTestSimulator .rt-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;background:#eaf4fb;border-bottom:1px solid #cbdce7;cursor:grab;user-select:none;touch-action:none}
+.responsiveTestSimulator .rt-panel-head:active{cursor:grabbing}
+.responsiveTestSimulator .rt-panel-head strong{font-size:14px}
+.responsiveTestSimulator .rt-panel-head button{min-height:32px;padding:3px 8px;font-size:12px}
+.responsiveTestSimulator .rt-panel-fields{padding:12px;display:grid;gap:10px}
+.responsiveTestSimulator .rt-preset{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.responsiveTestSimulator .rt-preset label{flex-wrap:wrap}
+.responsiveTestSimulator .rt-preset select{min-width:115px;max-width:180px}
+.responsiveTestSimulator .rt-preset button{min-height:39px}
+.responsiveTestSimulator fieldset{padding:5px 8px;border:1px solid #d7e2eb;border-radius:9px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.responsiveTestSimulator legend{color:#38576a;font-weight:700;font-size:11px;padding:0 3px}
+.responsiveTestSimulator fieldset label{display:flex;align-items:center;gap:4px;white-space:nowrap;font-weight:500}
+.responsiveTestSimulator input[type=radio]{accent-color:#1e619a;min-height:0;margin:0}
+.responsiveTestSimulator .rt-top[data-collapsed="true"]{width:max-content;max-width:calc(100% - 24px)}
+.responsiveTestSimulator .rt-top[data-collapsed="true"] .rt-panel-head{border-bottom:0}
+.responsiveTestSimulator .rt-top[data-collapsed="true"] .rt-panel-fields{display:none}
+.responsiveTestSimulator .rt-note{margin:8px 4px 0;color:#506b7e;font-size:12px}
 .responsiveTestSimulator :is(button,a,select,input):focus-visible{outline:3px solid #edae48;outline-offset:2px}
-@media(max-width:700px){.responsiveTestSimulator .rt-top{padding:9px}.responsiveTestSimulator .rt-preset,.responsiveTestSimulator .rt-address{gap:6px}.responsiveTestSimulator label:not(.rt-orientation label){font-size:12px}.responsiveTestSimulator .rt-scroll{padding:5px}.responsiveTestSimulator input[type=url]{width:100%;min-width:0;flex-basis:100%}.responsiveTestSimulator .rt-address>label{flex:1}.responsiveTestSimulator button,.responsiveTestSimulator a{padding:7px 9px}}
+@media(min-width:1100px){
+ .responsiveTestSimulator .rt-workspace[data-panel-open="true"] .rt-scroll{padding-right:363px}
+}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-address{padding:8px;gap:6px}
+ .responsiveTestSimulator .rt-address>label{width:100%}
+ .responsiveTestSimulator input[type=url]{min-width:0;width:100%;flex:1 1 100%}
+ .responsiveTestSimulator .rt-address button,.responsiveTestSimulator .rt-address a{padding:6px 8px;font-size:12px}
+ .responsiveTestSimulator .rt-monitor{padding:5px}
+ .responsiveTestSimulator .rt-scroll{padding:6px;height:clamp(350px,calc(100dvh - 252px),800px)}
+ .responsiveTestSimulator .rt-top{top:45px;right:10px}
+ .responsiveTestSimulator .rt-panel-head{touch-action:auto;cursor:default}
+}
