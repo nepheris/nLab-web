@@ -58,6 +58,7 @@ Le comportement de la popup reste volontairement `cases cochées = sélection à
 - [x] **UI-06** — Aligner le header de la bibliothèque iconographique sur le shell nLab.
 - [x] **UI-07** — Enlever les liens ZIP publics pointant vers des archives non présentes.
 - [x] **UI-08** — Ajouter `Tester dans Image Studio` sur les 7 cas Scan2D.
+- [x] **UI-09** — Afficher dans l'explorateur les ressources complémentaires approuvées du registre transversal, sans dupliquer les URL déjà indexées.
 - [x] **IMP-01** — Activer la première nouvelle image importée.
 - [x] **IMP-02** — Fallback du type image sur extension connue.
 - [x] **IMP-03** — Status import et erreur décodage/événement.
@@ -74,6 +75,7 @@ Le comportement de la popup reste volontairement `cases cochées = sélection à
 - [ ] **QA-06** — Tester un import de 7 PNG Scan2D (dont cas bruité volumineux), comparer noms et dimensions.
 - [ ] **QA-07** — Vérifier le comportement tablette/mobile et sur fond sombre, notamment le picker et la galerie.
 - [ ] **QA-08** — Valider les URL finales servies par GitHub Pages (distinctes des fichiers en dépôt).
+- [ ] **QA-09** — Contrôler le parcours des catégories complémentaires dans le navigateur et vérifier les aperçus publics.
 - [ ] **CORE-01** — Définir les états normés `selected → accepted → loaded → decoded → active` avec messages.
 - [ ] **CORE-02** — Harmoniser le traitement des types MIME/extensions entre Picker et Studio.
 - [ ] **CORE-03** — Ajouter un accusé de réception documenté à l'événement `input-picked` (compatible avec les autres Studios).
