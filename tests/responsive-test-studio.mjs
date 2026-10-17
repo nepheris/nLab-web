@@ -181,7 +181,7 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('[data-rt-url]').fill('javascript:alert(1)');
   await page.locator('[data-rt-load]').click();
   pass('javascript URL rejected',await page.locator('[data-rt-message]').textContent().then(x=>x.includes('HTTP(S)')));
-  await page.locator('[data-rt-url]').fill('../image-studio/');
+  await page.locator('[data-rt-url]').fill('../../../image-studio/');
   await page.locator('[data-rt-load]').click();
   pass('local URL accepted',(await frame.getAttribute('src')).includes('/APP-Applications/image-studio/'));
   await page.locator('[data-rt-dual]').click();
