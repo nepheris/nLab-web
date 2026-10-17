@@ -2,7 +2,8 @@
 // This intentionally does not claim Android OS, native permissions or UA emulation.
 import {chromium} from 'playwright';
 import fs from 'node:fs/promises';
-const url=new URL('APP-Applications/responsive-test-studio/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/').href;
+// Approved v0.4.0 historical runtime regression: CURRENT v0.4.2 is tested by the toolbar suite.
+const url=new URL('APP-Applications/responsive-test-studio/versions/0.4.0/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/').href;
 const channel=process.env.NLAB_BROWSER_CHANNEL||undefined;
 const browser=await chromium.launch({headless:true,...(channel?{channel}:{})});
 const out='artifacts/responsive-test-studio';
@@ -33,7 +34,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('no extra theme group in header',await page.locator('.site-header [data-rt-theme]').count()===0);
   const registry=await page.request.get(new URL('APP-Applications/responsive-test-studio/versions.json',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/').href);
   const versions=await registry.json();
-  pass('history preservation registry',versions.test==='0.4.1' && versions.current==='0.4.0' && versions.versions.some(v=>v.version==='0.4.0' && v.current===true && v.status==='current' && v.href==='./') && versions.versions.some(v=>v.version==='0.4.1' && v.status==='test' && v.href==='./test/') && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')) && versions.versions.some(v=>v.version==='0.3.0' && v.status==='historical' && v.href.includes('versions/0.3.0/')) && versions.versions.some(v=>v.version==='0.3.1' && v.status==='historical' && v.href.includes('versions/0.3.1/')));
+  pass('history preservation registry',versions.test===null && versions.current==='0.4.2' && versions.versions.some(v=>v.version==='0.4.2' && v.current===true && v.status==='current' && v.href==='./') && versions.versions.some(v=>v.version==='0.4.1' && v.status==='historical' && v.href==='./versions/0.4.1/') && versions.versions.some(v=>v.version==='0.4.0' && v.status==='historical' && v.href==='./versions/0.4.0/') && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')) && versions.versions.some(v=>v.version==='0.3.0' && v.status==='historical' && v.href.includes('versions/0.3.0/')) && versions.versions.some(v=>v.version==='0.3.1' && v.status==='historical' && v.href.includes('versions/0.3.1/')));
 
   const panel=page.locator('[data-rt-panel]'),monitor=page.locator('[data-rt-monitor]');
   const compact=viewport.width<=760;
@@ -180,7 +181,7 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('[data-rt-url]').fill('javascript:alert(1)');
   await page.locator('[data-rt-load]').click();
   pass('javascript URL rejected',await page.locator('[data-rt-message]').textContent().then(x=>x.includes('HTTP(S)')));
-  await page.locator('[data-rt-url]').fill('../image-studio/');
+  await page.locator('[data-rt-url]').fill('../../../image-studio/');
   await page.locator('[data-rt-load]').click();
   pass('local URL accepted',(await frame.getAttribute('src')).includes('/APP-Applications/image-studio/'));
   await page.locator('[data-rt-dual]').click();
@@ -247,6 +248,18 @@ try{
   if(!await page.locator('[data-rt-url-fields]').count())throw Error('Archive 0.4.0 original URL bar unavailable');
   if(!await page.locator('[data-rt-frame]').isVisible())throw Error('Archive 0.4.0 primary viewport unavailable');
   checks.push('history:0.4.0 approved native snapshot loads independently');
+  const archive041=new URL('APP-Applications/responsive-test-studio/versions/0.4.1/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/');
+  const response041=await page.goto(archive041.href,{waitUntil:'domcontentloaded',timeout:30000});
+  if(!response041?.ok())throw Error('Archive 0.4.1 HTTP unavailable');
+  await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
+  if(!await page.locator('[data-rt-monitor-header] [data-rt-url-toggle]').count())throw Error('Archive 0.4.1 integrated URL toolbar missing');
+  checks.push('history:0.4.1 approved integrated toolbar runs independently');
+  const archive042=new URL('APP-Applications/responsive-test-studio/versions/0.4.2/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/');
+  const response042=await page.goto(archive042.href,{waitUntil:'domcontentloaded',timeout:30000});
+  if(!response042?.ok())throw Error('Archive 0.4.2 HTTP unavailable');
+  await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
+  if(!await page.locator('[data-rt-frame]').isVisible())throw Error('Archive 0.4.2 viewport unavailable');
+  checks.push('current:0.4.2 pinned native snapshot available independently');
  }catch(error){failures.push({name:'history-0.1.0',error:String(error)})}
  finally{await historical.close()}
 }finally{await browser.close()}

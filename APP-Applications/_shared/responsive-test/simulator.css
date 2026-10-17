@@ -190,7 +190,7 @@
 /* 0.4.1 TEST: one integrated toolbar, including URL editing in native fullscreen. */
 .responsiveTestSimulator .rt-monitor-header{display:flex;flex-wrap:wrap;align-items:center;gap:5px;z-index:8;position:relative;min-height:44px}
 .responsiveTestSimulator .rt-monitor-header .rt-address{
- display:block;position:relative;flex:1 1 225px;min-width:145px;max-width:none;
+ display:block;position:relative;flex:1 1 50%;min-width:50%;max-width:none;
  margin:0;padding:2px 3px;border:0;border-radius:7px;background:transparent;
 }
 .responsiveTestSimulator .rt-monitor-header .rt-address-strip{min-height:35px;gap:5px}
