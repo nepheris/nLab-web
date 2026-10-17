@@ -139,10 +139,12 @@ for studio_id in CONTRACTS["studios"]:
         if not src.exists(): continue
         text=src.read_text(encoding="utf-8")
         for ref in demo_ref_re.findall(text):
+            # Match the filesystem path only; URL query/hash are browser routing, not filenames.
+            path_only=ref.split("?",1)[0].split("#",1)[0]
             # Studio references use ../../ from APP-Applications/<studio>/ after <base href="../">.
-            rel=ref[len("../../"):]
+            rel=path_only[len("../../"):]
             target=ROOT/rel
-            if ref.endswith("/"):
+            if path_only.endswith("/"):
                 if not target.is_dir(): fail(f"{studio_id}: broken demo directory reference {ref}")
             elif not target.exists():
                 fail(f"{studio_id}: broken demo file reference {ref}")
