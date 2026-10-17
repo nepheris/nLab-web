@@ -9,7 +9,7 @@
  <div class="toolbar"><button id="clearImages" type="button">Tout retirer</button><button id="demoSynthetic" type="button">Démo synthétique</button><button id="demoReal1" type="button">Démo réelle 1</button><button id="demoReal2" type="button">Démo réelle 2</button></div>
  <div class="panel" style="padding:8px;margin-top:8px"><div class="sectionTitle"><b>Bibliothèque démo · Scan2D V1</b><a class="small" href="../../Library/demo/?scan2d" target="_blank" rel="noopener">Galerie ↗</a></div>
 <div class="toolbar"><label class="small" for="scan2dDemoPicker">Image de test :</label><select id="scan2dDemoPicker" style="max-width:100%;flex:1"><option value="">Chargement du catalogue…</option></select></div>
-<div class="toolbar"><button id="scan2dDemoLoad" type="button">Charger le test</button><button id="scan2dDemoLoadAll" type="button">Charger les 7 tests</button></div>
+<div class="toolbar"><button id="scan2dDemoLoad" type="button">Charger le test</button><button id="scan2dDemoLoadAll" type="button">Charger les 7 tests</button></div><div class="toolbar"><button id="scan2dPresetReference" type="button">Référence (01)</button><button id="scan2dPresetCalibration" type="button">Calibration (01–04)</button><button id="scan2dPresetRobustness" type="button">Robustesse (05–07)</button></div>
 <div id="scan2dDemoStatus" class="small">Images synthétiques calibrées ; les déformations sont documentées dans le manifeste.</div>
 </div>
  <div id="collectionStatus" class="status">Aucune image.</div>
@@ -133,6 +133,10 @@ async function loadScan2dDemos(all=false){
 }
 $('scan2dDemoLoad').onclick=()=>loadScan2dDemos(false);
 $('scan2dDemoLoadAll').onclick=()=>loadScan2dDemos(true);
+async function loadScan2dPreset(indices){const status=$('scan2dDemoStatus');try{if(scan2dFixtures.length!==7)throw Error('Pack Scan2D indisponible');const files=[];for(const i of indices)files.push(await fetchScan2dFixture(scan2dFixtures[i]));await addFiles(files);status.textContent=files.length+' tests préchargés dans Image Studio.'}catch(e){status.textContent='Échec : '+(e?.message||e)}}
+$('scan2dPresetReference').onclick=()=>loadScan2dPreset([0]);
+$('scan2dPresetCalibration').onclick=()=>loadScan2dPreset([0,1,2,3]);
+$('scan2dPresetRobustness').onclick=()=>loadScan2dPreset([4,5,6]);
 initScan2dDemos();
 $('demoSynthetic').onclick=()=>addDemo('../../Library/demo/Images/calibration-regles-300x150.png','calibration-regles-300x150.png');$('demoReal1').onclick=()=>addDemo('../../Library/demo/source-drive/images/calibration-scan-reel-01-public.webp','calibration-scan-reel-01-public.webp');$('demoReal2').onclick=()=>addDemo('../../Library/demo/source-drive/images/calibration-scan-reel-02-public.webp','calibration-scan-reel-02-public.webp');
 document.addEventListener('studio-v2:undo-redo-changed',syncEditButtons);renderList();renderCal();applyViewZoom();syncEditButtons();publishSelection('ready');
