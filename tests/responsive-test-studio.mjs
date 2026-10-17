@@ -120,8 +120,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('dual source synchronized when enabled',(await second.getAttribute('src')).includes('/APP-Applications/image-studio/'));
   await page.locator('[data-rt-dual]').click();
 
-  if(emulateTouch)await equals(393,852,'viewport preserved after changing URL');
-  else await equals(420,880,'viewport preserved after changing URL');
+  await equals(393,852,'phone viewport preserved after changing URL');
   if(!compact){
     const head=page.locator('[data-rt-panel-head] strong'),before=await panel.boundingBox(),handle=await head.boundingBox();
     await page.mouse.move(handle.x+handle.width/2,handle.y+handle.height/2);
