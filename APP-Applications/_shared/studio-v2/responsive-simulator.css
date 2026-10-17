@@ -1,0 +1,28 @@
+/* Shared responsive simulator widget — visual frame only; NOT a real Android emulator. */
+.responsiveSimulator{background:#fff;border:1px solid #cbd9e5;border-radius:17px;padding:16px;margin:14px 0 20px;min-width:0;color:#17334d;box-shadow:0 5px 26px #16354d0c}
+.responsiveSimulator *{box-sizing:border-box}
+.responsiveSimulator .rs-head{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;border-bottom:1px solid #dce7ef;padding-bottom:13px}
+.responsiveSimulator .rs-head strong{font-size:20px}
+.responsiveSimulator .rs-head p{color:#52697b;margin:3px 0;font-size:13px}
+.responsiveSimulator .rs-presets{display:flex;gap:5px;flex-wrap:wrap}
+.responsiveSimulator button,.responsiveSimulator select,.responsiveSimulator input{font:inherit}
+.responsiveSimulator button,.responsiveSimulator .rs-controls a{min-height:42px;border:1px solid #bbcddd;border-radius:9px;background:#fff;color:#234d70;padding:8px 11px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.responsiveSimulator button[aria-pressed="true"]{background:#1d5f9b;color:#fff;border-color:#1d5f9b}
+.responsiveSimulator .rs-controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:13px 0}
+.responsiveSimulator .rs-controls label{display:inline-flex;align-items:center;gap:6px;font-size:13px}
+.responsiveSimulator .rs-controls input[type="number"]{width:70px;padding:7px;min-height:42px;border:1px solid #a9bfd1;border-radius:8px;color:#17334d;background:white}
+.responsiveSimulator .rs-controls select{min-height:42px;padding:7px;border:1px solid #a9bfd1;border-radius:8px;background:white;color:#17334d}
+.responsiveSimulator .rs-controls input[type="checkbox"]{width:18px;height:18px;accent-color:#2166a5}
+.responsiveSimulator .rs-caption{color:#335771;background:#edf5fb;border-radius:9px;font-size:13px;padding:7px 11px;margin:5px 0 10px;font-variant-numeric:tabular-nums}
+.responsiveSimulator .rs-scroller{width:100%;min-width:0;overflow:auto;background:repeating-linear-gradient(45deg,#eef4f8 0px,#eef4f8 12px,#e7eff5 12px,#e7eff5 24px);border:1px solid #d2e0e9;border-radius:13px;padding:12px;display:flex;align-items:flex-start;justify-content:center;min-height:230px}
+.responsiveSimulator .rs-stage{position:relative;flex:none}
+.responsiveSimulator .rs-device{position:absolute;top:0;left:0;transform-origin:top left;border:12px solid #233a53;border-radius:22px;background:#233a53;box-shadow:0 10px 30px #08243d38;overflow:hidden}
+.responsiveSimulator .rs-device-bar{height:31px;background:#e5edf5;display:flex;justify-content:space-between;gap:14px;align-items:center;padding:0 12px;font-size:12px;color:#3c5970;white-space:nowrap}
+.responsiveSimulator .rs-device-bar span:nth-child(2){text-overflow:ellipsis;overflow:hidden}
+.responsiveSimulator .rs-device-bar span:first-child{color:#3b9b64;font-size:11px}
+.responsiveSimulator .rs-viewport{position:relative;background:white;overflow:hidden}
+.responsiveSimulator .rs-viewport iframe{border:0;display:block;background:white}
+.responsiveSimulator .rs-grid{pointer-events:none;position:absolute;inset:0;background-image:linear-gradient(90deg,#2f87c933 1px,transparent 1px),linear-gradient(#2f87c933 1px,transparent 1px);background-size:40px 40px}
+.responsiveSimulator .rs-foot{color:#536b7d;font-size:12px;margin:11px 0 0}
+.responsiveSimulator :is(button,input,select,a):focus-visible{outline:3px solid #e9ad3c;outline-offset:2px}
+@media(max-width:720px){.responsiveSimulator{padding:10px}.responsiveSimulator .rs-head strong{font-size:17px}.responsiveSimulator .rs-presets button{font-size:12px;min-height:38px;padding:6px 8px}.responsiveSimulator .rs-controls{gap:6px}.responsiveSimulator .rs-scroller{padding:6px}}
