@@ -122,4 +122,19 @@ function updateDevice(){
 window.addEventListener('resize',updateDevice,{passive:true});
 updateDevice();
 status('Studio Core Lab prêt : import, couleurs, zoom, fenêtres et historique');
+// The parent Lab can embed the very same page using ?embed=1, without nested simulators.
+if(document.documentElement.dataset.simEmbed!=='1'){
+ try{
+  const {mountResponsiveSimulator}=await import('../_shared/studio-v2/responsive-simulator.js');
+  window.__studioCoreLabSimulator=mountResponsiveSimulator($('lab-simulator'),{
+   src:'./?embed=1',
+   initialPreset:'phone'
+  });
+  document.documentElement.dataset.responsiveSimulatorReady='1';
+ }catch(error){
+  const container=$('lab-simulator');
+  if(container)container.textContent='Simulateur indisponible : '+(error?.message||String(error));
+  console.error('Studio Core responsive simulator:',error);
+ }
+}
 document.documentElement.dataset.coreLabReady='1';
