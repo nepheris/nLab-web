@@ -21,15 +21,19 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await page.frameLocator('[data-rt-frame]').locator('body').waitFor({timeout:15000});
   pass('catalog Studio name',await page.locator('h1').textContent().then(x=>x.includes('Prévisualisez')));
-  const theme=page.locator('[data-shell-pref="theme"]');
-  pass('shared theme selector',await theme.isVisible());
-  await theme.selectOption('dark');
-  pass('nLab dark theme applied',await page.evaluate(()=>document.documentElement.dataset.theme==='dark' && getComputedStyle(document.body).backgroundColor==='rgb(22, 27, 32)'));
-  await theme.selectOption('light');
-  pass('nLab light theme applied',await page.evaluate(()=>document.documentElement.dataset.theme==='light' && getComputedStyle(document.body).backgroundColor==='rgb(244, 246, 248)'));
+  const controls=page.locator('[data-rt-theme]');
+  pass('exactly three visible theme buttons',await controls.count()===3&&await controls.first().isVisible());
+  await page.locator('[data-rt-theme="dark"]').click();
+  pass('one click dark theme applied',await page.evaluate(()=>document.documentElement.dataset.theme==='dark' && getComputedStyle(document.body).backgroundColor==='rgb(22, 27, 32)'));
+  pass('dark theme aria pressed',await page.locator('[data-rt-theme="dark"]').getAttribute('aria-pressed')==='true');
+  await page.locator('[data-rt-theme="light"]').click();
+  pass('one click light theme applied',await page.evaluate(()=>document.documentElement.dataset.theme==='light' && getComputedStyle(document.body).backgroundColor==='rgb(244, 246, 248)'));
+  await page.locator('[data-rt-theme="auto"]').click();
+  pass('auto saved as shared preference',await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab:application-shell:shared-prefs:v2')).theme==='auto'));
+  await page.locator('[data-rt-theme="light"]').click();
   const registry=await page.request.get(new URL('APP-Applications/responsive-test-studio/versions.json',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/').href);
   const versions=await registry.json();
-  pass('history preservation registry',versions.test==='0.2.0' && versions.current===null && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')));
+  pass('history preservation registry',versions.test==='0.3.0' && versions.current===null && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')));
 
   const panel=page.locator('[data-rt-panel]'),monitor=page.locator('[data-rt-monitor]');
   const compact=viewport.width<=760;
@@ -42,6 +46,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('panel collapsible',(await panel.getAttribute('data-collapsed'))==='true');
   await page.locator('[data-rt-show-settings]').click();
   pass('panel can reopen',(await panel.getAttribute('data-collapsed'))==='false');
+  await page.locator('input[name="rt-orientation"][value="portrait"]').check();
   await page.locator('[data-rt-device]').selectOption('tablet');
   await equals(768,1024,'tablet portrait');
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
@@ -71,13 +76,37 @@ async function scenario(name,viewport,emulateTouch=false){
 
   await page.locator('[data-rt-device]').selectOption('desktop');
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
-  await equals(1440,900,'desktop landscape');
+  await equals(1280,800,'default desktop 1280x800');
+  const presets=page.locator('[data-rt-desktop-resolution] option');
+  pass('desktop resolution catalogue',await presets.count()>=21);
+  await page.locator('[data-rt-desktop-resolution]').selectOption('640x480');
+  await equals(640,480,'VGA standard 4:3');
+  await page.locator('[data-rt-desktop-resolution]').selectOption('1280x1024');
+  await equals(1280,1024,'SXGA standard 5:4');
+  await page.locator('[data-rt-desktop-resolution]').selectOption('1920x1080');
+  await equals(1920,1080,'Full HD standard 16:9');
+  await page.locator('[data-rt-desktop-resolution]').selectOption('3840x2160');
+  await equals(3840,2160,'4K UHD viewport standard');
+  pass('4K fit zoom smaller than 100%',await page.locator('[data-rt-frame-box]').evaluate(el=>getComputedStyle(el).transform!=='matrix(1, 0, 0, 1, 0, 0)'));
+  await page.locator('[data-rt-desktop-resolution]').selectOption('1280x800');
+  await equals(1280,800,'standard 1280x800 restored');
   await page.locator('[data-rt-width]').fill('420');
   await page.locator('[data-rt-height]').fill('880');
   await page.locator('[data-rt-height]').press('Tab');
   await equals(420,880,'custom 420x880');
   await page.locator('[data-rt-default]').click();
   pass('default saved',await page.locator('[data-rt-message]').textContent().then(x=>x.includes('enregistré')));
+  await page.locator('[data-rt-zoom-value]').fill('67');
+  await page.locator('[data-rt-zoom-value]').press('Tab');
+  pass('manual zoom 67%',await page.locator('[data-rt-scale]').inputValue()==='custom'&&await page.locator('[data-rt-frame-box]').evaluate(el=>getComputedStyle(el).transform.includes('0.67')));
+  await page.locator('[data-rt-zoom-plus]').click();
+  pass('zoom plus 5 points',await page.locator('[data-rt-zoom-value]').inputValue()==='72');
+  await page.locator('[data-rt-zoom-minus]').click();
+  pass('zoom minus 5 points',await page.locator('[data-rt-zoom-value]').inputValue()==='67');
+  await page.locator('[data-rt-zoom-slider]').evaluate(el=>{el.value='83';el.dispatchEvent(new Event('input',{bubbles:true}))});
+  pass('zoom slider percent',await page.locator('[data-rt-zoom-value]').inputValue()==='83');
+  await page.locator('[data-rt-zoom-save]').click();
+  pass('zoom remembered after explicit save',await page.locator('[data-rt-message]').textContent().then(x=>x.includes('Zoom préféré enregistré')));
   await page.locator('[data-rt-scale]').selectOption('0.5');
   pass('scaled frame',await page.locator('[data-rt-frame-box]').evaluate(el=>getComputedStyle(el).transform.includes('0.5')));
   await page.screenshot({path:out+'/'+name+'.png',fullPage:true,animations:'disabled'});
@@ -85,6 +114,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('nLab theme persists on reload',await page.evaluate(()=>document.documentElement.dataset.theme==='light'));
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await equals(420,880,'default restored after reload');
+  pass('saved zoom restored after reload',await page.locator('[data-rt-scale]').inputValue()==='custom' && await page.locator('[data-rt-zoom-value]').inputValue()==='83');
   if((await panel.getAttribute('data-collapsed'))==='true')await page.locator('[data-rt-show-settings]').click();
   if(emulateTouch){
    const touch=await page.evaluate(()=>({points:navigator.maxTouchPoints,coarse:matchMedia('(pointer: coarse)').matches}));
@@ -99,6 +129,14 @@ async function scenario(name,viewport,emulateTouch=false){
 
   await page.locator('[data-rt-device]').selectOption('phone');
   await page.locator('input[name="rt-orientation"][value="portrait"]').check();
+  await page.locator('[data-rt-fullscreen]').click();
+  pass('fullscreen viewport enabled',await page.evaluate(()=>document.fullscreenElement===document.querySelector('[data-rt-monitor]')));
+  pass('fullscreen setting button visible',await page.locator('[data-rt-full-settings]').isVisible());
+  await page.locator('[data-rt-full-settings]').click();
+  pass('fullscreen settings collapsed',await page.locator('[data-rt-panel]').getAttribute('data-collapsed')==='true');
+  await page.locator('[data-rt-full-settings]').click();
+  await page.locator('[data-rt-fullscreen]').click();
+  pass('fullscreen exited',await page.evaluate(()=>document.fullscreenElement===null));
   await page.locator('[data-rt-dual]').click();
   pass('dual preview enabled',await page.locator('[data-rt-dual]').getAttribute('aria-pressed')==='true');
   pass('secondary iframe visible',await page.locator('[data-rt-stage-secondary]').isVisible());
@@ -156,6 +194,12 @@ try{
   if(!await primary.isVisible())throw Error('Historical iframe unavailable');
   if(await page.locator('[data-rt-frame-secondary]').count())throw Error('Archive changed: unexpected dual iframe');
   checks.push('history:0.1.0 snapshot loads independently');
+  const archive02=new URL('APP-Applications/responsive-test-studio/versions/0.2.0/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/');
+  const res02=await page.goto(archive02.href,{waitUntil:'domcontentloaded',timeout:30000});
+  if(!res02?.ok())throw Error('Archive 0.2.0 HTTP unavailable');
+  await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
+  if(!await page.locator('[data-rt-frame-secondary]').count())throw Error('Archive 0.2.0 dual iframe missing');
+  checks.push('history:0.2.0 snapshot loads independently');
  }catch(error){failures.push({name:'history-0.1.0',error:String(error)})}
  finally{await historical.close()}
 }finally{await browser.close()}
