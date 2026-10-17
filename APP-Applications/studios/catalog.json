@@ -165,7 +165,7 @@
       "versions_path": "../responsive-test-studio/versions.html",
       "version_registry": "../responsive-test-studio/versions.json",
       "icon": "../../assets/studios/responsive-test-studio.svg",
-      "purpose": "Atelier de test responsive par URL en iframe : profils ordinateur/tablette/téléphone, thèmes nLab clair/sombre/auto, prévisualisation portrait et paysage côte à côte, rotation, dimensions personnalisées, zoom Ajuster et diagnostics CSS. Version TEST indépendante d'Android réel."
+      "purpose": "Studio de test responsive : URL dans des iframes CSS, 21 résolutions PC classiques (4:3, 16:9, 16:10, ultra-wide, 4K), formats mobile/tablette, rotation, portrait/paysage côte à côte, thème nLab Auto/Clair/Sombre, zoom précis enregistrable et viewport plein écran."
     }
   ],
   "future": [

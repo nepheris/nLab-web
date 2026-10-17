@@ -26,3 +26,11 @@ body{margin:0;background:var(--nlab-bg);color:var(--nlab-ink);font:15px/1.6 syst
  .intro p{font-size:12px}
  .test-badge{display:none}
 }
+
+/* Explicit, single-click, accessible 3-way theme switch — shares nLab shell state. */
+.rt-theme-controls{display:flex;align-items:center;gap:3px;padding:3px;border:1px solid var(--nlab-line);background:var(--nlab-soft);border-radius:12px;white-space:nowrap}
+.rt-theme-controls button{font:inherit;font-size:12px;font-weight:750;padding:7px 10px;min-height:36px;cursor:pointer;border-radius:9px;border:1px solid transparent;color:var(--nlab-ink);background:transparent}
+.rt-theme-controls button:hover{background:var(--nlab-card)}
+.rt-theme-controls button[aria-pressed="true"]{background:var(--nlab-brand);color:#fff;border-color:var(--nlab-brand)}
+.rt-theme-controls button:focus-visible{outline:3px solid #edae48;outline-offset:2px}
+@media(max-width:760px){.rt-theme-controls{order:3;width:100%;justify-content:center}.rt-theme-controls button{flex:1;min-height:40px}.site-header{flex-wrap:wrap}}
