@@ -102,7 +102,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('zoom plus 5 points',await page.locator('[data-rt-zoom-value]').inputValue()==='72');
   await page.locator('[data-rt-zoom-minus]').click();
   pass('zoom minus 5 points',await page.locator('[data-rt-zoom-value]').inputValue()==='67');
-  await page.locator('[data-rt-zoom-slider]').fill('83');
+  await page.locator('[data-rt-zoom-slider]').evaluate(el=>{el.value='83';el.dispatchEvent(new Event('input',{bubbles:true}))});
   pass('zoom slider percent',await page.locator('[data-rt-zoom-value]').inputValue()==='83');
   await page.locator('[data-rt-zoom-save]').click();
   pass('zoom remembered after explicit save',await page.locator('[data-rt-message]').textContent().then(x=>x.includes('Zoom préféré enregistré')));
@@ -113,7 +113,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('nLab theme persists on reload',await page.evaluate(()=>document.documentElement.dataset.theme==='light'));
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await equals(420,880,'default restored after reload');
-  pass('stored manual zoom preference restored',await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab:responsive-test-studio:zoom:v1')).percent===83));
+  pass('saved zoom restored after reload',await page.locator('[data-rt-scale]').inputValue()==='custom' && await page.locator('[data-rt-zoom-value]').inputValue()==='83');
   if((await panel.getAttribute('data-collapsed'))==='true')await page.locator('[data-rt-show-settings]').click();
   if(emulateTouch){
    const touch=await page.evaluate(()=>({points:navigator.maxTouchPoints,coarse:matchMedia('(pointer: coarse)').matches}));
