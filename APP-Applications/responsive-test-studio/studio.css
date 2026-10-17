@@ -1,0 +1,20 @@
+:root{color-scheme:light;--ink:#17364c;--muted:#577083;--line:#cadce9;--bg:#edf3f8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.site-header{background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px clamp(14px,3vw,44px)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{background:#25699d;color:#fff;border-radius:13px;width:45px;height:45px;display:grid;place-items:center;font-size:29px}
+.brand strong{display:block;font-size:19px}.brand span:not(.brand-mark){display:block;color:var(--muted);font-size:12px}
+nav{display:flex;gap:15px}a{color:#21649b}nav a{text-decoration:none;font-size:13px;font-weight:650}
+.studio-main{max-width:1480px;margin:auto;padding:22px clamp(12px,2.5vw,32px)}
+.intro{display:flex;justify-content:space-between;gap:20px;align-items:center}
+.intro h1{font-size:clamp(23px,2.6vw,34px);line-height:1.2;margin:8px 0}
+.intro p{max-width:850px;margin:8px 0 20px;color:#4b6577}
+.eyebrow{font-size:12px;font-weight:750;color:#246c9d;letter-spacing:.07em}
+.test-badge{border:1px solid #b6d1e2;border-radius:20px;padding:5px 12px;background:#e2f2fb;color:#1c5e89;font-size:12px;white-space:nowrap}
+.quick-links{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:4px 0 13px;color:#4c6578;font-size:13px}
+.quick-links button{padding:7px 12px;min-height:39px;border:1px solid #c7d9e7;background:#fff;border-radius:10px;cursor:pointer;color:#235d86;font:inherit}
+.quick-links button:hover{background:#e7f4fd}
+.notes{border-top:1px solid #cddde8;margin:22px 0;padding:7px 4px;color:#526a7c}
+.notes h2{font-size:17px;color:#234861}.notes p{margin:7px 0;font-size:13px}
+@media(max-width:720px){.site-header{padding:9px}.brand strong{font-size:15px}.brand-mark{width:36px;height:36px;font-size:22px}.intro{align-items:start;flex-direction:column;gap:0}.test-badge{margin-bottom:15px}.studio-main{padding:12px 8px}nav{gap:7px}nav a{font-size:11px}}
