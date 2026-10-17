@@ -186,3 +186,41 @@
  .responsiveTestSimulator .rt-address-fields{gap:6px}
  .responsiveTestSimulator .rt-device-families button{min-height:61px}
 }
+
+/* 0.4.1 TEST: one integrated toolbar, including URL editing in native fullscreen. */
+.responsiveTestSimulator .rt-monitor-header{display:flex;flex-wrap:wrap;align-items:center;gap:5px;z-index:8;position:relative;min-height:44px}
+.responsiveTestSimulator .rt-monitor-header .rt-address{
+ display:block;position:relative;flex:1 1 225px;min-width:145px;max-width:none;
+ margin:0;padding:2px 3px;border:0;border-radius:7px;background:transparent;
+}
+.responsiveTestSimulator .rt-monitor-header .rt-address-strip{min-height:35px;gap:5px}
+.responsiveTestSimulator .rt-monitor-header .rt-address-strip strong{font-size:11px}
+.responsiveTestSimulator .rt-monitor-header .rt-address-strip [data-rt-url-summary]{font-size:11px}
+.responsiveTestSimulator .rt-monitor-header .rt-address-strip [data-rt-url-toggle]{min-height:32px;font-size:11px;padding:4px 7px}
+.responsiveTestSimulator .rt-monitor-header .rt-monitor-actions{display:flex;gap:5px;flex-wrap:wrap;align-items:center;justify-content:flex-end;flex:0 1 auto;margin:0 3px}
+.responsiveTestSimulator .rt-monitor-header .rt-monitor-actions button,
+.responsiveTestSimulator .rt-monitor-header .rt-monitor-actions a{font-size:11px;min-height:33px;padding:4px 7px}
+.responsiveTestSimulator .rt-monitor-header .rt-address-fields{
+ display:flex;position:absolute;top:calc(100% + 6px);left:0;z-index:12;
+ width:min(520px,calc(100vw - 36px));min-width:min(260px,calc(100vw - 36px));
+ padding:10px;border:1px solid var(--rt-line);border-radius:10px;
+ background:var(--rt-surface);box-shadow:0 14px 38px rgba(14,36,56,.25);
+ margin:0;gap:7px;
+}
+.responsiveTestSimulator .rt-monitor-header .rt-address-fields[hidden]{display:none!important}
+.responsiveTestSimulator .rt-monitor-header .rt-address-fields input[type=url]{width:100%;min-width:0;flex:1 1 220px}
+.responsiveTestSimulator .rt-monitor>.rt-message{min-height:0;font-size:11px;padding:0 8px}
+.responsiveTestSimulator .rt-monitor>.rt-metrics{min-height:24px;padding:3px 9px}
+.responsiveTestSimulator .rt-monitor .rt-diagnostics{padding:0 9px 5px}
+.responsiveTestSimulator .rt-monitor .rt-top,
+.responsiveTestSimulator .rt-monitor:fullscreen .rt-top,
+.responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-top{
+ top:calc(var(--rt-toolbar-height, 52px) + 48px);
+ max-height:calc(100% - var(--rt-toolbar-height, 52px) - 58px)
+}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-monitor-header .rt-address{flex:1 1 100%;min-width:0}
+ .responsiveTestSimulator .rt-monitor-header .rt-monitor-actions{flex:1 1 100%;justify-content:flex-start}
+ .responsiveTestSimulator .rt-monitor-header .rt-monitor-actions button,
+ .responsiveTestSimulator .rt-monitor-header .rt-monitor-actions a{font-size:10px;min-height:33px;padding:5px}
+}
