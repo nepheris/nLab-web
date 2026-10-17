@@ -78,6 +78,10 @@ jobs:
           echo $! > /tmp/nlab-studios-http.pid
           sleep 2
           curl --fail http://127.0.0.1:8770/APP-Applications/studios/ > /dev/null
+      - name: Studio Core B02 B03 B04 B05 B06 B07 Chromium acceptance
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+        run: node tests/studios-core-smoke.mjs
       - name: Hub H06 H07 H08 Chromium acceptance
         env:
           NLAB_BASE_URL: http://127.0.0.1:8770/
