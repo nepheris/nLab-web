@@ -165,7 +165,7 @@
       "versions_path": "../responsive-test-studio/versions.html",
       "version_registry": "../responsive-test-studio/versions.json",
       "icon": "../../assets/studios/responsive-test-studio.svg",
-      "purpose": "Studio de test responsive : URL dans des iframes CSS, 21 résolutions PC classiques (4:3, 16:9, 16:10, ultra-wide, 4K), formats mobile/tablette, rotation, portrait/paysage côte à côte, thème nLab Auto/Clair/Sombre, zoom précis enregistrable et viewport plein écran."
+      "purpose": "Studio de test responsive : URL iframe repliable, header nLab compact, choix SVG Ordinateur/Tablette/Mobile avec formats filtrés (21 PC, 6 tablettes, 9 mobiles), orientation et vue double portrait/paysage, thème nLab, zoom précis enregistrable et plein écran."
     }
   ],
   "future": [

@@ -1,11 +1,11 @@
-# Responsive Test Studio — 0.3.1 TEST
+# Responsive Test Studio — 0.4.0 TEST
 
 Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via le catalogue nLab Studios.
 
 ## Usage
 
-1. Coller une URL HTTP(S), relative ou absolue, puis **Afficher**.
-2. Choisir le profil ordinateur, tablette, téléphone ou petit téléphone. Pour **ordinateur**, le menu **Résolution écran** propose 21 formats standards : VGA/SVGA/XGA (4:3), SXGA (5:4), WXGA/16:10, HD/Full HD/QHD/4K (16:9), ultra-wide/cinéma. Valeur ordinateur par défaut **1280 × 800 (16:10)**. Dimensions personnalisées autorisées de 240 à 4096 px.
+1. La présentation se trouve dans le **header nLab standard**, pour garder toute la hauteur disponible au viewport. Coller une URL HTTP(S), relative ou absolue puis **Afficher**. La barre URL est **réductible** via « Réduire » et déployable via « Modifier URL » ; en vue compacte, l'URL courante reste lisible.
+2. Dans la palette, choisir directement le **type d'écran par pictogramme SVG** : **Ordinateur** (21 formats VGA/4:3/5:4, HD/16:9, 16:10 et ultra-large/4K), **Tablette** (6 résolutions, compacte à XL), **Mobile** (9 résolutions de mini 320×568 à grand 480×960), ou **Sur mesure** (240–4096 px). Le menu Résolution n'affiche que les formats du type sélectionné. Profil PC initial : **1280 × 800 (16:10)**. Les orientations portrait/paysage restent indépendantes du choix du format.
 3. Tourner entre portrait et paysage ; l'iframe applique les dimensions CSS de l'écran, sans changer l'User-Agent ni les permissions du système.
 4. Utiliser **Vue double** pour comparer la même URL dans deux iframes côte à côte (dimensions inversées portrait/paysage). Leurs navigations deviennent indépendantes après leur chargement initial ; une nouvelle URL recharge les deux.
 5. Utiliser **Ajuster** pour visualiser les écrans entiers ; le zoom visuel ne change pas la résolution CSS.
@@ -19,7 +19,8 @@ Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via
 
 ## Versions et stabilité
 
-- **0.3.1 TEST** : header et CSS nLab standard restaurés ; les boutons de thème Auto/Clair/Sombre sont déplacés dans la palette « Réglages d’écran », synchronisés avec la sélection du header. Toutes les fonctions de 0.3.0 restent disponibles.
+- **0.4.0 TEST** : présentation placée dans le header nLab, barre URL compacte/réductible, catégories SVG ordinateur/tablette/mobile/sur mesure, résolutions filtrées (21 / 6 / 9), avec vue double, zoom, plein écran et thème inchangés.
+- **0.3.1 historique** : version native autonome préservée sous versions/0.3.1/.
 - **0.3.0 historique** : version native autonome avec ses boutons de thème dans le header, préservée sous versions/0.3.0/.
 - **0.2.0 historique** : version native autonome sous versions/0.2.0/ (moteur CSS, shell, runtime et UI figés).
 - **0.1.0 historique** : instantané natif autonome sous versions/0.1.0/ (JS/CSS copiés) ; pas de dépendance au nouveau moteur.
