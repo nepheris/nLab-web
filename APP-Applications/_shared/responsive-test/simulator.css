@@ -156,3 +156,33 @@
 .responsiveTestSimulator .rt-theme-controls button:hover{background:var(--rt-soft)}
 .responsiveTestSimulator .rt-theme-controls button[aria-pressed="true"]{background:var(--rt-brand);border-color:var(--rt-brand);color:#fff}
 .responsiveTestSimulator .rt-theme-controls button[aria-pressed="true"]:hover{background:var(--rt-brand);color:#fff;filter:brightness(.92)}
+
+/* v0.4 — compact URL strip; complete form stays available in one click. */
+.responsiveTestSimulator .rt-address{display:block;padding:7px 9px}
+.responsiveTestSimulator .rt-address-strip{display:flex;align-items:center;gap:8px;min-height:35px;min-width:0}
+.responsiveTestSimulator .rt-address-strip strong{font-size:12px;color:var(--rt-ink);white-space:nowrap}
+.responsiveTestSimulator .rt-address-strip [data-rt-url-summary]{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;color:var(--rt-muted);direction:ltr}
+.responsiveTestSimulator .rt-address-strip [data-rt-url-toggle]{min-height:32px;padding:4px 9px;font-size:12px;flex-shrink:0}
+.responsiveTestSimulator .rt-address-fields{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding-top:7px;border-top:1px solid var(--rt-line);margin-top:5px}
+.responsiveTestSimulator .rt-address-fields[hidden]{display:none!important}
+.responsiveTestSimulator .rt-address-fields input[type=url]{min-width:170px;flex:1 1 320px}
+.responsiveTestSimulator .rt-address[data-collapsed="true"] .rt-address-strip{min-height:31px}
+.responsiveTestSimulator .rt-family-fieldset{width:100%;max-width:100%;margin:0;display:block}
+.responsiveTestSimulator .rt-device-families{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.responsiveTestSimulator .rt-device-families button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;min-height:57px;padding:6px 3px;font-size:11px;font-weight:650;text-align:center;white-space:normal;border:1px solid var(--rt-line);background:var(--rt-surface);color:var(--rt-ink)}
+.responsiveTestSimulator .rt-device-families button:hover{background:var(--rt-soft)}
+.responsiveTestSimulator .rt-device-families button[aria-pressed="true"]{background:var(--rt-brand);color:#fff;border-color:var(--rt-brand)}
+.responsiveTestSimulator .rt-device-families button[aria-pressed="true"]:hover{background:var(--rt-brand);color:#fff;filter:brightness(.92)}
+.responsiveTestSimulator .rt-device-families svg{width:19px;height:19px;flex-shrink:0}
+.responsiveTestSimulator .rt-resolution-preset{width:100%;border-top:1px solid var(--rt-line);padding-top:8px}
+.responsiveTestSimulator .rt-resolution-preset[hidden]{display:none!important}
+.responsiveTestSimulator .rt-resolution-preset label{display:flex;flex-wrap:wrap;width:100%}
+.responsiveTestSimulator .rt-resolution-preset select{width:100%;max-width:100%;min-width:0}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-address{padding:5px 7px}
+ .responsiveTestSimulator .rt-address-strip{gap:5px}
+ .responsiveTestSimulator .rt-address-strip strong{font-size:11px}
+ .responsiveTestSimulator .rt-address-strip [data-rt-url-summary]{font-size:10px}
+ .responsiveTestSimulator .rt-address-fields{gap:6px}
+ .responsiveTestSimulator .rt-device-families button{min-height:61px}
+}
