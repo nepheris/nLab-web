@@ -50,3 +50,24 @@ Remonter : modèle du téléphone, version Android, version Chrome, URL utilisé
 - Branche `studio-core-validation-2026-10-17` / PR [#71](https://github.com/nepheris/nLab-web/pull/71) : Lab et tests.
 - P028 : roadmap et sous-plan B10.
 - **CURRENT, Legacy, PR #70 et environnement P005 déployé restent inchangés.** Pas de mise en production ni de fusion automatique.
+
+## Simulateur responsive intégré
+
+La page TEST comporte en tête une **fenêtre de simulation** du vrai Studio Core, dans un `iframe` de taille CSS exacte. La fenêtre peut être repliée pour revenir à l'affichage plein écran du Lab.
+
+| Profil | Dimensions CSS |
+|---|---|
+| Ordinateur | 1440 × 900 |
+| Portable | 1280 × 800 |
+| Tablette | 768 × 1024 |
+| Téléphone | 393 × 852 |
+| Petit mobile | 360 × 800 |
+
+- Cliquez sur un appareil pour choisir sa largeur/hauteur, ou saisissez vos dimensions personnalisées (240–2560 px).
+- **↻ Pivoter** inverse la largeur et la hauteur ; **Échelle Ajuster/100/75/50/25 %** contrôle seulement la taille visuelle du cadre sans modifier le viewport CSS interne.
+- **Grille** superpose un repère, **Actualiser** recharge uniquement le contenu simulé, **Plein écran** ouvre le vrai Lab dans un nouvel onglet.
+- Le simulateur ne recrée pas le système Android, son appareil photo, les permissions ni le clavier natif : la vraie recette Android reste distincte.
+- Le composant est séparé du Lab dans `APP-Applications/_shared/studio-v2/responsive-simulator.js` et `.css` pour être réutilisable par un futur **Responsive Test Studio**. Aucun nouveau projet P0xx n'a été créé à ce stade.
+- Les tests automatisés `tests/studio-core-responsive-simulator.mjs` vérifient les dimensions effectives de l'iframe, la rotation, les modes, la grille, l'interactivité des modules Core et les débordements sur desktop et écran étroit.
+
+**Publication :** tant que la PR #71 n'est pas distribuée sur un hébergement TEST distinct, le lien GitHub montre les sources et le démarrage `bash scripts/run-studio-core-lab.sh` donne une démonstration interactive sur le PC et dans son réseau local ; l'URL GitHub Pages CURRENT n'est pas modifiée.
