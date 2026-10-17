@@ -1,5 +1,5 @@
-import {mountResponsiveSimulator} from '../_shared/responsive-test/simulator.js';
-import {mountThemeButtons} from './theme-buttons.js';
+import {mountResponsiveSimulator} from './versions/0.4.0/simulator.js';
+import {mountThemeButtons} from './versions/0.4.0/theme-buttons.js';
 const root=document.getElementById('responsive-test');
 try{
  const simulator=mountResponsiveSimulator(root,{src:'../studios/'});
