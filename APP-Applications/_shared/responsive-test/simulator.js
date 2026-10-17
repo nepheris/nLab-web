@@ -40,7 +40,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  let state=initial||{preset:'phone',orientation:'portrait',width:393,height:852};
  let scaleMode='fit';
  let currentUrl=null;
- root.innerHTML=\`<div class="rt-workspace" data-rt-workspace>
+ root.innerHTML=`<div class="rt-workspace" data-rt-workspace>
  <div class="rt-address" role="group" aria-label="Adresse du site à prévisualiser">
   <label for="rt-target-url">URL à tester</label>
   <input id="rt-target-url" data-rt-url type="url" spellcheck="false" placeholder="https://exemple.fr ou ../studios/" autocomplete="off">
@@ -83,7 +83,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   </aside>
  </div>
  <p class="rt-note">Aperçu en dimensions CSS réelles : le zoom n'altère pas le viewport de l'iframe. Cette prévisualisation ne simule pas les API Android, les permissions natives ou le navigateur tactile. Des sites peuvent interdire l'iframe via CSP ou X-Frame-Options.</p>
-</div>\`;
+</div>`;
  const query=s=>root.querySelector(s),ui={device:query('[data-rt-device]'),width:query('[data-rt-width]'),height:query('[data-rt-height]'),scale:query('[data-rt-scale]'),message:query('[data-rt-message]'),url:query('[data-rt-url]'),open:query('[data-rt-open]'),frame:query('[data-rt-frame]'),frameBox:query('[data-rt-frame-box]'),viewport:query('[data-rt-viewport]'),scroll:query('[data-rt-scroll]'),stage:query('[data-rt-stage]'),metrics:query('[data-rt-metrics]'),label:query('[data-rt-address-label]'),workspace:query('[data-rt-workspace]'),monitor:query('[data-rt-monitor]'),panel:query('[data-rt-panel]'),panelHead:query('[data-rt-panel-head]'),settingsButton:query('[data-rt-show-settings]'),collapseButton:query('[data-rt-collapse]')};
  const message=t=>{ui.message.textContent=t};
  const update=()=>{
