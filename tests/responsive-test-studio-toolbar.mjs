@@ -27,7 +27,7 @@ async function run(name,viewport,emulateTouch=false){
    const dimensions=await page.evaluate(()=>{
     const head=document.querySelector('[data-rt-monitor-header]').getBoundingClientRect();
     const url=document.querySelector('[data-rt-address-bar]').getBoundingClientRect();
-    const actions=document.querySelector('[data-rt-monitor-actions]')?.getBoundingClientRect();
+    const actions=document.querySelector('.rt-monitor-actions')?.getBoundingClientRect();
     return {head:head.width,url:url.width,urlTop:url.top,actionsTop:actions?.top??null};
    });
    pass('URL area at least half viewport toolbar width',dimensions.url>=dimensions.head*.5-2);
