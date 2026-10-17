@@ -28,7 +28,7 @@ try{
  await iconPage.close();
 
  await tests.first().click();
- await gallery.waitForURL(/APP-Applications\\/image-studio\\/v2\\/\\?demo=/,{timeout:20000});
+ await gallery.waitForURL(url=>url.pathname.includes('/APP-Applications/image-studio/v2/')&&url.searchParams.has('demo'),{timeout:20000});
  const opened=gallery;
  await opened.waitForSelector('#nlabStudioV2Chrome',{timeout:35000});
  await opened.waitForFunction(()=>document.querySelectorAll('#imageList .imageItem').length>=1,null,{timeout:40000});
