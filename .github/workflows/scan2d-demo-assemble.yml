@@ -1,0 +1,32 @@
+name: Scan2D public demo - assemble full-resolution fixture
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Library/demo/files/demo-input/Images/Scan2D/.parts/**'
+      - '.github/workflows/scan2d-demo-assemble.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Reconstruct full-resolution Scan2D image 05 and verify SHA256
+        run: |
+          set -euo pipefail
+          cd Library/demo/files/demo-input/Images/Scan2D
+          cat .parts/05.part*.bin > 05_image_de_test_ERREUR_flou_sigma2_bruit9.png
+          echo 'ece7c1bf02efc828b6a2bf75d46520e418a2df7afcca92ce0a696564b32bfecb  05_image_de_test_ERREUR_flou_sigma2_bruit9.png' | sha256sum -c -
+      - name: Commit verified PNG
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f Library/demo/files/demo-input/Images/Scan2D/05_image_de_test_ERREUR_flou_sigma2_bruit9.png
+          if ! git diff --cached --quiet; then
+            git commit -m "test(demo): publish original full-resolution noisy Scan2D PNG"
+            git push
+          fi

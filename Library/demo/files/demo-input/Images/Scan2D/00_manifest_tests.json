@@ -1,0 +1,94 @@
+{
+  "titre": "Jeu de tests synthétiques Scan2D V1",
+  "version": "1.0",
+  "dimensions_image_px": [
+    1600,
+    1200
+  ],
+  "pixels_par_mm_reference": 5,
+  "note": "Images synthétiques; les coordonnées et transformations sont déterministes. Contours visibles dessinés avec épaisseur de trait et antialiasing selon transformations. La géométrie SVG représente les dimensions nominales. Les graduations sont dessinées à 5 px/mm. Pas de garantie d’une précision CNC à partir du raster.",
+  "piece_mm": {
+    "bbox": [
+      86,
+      68,
+      150,
+      100
+    ],
+    "rayon_coin": 12,
+    "trous": [
+      {
+        "centre": [
+          114,
+          95
+        ],
+        "diametre": 21.2
+      },
+      {
+        "centre": [
+          205,
+          95
+        ],
+        "diametre": 21.2
+      },
+      {
+        "centre": [
+          160,
+          139
+        ],
+        "diametre": 31.2
+      }
+    ],
+    "oblong": {
+      "bbox": [
+        130,
+        109,
+        38,
+        10
+      ]
+    }
+  },
+  "tests": [
+    {
+      "file": "01_image_de_test_OK_reference_orthogonale.png",
+      "defaut": "Aucun",
+      "transformation": "Référence plane, 5 px/mm",
+      "attendu": "Échelle X/Y 5 px/mm ; angle axes 90° ; bbox pièce 150 x 100 mm"
+    },
+    {
+      "file": "02_image_de_test_ERREUR_rotation_7deg.png",
+      "defaut": "Rotation globale",
+      "transformation": "Rotation +7 degrés",
+      "attendu": "Règles toujours orthogonales ; dimensions pièce conservées après rectification"
+    },
+    {
+      "file": "03_image_de_test_ERREUR_echelle_Xplus6pct_Ymoins6pct.png",
+      "defaut": "Échelle anisotrope",
+      "transformation": "X x1.06; Y x0.94",
+      "attendu": "Calibrations X et Y différentes ; dimensions réelles 150 x 100 mm"
+    },
+    {
+      "file": "04_image_de_test_ERREUR_perspective_trapeze.png",
+      "defaut": "Perspective trapézoïdale",
+      "transformation": "Homographie du plan",
+      "attendu": "Correction projective ; contours et dimensions théoriques rétablis"
+    },
+    {
+      "file": "05_image_de_test_ERREUR_flou_sigma2_bruit9.png",
+      "defaut": "Flou et bruit",
+      "transformation": "Flou sigma 2px, bruit sigma 9",
+      "attendu": "Tester seuils, détection de traits de règle et précision des contours"
+    },
+    {
+      "file": "06_image_de_test_ERREUR_eclairage_gradient_regle_masquee.png",
+      "defaut": "Éclairage et occultation",
+      "transformation": "Gain de luminosité 0.60 à 1.18; règle Y masquée partiellement",
+      "attendu": "Évaluer seuil adaptatif et robustesse des points observables"
+    },
+    {
+      "file": "07_image_de_test_ERREUR_cisaillement_axes_non_orthogonaux.png",
+      "defaut": "Cisaillement X/Y",
+      "transformation": "x'=x+0.11(y-600); y'=y+0.04(x-800)",
+      "attendu": "Angle apparent ≠ 90° ; rectification affine"
+    }
+  ]
+}

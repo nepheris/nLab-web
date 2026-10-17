@@ -1,7 +1,7 @@
 {
   "schema": "nlab-demo-catalog/v2",
   "version": "2.2",
-  "updated": "2026-09-29",
+  "updated": "2026-10-17",
   "cards": [
     {
       "kind": "MD",
@@ -38,6 +38,55 @@
       "title": "Payloads QR / code-barres",
       "description": "Valeurs synthétiques et URL publiques utilisées par QR & Barcode Studio.",
       "path": "demo-input/QR-Barcode/payloads.json"
+    },
+    {
+      "kind": "Images",
+      "title": "Scan2D 01 · Référence orthogonale (OK)",
+      "description": "Scan 2D de référence ; règles orthogonales et géométrie nominale.",
+      "path": "demo-input/Images/Scan2D/01_image_de_test_OK_reference_orthogonale.png",
+      "preview": "./files/demo-input/Images/Scan2D/01_image_de_test_OK_reference_orthogonale.png"
+    },
+    {
+      "kind": "Images",
+      "title": "Scan2D 02 · Rotation de 7°",
+      "description": "Scan déformé par une rotation de 7 degrés ; tester le redressement.",
+      "path": "demo-input/Images/Scan2D/02_image_de_test_ERREUR_rotation_7deg.png",
+      "preview": "./files/demo-input/Images/Scan2D/02_image_de_test_ERREUR_rotation_7deg.png"
+    },
+    {
+      "kind": "Images",
+      "title": "Scan2D 03 · Échelle X +6 %, Y −6 %",
+      "description": "Erreur d'échelle différente suivant X et Y ; tester la calibration indépendante.",
+      "path": "demo-input/Images/Scan2D/03_image_de_test_ERREUR_echelle_Xplus6pct_Ymoins6pct.png",
+      "preview": "./files/demo-input/Images/Scan2D/03_image_de_test_ERREUR_echelle_Xplus6pct_Ymoins6pct.png"
+    },
+    {
+      "kind": "Images",
+      "title": "Scan2D 04 · Perspective trapézoïdale",
+      "description": "Déformation projective trapézoïdale ; tester la correction de perspective.",
+      "path": "demo-input/Images/Scan2D/04_image_de_test_ERREUR_perspective_trapeze.png",
+      "preview": "./files/demo-input/Images/Scan2D/04_image_de_test_ERREUR_perspective_trapeze.png"
+    },
+    {
+      "kind": "Images",
+      "title": "Scan2D 05 · Flou σ2 + bruit σ9",
+      "description": "Flou gaussien sigma 2 px et bruit sigma 9 ; tester détection et nettoyage.",
+      "path": "demo-input/Images/Scan2D/05_image_de_test_ERREUR_flou_sigma2_bruit9.png",
+      "preview": "./files/demo-input/Images/Scan2D/05_image_de_test_ERREUR_flou_sigma2_bruit9.png"
+    },
+    {
+      "kind": "Images",
+      "title": "Scan2D 06 · Éclairage variable et règle masquée",
+      "description": "Gradient lumineux avec portion de règle masquée ; tester la robustesse.",
+      "path": "demo-input/Images/Scan2D/06_image_de_test_ERREUR_eclairage_gradient_regle_masquee.png",
+      "preview": "./files/demo-input/Images/Scan2D/06_image_de_test_ERREUR_eclairage_gradient_regle_masquee.png"
+    },
+    {
+      "kind": "Images",
+      "title": "Scan2D 07 · Cisaillement : axes non orthogonaux",
+      "description": "Cisaillement affine X/Y ; tester l'angle des axes et la rectification.",
+      "path": "demo-input/Images/Scan2D/07_image_de_test_ERREUR_cisaillement_axes_non_orthogonaux.png",
+      "preview": "./files/demo-input/Images/Scan2D/07_image_de_test_ERREUR_cisaillement_axes_non_orthogonaux.png"
     }
   ]
 }

@@ -7,6 +7,11 @@
  <input id="file" type="file" accept="image/*" multiple hidden>
  <div id="imageList" class="imageList"></div>
  <div class="toolbar"><button id="clearImages" type="button">Tout retirer</button><button id="demoSynthetic" type="button">Démo synthétique</button><button id="demoReal1" type="button">Démo réelle 1</button><button id="demoReal2" type="button">Démo réelle 2</button></div>
+ <div class="panel" style="padding:8px;margin-top:8px"><div class="sectionTitle"><b>Bibliothèque démo · Scan2D V1</b><a class="small" href="../../Library/demo/?scan2d" target="_blank" rel="noopener">Galerie ↗</a></div>
+<div class="toolbar"><label class="small" for="scan2dDemoPicker">Image de test :</label><select id="scan2dDemoPicker" style="max-width:100%;flex:1"><option value="">Chargement du catalogue…</option></select></div>
+<div class="toolbar"><button id="scan2dDemoLoad" type="button">Charger le test</button><button id="scan2dDemoLoadAll" type="button">Charger les 7 tests</button></div>
+<div id="scan2dDemoStatus" class="small">Images synthétiques calibrées ; les déformations sont documentées dans le manifeste.</div>
+</div>
  <div id="collectionStatus" class="status">Aucune image.</div>
  <hr>
  <div class="sectionTitle"><h2>Édition</h2><button id="resetAll" type="button">Réinitialiser image</button></div>
@@ -48,6 +53,7 @@ import{pxToUnit,unitToPx}from'../_shared/studio-v2/dimension-service.js';
 import{fileToDataUrl,transformedCanvas,resizeCanvas,cropCanvas,canvasToBlob}from'../_shared/studio-v2/image-service.js';
 import{downloadBlob}from'../_shared/studio-v2/download-service.js';
 import{createEditHistory}from'../_shared/studio-v2/edit-history.js';
+import{DemoCorpus}from'../_shared/studio-v2/demo-corpus.js';
 import{pushUndoRedo,undo as coreUndo,redo as coreRedo}from'../_shared/studio-v2/undo-redo.js';
 import{mountViewerControls}from'../_shared/studio-v2/viewer-control.js';
 const $=id=>document.getElementById(id),cv=$('cv'),ctx=cv.getContext('2d'),overlay=$('cropOverlay'),stage=$('canvasStage');let items=[],active=-1,img=null,ratio=1,meas=[],measureMode=false,pts=[],cropMode=false,cropStart=null,cropRect=null,artifactId='',artifactManifest=null,zoom=1,fitMode=true,viewerControls=null;
@@ -93,7 +99,42 @@ document.addEventListener('studio-v2:viewer-command-global',e=>{const d=e.detail
 $('openPicker').onclick=()=>document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:'open',source:'image-ui'}}));$('file').onchange=e=>addFiles(e.target.files);$('clearImages').onclick=()=>{if(!items.length)return;const before=[...items],beforeActive=active;items=[];active=-1;const after=[...items],afterActive=active;renderList();loadActive();publishSelection('clear');pushUndoRedo({label:'Vider les images',meta:{studio:'image-studio'},undo:()=>{items=[...before];active=beforeActive;renderList();loadActive();publishSelection('undo')},redo:()=>{items=[...after];active=afterActive;renderList();loadActive();publishSelection('redo')}})};
 document.addEventListener('studio-v2:input-picked',e=>{if(e.detail?.studio==='image-studio')addFiles(e.detail.files)});
 async function addDemo(url,name){const blob=await fetch(url).then(r=>r.blob()),file=new File([blob],name,{type:blob.type||'image/png'});addFiles([file])}
+const scan2dCorpus=new DemoCorpus({indexUrl:new URL('../../Library/demo/manifests/index.json',document.baseURI).href});
+let scan2dFixtures=[];
+async function initScan2dDemos(){
+ const select=$('scan2dDemoPicker'),status=$('scan2dDemoStatus');
+ try{
+  const files=await scan2dCorpus.list('image-studio',{extensions:['png'],localOnly:true});
+  scan2dFixtures=files.filter(f=>f.category==='scan2d'&&/^\\d{2}_image_de_test_.*\\.png$/i.test(f.name));
+  if(scan2dFixtures.length!==7)throw Error('Attendu : 7 images Scan2D, trouvé : '+scan2dFixtures.length);
+  select.replaceChildren(...scan2dFixtures.map((f,i)=>new Option(f.label||f.name,String(i))));
+  status.textContent=scan2dFixtures.length+' cas disponibles · dimensions nominales de la pièce : 150 × 100 mm.';
+ }catch(e){
+  select.replaceChildren(new Option('Catalogue indisponible',''));
+  status.textContent='Erreur bibliothèque Scan2D : '+(e?.message||e);
+ }
+}
+async function fetchScan2dFixture(f){
+ const response=await fetch(f.url,{cache:'no-store'});
+ if(!response.ok)throw Error(f.name+' : HTTP '+response.status);
+ const blob=await response.blob();
+ return new File([blob],f.name,{type:'image/png'});
+}
+async function loadScan2dDemos(all=false){
+ const status=$('scan2dDemoStatus'),index=Number($('scan2dDemoPicker').value);
+ const chosen=all?scan2dFixtures:[scan2dFixtures[index]].filter(Boolean);
+ if(!chosen.length){status.textContent='Aucun test disponible.';return}
+ $('scan2dDemoLoad').disabled=true;$('scan2dDemoLoadAll').disabled=true;
+ try{
+  const files=[];for(const f of chosen)files.push(await fetchScan2dFixture(f));
+  await addFiles(files);status.textContent=chosen.length+' fichier(s) chargé(s) dans Image Studio.';
+ }catch(e){status.textContent='Échec du chargement : '+(e?.message||e)}
+ finally{$('scan2dDemoLoad').disabled=false;$('scan2dDemoLoadAll').disabled=false}
+}
+$('scan2dDemoLoad').onclick=()=>loadScan2dDemos(false);
+$('scan2dDemoLoadAll').onclick=()=>loadScan2dDemos(true);
+initScan2dDemos();
 $('demoSynthetic').onclick=()=>addDemo('../../Library/demo/Images/calibration-regles-300x150.png','calibration-regles-300x150.png');$('demoReal1').onclick=()=>addDemo('../../Library/demo/source-drive/images/calibration-scan-reel-01-public.webp','calibration-scan-reel-01-public.webp');$('demoReal2').onclick=()=>addDemo('../../Library/demo/source-drive/images/calibration-scan-reel-02-public.webp','calibration-scan-reel-02-public.webp');
 document.addEventListener('studio-v2:undo-redo-changed',syncEditButtons);renderList();renderCal();applyViewZoom();syncEditButtons();publishSelection('ready');
 </script>
-<script>window.NLAB_SPECIALIZED_V2={"manifest":{"id":"image-studio","sourcePath":"APP-Applications/image-studio/v2/index.html","name":"Image Studio","subtitle":"Image · transformation · calibration","homeHref":"../../","studiosHref":"../studios/","inputPicker":{"accept":"image/*","multiple":true,"folders":true,"camera":true,"url":true},"menus":[{"id":"home","label":"Accueil","scope":"core"},{"id":"tools","label":"Outils","scope":"studio"},{"id":"history","label":"Historique","scope":"core"},{"id":"help","label":"Aide","scope":"core"}],"ribbon":[{"id":"file","label":"Fichier","scope":"core","items":[{"id":"image-studio-open","action":"open","label":"Ouvrir","icon":"file","scope":"core","primary":true},{"id":"image-studio-demo","action":"demo","label":"Démo","icon":"command","scope":"core"},{"id":"image-studio-export","action":"export","label":"Exporter","icon":"save","scope":"core"}]}],"capabilities":[{"id":"core.input.file-folder-drop","status":"test"},{"id":"image.collection.multi","status":"test"},{"id":"image.transform.rotate","status":"stable"},{"id":"image.transform.flip","status":"stable"},{"id":"image.transform.resize","status":"stable"},{"id":"image.transform.crop","status":"test"},{"id":"image.transform.crop.mouse","status":"test"},{"id":"image.units.px-percent-pt","status":"test"},{"id":"image.history.undo-redo-reset","status":"test","engine":"studio-core.undo-redo"},{"id":"image.view.zoom","status":"test"},{"id":"image.transform.rotate-free","status":"test","engine":"studio-core.image"},{"id":"image.watermark.text","status":"test"},{"id":"image.calibration.measure","status":"test"},{"id":"image.identity.sha256","status":"test"}]},"actions":{"open":"#file","demo":"#demoSynthetic","export":"#export"},"channel":"test"};</script><script type="module" src="../_shared/studio-v2/bootstrap-specialized.js"></script></body></html>
+<script>window.NLAB_SPECIALIZED_V2={"manifest":{"id":"image-studio","sourcePath":"APP-Applications/image-studio/v2/index.html","name":"Image Studio","subtitle":"Image · transformation · calibration","homeHref":"../../","studiosHref":"../studios/","inputPicker":{"accept":"image/*","multiple":true,"folders":true,"camera":true,"url":true},"menus":[{"id":"home","label":"Accueil","scope":"core"},{"id":"tools","label":"Outils","scope":"studio"},{"id":"history","label":"Historique","scope":"core"},{"id":"help","label":"Aide","scope":"core"}],"ribbon":[{"id":"file","label":"Fichier","scope":"core","items":[{"id":"image-studio-open","action":"open","label":"Ouvrir","icon":"file","scope":"core","primary":true},{"id":"image-studio-demo","action":"demo","label":"Démo","icon":"command","scope":"core"},{"id":"image-studio-export","action":"export","label":"Exporter","icon":"save","scope":"core"}]}],"capabilities":[{"id":"core.input.file-folder-drop","status":"test"},{"id":"image.collection.multi","status":"test"},{"id":"image.transform.rotate","status":"stable"},{"id":"image.transform.flip","status":"stable"},{"id":"image.transform.resize","status":"stable"},{"id":"image.transform.crop","status":"test"},{"id":"image.transform.crop.mouse","status":"test"},{"id":"image.units.px-percent-pt","status":"test"},{"id":"image.history.undo-redo-reset","status":"test","engine":"studio-core.undo-redo"},{"id":"image.view.zoom","status":"test"},{"id":"image.transform.rotate-free","status":"test","engine":"studio-core.image"},{"id":"image.watermark.text","status":"test"},{"id":"image.calibration.measure","status":"test"},{"id":"image.identity.sha256","status":"test"}]},"actions":{"open":"#file","demo":"#scan2dDemoPicker","export":"#export"},"channel":"test"};</script><script type="module" src="../_shared/studio-v2/bootstrap-specialized.js"></script></body></html>

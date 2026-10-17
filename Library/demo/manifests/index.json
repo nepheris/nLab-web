@@ -1,6 +1,6 @@
 {
   "schema": "nlab-demo-manifests-index/v1",
-  "updated": "2026-10-03",
+  "updated": "2026-10-17",
   "sourceReference": "Google Drive reference supplied by HUMAN-00 + synthetic local regression fixtures",
   "studios": [
     {
@@ -14,7 +14,7 @@
       "id": "image-studio",
       "label": "Image Studio",
       "manifest": "./image.json",
-      "fileCount": 10,
+      "fileCount": 19,
       "pack": null
     },
     {

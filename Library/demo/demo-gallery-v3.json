@@ -1,6 +1,6 @@
 {
   "schema": "nlab-demo-gallery/v3",
-  "updated": "2026-09-30",
+  "updated": "2026-10-17",
   "files": [
     {
       "category": "MD",
@@ -171,6 +171,60 @@
       "href": "./files/demo-input/Security/demo-redaction-secrets.txt",
       "preview": "text",
       "synthetic": true
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/01_image_de_test_OK_reference_orthogonale.png",
+      "href": "./files/demo-input/Images/Scan2D/01_image_de_test_OK_reference_orthogonale.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/02_image_de_test_ERREUR_rotation_7deg.png",
+      "href": "./files/demo-input/Images/Scan2D/02_image_de_test_ERREUR_rotation_7deg.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/03_image_de_test_ERREUR_echelle_Xplus6pct_Ymoins6pct.png",
+      "href": "./files/demo-input/Images/Scan2D/03_image_de_test_ERREUR_echelle_Xplus6pct_Ymoins6pct.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/04_image_de_test_ERREUR_perspective_trapeze.png",
+      "href": "./files/demo-input/Images/Scan2D/04_image_de_test_ERREUR_perspective_trapeze.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/05_image_de_test_ERREUR_flou_sigma2_bruit9.png",
+      "href": "./files/demo-input/Images/Scan2D/05_image_de_test_ERREUR_flou_sigma2_bruit9.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/06_image_de_test_ERREUR_eclairage_gradient_regle_masquee.png",
+      "href": "./files/demo-input/Images/Scan2D/06_image_de_test_ERREUR_eclairage_gradient_regle_masquee.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/07_image_de_test_ERREUR_cisaillement_axes_non_orthogonaux.png",
+      "href": "./files/demo-input/Images/Scan2D/07_image_de_test_ERREUR_cisaillement_axes_non_orthogonaux.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/00_geometrie_reference_mm.svg",
+      "href": "./files/demo-input/Images/Scan2D/00_geometrie_reference_mm.svg",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/Scan2D/00_manifest_tests.json",
+      "href": "./files/demo-input/Images/Scan2D/00_manifest_tests.json",
+      "preview": "json"
     }
   ]
 }

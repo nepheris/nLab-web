@@ -2,17 +2,147 @@
   "schema": "nlab-demo-manifest/v1",
   "studio": "image-studio",
   "label": "Image Studio",
-  "source": "Google Drive reference + synthetic local fixtures 2026-09-30",
+  "source": "Google Drive reference + synthetic local fixtures 2026-10-17; Scan2D V1 originals copied from APP17",
   "files": [
-    {"name":"calibration-regles-300x150.json","storage":"reference-only","kind":"json"},
-    {"name":"calibration-regles-300x150.png","storage":"reference-only","kind":"image"},
-    {"name":"demo-image-anime.gif","storage":"reference-only","kind":"image"},
-    {"name":"demo-image-color.jpg","storage":"reference-only","kind":"image"},
-    {"name":"demo-image-color.png","storage":"reference-only","kind":"image"},
-    {"name":"demo-image-color.webp","storage":"reference-only","kind":"image"},
-    {"name":"demo-document-illustration.png","path":"../files/demo-input/Images/demo-document-illustration.png","storage":"local","kind":"png"},
-    {"name":"demo-format-bmp.bmp","path":"../files/demo-input/Images/demo-format-bmp.bmp","storage":"local","kind":"bmp"},
-    {"name":"demo-format-tiff.tiff","path":"../files/demo-input/Images/demo-format-tiff.tiff","storage":"local","kind":"tiff"},
-    {"name":"demo-format-svg.svg","path":"../files/demo-input/Images/demo-format-svg.svg","storage":"local","kind":"svg"}
+    {
+      "name": "calibration-regles-300x150.json",
+      "storage": "reference-only",
+      "kind": "json"
+    },
+    {
+      "name": "calibration-regles-300x150.png",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-image-anime.gif",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-image-color.jpg",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-image-color.png",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-image-color.webp",
+      "storage": "reference-only",
+      "kind": "image"
+    },
+    {
+      "name": "demo-document-illustration.png",
+      "path": "../files/demo-input/Images/demo-document-illustration.png",
+      "storage": "local",
+      "kind": "png"
+    },
+    {
+      "name": "demo-format-bmp.bmp",
+      "path": "../files/demo-input/Images/demo-format-bmp.bmp",
+      "storage": "local",
+      "kind": "bmp"
+    },
+    {
+      "name": "demo-format-tiff.tiff",
+      "path": "../files/demo-input/Images/demo-format-tiff.tiff",
+      "storage": "local",
+      "kind": "tiff"
+    },
+    {
+      "name": "demo-format-svg.svg",
+      "path": "../files/demo-input/Images/demo-format-svg.svg",
+      "storage": "local",
+      "kind": "svg"
+    },
+    {
+      "name": "01_image_de_test_OK_reference_orthogonale.png",
+      "path": "../files/demo-input/Images/Scan2D/01_image_de_test_OK_reference_orthogonale.png",
+      "storage": "local",
+      "kind": "png",
+      "category": "scan2d",
+      "label": "01 · Référence orthogonale (OK)",
+      "description": "Scan 2D de référence ; règles orthogonales et géométrie nominale.",
+      "testId": "SCAN2D-V1-01"
+    },
+    {
+      "name": "02_image_de_test_ERREUR_rotation_7deg.png",
+      "path": "../files/demo-input/Images/Scan2D/02_image_de_test_ERREUR_rotation_7deg.png",
+      "storage": "local",
+      "kind": "png",
+      "category": "scan2d",
+      "label": "02 · Rotation de 7°",
+      "description": "Scan déformé par une rotation de 7 degrés ; tester le redressement.",
+      "testId": "SCAN2D-V1-02"
+    },
+    {
+      "name": "03_image_de_test_ERREUR_echelle_Xplus6pct_Ymoins6pct.png",
+      "path": "../files/demo-input/Images/Scan2D/03_image_de_test_ERREUR_echelle_Xplus6pct_Ymoins6pct.png",
+      "storage": "local",
+      "kind": "png",
+      "category": "scan2d",
+      "label": "03 · Échelle X +6 %, Y −6 %",
+      "description": "Erreur d'échelle différente suivant X et Y ; tester la calibration indépendante.",
+      "testId": "SCAN2D-V1-03"
+    },
+    {
+      "name": "04_image_de_test_ERREUR_perspective_trapeze.png",
+      "path": "../files/demo-input/Images/Scan2D/04_image_de_test_ERREUR_perspective_trapeze.png",
+      "storage": "local",
+      "kind": "png",
+      "category": "scan2d",
+      "label": "04 · Perspective trapézoïdale",
+      "description": "Déformation projective trapézoïdale ; tester la correction de perspective.",
+      "testId": "SCAN2D-V1-04"
+    },
+    {
+      "name": "05_image_de_test_ERREUR_flou_sigma2_bruit9.png",
+      "path": "../files/demo-input/Images/Scan2D/05_image_de_test_ERREUR_flou_sigma2_bruit9.png",
+      "storage": "local",
+      "kind": "png",
+      "category": "scan2d",
+      "label": "05 · Flou σ2 + bruit σ9",
+      "description": "Flou gaussien sigma 2 px et bruit sigma 9 ; tester détection et nettoyage.",
+      "testId": "SCAN2D-V1-05"
+    },
+    {
+      "name": "06_image_de_test_ERREUR_eclairage_gradient_regle_masquee.png",
+      "path": "../files/demo-input/Images/Scan2D/06_image_de_test_ERREUR_eclairage_gradient_regle_masquee.png",
+      "storage": "local",
+      "kind": "png",
+      "category": "scan2d",
+      "label": "06 · Éclairage variable et règle masquée",
+      "description": "Gradient lumineux avec portion de règle masquée ; tester la robustesse.",
+      "testId": "SCAN2D-V1-06"
+    },
+    {
+      "name": "07_image_de_test_ERREUR_cisaillement_axes_non_orthogonaux.png",
+      "path": "../files/demo-input/Images/Scan2D/07_image_de_test_ERREUR_cisaillement_axes_non_orthogonaux.png",
+      "storage": "local",
+      "kind": "png",
+      "category": "scan2d",
+      "label": "07 · Cisaillement : axes non orthogonaux",
+      "description": "Cisaillement affine X/Y ; tester l'angle des axes et la rectification.",
+      "testId": "SCAN2D-V1-07"
+    },
+    {
+      "name": "00_manifest_tests.json",
+      "path": "../files/demo-input/Images/Scan2D/00_manifest_tests.json",
+      "storage": "local",
+      "kind": "json",
+      "category": "scan2d-reference",
+      "label": "Paramètres connus des tests Scan2D"
+    },
+    {
+      "name": "00_geometrie_reference_mm.svg",
+      "path": "../files/demo-input/Images/Scan2D/00_geometrie_reference_mm.svg",
+      "storage": "local",
+      "kind": "svg",
+      "category": "scan2d-reference",
+      "label": "Géométrie métrique nominale"
+    }
   ]
 }

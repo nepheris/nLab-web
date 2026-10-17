@@ -1,6 +1,6 @@
 {
   "schema": "nlab-demo-corpus/v3",
-  "updated": "2026-09-29",
+  "updated": "2026-10-17",
   "sourceReference": "Google Drive corpus supplied by HUMAN-00",
   "policy": "Public gallery keeps synthetic/test files only; personal-looking or third-party manuals are excluded from automatic publication.",
   "manifests": "./manifests/index.json",
@@ -8,16 +8,26 @@
     "MD",
     "JSON",
     "Code",
-    "QR-Barcode"
+    "QR-Barcode",
+    "Images"
   ],
   "referenceOnlyCategories": [
     "PDF",
     "OCR",
-    "Images",
     "Data",
     "File",
     "Office",
     "Compare",
     "Zip"
-  ]
+  ],
+  "mixedCategories": [
+    "Images"
+  ],
+  "scan2d": {
+    "version": "v1",
+    "testCount": 7,
+    "manifest": "./manifests/image.json",
+    "folder": "./files/demo-input/Images/Scan2D/",
+    "referenceManifest": "./files/demo-input/Images/Scan2D/00_manifest_tests.json"
+  }
 }
