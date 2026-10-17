@@ -156,6 +156,16 @@
       "version_registry": "../spreadsheet-studio/versions.json",
       "card_kind": "development",
       "icon": "../../assets/studios/spreadsheet-studio.svg"
+    },
+    {
+      "id": "responsive-test-studio",
+      "name": "Responsive Test Studio",
+      "status": "test-only",
+      "path": "../responsive-test-studio/",
+      "versions_path": "../responsive-test-studio/versions.html",
+      "version_registry": "../responsive-test-studio/versions.json",
+      "icon": "../../assets/studios/responsive-test-studio.svg",
+      "purpose": "Studio de développement web autonome : prévisualisation d'une URL dans un iframe aux formats bureau, tablette et téléphone, portrait/paysage, résolution sur mesure et format par défaut mémorisé. Android réel reste distinct."
     }
   ],
   "future": [
