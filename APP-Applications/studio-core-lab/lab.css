@@ -103,3 +103,9 @@ html[data-sim-embed="1"] .coreLab .lab-header{position:static}
 html[data-sim-embed="1"] .coreLab .lab-main{padding-top:12px}
 html[data-sim-embed="1"] .coreLab .lab-context{display:none}
 @media(max-width:760px){.coreLab .lab-simulator-area{padding:0 10px;margin-top:10px}.coreLab .lab-simulator-area details{padding:6px}}
+
+/* Keep the parent mobile dock from blocking a scaled test frame.
+   The embedded Core itself retains its own mobile action dock. */
+@media(max-width:760px){
+ html:not([data-sim-embed="1"]) body.coreLab:has(#lab-simulator-panel[open]) > .lab-bottom{display:none!important}
+}
