@@ -1,0 +1,93 @@
+:root{--lab-ink:#16324c;--lab-muted:#53697b;--lab-line:#cedbe4;--lab-surface:#fff;--lab-background:#edf3f7;--lab-accent:#2166a5;--lab-radius:16px}
+html{scroll-behavior:smooth}
+body.coreLab{margin:0!important;min-height:100dvh;background:var(--lab-background)!important;color:var(--lab-ink)!important;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif!important;overflow-x:clip}
+.coreLab *{box-sizing:border-box}
+.coreLab button,.coreLab select{font:inherit}
+.coreLab button{border:1px solid #bdccda;background:white;color:var(--lab-ink);min-height:44px;padding:9px 13px;border-radius:11px;cursor:pointer}
+.coreLab button:hover{border-color:var(--lab-accent)}
+.coreLab button:focus-visible,.coreLab a:focus-visible,.coreLab select:focus-visible{outline:3px solid #f1ae42;outline-offset:2px}
+.coreLab button:disabled{opacity:.44;cursor:not-allowed}
+.coreLab .lab-primary{background:#205f9d;color:#fff;border-color:#205f9d;font-weight:700}
+.coreLab .lab-header{min-height:76px;position:sticky;top:0;z-index:180;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px max(16px,calc((100vw - 1360px)/2));background:#fff;border-bottom:1px solid var(--lab-line);box-shadow:0 3px 12px #102c4010}
+.coreLab .lab-identity{display:flex;gap:12px;align-items:center;min-width:0}
+.coreLab .lab-icon{display:grid;place-items:center;background:#205f9d;color:#fff;width:42px;height:42px;border-radius:12px;font-size:30px}
+.coreLab .lab-identity strong{font-size:20px;line-height:1.3;display:block}
+.coreLab .lab-identity small{display:block;color:var(--lab-muted);font-size:12px}
+.coreLab .lab-layout{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.coreLab .lab-layout select{border:1px solid #bac9d9;border-radius:9px;background:#fff;color:inherit;min-height:44px;padding:8px}
+.coreLab .lab-context{background:#e0f0f8;color:#23485e;padding:9px max(18px,calc((100vw - 1360px)/2));font-size:13px;display:flex;align-items:center;gap:8px}
+.coreLab .lab-dot{width:8px;height:8px;border-radius:100%;background:#15936b;flex-shrink:0}
+.coreLab .lab-main{max-width:1390px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,370px);gap:20px;padding:24px 16px 50px;align-items:start}
+.coreLab .lab-stage-section,.coreLab .lab-side{min-width:0}
+.coreLab .lab-stage-section,.coreLab .lab-card{border:1px solid var(--lab-line);background:var(--lab-surface);border-radius:var(--lab-radius);box-shadow:0 5px 26px #1739520a}
+.coreLab .lab-stage-section{padding:18px}
+.coreLab .lab-side{display:flex;flex-direction:column;gap:12px}
+.coreLab .lab-side>.lab-section-title{padding:8px 2px}
+.coreLab .lab-section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.coreLab .lab-section-title small{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--lab-accent);font-weight:800}
+.coreLab h1,.coreLab h2{margin:2px 0;color:var(--lab-ink);line-height:1.25}
+.coreLab h1{font-size:clamp(20px,2.2vw,28px)}
+.coreLab h2{font-size:20px}
+.coreLab .lab-chip{border-radius:40px;padding:5px 9px;border:1px solid #c4d8e9;color:#276794;background:#ebf5fc;font-size:12px;white-space:nowrap}
+.coreLab .lab-toolbar,.coreLab .lab-extra{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.coreLab .lab-extra{background:#f2f7fb;border-radius:12px;padding:10px}
+.coreLab .lab-viewer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:#f1f6f9;padding:11px 12px;border-radius:11px;border:1px solid #dce8f0}
+.coreLab .lab-muted{color:var(--lab-muted);font-size:12px}
+.coreLab .lab-canvas{margin-top:14px;min-height:460px;border-radius:12px;border:1px solid #b9cbd9;position:relative;overflow:hidden;display:grid;place-items:center;background:#d5e2ec}
+.coreLab .lab-canvas-grid{position:absolute;inset:0;display:grid;place-items:center;background-image:linear-gradient(#2f658210 1px,transparent 1px),linear-gradient(90deg,#2f658210 1px,transparent 1px);background-size:24px 24px;overflow:hidden}
+.coreLab .lab-preview{width:min(390px,85%);min-height:210px;border:1px solid #95b0c6;border-radius:17px;background:#fff;box-shadow:0 20px 40px #112f5126;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px;padding:30px;transform-origin:center center;transition:background .2s,transform .1s;min-width:0;overflow-wrap:anywhere}
+.coreLab .lab-preview-tag{color:#2776b3;font-size:12px;letter-spacing:.16em;font-weight:800}
+.coreLab #lab-preview-title{font-size:25px}
+.coreLab .lab-file-count{background:#eaf3fa;padding:5px 10px;border-radius:9px;font-size:13px;color:#25597a}
+.coreLab .lab-status-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0 0;color:var(--lab-muted);font-size:13px}
+.coreLab .lab-card{padding:15px}
+.coreLab .lab-card-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #e2ecf3;padding-bottom:10px;margin-bottom:12px}
+.coreLab .lab-card-heading span{font-size:12px;color:var(--lab-muted);text-align:right}
+.coreLab .lab-card p{color:#425e75;margin:7px 0 12px}
+.coreLab .lab-card .lab-hint{font-size:12px;color:var(--lab-muted)}
+.coreLab .lab-checks{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:13px}
+.coreLab .lab-checks li span{display:inline-block;min-width:20px;color:#18775a;font-weight:700}
+.coreLab .lab-floating-window{position:fixed;top:22%;left:22%;z-index:250;width:min(430px,calc(100vw - 20px));max-height:70dvh;background:#fff;border:1px solid #a9c6da;border-radius:13px;box-shadow:0 22px 70px #0d27454d;overflow:auto}
+.coreLab .lab-floating-content{padding:16px 19px}
+.coreLab .lab-bottom{display:none}
+.coreLab .lab-skip{position:fixed;top:-80px;left:5px;z-index:1000;background:#fff;padding:12px}
+.coreLab .lab-skip:focus{top:5px}
+.coreLab .studioCoreColorPicker{grid-template-columns:1fr!important}
+.coreLab .studioCoreColorPicker label{min-width:0}
+.coreLab .coreViewerControls{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.coreLab .coreViewerControls button{min-height:38px;padding:6px 9px}
+.coreLab .coreViewerControls input{max-width:56px;font-size:14px}
+.coreLab .coreViewerControls select{max-width:120px;min-height:38px}
+@media(max-width:1000px){.coreLab .lab-main{grid-template-columns:minmax(0,1fr) 305px;gap:12px;padding:14px 10px 50px}.coreLab .lab-stage-section{padding:12px}}
+@media(max-width:760px){
+ .coreLab .lab-header{min-height:64px;padding:8px 12px;gap:8px}
+ .coreLab .lab-identity strong{font-size:16px}
+ .coreLab .lab-identity small{font-size:10px}
+ .coreLab .lab-icon{height:36px;width:36px;font-size:24px}
+ .coreLab .lab-layout{display:block}
+ .coreLab .lab-layout label{display:none}
+ .coreLab .lab-layout select{max-width:146px;font-size:12px}
+ .coreLab .lab-context{padding:7px 12px}
+ .coreLab .lab-main{display:flex;flex-direction:column;padding:12px 10px calc(100px + env(safe-area-inset-bottom,0px));gap:15px}
+ .coreLab .lab-stage-section,.coreLab .lab-side{width:100%}
+ .coreLab .lab-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+ .coreLab .lab-toolbar button{padding:8px 5px;font-size:13px}
+ .coreLab .lab-toolbar #lab-picker{grid-column:1/-1}
+ .coreLab .lab-viewer-row{display:flex;flex-direction:column;align-items:stretch}
+ .coreLab .coreViewerControls{gap:4px}
+ .coreLab .coreViewerControls button{min-height:44px}
+ .coreLab .lab-canvas{min-height:275px}
+ .coreLab .lab-preview{width:74%;min-height:166px;padding:20px;gap:7px}
+ .coreLab #lab-preview-title{font-size:19px}
+ .coreLab .lab-bottom{position:fixed;left:0;right:0;bottom:0;z-index:190;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:7px 8px calc(7px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--lab-line);box-shadow:0 -4px 20px #132e431c}
+ .coreLab .lab-bottom button{min-width:0;padding:5px 2px;display:grid;place-items:center;font-size:11px;min-height:51px}
+ .coreLab .lab-bottom button span{font-size:20px;line-height:1}
+ .coreLab .lab-floating-window{position:fixed!important;left:6px!important;right:6px!important;top:auto!important;bottom:calc(70px + env(safe-area-inset-bottom,0px))!important;width:calc(100vw - 12px)!important;max-height:65dvh!important;transform:none!important;border-radius:16px}
+ .coreLab #studioInputPicker{max-width:calc(100vw - 12px)!important;max-height:calc(100dvh - 80px)!important}
+}
+@media(max-width:400px){.coreLab .lab-chip{display:none}.coreLab .lab-section-title h1{font-size:21px}.coreLab .lab-layout select{max-width:120px}.coreLab .lab-header{gap:3px}.coreLab .lab-identity{gap:5px}}
+body.coreLab[data-layout="compact"] .lab-main{display:flex;flex-direction:column;max-width:760px;padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+body.coreLab[data-layout="compact"] .lab-stage-section,body.coreLab[data-layout="compact"] .lab-side{width:100%}
+body.coreLab[data-layout="compact"] .lab-bottom{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:190;grid-template-columns:repeat(4,minmax(0,1fr));background:#fff;border-top:1px solid #c4d4df;padding:7px 8px calc(7px + env(safe-area-inset-bottom,0px))}
+body.coreLab[data-layout="compact"] .lab-bottom button{display:grid;place-items:center;min-height:51px;padding:5px}
+body.coreLab[data-layout="compact"] .lab-bottom span{font-size:20px}
