@@ -25,7 +25,7 @@ export function mountViewerControls(host,options={}){
     '<button type="button" data-viewer-fit>Ajuster</button><button type="button" data-viewer-actual>100 %</button>'+
     '<select data-viewer-preset aria-label="Zoom prédéfini"><option value="">Zoom…</option>'+presets.map(v=>'<option value="'+v+'">'+v+' %</option>').join('')+'</select>'+
     '<span data-viewer-state class="coreViewerState"></span>';
-  const setZoom=(value,{emit=true}={})=>{const z=clamp(num(value)||100,min,max);state.zoom=z;state.fit=false;render(el,state);if(emit)dispatch(el,{action:'zoom',zoom:z,ratio:z/100});return z};
+  const setZoom=(value,{emit=true}={})=>{const n=num(value),valid=String(value??'').trim()!==''&&Number.isFinite(n),z=valid?clamp(n,min,max):state.zoom;state.zoom=z;state.fit=false;render(el,state);if(emit)dispatch(el,{action:'zoom',zoom:z,ratio:z/100});return z};
   const fit=({emit=true}={})=>{state.fit=true;render(el,state);if(emit)dispatch(el,{action:'fit',zoom:state.zoom,ratio:state.zoom/100})};
   const actual=({emit=true}={})=>{state.zoom=100;state.fit=false;render(el,state);if(emit)dispatch(el,{action:'actual',zoom:100,ratio:1})};
   el.querySelector('[data-viewer-minus]').onclick=()=>setZoom(state.zoom-step);
