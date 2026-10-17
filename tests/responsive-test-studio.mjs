@@ -21,6 +21,17 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await page.frameLocator('[data-rt-frame]').locator('body').waitFor({timeout:15000});
   pass('catalog Studio name',await page.locator('h1').textContent().then(x=>x.includes('Prévisualisez')));
+  const panel=page.locator('[data-rt-panel]'),monitor=page.locator('[data-rt-monitor]');
+  const compact=viewport.width<=760;
+  pass('settings initial compact state',(await panel.getAttribute('data-collapsed'))===(compact?'true':'false'));
+  if(compact)await page.locator('[data-rt-show-settings]').click();
+  pass('floating controls expanded',(await panel.getAttribute('data-collapsed'))==='false');
+  const rect=await panel.boundingBox(),area=await monitor.boundingBox();
+  pass('floating panel over viewport',!!rect&&!!area&&rect.x>=area.x&&rect.y>=area.y&&rect.y<area.y+area.height);
+  await page.locator('[data-rt-collapse]').click();
+  pass('panel collapsible',(await panel.getAttribute('data-collapsed'))==='true');
+  await page.locator('[data-rt-show-settings]').click();
+  pass('panel can reopen',(await panel.getAttribute('data-collapsed'))==='false');
   await page.locator('[data-rt-device]').selectOption('tablet');
   await equals(768,1024,'tablet portrait');
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
@@ -44,6 +55,7 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.reload({waitUntil:'domcontentloaded'});
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await equals(420,880,'default restored after reload');
+  if((await panel.getAttribute('data-collapsed'))==='true')await page.locator('[data-rt-show-settings]').click();
   if(emulateTouch){
    const touch=await page.evaluate(()=>({points:navigator.maxTouchPoints,coarse:matchMedia('(pointer: coarse)').matches}));
    pass('touch emulation API exposure',touch.points>0); // pointer:coarse depends on headless host input devices
@@ -60,6 +72,21 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('[data-rt-url]').fill('../image-studio/');
   await page.locator('[data-rt-load]').click();
   pass('local URL accepted',(await frame.getAttribute('src')).includes('/APP-Applications/image-studio/'));
+  if(emulateTouch)await equals(393,852,'viewport preserved after changing URL');
+  else await equals(420,880,'viewport preserved after changing URL');
+  if(!compact){
+    const head=page.locator('[data-rt-panel-head] strong'),before=await panel.boundingBox(),handle=await head.boundingBox();
+    await page.mouse.move(handle.x+handle.width/2,handle.y+handle.height/2);
+    await page.mouse.down();
+    await page.mouse.move(handle.x+handle.width/2-45,handle.y+handle.height/2+22,{steps:5});
+    await page.mouse.up();
+    const after=await panel.boundingBox();
+    pass('floating palette draggable',after.x<before.x-20);
+  }
+  const shellUrl=page.url();
+  await page.locator('[data-rt-url]').fill('https://example.com/');
+  await page.locator('[data-rt-load]').click();
+  pass('external HTTP URL stays in iframe',(await frame.getAttribute('src'))==='https://example.com/'&&page.url()===shellUrl);
   const metrics=await page.evaluate(()=>({a:document.documentElement.scrollWidth,b:document.documentElement.clientWidth}));
   pass('no page horizontal overflow',metrics.a<=metrics.b+2);
   pass('no JS exception',!errors.length);
