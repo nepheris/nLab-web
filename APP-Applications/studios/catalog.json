@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studios-catalog/v2",
-  "updated": "2026-10-11",
+  "updated": "2026-10-17",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
     {
@@ -165,7 +165,7 @@
       "versions_path": "../responsive-test-studio/versions.html",
       "version_registry": "../responsive-test-studio/versions.json",
       "icon": "../../assets/studios/responsive-test-studio.svg",
-      "purpose": "Studio de développement web autonome : prévisualisation d'une URL dans un iframe aux formats bureau, tablette et téléphone, portrait/paysage, résolution sur mesure et format par défaut mémorisé. Android réel reste distinct."
+      "purpose": "Atelier de test responsive par URL en iframe : profils ordinateur/tablette/téléphone, thèmes nLab clair/sombre/auto, prévisualisation portrait et paysage côte à côte, rotation, dimensions personnalisées, zoom Ajuster et diagnostics CSS. Version TEST indépendante d'Android réel."
     }
   ],
   "future": [

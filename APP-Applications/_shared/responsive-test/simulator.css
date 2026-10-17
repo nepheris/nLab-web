@@ -56,3 +56,54 @@
  .responsiveTestSimulator .rt-top{top:45px;right:10px}
  .responsiveTestSimulator .rt-panel-head{touch-action:auto;cursor:default}
 }
+
+/* nLab shell tokens: the workspace follows the same light/dark theme as all Studios. */
+.responsiveTestSimulator{
+ --rt-surface:var(--nlab-card,#fff);
+ --rt-ink:var(--nlab-ink,#18364d);
+ --rt-muted:var(--nlab-muted,#506b7e);
+ --rt-line:var(--nlab-line,#cbdce7);
+ --rt-soft:var(--nlab-soft,#edf4f9);
+ --rt-brand:var(--nlab-brand,#0057b8);
+ color:var(--rt-ink)
+}
+.responsiveTestSimulator .rt-address,
+.responsiveTestSimulator .rt-top{background:var(--rt-surface);color:var(--rt-ink);border-color:var(--rt-line)}
+.responsiveTestSimulator button,
+.responsiveTestSimulator a,
+.responsiveTestSimulator select,
+.responsiveTestSimulator input:not([type=checkbox]):not([type=radio]){
+ background:var(--rt-surface);color:var(--rt-ink);border-color:var(--rt-line)
+}
+.responsiveTestSimulator :is(button,a):hover{background:var(--rt-soft);color:var(--rt-ink)}
+.responsiveTestSimulator [data-rt-load]{background:var(--rt-brand);color:#fff;border-color:var(--rt-brand)}
+.responsiveTestSimulator [data-rt-load]:hover{background:var(--rt-brand);filter:brightness(.9);color:#fff}
+.responsiveTestSimulator [data-rt-show-settings],
+.responsiveTestSimulator [data-rt-dual][aria-pressed=true]{background:var(--rt-soft)}
+.responsiveTestSimulator .rt-message,
+.responsiveTestSimulator .rt-metrics,
+.responsiveTestSimulator .rt-note{color:var(--rt-muted)}
+.responsiveTestSimulator .rt-monitor{background:var(--rt-surface);border-color:var(--rt-line)}
+.responsiveTestSimulator .rt-scroll{
+ background:repeating-linear-gradient(45deg,var(--rt-soft),var(--rt-soft) 13px,var(--rt-surface) 13px,var(--rt-surface) 26px);
+ border-color:var(--rt-line)
+}
+.responsiveTestSimulator .rt-panel-head{background:var(--rt-soft);border-bottom-color:var(--rt-line)}
+.responsiveTestSimulator fieldset{border-color:var(--rt-line)}
+.responsiveTestSimulator legend{color:var(--rt-muted)}
+.responsiveTestSimulator .rt-reload-label{display:flex;gap:9px;align-items:center;font-size:12px;color:var(--rt-muted);font-weight:600}
+.responsiveTestSimulator .rt-reload-label input{margin:0;accent-color:var(--rt-brand);width:17px;height:17px}
+.responsiveTestSimulator input[type=radio]{accent-color:var(--rt-brand)}
+.responsiveTestSimulator .rt-stages{display:flex;align-items:flex-start;justify-content:center;gap:0;flex:none;margin:0 auto;position:relative}
+.responsiveTestSimulator .rt-screen-title{height:29px;display:flex;justify-content:center;align-items:center;font-size:12px;font-weight:800;color:var(--rt-muted);white-space:nowrap}
+.responsiveTestSimulator .rt-stage{margin:0;position:relative;flex:none}
+.responsiveTestSimulator .rt-stage[hidden]{display:none!important}
+.responsiveTestSimulator .rt-stage .rt-device-frame{top:29px}
+.responsiveTestSimulator .rt-scroll{display:block}
+.responsiveTestSimulator .rt-device-frame{box-shadow:0 14px 32px rgba(10,26,44,.2)}
+:root[data-theme="dark"] .responsiveTestSimulator .rt-device-frame{border-color:#52697a;background:#52697a}
+:root[data-theme="dark"] .responsiveTestSimulator .rt-chrome{background:#314252;color:#e4edf6}
+:root[data-theme="dark"] .responsiveTestSimulator .rt-chrome span:first-child{color:#7de0a1}
+:root[data-theme="dark"] .responsiveTestSimulator .rt-top{box-shadow:0 16px 50px rgba(0,0,0,.55)}
+
+.responsiveTestSimulator .rt-diagnostics{font-size:11px;line-height:1.45;color:var(--rt-muted);padding:2px 9px 9px;white-space:normal;overflow-wrap:anywhere}
