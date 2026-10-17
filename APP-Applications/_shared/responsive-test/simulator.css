@@ -105,3 +105,5 @@
 :root[data-theme="dark"] .responsiveTestSimulator .rt-chrome{background:#314252;color:#e4edf6}
 :root[data-theme="dark"] .responsiveTestSimulator .rt-chrome span:first-child{color:#7de0a1}
 :root[data-theme="dark"] .responsiveTestSimulator .rt-top{box-shadow:0 16px 50px rgba(0,0,0,.55)}
+
+.responsiveTestSimulator .rt-diagnostics{font-size:11px;line-height:1.45;color:var(--rt-muted);padding:2px 9px 9px;white-space:normal;overflow-wrap:anywhere}
