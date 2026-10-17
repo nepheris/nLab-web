@@ -1,6 +1,6 @@
-# Responsive Test Studio — 0.4.2 CURRENT
+# Responsive Test Studio — 0.4.2 CURRENT / 0.4.3 TEST
 
-Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via le catalogue nLab Studios. La **0.4.2 est CURRENT**, approuvée et figée (`versions/0.4.2/`). Les versions 0.4.1 et 0.4.0 restent accessibles dans leurs historiques autonomes. Aucun canal TEST n'est actuellement actif.
+Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via le catalogue nLab Studios. La **0.4.2 est CURRENT**, approuvée et figée (`versions/0.4.2/`). Les versions 0.4.1 et 0.4.0 restent accessibles dans leurs historiques autonomes. 0.4.3 TEST propose uniquement un agrandissement de la fenêtre « Modifier URL » (520 → 780 px maximum, avec adaptation sur mobile), sans modifier le CURRENT 0.4.2.
 
 ## Usage
 
@@ -19,6 +19,7 @@ Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via
 
 ## Versions et stabilité
 
+- **0.4.3 TEST** : saisie d’URL plus large dans le panneau « Modifier URL » ; version accessible sous `./test/`, sans effet sur le CURRENT.
 - **0.4.2 CURRENT** : barre URL étendue à au moins 50 % sur ordinateur, avec commandes regroupées dans le viewport, édition en plein écran ; CSS/simulateur gelés sous `./versions/0.4.2/`.
 - **0.4.1 historique** : première version de la barre unifiée, préservée sous `./versions/0.4.1/`.
 - **0.4.0 historique** : précédent CURRENT, avec barre URL séparée, préservé sous `./versions/0.4.0/`.
@@ -26,7 +27,7 @@ Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via
 - **0.3.0 historique** : version native autonome avec ses boutons de thème dans le header, préservée sous versions/0.3.0/.
 - **0.2.0 historique** : version native autonome sous versions/0.2.0/ (moteur CSS, shell, runtime et UI figés).
 - **0.1.0 historique** : instantané natif autonome sous versions/0.1.0/ (JS/CSS copiés) ; pas de dépendance au nouveau moteur.
-- CURRENT = 0.4.2 ; pas de TEST actif. Les autres Studios et leurs versions historiques restent inchangés.
+- CURRENT = 0.4.2 ; TEST = 0.4.3. Les autres Studios et leurs versions historiques restent inchangés.
 
 ## Tests
 
