@@ -140,3 +140,11 @@
  .responsiveTestSimulator .rt-monitor-actions button{font-size:11px;min-height:32px}
  .responsiveTestSimulator .rt-monitor:fullscreen .rt-top{top:74px}
 }
+
+/* Narrow layouts: keep fullscreen/settings actions unobstructed by the floating palette. */
+.responsiveTestSimulator .rt-monitor-header{position:relative;z-index:4}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-top{top:120px;max-height:calc(100% - 130px)}
+ .responsiveTestSimulator .rt-monitor:fullscreen .rt-top,
+ .responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-top{top:120px;max-height:calc(100% - 130px)}
+}
