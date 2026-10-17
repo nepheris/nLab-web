@@ -120,7 +120,7 @@ def main() -> int:
             continue
         seen_ids.add(app_id)
         parent = app.get("parent_studio")
-        if not parent or parent not in {s.get("id") for s in studios}:
+        if not parent or parent not in ({s.get("id") for s in studios} | {"studio-hub"}):
             fail(f"{app_id}: invalid parent_studio {parent!r}", errors)
         registry_path = ROOT / "APP-Applications" / app_id / "versions.json"
         if not registry_path.exists():

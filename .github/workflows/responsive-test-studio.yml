@@ -1,0 +1,68 @@
+name: Responsive Test Studio TEST Acceptance
+on:
+  pull_request:
+    paths:
+      - 'APP-Applications/responsive-test-studio/**'
+      - 'APP-Applications/_shared/responsive-test/**'
+      - 'APP-Applications/studios/catalog.json'
+      - 'assets/studios/responsive-test-studio.svg'
+      - 'tests/responsive-test-studio.mjs'
+      - '.github/workflows/responsive-test-studio.yml'
+  push:
+    branches:
+      - responsive-test-studio-2026-10-17
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-linux-chrome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate Studio TEST registry and JS syntax
+        run: |
+          node --check APP-Applications/responsive-test-studio/app.js
+          node --check APP-Applications/_shared/responsive-test/simulator.js
+          node --check tests/responsive-test-studio.mjs
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('APP-Applications')
+          catalog=json.loads((root/'studios/catalog.json').read_text())
+          apps=[s for s in catalog['studios'] if s.get('id')=='responsive-test-studio']
+          assert len(apps)==1, 'Studio must have exactly one catalog record'
+          v=json.loads((root/'responsive-test-studio/versions.json').read_text())
+          assert not v['current'] and v['test']=='0.1.0'
+          assert any(x['version']=='0.1.0' and x['status']=='test' for x in v['versions'])
+          assert (root/'responsive-test-studio/index.html').is_file()
+          print('Responsive Test Studio registry: PASS (TEST only)')
+          PY
+      - name: Install Playwright and Chrome
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install chrome
+      - name: Serve checked-out TEST branch
+        run: |
+          python3 -m http.server 8770 --bind 127.0.0.1 >/tmp/responsive-http.log 2>&1 &
+          sleep 2
+          curl --fail http://127.0.0.1:8770/APP-Applications/responsive-test-studio/ >/dev/null
+      - name: Responsive Studio desktop and mobile viewport tests
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/responsive-test-studio.mjs
+      - name: Upload TEST snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responsive-test-studio-screens
+          path: artifacts/responsive-test-studio/
+          retention-days: 14
+          if-no-files-found: warn
+      - name: HTTP diagnostics
+        if: failure()
+        run: tail -100 /tmp/responsive-http.log || true
