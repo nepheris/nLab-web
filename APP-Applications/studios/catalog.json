@@ -160,12 +160,13 @@
     {
       "id": "responsive-test-studio",
       "name": "Responsive Test Studio",
-      "status": "test-only",
+      "status": "current+test",
       "path": "../responsive-test-studio/",
       "versions_path": "../responsive-test-studio/versions.html",
       "version_registry": "../responsive-test-studio/versions.json",
       "icon": "../../assets/studios/responsive-test-studio.svg",
-      "purpose": "Studio de test responsive : URL iframe repliable, header nLab compact, choix SVG Ordinateur/Tablette/Mobile avec formats filtrés (21 PC, 6 tablettes, 9 mobiles), orientation et vue double portrait/paysage, thème nLab, zoom précis enregistrable et plein écran."
+      "purpose": "Responsive Test Studio 0.4.0 CURRENT validé : URL, preview par iframe, profils SVG PC/tablette/mobile, vue double, thèmes, zoom et plein écran. TEST 0.4.1 : barre d’URL et commandes intégrées au viewport, y compris en plein écran.",
+      "test_path": "../responsive-test-studio/test/"
     }
   ],
   "future": [
