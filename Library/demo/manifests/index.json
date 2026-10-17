@@ -28,7 +28,7 @@
       "id": "code-json",
       "label": "Code + JSON Studios",
       "manifest": "./code-json.json",
-      "fileCount": 27,
+      "fileCount": 13,
       "pack": null
     },
     {
@@ -106,5 +106,7 @@
       "kind": "category"
     }
   ],
-  "description": "Index de démonstrations nLab : studios existants + catégories transversales (Images/Scan2D, Office, Compare, ZIP, Security). La disponibilité est définie par storage=local ou reference-only."
+  "description": "Index de démonstrations nLab : studios existants + catégories transversales (Images/Scan2D, Office, Compare, ZIP, Security). La disponibilité est définie par storage=local ou reference-only.",
+  "completeCatalogue": "./catalogue-complet.json",
+  "sourceAudit": "./audit-sources.json"
 }
