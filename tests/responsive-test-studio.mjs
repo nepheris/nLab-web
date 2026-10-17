@@ -21,25 +21,31 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await page.frameLocator('[data-rt-frame]').locator('body').waitFor({timeout:15000});
   pass('catalog Studio name',await page.locator('h1').textContent().then(x=>x.includes('Prévisualisez')));
-  const controls=page.locator('[data-rt-theme]');
-  pass('exactly three visible theme buttons',await controls.count()===3&&await controls.first().isVisible());
-  await page.locator('[data-rt-theme="dark"]').click();
-  pass('one click dark theme applied',await page.evaluate(()=>document.documentElement.dataset.theme==='dark' && getComputedStyle(document.body).backgroundColor==='rgb(22, 27, 32)'));
-  pass('dark theme aria pressed',await page.locator('[data-rt-theme="dark"]').getAttribute('aria-pressed')==='true');
-  await page.locator('[data-rt-theme="light"]').click();
-  pass('one click light theme applied',await page.evaluate(()=>document.documentElement.dataset.theme==='light' && getComputedStyle(document.body).backgroundColor==='rgb(244, 246, 248)'));
-  await page.locator('[data-rt-theme="auto"]').click();
-  pass('auto saved as shared preference',await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab:application-shell:shared-prefs:v2')).theme==='auto'));
-  await page.locator('[data-rt-theme="light"]').click();
+  const headerTheme=page.locator('[data-shell-pref="theme"]');
+  pass('canonical nLab header theme selector restored',await headerTheme.isVisible());
+  pass('no extra theme group in header',await page.locator('.site-header [data-rt-theme]').count()===0);
   const registry=await page.request.get(new URL('APP-Applications/responsive-test-studio/versions.json',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/').href);
   const versions=await registry.json();
-  pass('history preservation registry',versions.test==='0.3.0' && versions.current===null && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')));
+  pass('history preservation registry',versions.test==='0.3.1' && versions.current===null && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')) && versions.versions.some(v=>v.version==='0.3.0' && v.status==='historical' && v.href.includes('versions/0.3.0/')));
 
   const panel=page.locator('[data-rt-panel]'),monitor=page.locator('[data-rt-monitor]');
   const compact=viewport.width<=760;
   pass('settings initial compact state',(await panel.getAttribute('data-collapsed'))===(compact?'true':'false'));
   if(compact)await page.locator('[data-rt-show-settings]').click();
   pass('floating controls expanded',(await panel.getAttribute('data-collapsed'))==='false');
+  const controls=page.locator('[data-rt-panel] [data-rt-theme]');
+  pass('exactly three theme buttons inside settings',await controls.count()===3&&await controls.first().isVisible());
+  await page.locator('[data-rt-theme="dark"]').click();
+  pass('palette selects dark theme',await page.evaluate(()=>document.documentElement.dataset.theme==='dark' && getComputedStyle(document.body).backgroundColor==='rgb(22, 27, 32)'));
+  pass('header synced from palette',await headerTheme.inputValue()==='dark');
+  pass('dark button aria-pressed',await page.locator('[data-rt-theme="dark"]').getAttribute('aria-pressed')==='true');
+  await headerTheme.selectOption('light');
+  pass('palette synced from canonical header',await page.locator('[data-rt-theme="light"]').getAttribute('aria-pressed')==='true'&&await page.evaluate(()=>document.documentElement.dataset.theme==='light'));
+  await page.locator('[data-rt-theme="auto"]').click();
+  pass('auto is stored in shared nLab preferences',await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab:application-shell:shared-prefs:v2')).theme==='auto'));
+  pass('header synced to auto',await headerTheme.inputValue()==='auto');
+  await page.locator('[data-rt-theme="light"]').click();
+
   const rect=await panel.boundingBox(),area=await monitor.boundingBox();
   pass('floating panel over viewport',!!rect&&!!area&&rect.x>=area.x&&rect.y>=area.y&&rect.y<area.y+area.height);
   await page.locator('[data-rt-collapse]').click();
@@ -200,6 +206,12 @@ try{
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
   if(!await page.locator('[data-rt-frame-secondary]').count())throw Error('Archive 0.2.0 dual iframe missing');
   checks.push('history:0.2.0 snapshot loads independently');
+  const archive03=new URL('APP-Applications/responsive-test-studio/versions/0.3.0/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/');
+  const res03=await page.goto(archive03.href,{waitUntil:'domcontentloaded',timeout:30000});
+  if(!res03?.ok())throw Error('Archive 0.3.0 HTTP unavailable');
+  await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
+  if(await page.locator('.site-header [data-rt-theme]').count()!==3)throw Error('Archive 0.3.0 original header theme buttons not preserved');
+  checks.push('history:0.3.0 original header style preserved');
  }catch(error){failures.push({name:'history-0.1.0',error:String(error)})}
  finally{await historical.close()}
 }finally{await browser.close()}
