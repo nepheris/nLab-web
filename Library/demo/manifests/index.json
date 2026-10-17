@@ -72,6 +72,39 @@
       "manifest": "./function-icons.json",
       "fileCount": 46,
       "pack": null
+    },
+    {
+      "id": "document-demo",
+      "label": "Documents / Office",
+      "manifest": "./office.json",
+      "fileCount": 4,
+      "pack": null,
+      "kind": "category"
+    },
+    {
+      "id": "compare-demo",
+      "label": "Comparaison de dossiers",
+      "manifest": "./compare.json",
+      "fileCount": 6,
+      "pack": null,
+      "kind": "category"
+    },
+    {
+      "id": "archive-demo",
+      "label": "Archives / ZIP",
+      "manifest": "./archive.json",
+      "fileCount": 1,
+      "pack": null,
+      "kind": "category"
+    },
+    {
+      "id": "security-demo",
+      "label": "Sécurité / rédaction",
+      "manifest": "./security.json",
+      "fileCount": 2,
+      "pack": null,
+      "kind": "category"
     }
-  ]
+  ],
+  "description": "Index de démonstrations nLab : studios existants + catégories transversales (Images/Scan2D, Office, Compare, ZIP, Security). La disponibilité est définie par storage=local ou reference-only."
 }

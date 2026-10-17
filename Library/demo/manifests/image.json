@@ -6,33 +6,51 @@
   "files": [
     {
       "name": "calibration-regles-300x150.json",
-      "storage": "reference-only",
-      "kind": "json"
+      "storage": "local",
+      "kind": "json",
+      "path": "../Images/calibration-regles-300x150.json",
+      "category": "calibration",
+      "note": "fichier de démonstration déjà publié sur le site nLab"
     },
     {
       "name": "calibration-regles-300x150.png",
-      "storage": "reference-only",
-      "kind": "image"
+      "storage": "local",
+      "kind": "image",
+      "path": "../Images/calibration-regles-300x150.png",
+      "category": "calibration",
+      "note": "fichier de démonstration déjà publié sur le site nLab"
     },
     {
       "name": "demo-image-anime.gif",
-      "storage": "reference-only",
-      "kind": "image"
+      "storage": "local",
+      "kind": "image",
+      "path": "../Images/demo-image-anime.gif",
+      "category": "images",
+      "note": "fichier de démonstration déjà publié sur le site nLab"
     },
     {
       "name": "demo-image-color.jpg",
-      "storage": "reference-only",
-      "kind": "image"
+      "storage": "local",
+      "kind": "image",
+      "path": "../Images/demo-image-color.jpg",
+      "category": "images",
+      "note": "fichier de démonstration déjà publié sur le site nLab"
     },
     {
       "name": "demo-image-color.png",
-      "storage": "reference-only",
-      "kind": "image"
+      "storage": "local",
+      "kind": "image",
+      "path": "../Images/demo-image-color.png",
+      "category": "images",
+      "note": "fichier de démonstration déjà publié sur le site nLab"
     },
     {
       "name": "demo-image-color.webp",
-      "storage": "reference-only",
-      "kind": "image"
+      "storage": "local",
+      "kind": "image",
+      "path": "../Images/demo-image-color.webp",
+      "category": "images",
+      "note": "fichier de démonstration déjà publié sur le site nLab"
     },
     {
       "name": "demo-document-illustration.png",
