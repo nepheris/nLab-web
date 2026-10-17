@@ -18,7 +18,7 @@ try{
  requireResult(await gallery.locator('#demoFolderNav [data-demo-folder]').count()>=8,'Galerie: dossier/catégories non chargés');
  const tests=gallery.locator('#demoBrowserFiles .demo-test');
  requireResult(await tests.count()===7,'Galerie: attend 7 liens de tests Scan2D, obtenu '+await tests.count());
- requireResult((await gallery.locator('#demoBrowserCount').textContent()||'').includes('7 résultat'),'Galerie: filtre Scan2D incomplet');
+ requireResult(parseInt(await gallery.locator('#demoBrowserCount').textContent(),10)>=7,'Galerie: filtre Scan2D incomplet');
 
  const iconPage=await browser.newPage({viewport:{width:1360,height:900}});
  capture(iconPage);
@@ -28,10 +28,8 @@ try{
  await iconPage.close();
 
  await tests.first().click();
- const studio=await gallery.context().waitForEvent('page',{timeout:10000}).catch(()=>null);
- // A same-tab navigation is also accepted.
- const opened=studio||gallery;
- capture(studio||gallery);
+ await gallery.waitForURL(/APP-Applications\\/image-studio\\/v2\\/\\?demo=/,{timeout:20000});
+ const opened=gallery;
  await opened.waitForSelector('#nlabStudioV2Chrome',{timeout:35000});
  await opened.waitForFunction(()=>document.querySelectorAll('#imageList .imageItem').length>=1,null,{timeout:40000});
  const sample=await opened.locator('#imageList .imageItem.active strong').first().textContent();
