@@ -27,4 +27,4 @@ echo "Ce serveur de test est visible sur le réseau local : utiliser uniquement 
 echo "Seuls les modules Studio Core nécessaires sont exposés. Aucun fichier choisi n'est téléversé."
 echo "Ctrl+C pour arrêter et supprimer la copie temporaire."
 cd "$TMP"
-exec python3 -m http.server "$PORT" --bind 0.0.0.0
+python3 -m http.server "$PORT" --bind 0.0.0.0
