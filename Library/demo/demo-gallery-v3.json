@@ -225,6 +225,132 @@
       "path": "Images/Scan2D/00_manifest_tests.json",
       "href": "./files/demo-input/Images/Scan2D/00_manifest_tests.json",
       "preview": "json"
+    },
+    {
+      "category": "Images",
+      "path": "Images/calibration-regles-300x150.json",
+      "href": "./Images/calibration-regles-300x150.json",
+      "preview": "json"
+    },
+    {
+      "category": "Images",
+      "path": "Images/calibration-regles-300x150.png",
+      "href": "./Images/calibration-regles-300x150.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-image-anime.gif",
+      "href": "./Images/demo-image-anime.gif",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-image-color.jpg",
+      "href": "./Images/demo-image-color.jpg",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-image-color.png",
+      "href": "./Images/demo-image-color.png",
+      "preview": "image"
+    },
+    {
+      "category": "Images",
+      "path": "Images/demo-image-color.webp",
+      "href": "./Images/demo-image-color.webp",
+      "preview": "image"
+    },
+    {
+      "category": "Data",
+      "path": "Data/dataset-validation-complet.csv",
+      "href": "./Data/dataset-validation-complet.csv",
+      "preview": "text"
+    },
+    {
+      "category": "Data",
+      "path": "Data/dataset-validation-complet.json",
+      "href": "./Data/dataset-validation-complet.json",
+      "preview": "json"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-config.yaml",
+      "href": "./Code/demo-config.yaml",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-markdown.md",
+      "href": "./Code/demo-markdown.md",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-record.xml",
+      "href": "./Code/demo-record.xml",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-script.js",
+      "href": "./Code/demo-script.js",
+      "preview": "text"
+    },
+    {
+      "category": "Code",
+      "path": "Code/demo-structure.json",
+      "href": "./Code/demo-structure.json",
+      "preview": "json"
+    },
+    {
+      "category": "JSON",
+      "path": "json/allergenes.json",
+      "href": "./json/allergenes.json",
+      "preview": "json"
+    },
+    {
+      "category": "JSON",
+      "path": "json/astuces_categories.json",
+      "href": "./json/astuces_categories.json",
+      "preview": "json"
+    },
+    {
+      "category": "JSON",
+      "path": "json/ciqual_import_config.json",
+      "href": "./json/ciqual_import_config.json",
+      "preview": "json"
+    },
+    {
+      "category": "JSON",
+      "path": "json/ciqual_taxonomie_correspondances.json",
+      "href": "./json/ciqual_taxonomie_correspondances.json",
+      "preview": "json"
+    },
+    {
+      "category": "JSON",
+      "path": "json/recettes.json",
+      "href": "./json/recettes.json",
+      "preview": "json"
+    },
+    {
+      "category": "JSON",
+      "path": "json/recettes_categories.json",
+      "href": "./json/recettes_categories.json",
+      "preview": "json"
+    },
+    {
+      "category": "JSON",
+      "path": "json/relations_contenus.json",
+      "href": "./json/relations_contenus.json",
+      "preview": "json"
+    },
+    {
+      "category": "JSON",
+      "path": "json/saisonnalite.json",
+      "href": "./json/saisonnalite.json",
+      "preview": "json"
     }
   ]
 }
