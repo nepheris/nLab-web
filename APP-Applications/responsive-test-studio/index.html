@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Responsive Test Studio — nLab TEST</title>
+<link rel="stylesheet" href="../_shared/responsive-test/simulator.css">
+<link rel="stylesheet" href="./studio.css">
+</head>
+<body>
+<header class="site-header"><div class="brand"><span aria-hidden="true" class="brand-mark">▣</span><div><strong>Responsive Test Studio</strong><span>nLab Studios · Projet P028 · TEST 0.1.0</span></div></div>
+<nav aria-label="Navigation du Studio"><a href="../studios/">Tous les Studios</a><a href="./versions.html">Versions</a></nav></header>
+<main class="studio-main">
+<section class="intro"><div><span class="eyebrow">STUDIO DÉVELOPPEMENT WEB</span><h1>Prévisualisez un site sur plusieurs écrans</h1><p>Choisissez l’ordinateur, la tablette ou le téléphone, en <strong>portrait</strong> ou en <strong>paysage</strong>. Définissez vos dimensions personnalisées, puis chargez une page dans le simulateur.</p></div><span class="test-badge">Branche TEST · Sans déploiement</span></section>
+<section class="quick-links" aria-label="Pages nLab à examiner"><span>Exemples :</span><button type="button" data-example="../studios/">Hub Studios</button><button type="button" data-example="../pdf-studio/">PDF Studio</button><button type="button" data-example="../image-studio/">Image Studio</button><button type="button" data-example="../scan-studio/">Scan Studio</button></section>
+<section id="responsive-test" class="responsiveTestSimulator" aria-label="Simulateur de résolutions"></section>
+<section class="notes"><h2>Ce qui est réellement testé</h2><p>L’iframe reçoit les <strong>dimensions CSS sélectionnées</strong>. Les media queries et comportements responsive de la page s’appliquent dans cet espace. Le zoom réduit seulement la représentation de l’écran pour qu’elle tienne sur votre ordinateur.</p><p>Certains sites externes interdisent leur intégration en iframe par sécurité. Les contrôles des permissions, de la caméra, du clavier virtuel, du défilement tactile et d’Android Chrome nécessiteront une couche de tests supplémentaire, puis un véritable appareil.</p></section>
+</main>
+<script type="module" src="./app.js"></script>
+</body></html>
