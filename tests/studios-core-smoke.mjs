@@ -7,7 +7,8 @@ import { checkStudioCoreWindows } from './studio-core-windows.mjs';
 import { checkStudioCoreUndoRedoBrowser } from './studio-core-undo-redo-browser.mjs';
 import { checkStudioCoreColors } from './studio-core-colors-browser.mjs';
 const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/';
-const browser=await chromium.launch({headless:true});
+const channel=process.env.NLAB_BROWSER_CHANNEL||'';
+const browser=await chromium.launch({headless:true,...(channel?{channel}:{})});
 const checks=[];
 const failures=[];
 try{
@@ -22,5 +23,5 @@ try{
   }
  }
 }finally{await browser.close()}
-console.log(JSON.stringify({kind:'studio-core-chromium',passed:checks.length,failed:failures.length,checks,failures},null,2));
+console.log(JSON.stringify({kind:'studio-core-'+(channel||'chromium'),passed:checks.length,failed:failures.length,checks,failures},null,2));
 if(failures.length)process.exitCode=1;
