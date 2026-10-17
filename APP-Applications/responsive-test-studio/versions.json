@@ -1,15 +1,24 @@
 {
   "name": "Responsive Test Studio",
   "current": null,
-  "test": "0.3.1",
+  "test": "0.4.0",
   "versions": [
     {
-      "version": "0.3.1",
-      "label": "Responsive Test Studio 0.3.1 TEST",
+      "version": "0.4.0",
+      "label": "Responsive Test Studio 0.4.0 TEST",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-runtime",
+      "notes": "Header nLab compact intégrant la présentation, barre URL repliable, navigation par pictogrammes SVG Ordinateur/Tablette/Mobile/Sur mesure et menus de résolutions filtrés (21 PC, 6 tablettes, 9 mobiles). Conservation vue simple/double, zoom, thème et plein écran."
+    },
+    {
+      "version": "0.3.1",
+      "label": "Responsive Test Studio 0.3.1 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.3.1/",
+      "isolation": "native",
       "notes": "Header nLab canonique restauré avec son sélecteur de thème standard ; boutons Auto/Clair/Sombre déplacés dans les réglages d'écran, synchronisés avec la préférence partagée nLab. Aucun changement aux 21 résolutions, à la vue double, au zoom ou au plein écran."
     },
     {

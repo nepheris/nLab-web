@@ -26,3 +26,11 @@ body{margin:0;background:var(--nlab-bg);color:var(--nlab-ink);font:15px/1.6 syst
  .intro p{font-size:12px}
  .test-badge{display:none}
 }
+
+/* Compact header copy uses the same nLab header and tokens; no global skin changes. */
+.brand-purpose{font-size:clamp(11px,1.15vw,14px);font-weight:600;color:var(--nlab-muted)}
+.studio-main{padding-top:5px}
+@media(max-width:760px){
+ .brand-purpose{display:block;font-size:11px}
+ .brand span:not(.brand-mark){line-height:1.3;font-size:10px}
+}
