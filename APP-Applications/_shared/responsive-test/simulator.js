@@ -107,6 +107,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   ui.addressSummary.textContent=currentUrl?.href||'Aucune URL chargée';
   ui.addressSummary.title=currentUrl?.href||'';
  };
+ const opposed=()=>({width:state.height,height:state.width});
  const orientationText=(w,h)=>w>h?'Paysage':h>w?'Portrait':'Carré';
  const dimensions=(box,viewport,iframe,w,h,scale,stage,title)=>{
   box.style.width=w+16+'px';box.style.height=h+42+'px';
