@@ -143,9 +143,16 @@ async function readDirectory(entry,path=''){
  const out=[];for(const child of entries){if(child.isFile)out.push(await fileEntry(child,path));else if(child.isDirectory)out.push(...await readDirectory(child,path+child.name+'/'))}return out
 }
 async function filesFromDrop(dt){
- const items=[...(dt?.items||[])],out=[];if(items.length&&items.some(x=>x.webkitGetAsEntry)){
-  for(const item of items){const entry=item.webkitGetAsEntry?.();if(!entry)continue;if(entry.isFile)out.push(await fileEntry(entry,''));else if(entry.isDirectory)out.push(...await readDirectory(entry,entry.name+'/'))}
- }else out.push(...[...(dt?.files||[])]);
+ const items=[...(dt?.items||[])],out=[];
+ if(items.length){
+  for(const item of items){
+   const entry=item.webkitGetAsEntry?.();
+   if(entry?.isFile)out.push(await fileEntry(entry,''));
+   else if(entry?.isDirectory)out.push(...await readDirectory(entry,entry.name+'/'));
+   else{const file=item.getAsFile?.();if(file)out.push(file)}
+  }
+ }
+ if(!out.length)out.push(...[...(dt?.files||[])]);
  return dedupe(out)
 }
 function ensure(){
@@ -164,7 +171,8 @@ function ensure(){
  document.body.append(host);enhanceStudioWindow(host,{key:'core-input-picker',title:'Choisir une entrée'});
  const fileInput=host.querySelector('#studioInputFilesNative'),folderInput=host.querySelector('#studioInputFolderNative'),cameraInput=host.querySelector('#studioInputCameraNative'),drop=host.querySelector('#studioInputDrop');
  host.querySelector('#studioInputPickFiles').onclick=()=>fileInput.click();host.querySelector('#studioInputPickFolder').onclick=()=>folderInput.click();host.querySelector('#studioInputPickCamera').onclick=()=>cameraInput.click();
- fileInput.onchange=async e=>await add([...e.target.files]);folderInput.onchange=async e=>await add([...e.target.files]);cameraInput.onchange=async e=>await add([...e.target.files]);
+ const importFromNative=async e=>{const files=[...e.target.files];e.target.value='';await add(files)};
+ fileInput.onchange=importFromNative;folderInput.onchange=importFromNative;cameraInput.onchange=importFromNative;
  host.querySelector('#studioInputUrlImport').onclick=async()=>{const input=host.querySelector('#studioInputUrl');state.error='';render(host);try{await add([await fileFromUrl(input.value)]);input.value=''}catch(e){state.error=e?.message||String(e);render(host)}};
  host.querySelector('#studioInputClear').onclick=()=>{if(!state.files.length)return;const before=collectionSnapshot();state.files=[];state.selected.clear();state.active=null;state.meta.clear();syncSession();render(host);publishSelection('clear');transactCollection('Vider la collection',before,collectionSnapshot())};
  host.querySelector('#studioInputCancel').onclick=()=>close(null);
