@@ -5,6 +5,7 @@ import{downloadBlob}from'../../_shared/studio-v2/download-service.js';
 import{fileToDataUrl,renderImageTransformed,canvasToBlob}from'../../_shared/studio-v2/image-service.js';
 import{openInputPicker,filesFromDrop}from'../../_shared/studio-v2/input-picker.js';
 import{pushUndoRedo,undo as coreUndo,redo as coreRedo,getUndoRedoState}from'../../_shared/studio-v2/undo-redo.js';
+import{DemoCorpus}from'../../_shared/studio-v2/demo-corpus.js';
 import manifest from'./studio-manifest.js';
 
 const VERSION_INFO=await resolveStudioVersions({versionsHref:new URL('../versions.json',import.meta.url).href,coreVersionHref:new URL('../../_shared/studio-v2/version.json',import.meta.url).href,channel:'test',sourcePath:manifest.sourcePath});
@@ -89,5 +90,22 @@ $('#exportPdf').onclick=async()=>{
  catch(e){status('Erreur PDF : '+(e?.message||e))}
  finally{active=Math.max(0,Math.min(previousActive,pages.length-1));renderList();renderActive();publishScanContext('pdf-export');if(searchable&&txBefore&&JSON.stringify(txBefore)!==JSON.stringify(snapshot()))transact('OCR automatique pour PDF recherchable',txBefore,snapshot())}
 };
+const scan2dPublicDemo=new DemoCorpus({indexUrl:new URL('../../../Library/demo/manifests/index.json',import.meta.url).href});
+document.querySelectorAll('[data-scan-demo]').forEach(button=>button.onclick=async()=>{
+ const ids=button.dataset.scanDemo==='all'?null:button.dataset.scanDemo.split(',').map(Number);
+ const buttons=[...document.querySelectorAll('[data-scan-demo]')];buttons.forEach(x=>x.disabled=true);
+ try{
+  const list=(await scan2dPublicDemo.list('image-studio',{extensions:['png'],localOnly:true}))
+    .filter(f=>f.category==='scan2d'&&f.name.includes('_image_de_test_')&&(!ids||ids.includes(Number(f.name.slice(0,2)))));
+  if(!list.length)throw Error('Aucun test Scan2D trouvé dans le manifeste.');
+  const input=[];for(const f of list){const response=await fetch(f.url,{cache:'no-store'});
+   if(!response.ok)throw Error(f.name+' · HTTP '+response.status);
+   input.push(new File([await response.blob()],f.name,{type:'image/png'}));
+  }
+  await addFiles(input);status(list.length+' test(s) Scan2D chargé(s).');
+ }catch(e){status('Erreur de chargement du corpus Scan2D : '+(e.message||e))}
+ finally{buttons.forEach(x=>x.disabled=false)}
+});
+
 document.addEventListener('studio-v2:action',e=>{const a=e.detail?.action;if(a==='open')pickImages(false).catch(x=>status(x.message));if(a==='camera')pickImages(true).catch(x=>status(x.message));if(a==='clean')$('#applyCleanup').click();if(a==='ocr')$('#runOcr').click();if(a==='pdf')$('#exportPdf').click()});
 document.addEventListener('studio-v2:undo-redo-changed',syncHistoryButtons);renderList();renderActive();syncHistoryButtons();publishScanContext('ready');

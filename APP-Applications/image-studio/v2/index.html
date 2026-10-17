@@ -10,6 +10,7 @@
  <div class="panel" style="padding:8px;margin-top:8px"><div class="sectionTitle"><b>Bibliothèque démo · Scan2D V1</b><a class="small" href="../../Library/demo/?scan2d" target="_blank" rel="noopener">Galerie ↗</a></div>
 <div class="toolbar"><label class="small" for="scan2dDemoPicker">Image de test :</label><select id="scan2dDemoPicker" style="max-width:100%;flex:1"><option value="">Chargement du catalogue…</option></select></div>
 <div class="toolbar"><button id="scan2dDemoLoad" type="button">Charger le test</button><button id="scan2dDemoLoadAll" type="button">Charger les 7 tests</button></div><div class="toolbar"><button id="scan2dPresetReference" type="button">Référence (01)</button><button id="scan2dPresetCalibration" type="button">Calibration (01–04)</button><button id="scan2dPresetRobustness" type="button">Robustesse (05–07)</button></div>
+<div class="toolbar" aria-label="Sélections rapides Scan2D"><button type="button" data-scan2d-set="1">Référence OK</button><button type="button" data-scan2d-set="2,3">Rotation / échelles</button><button type="button" data-scan2d-set="4,7">Perspective / axes</button><button type="button" data-scan2d-set="5,6">Bruit / éclairage</button></div>
 <div id="scan2dDemoStatus" class="small">Images synthétiques calibrées ; les déformations sont documentées dans le manifeste.</div>
 </div>
  <div id="collectionStatus" class="status">Aucune image.</div>
@@ -122,7 +123,7 @@ async function fetchScan2dFixture(f){
 }
 async function loadScan2dDemos(all=false){
  const status=$('scan2dDemoStatus'),index=Number($('scan2dDemoPicker').value);
- const chosen=all?scan2dFixtures:[scan2dFixtures[index]].filter(Boolean);
+ const chosen=Array.isArray(all)?scan2dFixtures.filter(f=>all.includes(Number(f.name.slice(0,2)))):all?scan2dFixtures:[scan2dFixtures[index]].filter(Boolean);
  if(!chosen.length){status.textContent='Aucun test disponible.';return}
  $('scan2dDemoLoad').disabled=true;$('scan2dDemoLoadAll').disabled=true;
  try{
@@ -133,6 +134,7 @@ async function loadScan2dDemos(all=false){
 }
 $('scan2dDemoLoad').onclick=()=>loadScan2dDemos(false);
 $('scan2dDemoLoadAll').onclick=()=>loadScan2dDemos(true);
+document.querySelectorAll('[data-scan2d-set]').forEach(b=>b.onclick=()=>loadScan2dDemos(b.dataset.scan2dSet.split(',').map(Number)));
 async function loadScan2dPreset(indices){const status=$('scan2dDemoStatus');try{if(scan2dFixtures.length!==7)throw Error('Pack Scan2D indisponible');const files=[];for(const i of indices)files.push(await fetchScan2dFixture(scan2dFixtures[i]));await addFiles(files);status.textContent=files.length+' tests préchargés dans Image Studio.'}catch(e){status.textContent='Échec : '+(e?.message||e)}}
 $('scan2dPresetReference').onclick=()=>loadScan2dPreset([0]);
 $('scan2dPresetCalibration').onclick=()=>loadScan2dPreset([0,1,2,3]);

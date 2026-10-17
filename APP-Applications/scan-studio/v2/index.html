@@ -8,6 +8,14 @@
 <input id="fileInput" type="file" accept="image/*" multiple hidden>
 <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
 <div class="toolbar"><button id="pickFiles" type="button">Choisir images / dossier / URL</button><button id="takePhoto" type="button">Prendre photo</button></div>
+<section aria-label="Tests de démonstration Scan2D" style="padding:9px;border:1px solid var(--nlab-line);border-radius:9px;margin:9px 0">
+<strong>Bibliothèque démo · Scan2D V1</strong><div class="toolbar">
+<button type="button" data-scan-demo="1">Référence OK</button>
+<button type="button" data-scan-demo="2,3">Rotation / échelles</button>
+<button type="button" data-scan-demo="4,7">Perspective / axes</button>
+<button type="button" data-scan-demo="5,6">Bruit / éclairage</button>
+<button type="button" data-scan-demo="all">Les 7 tests</button>
+</div><small><a href="../../Library/demo/?scan2d" target="_blank" rel="noopener">Voir la galerie et les manifestes ↗</a></small></section>
 <h3>Pages</h3><div class="toolbar"><button id="selectAll" type="button">Tout sélectionner</button><button id="selectNone" type="button">Tout désélectionner</button></div><div id="pageList" class="pageList"></div><div class="toolbar"><button id="moveUp" type="button">↑ Monter</button><button id="moveDown" type="button">↓ Descendre</button><button id="removePage" type="button">Retirer</button></div><div class="toolbar"><button id="undoScan" type="button">↶ Annuler</button><button id="redoScan" type="button">↷ Rétablir</button><button id="resetLot" type="button">Réinitialiser le lot</button></div>
 <hr>
 <h3>Nettoyage</h3>
