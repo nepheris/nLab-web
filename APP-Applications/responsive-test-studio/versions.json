@@ -1,24 +1,33 @@
 {
   "name": "Responsive Test Studio",
-  "current": "0.4.0",
-  "test": "0.4.1",
+  "current": "0.4.2",
+  "test": null,
   "versions": [
     {
-      "version": "0.4.1",
-      "label": "Responsive Test Studio 0.4.1 TEST",
-      "status": "test",
-      "current": false,
-      "href": "./test/",
-      "isolation": "test-runtime",
-      "notes": "Optimisation expérimentale : URL, Modifier, Actualiser, Onglet, Vue double, Réglages et Plein écran réunis dans une seule barre du viewport, accessible également en plein écran ; URL modifiable dans une palette compacte."
-    },
-    {
-      "version": "0.4.0",
-      "label": "Responsive Test Studio 0.4.0 CURRENT",
+      "version": "0.4.2",
+      "label": "Responsive Test Studio 0.4.2 CURRENT",
       "status": "current",
       "current": true,
       "href": "./",
       "isolation": "current-runtime",
+      "notes": "Version 0.4.1 validée ; dernière optimisation d'ergonomie : la zone URL visible occupe au minimum 50 % de la barre viewport sur ordinateur. Commandes URL/Actualiser/Onglet/Vue double/Réglages/Plein écran regroupées dans le viewport, changement d'URL possible en plein écran. CSS et moteur figés dans versions/0.4.2/. Aucun canal TEST actif."
+    },
+    {
+      "version": "0.4.1",
+      "label": "Responsive Test Studio 0.4.1 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.4.1/",
+      "isolation": "native",
+      "notes": "Optimisation expérimentale : URL, Modifier, Actualiser, Onglet, Vue double, Réglages et Plein écran réunis dans une seule barre du viewport, accessible également en plein écran ; URL modifiable dans une palette compacte."
+    },
+    {
+      "version": "0.4.0",
+      "label": "Responsive Test Studio 0.4.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.4.0/",
+      "isolation": "native",
       "notes": "Header nLab compact intégrant la présentation, barre URL repliable, navigation par pictogrammes SVG Ordinateur/Tablette/Mobile/Sur mesure et menus de résolutions filtrés (21 PC, 6 tablettes, 9 mobiles). Conservation vue simple/double, zoom, thème et plein écran. Validée par utilisateur et promue CURRENT ; moteur et CSS figés sur snapshot natif v0.4.0."
     },
     {
