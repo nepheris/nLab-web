@@ -21,6 +21,16 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await page.frameLocator('[data-rt-frame]').locator('body').waitFor({timeout:15000});
   pass('catalog Studio name',await page.locator('h1').textContent().then(x=>x.includes('Prévisualisez')));
+  const theme=page.locator('[data-shell-pref="theme"]');
+  pass('shared theme selector',await theme.isVisible());
+  await theme.selectOption('dark');
+  pass('nLab dark theme applied',await page.evaluate(()=>document.documentElement.dataset.theme==='dark' && getComputedStyle(document.body).backgroundColor==='rgb(22, 27, 32)'));
+  await theme.selectOption('light');
+  pass('nLab light theme applied',await page.evaluate(()=>document.documentElement.dataset.theme==='light' && getComputedStyle(document.body).backgroundColor==='rgb(244, 246, 248)'));
+  const registry=await page.request.get(new URL('APP-Applications/responsive-test-studio/versions.json',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/').href);
+  const versions=await registry.json();
+  pass('history preservation registry',versions.test==='0.2.0' && versions.current===null && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')));
+
   const panel=page.locator('[data-rt-panel]'),monitor=page.locator('[data-rt-monitor]');
   const compact=viewport.width<=760;
   pass('settings initial compact state',(await panel.getAttribute('data-collapsed'))===(compact?'true':'false'));
@@ -40,6 +50,25 @@ async function scenario(name,viewport,emulateTouch=false){
   await equals(852,393,'phone landscape');
   await page.locator('input[name="rt-orientation"][value="portrait"]').check();
   await equals(393,852,'phone portrait');
+  const responsive=await frame.evaluate(el=>({small:el.contentWindow.matchMedia('(max-width: 600px)').matches,portrait:el.contentWindow.matchMedia('(orientation: portrait)').matches,width:el.contentWindow.innerWidth}));
+  pass('iframe CSS media queries reflect phone',responsive.small && responsive.portrait && responsive.width===393);
+  await page.evaluate(()=>{window.__rtReloads=0;document.querySelector('[data-rt-frame]').addEventListener('load',()=>window.__rtReloads++)});
+  await page.locator('[data-rt-rotate]').click();
+  await equals(852,393,'rotation updates main viewport landscape');
+  await page.waitForFunction(()=>window.__rtReloads>=1,null,{timeout:12000});
+  pass('rotation triggers optional iframe reload',await page.evaluate(()=>window.__rtReloads>=1));
+  await page.locator('[data-rt-rotate]').click();
+  await equals(393,852,'rotation restores portrait');
+  await page.locator('[data-rt-auto-reload]').uncheck();
+  await page.evaluate(()=>{window.__rtReloads=0});
+  await page.locator('[data-rt-width]').fill('400');
+  await page.locator('[data-rt-height]').fill('850');
+  await page.locator('[data-rt-height]').press('Tab');
+  await equals(400,850,'live viewport CSS resize without page navigation');
+  pass('no reload with toggle disabled',await page.evaluate(()=>window.__rtReloads===0));
+  await page.locator('[data-rt-auto-reload]').check();
+  await page.locator('[data-rt-device]').selectOption('phone');
+
   await page.locator('[data-rt-device]').selectOption('desktop');
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
   await equals(1440,900,'desktop landscape');
@@ -53,6 +82,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('scaled frame',await page.locator('[data-rt-frame-box]').evaluate(el=>getComputedStyle(el).transform.includes('0.5')));
   await page.screenshot({path:out+'/'+name+'.png',fullPage:true,animations:'disabled'});
   await page.reload({waitUntil:'domcontentloaded'});
+  pass('nLab theme persists on reload',await page.evaluate(()=>document.documentElement.dataset.theme==='light'));
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await equals(420,880,'default restored after reload');
   if((await panel.getAttribute('data-collapsed'))==='true')await page.locator('[data-rt-show-settings]').click();
@@ -66,12 +96,30 @@ async function scenario(name,viewport,emulateTouch=false){
    await equals(393,852,'tap rotation to phone portrait');
    pass('emulation explicitly labelled',!!await page.locator('.rt-note').textContent().then(x=>x.includes('pas les API')));
   }
+
+  await page.locator('[data-rt-device]').selectOption('phone');
+  await page.locator('input[name="rt-orientation"][value="portrait"]').check();
+  await page.locator('[data-rt-dual]').click();
+  pass('dual preview enabled',await page.locator('[data-rt-dual]').getAttribute('aria-pressed')==='true');
+  pass('secondary iframe visible',await page.locator('[data-rt-stage-secondary]').isVisible());
+  const second=page.locator('[data-rt-frame-secondary]');
+  await equals(393,852,'dual primary portrait size');
+  const side=await second.evaluate(el=>({w:el.contentWindow.innerWidth,h:el.contentWindow.innerHeight,landscape:el.contentWindow.matchMedia('(orientation:landscape)').matches}));
+  pass('dual secondary landscape responsive',side.w===852&&side.h===393&&side.landscape);
+  await page.locator('[data-rt-scale]').selectOption('fit');
+  pass('dual fit canvas bounded',await page.locator('[data-rt-stages]').evaluate(el=>el.getBoundingClientRect().width>0));
+  await page.locator('[data-rt-dual]').click();
+  pass('return to single view',await page.locator('[data-rt-stage-secondary]').isHidden());
   await page.locator('[data-rt-url]').fill('javascript:alert(1)');
   await page.locator('[data-rt-load]').click();
   pass('javascript URL rejected',await page.locator('[data-rt-message]').textContent().then(x=>x.includes('HTTP(S)')));
   await page.locator('[data-rt-url]').fill('../image-studio/');
   await page.locator('[data-rt-load]').click();
   pass('local URL accepted',(await frame.getAttribute('src')).includes('/APP-Applications/image-studio/'));
+  await page.locator('[data-rt-dual]').click();
+  pass('dual source synchronized when enabled',(await second.getAttribute('src')).includes('/APP-Applications/image-studio/'));
+  await page.locator('[data-rt-dual]').click();
+
   if(emulateTouch)await equals(393,852,'viewport preserved after changing URL');
   else await equals(420,880,'viewport preserved after changing URL');
   if(!compact){
