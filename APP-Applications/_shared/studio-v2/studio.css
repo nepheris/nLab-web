@@ -1014,3 +1014,11 @@ body.studioMobileOptimized .ribbonInputLauncher .scopeIcon{width:38px!important;
 .coreViewerPercent input{width:58px;border:0!important;background:transparent!important;text-align:right;padding:3px!important}
 .coreViewerState{font-size:9px;color:var(--nlab-muted);min-width:48px}
 .themeDark .coreViewerPercent{border-color:#4d5b66;background:#20262c}
+
+/* Opt-in Studio Core HEX/RGB/HSL editor: scoped, theme-aware and mobile-friendly. */
+.studioCoreColorPicker{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;min-width:0;border:1px solid var(--nlab-line,#c8d3dc);border-radius:8px;padding:10px}
+.studioCoreColorPicker legend{font-weight:650;padding:0 5px}
+.studioCoreColorPicker label{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.studioCoreColorPicker input[type=number]{width:54px;max-width:100%;min-width:0}
+.studioCoreColorPicker input[data-color-hex]{width:88px;min-width:0}
+.studioCoreColorPicker input[type=color]{width:42px;min-height:32px}
