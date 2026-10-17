@@ -8,8 +8,8 @@ const browser=await chromium.launch({headless:true,...(channel?{channel}:{})});
 const out='artifacts/responsive-test-studio';
 await fs.mkdir(out,{recursive:true});
 const checks=[],failures=[];
-async function scenario(name,viewport){
- const context=await browser.newContext({viewport}),page=await context.newPage(),errors=[];
+async function scenario(name,viewport,emulateTouch=false){
+ const context=await browser.newContext({viewport,...(emulateTouch?{isMobile:true,hasTouch:true,deviceScaleFactor:3}: {})}),page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  const pass=(label,ok)=>{if(!ok)throw Error(name+': '+label);checks.push(name+': '+label)};
  const frame=page.locator('[data-rt-frame]');
@@ -44,6 +44,16 @@ async function scenario(name,viewport){
   await page.reload({waitUntil:'domcontentloaded'});
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await equals(420,880,'default restored after reload');
+  if(emulateTouch){
+   const touch=await page.evaluate(()=>({points:navigator.maxTouchPoints,coarse:matchMedia('(pointer: coarse)').matches}));
+   pass('touch emulation environment',touch.points>0&&touch.coarse);
+   await page.locator('[data-rt-device]').selectOption('phone');
+   await page.locator('[data-rt-rotate]').tap();
+   await equals(852,393,'tap rotation to phone landscape');
+   await page.locator('[data-rt-rotate]').tap();
+   await equals(393,852,'tap rotation to phone portrait');
+   pass('emulation explicitly labelled',!!await page.locator('.rt-note').textContent().then(x=>x.includes('pas les API')));
+  }
   await page.locator('[data-rt-url]').fill('javascript:alert(1)');
   await page.locator('[data-rt-load]').click();
   pass('javascript URL rejected',await page.locator('[data-rt-message]').textContent().then(x=>x.includes('HTTP(S)')));
@@ -56,7 +66,7 @@ async function scenario(name,viewport){
  }catch(error){failures.push({name,error:String(error?.stack||error),pageErrors:errors});await page.screenshot({path:out+'/'+name+'-failure.png',fullPage:true}).catch(()=>{})}
  finally{await context.close()}
 }
-try{await scenario('desktop',{width:1440,height:900});await scenario('mobile',{width:393,height:852})}finally{await browser.close()}
+try{await scenario('desktop',{width:1440,height:900});await scenario('mobile',{width:393,height:852});await scenario('touch-emulation',{width:393,height:852},true)}finally{await browser.close()}
 await fs.writeFile(out+'/results.json',JSON.stringify({channel:channel||'chromium',checks,failures,not_android_emulation:true},null,2));
 console.log(JSON.stringify({checks,failures},null,2));
 if(failures.length)process.exitCode=1;
