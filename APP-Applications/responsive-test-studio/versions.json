@@ -1,0 +1,16 @@
+{
+  "name": "Responsive Test Studio",
+  "current": null,
+  "test": "0.1.0",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "label": "Responsive Test Studio 0.1.0 TEST",
+      "current": false,
+      "status": "test",
+      "href": "./",
+      "isolation": "test-runtime",
+      "notes": "Studio autonome de prévisualisation de pages dans un iframe CSS ; ordinateurs, tablettes et téléphones, portrait/paysage, dimensions sur mesure, profil par défaut local. Ne simule pas Android OS."
+    }
+  ]
+}
