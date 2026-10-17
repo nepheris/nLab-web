@@ -41,11 +41,21 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  try{initial=safePrefs(localStorage.getItem(storageKey))}catch{}
  let state=initial||{preset:'desktop',orientation:'landscape',width:1280,height:800};
  let desktopChoice=initial?.desktopResolution||'1280x800';
- let scaleMode='fit',dual=false,reloadOnChange=true,currentUrl=null;
- root.innerHTML="<div class=\"rt-workspace\" data-rt-workspace>\n <div class=\"rt-address\" role=\"group\" aria-label=\"Adresse du site à prévisualiser\">\n  <label for=\"rt-target-url\">URL à tester</label>\n  <input id=\"rt-target-url\" data-rt-url type=\"url\" spellcheck=\"false\" placeholder=\"https://exemple.fr ou ../studios/\" autocomplete=\"off\">\n  <button type=\"button\" data-rt-load>Afficher</button>\n  <button type=\"button\" data-rt-reload title=\"Actualiser les prévisualisations\">↻ Actualiser</button>\n  <a data-rt-open target=\"_blank\" rel=\"noopener noreferrer\" title=\"Ouvrir l'URL dans un autre onglet\">↗ Onglet</a>\n  <button type=\"button\" data-rt-dual aria-pressed=\"false\">◫ Vue double</button>\n  <button type=\"button\" data-rt-show-settings aria-controls=\"rt-settings\" aria-expanded=\"true\">⚙ Réglages</button>\n </div>\n <div role=\"status\" aria-live=\"polite\" class=\"rt-message\" data-rt-message></div>\n <div class=\"rt-monitor\" data-rt-monitor>\n  <div class=\"rt-metrics\" data-rt-metrics></div>\n  <div class=\"rt-diagnostics\" data-rt-diagnostics aria-live=\"polite\"></div>\n  <div class=\"rt-scroll\" data-rt-scroll>\n   <div class=\"rt-stages\" data-rt-stages>\n    <section class=\"rt-stage\" data-rt-stage aria-label=\"Écran principal\">\n     <div class=\"rt-screen-title\" data-rt-screen-title>Portrait</div>\n     <div class=\"rt-device-frame\" data-rt-frame-box>\n      <div class=\"rt-chrome\"><span aria-hidden=\"true\">●</span><span data-rt-address-label>Prévisualisation</span><span>⋯</span></div>\n      <div class=\"rt-viewport\" data-rt-viewport><iframe data-rt-frame title=\"Site web testé — écran principal\" loading=\"eager\" referrerpolicy=\"no-referrer\"></iframe></div>\n     </div>\n    </section>\n    <section class=\"rt-stage\" data-rt-stage-secondary aria-label=\"Deuxième orientation\" hidden>\n     <div class=\"rt-screen-title\" data-rt-screen-title-secondary>Paysage</div>\n     <div class=\"rt-device-frame\" data-rt-frame-box-secondary>\n      <div class=\"rt-chrome\"><span aria-hidden=\"true\">●</span><span data-rt-address-label-secondary>Prévisualisation</span><span>⋯</span></div>\n      <div class=\"rt-viewport\" data-rt-viewport-secondary><iframe data-rt-frame-secondary title=\"Site web testé — orientation opposée\" loading=\"eager\" referrerpolicy=\"no-referrer\"></iframe></div>\n     </div>\n    </section>\n   </div>\n  </div>\n  <aside class=\"rt-top\" id=\"rt-settings\" data-rt-panel data-collapsed=\"false\" aria-label=\"Réglages de l'écran simulé\">\n   <div class=\"rt-panel-head\" data-rt-panel-head>\n    <strong>⚙ Réglages d'écran</strong>\n    <button type=\"button\" data-rt-collapse aria-controls=\"rt-screen-fields\" aria-expanded=\"true\">Réduire</button>\n   </div>\n   <div class=\"rt-panel-fields\" id=\"rt-screen-fields\">\n    <div class=\"rt-preset\">\n     <label>Appareil <select data-rt-device><option value=\"desktop\">Ordinateur</option><option value=\"tablet\">Tablette</option><option value=\"phone\">Téléphone</option><option value=\"small\">Petit téléphone</option><option value=\"custom\">Personnalisé</option></select></label>\n     <fieldset class=\"rt-orientation\"><legend>Orientation principale</legend><label><input type=\"radio\" name=\"rt-orientation\" value=\"portrait\" checked> Portrait</label><label><input type=\"radio\" name=\"rt-orientation\" value=\"landscape\"> Paysage</label></fieldset>\n    </div>\n    <div class=\"rt-preset rt-desktop-preset\" data-rt-desktop-presets>\n     <label>Résolution écran <select data-rt-desktop-resolution aria-label=\"Résolution d’écran d’ordinateur standard\"></select></label>\n    </div>\n    <div class=\"rt-preset\">\n     <label>Largeur <input data-rt-width type=\"number\" inputmode=\"numeric\" min=\"240\" max=\"4096\" step=\"1\">px</label>\n     <label>Hauteur <input data-rt-height type=\"number\" inputmode=\"numeric\" min=\"240\" max=\"4096\" step=\"1\">px</label>\n    </div>\n    <div class=\"rt-preset\">\n     <label>Échelle <select data-rt-scale><option value=\"fit\">Ajuster</option><option value=\"1\">100 %</option><option value=\"0.75\">75 %</option><option value=\"0.5\">50 %</option><option value=\"0.25\">25 %</option></select></label>\n     <button type=\"button\" data-rt-rotate title=\"Échanger portrait et paysage\">↻ Pivoter</button>\n     <button type=\"button\" data-rt-default title=\"Mémoriser ce format comme favori\">★ Par défaut</button>\n    </div>\n    <label class=\"rt-reload-label\"><input data-rt-auto-reload type=\"checkbox\" checked> Recharger le site au changement de format</label>\n   </div>\n  </aside>\n </div>\n <p class=\"rt-note\">Chaque iframe possède son propre viewport CSS : les media queries responsive et les événements de redimensionnement s'y appliquent. Le rechargement optionnel aide les sites qui calculent leur affichage au démarrage. Le zoom change seulement l'échelle du cadre, pas les API d'un vrai appareil Android (ni User-Agent, tactile ou permissions). Certains sites refusent les iframes (CSP / X-Frame-Options). En vue double, les deux pages sont indépendantes après chargement.</p>\n</div>";
+ let scaleMode='fit',manualScale=1,dual=false,reloadOnChange=true,currentUrl=null;
+ const zoomStorageKey='nlab:responsive-test-studio:zoom:v1';
+ try{
+  const saved=JSON.parse(localStorage.getItem(zoomStorageKey)||'null');
+  if(saved&&['fit','custom'].includes(saved.mode)){
+   scaleMode=saved.mode;
+   if(saved.mode==='custom'&&Number.isFinite(saved.percent)&&saved.percent>=5&&saved.percent<=300)manualScale=saved.percent/100;
+  }else if(saved&&['1','0.75','0.5','0.25'].includes(saved.mode)){
+   scaleMode=saved.mode;
+  }
+ }catch{}
+ root.innerHTML="<div class=\"rt-workspace\" data-rt-workspace>\n <div class=\"rt-address\" role=\"group\" aria-label=\"Adresse du site à prévisualiser\">\n  <label for=\"rt-target-url\">URL à tester</label>\n  <input id=\"rt-target-url\" data-rt-url type=\"url\" spellcheck=\"false\" placeholder=\"https://exemple.fr ou ../studios/\" autocomplete=\"off\">\n  <button type=\"button\" data-rt-load>Afficher</button>\n  <button type=\"button\" data-rt-reload title=\"Actualiser les prévisualisations\">↻ Actualiser</button>\n  <a data-rt-open target=\"_blank\" rel=\"noopener noreferrer\" title=\"Ouvrir l'URL dans un autre onglet\">↗ Onglet</a>\n  <button type=\"button\" data-rt-dual aria-pressed=\"false\">◫ Vue double</button>\n  <button type=\"button\" data-rt-show-settings aria-controls=\"rt-settings\" aria-expanded=\"true\">⚙ Réglages</button>\n </div>\n <div role=\"status\" aria-live=\"polite\" class=\"rt-message\" data-rt-message></div>\n <div class=\"rt-monitor\" data-rt-monitor>\n  <div class=\"rt-monitor-header\"><div class=\"rt-metrics\" data-rt-metrics></div><div class=\"rt-monitor-actions\"><button type=\"button\" data-rt-full-settings aria-controls=\"rt-settings\" aria-expanded=\"true\">⚙ Réglages</button><button type=\"button\" data-rt-fullscreen aria-pressed=\"false\" title=\"Afficher le viewport en plein écran\">⛶ Plein écran</button></div></div>\n  <div class=\"rt-diagnostics\" data-rt-diagnostics aria-live=\"polite\"></div>\n  <div class=\"rt-scroll\" data-rt-scroll>\n   <div class=\"rt-stages\" data-rt-stages>\n    <section class=\"rt-stage\" data-rt-stage aria-label=\"Écran principal\">\n     <div class=\"rt-screen-title\" data-rt-screen-title>Portrait</div>\n     <div class=\"rt-device-frame\" data-rt-frame-box>\n      <div class=\"rt-chrome\"><span aria-hidden=\"true\">●</span><span data-rt-address-label>Prévisualisation</span><span>⋯</span></div>\n      <div class=\"rt-viewport\" data-rt-viewport><iframe data-rt-frame title=\"Site web testé — écran principal\" loading=\"eager\" referrerpolicy=\"no-referrer\"></iframe></div>\n     </div>\n    </section>\n    <section class=\"rt-stage\" data-rt-stage-secondary aria-label=\"Deuxième orientation\" hidden>\n     <div class=\"rt-screen-title\" data-rt-screen-title-secondary>Paysage</div>\n     <div class=\"rt-device-frame\" data-rt-frame-box-secondary>\n      <div class=\"rt-chrome\"><span aria-hidden=\"true\">●</span><span data-rt-address-label-secondary>Prévisualisation</span><span>⋯</span></div>\n      <div class=\"rt-viewport\" data-rt-viewport-secondary><iframe data-rt-frame-secondary title=\"Site web testé — orientation opposée\" loading=\"eager\" referrerpolicy=\"no-referrer\"></iframe></div>\n     </div>\n    </section>\n   </div>\n  </div>\n  <aside class=\"rt-top\" id=\"rt-settings\" data-rt-panel data-collapsed=\"false\" aria-label=\"Réglages de l'écran simulé\">\n   <div class=\"rt-panel-head\" data-rt-panel-head>\n    <strong>⚙ Réglages d'écran</strong>\n    <button type=\"button\" data-rt-collapse aria-controls=\"rt-screen-fields\" aria-expanded=\"true\">Réduire</button>\n   </div>\n   <div class=\"rt-panel-fields\" id=\"rt-screen-fields\">\n    <div class=\"rt-preset\">\n     <label>Appareil <select data-rt-device><option value=\"desktop\">Ordinateur</option><option value=\"tablet\">Tablette</option><option value=\"phone\">Téléphone</option><option value=\"small\">Petit téléphone</option><option value=\"custom\">Personnalisé</option></select></label>\n     <fieldset class=\"rt-orientation\"><legend>Orientation principale</legend><label><input type=\"radio\" name=\"rt-orientation\" value=\"portrait\" checked> Portrait</label><label><input type=\"radio\" name=\"rt-orientation\" value=\"landscape\"> Paysage</label></fieldset>\n    </div>\n    <div class=\"rt-preset rt-desktop-preset\" data-rt-desktop-presets>\n     <label>Résolution écran <select data-rt-desktop-resolution aria-label=\"Résolution d’écran d’ordinateur standard\"></select></label>\n    </div>\n    <div class=\"rt-preset\">\n     <label>Largeur <input data-rt-width type=\"number\" inputmode=\"numeric\" min=\"240\" max=\"4096\" step=\"1\">px</label>\n     <label>Hauteur <input data-rt-height type=\"number\" inputmode=\"numeric\" min=\"240\" max=\"4096\" step=\"1\">px</label>\n    </div>\n    <div class=\"rt-preset\">\n     <label>Échelle <select data-rt-scale><option value=\"fit\">Ajuster</option><option value=\"1\">100 %</option><option value=\"0.75\">75 %</option><option value=\"0.5\">50 %</option><option value=\"0.25\">25 %</option><option value=\"custom\">Sur mesure</option></select></label>\n     <button type=\"button\" data-rt-rotate title=\"Échanger portrait et paysage\">↻ Pivoter</button>\n     <button type=\"button\" data-rt-default title=\"Mémoriser ce format comme favori\">★ Par défaut</button>\n    </div>\n\n    <div class=\"rt-zoom-editor\" role=\"group\" aria-label=\"Zoom précis du viewport\">\n     <button type=\"button\" data-rt-zoom-minus title=\"Réduire le zoom de 5 points\">−</button>\n     <input data-rt-zoom-slider type=\"range\" min=\"5\" max=\"300\" step=\"1\" value=\"100\" aria-label=\"Zoom en pourcentage\">\n     <button type=\"button\" data-rt-zoom-plus title=\"Augmenter le zoom de 5 points\">+</button>\n     <label><input data-rt-zoom-value type=\"number\" min=\"5\" max=\"300\" step=\"1\" inputmode=\"numeric\" value=\"100\" aria-label=\"Zoom manuel en pourcentage\"> %</label>\n     <button type=\"button\" data-rt-zoom-save title=\"Enregistrer le zoom préféré dans ce navigateur\">★ Sauver zoom</button>\n    </div>\n    <label class=\"rt-reload-label\"><input data-rt-auto-reload type=\"checkbox\" checked> Recharger le site au changement de format</label>\n   </div>\n  </aside>\n </div>\n <p class=\"rt-note\">Chaque iframe possède son propre viewport CSS : les media queries responsive et les événements de redimensionnement s'y appliquent. Le rechargement optionnel aide les sites qui calculent leur affichage au démarrage. Le zoom change seulement l'échelle du cadre, pas les API d'un vrai appareil Android (ni User-Agent, tactile ou permissions). Certains sites refusent les iframes (CSP / X-Frame-Options). En vue double, les deux pages sont indépendantes après chargement.</p>\n</div>";
  const query=s=>root.querySelector(s);
  const ui={
-  device:query('[data-rt-device]'),desktop:query('[data-rt-desktop-resolution]'),desktopPicker:query('[data-rt-desktop-presets]'),width:query('[data-rt-width]'),height:query('[data-rt-height]'),scale:query('[data-rt-scale]'),
+  device:query('[data-rt-device]'),desktop:query('[data-rt-desktop-resolution]'),desktopPicker:query('[data-rt-desktop-presets]'),width:query('[data-rt-width]'),height:query('[data-rt-height]'),scale:query('[data-rt-scale]'),zoomSlider:query('[data-rt-zoom-slider]'),zoomValue:query('[data-rt-zoom-value]'),zoomMinus:query('[data-rt-zoom-minus]'),zoomPlus:query('[data-rt-zoom-plus]'),zoomSave:query('[data-rt-zoom-save]'),
   message:query('[data-rt-message]'),url:query('[data-rt-url]'),open:query('[data-rt-open]'),
   frame:query('[data-rt-frame]'),frameB:query('[data-rt-frame-secondary]'),
   boxA:query('[data-rt-frame-box]'),boxB:query('[data-rt-frame-box-secondary]'),
@@ -54,7 +64,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   stages:query('[data-rt-stages]'),titleA:query('[data-rt-screen-title]'),titleB:query('[data-rt-screen-title-secondary]'),
   scroll:query('[data-rt-scroll]'),metrics:query('[data-rt-metrics]'),diagnostics:query('[data-rt-diagnostics]'),labelA:query('[data-rt-address-label]'),labelB:query('[data-rt-address-label-secondary]'),
   workspace:query('[data-rt-workspace]'),monitor:query('[data-rt-monitor]'),panel:query('[data-rt-panel]'),panelHead:query('[data-rt-panel-head]'),
-  settingsButton:query('[data-rt-show-settings]'),collapseButton:query('[data-rt-collapse]'),
+  settingsButton:query('[data-rt-show-settings]'),fullSettings:query('[data-rt-full-settings]'),fullscreenButton:query('[data-rt-fullscreen]'),collapseButton:query('[data-rt-collapse]'),
   dualButton:query('[data-rt-dual]'),reload:query('[data-rt-auto-reload]')
  };
  const message=t=>{ui.message.textContent=t};
@@ -98,7 +108,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   const maxH=Math.max(160,ui.scroll.clientHeight-62);
   const rawWidth=dual?w+16+other.width+16+18:w+16;
   const rawHeight=dual?Math.max(h+42,other.height+42):h+42;
-  const scale=scaleMode==='fit'?clamp(Math.min(1,maxW/rawWidth,maxH/rawHeight),.02,1):Number(scaleMode);
+  const scale=scaleMode==='fit'?clamp(Math.min(1,maxW/rawWidth,maxH/rawHeight),.02,1):scaleMode==='custom'?manualScale:Number(scaleMode);
   ui.stageB.hidden=!dual;
   ui.stages.style.gap=dual?18*scale+'px':'0px';
   dimensions(ui.boxA,ui.viewportA,ui.frame,w,h,scale,ui.stageA,ui.titleA);
@@ -107,6 +117,10 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   ui.stages.style.height=Math.ceil(rawHeight*scale)+29+'px';
   ui.device.value=state.preset;ui.scale.value=scaleMode;
   ui.desktopPicker.hidden=state.preset!=='desktop';ui.desktop.value=desktopChoice;
+  const percent=Math.round(scale*100);
+  if(document.activeElement!==ui.zoomValue)ui.zoomValue.value=percent;
+  ui.zoomSlider.value=clamp(percent,5,300);
+  ui.zoomSlider.setAttribute('aria-valuetext',percent+' %'+(scaleMode==='fit'?' (Ajuster)':''));
   root.querySelectorAll('input[name="rt-orientation"]').forEach(r=>{r.checked=r.value===state.orientation});
   if(document.activeElement!==ui.width)ui.width.value=w;
   if(document.activeElement!==ui.height)ui.height.value=h;
@@ -206,11 +220,13 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   ui.panel.dataset.collapsed=open?'false':'true';
   ui.workspace.dataset.panelOpen=String(open);
   ui.settingsButton.setAttribute('aria-expanded',String(open));
+  ui.fullSettings.setAttribute('aria-expanded',String(open));
   ui.collapseButton.setAttribute('aria-expanded',String(open));
   ui.collapseButton.textContent=open?'Réduire':'Déployer';
   update();
  };
  ui.settingsButton.addEventListener('click',()=>setPanelOpen(ui.panel.dataset.collapsed==='true'));
+ ui.fullSettings.addEventListener('click',()=>setPanelOpen(ui.panel.dataset.collapsed==='true'));
  ui.collapseButton.addEventListener('click',()=>setPanelOpen(ui.panel.dataset.collapsed==='true'));
  let drag=null;
  ui.panelHead.addEventListener('pointerdown',event=>{
@@ -232,7 +248,47 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  root.querySelectorAll('input[name="rt-orientation"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked)setOrientation(r.value)}));
  for(const input of [ui.width,ui.height])input.addEventListener('change',()=>setDimensions(ui.width.value,ui.height.value));
  query('[data-rt-rotate]').addEventListener('click',()=>setOrientation(state.orientation==='portrait'?'landscape':'portrait'));
+ const setZoomPercent=value=>{
+  const percent=Number(value);
+  if(!Number.isFinite(percent)||percent<5||percent>300){message('Zoom de 5 à 300 % attendu.');return false}
+  manualScale=Math.round(percent)/100;
+  scaleMode='custom';update();return true;
+ };
  ui.scale.addEventListener('change',()=>{scaleMode=ui.scale.value;update()});
+ ui.zoomSlider.addEventListener('input',()=>setZoomPercent(ui.zoomSlider.value));
+ ui.zoomValue.addEventListener('change',()=>setZoomPercent(ui.zoomValue.value));
+ ui.zoomValue.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();ui.zoomValue.blur()}});
+ const changeZoom=delta=>{
+  const current=Number(ui.zoomValue.value)||Math.round(manualScale*100);
+  setZoomPercent(clamp(current+delta,5,300));
+ };
+ ui.zoomMinus.addEventListener('click',()=>changeZoom(-5));
+ ui.zoomPlus.addEventListener('click',()=>changeZoom(5));
+ ui.zoomSave.addEventListener('click',()=>{
+  try{
+   localStorage.setItem(zoomStorageKey,JSON.stringify({mode:scaleMode,percent:Math.round(manualScale*100)}));
+   message('Zoom préféré enregistré dans ce navigateur.');
+  }catch{message('Impossible d’enregistrer le zoom.')}
+ });
+ const isFullscreen=()=>document.fullscreenElement===ui.monitor;
+ const synchronizeFullscreen=()=>{
+  const active=isFullscreen();
+  ui.fullscreenButton.textContent=active?'⛶ Quitter plein écran':'⛶ Plein écran';
+  ui.fullscreenButton.setAttribute('aria-pressed',String(active));
+  ui.monitor.dataset.fullscreen=String(active);
+  update();
+ };
+ const toggleFullscreen=async()=>{
+  try{
+   if(isFullscreen())await document.exitFullscreen();
+   else if(ui.monitor.requestFullscreen)await ui.monitor.requestFullscreen();
+   else{message('Le navigateur ne prend pas en charge le mode plein écran.');return false}
+   synchronizeFullscreen();
+   return true;
+  }catch{message('Plein écran non autorisé par le navigateur.');return false}
+ };
+ ui.fullscreenButton.addEventListener('click',toggleFullscreen);
+ document.addEventListener('fullscreenchange',synchronizeFullscreen);
  ui.dualButton.addEventListener('click',()=>setDual(!dual));
  ui.reload.addEventListener('change',()=>{reloadOnChange=ui.reload.checked;message(reloadOnChange?'Rechargement automatique activé.':'Rechargement désactivé : le viewport se redimensionne sans navigation.')});
  query('[data-rt-load]').addEventListener('click',()=>load());
@@ -250,9 +306,9 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  else window.addEventListener('resize',update,{passive:true});
  update();load(src);
  const api={
-  getState:()=>({...state,desktopResolution:desktopChoice,scale:scaleMode,dual,reloadOnChange,url:currentUrl?.href||null}),
-  setPreset,setDesktopResolution,setDimensions,setOrientation,setDual,load,refresh,getFrame:()=>ui.frame,getFrames:()=>dual?[ui.frame,ui.frameB]:[ui.frame],
-  destroy:()=>{observer?.disconnect();root.innerHTML='';delete root.__responsiveSimulator}
+  getState:()=>({...state,desktopResolution:desktopChoice,scale:scaleMode,manualZoomPercent:Math.round(manualScale*100),fullscreen:isFullscreen(),dual,reloadOnChange,url:currentUrl?.href||null}),
+  setPreset,setDesktopResolution,setDimensions,setOrientation,setDual,setZoomPercent,toggleFullscreen,load,refresh,getFrame:()=>ui.frame,getFrames:()=>dual?[ui.frame,ui.frameB]:[ui.frame],
+  destroy:()=>{observer?.disconnect();document.removeEventListener('fullscreenchange',synchronizeFullscreen);if(isFullscreen())document.exitFullscreen().catch(()=>{});root.innerHTML='';delete root.__responsiveSimulator}
  };
  root.__responsiveSimulator=api;return api;
 }
