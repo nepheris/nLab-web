@@ -4,12 +4,13 @@
  * Cross-origin pages may refuse framing (X-Frame-Options / CSP frame-ancestors).
  */
 export const SCREEN_PRESETS=Object.freeze({
- desktop:{label:'Ordinateur',portrait:[900,1440],landscape:[1440,900]},
+ desktop:{label:'Ordinateur',portrait:[800,1280],landscape:[1280,800]},
  tablet:{label:'Tablette',portrait:[768,1024],landscape:[1024,768]},
  phone:{label:'Téléphone',portrait:[393,852],landscape:[852,393]},
  small:{label:'Petit téléphone',portrait:[360,800],landscape:[800,360]}
 });
-export const MIN_VIEWPORT=240, MAX_VIEWPORT=2560;
+export const DESKTOP_RESOLUTIONS=Object.freeze([{"id":"640x480","label":"VGA · 640 × 480 · 4:3","group":"Classiques · 4:3 / 5:4"},{"id":"800x600","label":"SVGA · 800 × 600 · 4:3","group":"Classiques · 4:3 / 5:4"},{"id":"1024x768","label":"XGA · 1024 × 768 · 4:3","group":"Classiques · 4:3 / 5:4"},{"id":"1152x864","label":"1152 × 864 · 4:3","group":"Classiques · 4:3 / 5:4"},{"id":"1280x960","label":"1280 × 960 · 4:3","group":"Classiques · 4:3 / 5:4"},{"id":"1280x1024","label":"SXGA · 1280 × 1024 · 5:4","group":"Classiques · 4:3 / 5:4"},{"id":"1600x1200","label":"UXGA · 1600 × 1200 · 4:3","group":"Classiques · 4:3 / 5:4"},{"id":"1280x720","label":"HD · 1280 × 720","group":"HD · 16:9"},{"id":"1366x768","label":"1366 × 768","group":"HD · 16:9"},{"id":"1600x900","label":"HD+ · 1600 × 900","group":"HD · 16:9"},{"id":"1920x1080","label":"Full HD · 1920 × 1080","group":"HD · 16:9"},{"id":"2560x1440","label":"QHD · 2560 × 1440","group":"HD · 16:9"},{"id":"3840x2160","label":"4K UHD · 3840 × 2160","group":"HD · 16:9"},{"id":"1280x800","label":"WXGA · 1280 × 800","group":"Widescreen · 16:10"},{"id":"1440x900","label":"WXGA+ · 1440 × 900","group":"Widescreen · 16:10"},{"id":"1680x1050","label":"WSXGA+ · 1680 × 1050","group":"Widescreen · 16:10"},{"id":"1920x1200","label":"WUXGA · 1920 × 1200","group":"Widescreen · 16:10"},{"id":"2560x1600","label":"WQXGA · 2560 × 1600","group":"Widescreen · 16:10"},{"id":"2560x1080","label":"2560 × 1080 · ultra-wide","group":"Ultra-wide · 21:9 et plus"},{"id":"3440x1440","label":"3440 × 1440 · ultra-wide","group":"Ultra-wide · 21:9 et plus"},{"id":"3840x1600","label":"3840 × 1600 · ultra-wide","group":"Ultra-wide · 21:9 et plus"}].map(entry=>Object.freeze(entry)));
+export const MIN_VIEWPORT=240, MAX_VIEWPORT=4096;
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
 const integer=value=>{if(value===null||String(value).trim()==='')return null;const n=Number(value);return Number.isFinite(n)&&Number.isInteger(n)&&n>=MIN_VIEWPORT&&n<=MAX_VIEWPORT?n:null};
 export function resolvePreviewUrl(value,base){
@@ -30,7 +31,7 @@ export function presetDimensions(preset,orientation='portrait',custom=[420,880])
  }
  return {width:pair[0],height:pair[1]};
 }
-const safePrefs=s=>{try{const a=JSON.parse(s);if(!a||typeof a!=='object'||!['desktop','tablet','phone','small','custom'].includes(a.preset)||!['portrait','landscape'].includes(a.orientation))return null;const w=integer(a.width),h=integer(a.height);return w&&h?{preset:a.preset,orientation:a.orientation,width:w,height:h}:null}catch{return null}};
+const safePrefs=s=>{try{const a=JSON.parse(s);if(!a||typeof a!=='object'||!['desktop','tablet','phone','small','custom'].includes(a.preset)||!['portrait','landscape'].includes(a.orientation))return null;const w=integer(a.width),h=integer(a.height);return w&&h?{preset:a.preset,orientation:a.orientation,width:w,height:h,desktopResolution:DESKTOP_RESOLUTIONS.some(x=>x.id===a.desktopResolution)?a.desktopResolution:'1280x800'}:null}catch{return null}};
 
 export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nlab:responsive-test-studio:default:v1'}={}){
  const root=typeof host==='string'?document.querySelector(host):host;
@@ -38,12 +39,13 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  if(root.__responsiveSimulator)return root.__responsiveSimulator;
  let initial=null;
  try{initial=safePrefs(localStorage.getItem(storageKey))}catch{}
- let state=initial||{preset:'phone',orientation:'portrait',width:393,height:852};
+ let state=initial||{preset:'desktop',orientation:'landscape',width:1280,height:800};
+ let desktopChoice=initial?.desktopResolution||'1280x800';
  let scaleMode='fit',dual=false,reloadOnChange=true,currentUrl=null;
- root.innerHTML="<div class=\"rt-workspace\" data-rt-workspace>\n <div class=\"rt-address\" role=\"group\" aria-label=\"Adresse du site à prévisualiser\">\n  <label for=\"rt-target-url\">URL à tester</label>\n  <input id=\"rt-target-url\" data-rt-url type=\"url\" spellcheck=\"false\" placeholder=\"https://exemple.fr ou ../studios/\" autocomplete=\"off\">\n  <button type=\"button\" data-rt-load>Afficher</button>\n  <button type=\"button\" data-rt-reload title=\"Actualiser les prévisualisations\">↻ Actualiser</button>\n  <a data-rt-open target=\"_blank\" rel=\"noopener noreferrer\" title=\"Ouvrir l'URL dans un autre onglet\">↗ Onglet</a>\n  <button type=\"button\" data-rt-dual aria-pressed=\"false\">◫ Vue double</button>\n  <button type=\"button\" data-rt-show-settings aria-controls=\"rt-settings\" aria-expanded=\"true\">⚙ Réglages</button>\n </div>\n <div role=\"status\" aria-live=\"polite\" class=\"rt-message\" data-rt-message></div>\n <div class=\"rt-monitor\" data-rt-monitor>\n  <div class=\"rt-metrics\" data-rt-metrics></div>\n  <div class=\"rt-diagnostics\" data-rt-diagnostics aria-live=\"polite\"></div>\n  <div class=\"rt-scroll\" data-rt-scroll>\n   <div class=\"rt-stages\" data-rt-stages>\n    <section class=\"rt-stage\" data-rt-stage aria-label=\"Écran principal\">\n     <div class=\"rt-screen-title\" data-rt-screen-title>Portrait</div>\n     <div class=\"rt-device-frame\" data-rt-frame-box>\n      <div class=\"rt-chrome\"><span aria-hidden=\"true\">●</span><span data-rt-address-label>Prévisualisation</span><span>⋯</span></div>\n      <div class=\"rt-viewport\" data-rt-viewport><iframe data-rt-frame title=\"Site web testé — écran principal\" loading=\"eager\" referrerpolicy=\"no-referrer\"></iframe></div>\n     </div>\n    </section>\n    <section class=\"rt-stage\" data-rt-stage-secondary aria-label=\"Deuxième orientation\" hidden>\n     <div class=\"rt-screen-title\" data-rt-screen-title-secondary>Paysage</div>\n     <div class=\"rt-device-frame\" data-rt-frame-box-secondary>\n      <div class=\"rt-chrome\"><span aria-hidden=\"true\">●</span><span data-rt-address-label-secondary>Prévisualisation</span><span>⋯</span></div>\n      <div class=\"rt-viewport\" data-rt-viewport-secondary><iframe data-rt-frame-secondary title=\"Site web testé — orientation opposée\" loading=\"eager\" referrerpolicy=\"no-referrer\"></iframe></div>\n     </div>\n    </section>\n   </div>\n  </div>\n  <aside class=\"rt-top\" id=\"rt-settings\" data-rt-panel data-collapsed=\"false\" aria-label=\"Réglages de l'écran simulé\">\n   <div class=\"rt-panel-head\" data-rt-panel-head>\n    <strong>⚙ Réglages d'écran</strong>\n    <button type=\"button\" data-rt-collapse aria-controls=\"rt-screen-fields\" aria-expanded=\"true\">Réduire</button>\n   </div>\n   <div class=\"rt-panel-fields\" id=\"rt-screen-fields\">\n    <div class=\"rt-preset\">\n     <label>Appareil <select data-rt-device><option value=\"desktop\">Ordinateur</option><option value=\"tablet\">Tablette</option><option value=\"phone\">Téléphone</option><option value=\"small\">Petit téléphone</option><option value=\"custom\">Personnalisé</option></select></label>\n     <fieldset class=\"rt-orientation\"><legend>Orientation principale</legend><label><input type=\"radio\" name=\"rt-orientation\" value=\"portrait\" checked> Portrait</label><label><input type=\"radio\" name=\"rt-orientation\" value=\"landscape\"> Paysage</label></fieldset>\n    </div>\n    <div class=\"rt-preset\">\n     <label>Largeur <input data-rt-width type=\"number\" inputmode=\"numeric\" min=\"240\" max=\"2560\" step=\"1\">px</label>\n     <label>Hauteur <input data-rt-height type=\"number\" inputmode=\"numeric\" min=\"240\" max=\"2560\" step=\"1\">px</label>\n    </div>\n    <div class=\"rt-preset\">\n     <label>Échelle <select data-rt-scale><option value=\"fit\">Ajuster</option><option value=\"1\">100 %</option><option value=\"0.75\">75 %</option><option value=\"0.5\">50 %</option><option value=\"0.25\">25 %</option></select></label>\n     <button type=\"button\" data-rt-rotate title=\"Échanger portrait et paysage\">↻ Pivoter</button>\n     <button type=\"button\" data-rt-default title=\"Mémoriser ce format comme favori\">★ Par défaut</button>\n    </div>\n    <label class=\"rt-reload-label\"><input data-rt-auto-reload type=\"checkbox\" checked> Recharger le site au changement de format</label>\n   </div>\n  </aside>\n </div>\n <p class=\"rt-note\">Chaque iframe possède son propre viewport CSS : les media queries responsive et les événements de redimensionnement s'y appliquent. Le rechargement optionnel aide les sites qui calculent leur affichage au démarrage. Le zoom change seulement l'échelle du cadre, pas les API d'un vrai appareil Android (ni User-Agent, tactile ou permissions). Certains sites refusent les iframes (CSP / X-Frame-Options). En vue double, les deux pages sont indépendantes après chargement.</p>\n</div>";
+ root.innerHTML="<div class=\"rt-workspace\" data-rt-workspace>\n <div class=\"rt-address\" role=\"group\" aria-label=\"Adresse du site à prévisualiser\">\n  <label for=\"rt-target-url\">URL à tester</label>\n  <input id=\"rt-target-url\" data-rt-url type=\"url\" spellcheck=\"false\" placeholder=\"https://exemple.fr ou ../studios/\" autocomplete=\"off\">\n  <button type=\"button\" data-rt-load>Afficher</button>\n  <button type=\"button\" data-rt-reload title=\"Actualiser les prévisualisations\">↻ Actualiser</button>\n  <a data-rt-open target=\"_blank\" rel=\"noopener noreferrer\" title=\"Ouvrir l'URL dans un autre onglet\">↗ Onglet</a>\n  <button type=\"button\" data-rt-dual aria-pressed=\"false\">◫ Vue double</button>\n  <button type=\"button\" data-rt-show-settings aria-controls=\"rt-settings\" aria-expanded=\"true\">⚙ Réglages</button>\n </div>\n <div role=\"status\" aria-live=\"polite\" class=\"rt-message\" data-rt-message></div>\n <div class=\"rt-monitor\" data-rt-monitor>\n  <div class=\"rt-metrics\" data-rt-metrics></div>\n  <div class=\"rt-diagnostics\" data-rt-diagnostics aria-live=\"polite\"></div>\n  <div class=\"rt-scroll\" data-rt-scroll>\n   <div class=\"rt-stages\" data-rt-stages>\n    <section class=\"rt-stage\" data-rt-stage aria-label=\"Écran principal\">\n     <div class=\"rt-screen-title\" data-rt-screen-title>Portrait</div>\n     <div class=\"rt-device-frame\" data-rt-frame-box>\n      <div class=\"rt-chrome\"><span aria-hidden=\"true\">●</span><span data-rt-address-label>Prévisualisation</span><span>⋯</span></div>\n      <div class=\"rt-viewport\" data-rt-viewport><iframe data-rt-frame title=\"Site web testé — écran principal\" loading=\"eager\" referrerpolicy=\"no-referrer\"></iframe></div>\n     </div>\n    </section>\n    <section class=\"rt-stage\" data-rt-stage-secondary aria-label=\"Deuxième orientation\" hidden>\n     <div class=\"rt-screen-title\" data-rt-screen-title-secondary>Paysage</div>\n     <div class=\"rt-device-frame\" data-rt-frame-box-secondary>\n      <div class=\"rt-chrome\"><span aria-hidden=\"true\">●</span><span data-rt-address-label-secondary>Prévisualisation</span><span>⋯</span></div>\n      <div class=\"rt-viewport\" data-rt-viewport-secondary><iframe data-rt-frame-secondary title=\"Site web testé — orientation opposée\" loading=\"eager\" referrerpolicy=\"no-referrer\"></iframe></div>\n     </div>\n    </section>\n   </div>\n  </div>\n  <aside class=\"rt-top\" id=\"rt-settings\" data-rt-panel data-collapsed=\"false\" aria-label=\"Réglages de l'écran simulé\">\n   <div class=\"rt-panel-head\" data-rt-panel-head>\n    <strong>⚙ Réglages d'écran</strong>\n    <button type=\"button\" data-rt-collapse aria-controls=\"rt-screen-fields\" aria-expanded=\"true\">Réduire</button>\n   </div>\n   <div class=\"rt-panel-fields\" id=\"rt-screen-fields\">\n    <div class=\"rt-preset\">\n     <label>Appareil <select data-rt-device><option value=\"desktop\">Ordinateur</option><option value=\"tablet\">Tablette</option><option value=\"phone\">Téléphone</option><option value=\"small\">Petit téléphone</option><option value=\"custom\">Personnalisé</option></select></label>\n     <fieldset class=\"rt-orientation\"><legend>Orientation principale</legend><label><input type=\"radio\" name=\"rt-orientation\" value=\"portrait\" checked> Portrait</label><label><input type=\"radio\" name=\"rt-orientation\" value=\"landscape\"> Paysage</label></fieldset>\n    </div>\n    <div class=\"rt-preset rt-desktop-preset\" data-rt-desktop-presets>\n     <label>Résolution écran <select data-rt-desktop-resolution aria-label=\"Résolution d’écran d’ordinateur standard\"></select></label>\n    </div>\n    <div class=\"rt-preset\">\n     <label>Largeur <input data-rt-width type=\"number\" inputmode=\"numeric\" min=\"240\" max=\"4096\" step=\"1\">px</label>\n     <label>Hauteur <input data-rt-height type=\"number\" inputmode=\"numeric\" min=\"240\" max=\"4096\" step=\"1\">px</label>\n    </div>\n    <div class=\"rt-preset\">\n     <label>Échelle <select data-rt-scale><option value=\"fit\">Ajuster</option><option value=\"1\">100 %</option><option value=\"0.75\">75 %</option><option value=\"0.5\">50 %</option><option value=\"0.25\">25 %</option></select></label>\n     <button type=\"button\" data-rt-rotate title=\"Échanger portrait et paysage\">↻ Pivoter</button>\n     <button type=\"button\" data-rt-default title=\"Mémoriser ce format comme favori\">★ Par défaut</button>\n    </div>\n    <label class=\"rt-reload-label\"><input data-rt-auto-reload type=\"checkbox\" checked> Recharger le site au changement de format</label>\n   </div>\n  </aside>\n </div>\n <p class=\"rt-note\">Chaque iframe possède son propre viewport CSS : les media queries responsive et les événements de redimensionnement s'y appliquent. Le rechargement optionnel aide les sites qui calculent leur affichage au démarrage. Le zoom change seulement l'échelle du cadre, pas les API d'un vrai appareil Android (ni User-Agent, tactile ou permissions). Certains sites refusent les iframes (CSP / X-Frame-Options). En vue double, les deux pages sont indépendantes après chargement.</p>\n</div>";
  const query=s=>root.querySelector(s);
  const ui={
-  device:query('[data-rt-device]'),width:query('[data-rt-width]'),height:query('[data-rt-height]'),scale:query('[data-rt-scale]'),
+  device:query('[data-rt-device]'),desktop:query('[data-rt-desktop-resolution]'),desktopPicker:query('[data-rt-desktop-presets]'),width:query('[data-rt-width]'),height:query('[data-rt-height]'),scale:query('[data-rt-scale]'),
   message:query('[data-rt-message]'),url:query('[data-rt-url]'),open:query('[data-rt-open]'),
   frame:query('[data-rt-frame]'),frameB:query('[data-rt-frame-secondary]'),
   boxA:query('[data-rt-frame-box]'),boxB:query('[data-rt-frame-box-secondary]'),
@@ -56,6 +58,21 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   dualButton:query('[data-rt-dual]'),reload:query('[data-rt-auto-reload]')
  };
  const message=t=>{ui.message.textContent=t};
+ const groupNodes=new Map();
+ for(const entry of DESKTOP_RESOLUTIONS){
+  if(!groupNodes.has(entry.group)){
+   const group=document.createElement('optgroup');group.label=entry.group;
+   groupNodes.set(entry.group,group);ui.desktop.append(group);
+  }
+  const option=document.createElement('option');
+  option.value=entry.id;option.textContent=entry.label;groupNodes.get(entry.group).append(option);
+ }
+ const desktopDimensions=(orientation=state.orientation)=>{
+  const selected=DESKTOP_RESOLUTIONS.find(x=>x.id===desktopChoice)||DESKTOP_RESOLUTIONS.find(x=>x.id==='1280x800');
+  const [width,height]=selected.id.split('x').map(Number);
+  return orientation==='portrait'?{width:Math.min(width,height),height:Math.max(width,height)}:{width:Math.max(width,height),height:Math.min(width,height)};
+ };
+
  const opposed=()=>({width:state.height,height:state.width});
  const orientationText=(w,h)=>w>h?'Paysage':h>w?'Portrait':'Carré';
  const dimensions=(box,viewport,iframe,w,h,scale,stage,title)=>{
@@ -81,7 +98,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   const maxH=Math.max(160,ui.scroll.clientHeight-62);
   const rawWidth=dual?w+16+other.width+16+18:w+16;
   const rawHeight=dual?Math.max(h+42,other.height+42):h+42;
-  const scale=scaleMode==='fit'?clamp(Math.min(1,maxW/rawWidth,maxH/rawHeight),.10,1):Number(scaleMode);
+  const scale=scaleMode==='fit'?clamp(Math.min(1,maxW/rawWidth,maxH/rawHeight),.02,1):Number(scaleMode);
   ui.stageB.hidden=!dual;
   ui.stages.style.gap=dual?18*scale+'px':'0px';
   dimensions(ui.boxA,ui.viewportA,ui.frame,w,h,scale,ui.stageA,ui.titleA);
@@ -89,6 +106,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   ui.stages.style.width=Math.ceil(rawWidth*scale)+'px';
   ui.stages.style.height=Math.ceil(rawHeight*scale)+29+'px';
   ui.device.value=state.preset;ui.scale.value=scaleMode;
+  ui.desktopPicker.hidden=state.preset!=='desktop';ui.desktop.value=desktopChoice;
   root.querySelectorAll('input[name="rt-orientation"]').forEach(r=>{r.checked=r.value===state.orientation});
   if(document.activeElement!==ui.width)ui.width.value=w;
   if(document.activeElement!==ui.height)ui.height.value=h;
@@ -137,8 +155,14 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  };
  const setPreset=(id,orientation=state.orientation)=>{
   if(!SCREEN_PRESETS[id]&&id!=='custom')return false;
-  const pair=presetDimensions(id,orientation,id==='custom'?[state.width,state.height]:undefined);
+  const pair=id==='desktop'?desktopDimensions(orientation):presetDimensions(id,orientation,id==='custom'?[state.width,state.height]:undefined);
   state={preset:id,orientation,...pair};afterDimensionChange();return true;
+ };
+ const setDesktopResolution=id=>{
+  if(!DESKTOP_RESOLUTIONS.some(x=>x.id===id))return false;
+  desktopChoice=id;
+  state={preset:'desktop',orientation:state.orientation,...desktopDimensions(state.orientation)};
+  afterDimensionChange();return true;
  };
  const setDimensions=(w,h)=>{
   const width=integer(w),height=integer(h);
@@ -151,7 +175,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   if(state.preset==='custom'){
    const [w,h]=[state.width,state.height];
    state={...state,orientation,width:orientation==='portrait'?Math.min(w,h):Math.max(w,h),height:orientation==='portrait'?Math.max(w,h):Math.min(w,h)};
-  }else state={...state,orientation,...presetDimensions(state.preset,orientation)};
+  }else state={...state,orientation,...(state.preset==='desktop'?desktopDimensions(orientation):presetDimensions(state.preset,orientation))};
   afterDimensionChange();return true;
  };
  const setDual=value=>{
@@ -204,6 +228,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  for(const type of ['pointerup','pointercancel','lostpointercapture'])ui.panelHead.addEventListener(type,()=>{drag=null});
  setPanelOpen(!matchMedia('(max-width:760px)').matches);
  ui.device.addEventListener('change',()=>setPreset(ui.device.value));
+ ui.desktop.addEventListener('change',()=>setDesktopResolution(ui.desktop.value));
  root.querySelectorAll('input[name="rt-orientation"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked)setOrientation(r.value)}));
  for(const input of [ui.width,ui.height])input.addEventListener('change',()=>setDimensions(ui.width.value,ui.height.value));
  query('[data-rt-rotate]').addEventListener('click',()=>setOrientation(state.orientation==='portrait'?'landscape':'portrait'));
@@ -214,7 +239,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  ui.url.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();load()}});
  query('[data-rt-reload]').addEventListener('click',refresh);
  query('[data-rt-default]').addEventListener('click',()=>{
-  try{localStorage.setItem(storageKey,JSON.stringify(state));message('Format par défaut enregistré dans ce navigateur.')}
+  try{localStorage.setItem(storageKey,JSON.stringify({...state,desktopResolution:desktopChoice}));message('Format par défaut enregistré dans ce navigateur.')}
   catch{message('Le navigateur ne permet pas de mémoriser ce format.')}
  });
  for(const frame of [ui.frame,ui.frameB]){
@@ -225,8 +250,8 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  else window.addEventListener('resize',update,{passive:true});
  update();load(src);
  const api={
-  getState:()=>({...state,scale:scaleMode,dual,reloadOnChange,url:currentUrl?.href||null}),
-  setPreset,setDimensions,setOrientation,setDual,load,refresh,getFrame:()=>ui.frame,getFrames:()=>dual?[ui.frame,ui.frameB]:[ui.frame],
+  getState:()=>({...state,desktopResolution:desktopChoice,scale:scaleMode,dual,reloadOnChange,url:currentUrl?.href||null}),
+  setPreset,setDesktopResolution,setDimensions,setOrientation,setDual,load,refresh,getFrame:()=>ui.frame,getFrames:()=>dual?[ui.frame,ui.frameB]:[ui.frame],
   destroy:()=>{observer?.disconnect();root.innerHTML='';delete root.__responsiveSimulator}
  };
  root.__responsiveSimulator=api;return api;
