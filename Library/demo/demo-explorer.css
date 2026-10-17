@@ -21,7 +21,7 @@
 .demo-file{border:1px solid var(--nlab-line);border-radius:11px;background:var(--nlab-card);overflow:hidden;display:flex;flex-direction:column;min-height:220px}
 .demo-file-preview{height:140px;background:var(--nlab-soft);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .demo-file-preview img{width:100%;height:100%;object-fit:contain}
-.demo-file-icon{width:42px;height:42px;object-fit:contain}
+.demo-file-preview img.demo-file-icon{width:42px;height:42px;object-fit:contain}
 .demo-file-content{padding:11px;flex:1;display:flex;flex-direction:column;gap:6px}
 .demo-file-content strong{font-size:12px;overflow-wrap:anywhere}
 .demo-file-content small{font-size:11px;color:var(--nlab-muted)}
