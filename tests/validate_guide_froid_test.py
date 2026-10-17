@@ -103,10 +103,10 @@ css_pages=[
 ]
 for page in css_pages:
     markup=read(BASE/page)
-    sheets=re.findall(r'<link\\b[^>]*rel=["\\x27]stylesheet["\\x27][^>]*>',markup,re.I)
+    sheets=re.findall(r'<link\b[^>]*rel=["\x27]stylesheet["\x27][^>]*>',markup,re.I)
     check(len(sheets)==1 and 'guide-froid-unified.css' in sheets[0],
           'page must load exactly one canonical CSS: '+page)
-    check(not re.search(r'<style\\b',markup,re.I),
+    check(not re.search(r'<style\b',markup,re.I),
           'inline style block not migrated: '+page)
     check('guide-test-nav.js' in markup, 'shared navigation missing: '+page)
 css=read(BASE/'guide-froid-unified.css')
