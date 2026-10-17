@@ -4,84 +4,84 @@
   "images": {
     "TC-04": {
       "path": "TC-04.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 178632
     },
     "TC-05": {
       "path": "TC-05.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 169002
     },
     "TC-06": {
       "path": "TC-06.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 149810
     },
     "TC-07": {
       "path": "TC-07.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 165792
     },
     "TC-08": {
       "path": "TC-08.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 193480
     },
     "TC-09": {
       "path": "TC-09.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 210468
     },
     "TC-10": {
       "path": "TC-10.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 206898
     },
     "TC-11": {
       "path": "TC-11.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 242472
     },
     "TC-12": {
       "path": "TC-12.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 199510
     },
     "FN-01": {
       "path": "FN-01.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 171220
     },
     "FN-02": {
       "path": "FN-02.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 235516
     },
     "FN-03": {
       "path": "FN-03.webp",
-      "status": "pending-binary-upload",
+      "status": "published",
       "validated": true,
       "format": "image/webp",
       "webp_bytes": 197348

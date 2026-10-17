@@ -1,0 +1,37 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "document-studio",
+  "label": "Documents / Office",
+  "source": "Démonstrations publiques nLab et références Drive validées par type",
+  "files": [
+    {
+      "name": "demo-word-1page.docx",
+      "path": "../files/demo-input/Documents/demo-word-1page.docx",
+      "storage": "local",
+      "kind": "document",
+      "category": "office"
+    },
+    {
+      "name": "demo-word-1page.odt",
+      "path": "../files/demo-input/Documents/demo-word-1page.odt",
+      "storage": "local",
+      "kind": "document",
+      "category": "office"
+    },
+    {
+      "name": "demo-word-3pages-layout.doc",
+      "path": "../files/demo-input/Documents/demo-word-3pages-layout.doc",
+      "storage": "local",
+      "kind": "document",
+      "category": "office"
+    },
+    {
+      "name": "document-demo.docx",
+      "storage": "reference-only",
+      "kind": "document",
+      "category": "office",
+      "source": "Drive DemoFileSet/demo-input/Office",
+      "review": "publication non vérifiée"
+    }
+  ]
+}

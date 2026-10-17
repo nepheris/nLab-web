@@ -1,0 +1,15 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "file-studio",
+  "label": "Archives / ZIP",
+  "source": "Dossier Drive DemoFileSet/demo-input/Zip ; contrôle de publication nécessaire",
+  "files": [
+    {
+      "name": "archive-imbriquee-demo.zip",
+      "storage": "reference-only",
+      "kind": "zip",
+      "category": "archive",
+      "review": "non publié : contrôle des éléments internes requis"
+    }
+  ]
+}

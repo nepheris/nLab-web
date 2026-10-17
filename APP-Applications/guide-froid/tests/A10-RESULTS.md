@@ -1,0 +1,30 @@
+# Guide Froid V2 — A10 : essai de conservation ZIP
+
+Date : 2026-10-11. Branche : `main`.
+
+## Méthode
+Extraction depuis `dossiers/app.js` des fonctions `zip`, `unzip` et `normalizeImportedDevice` ; exécution avec environnement JavaScript simulant TextEncoder/TextDecoder/Blob.
+
+## Scénario et résultat
+1. Appareil `POS-ARM-001` avec site, froid positif, configuration, champ inconnu `customLegacy`, ancienne visite et photo.
+2. ZIP contenant `appareil.json`, `manifest.json`, photo binaire et notice.
+3. Décompression du ZIP puis normalisation de la fiche.
+4. Ajout d'une nouvelle visite et d'un nouveau document texte.
+5. Réexport et réimport.
+
+**PASS :** ID inchangé, champ inconnu `customLegacy.x=7` préservé, 2 visites présentes, ancienne photo et nouvelle pièce jointe préservées, notice présente.
+
+Entrées finales : `appareil.json`, `manifest.json`, `documents/visites/VIS-OLD/photo.png`, `documents/notice.pdf`, `documents/visites/VIS-NEW/document.txt`.
+
+## Limites
+Test technique ciblé et reproductible sur les fonctions du moteur ; non équivalent à une recette du DOM réel, des sélecteurs, de l'export téléchargé ni à des essais navigateur visuels. Les scénarios DEFLATE navigateur, ZIP historique réel, photos UI et parcours démo restent à jouer.
+
+## Décision
+A10 = PARTIAL. A11 = NO-GO tant que la recette de navigateur et les scénarios de non-régression ne sont pas achevés. Ne pas déployer `gh-pages`.
+
+## Recette utilisateur de l'atelier V2 — 11/10/2026
+Résultat communiqué : **PARTIAL**, sans précision sur la fonctionnalité bloquante. Ce retour n'autorise ni PASS ni diagnostic d'une panne spécifique. Deux défauts de gestion d'état constatés par lecture du code ont été corrigés dans l'atelier de test et dans main : marquage du dossier comme modifié après ajout d'une photo ; remise à zéro des pièces jointes de visite en attente lors d'un changement de dossier. **A10 reste PARTIAL** jusqu'au cycle interface export/réimport documenté.
+
+## Recette finale utilisateur — 11 octobre 2026
+L'utilisateur confirme avoir testé **toutes les fonctionnalités de l'atelier** sur **Firefox et Google Chrome** et les avoir validées. Confirmation additionnelle explicite : **réimport du ZIP fonctionnel**. Les contrôles précédemment rapportés « export ZIP Firefox = PASS » et « glisser-déposer Firefox = PASS » sont conservés.
+**Décision A10 : PASS — parcours fonctionnel validé par l'utilisateur dans les deux navigateurs** (atelier isolé A11). Ces résultats de recette prévalent sur l'ancien PARTIAL cité plus haut ; ne pas considérer les anciennes mentions PARTIAL comme l'état courant. Les fichiers de test et traces détaillées ne sont pas joints à cette confirmation.

@@ -1,0 +1,22 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "pdf-studio",
+  "label": "Sécurité / rédaction",
+  "source": "Jeux de démonstration synthétiques déjà publiés dans nLab-web",
+  "files": [
+    {
+      "name": "demo-redaction-secrets.pdf",
+      "path": "../files/demo-input/Security/demo-redaction-secrets.pdf",
+      "storage": "local",
+      "kind": "pdf",
+      "category": "security"
+    },
+    {
+      "name": "demo-redaction-secrets.txt",
+      "path": "../files/demo-input/Security/demo-redaction-secrets.txt",
+      "storage": "local",
+      "kind": "txt",
+      "category": "security"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+/* nLab Demo Explorer — layer on top of the canonical site-shell.css.
+   Scoped to the demo gallery; header, theme and global typography remain shared. */
+.demo-page .demo-explorer{margin-top:20px;padding:20px}
+.demo-explorer h2{margin:0 0 7px}
+.demo-explorer .demo-lead{margin:0 0 16px;color:var(--nlab-muted);line-height:1.5}
+.demo-explorer-layout{display:grid;grid-template-columns:minmax(210px,265px) minmax(0,1fr);gap:16px;align-items:start}
+.demo-folders{background:var(--nlab-soft);border:1px solid var(--nlab-line);border-radius:12px;padding:10px;position:sticky;top:86px;max-height:min(690px,calc(100vh - 100px));overflow:auto}
+.demo-folders h3{font-size:13px;margin:6px 8px 12px}
+.demo-folder-button,.demo-folder-link{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:40px;text-align:left;border:1px solid transparent;border-radius:8px;padding:9px;background:transparent;color:var(--nlab-ink);font:inherit;font-size:12px;text-decoration:none;cursor:pointer}
+.demo-folder-button:hover,.demo-folder-link:hover{background:var(--nlab-card);border-color:var(--nlab-line)}
+.demo-folder-button[aria-current="true"]{background:var(--nlab-card);border-color:var(--nlab-brand);font-weight:800;color:var(--nlab-brand)}
+.demo-folder-button small{color:var(--nlab-muted);font-variant-numeric:tabular-nums}
+.demo-folder-divider{border-top:1px solid var(--nlab-line);margin:9px 0}
+.demo-explorer-main{min-width:0}
+.demo-browser-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.demo-browser-toolbar label{font-size:12px;color:var(--nlab-muted)}
+.demo-browser-toolbar input[type="search"]{font:inherit;min-height:40px;flex:1;min-width:180px;padding:9px 12px;border:1px solid var(--nlab-line);border-radius:9px;color:var(--nlab-ink);background:var(--nlab-card)}
+.demo-browser-toolbar select{border:1px solid var(--nlab-line);border-radius:8px;min-height:38px;padding:6px;background:var(--nlab-card);color:var(--nlab-ink)}
+.demo-browser-hint{font-size:12px;color:var(--nlab-muted);padding:0 0 10px}
+.demo-browser-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.demo-file{border:1px solid var(--nlab-line);border-radius:11px;background:var(--nlab-card);overflow:hidden;display:flex;flex-direction:column;min-height:220px}
+.demo-file-preview{height:140px;background:var(--nlab-soft);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.demo-file-preview img{width:100%;height:100%;object-fit:contain}
+.demo-file-preview img.demo-file-icon{width:42px;height:42px;object-fit:contain}
+.demo-file-content{padding:11px;flex:1;display:flex;flex-direction:column;gap:6px}
+.demo-file-content strong{font-size:12px;overflow-wrap:anywhere}
+.demo-file-content small{font-size:11px;color:var(--nlab-muted)}
+.demo-file-content .demo-file-path{font:10px ui-monospace,monospace;overflow-wrap:anywhere;color:var(--nlab-muted)}
+.demo-file-actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:9px}
+.demo-file-actions a{font-size:11px;font-weight:700;padding:7px 9px;border-radius:7px;border:1px solid var(--nlab-line);text-decoration:none}
+.demo-file-actions .demo-test{color:#fff;background:var(--nlab-brand);border-color:var(--nlab-brand)}
+.demo-file[data-published="false"] .demo-file-preview{filter:grayscale(1);opacity:.8}
+.demo-file-status{color:var(--nlab-muted);font-size:11px}
+.demo-page .demo-legacy-index{margin-top:18px}
+.demo-legacy-index>summary{font-weight:800;cursor:pointer;padding:13px;border-radius:8px;border:1px solid var(--nlab-line)}
+.demo-page .demo-folder-link svg{width:19px;height:19px}
+:root[data-theme="dark"] .demo-file-preview{background:var(--nlab-soft)}
+@media(max-width:760px){.demo-explorer-layout{grid-template-columns:1fr}.demo-folders{position:static;max-height:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:3px}.demo-folders h3,.demo-folder-divider{grid-column:1/-1}.demo-browser-list{grid-template-columns:repeat(auto-fit,minmax(155px,1fr))}.demo-explorer{padding:12px}}

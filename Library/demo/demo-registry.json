@@ -1,0 +1,232 @@
+{
+  "schema": "nlab-demo-registry/v1",
+  "updated": "2026-10-17",
+  "description": "Index transversal des ressources de démonstration visibles et des éléments Drive non publiés. Les fichiers sensibles/tiers ne sont pas exposés sous forme d'URL publique.",
+  "publicGallery": "./",
+  "imageStudioManifest": "./manifests/image.json",
+  "scan2d": {
+    "version": "1.0",
+    "samples": 7,
+    "path": "./files/demo-input/Images/Scan2D/",
+    "reference": "./files/demo-input/Images/Scan2D/00_manifest_tests.json"
+  },
+  "categories": [
+    "Images",
+    "Data",
+    "Code",
+    "JSON"
+  ],
+  "supplemental": [
+    {
+      "name": "calibration-regles-300x150.json",
+      "category": "Images",
+      "path": "Images/calibration-regles-300x150.json",
+      "fileUrl": "./Images/calibration-regles-300x150.json",
+      "size": 305,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "calibration-regles-300x150.png",
+      "category": "Images",
+      "path": "Images/calibration-regles-300x150.png",
+      "fileUrl": "./Images/calibration-regles-300x150.png",
+      "size": 31165,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-image-anime.gif",
+      "category": "Images",
+      "path": "Images/demo-image-anime.gif",
+      "fileUrl": "./Images/demo-image-anime.gif",
+      "size": 23773,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-image-color.jpg",
+      "category": "Images",
+      "path": "Images/demo-image-color.jpg",
+      "fileUrl": "./Images/demo-image-color.jpg",
+      "size": 44949,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-image-color.png",
+      "category": "Images",
+      "path": "Images/demo-image-color.png",
+      "fileUrl": "./Images/demo-image-color.png",
+      "size": 18341,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-image-color.webp",
+      "category": "Images",
+      "path": "Images/demo-image-color.webp",
+      "fileUrl": "./Images/demo-image-color.webp",
+      "size": 16224,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "dataset-validation-complet.csv",
+      "category": "Data",
+      "path": "Data/dataset-validation-complet.csv",
+      "fileUrl": "./Data/dataset-validation-complet.csv",
+      "size": 24539,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "dataset-validation-complet.json",
+      "category": "Data",
+      "path": "Data/dataset-validation-complet.json",
+      "fileUrl": "./Data/dataset-validation-complet.json",
+      "size": 53818,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-config.yaml",
+      "category": "Code",
+      "path": "Code/demo-config.yaml",
+      "fileUrl": "./Code/demo-config.yaml",
+      "size": 68,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-markdown.md",
+      "category": "Code",
+      "path": "Code/demo-markdown.md",
+      "fileUrl": "./Code/demo-markdown.md",
+      "size": 78,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-record.xml",
+      "category": "Code",
+      "path": "Code/demo-record.xml",
+      "fileUrl": "./Code/demo-record.xml",
+      "size": 111,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-script.js",
+      "category": "Code",
+      "path": "Code/demo-script.js",
+      "fileUrl": "./Code/demo-script.js",
+      "size": 141,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "demo-structure.json",
+      "category": "Code",
+      "path": "Code/demo-structure.json",
+      "fileUrl": "./Code/demo-structure.json",
+      "size": 304,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "allergenes.json",
+      "category": "JSON",
+      "path": "json/allergenes.json",
+      "fileUrl": "./json/allergenes.json",
+      "size": 44269,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "astuces_categories.json",
+      "category": "JSON",
+      "path": "json/astuces_categories.json",
+      "fileUrl": "./json/astuces_categories.json",
+      "size": 15066,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "ciqual_import_config.json",
+      "category": "JSON",
+      "path": "json/ciqual_import_config.json",
+      "fileUrl": "./json/ciqual_import_config.json",
+      "size": 3188,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "ciqual_taxonomie_correspondances.json",
+      "category": "JSON",
+      "path": "json/ciqual_taxonomie_correspondances.json",
+      "fileUrl": "./json/ciqual_taxonomie_correspondances.json",
+      "size": 834447,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "recettes.json",
+      "category": "JSON",
+      "path": "json/recettes.json",
+      "fileUrl": "./json/recettes.json",
+      "size": 223085,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "recettes_categories.json",
+      "category": "JSON",
+      "path": "json/recettes_categories.json",
+      "fileUrl": "./json/recettes_categories.json",
+      "size": 98097,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "relations_contenus.json",
+      "category": "JSON",
+      "path": "json/relations_contenus.json",
+      "fileUrl": "./json/relations_contenus.json",
+      "size": 24215,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    },
+    {
+      "name": "saisonnalite.json",
+      "category": "JSON",
+      "path": "json/saisonnalite.json",
+      "fileUrl": "./json/saisonnalite.json",
+      "size": 350844,
+      "availability": "public-local",
+      "review": "approved-synthetic-fixtures"
+    }
+  ],
+  "reviewQueue": [
+    {
+      "source": "Google Drive DemoFileSet/demo-input/Images",
+      "category": "Images",
+      "rule": "Photos utilisateur, scans bruts, signatures, tampons et images tierces : examen manuel confidentialité et droits nécessaire"
+    },
+    {
+      "source": "Google Drive DemoFileSet/demo-input/PDF",
+      "category": "PDF",
+      "rule": "Notices fabricants, documents officiels et manuels tiers : examen des licences avant copie publique"
+    },
+    {
+      "source": "Google Drive DemoFileSet/demo-input/Data",
+      "category": "Data",
+      "rule": "Jeux de données tiers : vérifier licence, source, redistribution et données personnelles"
+    },
+    {
+      "source": "Google Drive DemoFileSet/demo-input/Office,Zip",
+      "category": "Office,Zip",
+      "rule": "Références dans les manifestes ; accès public uniquement après copie approuvée"
+    }
+  ]
+}

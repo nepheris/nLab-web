@@ -7,7 +7,14 @@
  <input id="file" type="file" accept="image/*" multiple hidden>
  <div id="imageList" class="imageList"></div>
  <div class="toolbar"><button id="clearImages" type="button">Tout retirer</button><button id="demoSynthetic" type="button">Démo synthétique</button><button id="demoReal1" type="button">Démo réelle 1</button><button id="demoReal2" type="button">Démo réelle 2</button></div>
+ <div class="panel" style="padding:8px;margin-top:8px"><div class="sectionTitle"><b>Bibliothèque démo · Scan2D V1</b><a class="small" href="../../Library/demo/?scan2d" target="_blank" rel="noopener">Galerie ↗</a></div>
+<div class="toolbar"><label class="small" for="scan2dDemoPicker">Image de test :</label><select id="scan2dDemoPicker" style="max-width:100%;flex:1"><option value="">Chargement du catalogue…</option></select></div>
+<div class="toolbar"><button id="scan2dDemoLoad" type="button">Charger le test</button><button id="scan2dDemoLoadAll" type="button">Charger les 7 tests</button></div><div class="toolbar"><button id="scan2dPresetReference" type="button">Référence (01)</button><button id="scan2dPresetCalibration" type="button">Calibration (01–04)</button><button id="scan2dPresetRobustness" type="button">Robustesse (05–07)</button></div>
+<div class="toolbar" aria-label="Sélections rapides Scan2D"><button type="button" data-scan2d-set="1">Référence OK</button><button type="button" data-scan2d-set="2,3">Rotation / échelles</button><button type="button" data-scan2d-set="4,7">Perspective / axes</button><button type="button" data-scan2d-set="5,6">Bruit / éclairage</button></div>
+<div id="scan2dDemoStatus" class="small">Images synthétiques calibrées ; les déformations sont documentées dans le manifeste.</div>
+</div>
  <div id="collectionStatus" class="status">Aucune image.</div>
+ <div id="importStatus" class="small" role="status" aria-live="polite">Importer puis valider la sélection pour afficher les images ici.</div>
  <hr>
  <div class="sectionTitle"><h2>Édition</h2><button id="resetAll" type="button">Réinitialiser image</button></div>
  <div class="imageActions"><button id="left">↶ Rotation 90°</button><button id="right">↷ Rotation 90°</button><button id="flipX">↔ Miroir horizontal</button><button id="flipY">↕ Miroir vertical</button></div><div class="toolbar"><label class="small">Rotation libre <input id="freeAngle" type="number" min="-180" max="180" step="0.1" value="0" style="width:80px"> °</label><button id="applyFreeRotation" type="button">Appliquer</button></div>
@@ -48,6 +55,7 @@ import{pxToUnit,unitToPx}from'../_shared/studio-v2/dimension-service.js';
 import{fileToDataUrl,transformedCanvas,resizeCanvas,cropCanvas,canvasToBlob}from'../_shared/studio-v2/image-service.js';
 import{downloadBlob}from'../_shared/studio-v2/download-service.js';
 import{createEditHistory}from'../_shared/studio-v2/edit-history.js';
+import{DemoCorpus}from'../_shared/studio-v2/demo-corpus.js';
 import{pushUndoRedo,undo as coreUndo,redo as coreRedo}from'../_shared/studio-v2/undo-redo.js';
 import{mountViewerControls}from'../_shared/studio-v2/viewer-control.js';
 const $=id=>document.getElementById(id),cv=$('cv'),ctx=cv.getContext('2d'),overlay=$('cropOverlay'),stage=$('canvasStage');let items=[],active=-1,img=null,ratio=1,meas=[],measureMode=false,pts=[],cropMode=false,cropStart=null,cropRect=null,artifactId='',artifactManifest=null,zoom=1,fitMode=true,viewerControls=null;
@@ -57,10 +65,49 @@ const itemById=id=>items.find(x=>x.id===id)||null;
 function publishSelection(source='image-studio'){const current=state();document.dispatchEvent(new CustomEvent('studio-v2:selection-change',{detail:{selection:current?[current]:[],active:current,scope:'document',kind:'image',meta:{collectionSize:items.length,width:cv.width,height:cv.height,name:current?.name||''},source}}))}
 function applyItemSnapshot(id,snapshot,source='undo-redo'){const i=items.findIndex(x=>x.id===id);if(i<0)return;items[i]={...items[i],...snapshot};active=i;renderList();loadActive();publishSelection(source)}
 function imageTransaction(item,before,after,label){pushUndoRedo({label,meta:{studio:'image-studio',itemId:item.id},undo:()=>applyItemSnapshot(item.id,before,'undo'),redo:()=>applyItemSnapshot(item.id,after,'redo')})}
-async function addFiles(files){const before=[...items],beforeActive=active,start=items.length;for(const file of files||[]){if(!(file.type||'').startsWith('image/'))continue;const src=await fileToDataUrl(file);items.push({id:itemId(),name:file.name,type:file.type||'image/png',src,originalSrc:src,editHistory:createEditHistory({clone:v=>v}),relativePath:file.webkitRelativePath||file.__relativePath||''})}if(active<0&&items.length)active=0;renderList();loadActive();publishSelection('add');const added=items.length-start;if(added){const after=[...items],afterActive=active;pushUndoRedo({label:'Ajouter '+added+' image'+(added>1?'s':''),meta:{studio:'image-studio'},undo:()=>{items=[...before];active=beforeActive;renderList();loadActive();publishSelection('undo')},redo:()=>{items=[...after];active=afterActive;renderList();loadActive();publishSelection('redo')}})}}
+function studioImageType(file){
+ const mime=String(file?.type||'').toLowerCase();
+ if(mime.startsWith('image/'))return mime;
+ const ext=String(file?.name||'').split('.').pop().toLowerCase();
+ return ({png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',gif:'image/gif',bmp:'image/bmp',svg:'image/svg+xml',avif:'image/avif',tif:'image/tiff',tiff:'image/tiff'})[ext]||'';
+}
+async function addFiles(files){
+ const before=[...items],beforeActive=active,start=items.length,failures=[];
+ for(const file of files||[]){
+  const type=studioImageType(file);
+  if(!type){failures.push((file?.name||'Fichier')+' : format non image');continue}
+  try{
+   const normalized=file.type?file:new File([file],file.name,{type,lastModified:file.lastModified});
+   const src=await fileToDataUrl(normalized);
+   items.push({id:itemId(),name:file.name,type,src,originalSrc:src,editHistory:createEditHistory({clone:v=>v}),relativePath:file.webkitRelativePath||file.__relativePath||''})
+  }catch(e){failures.push((file?.name||'Fichier')+' : '+(e?.message||e))}
+ }
+ const added=items.length-start;
+ if(added)active=start; // Première nouvelle image immédiatement visible dans le canvas.
+ else if(active<0&&items.length)active=0;
+ renderList();loadActive();publishSelection('add');
+ if(added){
+  const after=[...items],afterActive=active;
+  pushUndoRedo({label:'Ajouter '+added+' image'+(added>1?'s':''),meta:{studio:'image-studio'},undo:()=>{items=[...before];active=beforeActive;renderList();loadActive();publishSelection('undo')},redo:()=>{items=[...after];active=afterActive;renderList();loadActive();publishSelection('redo')}})
+ }
+ const status=$('importStatus');
+ if(status)status.textContent=added?added+' image(s) ajoutée(s) et affichage de la première nouvelle image.':'Aucune image importée.';
+ if(failures.length&&status)status.textContent+=' Erreurs : '+failures.join(' ; ');
+ return{added,failures}
+}
 function renderList(){$('imageList').innerHTML=items.map((x,i)=>'<div class="imageItem '+(i===active?'active':'')+'" data-context-menu="image"><img src="'+x.src+'" alt=""><div data-open-image="'+i+'"><strong>'+x.name+'</strong><small>'+(x.relativePath||x.type)+'</small></div><button type="button" data-remove-image="'+i+'" title="Retirer">×</button></div>').join('')||'<div class="status">Aucune image chargée.</div>';$('collectionStatus').textContent=items.length+' image(s)';$('imageList').onclick=e=>{const rm=e.target.closest('[data-remove-image]');if(rm){const i=Number(rm.dataset.removeImage),removed=items[i];if(!removed)return;const before=[...items],beforeActive=active;items.splice(i,1);if(active>=items.length)active=items.length-1;const after=[...items],afterActive=active;renderList();loadActive();publishSelection('remove');pushUndoRedo({label:'Retirer '+removed.name,meta:{studio:'image-studio'},undo:()=>{items=[...before];active=beforeActive;renderList();loadActive();publishSelection('undo')},redo:()=>{items=[...after];active=afterActive;renderList();loadActive();publishSelection('redo')}});return}const op=e.target.closest('[data-open-image]');if(op){active=Number(op.dataset.openImage);renderList();loadActive();publishSelection('select')}}}
 function drawBase(){ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height);if(img)ctx.drawImage(img,0,0,cv.width,cv.height);if(pts.length){ctx.save();ctx.fillStyle='#d22';ctx.strokeStyle='#d22';ctx.lineWidth=Math.max(2,cv.width/900);pts.forEach((p,i)=>{ctx.beginPath();ctx.arc(p.x,p.y,Math.max(5,cv.width/300),0,Math.PI*2);ctx.fill();ctx.font=Math.max(15,cv.width/70)+'px Arial';ctx.fillText(i?'B':'A',p.x+8,p.y-8)});if(pts.length===2){ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);ctx.lineTo(pts[1].x,pts[1].y);ctx.stroke()}ctx.restore()}}
-function loadActive(){const s=state();syncEditButtons();overlay.hidden=true;cropRect=null;cropMode=false;stage.classList.remove('cropMode');if(!s){img=null;ctx.clearRect(0,0,cv.width,cv.height);$('imageMeta').textContent='Aucune image';$('msg').textContent='Choisissez une image.';return}const i=new Image();i.onload=()=>{img=i;cv.width=i.naturalWidth;cv.height=i.naturalHeight;ratio=cv.width/cv.height;syncDimensions();$('imageMeta').textContent=cv.width+' × '+cv.height+' px';$('msg').textContent=s.name;drawBase()};i.src=s.src}
+let activeImageRevision=0;
+function loadActive(){
+ const s=state(),revision=++activeImageRevision;
+ syncEditButtons();overlay.hidden=true;cropRect=null;cropMode=false;stage.classList.remove('cropMode');
+ if(!s){img=null;ctx.clearRect(0,0,cv.width,cv.height);$('imageMeta').textContent='Aucune image';$('msg').textContent='Choisissez une image.';return}
+ const i=new Image();
+ $('msg').textContent='Chargement de '+s.name+'…';
+ i.onload=()=>{if(revision!==activeImageRevision)return;img=i;cv.width=i.naturalWidth;cv.height=i.naturalHeight;ratio=cv.width/cv.height;syncDimensions();$('imageMeta').textContent=cv.width+' × '+cv.height+' px';$('msg').textContent=s.name;drawBase()};
+ i.onerror=()=>{if(revision!==activeImageRevision)return;img=null;$('imageMeta').textContent='Image non décodable';$('msg').textContent='Impossible d’afficher '+s.name+' : vérifier le format image et le fichier.';const status=$('importStatus');if(status)status.textContent='Échec du décodage : '+s.name};
+ i.src=s.src
+}
 function syncDimensions(){const u=$('dimensionUnit').value,w=cv.width,h=cv.height;$('w').value=u==='%'?100:(u==='px'?Math.round(w):pxToUnit(w,u,{base:w}).toFixed(1));$('h').value=u==='%'?100:(u==='px'?Math.round(h):pxToUnit(h,u,{base:h}).toFixed(1))}
 function px(v,axis){const u=$('dimensionUnit').value,base=axis==='w'?cv.width:cv.height;return Math.max(1,Math.round(unitToPx(Number(v)||(u==='%'?100:pxToUnit(base,u,{base})),u,{base})))}
 function commitCanvas(name,type='image/png',quality=.95,label='Modification'){const current=state();if(!current)return;const before={src:current.src,name:current.name};current.editHistory?.checkpoint(current.src,label);const after={src:cv.toDataURL(type,quality),name:name||current.name};current.src=after.src;current.name=after.name;renderList();loadActive();syncEditButtons();publishSelection('edit');imageTransaction(current,before,after,label)}
@@ -91,9 +138,62 @@ function applyViewZoom(){const wrap=$('canvasWrap');cv.style.maxWidth=fitMode?'1
 viewerControls=mountViewerControls($('#imageViewerCore'),{value:100,min:25,max:400,step:25,presets:[25,50,75,100,150,200]});
 document.addEventListener('studio-v2:viewer-command-global',e=>{const d=e.detail||{};if(d.viewerId!=='image-studio')return;if(d.action==='fit'){fitMode=true;zoom=1}else if(d.action==='actual'){fitMode=false;zoom=1}else if(d.action==='zoom'){fitMode=false;zoom=Math.max(.25,Math.min(4,Number(d.ratio)||1))}applyViewZoom()});
 $('openPicker').onclick=()=>document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:'open',source:'image-ui'}}));$('file').onchange=e=>addFiles(e.target.files);$('clearImages').onclick=()=>{if(!items.length)return;const before=[...items],beforeActive=active;items=[];active=-1;const after=[...items],afterActive=active;renderList();loadActive();publishSelection('clear');pushUndoRedo({label:'Vider les images',meta:{studio:'image-studio'},undo:()=>{items=[...before];active=beforeActive;renderList();loadActive();publishSelection('undo')},redo:()=>{items=[...after];active=afterActive;renderList();loadActive();publishSelection('redo')}})};
-document.addEventListener('studio-v2:input-picked',e=>{if(e.detail?.studio==='image-studio')addFiles(e.detail.files)});
+document.addEventListener('studio-v2:input-picked',e=>{if(e.detail?.studio==='image-studio')addFiles(e.detail.files).catch(err=>{const status=$('importStatus');if(status)status.textContent='Erreur de transfert du sélecteur vers Image Studio : '+(err?.message||err);console.error('Image Studio import failed',err)})});
 async function addDemo(url,name){const blob=await fetch(url).then(r=>r.blob()),file=new File([blob],name,{type:blob.type||'image/png'});addFiles([file])}
+const scan2dCorpus=new DemoCorpus({indexUrl:new URL('../../Library/demo/manifests/index.json',document.baseURI).href});
+let scan2dFixtures=[];
+async function initScan2dDemos(){
+ const select=$('scan2dDemoPicker'),status=$('scan2dDemoStatus');
+ try{
+  const files=await scan2dCorpus.list('image-studio',{extensions:['png'],localOnly:true});
+  scan2dFixtures=files.filter(f=>f.category==='scan2d'&&f.name.endsWith('.png')&&f.name.includes('_image_de_test_'));
+  if(scan2dFixtures.length!==7)throw Error('Attendu : 7 images Scan2D, trouvé : '+scan2dFixtures.length);
+  select.replaceChildren(...scan2dFixtures.map((f,i)=>new Option(f.label||f.name,String(i))));
+  status.textContent=scan2dFixtures.length+' cas disponibles · dimensions nominales de la pièce : 150 × 100 mm.';
+ }catch(e){
+  select.replaceChildren(new Option('Catalogue indisponible',''));
+  status.textContent='Erreur bibliothèque Scan2D : '+(e?.message||e);
+ }
+}
+async function fetchScan2dFixture(f){
+ const response=await fetch(f.url,{cache:'no-store'});
+ if(!response.ok)throw Error(f.name+' : HTTP '+response.status);
+ const blob=await response.blob();
+ return new File([blob],f.name,{type:'image/png'});
+}
+async function loadScan2dDemos(all=false){
+ const status=$('scan2dDemoStatus'),index=Number($('scan2dDemoPicker').value);
+ const chosen=Array.isArray(all)?scan2dFixtures.filter(f=>all.includes(Number(f.name.slice(0,2)))):all?scan2dFixtures:[scan2dFixtures[index]].filter(Boolean);
+ if(!chosen.length){status.textContent='Aucun test disponible.';return}
+ $('scan2dDemoLoad').disabled=true;$('scan2dDemoLoadAll').disabled=true;
+ try{
+  const files=[];for(const f of chosen)files.push(await fetchScan2dFixture(f));
+  await addFiles(files);status.textContent=chosen.length+' fichier(s) chargé(s) dans Image Studio.';
+ }catch(e){status.textContent='Échec du chargement : '+(e?.message||e)}
+ finally{$('scan2dDemoLoad').disabled=false;$('scan2dDemoLoadAll').disabled=false}
+}
+$('scan2dDemoLoad').onclick=()=>loadScan2dDemos(false);
+$('scan2dDemoLoadAll').onclick=()=>loadScan2dDemos(true);
+document.querySelectorAll('[data-scan2d-set]').forEach(b=>b.onclick=()=>loadScan2dDemos(b.dataset.scan2dSet.split(',').map(Number)));
+async function loadScan2dPreset(indices){const status=$('scan2dDemoStatus');try{if(scan2dFixtures.length!==7)throw Error('Pack Scan2D indisponible');const files=[];for(const i of indices)files.push(await fetchScan2dFixture(scan2dFixtures[i]));await addFiles(files);status.textContent=files.length+' tests préchargés dans Image Studio.'}catch(e){status.textContent='Échec : '+(e?.message||e)}}
+$('scan2dPresetReference').onclick=()=>loadScan2dPreset([0]);
+$('scan2dPresetCalibration').onclick=()=>loadScan2dPreset([0,1,2,3]);
+$('scan2dPresetRobustness').onclick=()=>loadScan2dPreset([4,5,6]);
+initScan2dDemos().then(async()=>{
+ const id=new URLSearchParams(location.search).get('demo');
+ if(!id)return;
+ const fixture=scan2dFixtures.find(f=>f.testId===id);
+ if(!fixture){$('scan2dDemoStatus').textContent='Test demandé introuvable dans le manifeste : '+id;return}
+ try{
+  const file=await fetchScan2dFixture(fixture);
+  const result=await addFiles([file]);
+  if(result.added){
+   $('scan2dDemoPicker').value=String(scan2dFixtures.indexOf(fixture));
+   $('scan2dDemoStatus').textContent='Test chargé depuis la galerie : '+(fixture.label||fixture.name)
+  }
+ }catch(e){$('scan2dDemoStatus').textContent='Ouverture depuis la galerie impossible : '+(e?.message||e)}
+});
 $('demoSynthetic').onclick=()=>addDemo('../../Library/demo/Images/calibration-regles-300x150.png','calibration-regles-300x150.png');$('demoReal1').onclick=()=>addDemo('../../Library/demo/source-drive/images/calibration-scan-reel-01-public.webp','calibration-scan-reel-01-public.webp');$('demoReal2').onclick=()=>addDemo('../../Library/demo/source-drive/images/calibration-scan-reel-02-public.webp','calibration-scan-reel-02-public.webp');
 document.addEventListener('studio-v2:undo-redo-changed',syncEditButtons);renderList();renderCal();applyViewZoom();syncEditButtons();publishSelection('ready');
 </script>
-<script>window.NLAB_SPECIALIZED_V2={"manifest":{"id":"image-studio","sourcePath":"APP-Applications/image-studio/v2/index.html","name":"Image Studio","subtitle":"Image · transformation · calibration","homeHref":"../../","studiosHref":"../studios/","inputPicker":{"accept":"image/*","multiple":true,"folders":true,"camera":true,"url":true},"menus":[{"id":"home","label":"Accueil","scope":"core"},{"id":"tools","label":"Outils","scope":"studio"},{"id":"history","label":"Historique","scope":"core"},{"id":"help","label":"Aide","scope":"core"}],"ribbon":[{"id":"file","label":"Fichier","scope":"core","items":[{"id":"image-studio-open","action":"open","label":"Ouvrir","icon":"file","scope":"core","primary":true},{"id":"image-studio-demo","action":"demo","label":"Démo","icon":"command","scope":"core"},{"id":"image-studio-export","action":"export","label":"Exporter","icon":"save","scope":"core"}]}],"capabilities":[{"id":"core.input.file-folder-drop","status":"test"},{"id":"image.collection.multi","status":"test"},{"id":"image.transform.rotate","status":"stable"},{"id":"image.transform.flip","status":"stable"},{"id":"image.transform.resize","status":"stable"},{"id":"image.transform.crop","status":"test"},{"id":"image.transform.crop.mouse","status":"test"},{"id":"image.units.px-percent-pt","status":"test"},{"id":"image.history.undo-redo-reset","status":"test","engine":"studio-core.undo-redo"},{"id":"image.view.zoom","status":"test"},{"id":"image.transform.rotate-free","status":"test","engine":"studio-core.image"},{"id":"image.watermark.text","status":"test"},{"id":"image.calibration.measure","status":"test"},{"id":"image.identity.sha256","status":"test"}]},"actions":{"open":"#file","demo":"#demoSynthetic","export":"#export"},"channel":"test"};</script><script type="module" src="../_shared/studio-v2/bootstrap-specialized.js"></script></body></html>
+<script>window.NLAB_SPECIALIZED_V2={"manifest":{"id":"image-studio","sourcePath":"APP-Applications/image-studio/v2/index.html","name":"Image Studio","subtitle":"Image · transformation · calibration","homeHref":"../../","studiosHref":"../studios/","inputPicker":{"accept":"image/*","multiple":true,"folders":true,"camera":true,"url":true},"menus":[{"id":"home","label":"Accueil","scope":"core"},{"id":"tools","label":"Outils","scope":"studio"},{"id":"history","label":"Historique","scope":"core"},{"id":"help","label":"Aide","scope":"core"}],"ribbon":[{"id":"file","label":"Fichier","scope":"core","items":[{"id":"image-studio-open","action":"open","label":"Ouvrir","icon":"file","scope":"core","primary":true},{"id":"image-studio-demo","action":"demo","label":"Démo","icon":"command","scope":"core"},{"id":"image-studio-export","action":"export","label":"Exporter","icon":"save","scope":"core"}]}],"capabilities":[{"id":"core.input.file-folder-drop","status":"test"},{"id":"image.collection.multi","status":"test"},{"id":"image.transform.rotate","status":"stable"},{"id":"image.transform.flip","status":"stable"},{"id":"image.transform.resize","status":"stable"},{"id":"image.transform.crop","status":"test"},{"id":"image.transform.crop.mouse","status":"test"},{"id":"image.units.px-percent-pt","status":"test"},{"id":"image.history.undo-redo-reset","status":"test","engine":"studio-core.undo-redo"},{"id":"image.view.zoom","status":"test"},{"id":"image.transform.rotate-free","status":"test","engine":"studio-core.image"},{"id":"image.watermark.text","status":"test"},{"id":"image.calibration.measure","status":"test"},{"id":"image.identity.sha256","status":"test"}]},"actions":{"open":"#file","demo":"#scan2dDemoLoad","export":"#export"},"channel":"test"};</script><script type="module" src="../_shared/studio-v2/bootstrap-specialized.js"></script></body></html>

@@ -1,6 +1,6 @@
 {
   "schema": "nlab-studios-catalog/v2",
-  "updated": "2026-10-17",
+  "updated": "2026-10-11",
   "publicBase": "/nLab-web/APP-Applications/",
   "studios": [
     {
@@ -322,12 +322,14 @@
     },
     {
       "id": "guide-froid",
-      "name": "Guide Froid — MVP",
-      "status": "mvp-test-0.6",
+      "name": "Guide Froid Studio",
+      "status": "current+test",
       "parent_studio": "studio-hub",
       "path": "../guide-froid/",
-      "purpose": "Application spécialisée autonome de diagnostic pédagogique frigorifique et rapports HTML/PDF, avec documentation UML. Appareils de démonstration, sans stockage partagé.",
-      "icon": "../../assets/studios/guide-froid.svg"
+      "purpose": "Guide Froid : CURRENT 0.6.1 conservé ; TEST 1.0.0 diagnostic guidé, tableaux des défauts et fiches de tests.",
+      "icon": "../../assets/studios/guide-froid.svg",
+      "versions_path": "../guide-froid/versions.html",
+      "version_registry": "../guide-froid/versions.json"
     }
   ]
 }

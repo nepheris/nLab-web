@@ -1,0 +1,52 @@
+{
+  "schema": "nlab-demo-manifest/v1",
+  "studio": "file-studio",
+  "label": "Comparaison de dossiers",
+  "source": "Jeux de dossiers nLab déjà publiés",
+  "files": [
+    {
+      "name": "commun.txt",
+      "path": "../Compare/tree-A/docs/commun.txt",
+      "storage": "local",
+      "kind": "txt",
+      "category": "compare",
+      "relativePath": "tree-A/docs/commun.txt"
+    },
+    {
+      "name": "modifie.txt",
+      "path": "../Compare/tree-A/docs/modifie.txt",
+      "storage": "local",
+      "kind": "txt",
+      "category": "compare",
+      "relativePath": "tree-A/docs/modifie.txt"
+    },
+    {
+      "name": "commun.txt",
+      "path": "../Compare/tree-B/docs/commun.txt",
+      "storage": "local",
+      "kind": "txt",
+      "category": "compare",
+      "relativePath": "tree-B/docs/commun.txt"
+    },
+    {
+      "name": "modifie.txt",
+      "path": "../Compare/tree-B/docs/modifie.txt",
+      "storage": "local",
+      "kind": "txt",
+      "category": "compare",
+      "relativePath": "tree-B/docs/modifie.txt"
+    },
+    {
+      "name": "tree-A (dossier source Drive)",
+      "storage": "reference-only",
+      "kind": "folder",
+      "category": "compare"
+    },
+    {
+      "name": "tree-B (dossier source Drive)",
+      "storage": "reference-only",
+      "kind": "folder",
+      "category": "compare"
+    }
+  ]
+}
