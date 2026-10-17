@@ -111,3 +111,32 @@
 .responsiveTestSimulator .rt-desktop-preset select{min-width:250px;max-width:310px;width:100%}
 .responsiveTestSimulator .rt-desktop-preset[hidden]{display:none!important}
 .responsiveTestSimulator .rt-desktop-preset{border-top:1px solid var(--rt-line);padding-top:8px}
+
+/* v0.3.0 — fullscreen viewport and granular saved zoom controls. */
+.responsiveTestSimulator .rt-monitor-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px}
+.responsiveTestSimulator .rt-monitor-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin:3px 5px}
+.responsiveTestSimulator .rt-monitor-actions button{min-height:34px;padding:5px 10px;font-size:12px;background:var(--rt-surface);color:var(--rt-ink)}
+.responsiveTestSimulator .rt-monitor-actions button[aria-pressed="true"]{background:var(--rt-brand);color:#fff;border-color:var(--rt-brand)}
+.responsiveTestSimulator .rt-top{max-height:calc(100% - 58px);overflow-y:auto;overflow-x:hidden}
+.responsiveTestSimulator .rt-panel-head{position:sticky;top:0;z-index:1}
+.responsiveTestSimulator .rt-zoom-editor{display:grid;grid-template-columns:42px minmax(94px,1fr) 42px;align-items:center;gap:7px;border-top:1px solid var(--rt-line);padding-top:10px}
+.responsiveTestSimulator .rt-zoom-editor button{min-height:38px;font-size:17px;font-weight:750;padding:5px}
+.responsiveTestSimulator .rt-zoom-editor input[type="range"]{display:block;width:100%;min-height:28px;height:28px;padding:0;accent-color:var(--rt-brand);cursor:pointer;min-width:0}
+.responsiveTestSimulator .rt-zoom-editor label{grid-column:1 / 2;gap:5px}
+.responsiveTestSimulator .rt-zoom-editor input[type="number"]{width:60px;min-width:60px;font-variant-numeric:tabular-nums}
+.responsiveTestSimulator .rt-zoom-editor [data-rt-zoom-save]{grid-column:2 / 4;font-size:12px}
+.responsiveTestSimulator .rt-monitor:fullscreen,
+.responsiveTestSimulator .rt-monitor[data-fullscreen="true"]{
+ width:100vw;height:100dvh;max-height:100dvh;border-radius:0;
+ padding:7px;display:flex;flex-direction:column;overflow:hidden;
+ background:var(--rt-surface);color:var(--rt-ink)
+}
+.responsiveTestSimulator .rt-monitor:fullscreen .rt-scroll,
+.responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-scroll{height:auto;min-height:0;flex:1}
+.responsiveTestSimulator .rt-monitor:fullscreen .rt-top,
+.responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-top{top:65px;max-height:calc(100% - 75px)}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-monitor-actions{margin:2px 4px}
+ .responsiveTestSimulator .rt-monitor-actions button{font-size:11px;min-height:32px}
+ .responsiveTestSimulator .rt-monitor:fullscreen .rt-top{top:74px}
+}
