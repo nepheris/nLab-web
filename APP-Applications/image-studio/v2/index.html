@@ -77,7 +77,8 @@ async function addFiles(files){
   const type=studioImageType(file);
   if(!type){failures.push((file?.name||'Fichier')+' : format non image');continue}
   try{
-   const src=await fileToDataUrl(file);
+   const normalized=file.type?file:new File([file],file.name,{type,lastModified:file.lastModified});
+   const src=await fileToDataUrl(normalized);
    items.push({id:itemId(),name:file.name,type,src,originalSrc:src,editHistory:createEditHistory({clone:v=>v}),relativePath:file.webkitRelativePath||file.__relativePath||''})
   }catch(e){failures.push((file?.name||'Fichier')+' : '+(e?.message||e))}
  }
