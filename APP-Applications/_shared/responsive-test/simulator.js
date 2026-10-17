@@ -166,7 +166,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  };
  const setDimensions=(w,h)=>{
   const width=integer(w),height=integer(h);
-  if(width===null||height===null){message('Dimensions attendues : nombres entiers de 240 à 2560 px.');return false}
+  if(width===null||height===null){message('Dimensions attendues : nombres entiers de 240 à 4096 px.');return false}
   state={preset:'custom',orientation:width>height?'landscape':'portrait',width,height};
   afterDimensionChange();message('Format personnalisé appliqué.');return true;
  };
