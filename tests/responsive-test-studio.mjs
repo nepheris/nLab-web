@@ -70,6 +70,8 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
   await equals(1024,768,'tablet landscape');
   await page.locator('[data-rt-family="mobile"]').click();
+  await equals(393,852,'mobile family starts portrait');
+  await page.locator('input[name="rt-orientation"][value="landscape"]').check();
   await equals(852,393,'phone landscape');
   await page.locator('input[name="rt-orientation"][value="portrait"]').check();
   await equals(393,852,'phone portrait');
