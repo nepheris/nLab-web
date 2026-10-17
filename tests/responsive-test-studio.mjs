@@ -20,13 +20,20 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('page HTTP',res?.ok());
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   await page.frameLocator('[data-rt-frame]').locator('body').waitFor({timeout:15000});
-  pass('catalog Studio name',await page.locator('h1').textContent().then(x=>x.includes('Prévisualisez')));
+  pass('intro merged into canonical nLab header',await page.locator('.site-header .brand').textContent().then(x=>x.includes('Prévisualisez votre site en responsive')&&x.includes('Collez une URL')));
+  pass('no redundant intro section',await page.locator('.studio-main .intro').count()===0);
+  pass('collapsible URL toolbar initially expanded',await page.locator('[data-rt-address-bar]').getAttribute('data-collapsed')==='false');
+  await page.locator('[data-rt-url-toggle]').click();
+  pass('URL bar compact after toggle',await page.locator('[data-rt-address-bar]').getAttribute('data-collapsed')==='true'&&await page.locator('[data-rt-url-fields]').isHidden());
+  pass('URL summary still visible',await page.locator('[data-rt-url-summary]').isVisible());
+  await page.locator('[data-rt-url-toggle]').click();
+  pass('URL editing restored',await page.locator('[data-rt-url-fields]').isVisible());
   const headerTheme=page.locator('[data-shell-pref="theme"]');
   pass('canonical nLab header theme selector restored',await headerTheme.isVisible());
   pass('no extra theme group in header',await page.locator('.site-header [data-rt-theme]').count()===0);
   const registry=await page.request.get(new URL('APP-Applications/responsive-test-studio/versions.json',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/').href);
   const versions=await registry.json();
-  pass('history preservation registry',versions.test==='0.3.1' && versions.current===null && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')) && versions.versions.some(v=>v.version==='0.3.0' && v.status==='historical' && v.href.includes('versions/0.3.0/')));
+  pass('history preservation registry',versions.test==='0.4.0' && versions.current===null && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')) && versions.versions.some(v=>v.version==='0.3.0' && v.status==='historical' && v.href.includes('versions/0.3.0/')) && versions.versions.some(v=>v.version==='0.3.1' && v.status==='historical' && v.href.includes('versions/0.3.1/')));
 
   const panel=page.locator('[data-rt-panel]'),monitor=page.locator('[data-rt-monitor]');
   const compact=viewport.width<=760;
@@ -53,14 +60,27 @@ async function scenario(name,viewport,emulateTouch=false){
   await page.locator('[data-rt-show-settings]').click();
   pass('panel can reopen',(await panel.getAttribute('data-collapsed'))==='false');
   await page.locator('input[name="rt-orientation"][value="portrait"]').check();
-  await page.locator('[data-rt-device]').selectOption('tablet');
+  await page.locator('[data-rt-family="tablet"]').click();
   await equals(768,1024,'tablet portrait');
+  pass('tablet resolution list only tablet sizes',await page.locator('[data-rt-resolution] option').count()===6);
+  await page.locator('[data-rt-resolution]').selectOption('834x1194');
+  await equals(834,1194,'large tablet preset portrait');
+  await page.locator('[data-rt-resolution]').selectOption('768x1024');
+  await equals(768,1024,'tablet standard preset restored');
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
   await equals(1024,768,'tablet landscape');
-  await page.locator('[data-rt-device]').selectOption('phone');
+  await page.locator('[data-rt-family="mobile"]').click();
   await equals(852,393,'phone landscape');
   await page.locator('input[name="rt-orientation"][value="portrait"]').check();
   await equals(393,852,'phone portrait');
+  pass('mobile preset list only mobile sizes',await page.locator('[data-rt-resolution] option').count()===9);
+  pass('mobile SVG type selected',await page.locator('[data-rt-family="mobile"]').getAttribute('aria-pressed')==='true');
+  await page.locator('[data-rt-resolution]').selectOption('320x568');
+  await equals(320,568,'very small mobile portrait');
+  await page.locator('[data-rt-resolution]').selectOption('430x932');
+  await equals(430,932,'large mobile portrait');
+  await page.locator('[data-rt-resolution]').selectOption('393x852');
+  await equals(393,852,'standard mobile restored');
   const responsive=await frame.evaluate(el=>({small:el.contentWindow.matchMedia('(max-width: 600px)').matches,portrait:el.contentWindow.matchMedia('(orientation: portrait)').matches,width:el.contentWindow.innerWidth}));
   pass('iframe CSS media queries reflect phone',responsive.small && responsive.portrait && responsive.width===393);
   await page.evaluate(()=>{window.__rtReloads=0;document.querySelector('[data-rt-frame]').addEventListener('load',()=>window.__rtReloads++)});
@@ -78,23 +98,23 @@ async function scenario(name,viewport,emulateTouch=false){
   await equals(400,850,'live viewport CSS resize without page navigation');
   pass('no reload with toggle disabled',await page.evaluate(()=>window.__rtReloads===0));
   await page.locator('[data-rt-auto-reload]').check();
-  await page.locator('[data-rt-device]').selectOption('phone');
+  await page.locator('[data-rt-family="mobile"]').click();
 
-  await page.locator('[data-rt-device]').selectOption('desktop');
+  await page.locator('[data-rt-family="desktop"]').click();
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
   await equals(1280,800,'default desktop 1280x800');
   const presets=page.locator('[data-rt-desktop-resolution] option');
-  pass('desktop resolution catalogue',await presets.count()>=21);
-  await page.locator('[data-rt-desktop-resolution]').selectOption('640x480');
+  pass('desktop-only resolution catalogue',await presets.count()===21 && await page.locator('[data-rt-family="desktop"]').getAttribute('aria-pressed')==='true');
+  await page.locator('[data-rt-resolution]').selectOption('640x480');
   await equals(640,480,'VGA standard 4:3');
-  await page.locator('[data-rt-desktop-resolution]').selectOption('1280x1024');
+  await page.locator('[data-rt-resolution]').selectOption('1280x1024');
   await equals(1280,1024,'SXGA standard 5:4');
-  await page.locator('[data-rt-desktop-resolution]').selectOption('1920x1080');
+  await page.locator('[data-rt-resolution]').selectOption('1920x1080');
   await equals(1920,1080,'Full HD standard 16:9');
-  await page.locator('[data-rt-desktop-resolution]').selectOption('3840x2160');
+  await page.locator('[data-rt-resolution]').selectOption('3840x2160');
   await equals(3840,2160,'4K UHD viewport standard');
   pass('4K fit zoom smaller than 100%',await page.locator('[data-rt-frame-box]').evaluate(el=>getComputedStyle(el).transform!=='matrix(1, 0, 0, 1, 0, 0)'));
-  await page.locator('[data-rt-desktop-resolution]').selectOption('1280x800');
+  await page.locator('[data-rt-resolution]').selectOption('1280x800');
   await equals(1280,800,'standard 1280x800 restored');
   await page.locator('[data-rt-width]').fill('420');
   await page.locator('[data-rt-height]').fill('880');
@@ -125,7 +145,7 @@ async function scenario(name,viewport,emulateTouch=false){
   if(emulateTouch){
    const touch=await page.evaluate(()=>({points:navigator.maxTouchPoints,coarse:matchMedia('(pointer: coarse)').matches}));
    pass('touch emulation API exposure',touch.points>0); // pointer:coarse depends on headless host input devices
-   await page.locator('[data-rt-device]').selectOption('phone');
+   await page.locator('[data-rt-family="mobile"]').click();
    await page.locator('[data-rt-rotate]').tap();
    await equals(852,393,'tap rotation to phone landscape');
    await page.locator('[data-rt-rotate]').tap();
@@ -133,7 +153,7 @@ async function scenario(name,viewport,emulateTouch=false){
    pass('emulation explicitly labelled',!!await page.locator('.rt-note').textContent().then(x=>x.includes('pas les API')));
   }
 
-  await page.locator('[data-rt-device]').selectOption('phone');
+  await page.locator('[data-rt-family="mobile"]').click();
   await page.locator('input[name="rt-orientation"][value="portrait"]').check();
   await page.locator('[data-rt-fullscreen]').click();
   pass('fullscreen viewport enabled',await page.evaluate(()=>document.fullscreenElement===document.querySelector('[data-rt-monitor]')));
@@ -212,6 +232,12 @@ try{
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
   if(await page.locator('.site-header [data-rt-theme]').count()!==3)throw Error('Archive 0.3.0 original header theme buttons not preserved');
   checks.push('history:0.3.0 original header style preserved');
+  const archive031=new URL('APP-Applications/responsive-test-studio/versions/0.3.1/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/');
+  const res031=await page.goto(archive031.href,{waitUntil:'domcontentloaded',timeout:30000});
+  if(!res031?.ok())throw Error('Archive 0.3.1 HTTP unavailable');
+  await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
+  if(!await page.locator('[data-rt-device]').count())throw Error('Archive 0.3.1 original profile selector not preserved');
+  checks.push('history:0.3.1 native runtime loads independently');
  }catch(error){failures.push({name:'history-0.1.0',error:String(error)})}
  finally{await historical.close()}
 }finally{await browser.close()}
