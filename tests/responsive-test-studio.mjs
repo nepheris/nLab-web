@@ -33,7 +33,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('no extra theme group in header',await page.locator('.site-header [data-rt-theme]').count()===0);
   const registry=await page.request.get(new URL('APP-Applications/responsive-test-studio/versions.json',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/').href);
   const versions=await registry.json();
-  pass('history preservation registry',versions.test==='0.4.0' && versions.current===null && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')) && versions.versions.some(v=>v.version==='0.3.0' && v.status==='historical' && v.href.includes('versions/0.3.0/')) && versions.versions.some(v=>v.version==='0.3.1' && v.status==='historical' && v.href.includes('versions/0.3.1/')));
+  pass('history preservation registry',versions.test==='0.4.1' && versions.current==='0.4.0' && versions.versions.some(v=>v.version==='0.4.0' && v.current===true && v.status==='current' && v.href==='./') && versions.versions.some(v=>v.version==='0.4.1' && v.status==='test' && v.href==='./test/') && versions.versions.some(v=>v.version==='0.1.0' && v.status==='historical' && v.href.includes('versions/0.1.0/')) && versions.versions.some(v=>v.version==='0.2.0' && v.status==='historical' && v.href.includes('versions/0.2.0/')) && versions.versions.some(v=>v.version==='0.3.0' && v.status==='historical' && v.href.includes('versions/0.3.0/')) && versions.versions.some(v=>v.version==='0.3.1' && v.status==='historical' && v.href.includes('versions/0.3.1/')));
 
   const panel=page.locator('[data-rt-panel]'),monitor=page.locator('[data-rt-monitor]');
   const compact=viewport.width<=760;
@@ -240,6 +240,13 @@ try{
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
   if(!await page.locator('[data-rt-device]').count())throw Error('Archive 0.3.1 original profile selector not preserved');
   checks.push('history:0.3.1 native runtime loads independently');
+  const archive040=new URL('APP-Applications/responsive-test-studio/versions/0.4.0/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/');
+  const response040=await page.goto(archive040.href,{waitUntil:'domcontentloaded',timeout:30000});
+  if(!response040?.ok())throw Error('Archive 0.4.0 HTTP unavailable');
+  await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
+  if(!await page.locator('[data-rt-url-fields]').count())throw Error('Archive 0.4.0 original URL bar unavailable');
+  if(!await page.locator('[data-rt-frame]').isVisible())throw Error('Archive 0.4.0 primary viewport unavailable');
+  checks.push('history:0.4.0 approved native snapshot loads independently');
  }catch(error){failures.push({name:'history-0.1.0',error:String(error)})}
  finally{await historical.close()}
 }finally{await browser.close()}
