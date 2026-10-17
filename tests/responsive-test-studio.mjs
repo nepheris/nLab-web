@@ -108,6 +108,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('dual secondary landscape responsive',side.w===852&&side.h===393&&side.landscape);
   await page.locator('[data-rt-scale]').selectOption('fit');
   pass('dual fit canvas bounded',await page.locator('[data-rt-stages]').evaluate(el=>el.getBoundingClientRect().width>0));
+  await page.screenshot({path:out+'/'+name+'-dual.png',fullPage:true,animations:'disabled'});
   await page.locator('[data-rt-dual]').click();
   pass('return to single view',await page.locator('[data-rt-stage-secondary]').isHidden());
   await page.locator('[data-rt-url]').fill('javascript:alert(1)');
@@ -140,7 +141,24 @@ async function scenario(name,viewport,emulateTouch=false){
  }catch(error){failures.push({name,error:String(error?.stack||error),pageErrors:errors});await page.screenshot({path:out+'/'+name+'-failure.png',fullPage:true}).catch(()=>{})}
  finally{await context.close()}
 }
-try{await scenario('desktop',{width:1440,height:900});await scenario('mobile',{width:393,height:852});await scenario('touch-emulation',{width:393,height:852},true)}finally{await browser.close()}
+try{
+ await scenario('desktop',{width:1440,height:900});
+ await scenario('mobile',{width:393,height:852});
+ await scenario('touch-emulation',{width:393,height:852},true);
+ const historical=await browser.newContext({viewport:{width:1220,height:840}});
+ const page=await historical.newPage();
+ try{
+  const url0=new URL('APP-Applications/responsive-test-studio/versions/0.1.0/',process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/');
+  const response=await page.goto(url0.href,{waitUntil:'domcontentloaded',timeout:30000});
+  if(!response?.ok())throw Error('Archive 0.1.0 HTTP unavailable');
+  await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:12000});
+  const primary=page.locator('[data-rt-frame]');
+  if(!await primary.isVisible())throw Error('Historical iframe unavailable');
+  if(await page.locator('[data-rt-frame-secondary]').count())throw Error('Archive changed: unexpected dual iframe');
+  checks.push('history:0.1.0 snapshot loads independently');
+ }catch(error){failures.push({name:'history-0.1.0',error:String(error)})}
+ finally{await historical.close()}
+}finally{await browser.close()}
 await fs.writeFile(out+'/results.json',JSON.stringify({channel:channel||'chromium',checks,failures,not_android_emulation:true},null,2));
 console.log(JSON.stringify({checks,failures},null,2));
 if(failures.length)process.exitCode=1;
