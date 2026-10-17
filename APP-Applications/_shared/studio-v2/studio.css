@@ -1022,3 +1022,25 @@ body.studioMobileOptimized .ribbonInputLauncher .scopeIcon{width:38px!important;
 .studioCoreColorPicker input[type=number]{width:54px;max-width:100%;min-width:0}
 .studioCoreColorPicker input[data-color-hex]{width:88px;min-width:0}
 .studioCoreColorPicker input[type=color]{width:42px;min-height:32px}
+
+/* Studio Core mobile Input Picker: keep footer reachable within a narrow visual viewport.
+   This is a real shared component fix, not simulator-only presentation. */
+@media(max-width:760px){
+ .studioInputPicker:not([hidden]){
+  left:4px!important;right:4px!important;top:4px!important;
+  bottom:auto!important;width:calc(100vw - 8px)!important;
+  max-width:calc(100vw - 8px)!important;
+  height:calc(100dvh - 8px)!important;
+  max-height:calc(100dvh - 8px)!important;
+  transform:none!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+ }
+ .studioInputPicker .inputPickerFooter{
+  position:sticky;bottom:0;z-index:3;
+  background:var(--nlab-panel,#fff);
+  border-top:1px solid var(--nlab-line,#c8d3dc);
+  padding:10px 0 max(8px,env(safe-area-inset-bottom,0px));
+ }
+ .studioInputPicker .inputPickerFooter button{min-height:44px}
+}
