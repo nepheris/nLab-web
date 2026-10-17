@@ -46,6 +46,7 @@ async function scenario(name,viewport,emulateTouch=false){
   pass('panel collapsible',(await panel.getAttribute('data-collapsed'))==='true');
   await page.locator('[data-rt-show-settings]').click();
   pass('panel can reopen',(await panel.getAttribute('data-collapsed'))==='false');
+  await page.locator('input[name="rt-orientation"][value="portrait"]').check();
   await page.locator('[data-rt-device]').selectOption('tablet');
   await equals(768,1024,'tablet portrait');
   await page.locator('input[name="rt-orientation"][value="landscape"]').check();
