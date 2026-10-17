@@ -107,3 +107,7 @@
 :root[data-theme="dark"] .responsiveTestSimulator .rt-top{box-shadow:0 16px 50px rgba(0,0,0,.55)}
 
 .responsiveTestSimulator .rt-diagnostics{font-size:11px;line-height:1.45;color:var(--rt-muted);padding:2px 9px 9px;white-space:normal;overflow-wrap:anywhere}
+
+.responsiveTestSimulator .rt-desktop-preset select{min-width:250px;max-width:310px;width:100%}
+.responsiveTestSimulator .rt-desktop-preset[hidden]{display:none!important}
+.responsiveTestSimulator .rt-desktop-preset{border-top:1px solid var(--rt-line);padding-top:8px}
