@@ -1,15 +1,24 @@
 {
   "name": "Responsive Test Studio",
   "current": null,
-  "test": "0.3.0",
+  "test": "0.3.1",
   "versions": [
     {
-      "version": "0.3.0",
-      "label": "Responsive Test Studio 0.3.0 TEST",
+      "version": "0.3.1",
+      "label": "Responsive Test Studio 0.3.1 TEST",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-runtime",
+      "notes": "Header nLab canonique restauré avec son sélecteur de thème standard ; boutons Auto/Clair/Sombre déplacés dans les réglages d'écran, synchronisés avec la préférence partagée nLab. Aucun changement aux 21 résolutions, à la vue double, au zoom ou au plein écran."
+    },
+    {
+      "version": "0.3.0",
+      "label": "Responsive Test Studio 0.3.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.3.0/",
+      "isolation": "native",
       "notes": "Trois boutons de thème Auto/Clair/Sombre avec préférence partagée nLab ; 21 résolutions classiques d’écran (VGA, 4:3, 5:4, 16:9, 16:10, ultra-wide, 4K), 1280 × 800 par défaut, vue double et zoom Ajuster."
     },
     {

@@ -148,3 +148,11 @@
  .responsiveTestSimulator .rt-monitor:fullscreen .rt-top,
  .responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-top{top:120px;max-height:calc(100% - 130px)}
 }
+
+/* Theme buttons live only in the floating simulator palette, with shared nLab tokens. */
+.responsiveTestSimulator .rt-theme-fieldset{width:100%;max-width:100%;margin:0;display:block}
+.responsiveTestSimulator .rt-theme-controls{display:flex;flex-wrap:wrap;gap:5px;width:100%;margin-top:2px}
+.responsiveTestSimulator .rt-theme-controls button{flex:1 1 77px;min-width:0;min-height:36px;padding:5px 8px;font-size:12px;font-weight:750;border:1px solid var(--rt-line);background:var(--rt-surface);color:var(--rt-ink)}
+.responsiveTestSimulator .rt-theme-controls button:hover{background:var(--rt-soft)}
+.responsiveTestSimulator .rt-theme-controls button[aria-pressed="true"]{background:var(--rt-brand);border-color:var(--rt-brand);color:#fff}
+.responsiveTestSimulator .rt-theme-controls button[aria-pressed="true"]:hover{background:var(--rt-brand);color:#fff;filter:brightness(.92)}
