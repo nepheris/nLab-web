@@ -51,13 +51,13 @@ export function mountResponsiveSimulator(host,{src='./?embed=1',presets=BASE_PRE
  const refreshScale=()=>{
   const available=Math.max(240,scroll.clientWidth-24);
   const maxHeight=760;
-  const raw=state.zoom==='fit'?Math.min(1,available/(state.width+24),maxHeight/(state.height+43)):Number(state.zoom);
+  const raw=state.zoom==='fit'?Math.min(1,available/(state.width+24),maxHeight/(state.height+55)):Number(state.zoom);
   const scale=clamp(raw,.15,1);
   device.style.width=(state.width+24)+'px';
-  device.style.height=(state.height+43)+'px';
+  device.style.height=(state.height+55)+'px';
   device.style.transform='scale('+scale+')';
   stage.style.width=Math.ceil((state.width+24)*scale)+'px';
-  stage.style.height=Math.ceil((state.height+43)*scale)+'px';
+  stage.style.height=Math.ceil((state.height+55)*scale)+'px';
   box.style.width=frame.style.width=state.width+'px';
   box.style.height=frame.style.height=state.height+'px';
   const cssViewport=(()=>{try{return frame.contentWindow?.innerWidth}catch{return null}})();
