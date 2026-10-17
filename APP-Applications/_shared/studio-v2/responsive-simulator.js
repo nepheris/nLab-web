@@ -63,7 +63,10 @@ export function mountResponsiveSimulator(host,{src='./?embed=1',presets=BASE_PRE
   const cssViewport=(()=>{try{return frame.contentWindow?.innerWidth}catch{return null}})();
   const measure=cssViewport===state.width?' · iframe '+cssViewport+' px':cssViewport?' · iframe '+cssViewport+' px':'';
   info.textContent=state.width+' × '+state.height+' px · affichage '+Math.round(scale*100)+' %'+measure;
-  w.value=state.width;h.value=state.height;select.value=state.zoom;
+  // Do not overwrite a custom dimension while a user is editing it (especially on narrow layouts).
+  if(document.activeElement!==w)w.value=state.width;
+  if(document.activeElement!==h)h.value=state.height;
+  select.value=state.zoom;
   for(const btn of root.querySelectorAll('[data-rs-preset]'))btn.setAttribute('aria-pressed',String(btn.dataset.rsPreset===state.preset));
  };
  const apply=patch=>{state={...state,...patch};refreshScale();return {...state}};
