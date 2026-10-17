@@ -8,6 +8,8 @@ on:
       - 'APP-Applications/_shared/studio-v2/studio.css'
       - 'tests/studio-core-*.mjs'
       - 'tests/studios-core-smoke.mjs'
+      - 'APP-Applications/studio-core-lab/**'
+      - 'tests/studio-core-lab-acceptance.mjs'
       - '.github/workflows/studio-core-acceptance.yml'
   push:
     branches:
@@ -32,6 +34,8 @@ jobs:
           done
           node tests/studio-core-undo-redo.mjs
           node tests/studio-core-colors.mjs
+          node --check APP-Applications/studio-core-lab/app.js
+          node --check tests/studio-core-lab-acceptance.mjs
       - name: Install Playwright Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
@@ -53,6 +57,19 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/studios-core-smoke.mjs
+      - name: Visual Core Lab desktop and mobile touch emulation
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/studio-core-lab-acceptance.mjs
+      - name: Upload Core Lab visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-core-lab-linux-chrome
+          path: artifacts/core-lab/
+          retention-days: 14
+          if-no-files-found: warn
       - name: Local HTTP diagnostics on failure
         if: failure()
         run: tail -120 /tmp/studio-core-http.log || true
