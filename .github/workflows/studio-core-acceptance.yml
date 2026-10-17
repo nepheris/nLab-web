@@ -1,0 +1,51 @@
+name: Studio Core Acceptance
+on:
+  pull_request:
+    paths:
+      - 'APP-Applications/_shared/studio-v2/input-picker.js'
+      - 'APP-Applications/_shared/studio-v2/viewer-control.js'
+      - 'APP-Applications/_shared/studio-v2/color-picker.js'
+      - 'APP-Applications/_shared/studio-v2/studio.css'
+      - 'tests/studio-core-*.mjs'
+      - 'tests/studios-core-smoke.mjs'
+      - '.github/workflows/studio-core-acceptance.yml'
+  push:
+    branches:
+      - studio-core-validation-2026-10-17
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  core-linux-chromium:
+    name: Core Linux Chromium (B02-B09)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Node syntax and Core unit tests
+        run: |
+          for file in APP-Applications/_shared/studio-v2/{input-picker,viewer-control,window-system,undo-redo,color-picker}.js tests/studio-core-*.mjs tests/studios-core-smoke.mjs; do
+            node --check "$file"
+          done
+          node tests/studio-core-undo-redo.mjs
+          node tests/studio-core-colors.mjs
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Serve local branch build without deployment
+        run: |
+          python3 -m http.server 8770 --bind 127.0.0.1 >/tmp/studio-core-http.log 2>&1 &
+          echo $! >/tmp/studio-core-http.pid
+          sleep 2
+          curl --fail http://127.0.0.1:8770/APP-Applications/studios/ > /dev/null
+      - name: Studio Core browser acceptance
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+        run: node tests/studios-core-smoke.mjs
+      - name: Local HTTP diagnostics on failure
+        if: failure()
+        run: tail -120 /tmp/studio-core-http.log || true
