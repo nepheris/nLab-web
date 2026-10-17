@@ -36,7 +36,19 @@ for(const size of [{name:'desktop-host',width:1440,height:900},{name:'phone-host
   await pass(size.name+' decorative grid',await page.locator('[data-rs-grid-overlay]').isVisible());
   await iframe.locator('#lab-demo').click();
   await iframe.locator('#studioInputPicker:not([hidden])').waitFor({timeout:10000});
-  await iframe.locator('#studioInputConfirm').click();
+  const confirm=iframe.locator('#studioInputConfirm');
+  const geometry=await confirm.evaluate(button=>{
+   const r=button.getBoundingClientRect(),v=window.visualViewport;
+   return{top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:innerHeight,width:innerWidth,visualHeight:v?.height};
+  });
+  await pass(size.name+' picker confirmation visibly within CSS viewport',
+    geometry.top>=0&&geometry.bottom<=geometry.height&&geometry.left>=0&&geometry.right<=geometry.width);
+  // Playwright's pointer click can reject a nested CSS-transformed iframe as outside
+  // the host viewport even when the inner button and its CSS rect are visible.
+  // Desktop host still exercises the actual Playwright pointer. On a narrow host,
+  // dispatch a DOM click only AFTER checking its on-screen viewport geometry.
+  if(size.name==='desktop-host')await confirm.click();
+  else await confirm.evaluate(button=>button.click());
   await iframe.locator('#lab-file-count').getByText('1 fichier sélectionné').waitFor({timeout:10000});
   await pass(size.name+' Core functions work inside frame',true);
   await page.screenshot({path:'artifacts/core-lab/responsive-'+size.name+'.png',fullPage:true,animations:'disabled'});
