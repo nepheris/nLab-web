@@ -1,0 +1,81 @@
+{
+  "schema": "nlab-demo-source-audit/v1",
+  "updated": "2026-10-17",
+  "source": "Google Drive DemoFileSet/demo-input and existing Library/demo paths",
+  "sourceFolder": "https://drive.google.com/drive/folders/1zQb7Lyep6G0rOt-xv_vUcF-U1JvjtNIJ",
+  "observations": [
+    {
+      "name": "MD",
+      "directChildren": 14,
+      "classification": "Démonstrations Markdown"
+    },
+    {
+      "name": "json",
+      "directChildren": 8,
+      "classification": "JSON / recettes — copies approuvées uniquement"
+    },
+    {
+      "name": "Office",
+      "directChildren": 1,
+      "classification": "Documents Office — vérification avant republication"
+    },
+    {
+      "name": "Compare",
+      "directChildren": 2,
+      "classification": "Arbres de dossiers A/B — exemples déjà publiés"
+    },
+    {
+      "name": "Data",
+      "directChildren": 22,
+      "classification": "Datasets variés — licences externes à contrôler"
+    },
+    {
+      "name": "Code",
+      "directChildren": 5,
+      "classification": "Fichiers synthétiques"
+    },
+    {
+      "name": "File",
+      "directChildren": 2,
+      "classification": "Dossiers de comparaison / fichiers"
+    },
+    {
+      "name": "PDF",
+      "directChildren": 14,
+      "classification": "PDF synthétiques et sources tierces mélangés — vérification"
+    },
+    {
+      "name": "OCR",
+      "directChildren": 4,
+      "classification": "Images tests OCR synthétiques, référencées"
+    },
+    {
+      "name": "Images",
+      "directChildren": 23,
+      "classification": "Exemples et photos — protection des données personnelles"
+    },
+    {
+      "name": "QR-Barcode",
+      "directChildren": 7,
+      "classification": "Codes de démonstration"
+    },
+    {
+      "name": "Zip",
+      "directChildren": 1,
+      "classification": "ZIP de démonstration — inspection du contenu"
+    }
+  ],
+  "categoriesAdded": [
+    "Office",
+    "Compare",
+    "ZIP",
+    "Sécurité"
+  ],
+  "publicationPolicy": {
+    "syntheticOrApprovedOnly": true,
+    "rawPersonalImages": false,
+    "thirdPartyLicensedReview": true,
+    "referenceOnlyWithoutPublicUrl": true
+  },
+  "note": "Comptes observés au premier niveau des dossiers Drive. Les sous-dossiers peuvent contenir d'autres fichiers. Aucun fichier Drive non approuvé n'a été rendu publiquement accessible par cet audit."
+}

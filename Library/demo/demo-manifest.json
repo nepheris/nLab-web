@@ -2,7 +2,7 @@
   "schema": "nlab-demo-corpus/v3",
   "updated": "2026-10-17",
   "sourceReference": "Google Drive corpus supplied by HUMAN-00",
-  "policy": "Public gallery keeps synthetic/test files only; personal-looking or third-party manuals are excluded from automatic publication.",
+  "policy": "Public gallery includes only synthetic/approved local files. Drive/third-party/personal sources are represented by reference-only metadata until reviewed.",
   "manifests": "./manifests/index.json",
   "localCategories": [
     "MD",
@@ -29,5 +29,8 @@
     "manifest": "./manifests/image.json",
     "folder": "./files/demo-input/Images/Scan2D/",
     "referenceManifest": "./files/demo-input/Images/Scan2D/00_manifest_tests.json"
-  }
+  },
+  "sourceAudit": "./manifests/audit-sources.json",
+  "catalogueComplet": "./manifests/catalogue-complet.json",
+  "categoryIndex": "./manifests/index.json"
 }

@@ -1,0 +1,28 @@
+name: nLab demo complete index
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Library/demo/manifests/**'
+      - 'Library/demo/rebuild_demo_index.py'
+      - '.github/workflows/demo-complete-index.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and validate all public demo manifest entries
+        run: python3 Library/demo/rebuild_demo_index.py
+      - name: Save machine-readable complete index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Library/demo/manifests/index.json Library/demo/manifests/catalogue-complet.json
+          if ! git diff --cached --quiet; then
+            git commit -m "docs(demo): regenerate complete catalog from approved manifests"
+            git push
+          fi
