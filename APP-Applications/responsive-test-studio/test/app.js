@@ -7,5 +7,5 @@ try{
  document.documentElement.dataset.responsiveStudioReady='1';
 }catch(error){
  root.textContent='Initialisation impossible : '+(error?.message||String(error));
- console.error('Responsive Test Studio TEST 0.4.1:',error);
+ console.error('Responsive Test Studio TEST 0.4.3:',error);
 }

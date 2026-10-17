@@ -160,12 +160,13 @@
     {
       "id": "responsive-test-studio",
       "name": "Responsive Test Studio",
-      "status": "current",
+      "status": "current+test",
       "path": "../responsive-test-studio/",
       "versions_path": "../responsive-test-studio/versions.html",
       "version_registry": "../responsive-test-studio/versions.json",
       "icon": "../../assets/studios/responsive-test-studio.svg",
-      "purpose": "Responsive Test Studio 0.4.2 CURRENT validé : URL occupant au moins 50 % du viewport sur ordinateur, édition de l’URL même en plein écran, commandes unifiées, profils SVG PC/tablette/mobile, vue double, thèmes et zoom. Historique natif 0.4.1 et 0.4.0 conservé."
+      "purpose": "Responsive Test Studio 0.4.2 CURRENT validé : URL occupant au moins 50 % du viewport sur ordinateur, édition de l’URL même en plein écran, commandes unifiées, profils SVG PC/tablette/mobile, vue double, thèmes et zoom. Historique natif 0.4.1 et 0.4.0 conservé. Test 0.4.3 : fenêtre Modifier URL élargie, sans toucher au CURRENT.",
+      "test_path": "../responsive-test-studio/test/"
     }
   ],
   "future": [
