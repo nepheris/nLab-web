@@ -8,10 +8,11 @@ on:
       - 'assets/studios/responsive-test-studio.svg'
       - 'tests/responsive-test-studio.mjs'
       - 'tests/responsive-test-studio-toolbar.mjs'
+      - 'tests/responsive-test-studio-url-editor.mjs'
       - '.github/workflows/responsive-test-studio.yml'
   push:
     branches:
-      - responsive-test-studio-v0.4.2-current-2026-10-17
+      - responsive-test-studio-v0.4.3-wide-url-editor-2026-10-17
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,6 +31,7 @@ jobs:
           node --check APP-Applications/_shared/responsive-test/simulator.js
           node --check tests/responsive-test-studio.mjs
           node --check tests/responsive-test-studio-toolbar.mjs
+          node --check tests/responsive-test-studio-url-editor.mjs
           node --check APP-Applications/responsive-test-studio/test/app.js
           node --check APP-Applications/responsive-test-studio/versions/0.4.2/app.js
           node --check APP-Applications/responsive-test-studio/versions/0.4.2/simulator.js
@@ -54,7 +56,8 @@ jobs:
           apps=[s for s in catalog['studios'] if s.get('id')=='responsive-test-studio']
           assert len(apps)==1, 'Studio must have exactly one catalog record'
           v=json.loads((root/'responsive-test-studio/versions.json').read_text())
-          assert v['current']=='0.4.2' and v['test'] is None
+          assert v['current']=='0.4.2' and v['test']=='0.4.3'
+          assert any(x['version']=='0.4.3' and x['status']=='test' and x['href']=='./test/' for x in v['versions'])
           assert any(x['version']=='0.4.2' and x['status']=='current' and x['current'] and x['href']=='./' for x in v['versions'])
           assert any(x['version']=='0.4.1' and x['status']=='historical' and not x['current'] and x['href']=='./versions/0.4.1/' for x in v['versions'])
           assert any(x['version']=='0.4.0' and x['status']=='historical' and not x['current'] and x['href']=='./versions/0.4.0/' for x in v['versions'])
@@ -103,6 +106,11 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/responsive-test-studio-toolbar.mjs
+      - name: Validate expanded URL editor in 0.4.3 TEST
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/responsive-test-studio-url-editor.mjs
       - name: Upload TEST snapshots
         if: always()
         uses: actions/upload-artifact@v4
