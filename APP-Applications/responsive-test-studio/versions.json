@@ -1,15 +1,24 @@
 {
   "name": "Responsive Test Studio",
   "current": null,
-  "test": "0.2.0",
+  "test": "0.3.0",
   "versions": [
     {
-      "version": "0.2.0",
-      "label": "Responsive Test Studio 0.2.0 TEST",
+      "version": "0.3.0",
+      "label": "Responsive Test Studio 0.3.0 TEST",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-runtime",
+      "notes": "Trois boutons de thème Auto/Clair/Sombre avec préférence partagée nLab ; 21 résolutions classiques d’écran (VGA, 4:3, 5:4, 16:9, 16:10, ultra-wide, 4K), 1280 × 800 par défaut, vue double et zoom Ajuster."
+    },
+    {
+      "version": "0.2.0",
+      "label": "Responsive Test Studio 0.2.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.2.0/",
+      "isolation": "native",
       "notes": "Thèmes nLab clair/sombre/auto, mode double portrait-paysage côte à côte, iframe CSS indépendant par orientation, rechargement au changement de format, zoom et dimensions personnalisées."
     },
     {
