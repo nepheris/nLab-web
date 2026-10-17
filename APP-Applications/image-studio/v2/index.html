@@ -105,7 +105,7 @@ async function initScan2dDemos(){
  const select=$('scan2dDemoPicker'),status=$('scan2dDemoStatus');
  try{
   const files=await scan2dCorpus.list('image-studio',{extensions:['png'],localOnly:true});
-  scan2dFixtures=files.filter(f=>f.category==='scan2d'&&/^\\d{2}_image_de_test_.*\\.png$/i.test(f.name));
+  scan2dFixtures=files.filter(f=>f.category==='scan2d'&&f.name.endsWith('.png')&&f.name.includes('_image_de_test_'));
   if(scan2dFixtures.length!==7)throw Error('Attendu : 7 images Scan2D, trouvé : '+scan2dFixtures.length);
   select.replaceChildren(...scan2dFixtures.map((f,i)=>new Option(f.label||f.name,String(i))));
   status.textContent=scan2dFixtures.length+' cas disponibles · dimensions nominales de la pièce : 150 × 100 mm.';
