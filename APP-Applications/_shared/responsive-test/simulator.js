@@ -83,7 +83,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   const rawHeight=dual?Math.max(h+42,other.height+42):h+42;
   const scale=scaleMode==='fit'?clamp(Math.min(1,maxW/rawWidth,maxH/rawHeight),.10,1):Number(scaleMode);
   ui.stageB.hidden=!dual;
-  ui.stages.style.gap=dual?'18px':'0px';
+  ui.stages.style.gap=dual?18*scale+'px':'0px';
   dimensions(ui.boxA,ui.viewportA,ui.frame,w,h,scale,ui.stageA,ui.titleA);
   if(dual)dimensions(ui.boxB,ui.viewportB,ui.frameB,other.width,other.height,scale,ui.stageB,ui.titleB);
   ui.stages.style.width=Math.ceil(rawWidth*scale)+'px';
@@ -148,7 +148,10 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
   update();
   if(dual&&currentUrl){
    ui.frameB.src=currentUrl.href;
-   if(reloadOnChange)refresh();
+   if(reloadOnChange){
+    // Existing preview receives a fresh viewport-aware navigation; the new frame was just loaded.
+    try{ui.frame.contentWindow.location.reload()}catch{ui.frame.src=currentUrl.href}
+   }
   }
   message(dual?'Comparaison portrait et paysage : deux iframes indépendantes.':'Vue simple restaurée.');
   return true;
