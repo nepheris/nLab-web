@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Studio Core Lab — nLab · TEST</title>
+<link rel="stylesheet" href="../_shared/studio-v2/studio.css">
+<link rel="stylesheet" href="./lab.css">
+</head>
+<body class="coreLab" data-layout="auto">
+<a href="#lab-main" class="lab-skip">Aller aux outils</a>
+<header class="lab-header">
+  <div class="lab-identity"><span class="lab-icon" aria-hidden="true">◈</span><div><strong>Studio Core Lab</strong><small>nLab Studios · PR de validation · TEST</small></div></div>
+  <div class="lab-layout"><label for="lab-layout">Affichage</label><select id="lab-layout" aria-label="Mode d'affichage"><option value="auto">Automatique</option><option value="desktop">Bureau</option><option value="compact">Compact / mobile</option></select></div>
+</header>
+<div class="lab-context" role="note"><span class="lab-dot" aria-hidden="true"></span> Environnement d’essai local. Les fichiers restent dans ce navigateur. Aucune sauvegarde sur serveur.</div>
+<main id="lab-main" class="lab-main">
+  <section class="lab-stage-section" aria-labelledby="stage-title">
+    <div class="lab-section-title"><div><small>01 / Aperçu interactif</small><h1 id="stage-title">Tester les briques du Core</h1></div><span class="lab-chip">Chrome · Android</span></div>
+    <div class="lab-toolbar" role="toolbar" aria-label="Actions principales">
+      <button id="lab-picker" class="lab-primary" type="button">📁 Ouvrir des fichiers</button>
+      <button id="lab-demo" type="button">Exemple</button>
+      <button id="lab-undo" type="button" disabled>↶ Annuler</button>
+      <button id="lab-redo" type="button" disabled>↷ Rétablir</button>
+      <button id="lab-more" type="button" aria-expanded="false" aria-controls="lab-extra">⋯ Options</button>
+    </div>
+    <div id="lab-extra" class="lab-extra" hidden>
+      <button id="lab-open-window" type="button">Afficher la fenêtre</button>
+      <button id="lab-reset-window" type="button">Réinitialiser les fenêtres</button>
+      <button id="lab-reset-color" type="button">Couleur initiale</button>
+    </div>
+    <div class="lab-viewer-row"><div><strong>Viewer / Zoom</strong><span class="lab-muted"> Ajuster, 100 %, ± et préréglages</span></div><div id="lab-viewer" data-core-viewer-controls data-viewer-id="core-lab" data-min="25" data-max="300" data-step="25"></div></div>
+    <div class="lab-canvas" id="lab-canvas" aria-label="Zone de prévisualisation Core">
+      <div class="lab-canvas-grid"><div id="lab-preview" class="lab-preview">
+        <span class="lab-preview-tag">STUDIO CORE</span>
+        <strong id="lab-preview-title">Votre espace de test</strong>
+        <span id="lab-preview-subtitle">Importez un fichier ou chargez l’exemple.</span>
+        <span class="lab-file-count" id="lab-file-count">0 fichier sélectionné</span>
+      </div></div>
+    </div>
+    <div class="lab-status-row"><span role="status" id="lab-status">Initialisation…</span><span id="lab-undo-depth" class="lab-muted">Historique : 0 / 0</span></div>
+  </section>
+  <aside class="lab-side" aria-labelledby="modules-title">
+    <div class="lab-section-title"><div><small>02 / Composants</small><h2 id="modules-title">Panneau de test</h2></div></div>
+    <section class="lab-card"><div class="lab-card-heading"><strong>Color Picker</strong><span>HEX · RGB · HSL</span></div><div id="lab-colors" aria-label="Sélecteur de couleur Core"></div><p class="lab-hint">Changez la couleur : Annuler et Rétablir doivent fonctionner.</p></section>
+    <section class="lab-card"><div class="lab-card-heading"><strong>Fenêtres</strong><span>Déplacer · Masquer · Restaurer</span></div><p>Testez le focus, la barre de fenêtre, sa fermeture puis sa réouverture.</p><button id="lab-window-button" type="button">Ouvrir la fenêtre Core</button></section>
+    <section class="lab-card"><div class="lab-card-heading"><strong>Input Picker</strong><span>Fichiers · Dossiers · Photo</span></div><p>Ouvrez des fichiers depuis Chrome. Sur Android, essayez une photo et le sélecteur natif.</p><p class="lab-hint" id="lab-files">Aucun fichier choisi.</p></section>
+    <section class="lab-card"><div class="lab-card-heading"><strong>État du Lab</strong><span id="lab-device">Détection…</span></div><ul class="lab-checks">
+      <li><span id="lab-check-viewer">○</span> Zoom Core</li>
+      <li><span id="lab-check-colors">○</span> Couleur Core</li>
+      <li><span id="lab-check-history">○</span> Historique Undo/Redo</li>
+      <li><span id="lab-check-windows">○</span> Fenêtres Core</li>
+      <li><span id="lab-check-picker">○</span> Input Picker</li>
+    </ul></section>
+  </aside>
+</main>
+<div id="lab-floating-window" class="studioWindow lab-floating-window" data-scope="core" hidden>
+ <div class="lab-floating-content"><h2>Fenêtre Core</h2><p>Ce panneau utilise le véritable composant partagé de gestion des fenêtres.</p><p>Essayez de la déplacer sur ordinateur, de la masquer puis de la restaurer.</p><button id="lab-close-window" type="button">Masquer</button></div>
+</div>
+<nav class="lab-bottom" aria-label="Navigation rapide mobile">
+ <button type="button" data-lab-mobile="files"><span aria-hidden="true">📁</span>Fichiers</button>
+ <button type="button" data-lab-mobile="undo"><span aria-hidden="true">↶</span>Annuler</button>
+ <button type="button" data-lab-mobile="redo"><span aria-hidden="true">↷</span>Rétablir</button>
+ <button type="button" data-lab-mobile="options"><span aria-hidden="true">⋯</span>Options</button>
+</nav>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
