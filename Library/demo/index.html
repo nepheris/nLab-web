@@ -147,6 +147,18 @@ async function init(){
    const data=await r.json();return{id:s.id,label:s.label,manifestUrl,files:(data.files||[])};
   }));
   groups=results.filter(x=>x.status==='fulfilled').map(x=>x.value);
+  // Resources catalogued outside studio-specific manifests appear under a distinct folder.
+  try{
+   const registryUrl=new URL('./demo-registry.json',location.href),response=await fetch(registryUrl,{cache:'no-store'});
+   if(response.ok){
+    const registry=await response.json(),existing=new Set();
+    for(const group of groups)for(const f of group.files){const url=fileUrl(group,f);if(url)existing.add(url)}
+    const extras=(registry.supplemental||[]).filter(x=>x.availability==='public-local'&&x.fileUrl).map(x=>({
+     name:x.name,label:x.name,category:x.category,description:'Ressource classée dans le registre transversal',storage:'local',path:x.fileUrl
+    })).filter(x=>!existing.has(new URL(x.path,registryUrl).href));
+    if(extras.length)groups.push({id:'cross-category',label:'Autres démos classées',manifestUrl:registryUrl,files:extras});
+   }
+  }catch(e){console.warn('Registre complémentaire non disponible',e)}
   const failures=results.filter(x=>x.status==='rejected');
   if(!groups.length)throw Error('Aucun manifeste consultable');
   if(new URLSearchParams(location.search).has('scan2d')){chosen='image-studio';search.value='Scan2D'}
