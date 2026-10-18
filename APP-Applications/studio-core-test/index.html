@@ -38,6 +38,18 @@
     .labCode{overflow-wrap:anywhere;font-family:ui-monospace,Consolas,monospace;font-size:11px}
     @media(max-width:800px){.studioMain{display:block}.labSidebar{margin-bottom:10px}.labPanel{padding:12px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
+
+    .coreAcquireActions,.coreAcquireUrl>div{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+    .coreAcquireActions button,.coreAcquireUrl button,.coreAcquireItem button{font:inherit;min-height:36px;padding:7px 11px;border-radius:7px;border:1px solid var(--nlab-line,#d9e0e6);background:var(--nlab-card,#fff);color:inherit}
+    .coreAcquireDrop{padding:22px;border:2px dashed #8ba9c4;border-radius:11px;background:var(--nlab-bg,#f5f7f9);text-align:center;font-size:13px;cursor:pointer}
+    .coreAcquireDragOver .coreAcquireDrop{border-color:var(--nlab-brand,#0057b8);background:#e7f3ff}
+    .coreAcquireUrl{font-size:12px;margin:10px 0}.coreAcquireUrl input{flex:1;min-width:160px;padding:10px;border:1px solid var(--nlab-line,#d9e0e6);border-radius:7px;background:var(--nlab-card,#fff);color:inherit}
+    .coreAcquireSummary{font-size:12px;margin:8px 0;color:var(--nlab-muted,#667582)}
+    .coreAcquireList{display:grid;gap:5px;max-height:280px;overflow:auto}
+    .coreAcquireItem{display:flex;align-items:center;gap:8px;padding:7px;border:1px solid var(--nlab-line,#d9e0e6);border-radius:7px;font-size:12px}
+    .coreAcquireItem label{min-width:0;flex:1;display:flex;gap:6px;align-items:center}
+    .coreAcquireName{min-width:0;overflow-wrap:anywhere}.coreAcquireItem small{font-size:10px;color:var(--nlab-muted,#667582)}
+    .coreAcquireEmpty{font-size:12px;color:var(--nlab-muted,#667582)}
   </style>
 </head>
 <body>
@@ -48,7 +60,7 @@
       <h1 class="labHeading">Studio Core Test Lab</h1>
       <p class="labLead">Banc d’essai du véritable Studio Core partagé. Aucun moteur métier ni ancien Studio n’est modifié ici.</p>
       <div class="labBadges">
-        <span class="labBadge">TEST 0.1.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
+        <span class="labBadge">TEST 0.2.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
       </div>
       <div class="labToolbar"><button id="labRunChecks" class="labPrimary" type="button">Exécuter les contrôles</button></div>
       <p id="labCheckSummary" class="labHint" role="status">Vérification du Core…</p>
@@ -72,6 +84,14 @@
           <a id="labResponsiveLink" href="../responsive-test-studio/">Simuler mobile / tablette / PC ↗</a>
           <a href="../studios/">Retour aux Studios ↗</a>
         </div>
+      </section>
+      <section class="labPanel" id="labAcquisitionPanel">
+        <div class="labEyebrow">Fichiers · module commun Studio Core</div>
+        <h2 class="labHeading">Importer, parcourir et sélectionner</h2>
+        <p class="labLead">Fichiers multiples, répertoire, glisser-déposer, URL CORS, sélection et retrait. Aucune donnée n’est envoyée au serveur ; le Studio métier reçoit les fichiers sélectionnés.</p>
+        <div id="labFileAcquisition"></div>
+        <p id="labAcquiredInfo" class="labStatus" aria-live="polite">Aucun fichier choisi.</p>
+        <div class="labToolbar"><a href="../../Library/demo/?folder=all">Ouvrir le corpus démo ↗</a></div>
       </section>
       <section class="labPanel">
         <div class="labEyebrow">Échantillon métier sans dépendance</div>
