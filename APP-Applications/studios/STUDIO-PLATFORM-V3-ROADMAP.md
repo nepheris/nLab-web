@@ -1,5 +1,24 @@
 # nLab Studio Platform V3 — implementation roadmap
 
+## Chantier 3.4.1 TEST — Core Lab 0.2 et démos (18 octobre 2026)
+
+**Branche / PR :** `studio-core-test-v0.2-acquisition-demos-audit-20261018` / [PR #84](https://github.com/nepheris/nLab-web/pull/84).
+**Audit :** [STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md](./STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md).
+
+- CORE-201 Audit statique des 15 Studios / Core vs service vs métier : **DONE**.
+- CORE-202 Acquisition Core opt-in via `input-picker.js` existant, aucune copie du module : **IMPLEMENTED TEST**.
+- CORE-203 Navigation rail Core repliable, Historique/Propriétés, réglage Responsive optionnel, icône plein écran : **IMPLEMENTED TEST**.
+- CORE-204 Démos : dossier Icônes, tous fichiers filtrables, previews de repli, lien Lab : **IMPLEMENTED TEST**.
+- CORE-205 Recette Chrome desktop/mobile + galerie : **CI**, PWA physique et UX utilisateur **TODO**.
+- CORE-206 Migration progressive des surfaces PDF, Image, OCR et File vers l'entrée canonique : **PLANNED**.
+- CORE-207 Standardiser nommage/export, métadonnées et progression sans forcer des conversions métier dans le Core : **PLANNED**.
+- CORE-208 Multi-fenêtres dockées/flottantes, clavier et responsive sur 15 Studios : **PLANNED**.
+
+**Gates :** ne pas considérer l'audit statique comme validation 15/15, ni une PR comme une publication. Conserver les historiques, contrôler CI et Pages avant promotion.
+
+---
+
+
 ## Chantier — Studio Core Test Lab / mode application (18 octobre 2026)
 
 | ID | Tâche | État sur branche TEST | Gate |
