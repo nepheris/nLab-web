@@ -1,24 +1,24 @@
 {
   "name": "Responsive Test Studio",
-  "current": "0.4.2",
-  "test": "0.4.3",
+  "current": "0.4.3",
+  "test": null,
   "versions": [
     {
       "version": "0.4.3",
-      "label": "Responsive Test Studio 0.4.3 TEST",
-      "status": "test",
-      "current": false,
-      "href": "./test/",
-      "isolation": "test-runtime",
-      "notes": "Agrandissement ciblé de la fenêtre Modifier URL de 520 à 780 px maximum, adaptée à la largeur de l'écran ; meilleure lecture et saisie des longues URL et chemins de fichiers. Toutes les autres commandes et le CURRENT 0.4.2 restent inchangés."
-    },
-    {
-      "version": "0.4.2",
-      "label": "Responsive Test Studio 0.4.2 CURRENT",
+      "label": "Responsive Test Studio 0.4.3 CURRENT",
       "status": "current",
       "current": true,
       "href": "./",
       "isolation": "current-runtime",
+      "notes": "Version 0.4.3 ergonomique approuvée : champ Modifier URL élargi à 780 px, adresse affichée sur 50 % de la barre desktop, changement d’URL en plein écran. CURRENT accessible comme application web sur PC fixe/portable avec manifeste d’application, logo nLab et retour accueil ; accès partagé depuis Studio Core V2. Runtime/CSS préservés dans versions/0.4.3/."
+    },
+    {
+      "version": "0.4.2",
+      "label": "Responsive Test Studio 0.4.2 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.4.2/",
+      "isolation": "native",
       "notes": "Version 0.4.1 validée ; dernière optimisation d'ergonomie : la zone URL visible occupe au minimum 50 % de la barre viewport sur ordinateur. Commandes URL/Actualiser/Onglet/Vue double/Réglages/Plein écran regroupées dans le viewport, changement d'URL possible en plein écran. CSS et moteur figés dans versions/0.4.2/. Aucun canal TEST actif."
     },
     {
