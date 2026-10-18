@@ -40,7 +40,11 @@ async function scenario(name,viewport){
   assert(await page.locator('#labCollection').evaluate(el=>el.classList.contains('collection-list')),name+': list view missing');
   await page.locator('#labViewThumbs').click();
   assert(await page.locator('#labCollection').evaluate(el=>el.classList.contains('collection-thumbs')),name+': thumbnail view missing');
-  await page.locator('#labCollection .collectionThumbTools [data-collection-rotate="90"]').first().click({force:true});
+  // The rotate controls are intentionally hidden on small thumbnail cards.
+  // Enlarge cards before checking the contextual buttons.
+  for(let i=0;i<7;i++)await page.locator('#labThumbPlus').click();
+  assert(await page.locator('#labCollection .collectionThumbTools [data-collection-rotate="90"]').first().isVisible(),name+': rotate action should be visible on large thumbnails');
+  await page.locator('#labCollection .collectionThumbTools [data-collection-rotate="90"]').first().click();
   assert(await page.locator('#labCollection .collectionThumbMedia').first().evaluate(el=>el.style.getPropertyValue('--collection-item-rotation'))==='90deg',name+': thumbnail +90 rotation failed');
   assert(await page.evaluate(()=>window.NLABStudioUndoRedo?.get?.().undoDepth>=1),name+': thumbnail rotation missing undo transaction');
   await page.locator('#labFilesNative').setInputFiles([{name:'image-1.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="#00f"/></svg>')},{name:'image-2.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="#f00"/></svg>')}]);
