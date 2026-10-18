@@ -456,8 +456,8 @@
       ]
     },
     "pdf-studio": {
-      "test": "2.11.0",
-      "path": "APP-Applications/pdf-studio/v2/index.html",
+      "test": "2.12.0",
+      "path": "APP-Applications/pdf-studio/v2-ux/index.html",
       "runtime": "APP-Applications/pdf-studio/v2/pdf-v2.js",
       "required_ids": [
         "sectionConfig",
