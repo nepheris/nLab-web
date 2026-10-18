@@ -139,3 +139,69 @@ body[data-studio-ux-theme="dark"] .studioUx a{color:#9bd6ff!important;text-decor
  body[data-studio-ux-theme] .studioUx *,body[data-studio-ux-theme] .studioUx *::before,
  body[data-studio-ux-theme] .studioUx *::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
 }
+
+
+/* The approved Lab 0.5 stylesheet has high-specificity literal light colors.
+   Scope extra selectors only to the opt-in Core TEST consumer. */
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxMain,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxWorkBody{
+ background:var(--ux-bg)!important;color:var(--ux-fg)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxRail,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxSideContent,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxSideContent>header,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxWorkHeader,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxPreview>header,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxPreviewToolbar,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryAccordion>summary{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem>button[data-collection-open]{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxInfoRow strong,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem>button[data-collection-open] strong,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryEntryHead strong,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryGroup>summary,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxSideContent>header strong{
+ color:var(--ux-fg)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem>button[data-collection-open] small,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem>button[data-collection-open] em,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryCounters,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryHint{
+ color:var(--ux-muted)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxPreviewCanvas{
+ background:var(--ux-preview)!important;color:var(--ux-fg)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryHint,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryCounters,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryEyebrow,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryEntryHead time,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryEmpty{
+ color:var(--ux-muted)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxSurfaceDescription,
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxSurfacePanel p{
+ font-size:12px;line-height:1.5;color:var(--ux-muted)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxSurfaceActions{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxSurfaceActions button{
+ width:100%;min-height:40px;padding:8px 9px;font-size:12px;border:1px solid var(--ux-border);
+ border-radius:7px;background:var(--ux-control)!important;color:var(--ux-control-fg)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxHistoryCompact .uxHistoryEntryDetails{font-size:10px}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxHistoryCompact .uxHistoryEntryDetails p{display:none}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxHistoryFull{
+ min-height:36px
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] #studioUxWorkBody:focus{outline:none}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx button:focus-visible,
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx [role="tab"]:focus-visible{
+ outline:2px solid var(--ux-accent)!important;outline-offset:2px
+}
