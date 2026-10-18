@@ -10,7 +10,7 @@
 | CORE-222 | Enregistrer / Enregistrer sous : `template-engine.js`, variables copiables/commentées, chemin de classement, `output-service.js`, dossier avec autorisation | IMPLEMENTED TEST | sortie **métadonnées JSON/CSV/TXT uniquement**, pas de PDF/Image modifié |
 | CORE-223 | Propriétés, couleur HEX/RGB/HSL via `color-control.js`, historique/Core Undo-Redo, thèmes et panneau des réglages | IMPLEMENTED TEST | contrôle clavier/UX manuelle |
 | CORE-224 | Version antérieure 0.3.0 figée ; snapshots 0.1/0.2 préservés | IMPLEMENTED TEST | contrôler liens des versions |
-| CORE-225 | Tests CI Core Lab (Chrome desktop + mobile + enregistrement CSV, audit/sécurité) | IN PROGRESS | ne pas confondre ciblé et exhaustive Image |
+| CORE-225 | Tests CI Core Lab (Chrome desktop + tablette + mobile, enregistrement CSV et aide variables), audit et PDF | **PASS — Chrome Core / Audit / PDF** | Suite exhaustive Image Studio FAIL sur timeout historique (STU-20261018-10), recette appareils réels TODO |
 | CORE-226 | Étendre le shell aux PDF/Image/OCR/File selon un manifeste opt-in et après validation humaine | PLANNED | pas de migration CURRENT automatique |
 | CORE-227 | Rotation effective des octets image/PDF, formats métier et compteurs multi-appareils | PLANNED | moteurs et contrats métier séparés |
 
