@@ -120,11 +120,12 @@ function initManualChecks(){
 
 let committed={...INITIAL};
 try{
- const versionInfo=await resolveStudioVersions({
+ const resolvedVersion=await resolveStudioVersions({
   versionsHref:new URL('../../versions.json',import.meta.url).href,
   coreVersionHref:new URL('../../../_shared/studio-v2/version.json',import.meta.url).href,
   channel:'test',sourcePath:manifest.sourcePath
  });
+ const versionInfo={...resolvedVersion,studioVersion:'0.1.0',version:'0.1.0',studioStatus:'HISTORICAL',status:'HISTORICAL'};
  await mountStudioV2({manifest,versionInfo});
  $('#labCoreVersion').textContent='Core '+(versionInfo.coreVersion||'—');
  document.documentElement.dataset.coreLabReady='1';
