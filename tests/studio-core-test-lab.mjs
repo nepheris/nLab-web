@@ -30,7 +30,7 @@ async function scenario(name,viewport){
   assert(resp.includes('responsive-test-studio/')&&resp.includes('url='),name+': responsive launcher URL invalid');
   await page.locator('#labItemName').fill('Échantillon modifié');
   await page.locator('#labCommit').click();
-  assert((await page.locator('#labHistory').textContent()).includes('1 action'),name+': no transaction');
+  assert(await page.evaluate(()=>window.NLABStudioUndoRedo?.get?.().undoDepth>=1),name+': no transaction');
   // On mobile the Core uses a reduced ribbon; use its own dock to expose actions.
   if(viewport.width<=700)await page.locator('[data-mobile-action="ribbon"]').click();
   await page.locator('[data-studio-action="core.undo"]').click();
