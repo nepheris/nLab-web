@@ -43,7 +43,8 @@ async function scenario(name,viewport){
   // The rotate controls are intentionally hidden on small thumbnail cards.
   // Enlarge cards before checking the contextual buttons.
   for(let i=0;i<7;i++)await page.locator('#labThumbPlus').click();
-  assert(await page.locator('#labCollection .collectionThumbTools [data-collection-rotate="90"]').first().isVisible(),name+': rotate action should be visible on large thumbnails');
+  const rotateDiagnostics=await page.locator('#labCollection .collectionItem').first().evaluate(card=>{const button=card.querySelector('[data-collection-rotate="90"]'),tools=button?.parentElement,thumb=card.querySelector('.collectionThumb');return{cardWidth:card.getBoundingClientRect().width,enabled:card.dataset.rotateEnabled,view:card.closest('.collectionBrowser')?.className,toolsDisplay:tools?getComputedStyle(tools).display:'none',buttonDisplay:button?getComputedStyle(button).display:'none',thumbWidth:thumb?.getBoundingClientRect().width,zoom:card.closest('.collectionBrowser')?.dataset.thumbnailSize}});
+  assert(await page.locator('#labCollection .collectionThumbTools [data-collection-rotate="90"]').first().isVisible(),name+': rotate action should be visible on large thumbnails; '+JSON.stringify(rotateDiagnostics));
   await page.locator('#labCollection .collectionThumbTools [data-collection-rotate="90"]').first().click();
   assert(await page.locator('#labCollection .collectionThumbMedia').first().evaluate(el=>el.style.getPropertyValue('--collection-item-rotation'))==='90deg',name+': thumbnail +90 rotation failed');
   assert(await page.evaluate(()=>window.NLABStudioUndoRedo?.get?.().undoDepth>=1),name+': thumbnail rotation missing undo transaction');
