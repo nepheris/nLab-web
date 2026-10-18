@@ -1,3 +1,4 @@
+import{openResponsiveTestStudio}from'./responsive-test-launcher.js';
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible,setStatus}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings,loadStudioSettings}from'./settings.js';
 import{enhanceStudioWindow,showStudioWindow,hideStudioWindow,bringStudioWindowToFront,restoreAllStudioWindows}from'./window-system.js';
@@ -24,7 +25,8 @@ const CORE_RIBBON_GROUPS=[
   ]},
   {id:'core-command',label:'Commandes',scope:'core',items:[
     {id:'core-command-palette',action:'core.commands',label:'Commandes',icon:'command',scope:'core',featureId:'core.commands',capability:'core.commands',status:'stable',primary:true,shortcut:'Ctrl+K'},
-    {id:'core-properties',action:'core.properties',label:'Propriétés',icon:'settings',scope:'core',featureId:'core.properties',capability:'core.properties',status:'stable'}
+    {id:'core-properties',action:'core.properties',label:'Propriétés',icon:'settings',scope:'core',featureId:'core.properties',capability:'core.properties',status:'stable'},
+    {id:'core-responsive-test',action:'core.responsive-test',label:'Test responsive',icon:'screen',scope:'core',featureId:'core.responsive-test',capability:'core.responsive-test',status:'stable',title:'Tester cette page dans Responsive Test Studio'}
   ]}
 ];
 function itemButton(it){
@@ -131,6 +133,9 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   document.body.dataset.studioVersion=versionInfo.version||'';
   document.body.dataset.studioCoreVersion=versionInfo.coreVersion||'';
   registerCapabilities(manifest);
+  document.addEventListener('studio-v2:action',event=>{
+    if(event.detail?.action==='core.responsive-test')openResponsiveTestStudio();
+  });
   const syncUndoRedoButtons=()=>{
     const st=globalThis.NLABStudioUndoRedo?.get?.()||{canUndo:false,canRedo:false};
     const undoBtn=qs('[data-studio-action="core.undo"]',chrome),redoBtn=qs('[data-studio-action="core.redo"]',chrome);
