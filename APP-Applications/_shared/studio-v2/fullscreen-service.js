@@ -13,7 +13,8 @@ export function createFullscreenController({target,button,onChange=()=>{},onMess
  const synchronize=()=>{
   if(disposed)return;
   const active=isFullscreen();
-  button.textContent=active?'⛶ Quitter plein écran':'⛶ Plein écran';
+  const label=button.querySelector('.ribbonBtnLabel')||button;
+  label.textContent=active?'⛶ Quitter plein écran':'⛶ Plein écran';
   button.setAttribute('aria-pressed',String(active));
   button.setAttribute('title',active?'Quitter le plein écran':'Afficher en plein écran');
   target.dataset.fullscreen=String(active);
