@@ -1,15 +1,24 @@
 {
   "name": "Studio Core Test Lab",
   "current": null,
-  "test": "0.6.0",
+  "test": "0.7.0",
   "versions": [
     {
-      "version": "0.6.0",
-      "label": "Studio Core Test Lab 0.6.0 TEST · chantier Core d’abord",
+      "version": "0.7.0",
+      "label": "Studio Core Test Lab 0.7.0 TEST · modèles et réglages",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-path",
+      "notes": "Paramètres personnels locaux 00, variables par catégories et aide au survol, date:masque configurable, FOLDER/PARENT/SUBFOLDER/RELATIVE_FOLDER, aides contextuelles contenu/format, volet latéral repliable et aperçu masquable, simulation bureau/tablette/mobile, thème partagé. Valider sur appareil réel avant migration."
+    },
+    {
+      "version": "0.6.0",
+      "label": "Studio Core Test Lab 0.6.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.6.0/",
+      "isolation": "snapshot",
       "notes": "Validation Core avant migration métier : nouvel onglet Planche de travail, Historique exhaustif avec favoris, navigation et détail, thèmes communs clair/sombre/auto avec lisibilité, onglets accessibles au clavier. Archives 0.1 à 0.5 conservées. Aucun déploiement Image/PDF/OCR effectué."
     },
     {
