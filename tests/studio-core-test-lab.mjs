@@ -106,8 +106,10 @@ async function scenario(name,viewport){
   assert(await page.locator('.uxTokenFamily').count()===6,name+': template categories missing');
   assert(await page.locator('#uxSaveProfileMount [data-template-profile="FIRST_NAME"]').count()===1,name+': personal profile 00 missing');
   await page.locator('#uxSaveProfileMount [data-template-profile="FIRST_NAME"]').fill('Essai');
+  await page.locator('#uxSaveProfileMount [data-template-profile="DATE_A"]').fill('2025-02-03');
   await page.locator('#uxSavePattern').fill('{FIRST_NAME}_{DATE_A:DD-MM-YYYY}');
   assert((await page.locator('#uxSavePreview').textContent()).includes('Essai_'),name+': local personal variable not resolved');
+  assert((await page.locator('#uxSavePreview').textContent()).includes('03-02-2025'),name+': configured Date A not formatted');
   await page.locator('#uxSaveDateMask').selectOption('DD-MM-YYYY');
   assert((await page.locator('.uxTokenFamily[data-family="date"] [data-template-token="DATE_A"]').textContent()).includes(':DD-MM-YYYY'),name+': formatted date token missing');
   await page.locator('.uxTokenFamily[data-family="date"] .uxToken[data-token-key="DATE_A"] button').nth(1).click();
