@@ -95,3 +95,27 @@ Le même module `fullscreen-service.js` gère **entrer / quitter plein écran** 
 - **Version 0.4.3 archivée** : le simulateur d'origine est figé dans `versions/0.4.3/` ; l'application CURRENT consomme la version partagée, sans modifier la copie historique.
 - Aucun émulateur de système d'exploitation ni contournement des restrictions Fullscreen API ; l'activation exige un geste utilisateur et le navigateur reste maître des permissions.
 - Ne pas dupliquer la logique dans les Studios spécialisés ; pour ajouter une autre cible métier, utiliser le service Core.
+
+## Mode application PWA — contrat Core (laboratoire TEST)
+
+Le service physique commun est `application-mode-service.js`, API
+`createApplicationModeController({button,onChange,onMessage,hideUnavailable})`.
+La commande `core.app-mode` figure dans le ruban de tous les Studios V2 qui
+utilisent le Core et dans leur palette de commandes. Le runtime indique
+`standalone`, `installable`, `browser` ou `not-configured` sans prétendre
+forcer l’installation.
+
+**Le mode application n’est pas un plein écran** : `display: standalone`
+supprime les onglets de la fenêtre installée, mais le mode fullscreen conserve
+son contrôleur distinct. Les deux états se combinent sans être confondus.
+
+Pour qu’un Studio soit réellement installable, son entrée HTML doit avoir un
+`<link rel="manifest" href="...">` vers **son propre** manifeste, un scope et un
+start_url dédiés, ainsi que les icônes et critères du navigateur. Le Studio
+Core Test Lab est le banc d'essai de référence pour cette migration. Le bouton
+commun est disponible partout, mais indique explicitement si le manifeste
+n’est pas configuré ou si le navigateur ne propose pas l’installation.
+
+Responsive Test Studio CURRENT consomme ce service sans toucher aux snapshots
+historiques. Aucun service worker/hors ligne ou support universel de l’invite
+d’installation n’est annoncé sans recette réelle.

@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "nLab Studio Core Test Lab",
+  "short_name": "Core Test Lab",
+  "description": "Laboratoire isolé des fonctions transversales Studio Core nLab.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#0057b8",
+  "icons": [
+    {
+      "src": "../../assets/branding/nlab-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
