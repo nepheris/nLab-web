@@ -1,3 +1,23 @@
+## Chantier Studio Core 3.6.0 TEST — Intégration de la maquette UX 0.5 (18 octobre 2026)
+
+**Branche :** `studio-core-3-6-ux-workspace-20261018` · [PR #86](https://github.com/nepheris/nLab-web/pull/86) · **Lab 0.4.0 TEST**. Aucun changement de version CURRENT.
+
+| ID | Livraison | État | Gate |
+| --- | --- | --- | --- |
+| CORE-219 | Composant `workspace-layout.js/css` partageable **opt-in** : rail Outils, Fichiers, Historique, Propriétés, Tâches, Recherche, Réglages ; fenêtres détachables via `window-system.js` | IMPLEMENTED TEST | CI desktop/mobile + validation humaine |
+| CORE-220 | Présentation type PDF Studio : ruban Fichier/Édition/Affichage, planche de travail, collection et aperçu distincts, responsive auto mobile/tablette/desktop | IMPLEMENTED TEST | comparer à maquette 0.5 et vérifier tablette réelle |
+| CORE-221 | Acquisition et collection réelles conservées : `input-picker.js`, `collection-browser.js`, `thumbnail-service.js`, tri/sélection/rotations visuelles | IMPLEMENTED TEST | pas de conversion métier implicite |
+| CORE-222 | Enregistrer / Enregistrer sous : `template-engine.js`, variables copiables/commentées, chemin de classement, `output-service.js`, dossier avec autorisation | IMPLEMENTED TEST | sortie **métadonnées JSON/CSV/TXT uniquement**, pas de PDF/Image modifié |
+| CORE-223 | Propriétés, couleur HEX/RGB/HSL via `color-control.js`, historique/Core Undo-Redo, thèmes et panneau des réglages | IMPLEMENTED TEST | contrôle clavier/UX manuelle |
+| CORE-224 | Version antérieure 0.3.0 figée ; snapshots 0.1/0.2 préservés | IMPLEMENTED TEST | contrôler liens des versions |
+| CORE-225 | Tests CI Core Lab (Chrome desktop + tablette + mobile, enregistrement CSV et aide variables), audit et PDF | **PASS — Chrome Core / Audit / PDF** | Suite exhaustive Image Studio FAIL sur timeout historique (STU-20261018-10), recette appareils réels TODO |
+| CORE-226 | Étendre le shell aux PDF/Image/OCR/File selon un manifeste opt-in et après validation humaine | PLANNED | pas de migration CURRENT automatique |
+| CORE-227 | Rotation effective des octets image/PDF, formats métier et compteurs multi-appareils | PLANNED | moteurs et contrats métier séparés |
+
+**Point de vigilance :** la suite exhaustive spécialisée Image Studio dispose toujours d'un timeout historique ; il n'est pas considéré comme validé par les tests Core ciblés. PWA Android/iOS et permission dossier nécessitent recette réelle.
+
+---
+
 ## Chantier Core 3.5.0 TEST — Collection vignettes, zoom et rotations (18 octobre 2026)
 
 **Branche :** `studio-core-3-5-collection-thumbnails-20261018` · **Produit :** Core TEST 3.5.0, Studio Core Test Lab **0.3.0 TEST**.

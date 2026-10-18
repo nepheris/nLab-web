@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "channel": "test",
-  "notes": "Core 3.5.0 TEST : CollectionBrowser opt-in zoom −/+ et auto-fit responsive des vignettes, rotations ±90° visuelles sur les cartes suffisamment larges, événements et sélection conservés. Test Lab 0.3.0 : acquisition canonique, tri, sélection multiple, undo/redo et dépôt local. Historique 0.2.0 figé. Aucune conversion métier forcée ni migration CURRENT.",
+  "notes": "Studio Core 3.6.0 TEST — workspace-layout.js + CSS communs opt-in, onglets Outils/Fichiers/Historique/Propriétés/Tâches/Recherche/Réglages, panneaux flottants via window-system, responsive desktop/tablette/mobile. Lab 0.4 UX v0.5 intégrée au vrai Core, naming via template-engine et output-service, color-control et miniatures. Aucune migration CURRENT, export métadonnées de démo uniquement.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
