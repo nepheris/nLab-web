@@ -1,3 +1,22 @@
+## PDF Studio 2.12.0 TEST — première adoption de l’UX Core 0.5 validée (18 octobre 2026)
+
+**Décision :** l’interface Studio Core Test Lab 0.5.0, approuvée par le pilote, devient une interface réelle de **PDF Studio** en version isolée `APP-Applications/pdf-studio/v2-ux/`. Les versions CURRENT 0.9.10, TEST antérieure 2.11.0 et toutes les historiques restent accessibles. Le moteur PDF, les annotations, le nommage et les exports ne sont pas remplacés.
+
+| ID | Tâche | État | Gate |
+| --- | --- | --- | --- |
+| CORE-236 | Créer `pdf-studio/v2-ux/`, identité UX 0.5, route TEST 2.12.0 | IMPLEMENTED TEST | vérifier `versions.json` + `gh-pages` |
+| CORE-237 | Adopter le `workspace-layout.js/css` commun (classeur 7 onglets, panels détachables, desktop/tablette/mobile) | IMPLEMENTED TEST | captures et recette réelle |
+| CORE-238 | Réutiliser le **même moteur PDF V2**, la même instance `CollectionBrowser` et le service de miniatures ; aucune duplication de moteur | IMPLEMENTED TEST | ouvrir/éditer/rotation/enregistrer un PDF réel |
+| CORE-239 | Brancher la frise Historique commune `history-sidebar.js` et Undo/Redo, tri/sélection/zoom des fichiers | IMPLEMENTED TEST | vérification filtrage/historique |
+| CORE-240 | Fenêtre Enregistrer sous sur les **vrais** contrôles PDF `sectionOutput` et `sectionNaming` avec variables/dossier, sans export factice | IMPLEMENTED TEST | tests nommage et export PDF, permission dossier manuelle |
+| CORE-241 | Corriger le bouton d’ouverture de TEST sur l’accueil PDF : lire la route du registre | IMPLEMENTED TEST | CURRENT stable inchangée |
+| CORE-242 | Recette CI Chrome 3 profils, moteur PDF réel et sortie PDF, Historique et captures | **CI PILOTE PASS / VALIDATION UTILISATEUR PENDING** | navigateur Chrome desktop/tablette/mobile, entrée PDF et export PDF réel, annulation/historique, capture ; audit Studios PASS, PDF public et Responsive contrôlés séparément |
+| CORE-243 | Étendre la surface à Image/OCR/File | TODO APRÈS ACCEPTATION PDF | nouvelle version TEST par Studio, jamais de bascule automatique CURRENT |
+
+**Limites :** le pilote adopte l’UX pour les collections et le document, mais conserve dans Outils les contrôles complexes du PDF existant. Les rotations sur vignettes seules ne remplacent pas les opérations PDF métier. Les tests de permission locale sur Android, Drive et la suite exhaustive Image Studio sont séparés.
+
+---
+
 ## Studio Core 3.7.0 TEST — Parité visuelle avec la maquette UX 0.5 (18 octobre 2026)
 
 **Objectif validé :** privilégier la structure de la maquette acceptée par le pilote, sans réinventer l'UX au fil des passes. Version **Lab 0.5.0 TEST** avec snapshot 0.4.0 conservé, CURRENT inchangé.

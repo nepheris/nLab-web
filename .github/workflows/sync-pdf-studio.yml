@@ -228,7 +228,9 @@ jobs:
           item=next((x for x in reg.get('versions',[]) if str(x.get('version'))==str(test)),None)
           assert item, f'PDF Studio TEST {test} absent from versions[]'
           assert str(item.get('status','')).lower()=='test', f'PDF Studio TEST {test} status invalide'
-          assert item.get('href')=='./v2/', f'PDF Studio TEST {test} doit cibler ./v2/'
+          assert item.get('href') in ['./v2/','./v2-ux/'], f'PDF Studio TEST {test} doit cibler une route PDF valide'
+          if item.get('href')=='./v2-ux/':
+            assert Path('APP-Applications/pdf-studio/v2-ux/index.html').is_file()
           print('PDF Studio TEST registry:',test)
           PY
 

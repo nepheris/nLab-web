@@ -1,0 +1,69 @@
+name: PDF Studio 2.12 UX Pilot Acceptance
+on:
+  pull_request:
+    paths:
+      - 'APP-Applications/pdf-studio/v2-ux/**'
+      - 'APP-Applications/pdf-studio/v2/pdf-v2.js'
+      - 'APP-Applications/pdf-studio/versions.json'
+      - 'APP-Applications/pdf-studio/index.html'
+      - 'APP-Applications/_shared/studio-v2/workspace-layout.*'
+      - 'APP-Applications/_shared/studio-v2/history-sidebar.js'
+      - 'tests/pdf-studio-ux-v2-12.mjs'
+      - '.github/workflows/pdf-studio-ux-pilot.yml'
+  workflow_dispatch:
+jobs:
+  pdf-ux-real-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check syntax and TEST isolation
+        run: |
+          node --check APP-Applications/pdf-studio/v2-ux/pdf-ux.js
+          node --check APP-Applications/pdf-studio/v2/pdf-v2.js
+          node --check tests/pdf-studio-ux-v2-12.mjs
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('APP-Applications/pdf-studio')
+          d=json.loads((root/'versions.json').read_text())
+          assert d['current']=='0.9.10', 'Never silently promote CURRENT'
+          assert d['test']=='2.12.0'
+          assert d['versions'][0]['status']=='test'
+          assert d['versions'][0]['href']=='./v2-ux/'
+          assert any(x['version']=='2.11.0' and x['status']=='historical' for x in d['versions'])
+          html=(root/'v2-ux/index.html').read_text()
+          assert 'data-pdf-ux-pilot="2.12.0"' in html
+          assert 'src="../v2/pdf-v2.js"' in html
+          assert (root/'v2/index.html').is_file()
+          assert (root/'app.html').is_file()
+          print('Isolated UX pilot and CURRENT/historical routes PASS')
+          PY
+      - name: Install Playwright and Chrome
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install chrome
+      - name: Serve TEST branch
+        run: |
+          python3 -m http.server 8776 --bind 127.0.0.1 >/tmp/pdf-ux-server.log 2>&1 &
+          sleep 2
+          curl --fail http://127.0.0.1:8776/APP-Applications/pdf-studio/v2-ux/ >/dev/null
+      - name: Run real PDF UX pilot browser acceptance
+        env:
+          PDF_UX_URL: http://127.0.0.1:8776/APP-Applications/pdf-studio/v2-ux/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/pdf-studio-ux-v2-12.mjs
+      - name: Upload desktop tablet mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-studio-2.12-ux-desktop-tablet-mobile
+          path: artifacts/pdf-studio-ux/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Error diagnostics
+        if: failure()
+        run: tail -120 /tmp/pdf-ux-server.log || true

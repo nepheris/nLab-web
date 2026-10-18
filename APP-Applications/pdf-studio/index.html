@@ -13,6 +13,6 @@ fetch('./versions.json',{cache:'no-store'}).then(r=>r.json()).then(v=>{
   document.getElementById('currentVersionNote').textContent=cur?(cur.label||cv)+' · '+(cur.notes||''):'Aucune version CURRENT.';
   document.getElementById('testVersionNote').textContent=test?(test.label||tv)+' · '+(test.notes||''):'Aucune version TEST.';
   const currentBtn=document.querySelector('a[href="./app.html"]'); if(currentBtn)currentBtn.textContent='Lancer la CURRENT '+cv;
-  const testBtn=document.querySelector('a[href="./v1/"]'); if(testBtn)testBtn.textContent='Tester PDF Studio '+tv;
+  const testBtn=document.querySelector('a.btn.test'); if(testBtn){testBtn.textContent='Tester PDF Studio '+tv;if(test?.href)testBtn.href=test.href;}
 }).catch(()=>{});
 </script></body></html>
