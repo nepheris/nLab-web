@@ -37,7 +37,7 @@ const CORE_RIBBON_GROUPS=[
   {id:'core-command',label:'Commandes',scope:'core',items:[
     {id:'core-command-palette',action:'core.commands',label:'Commandes',icon:'command',scope:'core',featureId:'core.commands',capability:'core.commands',status:'stable',primary:true,shortcut:'Ctrl+K'},
     {id:'core-properties',action:'core.properties',label:'Propriétés',icon:'settings',scope:'core',featureId:'core.properties',capability:'core.properties',status:'stable'},
-    {id:'core-fullscreen',action:'core.fullscreen',label:'⛶ Plein écran',icon:'screen',scope:'core',featureId:'core.fullscreen',capability:'core.fullscreen',status:'stable',title:'Afficher / quitter le plein écran'},
+    {id:'core-fullscreen',action:'core.fullscreen',label:'⛶ Plein écran',icon:'expand',scope:'core',featureId:'core.fullscreen',capability:'core.fullscreen',status:'stable',title:'Afficher / quitter le plein écran'},
     {id:'core-app-mode',action:'core.app-mode',label:'Installer l’application',icon:'screen',scope:'core',featureId:'core.app-mode',capability:'core.app-mode',status:'stable',title:'Installer ce Studio comme application web (si proposé par le navigateur)'},
     {id:'core-responsive-test',action:'core.responsive-test',label:'Test responsive',icon:'screen',scope:'core',featureId:'core.responsive-test',capability:'core.responsive-test',status:'stable',title:'Tester cette page dans Responsive Test Studio'}
   ]}
@@ -102,18 +102,25 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   <button id="studioVisibilityOpen" class="studioMenuUtility scope-core" data-scope="core" title="Afficher / masquer les menus et groupes du ruban">${icon('eye')}<span>Affichage</span></button><button id="studioRestoreWindows" class="studioMenuUtility scope-core" data-scope="core" title="Restaurer toutes les fenêtres masquées">${icon('restore')}<span>Fenêtres</span></button>
 </nav>
 <div class="studioRibbon">
-  ${[...CORE_RIBBON_GROUPS,...(manifest.ribbon||[])].map(g=>'<div class="ribbonGroup scope-'+scopeClass(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
+  ${[...(manifest.coreFeatures?.acquisition?[{id:'core-acquisition',label:'Fichiers',scope:'core',items:[{id:'core-acquire',action:'core.acquire',label:'Importer',icon:'inputAcquire',scope:'core',featureId:'core.acquire',capability:'core.acquire',status:'stable',primary:true}]}]:[]),...CORE_RIBBON_GROUPS,...(manifest.ribbon||[])].map(g=>'<div class="ribbonGroup scope-'+scopeClass(g)+'" data-scope="'+scopeOf(g)+'" data-ribbon-group="'+esc(g.id)+'">'+(g.items||[]).map(itemButton).join('')+'<span class="ribbonLabel">'+esc(g.label||g.id)+'</span></div>').join('')}
   <button id="studioRibbonToggle" class="studioRibbonToggle scope-core" data-scope="core" title="Replier/déplier le ruban">⌃<small class="scopeBadge">CORE</small></button>
 </div>
 <div id="ribbonContext" class="ribbonContext scope-core" data-scope="core" hidden>
   <div class="ribbonContextHead"><strong id="ribbonContextTitle">Outil</strong><button id="ribbonContextDetails">Détails</button><button id="ribbonContextToggle">⌃</button><button id="ribbonContextClose">×</button></div>
   <div id="ribbonContextBody"></div>
 </div>
+<nav id="studioCoreRail" class="studioCoreRail scope-core" data-scope="core" aria-label="Accès rapide Core">
+  <button type="button" data-core-rail="toggle" title="Replier ou déplier le volet" aria-expanded="true">${icon('collapse')}<span>Réduire</span></button>
+  <button type="button" data-core-rail="history" title="Afficher ou masquer l’historique">${icon('history')}<span>Historique</span></button>
+  <button type="button" data-core-rail="properties" title="Afficher ou masquer les propriétés">${icon('settings')}<span>Propriétés</span></button>
+  ${manifest.coreFeatures?.acquisition?'<button type="button" data-core-rail="files" title="Importer des fichiers">'+icon('inputAcquire')+'<span>Fichiers</span></button>':''}
+</nav>
 <div id="studioMobileBackdrop" class="studioMobileBackdrop" hidden></div>
 <nav id="studioMobileDock" class="studioMobileDock scope-core" data-scope="core" aria-label="Accès rapides mobile">
   <button type="button" data-mobile-action="ribbon" title="Afficher toutes les actions">${icon('command')}<span>Ruban</span></button>
   <button type="button" data-mobile-action="tools" title="Ouvrir les outils">${icon('settings')}<span>Outils</span></button>
   <button type="button" data-mobile-action="commands" title="Rechercher une commande">${icon('search')}<span>Commandes</span></button>
+  <button type="button" data-mobile-action="history" title="Afficher l’historique">${icon('history')}<span>Historique</span></button>
   <button type="button" data-mobile-action="settings" title="Paramètres d’affichage">${icon('settings')}<span>Réglages</span></button>
 </nav>
 <div id="studioTouchTooltip" class="studioTouchTooltip" hidden></div>
@@ -188,6 +195,14 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   document.addEventListener('studio-v2:undo-redo-changed',syncUndoRedoButtons);
   syncUndoRedoButtons();
   applyStudioSettings();
+  const syncCoreOptionalActions=()=>{
+    const settings=loadStudioSettings();
+    const responsive=qs('[data-studio-action="core.responsive-test"]',chrome);
+    if(responsive)responsive.hidden=settings.showResponsiveLauncher===false;
+    if(rail)rail.hidden=settings.showCoreRail===false;
+  };
+  syncCoreOptionalActions();
+  document.addEventListener('studio-v2:settings-changed',syncCoreOptionalActions);
   const syncRibbonPersonalization=()=>{
     const settings=loadStudioSettings(),favorites=new Set(Array.isArray(settings.ribbonFavorites)?settings.ribbonFavorites:[]);
     qsa('.ribbonBtn[data-studio-action]',chrome).forEach(b=>{
@@ -261,6 +276,32 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   qs('#studioRestoreWindows')?.addEventListener('click',()=>restoreAllStudioWindows());
   document.addEventListener('studio-v2:window-state',e=>{const d=e.detail||{};if(!d.key)return;document.body.dataset.lastCoreWindow=d.key;document.body.dataset.lastCoreWindowAction=d.action||''});
 
+  // Shared Core rail. Panels themselves stay owned by their existing services.
+  const rail=qs('#studioCoreRail',chrome);
+  const railKey='nlab-studio-v2-core-rail-collapsed';
+  const syncRail=()=>{
+    const collapsed=localStorage.getItem(railKey)==='1';
+    rail?.classList.toggle('collapsed',collapsed);
+    rail?.querySelector('[data-core-rail="toggle"]')?.setAttribute('aria-expanded',String(!collapsed));
+  };
+  rail?.addEventListener('click',event=>{
+    const action=event.target.closest('[data-core-rail]')?.dataset.coreRail;
+    if(action==='toggle'){
+      localStorage.setItem(railKey,localStorage.getItem(railKey)==='1'?'0':'1');
+      syncRail();
+    }else if(action==='history'){
+      const panel=qs('#history-full-view');
+      if(panel?.hidden){showStudioWindow('history-full');window.NLABStudioHistory?.renderFull?.()}
+      else hideStudioWindow('history-full');
+    }else if(action==='properties'){
+      const panel=qs('#studioPropertyInspector');
+      document.dispatchEvent(new Event(panel?.hidden?'studio-v2:open-properties':'studio-v2:close-properties'));
+    }else if(action==='files'){
+      document.dispatchEvent(new CustomEvent('studio-v2:action',{detail:{action:'core.acquire',scope:'core',source:'rail'}}));
+    }
+  });
+  syncRail();
+
   const ribbon=qs('.studioRibbon');
   const mobileDock=qs('#studioMobileDock'),mobileBackdrop=qs('#studioMobileBackdrop'),touchTooltip=qs('#studioTouchTooltip');
   const studioMenu=qs('.studioMenu');
@@ -287,6 +328,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
     if(action==='tools'){setMobileSidebar(!document.body.classList.contains('studioMobileSidebarOpen'));return}
     if(action==='ribbon'){document.body.classList.toggle('studioMobileRibbonExpanded');return}
     if(action==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
+    if(action==='history'){showStudioWindow('history-full');window.NLABStudioHistory?.renderFull?.();return}
     if(action==='settings'){const panel=qs('#studioCoreSettingsPanel');if(panel){renderStudioSettingsPanel(qs('#studioCoreSettingsBody'));showStudioWindow('core-settings');bringStudioWindowToFront(panel)}return}
   });
   mobileBackdrop?.addEventListener('click',closeMobileSurfaces);
