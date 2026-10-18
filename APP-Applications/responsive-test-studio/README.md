@@ -47,3 +47,7 @@ Un test sur téléphone Android réel reste nécessaire pour les API/permissions
 - L’action commune **Test responsive** du Studio Core V2 (ruban et palette de commandes Ctrl+K) ouvre cette application avec l’URL du Studio source dans le champ de test, sans dupliquer son moteur.
 - Le logo nLab dans l’en-tête renvoie au portail nLab. La navigation et les ressources des versions historiques restent isolées.
 - L’application ne garantit pas un fonctionnement hors connexion et les sites tiers peuvent refuser l’affichage en iframe.
+
+## Plein écran mutualisé dans Studio Core
+
+Le mode plein écran de 0.4.3 reste visuellement et fonctionnellement identique. La version CURRENT utilise désormais `APP-Applications/_shared/studio-v2/fullscreen-service.js` via le simulateur partagé ; le snapshot autonome `versions/0.4.3/simulator.js` reste conservé sans modification. Les autres Studios V2 héritent du même bouton « ⛶ Plein écran / ⛶ Quitter plein écran » et d’une commande Core correspondante, avec sortie par Échap. Aucun code plein écran autonome n'est nécessaire dans chaque Studio.
