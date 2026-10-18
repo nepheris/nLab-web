@@ -15,6 +15,7 @@ function registerCoreCommands(){
     {id:'core.commands',action:'core.commands',label:'Palette de commandes',shortLabel:'Commandes',icon:'command',scope:'core',plugin:'studio-core',status:'stable',group:'navigation',shortcut:'Ctrl+K',keywords:['rechercher','palette','actions'],priority:'secondary'},
     {id:'core.properties',action:'core.properties',label:'Propriétés',shortLabel:'Propriétés',icon:'settings',scope:'core',plugin:'studio-core',status:'stable',group:'inspect',keywords:['inspecteur','sélection','objet'],priority:'secondary',when:'active'},
     {id:'core.fullscreen',action:'core.fullscreen',label:'Plein écran',shortLabel:'Plein écran',icon:'screen',scope:'core',plugin:'studio-core',status:'stable',group:'navigation',keywords:['plein écran','quitter','fullscreen','fenêtre'],priority:'secondary'},
+    {id:'core.app-mode',action:'core.app-mode',label:'Installer l’application',shortLabel:'Application',icon:'screen',scope:'core',plugin:'studio-core',status:'stable',group:'navigation',keywords:['application','installer','pwa','standalone','fenêtre'],priority:'secondary'},
     {id:'core.responsive-test',action:'core.responsive-test',label:'Test responsive',shortLabel:'Responsive',icon:'screen',scope:'core',plugin:'studio-core',status:'stable',group:'navigation',keywords:['viewport','responsive','écran','desktop','mobile','tablette'],priority:'secondary',handler:()=>openResponsiveTestStudio()}
   ];
   for(const cmd of core){REG.set(cmd.id,cmd);registerCommand(cmd)}
