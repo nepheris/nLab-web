@@ -199,7 +199,7 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
     const settings=loadStudioSettings();
     const responsive=qs('[data-studio-action="core.responsive-test"]',chrome);
     if(responsive)responsive.hidden=settings.showResponsiveLauncher===false;
-    if(rail)rail.hidden=settings.showCoreRail===false;
+    const shortcutRail=qs('#studioCoreRail',chrome);if(shortcutRail)shortcutRail.hidden=settings.showCoreRail===false;
   };
   syncCoreOptionalActions();
   document.addEventListener('studio-v2:settings-changed',syncCoreOptionalActions);
