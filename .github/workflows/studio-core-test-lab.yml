@@ -91,6 +91,14 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/demo-explorer-folders.mjs
+      - name: Upload UX 0.5 visual parity screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-lab-ux-0.5-desktop-tablet-mobile
+          path: artifacts/core-lab-ux/
+          if-no-files-found: ignore
+          retention-days: 14
       - name: HTTP diagnostics
         if: failure()
         run: tail -100 /tmp/studio-core-lab-http.log || true
