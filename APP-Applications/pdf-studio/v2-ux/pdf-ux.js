@@ -63,6 +63,7 @@ const ws=mountStudioWorkspace({main:source,title:'Planche de travail PDF',subtit
 applyTheme();
 const chromeMenu=$('.studioMenu'),coreRibbon=$('.studioRibbon'),chrome=$('#nlabStudioV2Chrome');
 document.body.dataset.navPlacement='separate';
+const about=Array.from(document.querySelectorAll('.studioGlobalNav a')).find(x=>x.textContent.trim()==='Info');if(about)about.textContent='À propos';
 if(chromeMenu&&chrome&&coreRibbon){chromeMenu.classList.remove('studioMenuIntegrated');chrome.insertBefore(chromeMenu,coreRibbon)}
 const workHeader=el('div','pdfUxSectionHeading','Collection de fichiers');
 const workActions=el('div','pdfUxWorkActions');
