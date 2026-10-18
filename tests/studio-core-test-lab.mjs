@@ -14,7 +14,7 @@ async function scenario(name,viewport){
   assert(response?.ok(),name+': HTML unavailable');
   await page.locator('html[data-core-lab-ready="1"]').waitFor({timeout:35000});
   await page.locator('html[data-core-lab-checks="pass"]').waitFor({timeout:15000});
-  assert((await page.locator('#labCheckList li.pass').count())===14,name+': 14 checks should pass');
+  assert((await page.locator('#labCheckList li.pass').count())===15,name+': 15 checks should pass');
   assert(await page.locator('.studioLogo img').count()===1,name+': Core nLab logo absent');
   assert(await page.locator('[data-studio-action="core.fullscreen"]').count()===1,name+': fullscreen missing');
   const app=page.locator('[data-studio-action="core.app-mode"]');
@@ -57,6 +57,22 @@ async function scenario(name,viewport){
 
   const resp=await page.locator('#labResponsiveLink').getAttribute('href');
   assert(resp.includes('responsive-test-studio/')&&resp.includes('url='),name+': responsive launcher URL invalid');
+  assert(await page.locator('#studioMain.studioUx').count()===1,name+': workspace shell missing');
+  assert(await page.locator('.studioUxRail [data-ux-tab]').count()===7,name+': PDF-inspired tab rail missing');
+  await page.locator('#uxSaveAsOpen').click();
+  assert(await page.locator('#uxSaveDialog').isVisible(),name+': save-as dialog missing');
+  await page.locator('#uxSavePattern').fill('{STUDIO}_{DATE:YYYYMMDD}_{COUNTER}');
+  await page.locator('#uxSavePath').fill('{YEAR}/{MONTH}/{DAY}');
+  assert((await page.locator('#uxSavePreview').textContent()).includes('2026')||/\d{4}/.test(await page.locator('#uxSavePreview').textContent()),name+': naming preview missing year');
+  await page.locator('#uxSaveFormat').selectOption('csv');
+  await page.locator('#uxSaveDestination').selectOption('download');
+  const downloadPromise=page.waitForEvent('download',{timeout:10000});
+  await page.locator('#uxSaveConfirm').click();
+  const downloaded=await downloadPromise;
+  assert(downloaded.suggestedFilename().endsWith('.csv'),name+': metadata export must be CSV');
+  await page.locator('#uxSaveClose').click();
+  if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
+  await page.locator('[data-ux-tab="properties"]').click();
   await page.locator('#labItemName').fill('Échantillon modifié');
   await page.locator('#labCommit').click();
   assert(await page.evaluate(()=>window.NLABStudioUndoRedo?.get?.().undoDepth>=1),name+': no transaction');
@@ -66,6 +82,7 @@ async function scenario(name,viewport){
   assert(await page.locator('#labItemName').inputValue()==='Composant de démonstration nLab',name+': undo failed');
   await page.locator('[data-studio-action="core.redo"]').click();
   assert(await page.locator('#labItemName').inputValue()==='Échantillon modifié',name+': redo failed');
+  await page.locator('[data-ux-tab="settings"]').click();
   await page.locator('#labOpenSettings').click();
   assert(await page.locator('#studioCoreSettingsPanel').isVisible(),name+': Core settings not opened');
   await page.locator('#studioCoreSettingsClose').click();
@@ -79,7 +96,7 @@ async function scenario(name,viewport){
    assert((await page.locator('body').getAttribute('data-responsive-profile'))==='mobile',name+': Core responsive profile incorrect');
   }
   assert(errors.length===0,name+': page errors '+errors.join('; '));
-  reports.push({name,status:'PASS',checks:14});
+  reports.push({name,status:'PASS',checks:15});
  }catch(error){
   reports.push({name,status:'FAIL',error:String(error?.stack||error),browserErrors:errors});
  }finally{await context.close();}
