@@ -114,8 +114,9 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  ctrl.append(groupLabel,centralFilter,selectVisible);
  groupSelect.addEventListener('change',()=>collection.setGroupBy(groupSelect.value));
  const collectionSide=make('div','studioUxCollectionSide');collectionSide.append(coll,collectionInfo);
- const preview=make('section','studioUxPreview','<header><strong>Aperçu de l’élément actif</strong><small id="uxPreviewType">Aucun fichier</small></header><div class="studioUxPreviewToolbar"><label>Afficher <select id="uxPreviewScope"><option value="active">Fichier actif</option><option value="selected">Sélection (en série)</option></select></label><button id="uxPreviewMinus" type="button">−</button><output id="uxPreviewZoom">100 %</output><button id="uxPreviewPlus" type="button">+</button><button id="uxPreviewFit" type="button">1:1</button><button id="uxPreviewLeft" type="button" title="Tourner à gauche">↶ 90°</button><button id="uxPreviewRight" type="button" title="Tourner à droite">↷ 90°</button></div><div class="studioUxPreviewCanvas" id="uxPreviewCanvas"><span class="labHint">Ajoutez ou sélectionnez un fichier.</span></div><footer>Aperçu uniquement : les fichiers sources ne sont pas modifiés.</footer>');
+ const preview=make('section','studioUxPreview','<header><strong>Aperçu de l’élément actif</strong><small id="uxPreviewType">Aucun fichier</small><button type="button" id="uxPreviewCollapse" class="uxPreviewHide" title="Masquer l’aperçu" aria-label="Masquer l’aperçu">◧</button></header><div class="studioUxPreviewToolbar"><label>Afficher <select id="uxPreviewScope"><option value="active">Fichier actif</option><option value="selected">Sélection (en série)</option></select></label><button id="uxPreviewMinus" type="button">−</button><output id="uxPreviewZoom">100 %</output><button id="uxPreviewPlus" type="button">+</button><button id="uxPreviewFit" type="button">1:1</button><button id="uxPreviewLeft" type="button" title="Tourner à gauche">↶ 90°</button><button id="uxPreviewRight" type="button" title="Tourner à droite">↷ 90°</button></div><div class="studioUxPreviewCanvas" id="uxPreviewCanvas"><span class="labHint">Ajoutez ou sélectionnez un fichier.</span></div><footer>Aperçu uniquement : les fichiers sources ne sont pas modifiés.</footer>');
  const split=make('div','studioUxCollectionSplit');split.append(collectionSide,preview);
+ const previewRestore=make('button','uxMiniButton uxPreviewRestore','◩ Afficher aperçu');previewRestore.id='uxPreviewRestore';previewRestore.type='button';previewRestore.hidden=true;heading.append(previewRestore);
  ws.work.append(heading,ctrl,split,drop,acquiredInfo,filesNative);
  // Read-only import details in the file sidebar are always present for previous Lab APIs.
  $('#uxSideAdd').addEventListener('click',()=>picker.click());
@@ -155,7 +156,15 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  collection.addEventListener('selection',renderSideFiles);collection.addEventListener('activate',renderSideFiles);
  const previousSummary=collection.setItems.bind(collection);
  collection.setItems=(items)=>{const result=previousSummary(items);renderSideFiles();return result};
- $('#uxTogglePreview').addEventListener('click',()=>{preview.hidden=!preview.hidden;split.classList.toggle('uxPreviewHidden',preview.hidden)});
+ const setPreviewVisible=visible=>{
+  preview.hidden=!visible;split.classList.toggle('uxPreviewHidden',!visible);
+  previewRestore.hidden=visible;viewBtn.setAttribute('aria-pressed',String(visible));
+  viewBtn.textContent=visible?'◉ Masquer aperçu':'◩ Afficher aperçu';
+ };
+ $('#uxTogglePreview').addEventListener('click',()=>setPreviewVisible(preview.hidden));
+ $('#uxPreviewCollapse').addEventListener('click',()=>setPreviewVisible(false));
+ previewRestore.addEventListener('click',()=>setPreviewVisible(true));
+ setPreviewVisible(true);
  const filter=$('#uxCollectionSearch');
  const filterCollection=()=>{const q=filter.value.trim().toLocaleLowerCase('fr');let n=0;coll.querySelectorAll('.collectionItem').forEach(el=>{const id=el.dataset.collectionId;const item=collection.items.find(x=>x.id===id);const ok=!q||[item?.label,item?.extension,item?.relativePath,item?.type].join(' ').toLocaleLowerCase('fr').includes(q);el.hidden=!ok;if(ok)n++});$('#uxSearchCount').textContent=n+' résultat(s)';};
  const observer=new MutationObserver(()=>{filterCollection();updateSummary()});
