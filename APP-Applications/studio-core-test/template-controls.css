@@ -1,0 +1,51 @@
+/* Core template controls: opt-in Test Lab only. Reusable variable UI retains
+   the approved UX 0.5 palette via the shared workspace theme CSS. */
+.studioUx .uxTokenFamilies{display:grid;gap:9px;max-height:340px;overflow:auto;padding:2px}
+.studioUx .uxTokenFamily{min-width:0;border:1px solid var(--ux-border,#cbdce9);border-radius:8px;background:var(--ux-panel,#fff);padding:0 0 7px}
+.studioUx .uxTokenFamily>summary{font-weight:750;padding:10px 12px;font-size:12px;cursor:pointer;background:var(--ux-soft,#edf3f9);color:var(--ux-fg,#243b50);border-radius:7px}
+.studioUx .uxFamilyHint{font-size:11px;color:var(--ux-muted,#536f84);line-height:1.4;margin:7px 10px 9px}
+.studioUx .uxTokenFamily>.uxTokenList{padding:6px 10px;max-height:none;display:flex;flex-wrap:wrap;gap:6px;overflow:visible}
+.studioUx .uxToken{position:relative;display:inline-flex;align-items:center;gap:3px;border-radius:6px;border:1px solid var(--ux-border,#cfddeb);background:var(--ux-control,#fff);max-width:100%;padding:3px}
+.studioUx .uxToken button{font-size:10px;min-height:29px;padding:3px 6px;border-radius:5px;color:var(--ux-control-fg,#275c8a)}
+.studioUx .uxToken button[data-template-token]{font-family:ui-monospace,monospace;font-weight:650;white-space:normal;word-break:break-word;text-align:left}
+.studioUx .uxTokenTooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:0;background:#172c40;color:#fff;border:1px solid #7badd2;border-radius:7px;padding:8px 10px;width:min(310px,80vw);max-width:min(310px,80vw);box-shadow:0 6px 20px #0003;z-index:990;font-size:11px;line-height:1.45;pointer-events:none;overflow-wrap:anywhere}
+.studioUx .uxToken:hover .uxTokenTooltip,.studioUx .uxToken:focus-within .uxTokenTooltip{display:block}
+.studioUx .uxDateFormatRow{display:grid;gap:7px;margin:8px 10px;padding:10px;border:1px solid var(--ux-border,#cbdce9);border-radius:7px;background:var(--ux-soft,#f3f8fc)}
+.studioUx .uxDateFormatRow select,.studioUx .uxDateFormatRow input{width:100%;max-width:100%;border:1px solid var(--ux-border,#ccdceb);border-radius:6px;background:var(--ux-control,#fff);color:var(--ux-control-fg,#203a54);min-height:36px;padding:7px 9px}
+.studioUx .uxDateFormatRow input[hidden]{display:none!important}
+.studioUx .uxProfileSection{margin:0 0 12px}
+.studioUx .uxProfileSection .uxSaveFields{padding:10px;display:grid;gap:8px}
+.studioUx .uxProfileGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.studioUx .uxProfileGrid label{display:grid;gap:4px;font-size:11px;min-width:0;color:var(--ux-fg,#29485e)}
+.studioUx .uxProfileGrid input{width:100%;min-width:0;max-width:100%;box-sizing:border-box;min-height:34px;font-size:11px;border:1px solid var(--ux-border,#c8d8e6);border-radius:6px;padding:6px;background:var(--ux-control,#fff);color:var(--ux-control-fg,#263f50)}
+.studioUx .uxProfileHint{font-size:11px;color:var(--ux-muted,#60788d);line-height:1.5}
+.studioUx .uxSaveContext{font-size:11px;padding:10px;background:var(--ux-soft,#eff6fc);color:var(--ux-fg,#294459);border:1px solid var(--ux-border,#c6dce9);border-radius:7px;line-height:1.55}
+.studioUx .uxSaveContext:empty{display:none}
+.studioUx .uxProfileSection button{justify-self:start}
+.studioUx .uxPanelToggle{position:absolute;right:11px;top:14px;z-index:6;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid var(--ux-border,#c5d5e3);border-radius:7px;background:var(--ux-control,#fff);color:var(--ux-control-fg,#205b86);font-size:18px;cursor:pointer}
+.studioUx .studioUxRail .uxRailToggle{display:flex;align-items:center;justify-content:center;gap:4px;border:1px solid var(--ux-border,#ccddea);border-radius:7px;min-height:35px;padding:5px;font-size:12px;background:var(--ux-control,#fff);color:var(--ux-control-fg,#205b86)}
+body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed{grid-template-columns:64px minmax(0,1fr)!important}
+body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed .studioUxSidebar{grid-template-columns:64px!important}
+body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed .studioUxSideContent{display:none!important}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxPreview[hidden]{display:none!important}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxCollectionSplit.uxPreviewHidden{grid-template-columns:minmax(0,1fr)!important}
+body[data-studio="studio-core-test"] #studioMain.studioUx .uxPreviewRestore{display:inline-flex;align-items:center}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxPreview>header{gap:7px}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxPreview>header .uxPreviewHide{margin-left:auto;background:var(--ux-control,#fff);color:var(--ux-control-fg,#275576);border:1px solid var(--ux-border,#ccddea);border-radius:6px;min-width:30px;min-height:30px}
+.studioUx[data-preview-profile="tablet"] .studioUxMain{max-width:800px;margin-inline:auto;width:100%;box-shadow:0 0 0 1px var(--ux-border,#cfdce9)}
+.studioUx[data-preview-profile="mobile"] .studioUxMain{max-width:430px;margin-inline:auto;width:100%;box-shadow:0 0 0 1px var(--ux-border,#cfdce9)}
+.studioUx[data-preview-profile="mobile"] .studioUxCollectionSplit{grid-template-columns:minmax(0,1fr)!important}
+.studioUx[data-preview-profile="mobile"] .studioUxWorkHeader{flex-wrap:wrap}
+.studioUx[data-preview-profile="mobile"] .studioUxWorkActions{flex-wrap:wrap}
+.studioUx[data-preview-profile="mobile"] .studioUxWorkBody{padding:8px!important}
+.studioUx[data-preview-profile="mobile"] .uxCollectionToolbar{gap:4px!important}
+.studioUx[data-preview-profile="mobile"] .studioUxPreviewCanvas{min-height:180px}
+.studioUx .uxDisplayProfile{display:grid;gap:8px}
+.studioUx .uxDisplayProfile select{width:100%;min-height:36px;border:1px solid var(--ux-border,#d0e1ef);border-radius:7px;background:var(--ux-control,#fff);color:var(--ux-control-fg,#264d70)}
+.studioUx .uxDisplayNote{font-size:11px;color:var(--ux-muted,#536e80);line-height:1.4}
+@media(max-width:700px){
+ body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed{display:block!important}
+ .studioUx .uxProfileGrid{grid-template-columns:minmax(0,1fr)}
+ .studioUx .uxTokenFamilies{max-height:260px}
+ .studioUx .uxTokenTooltip{left:auto;right:0;width:min(260px,82vw)}
+}
