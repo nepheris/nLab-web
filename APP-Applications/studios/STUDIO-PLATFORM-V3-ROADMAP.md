@@ -12,23 +12,23 @@
 | --- | --- | --- | --- |
 | STU-20261018-01 | 0.4.2 CURRENT et historique 0.4.1/0.4.0 | **DONE** | Fusion PR #79, version CURRENT publiée dans `main` avant la nouvelle passe. |
 | STU-20261018-02 | Étendre la saisie « Modifier URL » à 780 px en restant responsive | **VALIDATED** | 0.4.3 TEST livrée par PR #80, acceptation de l'utilisateur, recette Chrome PASS ; promotion CURRENT en PR #81. |
-| STU-20261018-03 | Promouvoir 0.4.3 CURRENT et geler sa version autonome | **VALIDATED / RELEASE PENDING** | `versions/0.4.3/`, registre et page CURRENT préparés, PR #81 ouverte ; fusion/déploiement à vérifier. |
-| STU-20261018-04 | Logo nLab officiel cliquable sur Responsive CURRENT et page Versions | **VALIDATED / RELEASE PENDING** | Implémenté dans PR #81, audit Chrome logo/home PASS ; publication à confirmer. |
-| STU-20261018-05 | Résoudre dans le Studio Core V2 les liens logo/home/navigation depuis n'importe quel Studio | **VALIDATED / RELEASE PENDING** | Résolution via `import.meta.url` dans `studio-v2/frame.js` ; couverture représentative Chrome + audit statique du catalogue PASS dans PR #81. |
-| STU-20261018-06 | Harmoniser la page d'accueil PDF Studio (cas non géré par le Core commun) | **VALIDATED / RELEASE PENDING** | Logo et destination nLab ajoutés, test Chrome PASS en PR #81 ; runtime PDF legacy préservé. |
-| STU-20261018-07 | Ajouter au Core la commande partagée « Test responsive » | **VALIDATED / RELEASE PENDING** | Ruban/registry + lancement URL source ; test navigateur PASS en PR #81, aucune duplication de moteur. |
+| STU-20261018-03 | Promouvoir 0.4.3 CURRENT et geler sa version autonome | **DONE / VALIDATED** | `versions/0.4.3/`, registre et page CURRENT préparés, PR #81 fusionnée (`fcdeba13`), Pages `39109589863` PASS ; `main` et `gh-pages` identiques. |
+| STU-20261018-04 | Logo nLab officiel cliquable sur Responsive CURRENT et page Versions | **DONE / VALIDATED** | Implémenté dans PR #81, audit Chrome logo/home PASS ; publication GitHub Pages confirmée. |
+| STU-20261018-05 | Résoudre dans le Studio Core V2 les liens logo/home/navigation depuis n'importe quel Studio | **DONE / VALIDATED** | Résolution via `import.meta.url` dans `studio-v2/frame.js` ; couverture représentative Chrome + audit statique du catalogue PASS, fusionné et publié par PR #81. |
+| STU-20261018-06 | Harmoniser la page d'accueil PDF Studio (cas non géré par le Core commun) | **DONE / VALIDATED** | Logo et destination nLab ajoutés, test Chrome PASS en PR #81 fusionnée, PDF legacy préservé. |
+| STU-20261018-07 | Ajouter au Core la commande partagée « Test responsive » | **DONE / VALIDATED** | Ruban/registry + lancement URL source ; test navigateur PASS en PR #81 fusionnée, moteur unique conservé. |
 | STU-20261018-08 | Exposer Responsive Test comme web app PC fixe/portable | **PARTIAL** | Manifeste web + bouton conditionnel `beforeinstallprompt`, syntaxe et navigation testées ; installation manuelle Chrome/Edge/OS et expérience hors navigateur non encore validées. |
 | STU-20261018-09 | Audit du logo nLab sur les **15** Studios | **PARTIAL** | Inventaire et audit de raccordement au Core réalisés ; Chrome vérifié sur surfaces représentatives, pas de test E2E exhaustif 15/15 en desktop/mobile. |
 | STU-20261018-10 | Stabiliser la CI exhaustive Image Studio | **BLOCKED** | Job `Exhaustive specialized V2` échoue encore sur `page.waitForFunction` (timeout 10 s), indépendamment des recettes Chrome ciblées PASS. Identifier la cause, corriger, relancer. |
-| STU-20261018-11 | Valider GO/NO-GO et fusionner PR #81 puis contrôler GitHub Pages | **TODO** | Gate ciblé PASS, audit PASS, gate exhaustive FAIL ; arbitrage nécessaire après investigation, aucun déploiement définitif 0.4.3 affirmé. |
+| STU-20261018-11 | Valider GO/NO-GO et fusionner PR #81 puis contrôler GitHub Pages | **DONE / VALIDATED** | PR #81 fusionnée et Pages vérifié, Chrome/audit PASS. Suite exhaustive Image Studio toujours FAIL, tracée séparément STU-20261018-10. |
 | STU-20261018-12 | Ajouter santé runtime/capacités consolidées aux cartes du Studio Hub | **TODO** | Report V3.4, ne pas complexifier le Core avant stabilisation. |
 | STU-20261018-13 | Harmoniser les métadonnées de versions/build et le CSS sur toutes les familles | **PARTIAL** | Le Core et plusieurs manifests le supportent ; PDF legacy et certains points d'entrée conservent des exceptions isolées. |
-| STU-20261018-14 | Factoriser entrée/sortie du plein écran dans le Core commun, même comportement dans tous les Studios V2 | **VALIDATION EN COURS** | Module `studio-v2/fullscreen-service.js` + ruban et commande `core.fullscreen` dans `frame.js` ; Responsive CURRENT réutilise ce service tout en conservant le snapshot historique 0.4.3, recette Chrome desktop/mobile/Échap/commandes ajoutée. |
+| STU-20261018-14 | Factoriser entrée/sortie du plein écran dans le Core commun, même comportement dans tous les Studios V2 | **DONE / VALIDATED** | Module `studio-v2/fullscreen-service.js` + ruban et commande `core.fullscreen` dans `frame.js` ; Responsive CURRENT réutilise ce service tout en conservant le snapshot historique 0.4.3, recette Chrome desktop/mobile/Échap/commandes PASS et service Core publié. |
 
 ### Priorité et ordre d'exécution
 
 1. **P0 — release gate** : analyser le timeout transversal Image Studio, déterminer s'il est préexistant sans effet fonctionnel ou s'il révèle une régression, et consigner la preuve.
-2. **P0 — promotion** : finaliser la PR #81, fusionner puis vérifier `main`, GitHub Pages et le chemin réel du logo dans les Studios Core.
+2. **DONE — promotion** : PR #81 fusionnée, artefacts `main` et `gh-pages` vérifiés ; logo et Core plein écran publiés.
 3. **P1 — couverture 15/15** : dérouler un contrôle navigateur individuel du lien nLab sur chaque CURRENT, desktop et mobile ; documenter explicitement les exceptions PDF legacy et redirections.
 4. **P1 — application installable** : vérifier l'installation réelle dans Chrome/Edge sur Windows et Linux ; tester réouverture, navigation et viewport en fenêtre standalone ; ne pas annoncer de fonctionnement hors ligne non prouvé.
 5. **P2 — mutualisation** : poursuivre V3.4 Hub (statut des capacités, état des moteurs et galerie), sans dupliquer le Core, puis V3.2 image-service.
@@ -37,7 +37,7 @@
 
 Voir `APP-Applications/_shared/studio-v2/BRANDING-CONTRACT.md` (PR #81) : logo officiel `nlab-wordmark.svg`, lien vers l'accueil du site, styles hérités du Core V2 ; pages autonomes isolées et historique immuable.
 
-**Références de validation du jour :** PR #81, workflows Chrome `39108135649` et `39108132487` PASS, audit `39108135672` PASS, CI exhaustive `39108135654` FAIL (timeout Image Studio). **État de publication au pointage :** `main` affiche encore Responsive 0.4.2 CURRENT et 0.4.3 TEST ; la promotion préparée dans la branche ne constitue pas une livraison en production.
+**Références de validation finales :** PR #81 (`fcdeba13`), Chrome Responsive + fullscreen Core `39109430450` PASS, audit `39109430454` PASS, PDF V2 `39109430513` PASS, Pages `39109589863` PASS, CI exhaustive spécialisée `39109430437` FAIL (timeout Image Studio préexistant). **Publication confirmée :** `main` et `gh-pages` servent Responsive 0.4.3 CURRENT ; module Core plein écran partagé, historiques préservés. Exception connue : la suite exhaustive Image Studio conserve un timeout indépendant.
 
 ---
 

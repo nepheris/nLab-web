@@ -29,12 +29,12 @@
     {
       "path": "../files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
       "size": 149500,
-      "sha256": "a1438bdbb6ecce67c82dd4b6f77dd4b404401a346bd64de9c56aa3269203c9ed"
+      "sha256": "840d4f57920e950b9181ec83e517044c1cf0c25643ced8eb95f39567bae33cdb"
     },
     {
       "path": "../files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
       "size": 116805,
-      "sha256": "d24d4e0af0d121ee219a20a9b248fb3dd0d6d9eebb1ce9d5da1bfef2912c4662"
+      "sha256": "20fcdce3c39157726e85b86aac74bca53019db3634c28cb6477a811ab98476e1"
     }
   ]
 }
