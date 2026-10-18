@@ -9,6 +9,7 @@ on:
       - 'APP-Applications/responsive-test-studio/app.js'
       - 'APP-Applications/_shared/studio-v2/settings.js'
       - 'APP-Applications/_shared/studio-v2/studio.css'
+      - 'APP-Applications/_shared/studio-v2/collection-browser.js'
       - 'APP-Applications/studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md'
       - 'Library/demo/**'
       - 'APP-Applications/studios/index.html'
@@ -30,6 +31,8 @@ jobs:
       - name: Verify code syntax, isolated TEST channel and PWA manifest
         run: |
           node --check APP-Applications/studio-core-test/app.js
+          node --check APP-Applications/_shared/studio-v2/collection-browser.js
+          node --check APP-Applications/studio-core-test/versions/0.2.0/app.js
           node --check APP-Applications/_shared/studio-v2/application-mode-service.js
           node --check APP-Applications/_shared/studio-v2/frame.js
           node --check APP-Applications/_shared/studio-v2/capability-registry.js
@@ -43,9 +46,12 @@ jobs:
           m=json.loads((root/'studio-core-test/manifest.webmanifest').read_text())
           v=json.loads((root/'studio-core-test/versions.json').read_text())
           assert m['display']=='standalone' and m['scope']=='./' and m['start_url']=='./'
-          assert v['current'] is None and v['test']=='0.2.0'
+          assert v['current'] is None and v['test']=='0.3.0'
           assert any(x['version']=='0.1.0' and x['status']=='historical' for x in v['versions'])
           assert (root/'studio-core-test/versions/0.1.0/index.html').is_file()
+          assert any(x['version']=='0.2.0' and x['status']=='historical' for x in v['versions'])
+          for f in ['index.html','app.js','manifest.webmanifest']:
+            assert (root/'studio-core-test/versions/0.2.0'/f).is_file()
           catalog=json.loads((root/'studios/catalog.json').read_text())
           assert 'studio-core-test' not in [s['id'] for s in catalog['studios']]
           print('Isolated TEST channel: PASS')

@@ -1,16 +1,25 @@
 {
   "name": "Studio Core Test Lab",
   "current": null,
-  "test": "0.2.0",
+  "test": "0.3.0",
   "versions": [
     {
-      "version": "0.2.0",
-      "label": "Studio Core Test Lab 0.2.0 TEST",
+      "version": "0.3.0",
+      "label": "Studio Core Test Lab 0.3.0 TEST",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-path",
-      "notes": "Sélecteur canonique input-picker, rail Historique/Propriétés, commandes Core facultatives, audit mutualisation, galerie démos corrigée. Tests navigateur et PWA manuels requis."
+      "notes": "CollectionBrowser partagé opt-in avec zoom vignettes +/−, ajustement automatique selon largeur, rotation 90° conditionnelle à la taille, sélection multiple, tri, dropzone et historique Annuler/Rétablir. Core 3.5.0 TEST. Recette PC/mobile et validation humaine requises."
+    },
+    {
+      "version": "0.2.0",
+      "label": "Studio Core Test Lab 0.2.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.2.0/",
+      "isolation": "snapshot",
+      "notes": "Version 0.2.0 conservée sous versions/0.2.0/ ; services Core partagés évolutifs."
     },
     {
       "version": "0.1.0",
