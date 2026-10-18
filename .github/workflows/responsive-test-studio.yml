@@ -11,6 +11,8 @@ on:
       - 'APP-Applications/_shared/studio-v2/responsive-test-launcher.js'
       - 'APP-Applications/pdf-studio/index.html'
       - 'tests/studio-branding.mjs'
+      - 'tests/studio-fullscreen-core.mjs'
+      - 'APP-Applications/_shared/studio-v2/fullscreen-service.js'
       - 'tests/responsive-test-studio.mjs'
       - 'tests/responsive-test-studio-toolbar.mjs'
       - 'tests/responsive-test-studio-url-editor.mjs'
@@ -38,6 +40,9 @@ jobs:
           node --check tests/responsive-test-studio-toolbar.mjs
           node --check tests/responsive-test-studio-url-editor.mjs
           node --check tests/studio-branding.mjs
+          node --check tests/studio-fullscreen-core.mjs
+          node --check APP-Applications/_shared/studio-v2/fullscreen-service.js
+          node --check APP-Applications/_shared/responsive-test/simulator.js
           node --check APP-Applications/_shared/studio-v2/frame.js
           node --check APP-Applications/_shared/studio-v2/responsive-test-launcher.js
           node --check APP-Applications/responsive-test-studio/test/app.js
@@ -124,6 +129,11 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/studio-branding.mjs
+      - name: Validate shared Studio Core fullscreen control and Responsive non-regression
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/studio-fullscreen-core.mjs
       - name: Upload CURRENT snapshots
         if: always()
         uses: actions/upload-artifact@v4
