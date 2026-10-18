@@ -3,6 +3,83 @@
 Status: **IMPLEMENTATION IN PROGRESS**  
 Source of truth for public Studio inventory: `APP-Applications/studios/catalog.json`
 
+## Revue opérationnelle — 18 octobre 2026
+
+**Référence de pilotage atomique :** [STUDIOS-ROADMAP-STATUS-2026-10-18.json](./STUDIOS-ROADMAP-STATUS-2026-10-18.json).
+Statuts recoupés avec les registres `versions.json`, le catalogue et les PR GitHub ; **une PR ouverte n'est pas assimilée à une livraison main/Pages**.
+
+### Bilan quantifié
+
+| Indicateur | Constat vérifié |
+|---|---|
+| Studios | **15** inscrits dans `studios/catalog.json` |
+| Applications dérivées | **3** : PDF Sign, Merge Studio, Guide Froid |
+| Studios avec CURRENT dans le registre | **15/15**, dont PDF Studio encore en CURRENT historique |
+| Tâches auditées aujourd’hui | **28** : 6 validées, 15 partielles, 3 bloquées, 4 planifiées |
+| Responsive Test Studio déployé sur main | **0.4.2 CURRENT** + **0.4.3 TEST** |
+| Responsive 0.4.3 ergonomie | **Validée humainement**, tests Chrome OK |
+| Passage Responsive 0.4.3 en CURRENT | **Code préparé dans PR #81, NON encore fusionné/publié** |
+| Logo nLab/retour accueil et commande Core commune | **PR #81, implémentées ; non publiées sur main** |
+| Contrôles Chrome (branche PR #81) | **PASS** |
+| Audit du catalogue Studios | **PASS** |
+| Exhaustive spécialisée V2 | **ÉCHEC préexistant**, timeout Image Studio, à isoler |
+
+### État individuel des Studios (source : registres de `main`)
+
+| Studio | CURRENT | TEST | Observations de pilotage |
+|---|---:|---:|---|
+| PDF | 0.9.10 | 2.11.0 | Migration V2 non validée ; préserver legacy CURRENT |
+| Image | 2.7.0 | 2.7.1 | V2 CURRENT, TEST distinct |
+| Scan | 0.4.0 | 0.4.1 | V2 CURRENT, TEST distinct |
+| OCR | 2.3.0 | 2.3.1 | V2 CURRENT, TEST distinct |
+| Code | 2.4.0 | 2.4.1 | V2 CURRENT, TEST distinct |
+| JSON | 2.2.0 | 2.2.1 | V2 CURRENT, TEST distinct |
+| Data | 2.4.0 | 2.4.1 | V2 CURRENT, TEST distinct |
+| QR & Barcode | 2.4.1 | 2.4.2 | V2 CURRENT, TEST distinct |
+| File | 2.4.0 | 2.4.1 | V2 CURRENT, TEST distinct |
+| Markdown | 2.3.0 | 2.3.1 | V2 CURRENT, TEST distinct |
+| Démo | 1.0.0 | — | Page catalogue/corpus |
+| Dataset Generator | 2.3.0 | 2.3.1 | V2 CURRENT, TEST distinct |
+| Document | 1.3.0 | 1.3.1 | V2 CURRENT, TEST distinct |
+| Spreadsheet | 1.3.0 | 1.3.1 | V2 CURRENT, TEST distinct |
+| Responsive Test | **0.4.2** | **0.4.3** | 0.4.3 validée utilisateur ; publication CURRENT conditionnée à PR #81 |
+
+Applications dérivées : **PDF Sign 0.3.0 TEST**, **Merge Studio 0.4.0 TEST**, **Guide Froid au catalogue**.
+Ne pas inférer un CURRENT dérivé à partir de la seule présence au catalogue.
+
+### Livrables finalisés et validés
+
+- [x] Création du Responsive Test Studio par `iframe`, profils PC/tablette/mobile, largeur CSS, orientation et zoom.
+- [x] Vue double et commande plein écran avec modification de l’URL à l'intérieur du viewport.
+- [x] Version 0.4.0 puis 0.4.1 et 0.4.2 validées, archivage autonome et 0.4.2 effectivement publiée comme CURRENT.
+- [x] Interface 0.4.3 avec saisie d’URL élargie à 780 px : **validation humaine**, Chrome OK ; reste à promouvoir et publier.
+- [x] État des 15 Studios et 3 applications dérivées recoupé avec le catalogue et les registres.
+- [x] Audit nLab Studios et tests Chrome du chantier PR #81 réussis.
+
+### Réalisé dans une PR, mais non terminé en production
+
+- [ ] **PR #81** : promouvoir la 0.4.3 CURRENT, figer la version précédente ; contrôler le déploiement `gh-pages` et sa concordance avec `main`.
+- [ ] **PR #81** : généraliser le logo SVG officiel cliquable et le retour à l’accueil nLab via **le Core V2 commun** ; certification des 15 Studios en navigateur à compléter.
+- [ ] **PR #81** : raccorder le lancement du Responsive Test depuis le ruban/les commandes du Core, avec URL du Studio d'origine.
+- [ ] **PR #81** : manifeste d’application Chrome/Edge, installation réelle PC fixe/portable et relancement à certifier. Pas d'application native promise.
+- [ ] **PR #70 / #67** : finaliser la certification historique **128/128** et n'autoriser de suppression physique du legacy qu'après cette gate.
+- [ ] **PR #71** : finaliser la validation autonome du Studio Core B02–B09 ; encore brouillon/non fusionnée.
+- [ ] **PR #72** : réconcilier la PR ancienne avec le Responsive livré (éviter doublon et régression).
+
+### Blocages et tâches transversales restantes
+
+1. **P0 — CI exhaustive V2/Image Studio** : timeout persistant indépendant du Responsive, analyser et corriger ou isoler le scénario défaillant sans faux PASS.
+2. **P0 — intégration fiable** : fusionner et publier #81 uniquement après passage des gates exigées, puis tester liens et logo en navigateur.
+3. **P1 — Legacy** : ne pas purger sans preuves 128/128 et compatibilité des URLs CURRENT/TEST historiques.
+4. **P1 — PDF** : pas de migration automatique de CURRENT 0.9.10 vers V2 2.11.0 TEST.
+5. **P1 — QA** : enrichir le smoke Chrome à l'ensemble des 15 Studios, puis Firefox/WebKit et application installée en environnement réel.
+6. **P2 — Hub / Cockpit** : projeter les statuts depuis le fichier de tâches sans recopier des chiffres à la main ; ajouter health/capability/engine metadata.
+7. **P2 — capacités** : poursuivre mutualisation Input/Output/OCR/format, conversion documentaire, traitement d’image et grosses données selon `MUTUALIZATION-ROADMAP.json`.
+
+**Règle GO/NO-GO :** code en PR ≠ code fusionné ≠ Pages déployées ≠ validation humaine. Chaque étape doit conserver sa preuve, et les historiques restent exécutables.
+
+---
+
 ## Architectural rules
 
 1. **Responsive by contract** — every Studio and derived app must support phone, tablet, desktop and wide desktop layouts from the shared Core.
@@ -16,10 +93,12 @@ Source of truth for public Studio inventory: `APP-Applications/studios/catalog.j
 
 ## Current Studio fleet
 
-### Published/catalogued Studios
+### Published/catalogued Studios (inventaire historique V3 initial ; consulter la revue 2026-10-18 pour l’état actuel)
 - PDF Studio
 - Image Studio
 - OCR Studio
+- Scan Studio
+- Responsive Test Studio
 - Code Studio — developer/source code
 - JSON Studio
 - Data Studio
@@ -32,7 +111,9 @@ Source of truth for public Studio inventory: `APP-Applications/studios/catalog.j
 - Spreadsheet Studio
 
 ### Derived apps
-- **nLab PDF Sign** — first derived mini-app from PDF Studio; TEST 0.1.0.
+- **nLab PDF Sign** — first derived mini-app from PDF Studio ; registre actuel : 0.3.0 TEST.
+- **Merge Studio** — application de fusion PDF dérivée ; registre actuel : 0.4.0 TEST.
+- **Guide Froid** — application métier dérivée inscrite au catalogue.
 
 ### Planned/development families
 - Translation Studio
@@ -177,7 +258,7 @@ It reuses the PDF engine and Studio Core. PAdES/DSS remains an advanced PDF Stud
 Imported source values are not copied into generated fixtures by default. Structure-only mode may use field names and coarse type inference, but generated values are independent synthetic data.
 
 
-## Current TEST refresh batch
+## Historical TEST refresh batch (V3 initial snapshot; not current release pointers)
 
 | Layer / Studio | TEST |
 | --- | --- |

@@ -1,0 +1,337 @@
+{
+  "schema": "nlab-studios-roadmap-status/v1",
+  "as_of": "2026-10-18",
+  "repo": "nepheris/nLab-web",
+  "source_branch": "main",
+  "scope": "Studios + Core V2 + applications dérivées",
+  "catalogue": {
+    "studios": 15,
+    "derived_apps": 3
+  },
+  "release_truth": {
+    "responsive_current_published": "0.4.2",
+    "responsive_test_published": "0.4.3",
+    "responsive_current_requested": "0.4.3",
+    "promotion_pr": 81,
+    "promotion_status": "pending_merge"
+  },
+  "summary": {
+    "tasks_total": 28,
+    "validated": 6,
+    "completed": 0,
+    "partial": 15,
+    "blocked": 3,
+    "planned": 4
+  },
+  "status_dictionary": {
+    "validated": "réalisé avec preuve de validation humaine ou recette concluante",
+    "completed": "implémenté mais validation finale non documentée",
+    "partial": "réalisation incomplète ou PR non fusionnée",
+    "blocked": "gate ou dépendance empêche la clôture",
+    "planned": "non démarré"
+  },
+  "links": {
+    "catalogue": "APP-Applications/studios/catalog.json",
+    "v3_roadmap": "APP-Applications/studios/STUDIO-PLATFORM-V3-ROADMAP.md",
+    "mutualization": "APP-Applications/studios/MUTUALIZATION-ROADMAP.json",
+    "legacy": "APP-Applications/studios/reconciliation/LEGACY-PHYSICAL-MIGRATION-PLAN-2026-10-08.md"
+  },
+  "tasks": [
+    {
+      "id": "STU-001",
+      "workstream": "Portefeuille",
+      "title": "Inventaire des 15 Studios et 3 applications dérivées",
+      "status": "validated",
+      "progress_percent": 100,
+      "publication": "published",
+      "validation": "audit-2026-10-18",
+      "evidence": "Catalogue vérifié dans main"
+    },
+    {
+      "id": "STU-002",
+      "workstream": "Responsive",
+      "title": "CURRENT 0.4.0 / archives historiques autonomes",
+      "status": "validated",
+      "progress_percent": 100,
+      "publication": "published",
+      "validation": "user+chrome",
+      "evidence": "Snapshots figés et accessibles"
+    },
+    {
+      "id": "STU-003",
+      "workstream": "Responsive",
+      "title": "Version 0.4.1 : commandes et URL regroupées dans le viewport",
+      "status": "validated",
+      "progress_percent": 100,
+      "publication": "historical",
+      "validation": "user+chrome",
+      "evidence": "Ergonomie validée et archivée"
+    },
+    {
+      "id": "STU-004",
+      "workstream": "Responsive",
+      "title": "Version 0.4.2 : URL visible sur ≥50 % du viewport desktop",
+      "status": "validated",
+      "progress_percent": 100,
+      "publication": "published_current",
+      "validation": "user+chrome",
+      "evidence": "CURRENT réellement publié dans main"
+    },
+    {
+      "id": "STU-005",
+      "workstream": "Responsive",
+      "title": "Version 0.4.3 : fenêtre Modifier URL jusqu’à 780 px",
+      "status": "partial",
+      "progress_percent": 95,
+      "publication": "test_published",
+      "validation": "human_approved+chrome",
+      "evidence": "Ergonomie approuvée ; promotion CURRENT en PR #81",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-006",
+      "workstream": "Responsive",
+      "title": "Publier CURRENT 0.4.3 et archiver 0.4.2",
+      "status": "partial",
+      "progress_percent": 85,
+      "publication": "pull_request",
+      "validation": "chrome_pass+audit_pass",
+      "evidence": "Code + registre prêts ; exhaustive CI transverse non verte, Pages non publié",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-007",
+      "workstream": "Identité",
+      "title": "Logo officiel cliquable sur Responsive CURRENT et page versions",
+      "status": "partial",
+      "progress_percent": 90,
+      "publication": "pull_request",
+      "validation": "code_review_pending",
+      "evidence": "Retour à l’accueil implémenté, déploiement après PR #81",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-008",
+      "workstream": "Identité",
+      "title": "Unifier logo/retour accueil dans Studio Core V2",
+      "status": "partial",
+      "progress_percent": 90,
+      "publication": "pull_request",
+      "validation": "chrome_smoke_pass",
+      "evidence": "Navigation résolue depuis module Core pour éviter les liens relatifs cassés",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-009",
+      "workstream": "Identité",
+      "title": "Page d’accueil PDF Studio avec logo officiel",
+      "status": "partial",
+      "progress_percent": 90,
+      "publication": "pull_request",
+      "validation": "chrome_smoke_pass",
+      "evidence": "Correction limitée au portail, ancien runtime PDF préservé",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-010",
+      "workstream": "Identité",
+      "title": "Certifier logo/lien sur tous les Studios CURRENT",
+      "status": "partial",
+      "progress_percent": 65,
+      "publication": "in_review",
+      "validation": "static_catalog_pass+representative_chrome",
+      "evidence": "15 entrées auditées statiquement ; tests Chrome représentatifs, pas 15/15 navigateurs individuellement",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-011",
+      "workstream": "Core",
+      "title": "Commande partagée Test responsive dans ruban et palette Core",
+      "status": "partial",
+      "progress_percent": 90,
+      "publication": "pull_request",
+      "validation": "chrome_pass",
+      "evidence": "Transmission de l’URL du Studio source ; moteur non dupliqué",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-012",
+      "workstream": "Desktop",
+      "title": "Manifest Chrome/Edge et lancement en fenêtre d’application",
+      "status": "partial",
+      "progress_percent": 65,
+      "publication": "pull_request",
+      "validation": "manifest_tested",
+      "evidence": "Manifeste et prompt conditionnel ; installation OS Windows/Linux/macOS à confirmer",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-013",
+      "workstream": "Responsive",
+      "title": "Régression Chrome desktop/mobile/tactile et plein écran",
+      "status": "validated",
+      "progress_percent": 100,
+      "publication": "tested_pr",
+      "validation": "chrome_pass",
+      "evidence": "Recettes utilisateur et test de largeur URL réussis",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-014",
+      "workstream": "Qualité",
+      "title": "Audit Studios V2 sur chantier Responsive",
+      "status": "validated",
+      "progress_percent": 100,
+      "publication": "tested_pr",
+      "validation": "audit_pass",
+      "evidence": "Audit du hub et référentiels réussi",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-015",
+      "workstream": "Qualité",
+      "title": "Exhaustive CI V2 : supprimer timeout Image Studio",
+      "status": "blocked",
+      "progress_percent": 30,
+      "publication": "failing_ci",
+      "validation": "timeout_existing",
+      "evidence": "Échec transversal connu, indépendant du Responsive ; isoler et fiabiliser le scénario",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-016",
+      "workstream": "Legacy",
+      "title": "Conserver les historiques exécutables (128 cas)",
+      "status": "partial",
+      "progress_percent": 80,
+      "publication": "open_pr",
+      "validation": "gate_unconfirmed",
+      "evidence": "PR #70 durcissement smoke, PR #67 gate historique encore ouvertes ; aucune certification 128/128 finale",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/70"
+    },
+    {
+      "id": "STU-017",
+      "workstream": "Legacy",
+      "title": "Purge physique sûre des anciens fichiers",
+      "status": "blocked",
+      "progress_percent": 35,
+      "publication": "not_authorized",
+      "validation": "no_go",
+      "evidence": "Ne pas supprimer tant que CURRENT/TEST/historiques et redirects ne sont pas certifiés",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/67"
+    },
+    {
+      "id": "STU-018",
+      "workstream": "Core",
+      "title": "Validation isolée Studio Core B02–B09",
+      "status": "partial",
+      "progress_percent": 70,
+      "publication": "draft_pr",
+      "validation": "not_merged",
+      "evidence": "PR #71 en brouillon, non fusionnée",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/71"
+    },
+    {
+      "id": "STU-019",
+      "workstream": "PR",
+      "title": "Réconcilier PR #72 historique Responsive avec les versions déjà livrées",
+      "status": "partial",
+      "progress_percent": 40,
+      "publication": "open_pr",
+      "validation": "needs_triage",
+      "evidence": "Identifier doublons et fermer après preuves d’absorption, sans re-fusionner d’ancien code",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/72"
+    },
+    {
+      "id": "STU-020",
+      "workstream": "Métadonnées",
+      "title": "Centraliser versions/commit/build/footer/Hub sans valeurs figées",
+      "status": "partial",
+      "progress_percent": 60,
+      "publication": "ongoing",
+      "validation": "roadmap_v3",
+      "evidence": "Conventions existantes, plusieurs chaînes et snapshots à harmoniser"
+    },
+    {
+      "id": "STU-021",
+      "workstream": "Core",
+      "title": "Engines mutualisés input/download/OCR/document/tabulaire",
+      "status": "partial",
+      "progress_percent": 75,
+      "publication": "ongoing",
+      "validation": "multi_studio_partial",
+      "evidence": "Engines en place ; terminer propagation et contrats consommateurs"
+    },
+    {
+      "id": "STU-022",
+      "workstream": "Plateforme",
+      "title": "Indicateurs santé runtime et capabilities agrégées dans Hub",
+      "status": "planned",
+      "progress_percent": 0,
+      "publication": "backlog",
+      "validation": "not_tested",
+      "evidence": "Travail restant de la feuille V3.4"
+    },
+    {
+      "id": "STU-023",
+      "workstream": "Plateforme",
+      "title": "Tests compatibilité Firefox/Safari et performance gros volumes",
+      "status": "planned",
+      "progress_percent": 0,
+      "publication": "backlog",
+      "validation": "not_tested",
+      "evidence": "Chrome n’équivaut pas à validation multi-navigateurs ni native OS"
+    },
+    {
+      "id": "STU-024",
+      "workstream": "PDF",
+      "title": "Migration contrôlée PDF CURRENT 0.9.10 vers V2 2.11.0 TEST",
+      "status": "blocked",
+      "progress_percent": 35,
+      "publication": "legacy_current",
+      "validation": "no_go",
+      "evidence": "Conserver CURRENT 0.9.10 et URLs tant que promotion V2 + compatibilité non validées"
+    },
+    {
+      "id": "STU-025",
+      "workstream": "Apps",
+      "title": "Applications dérivées PDF Sign, Merge Studio, Guide Froid",
+      "status": "partial",
+      "progress_percent": 60,
+      "publication": "catalogued",
+      "validation": "not_all_current",
+      "evidence": "3 entrées enregistrées ; PDF Sign et Merge encore TEST uniquement"
+    },
+    {
+      "id": "STU-026",
+      "workstream": "Cockpit",
+      "title": "Projection automatique des tâches/roadmaps Studios vers Cockpit",
+      "status": "planned",
+      "progress_percent": 0,
+      "publication": "backlog",
+      "validation": "not_integrated",
+      "evidence": "Créer une ingestion du JSON canonique sans recopier des statuts manuellement"
+    },
+    {
+      "id": "STU-027",
+      "workstream": "Identité",
+      "title": "Contrat documentaire du header/logo commun réutilisable",
+      "status": "partial",
+      "progress_percent": 90,
+      "publication": "pull_request",
+      "validation": "code_written",
+      "evidence": "BRANDING-CONTRACT.md présent dans PR #81 ; revue publication requise",
+      "pull_request": "https://github.com/nepheris/nLab-web/pull/81"
+    },
+    {
+      "id": "STU-028",
+      "workstream": "Desktop",
+      "title": "Certifier l’installation Web App en situation réelle",
+      "status": "planned",
+      "progress_percent": 0,
+      "publication": "backlog",
+      "validation": "not_tested",
+      "evidence": "Scénarios Chrome/Edge Ubuntu et Windows PC fixe/portable, raccourci et relancement"
+    }
+  ]
+}
