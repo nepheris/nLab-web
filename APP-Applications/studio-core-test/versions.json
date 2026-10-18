@@ -1,16 +1,25 @@
 {
   "name": "Studio Core Test Lab",
   "current": null,
-  "test": "0.3.0",
+  "test": "0.4.0",
   "versions": [
     {
-      "version": "0.3.0",
-      "label": "Studio Core Test Lab 0.3.0 TEST",
+      "version": "0.4.0",
+      "label": "Studio Core Test Lab 0.4.0 TEST — UX 0.5",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-path",
-      "notes": "CollectionBrowser partagé opt-in avec zoom vignettes +/−, ajustement automatique selon largeur, rotation 90° conditionnelle à la taille, sélection multiple, tri, dropzone et historique Annuler/Rétablir. Core 3.5.0 TEST. Recette PC/mobile et validation humaine requises."
+      "notes": "Espace de travail Core UX réutilisable opt-in : ruban et onglets PDF Studio, collection/aperçu mobile, historique, propriétés, couleur et Enregistrer sous avec variables du moteur partagé. Sorties limitées aux métadonnées JSON/CSV/TXT ; validation manuelle requise."
+    },
+    {
+      "version": "0.3.0",
+      "label": "Studio Core Test Lab 0.3.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.3.0/",
+      "isolation": "snapshot",
+      "notes": "Collection vignettes/zoom/rotations préservée, modules Core partagés évolutifs."
     },
     {
       "version": "0.2.0",
