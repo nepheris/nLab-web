@@ -14,7 +14,7 @@ const manifest={
  id:'studio-core-test',
  name:'Studio Core Test Lab',
  subtitle:'Laboratoire des fonctions transversales',
- studioIconHref:'../../assets/branding/nlab-favicon.svg',
+ studioIconHref:new URL('../../assets/branding/nlab-favicon.svg',import.meta.url).href,
  sourcePath:'APP-Applications/studio-core-test/index.html',
  versionsHref:'./versions.html',
  menus:[{id:'diagnostic',label:'Diagnostics',scope:'studio'},{id:'specimen',label:'Échantillon',scope:'studio'},{id:'validation',label:'Validation',scope:'studio'}],
