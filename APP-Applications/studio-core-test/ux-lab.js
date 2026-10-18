@@ -70,6 +70,10 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  // The accepted mockup has a dedicated menu line and a single compact ribbon row.
  // Keep every existing action binding: only rearrange the actual Core controls.
  document.body.dataset.navPlacement='separate';
+ // The Core starts with the menu integrated in the header. Move the existing
+ // DOM node (not a duplicate) into the canonical separate menu row.
+ const menu=$('.studioMenu'),chromeRoot=$('#nlabStudioV2Chrome');
+ if(menu&&chromeRoot&&coreRibbon){menu.classList.remove('studioMenuIntegrated');chromeRoot.insertBefore(menu,coreRibbon)}
  const createGroup=(id,caption)=>{const el=document.createElement('div');el.className='ribbonGroup scope-core';el.dataset.ribbonGroup=id;el.dataset.scope='core';const label=document.createElement('span');label.className='ribbonLabel';label.textContent=caption;el.append(label);return el};
  const proxy=(group,glyph,label,handler)=>{const b=document.createElement('button');b.type='button';b.className='labRibbonProxy';b.title=label;b.setAttribute('aria-label',label);const i=document.createElement('span');i.className='labRibbonGlyph';i.setAttribute('aria-hidden','true');i.textContent=glyph;const txt=document.createElement('span');txt.textContent=label;b.append(i,txt);b.addEventListener('click',handler);group.insertBefore(b,group.querySelector('.ribbonLabel'));return b};
  const selectionGroup=createGroup('lab-selection','Sélection');
