@@ -25,7 +25,7 @@ try{
     assert(rect.width<=width-30,'URL edit window adapted to mobile width');
     assert(rect.x>=0&&rect.x+rect.width<=width+1,'mobile popup fits the viewport');
    }
-   await urlInput.fill('../../image-studio/');
+   await urlInput.fill('../image-studio/');
    await page.locator('[data-rt-load]').click();
    assert((await page.locator('[data-rt-frame]').getAttribute('src')).includes('/APP-Applications/image-studio/'),'URL navigation still works '+width);
    await page.locator('[data-rt-fullscreen]').click();
@@ -33,7 +33,7 @@ try{
    await toggle.click();
    const fullRect=await popover.boundingBox();
    assert(!!fullRect && (width<=760?fullRect.width<=width-30:fullRect.width>=770),'wide editor remains usable fullscreen '+width);
-   await urlInput.fill('../../code-studio/');
+   await urlInput.fill('../code-studio/');
    await page.locator('[data-rt-load]').click();
    assert(await page.evaluate(()=>document.fullscreenElement===document.querySelector('[data-rt-monitor]')),'load URL without leaving fullscreen '+width);
    assert((await page.locator('[data-rt-frame]').getAttribute('src')).includes('/APP-Applications/code-studio/'),'fullscreen target updates '+width);
