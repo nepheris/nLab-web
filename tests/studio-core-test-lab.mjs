@@ -27,6 +27,23 @@ async function scenario(name,viewport){
   await page.locator('#labPickedFiles li').first().waitFor({state:'attached',timeout:12000});
   assert((await page.locator('#labPickedFiles').textContent()).includes('core-test-fixture.txt'),name+': input-picker selection not returned');
   await page.locator('#labCollection .collectionItem').first().waitFor({timeout:12000});
+  // UX 0.5 parity: files binder, contextual history, shared real event store.
+  if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
+  await page.locator('[data-ux-tab="history"]').click();
+  assert(await page.locator('.uxHistorySidebar').count()===1,name+': shared history sidebar absent');
+  assert(await page.locator('#uxHistoryRecent').getAttribute('open')!==null,name+': history accordion not expanded');
+  assert(await page.locator('#uxHistoryList .uxHistoryEntry').count()>=1,name+': imported-file activity missing');
+  await page.locator('#uxHistoryGrouping').selectOption('type');
+  await page.locator('[data-ux-history-type="file"]').click();
+  assert((await page.locator('#uxHistoryList .uxHistoryEntry').count())>=1,name+': file history filter failed');
+  await page.locator('#uxHistorySearch').fill('aucun-resultat-inexistant');
+  assert((await page.locator('#uxHistoryList .uxHistoryEntry').count())===0,name+': history search not filtering');
+  await page.locator('#uxHistorySearch').fill('');
+  await page.locator('[data-ux-history-type="all"]').click();
+  if(viewport.width<=700)await page.locator('#studioUxCollapse').click();
+  else await page.locator('[data-ux-tab="files"]').click();
+  assert(await page.locator('#uxSideFileList .uxSideFileRow').count()===1,name+': files binder out of sync';
+
   const initial=await page.locator('#labThumbSize').textContent();
   assert(initial==='Auto',name+': auto-fit should be default');
   await page.locator('#labThumbPlus').click();
