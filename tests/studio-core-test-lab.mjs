@@ -127,7 +127,18 @@ async function scenario(name,viewport){
    const profile=await page.locator('body').getAttribute('data-responsive-profile');
    assert(viewport.width<=700?profile==='mobile':['tablet','desktop','compact'].includes(profile),name+': Core responsive profile incorrect: '+profile);
   }
-  assert(errors.length===0,name+': page errors '+errors.join('; '));
+  // Mockup UX 0.5: optional populated workspace, real grouping and central search.
+  if(viewport.width<=700&&!(await page.locator('#studioUxSidebar').isVisible().catch(()=>false))){/* drawer already open from settings */}
+  await page.locator('[data-ux-tab="files"]').click();
+  await page.locator('#uxSideSamples').click();
+  assert((await page.locator('#uxSideFileList .uxSideFileRow').count())===7,name+': optional demo pack not imported');
+  await page.locator('#uxCollectionGrouping').selectOption('path');
+  assert((await page.locator('#labCollection .collectionGroup').count())>=2,name+': folder grouping not active');
+  if(viewport.width<=700)await page.locator('#studioUxCollapse').click();
+  await page.locator('#uxCollectionFilter').fill('Inventaire');
+  assert((await page.locator('#uxSearchCount').textContent()).includes('1 résultat'),name+': central collection filtering failed');
+  await page.locator('#uxCollectionFilter').fill('');
+    assert(errors.length===0,name+': page errors '+errors.join('; '));
   reports.push({name,status:'PASS',checks:15});
  }catch(error){
   reports.push({name,status:'FAIL',error:String(error?.stack||error),browserErrors:errors});
