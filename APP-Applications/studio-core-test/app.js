@@ -2,6 +2,8 @@ import {mountStudioV2} from '../_shared/studio-v2/frame.js';
 import {resolveStudioVersions} from '../_shared/studio-v2/version-service.js';
 import {createFullscreenController} from '../_shared/studio-v2/fullscreen-service.js';
 import {createApplicationModeController} from '../_shared/studio-v2/application-mode-service.js';
+import {mountCoreFileAcquisition} from '../_shared/studio-v2/file-acquisition.js';
+import {recordHistory} from '../_shared/studio-v2/history.js';
 import {pushUndoRedo,getUndoRedoState,subscribeUndoRedo} from '../_shared/studio-v2/undo-redo.js';
 
 const $=selector=>document.querySelector(selector);
@@ -17,7 +19,8 @@ const manifest={
  studioIconHref:new URL('../../assets/branding/nlab-favicon.svg',import.meta.url).href,
  sourcePath:'APP-Applications/studio-core-test/index.html',
  versionsHref:'./versions.html',
- menus:[{id:'diagnostic',label:'Diagnostics',scope:'studio'},{id:'specimen',label:'Échantillon',scope:'studio'},{id:'validation',label:'Validation',scope:'studio'}],
+ coreFeatures:{acquisition:true},
+ menus:[{id:'diagnostic',label:'Diagnostics',scope:'studio'},{id:'acquisition',label:'Fichiers',scope:'studio'},{id:'specimen',label:'Échantillon',scope:'studio'},{id:'validation',label:'Validation',scope:'studio'}],
  ribbon:[{id:'lab-diagnostics',label:'Test Lab',scope:'studio',items:[
   {id:'lab-run-action',action:'lab.run-checks',label:'Contrôles',icon:'check',scope:'studio',status:'stable'},
   {id:'lab-select-action',action:'lab.select',label:'Sélectionner',icon:'select',scope:'studio',status:'stable'},
@@ -79,6 +82,8 @@ const TESTS=[
  ['responsive','Lanceur Responsive',()=>Boolean($('[data-studio-action="core.responsive-test"]'))],
  ['version','Version Core issue du référentiel',()=>Boolean(document.body.dataset.studioCoreVersion)],
  ['storage','Stockage local navigateur',()=>{try{const k='nlab:core-lab:storage-probe';localStorage.setItem(k,'ok');const ok=localStorage.getItem(k)==='ok';localStorage.removeItem(k);return ok}catch{return false}}],
+ ['acquisition','Acquisition Core partagée',()=>typeof mountCoreFileAcquisition==='function'&&Boolean($('#labFileAcquisition [data-acquire-input]'))],
+ ['history-nav','Navigation historique Core',()=>Boolean($('#studioCoreRail [data-core-rail="history"]'))],
  ['manifest','Manifeste PWA accessible',async()=>{const link=$('link[rel="manifest"]');if(!link)return false;const response=await fetch(link.href,{cache:'no-store'});if(!response.ok)return false;const data=await response.json();return data.display==='standalone'&&data.start_url==='./'}]
 ];
 async function runChecks(){
@@ -126,6 +131,26 @@ try{
   channel:'test',sourcePath:manifest.sourcePath
  });
  await mountStudioV2({manifest,versionInfo});
+ const acquisition=mountCoreFileAcquisition($('#labFileAcquisition'),{
+  onChange:({added,files,source})=>{
+   $('#labAcquiredInfo').textContent=files.length+' fichier(s) en mémoire. Dernière opération : '+source+'.';
+   if(added.length)recordHistory({studio:'studio-core-test',type:'file',label:added.length+' fichier(s) importé(s)',detail:source,target:added.map(f=>f.name).join(', ').slice(0,500)});
+  },
+  onSelect:files=>{
+   if(files.length){
+    const f=files[0];
+    document.dispatchEvent(new CustomEvent('studio-v2:selection-change',{detail:{
+     active:f,selection:files,scope:'file',kind:'file',
+     meta:{name:f.name,size:f.size,type:f.type||'—',selectedCount:files.length},source:'core-acquisition'
+    }}));
+   }
+  },
+  onMessage:message=>{$('#labAcquiredInfo').textContent=message}
+ });
+ document.addEventListener('studio-v2:action',e=>{
+  if(e.detail?.action==='core.acquire')acquisition.open();
+ });
+
  $('#labCoreVersion').textContent='Core '+(versionInfo.coreVersion||'—');
  document.documentElement.dataset.coreLabReady='1';
  $('#labResponsiveLink').href=new URL('../responsive-test-studio/?url='+encodeURIComponent(location.href),location.href).href;
@@ -150,7 +175,7 @@ try{
   if(action==='lab.restore')commitSample({...INITIAL},'Restaurer le modèle');
  });
  document.addEventListener('studio-v2:menu',event=>{
-  const target={diagnostic:'#labRunChecks',specimen:'#labItemName',validation:'#labManual'}[event.detail?.tab];
+  const target={diagnostic:'#labRunChecks',acquisition:'#labAcquisitionPanel',specimen:'#labItemName',validation:'#labManual'}[event.detail?.tab];
   if(target)$(target)?.scrollIntoView({behavior:'smooth',block:'nearest'});
  });
  window.addEventListener('resize',updateMetrics);
