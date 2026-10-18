@@ -150,7 +150,7 @@ async function scenario(name,viewport){
   await page.locator('#labOpenSettings').click();
   assert(await page.locator('#studioCoreSettingsPanel').isVisible(),name+': Core settings not opened');
   await page.locator('#studioCoreSettingsClose').click();
-  assert(await page.locator('#uxSettingsProfile [data-template-profile="FIRST_NAME"]').inputValue()==='Essai',name+': personal profile not synchronized');
+  assert(await page.locator('.uxSettingsProfile [data-template-profile="FIRST_NAME"]').inputValue()==='Essai',name+': personal profile not synchronized');
   await page.locator('#uxDisplayMode').selectOption('tablet');
   assert(await page.locator('#studioMain').getAttribute('data-preview-profile')==='tablet',name+': tablet simulation missing');
   await page.locator('#uxDisplayMode').selectOption('mobile');
