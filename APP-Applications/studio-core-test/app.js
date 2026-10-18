@@ -2,7 +2,7 @@ import {mountStudioV2} from '../_shared/studio-v2/frame.js';
 import {resolveStudioVersions} from '../_shared/studio-v2/version-service.js';
 import {createFullscreenController} from '../_shared/studio-v2/fullscreen-service.js';
 import {createApplicationModeController} from '../_shared/studio-v2/application-mode-service.js';
-import {mountCoreFileAcquisition} from '../_shared/studio-v2/file-acquisition.js';
+import {openInputPicker} from '../_shared/studio-v2/input-picker.js';
 import {recordHistory} from '../_shared/studio-v2/history.js';
 import {pushUndoRedo,getUndoRedoState,subscribeUndoRedo} from '../_shared/studio-v2/undo-redo.js';
 
@@ -82,7 +82,7 @@ const TESTS=[
  ['responsive','Lanceur Responsive',()=>Boolean($('[data-studio-action="core.responsive-test"]'))],
  ['version','Version Core issue du référentiel',()=>Boolean(document.body.dataset.studioCoreVersion)],
  ['storage','Stockage local navigateur',()=>{try{const k='nlab:core-lab:storage-probe';localStorage.setItem(k,'ok');const ok=localStorage.getItem(k)==='ok';localStorage.removeItem(k);return ok}catch{return false}}],
- ['acquisition','Acquisition Core partagée',()=>typeof mountCoreFileAcquisition==='function'&&Boolean($('#labFileAcquisition [data-acquire-input]'))],
+ ['acquisition','Acquisition Core partagée',()=>typeof openInputPicker==='function'&&Boolean($('#labPickerOpen'))],
  ['history-nav','Navigation historique Core',()=>Boolean($('#studioCoreRail [data-core-rail="history"]'))],
  ['manifest','Manifeste PWA accessible',async()=>{const link=$('link[rel="manifest"]');if(!link)return false;const response=await fetch(link.href,{cache:'no-store'});if(!response.ok)return false;const data=await response.json();return data.display==='standalone'&&data.start_url==='./'}]
 ];
@@ -131,26 +131,30 @@ try{
   channel:'test',sourcePath:manifest.sourcePath
  });
  await mountStudioV2({manifest,versionInfo});
- const acquisition=mountCoreFileAcquisition($('#labFileAcquisition'),{
-  onChange:({added,files,source})=>{
-   $('#labAcquiredInfo').textContent=files.length+' fichier(s) en mémoire. Dernière opération : '+source+'.';
-   if(added.length)recordHistory({studio:'studio-core-test',type:'file',label:added.length+' fichier(s) importé(s)',detail:source,target:added.map(f=>f.name).join(', ').slice(0,500)});
-  },
-  onSelect:files=>{
-   if(files.length){
-    const f=files[0];
+ let acquiredFiles=[];
+ const openAcquisition=async()=>{
+  try{
+   const selected=await openInputPicker({multiple:true,folders:true,url:true,preserveSession:true,view:'icon'});
+   if(!selected)return;
+   acquiredFiles=selected;
+   $('#labAcquiredInfo').textContent=selected.length+' fichier(s) sélectionné(s) : '+selected.slice(0,3).map(f=>f.name).join(', ')+(selected.length>3?'…':'');
+   $('#labPickedFiles').replaceChildren(...selected.map(f=>{
+    const li=document.createElement('li');li.textContent=f.name+' — '+(f.size/1024).toFixed(1)+' Ko';return li;
+   }));
+   if(selected.length){
+    const f=selected[0];
     document.dispatchEvent(new CustomEvent('studio-v2:selection-change',{detail:{
-     active:f,selection:files,scope:'file',kind:'file',
-     meta:{name:f.name,size:f.size,type:f.type||'—',selectedCount:files.length},source:'core-acquisition'
+     active:f,selection:selected,scope:'collection',kind:'file',
+     meta:{name:f.name,size:f.size,type:f.type||'—',selectedCount:selected.length},source:'core-input-picker'
     }}));
+    recordHistory({studio:'studio-core-test',type:'file',label:selected.length+' fichier(s) sélectionné(s)',detail:'input-picker',target:selected.map(f=>f.name).join(', ').slice(0,500)});
    }
-  },
-  onMessage:message=>{$('#labAcquiredInfo').textContent=message}
- });
+  }catch(error){$('#labAcquiredInfo').textContent='Sélection impossible : '+(error.message||error)}
+ };
+ $('#labPickerOpen').addEventListener('click',openAcquisition);
  document.addEventListener('studio-v2:action',e=>{
-  if(e.detail?.action==='core.acquire')acquisition.open();
+  if(e.detail?.action==='core.acquire')openAcquisition();
  });
-
  $('#labCoreVersion').textContent='Core '+(versionInfo.coreVersion||'—');
  document.documentElement.dataset.coreLabReady='1';
  $('#labResponsiveLink').href=new URL('../responsive-test-studio/?url='+encodeURIComponent(location.href),location.href).href;
