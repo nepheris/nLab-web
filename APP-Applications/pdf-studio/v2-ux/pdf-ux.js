@@ -68,7 +68,7 @@ const workHeader=el('div','pdfUxSectionHeading','Collection de fichiers');
 const workActions=el('div','pdfUxWorkActions');
 workActions.append(button('↥ Fichier',()=>$('#pickFile').click()),button('▱ Dossier',()=>$('#pickFolder').click()),button('↶ Annuler',()=>$('#history-undo')?.click()),button('↷ Rétablir',()=>$('#history-redo')?.click()));
 const save=button('▣ Enregistrer',()=>$('#savePdfSide').click(),'pdfUxPrimary');
-const saveAs=button('⇩ Enregistrer sous',()=>openSaveDialog());
+const saveAs=button('⇩ Enregistrer sous',()=>openSaveDialog());saveAs.id='pdfUxSaveOpen';
 const classify=button('↳ Classer',()=>openSaveDialog());
 ws.actions.append(workActions,save,saveAs,classify);
 const workSurface=el('div','pdfUxWorkSurface');
