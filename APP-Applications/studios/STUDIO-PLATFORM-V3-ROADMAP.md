@@ -10,7 +10,7 @@
 | CORE-254 | IMPLEMENTED TEST | `FOLDER`, `PARENT`, `SUBFOLDER`, `RELATIVE_FOLDER`, `RELATIVE_PATH`, chemin de classement calculé | Test dossiers |
 | CORE-255 | IMPLEMENTED TEST | Aides contextuelles aux choix Contenu (collection/sélection/session) et Format (JSON/CSV/TXT). **Aucun PDF métier exporté par le Lab** | Tests UI |
 | CORE-256 | IMPLEMENTED TEST | Rail repliable/restaurable par icône, aperçu masqué/restauré, sélection mode Auto/Bureau/Tablette/Téléphone pour simuler la planche centrale | Tests desktop/tablette/mobile |
-| CORE-257 | CI PENDING | Snapshot de 0.6.0, Core 3.9.0 TEST/Lab 0.7.0, tests de contraste et de non-régression | CI GitHub et validation humaine |
+| CORE-257 | **CI ciblée PASS / validation humaine PENDING** | Snapshot de 0.6.0, Core 3.9.0 TEST/Lab 0.7.0, thèmes et fonctions préservés | Chrome desktop/tablette/mobile + tests de modèles Node PASS ; audits Studios, PDF V2 pilote et PDF public PASS ; suite exhaustive spécialisée Image garde son timeout historique FAIL |
 | CORE-258 | BLOCKED | Migration de ces fonctions aux Studios Image, PDF, Sky et autres | Validation Core d'abord |
 
 **Attention :** les paramètres sont stockés dans le navigateur via `localStorage`, pas synchronisés entre appareils. La vue simulée bureau/tablette/mobile n'est pas l'émulation exacte des dispositifs physiques ; Responsive Test Studio reste le banc de mesure. Les exports du Lab concernent les métadonnées de test uniquement.
