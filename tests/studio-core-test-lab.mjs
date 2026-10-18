@@ -170,6 +170,12 @@ async function scenario(name,viewport){
   if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
   await page.locator('[data-ux-tab="history"]').click();
   await page.screenshot({path:'artifacts/core-lab-ux/'+name+'-history.png',fullPage:true});
+  await page.locator('[data-ux-tab="settings"]').click();
+  await page.locator('#uxTheme').selectOption('dark');
+  await page.locator('[data-ux-tab="history"]').click();
+  await page.screenshot({path:'artifacts/core-lab-ux/'+name+'-dark-history.png',fullPage:true});
+  await page.locator('[data-ux-tab="settings"]').click();
+  await page.locator('#uxTheme').selectOption('light');
     assert(errors.length===0,name+': page errors '+errors.join('; '));
   reports.push({name,status:'PASS',checks:15,extra:'Workbench + history favorites/details + AA dark contrast'});
  }catch(error){
