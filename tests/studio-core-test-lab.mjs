@@ -25,6 +25,8 @@ async function scenario(name,viewport){
   await page.locator('#labItemName').fill('Échantillon modifié');
   await page.locator('#labCommit').click();
   assert((await page.locator('#labHistory').textContent()).includes('1 action'),name+': no transaction');
+  // On mobile the Core uses a reduced ribbon; use its own dock to expose actions.
+  if(viewport.width<=700)await page.locator('[data-mobile-action="ribbon"]').click();
   await page.locator('[data-studio-action="core.undo"]').click();
   assert(await page.locator('#labItemName').inputValue()==='Composant de démonstration nLab',name+': undo failed');
   await page.locator('[data-studio-action="core.redo"]').click();
