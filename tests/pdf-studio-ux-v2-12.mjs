@@ -75,7 +75,7 @@ for(const testcase of cases){
   assert((await page.locator('#pdfUxSaveDialog').isVisible())===false,'Save As not closing');
   if(testcase.width>1000){
    const downloadPromise=page.waitForEvent('download',{timeout:25000});
-   await page.locator('#savePdfSide').click();
+   await page.locator('#pdfUxSaveDirect').click();
    const d=await downloadPromise;const p=await d.path();const bytes=p?await readFile(p):Buffer.alloc(0);
    assert(d.suggestedFilename().toLowerCase().endsWith('.pdf'),'PDF filename is not PDF');
    assert(bytes.slice(0,5).toString()==='%PDF-','download not an actual PDF');
