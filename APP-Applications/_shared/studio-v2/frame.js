@@ -15,6 +15,15 @@ import{mountContextMenu}from'./context-menu.js';
 import{installContextSelectionBridge}from'./context-selection.js';
 import{installUndoRedoBridge}from'./undo-redo.js';
 
+// Canonical branding/navigation are resolved from Studio Core itself, not relative
+// to individual Studio documents (which may use different <base> rules).
+const NLAB_HOME=new URL('../../../',import.meta.url).href;
+const NLAB_WORDMARK=new URL('../../../assets/branding/nlab-wordmark.svg',import.meta.url).href;
+const NLAB_STUDIOS=new URL('APP-Applications/studios/',NLAB_HOME).href;
+const NLAB_APPLICATIONS=new URL('APP-Applications/',NLAB_HOME).href;
+const NLAB_DEMOS=new URL('Library/demo/',NLAB_HOME).href;
+const NLAB_INFO=new URL('Info/',NLAB_HOME).href;
+const NLAB_LICENSES=new URL('Info/licenses.html',NLAB_HOME).href;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const scopeOf=x=>String(x?.scope||'studio').toLowerCase();
 const scopeClass=x=>scopeOf(x)==='core'?'core':'studio';
@@ -58,8 +67,8 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   chrome.innerHTML=`
 <header class="studioHeader">
   <div class="studioHeaderInner">
-    <a class="studioLogo" href="${esc(manifest.homeHref||'../../')}" aria-label="nLab Web">
-      <img src="${esc(manifest.logoHref||'../../assets/branding/nlab-wordmark.svg')}" alt="nLab">
+    <a class="studioLogo" href="${esc(NLAB_HOME)}" aria-label="Retour à l’accueil nLab" title="Accueil nLab">
+      <img src="${esc(NLAB_WORDMARK)}" alt="nLab">
     </a>
     <div class="studioIdentity">
       <span class="studioAppIcon" style="--studio-icon:url('${esc(manifest.studioIconHref||('../../assets/studios/'+manifest.id+'.svg'))}')" aria-hidden="true"></span>
@@ -73,11 +82,11 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
       </div>
     </div>
     <nav class="studioGlobalNav" aria-label="Navigation nLab">
-      <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'APP-Applications/')}">Applications</a>
-      <a class="scope-core" data-scope="core" href="${esc(manifest.studiosHref||'../studios-v2/')}">Studios</a>
-      <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Library/demo/')}">Démos</a>
-      <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Info/')}">Info</a>
-      <a class="scope-core" data-scope="core" href="${esc((manifest.homeHref||'../../')+'Info/licenses.html')}">À propos & licence</a>
+      <a class="scope-core" data-scope="core" href="${esc(NLAB_APPLICATIONS)}">Applications</a>
+      <a class="scope-core" data-scope="core" href="${esc(NLAB_STUDIOS)}">Studios</a>
+      <a class="scope-core" data-scope="core" href="${esc(NLAB_DEMOS)}">Démos</a>
+      <a class="scope-core" data-scope="core" href="${esc(NLAB_INFO)}">Info</a>
+      <a class="scope-core" data-scope="core" href="${esc(NLAB_LICENSES)}">À propos & licence</a>
       <a class="scope-core" data-scope="core" href="https://github.com/nepheris/nLab-web">GitHub</a>
       <button id="studioCommandOpen" class="studioNavAction scope-core" data-scope="core" title="Rechercher une commande (Ctrl+K)">⌕ Commandes</button><button id="studioWorkflowOpen" class="studioNavAction scope-core" data-scope="core" title="Workflows enregistrés">Workflows</button><button id="studioContextHelpOpen" class="studioNavAction scope-core" data-scope="core" title="Aide contextuelle">? Aide</button><button id="studioCoreSettings" class="studioNavAction scope-core" data-scope="core" title="Paramètres du Studio Core">⚙ Core</button>
       <a class="studioNavAction scope-core" data-scope="core" href="${esc(manifest.versionsHref||'./versions.html')}">Versions</a>
