@@ -88,9 +88,36 @@ async function scenario(name,viewport){
   const resp=await page.locator('#labResponsiveLink').getAttribute('href');
   assert(resp.includes('responsive-test-studio/')&&resp.includes('url='),name+': responsive launcher URL invalid');
   assert(await page.locator('#studioMain.studioUx').count()===1,name+': workspace shell missing');
+  assert(await page.locator('#studioUxRailToggle').count()===1,name+': collapsible rail toggle missing');
+  if(viewport.width>700){
+   await page.locator('#studioUxRailToggle').click();
+   assert(await page.locator('#studioMain').evaluate(x=>x.classList.contains('uxSidebarClosed')),name+': rail did not collapse');
+   await page.locator('#studioUxRailToggle').click();
+   assert(!(await page.locator('#studioMain').evaluate(x=>x.classList.contains('uxSidebarClosed'))),name+': rail did not expand');
+  }
+  await page.locator('#uxPreviewCollapse').click();
+  assert(await page.locator('#uxPreviewCanvas').isHidden(),name+': preview did not collapse');
+  await page.locator('#uxPreviewRestore').click();
+  assert(await page.locator('#uxPreviewCanvas').isVisible(),name+': preview did not restore');
+
   assert(await page.locator('#studioMain').getAttribute('data-layout-profile')===(viewport.width<=700?'mobile':viewport.width<=1100?'tablet':'desktop'),name+': adaptive workspace profile incorrect');
   assert(await page.locator('.studioUxRail [data-ux-tab]').count()===8,name+': Core workbench tab missing');
   await page.locator('#uxSaveAsOpen').click();
+  assert(await page.locator('.uxTokenFamily').count()===6,name+': template categories missing');
+  assert(await page.locator('#uxSaveProfileMount [data-template-profile="FIRST_NAME"]').count()===1,name+': personal profile 00 missing');
+  await page.locator('#uxSaveProfileMount [data-template-profile="FIRST_NAME"]').fill('Essai');
+  await page.locator('#uxSavePattern').fill('{FIRST_NAME}_{DATE_A:DD-MM-YYYY}');
+  assert((await page.locator('#uxSavePreview').textContent()).includes('Essai_'),name+': local personal variable not resolved');
+  await page.locator('#uxSaveDateMask').selectOption('DD-MM-YYYY');
+  assert((await page.locator('.uxTokenFamily[data-family="date"] [data-template-token="DATE_A"]').textContent()).includes(':DD-MM-YYYY'),name+': formatted date token missing');
+  await page.locator('.uxTokenFamily[data-family="date"] .uxToken[data-token-key="DATE_A"] button').nth(1).click();
+  assert((await page.locator('#uxSavePattern').inputValue()).includes('{DATE_A:DD-MM-YYYY}'),name+': date insertion failed');
+  await page.locator('.uxToken[data-token-key="FOLDER"]').hover();
+  assert((await page.locator('#uxSaveTokenHelp').textContent()).includes('Dossier parent'),name+': contextual hover variable help missing');
+  await page.locator('#uxSaveContent').selectOption('selection');
+  assert((await page.locator('#uxSaveContextHelp').textContent()).includes('cochés'),name+': selection context help missing');
+  await page.locator('#uxSaveContent').selectOption('collection');
+
   assert(await page.locator('#uxSaveDialog').isVisible(),name+': save-as dialog missing');
   await page.locator('#uxSaveTokens .uxTokenHelp').first().click();
   assert((await page.locator('#uxSaveTokenHelp').textContent()).includes('STUDIO'),name+': contextual variable help missing');
@@ -120,6 +147,12 @@ async function scenario(name,viewport){
   await page.locator('#labOpenSettings').click();
   assert(await page.locator('#studioCoreSettingsPanel').isVisible(),name+': Core settings not opened');
   await page.locator('#studioCoreSettingsClose').click();
+  assert(await page.locator('#uxSettingsProfile [data-template-profile="FIRST_NAME"]').inputValue()==='Essai',name+': personal profile not synchronized');
+  await page.locator('#uxDisplayMode').selectOption('tablet');
+  assert(await page.locator('#studioMain').getAttribute('data-preview-profile')==='tablet',name+': tablet simulation missing');
+  await page.locator('#uxDisplayMode').selectOption('mobile');
+  assert(await page.locator('#studioMain').getAttribute('data-preview-profile')==='mobile',name+': mobile simulation missing');
+  await page.locator('#uxDisplayMode').selectOption('auto');
   await page.locator('#uxTheme').selectOption('dark');
   assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='dark',name+': dark theme missing');
   assert((await page.locator('body').getAttribute('data-studio-ux-theme'))==='dark',name+': dark theme not applied across header and dialogs');
