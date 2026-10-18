@@ -205,3 +205,32 @@ body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx button:focu
 body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx [role="tab"]:focus-visible{
  outline:2px solid var(--ux-accent)!important;outline-offset:2px
 }
+
+
+/* Detached Core windows and native advanced History stay readable in dark mode. */
+body[data-studio-ux-theme="dark"] .studioUxFloat,
+body[data-studio-ux-theme="dark"] .studioUxFloatHead,
+body[data-studio-ux-theme="dark"] .studioUxFloatBody,
+body[data-studio-ux-theme="dark"] #history-full-view{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] #history-full-view .historyFullControls,
+body[data-studio-ux-theme="dark"] #history-full-view .historyGroup,
+body[data-studio-ux-theme="dark"] #history-full-view .historyItem,
+body[data-studio-ux-theme="dark"] #history-full-view .historyItemBody{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] #history-full-view button,
+body[data-studio-ux-theme="dark"] #history-full-view input,
+body[data-studio-ux-theme="dark"] #history-full-view select,
+body[data-studio-ux-theme="dark"] .studioUxFloat button,
+body[data-studio-ux-theme="dark"] .studioUxFloat input,
+body[data-studio-ux-theme="dark"] .studioUxFloat select{
+ background:var(--ux-control)!important;color:var(--ux-control-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] #history-full-view strong,
+body[data-studio-ux-theme="dark"] #history-full-view summary,
+body[data-studio-ux-theme="dark"] #history-full-view time,
+body[data-studio-ux-theme="dark"] .studioUxFloat strong{
+ color:var(--ux-fg)!important
+}
