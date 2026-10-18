@@ -67,6 +67,21 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  // Use the actual shared Core ribbon, but order groups as in the UX reference.
  const coreRibbon=$('.studioRibbon'),toggle=$('#studioRibbonToggle');
  for(const key of ['core-acquisition','lab-file','core-history','lab-panels','core-command','lab-diagnostics']){const group=coreRibbon?.querySelector('[data-ribbon-group="'+key+'"]');if(group)coreRibbon.insertBefore(group,toggle)}
+ // The accepted mockup has a dedicated menu line and a single compact ribbon row.
+ // Keep every existing action binding: only rearrange the actual Core controls.
+ document.body.dataset.navPlacement='below';
+ const createGroup=(id,caption)=>{const el=document.createElement('div');el.className='ribbonGroup scope-core';el.dataset.ribbonGroup=id;el.dataset.scope='core';const label=document.createElement('span');label.className='ribbonLabel';label.textContent=caption;el.append(label);return el};
+ const proxy=(group,glyph,label,handler)=>{const b=document.createElement('button');b.type='button';b.className='labRibbonProxy';b.title=label;b.setAttribute('aria-label',label);const i=document.createElement('span');i.className='labRibbonGlyph';i.setAttribute('aria-hidden','true');i.textContent=glyph;const txt=document.createElement('span');txt.textContent=label;b.append(i,txt);b.addEventListener('click',handler);group.insertBefore(b,group.querySelector('.ribbonLabel'));return b};
+ const selectionGroup=createGroup('lab-selection','Sélection');
+ proxy(selectionGroup,'☑','Tout choisir',()=>collection.selectAll());
+ proxy(selectionGroup,'□','Désélect.',()=>collection.clearSelection());
+ proxy(selectionGroup,'⇄','Inverser',()=>$('#labInvertFiles').click());
+ const anchorHistory=coreRibbon?.querySelector('[data-ribbon-group="core-history"]');
+ coreRibbon?.insertBefore(selectionGroup,anchorHistory||toggle);
+ const displayGroup=createGroup('lab-display','Affichage');
+ for(const id of ['core-fullscreen','core-app-mode','core-responsive-test']){const button=coreRibbon?.querySelector('#'+id);if(button)displayGroup.insertBefore(button,displayGroup.querySelector('.ribbonLabel'))}
+ proxy(displayGroup,'⚙','Réglages',()=>$('#studioCoreSettings')?.click());
+ coreRibbon?.insertBefore(displayGroup,toggle);
  const ribbon=make('div','labToolbar uxWorkMainActions','');
  ribbon.append(picker);
  const upload=make('button','','▣ Dossier');upload.type='button';upload.title='Parcourir un dossier dans le sélecteur canonique';upload.addEventListener('click',()=>picker.click());ribbon.append(upload);
