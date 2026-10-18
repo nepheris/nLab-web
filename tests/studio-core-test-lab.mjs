@@ -1,5 +1,6 @@
 // Studio Core Test Lab — validation navigateur du vrai Core partagé.
 import {chromium} from 'playwright';
+import {mkdir} from 'node:fs/promises';
 const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/';
 const browser=await chromium.launch({headless:true,...(process.env.NLAB_BROWSER_CHANNEL?{channel:process.env.NLAB_BROWSER_CHANNEL}:{})});
 const reports=[];
@@ -138,6 +139,14 @@ async function scenario(name,viewport){
   await page.locator('#uxCollectionFilter').fill('Inventaire');
   assert((await page.locator('#uxSearchCount').textContent()).includes('1 résultat'),name+': central collection filtering failed');
   await page.locator('#uxCollectionFilter').fill('');
+  await mkdir('artifacts/core-lab-ux',{recursive:true});
+  if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
+  await page.locator('[data-ux-tab="files"]').click();
+  if(viewport.width<=700)await page.locator('#studioUxCollapse').click();
+  await page.screenshot({path:'artifacts/core-lab-ux/'+name+'-workspace.png',fullPage:true});
+  if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
+  await page.locator('[data-ux-tab="history"]').click();
+  await page.screenshot({path:'artifacts/core-lab-ux/'+name+'-history.png',fullPage:true});
     assert(errors.length===0,name+': page errors '+errors.join('; '));
   reports.push({name,status:'PASS',checks:15});
  }catch(error){
