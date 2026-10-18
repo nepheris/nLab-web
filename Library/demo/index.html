@@ -21,14 +21,14 @@ footer{padding:18px 0;color:var(--muted);font-size:12px}
 <main class="wrap">
 <section class="hero"><span class="badge">100 % synthétique · aucune donnée personnelle réelle</span><h1>Galerie de démonstration nLab</h1>
 <p>Prévisualisation du corpus commun utilisé pour PDF Studio, OCR, Image Studio, BrickMiner et les futurs convertisseurs. Le corpus est versionné séparément des applications.</p>
-<div class="actions"><a class="btn primary" href="#demoExplorer">Explorer les dossiers</a><a class="btn" href="./conversion-test/">Test conversion HTML→PDF</a><a class="btn" href="#demoExplorer">Toutes les catégories</a><button class="btn primary" id="scan2dJump" type="button">Tests Scan2D (7)</button><a class="btn" href="./demo-manifest.json">Manifest global</a><a class="btn" href="./demo-registry.json">Index général classé</a><a class="btn" href="./manifests/index.json">Manifests par Studio</a><a class="btn primary" href="./Images/nLab-Studio/Icon-Library/gallery/">Bibliothèque icônes SVG</a><a class="btn" href="./demo-catalog-v2.json">Catalogue v2.1</a><a class="btn" href="../../APP-Applications/pdf-studio/app-0.9.13.html">Tester PDF Studio 0.9.13</a></div></section>
+<div class="actions"><a class="btn primary" href="#demoExplorer">Explorer les dossiers</a><a class="btn" href="./conversion-test/">Test conversion HTML→PDF</a><a class="btn" href="#demoExplorer">Toutes les catégories</a><button class="btn primary" id="scan2dJump" type="button">Tests Scan2D (7)</button><a class="btn" href="./demo-manifest.json">Manifest global</a><a class="btn" href="./demo-registry.json">Index général classé</a><a class="btn" href="./manifests/index.json">Manifests par Studio</a><a class="btn primary" href="?folder=icons#demoExplorer">📁 Dossier Icônes nLab</a><a class="btn" href="./Images/nLab-Studio/Icon-Library/gallery/">🎨 Parcourir les icônes</a><a class="btn" href="../../APP-Applications/studio-core-test/">🧪 Studio Core Test Lab</a><a class="btn" href="./demo-catalog-v2.json">Catalogue v2.1</a><a class="btn" href="../../APP-Applications/pdf-studio/app-0.9.13.html">Tester PDF Studio 0.9.13</a></div></section>
 <section class="nlab-panel demo-explorer" id="demoExplorer" aria-label="Explorateur de démonstrations">
  <h2>Explorer les démonstrations</h2>
  <p class="demo-lead">Parcourez les dossiers par Studio et par catégorie. Les images de référence sont visibles et peuvent être ouvertes ; les jeux Scan2D peuvent être chargés directement dans Image Studio.</p>
  <div class="demo-explorer-layout">
   <nav class="demo-folders" id="demoFolderNav" aria-label="Dossiers de démonstration"><h3>Répertoires</h3><div class="demo-browser-hint">Chargement des manifestes…</div></nav>
   <div class="demo-explorer-main">
-   <div class="demo-browser-toolbar"><input id="demoBrowserSearch" type="search" placeholder="Rechercher un fichier, un test ou une catégorie…" aria-label="Rechercher des démonstrations"><label><input id="demoBrowserLocalOnly" type="checkbox" checked> Disponibles seulement</label></div>
+   <div class="demo-browser-toolbar"><input id="demoBrowserSearch" type="search" placeholder="Rechercher un fichier, un test ou une catégorie…" aria-label="Rechercher des démonstrations"><label><input id="demoBrowserLocalOnly" type="checkbox"> Disponibles seulement</label></div>
    <div class="demo-browser-hint" id="demoBrowserCount" aria-live="polite">Chargement…</div>
    <div id="demoBrowserFiles" class="demo-browser-list"></div>
   </div>
@@ -121,20 +121,20 @@ function render(){
    filtered.push({group,f})
   }
  }
- const visible=filtered.slice(0,150);
- count.textContent=filtered.length+' résultat(s)'+(filtered.length>visible.length?' · '+visible.length+' affichés':'');
+ const visible=filtered;
+ count.textContent=filtered.length+' résultat(s) · '+groups.length+' dossier(s) indexé(s)';
  list.innerHTML=visible.map(({group,f})=>{
   const name=f.label||f.name||'Sans nom',url=fileUrl(group,f),canPreview=url&&imgExt.has(ext(f.name)),icon=iconUrl(f.name);
-  const picture=canPreview?'<img loading="lazy" src="'+esc(url)+'" alt="Aperçu de '+esc(name)+'">':'<img class="demo-file-icon" loading="lazy" src="'+esc(icon)+'" alt="">';
+  const picture=canPreview?'<img loading="lazy" data-demo-preview src="'+esc(url)+'" alt="Aperçu de '+esc(name)+'">':'<div class="demo-file-type" aria-label="Format '+esc(ext(f.name)||f.kind||'fichier')+'">'+esc((ext(f.name)||f.kind||'FICHIER').toUpperCase())+'</div>';
   const test=(f.testId&&url)?'<a class="demo-test" href="'+esc(studioUrl.href+'?demo='+encodeURIComponent(f.testId))+'">Tester dans Image Studio</a>':'';
-  const actions=url?'<a href="'+esc(url)+'" target="_blank" rel="noopener">Ouvrir</a><a href="'+esc(url)+'" download>Télécharger</a>'+test:'<span class="demo-file-status">Référence non publiée</span>';
+  const actions=url?'<a href="'+esc(url)+'" target="_blank" rel="noopener">Aperçu / ouvrir</a><a href="'+esc(url)+'" download>Télécharger</a>'+test:'<span class="demo-file-status">Référence non publiée</span>';
   return '<article class="demo-file" data-published="'+Boolean(url)+'"><div class="demo-file-preview">'+picture+'</div><div class="demo-file-content"><strong>'+esc(name)+'</strong><small>'+esc(group.label)+' · '+esc((ext(f.name)||f.kind||'fichier').toUpperCase())+'</small><div class="demo-file-path">'+esc(f.name||'')+'</div><div class="demo-file-actions">'+actions+'</div></div></article>';
  }).join('')||'<div class="empty">Aucun fichier ne correspond aux filtres.</div>';
  for(const btn of nav.querySelectorAll('[data-demo-folder]'))btn.setAttribute('aria-current',String(btn.dataset.demoFolder===chosen));
 }
 function renderFolders(){
  nav.innerHTML='<h3>Parcourir les dossiers</h3><button class="demo-folder-button" type="button" data-demo-folder="all"><span>📁 Toutes les démos</span><small>'+groups.reduce((a,g)=>a+g.files.length,0)+'</small></button>'+groups.map(group=>'<button class="demo-folder-button" type="button" data-demo-folder="'+esc(group.id)+'"><span>📂 '+esc(group.label)+'</span><small>'+group.files.length+'</small></button>').join('')+
- '<div class="demo-folder-divider"></div><a class="demo-folder-link" href="./Images/nLab-Studio/Icon-Library/gallery/">🎨 Parcourir les icônes ↗</a><a class="demo-folder-link" href="./demo-registry.json">🗂️ Index transversal JSON ↗</a>';
+ '<a class="demo-folder-link" href="./Images/nLab-Studio/Icon-Library/gallery/">🎨 Parcourir les icônes ↗</a><div class="demo-folder-divider"></div><a class="demo-folder-link" href="../../APP-Applications/studio-core-test/">🧪 Studio Core Test Lab ↗</a><a class="demo-folder-link" href="./demo-registry.json">🗂️ Index transversal JSON ↗</a>';
  nav.onclick=e=>{const b=e.target.closest('[data-demo-folder]');if(!b)return;chosen=b.dataset.demoFolder;render()};
  render();
 }
@@ -147,6 +147,13 @@ async function init(){
    const data=await r.json();return{id:s.id,label:s.label,manifestUrl,files:(data.files||[])};
   }));
   groups=results.filter(x=>x.status==='fulfilled').map(x=>x.value);
+  // Studio icons and function icons share ONE real folder in the normal explorer.
+  const icons=groups.filter(x=>x.id==='studio-icons'||x.id==='function-icons');
+  if(icons.length){
+    groups=groups.filter(x=>!icons.includes(x));
+    groups.push({id:'icons',label:'Icônes nLab',manifestUrl:icons[0].manifestUrl,
+      files:icons.flatMap(g=>g.files.map(f=>({...f,category:g.label||g.id})))});
+  }
   // Resources catalogued outside studio-specific manifests appear under a distinct folder.
   try{
    const registryUrl=new URL('./demo-registry.json',location.href),response=await fetch(registryUrl,{cache:'no-store'});
@@ -161,11 +168,23 @@ async function init(){
   }catch(e){console.warn('Registre complémentaire non disponible',e)}
   const failures=results.filter(x=>x.status==='rejected');
   if(!groups.length)throw Error('Aucun manifeste consultable');
-  if(new URLSearchParams(location.search).has('scan2d')){chosen='image-studio';search.value='Scan2D'}
+  const params=new URLSearchParams(location.search);
+  if(params.has('scan2d')){chosen='image-studio';search.value='Scan2D'}
+  const requested=params.get('folder');
+  if(requested&&groups.some(g=>g.id===requested))chosen=requested;
   renderFolders();
   if(failures.length)count.textContent+=' · '+failures.length+' manifeste(s) indisponible(s)';
  }catch(e){nav.innerHTML='<h3>Parcourir les dossiers</h3><p class="demo-browser-hint">Index indisponible</p>';list.innerHTML='<div class="empty">Erreur de lecture du catalogue : '+esc(e?.message||e)+'</div>';count.textContent='Erreur'}
 }
+// Failed previews do not leave blank cards; show a format fallback.
+list.addEventListener('error',event=>{
+ const image=event.target;
+ if(!image?.matches?.('img[data-demo-preview]'))return;
+ const fallback=document.createElement('div');fallback.className='demo-file-type';
+ fallback.textContent=(ext(image.src)||'FICHIER').toUpperCase();
+ fallback.setAttribute('role','img');fallback.setAttribute('aria-label','Aperçu indisponible');
+ image.replaceWith(fallback);
+},true);
 search.addEventListener('input',render);localOnly.addEventListener('change',render);init();
 })();
 </script>

@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "channel": "test",
-  "notes": "Studio Core 3.4.0 TEST : récupération Legacy contrôlée du Viewer Core (zoom ±, pourcentage éditable, Ajuster, 100 %, presets, état synchronisé) et du launcher d’acquisition canonique avec icône inputAcquire et tuile de dépôt compacte ; Core 3.3.1 Command/Context/Undo-Redo conservé.",
+  "notes": "Studio Core 3.4.1 TEST : panneau latéral Core repliable Historique/Propriétés, mode acquisition opt-in réutilisant input-picker.js (sans duplication), commande Test responsive masquable, icône fullscreen expand, paramètres UX mutualisés. Les services OCR/Image/PDF et historiques restent indépendants.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }

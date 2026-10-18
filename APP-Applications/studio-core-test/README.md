@@ -1,9 +1,9 @@
-# Studio Core Test Lab — TEST 0.1.0
+# Studio Core Test Lab — TEST 0.2.0
 
 Surface de diagnostic isolée : `APP-Applications/studio-core-test/`.
 
 ## Objectif
-Vérifier le véritable Studio Core V2 partagé et préparer une propagation contrôlée à l'ensemble des Studios nLab, sans dupliquer le code du Core ni modifier les archives historiques.
+Vérifier le véritable Studio Core V2 partagé (Core 3.4.1 TEST) et préparer une propagation contrôlée à l'ensemble des Studios nLab, sans dupliquer le code du Core ni modifier les archives historiques.
 
 ## Périmètre couvert
 - Header nLab / navigation, ruban, menus, réglages et commandes Core.
@@ -27,3 +27,11 @@ La surface TEST est volontairement absente des 15 Studios métier comptabilisés
 4. Mobile Android : affichage et actions dans le ruban.
 5. Retester un Studio V2 spécialisé ainsi que Responsive Test Studio CURRENT (non-régression).
 6. Étendre l'installation PWA aux autres Studios via leurs manifestes dédiés ; ce chantier reste PARTIAL tant qu'il n'est pas audité.
+
+## Passe 0.2.0
+- Le module d'acquisition réel est `APP-Applications/_shared/studio-v2/input-picker.js`, déjà consommé par Scan et QR Barcode. Aucune seconde fenêtre d'import n'est introduite.
+- Le Lab `coreFeatures.acquisition=true` active `core.acquire`; la fenêtre d'entrée sélectionne et renvoie les `File[]` au Lab.
+- Barre Core repliable Historique / Propriétés + Fichiers opt-in ; préférence pour masquer le launcher Responsive.
+- Explorateur de démos : toutes les entrées de manifests, dossier Icônes normal, preview valide ou fallback.
+- L'historique 0.1.0 est conservé dans `versions/0.1.0/`.
+- Audit de mutualisation : `../studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md`.
