@@ -146,13 +146,14 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   registerCapabilities(manifest);
   // Reuse exactly the viewport's fullscreen controller, with the whole Studio
   // document as the target so its shared Core ribbon stays visible.
+  const fullscreenButton=qs('[data-studio-action="core.fullscreen"]',chrome);
   const fullscreenController=createFullscreenController({
     target:document.documentElement,
-    button:qs('[data-studio-action="core.fullscreen"]',chrome),
+    button:fullscreenButton,
     onMessage:text=>{const status=qs('#studioStatusText');if(status)status.textContent=text}
   });
   document.addEventListener('studio-v2:action',event=>{
-    if(event.detail?.action==='core.fullscreen'&&event.detail?.element!==fullscreenController.button) {
+    if(event.detail?.action==='core.fullscreen'&&event.detail?.element!==fullscreenButton) {
       // Commands palette may trigger actions without clicking the ribbon.
       fullscreenController.toggle();
     }
