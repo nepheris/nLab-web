@@ -38,11 +38,20 @@ export function createFullscreenController({target,button,onChange=()=>{},onMess
  };
  // listen to Escape / browser UI / another consumer taking over fullscreen
  doc.addEventListener('fullscreenchange',synchronize);
+ // In Chromium headless and embedded app windows Escape may not trigger the
+ // browser-level exit. Use the same explicit fallback for every Studio.
+ const escapeToExit=event=>{
+  if(event.key==='Escape'&&isFullscreen()&&typeof doc.exitFullscreen==='function'){
+   doc.exitFullscreen().catch(()=>{});
+  }
+ };
+ doc.addEventListener('keydown',escapeToExit);
  button.addEventListener('click',toggle);
  synchronize();
  const destroy=()=>{
   if(disposed)return;
   doc.removeEventListener('fullscreenchange',synchronize);
+  doc.removeEventListener('keydown',escapeToExit);
   button.removeEventListener('click',toggle);
   const active=isFullscreen();
   disposed=true;
