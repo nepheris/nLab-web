@@ -18,7 +18,7 @@ const csv=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
 const safeStore=(key,value)=>{try{localStorage.setItem(key,String(value))}catch{}};
 const safeRead=(key,fallback)=>{try{return localStorage.getItem(key)??fallback}catch{return fallback}};
 
-export function mountCoreLabUx({main,collection}){
+export function mountCoreLabUx({main,collection,appendFiles}){
  const legacyAside=main.querySelector(':scope>.labSidebar');
  const oldViewer=main.querySelector(':scope>.viewer');
  const panels=Array.from(oldViewer.children);
@@ -30,7 +30,7 @@ export function mountCoreLabUx({main,collection}){
  const acquiredInfo=$('#labAcquiredInfo'),picked=$('#labPickedFiles');
  const pickedDetails=picked.closest('details');
  const profile=make('div','studioUxFileSidebar','<strong>Collection active</strong><p id="uxFilesCount">0 fichier</p><button class="uxMiniButton" id="uxSideImport" type="button">↥ Ajouter des fichiers</button>');
- const fileBar=make('div','uxFileBar','<div class="uxSidebarOverline">Collection active · <span id="uxSideFileCount">0 fichiers</span></div><div class="uxFileActions"><button id="uxSideAdd" type="button">↥ Ajouter</button><button id="uxSideFolder" type="button">▱ Dossier</button></div>');
+ const fileBar=make('div','uxFileBar','<div class="uxSidebarOverline">Collection active · <span id="uxSideFileCount">0 fichiers</span></div><div class="uxFileActions"><button id="uxSideAdd" type="button">↥ Ajouter</button><button id="uxSideFolder" type="button">▱ Dossier</button></div><button id="uxSideSamples" class="uxMiniButton" type="button">◫ Charger les 4 exemples</button>');
  const fileAccordion=make('details','uxHistoryAccordion uxFileAccordion','<summary>Fichiers · <span id="uxSideSelected">0 sélectionné(s)</span></summary><div id="uxSideFileList" class="uxSideFileList" role="list"></div>');
  fileAccordion.open=true;
  const sideSelection=make('div','uxFileSelection','<button id="uxFileAll" type="button">Tout</button><button id="uxFileNone" type="button">Aucun</button><button id="uxFileInvert" type="button">Inverser</button>');
@@ -76,6 +76,16 @@ export function mountCoreLabUx({main,collection}){
  ws.actions.append(ribbon);
  const heading=make('div','studioUxInfoRow','<div><strong>Collection de fichiers</strong><span> · Cliquer pour activer et cocher pour sélectionner</span></div><span id="uxCollectionCount">0 fichier</span>');
  ctrl.classList.add('uxCollectionToolbar');
+ const groupLabel=document.createElement('label');groupLabel.textContent='Regrouper : ';
+ const groupSelect=document.createElement('select');groupSelect.id='uxCollectionGrouping';
+ for(const [value,label] of [['none','À plat'],['path','Dossier'],['type','Type'],['selected','Sélection']]){
+  const opt=document.createElement('option');opt.value=value;opt.textContent=label;groupSelect.append(opt);
+ }
+ groupSelect.value=collection.groupBy;groupLabel.append(groupSelect);
+ const centralFilter=document.createElement('input');centralFilter.id='uxCollectionFilter';centralFilter.type='search';centralFilter.placeholder='Nom, type, dossier…';centralFilter.setAttribute('aria-label','Filtrer la collection');
+ const selectVisible=document.createElement('button');selectVisible.id='uxSelectVisibleMain';selectVisible.type='button';selectVisible.textContent='Choisir visibles';
+ ctrl.append(groupLabel,centralFilter,selectVisible);
+ groupSelect.addEventListener('change',()=>collection.setGroupBy(groupSelect.value));
  const collectionSide=make('div','studioUxCollectionSide');collectionSide.append(coll,collectionInfo);
  const preview=make('section','studioUxPreview','<header><strong>Aperçu de l’élément actif</strong><small id="uxPreviewType">Aucun fichier</small></header><div class="studioUxPreviewToolbar"><label>Afficher <select id="uxPreviewScope"><option value="active">Fichier actif</option><option value="selected">Sélection (en série)</option></select></label><button id="uxPreviewMinus" type="button">−</button><output id="uxPreviewZoom">100 %</output><button id="uxPreviewPlus" type="button">+</button><button id="uxPreviewFit" type="button">1:1</button><button id="uxPreviewLeft" type="button" title="Tourner à gauche">↶ 90°</button><button id="uxPreviewRight" type="button" title="Tourner à droite">↷ 90°</button></div><div class="studioUxPreviewCanvas" id="uxPreviewCanvas"><span class="labHint">Ajoutez ou sélectionnez un fichier.</span></div><footer>Aperçu uniquement : les fichiers sources ne sont pas modifiés.</footer>');
  const split=make('div','studioUxCollectionSplit');split.append(collectionSide,preview);
@@ -83,6 +93,20 @@ export function mountCoreLabUx({main,collection}){
  // Read-only import details in the file sidebar are always present for previous Lab APIs.
  $('#uxSideAdd').addEventListener('click',()=>picker.click());
  $('#uxSideFolder').addEventListener('click',()=>picker.click());
+ $('#uxSideSamples').addEventListener('click',()=>{
+   if(typeof appendFiles!=='function')return;
+   const svg='<svg xmlns="http://www.w3.org/2000/svg" width="480" height="310"><rect width="480" height="310" fill="#e4f3ff"/><circle cx="350" cy="90" r="32" fill="#faca72"/><path d="M35 277 170 110 280 240 360 170 460 277" fill="#5ba084"/><text x="50" y="54" font-size="24" fill="#2574a9">Photo nLab</text></svg>';
+   const files=[
+    new File([svg],'Photo-echantillon.svg',{type:'image/svg+xml'}),
+    new File(['Nom;Quantite\nExemple;3\nTest;7\n'],'Inventaire-tests.csv',{type:'text/csv'}),
+    new File(['# Notes projet nLab\n- Import\n- Historique\n- Apercu'],'Notes-projet.md',{type:'text/markdown'}),
+    new File(['Fichier de demonstration nLab'],'Document-demo.txt',{type:'text/plain'})
+   ];
+   const folders=['Images/Octobre/Photo-echantillon.svg','Inventaires/2026/Inventaire-tests.csv','Notes-projet.md','Documents/Document-demo.txt'];
+   files.forEach((f,i)=>{f.__relativePath=folders[i]});
+   appendFiles(files);
+   $('#uxSideSamples').textContent='✓ Exemples chargés';
+ });
  $('#uxSideImport')?.addEventListener('click',()=>picker.click());
  $('#uxFileAll').addEventListener('click',()=>collection.selectAll());
  $('#uxFileNone').addEventListener('click',()=>collection.clearSelection());
@@ -109,7 +133,9 @@ export function mountCoreLabUx({main,collection}){
  const filterCollection=()=>{const q=filter.value.trim().toLocaleLowerCase('fr');let n=0;coll.querySelectorAll('.collectionItem').forEach(el=>{const id=el.dataset.collectionId;const item=collection.items.find(x=>x.id===id);const ok=!q||[item?.label,item?.extension,item?.relativePath,item?.type].join(' ').toLocaleLowerCase('fr').includes(q);el.hidden=!ok;if(ok)n++});$('#uxSearchCount').textContent=n+' résultat(s)';};
  const observer=new MutationObserver(()=>{filterCollection();updateSummary()});
  observer.observe(coll,{childList:true,subtree:false});
- filter.addEventListener('input',filterCollection);
+ filter.addEventListener('input',()=>{centralFilter.value=filter.value;filterCollection()});
+ centralFilter.addEventListener('input',()=>{filter.value=centralFilter.value;filterCollection()});
+ selectVisible.addEventListener('click',()=>$('#uxSelectVisible').click());
  $('#uxSelectVisible').addEventListener('click',()=>{for(const el of coll.querySelectorAll('.collectionItem:not([hidden])'))collection.selected.add(el.dataset.collectionId);collection.render();collection.dispatchEvent(new CustomEvent('selection',{detail:collection.selectedItems()}))});
  let zoom=1;
  const previewUpdate=async()=>{
