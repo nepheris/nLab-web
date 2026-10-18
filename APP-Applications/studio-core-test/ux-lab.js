@@ -125,7 +125,7 @@ export function mountCoreLabUx({main,collection}){
   }
  };
  const selectionUpdate=()=>{updateSummary();renderSideFiles();previewUpdate()};
- function updateSummary(){$('#uxCollectionCount').textContent=collection.items.length+' fichier(s) · '+collection.selectedItems().length+' sélectionné(s)';$('#uxFilesCount').textContent=collection.items.length+' fichier(s)';}
+ function updateSummary(){$('#uxCollectionCount').textContent=collection.items.length+' fichier(s) · '+collection.selectedItems().length+' sélectionné(s)';const count=$('#uxFilesCount');if(count)count.textContent=collection.items.length+' fichier(s)';}
  collection.addEventListener('selection',selectionUpdate);
  collection.addEventListener('activate',selectionUpdate);
  collection.addEventListener('rotate',selectionUpdate);
