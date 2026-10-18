@@ -1,0 +1,199 @@
+
+/* PDF Studio 2.12 TEST — independently routed, opt-in to approved UX 0.5.
+   Native PDF Studio v2/V1/CURRENT use none of these selectors. */
+body[data-pdf-ux-pilot="2.12.0"]{--ux-blue:#0c68b8;--ux-border:#d5e0eb;--ux-muted:#70869a;--ux-bg:#f2f6fa;--ux-panel:#fff;--ux-fg:#283e52;background:#e4ebf3;color:#293f52}
+body[data-pdf-ux-pilot="2.12.0"] .studioHeader{background:#fff;border-bottom:1px solid #d5e0eb}
+body[data-pdf-ux-pilot="2.12.0"] .studioMenu{min-height:39px;background:#fff;border-bottom:1px solid #d8e3eb}
+body[data-pdf-ux-pilot="2.12.0"] .studioMenu [data-menu]{padding:7px 14px;font-size:12px}
+body[data-pdf-ux-pilot="2.12.0"] .studioRibbon{min-height:75px;overflow-x:auto;background:#f8fbfe;border-bottom:1px solid #d6e2ec;gap:4px}
+body[data-pdf-ux-pilot="2.12.0"] .studioRibbon .ribbonGroup{border-right:1px solid #d9e6f0;padding:3px 9px;flex:none}
+body[data-pdf-ux-pilot="2.12.0"] #studioMain.studioUx{grid-template-columns:minmax(265px,342px) minmax(0,1fr)!important;min-height:calc(100dvh - 220px);background:#f1f5f9;padding:0!important;border:0;max-width:none}
+body[data-pdf-ux-pilot="2.12.0"] #studioMain .studioUxSidebar{grid-template-columns:64px minmax(0,1fr);min-height:620px;background:#fff;border-right:1px solid #d8e2ed}
+body[data-pdf-ux-pilot="2.12.0"] #studioMain .studioUxRail{background:#f0f5fb;padding:7px 4px;gap:5px}
+body[data-pdf-ux-pilot="2.12.0"] #studioMain .studioUxRail [data-ux-tab]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:55px;font-size:10px;border-radius:8px}
+body[data-pdf-ux-pilot="2.12.0"] #studioMain .studioUxRail [data-ux-tab].active{background:#fff;color:#0a70c5;border-color:#b9d8f3}
+body[data-pdf-ux-pilot="2.12.0"] .uxRailGlyph{font-size:21px;line-height:1}
+body[data-pdf-ux-pilot="2.12.0"] .uxRailName{font-size:10px}
+body[data-pdf-ux-pilot="2.12.0"] #studioMain .studioUxSideContent>header{height:52px;min-height:52px}
+body[data-pdf-ux-pilot="2.12.0"] #studioMain .studioUxTabPanel{padding:12px;max-height:calc(100dvh - 270px)}
+body[data-pdf-ux-pilot="2.12.0"] .studioUxWorkHeader{background:#fff;border-bottom:1px solid #d8e3ed;min-height:56px;padding:10px 15px}
+body[data-pdf-ux-pilot="2.12.0"] .studioUxWorkHeader strong{font-size:15px}
+body[data-pdf-ux-pilot="2.12.0"] .studioUxWorkBody{padding:13px;gap:9px;min-height:0}
+body[data-pdf-ux-pilot="2.12.0"] .studioUxWorkActions{gap:5px}
+body[data-pdf-ux-pilot="2.12.0"] .studioUxWorkActions button{min-height:34px;font-size:11px;border-radius:7px;padding:7px 10px;color:#205d91;background:#fff;border:1px solid #cbddea}
+body[data-pdf-ux-pilot="2.12.0"] .studioUxWorkActions .pdfUxPrimary,body[data-pdf-ux-pilot="2.12.0"] .pdfUxPrimary{background:#0b68b8!important;border-color:#0b68b8!important;color:#fff!important}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxWorkActions{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxSectionHeading{font-size:14px;font-weight:750;padding:2px 4px;color:#28465f}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxWorkSurface{display:grid;grid-template-columns:minmax(260px,.95fr) minmax(340px,1.3fr);align-items:stretch;gap:12px;min-height:440px;min-width:0;flex:1}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxCollection{display:flex;min-width:0;min-height:350px;flex-direction:column;gap:9px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxCollectionToolbar{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxCollectionToolbar>*{min-height:32px;font-size:11px;border:1px solid #cbdce9;border-radius:6px;padding:5px 7px;background:#fff;color:#2d5a7d}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxCollectionToolbar #pdfUxFilter{width:100%;flex:1 1 150px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxCollectionToolbar output{min-width:48px;text-align:center;border:0;background:transparent;padding:5px;font-size:10px}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection.collectionBrowser{width:100%;display:grid;gap:9px;flex:1;min-height:140px;max-height:min(66dvh,700px);overflow-y:auto;overflow-x:hidden;align-content:start;background:transparent;border:0}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection.collectionThumbnailTools.collection-grid,
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection.collectionThumbnailTools.collection-thumbs{
+ grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--nlab-collection-card-width,180px)),1fr))!important;
+ grid-auto-rows:max-content!important;
+}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection.collectionThumbnailTools:has(>.collectionGroup){display:block!important}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionGroup{display:block!important;min-height:0!important;margin:0 0 10px}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionGroupBody{
+ display:grid!important;grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--nlab-collection-card-width,180px)),1fr))!important;
+ grid-auto-rows:max-content!important;gap:9px!important;align-content:start;
+}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionGroupBody[hidden],
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionItem[hidden]{display:none!important}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionItem{
+ position:relative;display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ min-width:0;min-height:calc(var(--nlab-collection-thumb-height,135px) + 67px)!important;
+ height:auto!important;overflow:visible!important;gap:0!important;border:1px solid #d0deeb;border-radius:10px;background:#fff;padding:0!important
+}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionItem.active{border:2px solid #1486e5;box-shadow:0 0 0 2px #d2e9fc}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionThumb{
+ display:grid!important;flex:0 0 auto!important;width:100%!important;height:var(--nlab-collection-thumb-height,135px)!important;
+ min-height:100px!important;border-radius:9px 9px 0 0;background:#edf4f9;
+}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionThumbMedia img{object-fit:contain;width:100%;height:100%}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionCheck{position:absolute!important;z-index:4;left:6px;top:6px}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionItem>button[data-collection-open]{
+ width:100%!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+ gap:3px;min-height:66px!important;padding:9px!important;text-align:left;flex:0 0 auto
+}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionItem>button[data-collection-open] strong{font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionItem>button[data-collection-open] small,
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionItem>button[data-collection-open] em{font-size:10px;color:#8296a6}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxCount{font-size:10px;color:#758a9e;margin:2px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxDrop{padding:12px;border:1px dashed #adcae0;background:#f9fcff;color:#2c6da3;border-radius:8px;cursor:pointer;min-height:50px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxDrop.dragging{background:#e1f2ff;border-color:#1780d3}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer.viewer{display:flex!important;flex-direction:column;min-width:0!important;min-height:430px;max-width:100%;overflow:auto;padding:0!important;margin:0!important;gap:9px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer .previewPanel,body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer .viewerCard{background:#fff;border:1px solid #d5e1ea;border-radius:8px;margin:0}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer #canvasStage{min-height:290px;background:#e7eef5;border:1px solid #d5e1eb;border-radius:9px;margin:0;max-width:100%;overflow:auto}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer .previewToolbar,body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer .viewerToolbar{overflow-x:auto;flex-wrap:wrap;gap:4px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools #studioSidebar{display:block!important;position:static!important;inset:auto!important;float:none!important;transform:none!important;box-shadow:none!important;width:100%!important;min-width:0!important;min-height:0!important;max-height:none!important;height:auto!important;border:0!important;margin:0!important;padding:0!important;overflow:visible!important;z-index:auto!important}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools #sidebarResizer{display:none!important}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools .sidebarTabs{display:flex;flex-wrap:wrap;gap:4px;overflow:visible;margin-bottom:9px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools .sidebarTabs button{font-size:10px;min-height:32px;padding:5px 6px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools .sidebarGlobalControls{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:9px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools .sidebarPane{min-width:0}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools .toolSection{background:#fff;margin:7px 0;border:1px solid #d4e1eb;border-radius:7px;overflow:hidden}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools .toolSection>summary{padding:10px 8px;font-size:11px;background:#f3f7fb}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxTools .toolSection .body{padding:9px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxFileActions{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxFileActions button,body[data-pdf-ux-pilot="2.12.0"] .pdfUxShortcuts button,
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxProperties button{
+ border:1px solid #cedfee;border-radius:7px;background:#fff;color:#215c91;padding:8px 10px;min-height:34px;font-size:11px
+}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxFileList{max-height:42dvh;overflow-y:auto;display:grid;gap:3px;padding:7px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxFileRow{display:flex;align-items:center;gap:5px;padding:5px 6px;border-radius:7px;min-width:0;font-size:11px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxFileRow.active{background:#eaf4ff;border:1px solid #bbd8f0}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxFileRow input{width:16px;height:16px;accent-color:#1479ca}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxFileRow button{min-width:0;flex:1;background:transparent;border:0;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxFileRow small{font-size:9px;color:#8192a3}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxShortcuts{display:grid;gap:10px;align-content:start}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxProperties{display:grid;gap:11px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxProperties .uxCard{border:1px solid #d4e3ec;background:#fff;padding:10px;border-radius:8px;overflow-wrap:anywhere;font-size:11px}
+body[data-pdf-ux-pilot="2.12.0"] .pdfUxLabel{font-size:12px}
+body[data-pdf-ux-pilot="2.12.0"] #pdfUxTheme{border:1px solid #d4e0e9;border-radius:7px;padding:9px}
+.pdfUxSaveBackdrop{position:fixed;z-index:375;inset:0;background:#071a31a9}
+.pdfUxSaveDialog{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:380;
+ width:min(930px,calc(100vw - 20px));max-height:90dvh;overflow:auto;box-sizing:border-box;
+ background:#fff;color:#213a50;border:1px solid #92b9d8;border-radius:12px;padding:15px;box-shadow:0 20px 60px #0005}
+.pdfUxSaveBackdrop[hidden],.pdfUxSaveDialog[hidden]{display:none!important}
+.pdfUxSaveDialog>header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #d9e4ee;padding:8px 0 12px;font-weight:800;font-size:16px}
+.pdfUxSaveDialog button{min-height:34px;border:1px solid #c3d6e6;background:#fff;color:#1b639b;border-radius:7px;padding:7px 11px;font-size:12px}
+.pdfUxSaveDialog .pdfUxSaveFields{display:grid;gap:9px}
+.pdfUxSaveDialog .pdfUxSaveFields>.toolSection{display:block;max-width:100%;min-width:0;border:1px solid #d6e1e9;margin:0;border-radius:9px}
+.pdfUxSaveDialog .pdfUxSaveFields>.toolSection>summary{padding:10px;background:#f0f5fa}
+.pdfUxSaveDialog .pdfUxSaveFields>.toolSection>.body{padding:12px}
+.pdfUxSaveDialog .pdfUxSaveNote{font-size:11px;color:#5e778e}
+.pdfUxSaveDialog .pdfUxSaveFooter{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px;padding-top:12px}
+.pdfUxSaveDialog .pdfUxSaveFooter .pdfUxPrimary{background:#0b68b8;color:white}
+@media(max-width:1100px){
+ body[data-pdf-ux-pilot="2.12.0"] #studioMain.studioUx{grid-template-columns:290px minmax(0,1fr)!important}
+ body[data-pdf-ux-pilot="2.12.0"] .pdfUxWorkSurface{grid-template-columns:minmax(0,1fr)}
+ body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer.viewer{min-height:250px}
+}
+@media(max-width:700px){
+ body[data-pdf-ux-pilot="2.12.0"] #studioMain.studioUx{display:block!important;min-height:66dvh}
+ body[data-pdf-ux-pilot="2.12.0"] #studioMain.studioUx .studioUxSidebar{position:fixed!important;top:65px;bottom:53px;left:0;width:min(340px,92vw);max-height:none!important;min-height:0;z-index:320;display:none;box-shadow:0 8px 30px #0004}
+ body[data-pdf-ux-pilot="2.12.0"] #studioMain.studioUx.uxSidebarOpen .studioUxSidebar{display:grid}
+ body[data-pdf-ux-pilot="2.12.0"] #studioMain.studioUx .studioUxTabPanel{max-height:calc(100dvh - 135px)}
+ body[data-pdf-ux-pilot="2.12.0"] #studioMain.studioUx .studioUxWorkBody{padding:8px}
+ body[data-pdf-ux-pilot="2.12.0"] .pdfUxWorkSurface{display:grid;grid-template-columns:minmax(0,1fr)}
+ body[data-pdf-ux-pilot="2.12.0"] .studioUxWorkHeader{flex-wrap:wrap}
+ body[data-pdf-ux-pilot="2.12.0"] .studioUxWorkActions{flex-wrap:wrap}
+ body[data-pdf-ux-pilot="2.12.0"] .studioRibbon{max-height:66px;min-height:66px;overflow-x:auto;overflow-y:hidden}
+ body[data-pdf-ux-pilot="2.12.0"] #fileCollection.collectionBrowser{max-height:400px}
+ body[data-pdf-ux-pilot="2.12.0"] .pdfUxSaveDialog{padding:10px}
+}
+
+/* History: parity with the v0.5 mockup, advanced capabilities still from history.js */
+body[data-pdf-ux-pilot="2.12.0"] .uxHistorySidebar{color:#284255}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryToolbar{display:flex;gap:6px;margin:0 0 10px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryToolbar button{background:#fff;border:1px solid #cddfee;border-radius:7px;padding:8px 10px;min-height:36px;font-size:11px;font-weight:650;color:#236398}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryToolbar button:disabled{opacity:.45;cursor:not-allowed}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryCounters{font-size:10px;color:#7f92a5;margin:7px 0 11px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryAccordion{border:1px solid #d3dfea;border-radius:8px;background:#fff;margin:8px 0;overflow:hidden}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryAccordion>summary{padding:10px 12px;background:#f3f7fb;color:#31465a;font-size:11px;font-weight:750;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryAccordion>summary output{font-size:10px;color:#72899b}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryInner{padding:9px 11px 12px;display:grid;gap:9px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistorySearchLabel,
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryGroupLabel{display:grid;gap:4px;font-size:10px;color:#687f93}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistorySearchLabel input,
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryGroupLabel select{width:100%;border:1px solid #d3e0eb;border-radius:6px;background:#fff;color:#365369;padding:7px 9px;min-height:31px;font-size:11px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryChips{display:flex;flex-wrap:wrap;gap:4px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryChips button{border:1px solid #d6e2ec;background:#fff;border-radius:6px;font-size:10px;padding:5px 7px;color:#57738b}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryChips button[aria-pressed="true"]{background:#e8f4ff;color:#075fae;border-color:#9bc9f5;font-weight:750}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryTimeline{display:grid;gap:6px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryGroup{border:0;min-width:0}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryGroup>summary{font-size:10px;font-weight:750;color:#516f87;padding:6px 0;cursor:pointer}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEntry{margin-left:3px;padding:6px 4px 9px 12px;border-left:2px solid #cbddec;border-top:0;border-right:0;border-bottom:0;min-width:0;background:transparent}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEntryHead{list-style:none;display:flex;justify-content:space-between;gap:6px;align-items:start;cursor:pointer}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEntryHead::-webkit-details-marker{display:none}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEntryHead strong{font-weight:700;font-size:11px;line-height:1.35;color:#2a4155;overflow-wrap:anywhere}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEntryHead time{font-size:9px;color:#95a6b6;white-space:nowrap}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEntryDetails{padding:7px 0;display:grid;gap:5px;font-size:10px;color:#6c849a}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEntryDetails code{display:block;white-space:normal;word-break:break-all;font-size:9px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEntryDetails button{justify-self:start;border:1px solid #cfdfeb;border-radius:6px;padding:5px;background:#fff;color:#325f86;font-size:10px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryEmpty{font-size:11px;color:#8a9dae;padding:8px}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryFull{border:1px solid #c7d9e9;background:#fff;padding:7px 10px;color:#175e9a;border-radius:6px;font-size:11px;cursor:pointer}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryHint{border:1px solid #dbe5ed;background:#f3f7fb;padding:10px;color:#728b9e;border-radius:8px;font-size:10px;line-height:1.5;margin:12px 0}
+body[data-pdf-ux-pilot="2.12.0"] .uxHistoryAdvanced .uxHistoryInner p,
+body[data-pdf-ux-pilot="2.12.0"] #uxHistoryAdvanced p{font-size:10px;line-height:1.5;color:#8194a6}
+body[data-pdf-ux-pilot="2.12.0"] .studioUxTabPanel .uxFileAccordion{margin:4px 0 0}
+body[data-pdf-ux-pilot="2.12.0"] .studioUxFloat .uxHistorySidebar{padding:6px}
+
+
+
+/* Visual review: genuine header → menu → ribbon document order, no legacy floating rail. */
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome{padding-top:0!important}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioHeader,
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioMenu,
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioRibbon{
+ position:relative!important;top:auto!important;bottom:auto!important;
+ transform:none!important;margin:0!important
+}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioHeader{order:0;z-index:11;min-height:65px}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioMenu{order:1;z-index:10}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioRibbon{order:2;z-index:9}
+body[data-pdf-ux-pilot="2.12.0"] #studioCoreRail,
+body[data-pdf-ux-pilot="2.12.0"] .studioCoreRail{display:none!important}
+body[data-pdf-ux-pilot="2.12.0"] .studioGlobalNav a[href*="Info/licenses"],
+body[data-pdf-ux-pilot="2.12.0"] .studioGlobalNav a[href*="github.com"]{display:none!important}
+body[data-pdf-ux-pilot="2.12.0"] .studioAppIcon{--studio-icon:url('../../../assets/studios/pdf-studio.svg')!important}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioRibbon{display:flex;flex-wrap:nowrap;white-space:normal;max-height:88px;overflow-x:auto;overflow-y:hidden}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioMenu{display:flex;overflow-x:auto;flex-wrap:nowrap}
+@media(max-width:700px){
+ body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioRibbon{height:64px!important;min-height:64px;max-height:64px}
+ body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioMenu{height:39px;min-height:39px}
+}
+
+
+/* Match CollectionBrowser auto-fit calculation (8 px column gap): avoid the
+   one-pixel overflow which makes a 2-up desktop gallery collapse to 1 column. */
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection.collectionBrowser,
+body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionGroupBody{column-gap:8px!important;row-gap:8px!important}
+@media(max-width:700px){
+ body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer #canvasStage{min-height:270px!important;max-height:70dvh!important;overflow:auto!important}
+}
