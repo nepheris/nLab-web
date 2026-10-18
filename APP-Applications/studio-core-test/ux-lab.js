@@ -256,7 +256,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
    NUMBER:String(counter),FORMAT:$('#uxSaveFormat').value,NOM:name.replace(/\.[^.]+$/,'')
   }}
  };
- const resolved=()=>{templates.setValues(templateProfileVariables());const {name,values}=ctx();const format=$('#uxSaveFormat').value;
+ const resolved=()=>{const today=new Date().toISOString().slice(0,10);templates.setValues({STAMP_DATE:today,DATE_A:today,DATE_B:today,DATE_C:today,DATE_D:today,...templateProfileVariables()});const {name,values}=ctx();const format=$('#uxSaveFormat').value;
   const raw=templates.resolve($('#uxSavePattern').value||'{FILENAME}',name,values);
   const file=safePart(raw||'collection')+'.'+format;
   const parts=templates.resolve($('#uxSavePath').value||'',name,values).split(/[\\/]+/).map(safePart).filter(x=>x&&x!=='.'&&x!=='..');
