@@ -1,15 +1,24 @@
 {
   "name": "Studio Core Test Lab",
   "current": null,
-  "test": "0.5.0",
+  "test": "0.6.0",
   "versions": [
     {
-      "version": "0.5.0",
-      "label": "Studio Core Test Lab 0.5.0 TEST · fidélité maquette UX",
+      "version": "0.6.0",
+      "label": "Studio Core Test Lab 0.6.0 TEST · chantier Core d’abord",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-path",
+      "notes": "Validation Core avant migration métier : nouvel onglet Planche de travail, Historique exhaustif avec favoris, navigation et détail, thèmes communs clair/sombre/auto avec lisibilité, onglets accessibles au clavier. Archives 0.1 à 0.5 conservées. Aucun déploiement Image/PDF/OCR effectué."
+    },
+    {
+      "version": "0.5.0",
+      "label": "Studio Core Test Lab 0.5.0 HISTORIQUE · maquette validée",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.5.0/",
+      "isolation": "snapshot",
       "notes": "Reprise fidèle de la maquette UX 0.5 : panneau Historique interactif avec timeline, filtres et accordéons, navigation compacte, panneau Fichiers synchronisé, miniatures, tri, regroupement, sélection, exemples facultatifs. Réutilisation des services de Core 3.7.0 TEST. Recette appareils réels à faire."
     },
     {
