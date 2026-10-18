@@ -36,3 +36,10 @@
 .demo-page .demo-folder-link svg{width:19px;height:19px}
 :root[data-theme="dark"] .demo-file-preview{background:var(--nlab-soft)}
 @media(max-width:760px){.demo-explorer-layout{grid-template-columns:1fr}.demo-folders{position:static;max-height:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:3px}.demo-folders h3,.demo-folder-divider{grid-column:1/-1}.demo-browser-list{grid-template-columns:repeat(auto-fit,minmax(155px,1fr))}.demo-explorer{padding:12px}}
+
+/* Unified folder explorer: meaningful fallback instead of broken preview images. */
+.demo-file-type{display:grid;place-items:center;width:100%;height:100%;min-height:100px;
+  font-size:21px;font-weight:800;letter-spacing:.08em;color:var(--nlab-muted,#607181);
+  background:var(--nlab-soft,#eef2f5);overflow-wrap:anywhere}
+.demo-file-preview img[data-demo-preview]{max-width:100%;max-height:100%;object-fit:contain}
+.demo-folders .demo-folder-link{border:1px solid var(--nlab-line,#d8e0e7);background:var(--nlab-card,#fff);margin:3px 0}
