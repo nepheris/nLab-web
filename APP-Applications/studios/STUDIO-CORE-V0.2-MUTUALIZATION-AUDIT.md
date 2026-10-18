@@ -3,6 +3,24 @@
 Date : 2026-10-18 · Canal : TEST · Périmètre : catalogue public de 15 Studios, applications dérivées, Demo Explorer.
 Source de vérité : `APP-Applications/studios/catalog.json`. Une présence HTML ne constitue pas une validation fonctionnelle.
 
+## Passe complémentaire — Core 3.5.0 TEST / Lab 0.3.0 (18 octobre 2026)
+
+**Point de mutualisation :** le Picker canonique `input-picker.js` possédait déjà une échelle de vignettes et des rotations. La nouvelle extension se situe dans **`collection-browser.js`**, brique différente servant à afficher les collections des Studios (en particulier PDF Studio V2). Elle ne crée ni picker alternatif ni gestionnaire d'images secondaire.
+
+| Fonction | Décision | Gate |
+|---|---|---|
+| Zoom vignette − / +, taille persistée, ajustement automatique en fonction de la largeur du conteneur | **CORE UX**, facultatif via `thumbnailTools:true` | Vérifier grille, petit écran, persistance et CSS sans impact sur les consommateurs historiques |
+| Rotation ±90° visible sur les cartes assez larges, contrôles accessibles au clavier | **CORE UX pour aperçu uniquement** (métadonnée d'affichage et événement `rotate`) | Le fichier original n'est pas transformé ; un Studio doit brancher son moteur pour l'export réellement tourné |
+| Sélection unitaire/multiple, tri, groupement et dossier relatif | **CORE UX existante** dans `CollectionBrowser` | Étendre usages sans remplacer leur logique métier |
+| Glisser-déposer des fichiers | **CORE UX existante**, `input-picker.js` / `drop-zone.js` | Lab raccordé à une zone locale ; dossiers complexes à tester séparément |
+| Prévisualisations PDF/image/texte | **SERVICE** `thumbnail-service.js` existant | Tests types, PDF avec/sans pdf.js, consommation mémoire |
+| Nommage et classement date/numéro | **CORE UX/SERVICE** `template-engine.js` + `output-service.js` existants | Valider incrément stable, sanitisation des chemins et conflits, avant généralisation |
+| Couleur HEX/RGB/HSL | **CORE UX** `color-control.js` existant | Intégration par opt-in ; pas de second color picker |
+| Fenêtres, Historique, Propriétés, Responsive/PWA et ruban | **CORE UX** modules existants | Consolidation UX fondée sur la maquette v0.5, sans supprimer les contrôles métier |
+| Rotation effective, compression, OCR, conversion PDF | **SERVICE/métier Studio** | Ne jamais promettre un export modifié à partir de la simple vignette tournée |
+
+**Statut :** extension opt-in et UX Lab implémentées sur canal **TEST** ; maintien de l'ancienne 0.2.0 en snapshot. Pas de certification fonctionnelle 15/15 ni de migration CURRENT. Les autres mutualisations de la maquette restent des tâches distinctes.
+
 ## Principes de séparation
 
 - **CORE UX** : identité nLab, navigation, ruban, réglages, fenêtres et docks, raccourcis, historique, propriétés, imports, sélection, progression générique, Undo/Redo, export/download.
