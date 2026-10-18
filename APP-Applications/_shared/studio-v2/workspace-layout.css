@@ -124,3 +124,14 @@ body[data-studio="studio-core-test"] .studioMain.studioUx{height:auto}
 .studioUx[data-ux-theme="dark"] .collectionItem.active{border-color:#73b5ec}
 .studioUx .uxPreviewHidden{grid-template-columns:minmax(0,1fr)}
 .studioUx .uxPreviewHidden .studioUxPreview{display:none!important}
+
+/* Lab UX 0.5: keep the actual Core chrome but remove duplicate top navigation. */
+body[data-studio="studio-core-test"] .studioGlobalNav>a:not([href$="/Info/"]){display:none!important}
+body[data-studio="studio-core-test"] .studioGlobalNav>#studioWorkflowOpen,
+body[data-studio="studio-core-test"] .studioGlobalNav>#studioContextHelpOpen,
+body[data-studio="studio-core-test"] .studioGlobalNav>#studioCommandOpen{display:none!important}
+body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav{gap:8px}
+body[data-studio="studio-core-test"] .studioRibbon{background:#f8fafc}
+body[data-studio="studio-core-test"] .studioRibbon .scopeBadge{display:none}
+body[data-studio="studio-core-test"] .studioRibbon .ribbonGroup{gap:5px}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxWorkHeader{background:#fff}
