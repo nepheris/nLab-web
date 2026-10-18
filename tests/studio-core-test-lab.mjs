@@ -42,7 +42,7 @@ async function scenario(name,viewport){
   await page.locator('[data-ux-history-type="all"]').click();
   if(viewport.width<=700)await page.locator('#studioUxCollapse').click();
   else await page.locator('[data-ux-tab="files"]').click();
-  assert(await page.locator('#uxSideFileList .uxSideFileRow').count()===1,name+': files binder out of sync';
+  assert((await page.locator('#uxSideFileList .uxSideFileRow').count())===1,name+': files binder out of sync');
 
   const initial=await page.locator('#labThumbSize').textContent();
   assert(initial==='Auto',name+': auto-fit should be default');
