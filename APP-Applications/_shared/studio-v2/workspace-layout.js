@@ -14,11 +14,12 @@ export function mountStudioWorkspace({main,tabs=[],initial='files',title='Planch
  main.querySelector('#studioUxMobileOpen').addEventListener('click',()=>main.classList.toggle('uxSidebarOpen'));
  main.querySelector('#studioUxCollapse').addEventListener('click',()=>{if(matchMedia('(max-width:700px)').matches)main.classList.remove('uxSidebarOpen');else main.classList.toggle('uxSidebarClosed')});
  main.querySelector('#studioUxDetach').addEventListener('click',()=>{
-  const panel=nodes.get(active);if(!panel)return;
-  const existing=document.querySelector('[data-ux-float="'+active+'"]');if(existing){existing.querySelector('[data-ux-float-close]').click();return}
-  const floater=document.createElement('div');floater.className='studioUxFloat studioWindow';floater.dataset.uxFloat=active;floater.innerHTML='<header class="studioUxFloatHead"><strong>'+esc(tabs.find(t=>t.id===active)?.label||active)+'</strong><button type="button" data-ux-float-close aria-label="Rattacher">↙ Rattacher</button></header><div class="studioUxFloatBody"></div>';floater.querySelector('.studioUxFloatBody').append(panel);document.body.append(floater);floater.querySelector('[data-ux-float-close]').addEventListener('click',()=>{host.append(panel);floater.remove();switchTab(active)});floater.hidden=false;
+  const detachedId=active,panel=nodes.get(detachedId);if(!panel)return;
+  const existing=document.querySelector('[data-ux-float="'+detachedId+'"]');if(existing){existing.querySelector('[data-ux-float-close]').click();return}
+  const floater=document.createElement('div');floater.className='studioUxFloat studioWindow';floater.dataset.uxFloat=detachedId;floater.innerHTML='<header class="studioUxFloatHead"><strong>'+esc(tabs.find(t=>t.id===detachedId)?.label||detachedId)+'</strong><button type="button" data-ux-float-close aria-label="Rattacher">↙ Rattacher</button></header><div class="studioUxFloatBody"></div>';floater.querySelector('.studioUxFloatBody').append(panel);document.body.append(floater);const reattach=()=>{if(!floater.isConnected)return;host.append(panel);floater.remove();switchTab(detachedId)};
+  floater.querySelector('[data-ux-float-close]').addEventListener('click',reattach);floater.addEventListener('studio-window-close',reattach);floater.hidden=false;
   // Use the same shared draggable/dockable Studio window manager as PDF Studio.
-  import('./window-system.js').then(m=>m.enhanceStudioWindow(floater,{key:'core-ux-'+active,title:'Panneau · '+active})).catch(()=>{});
+  import('./window-system.js').then(m=>m.enhanceStudioWindow(floater,{key:'core-ux-'+detachedId,title:'Panneau · '+detachedId})).catch(()=>{});
  });
  let saved=initial;try{saved=localStorage.getItem(storageKey+':tab')||initial}catch{}
  switchTab(nodes.has(saved)?saved:initial);
