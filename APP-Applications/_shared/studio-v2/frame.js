@@ -1,5 +1,6 @@
 import{openResponsiveTestStudio}from'./responsive-test-launcher.js';
 import{createFullscreenController}from'./fullscreen-service.js';
+import{createApplicationModeController}from'./application-mode-service.js';
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible,setStatus}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings,loadStudioSettings}from'./settings.js';
 import{enhanceStudioWindow,showStudioWindow,hideStudioWindow,bringStudioWindowToFront,restoreAllStudioWindows}from'./window-system.js';
@@ -37,6 +38,7 @@ const CORE_RIBBON_GROUPS=[
     {id:'core-command-palette',action:'core.commands',label:'Commandes',icon:'command',scope:'core',featureId:'core.commands',capability:'core.commands',status:'stable',primary:true,shortcut:'Ctrl+K'},
     {id:'core-properties',action:'core.properties',label:'Propriétés',icon:'settings',scope:'core',featureId:'core.properties',capability:'core.properties',status:'stable'},
     {id:'core-fullscreen',action:'core.fullscreen',label:'⛶ Plein écran',icon:'screen',scope:'core',featureId:'core.fullscreen',capability:'core.fullscreen',status:'stable',title:'Afficher / quitter le plein écran'},
+    {id:'core-app-mode',action:'core.app-mode',label:'Installer l’application',icon:'screen',scope:'core',featureId:'core.app-mode',capability:'core.app-mode',status:'stable',title:'Installer ce Studio comme application web (si proposé par le navigateur)'},
     {id:'core-responsive-test',action:'core.responsive-test',label:'Test responsive',icon:'screen',scope:'core',featureId:'core.responsive-test',capability:'core.responsive-test',status:'stable',title:'Tester cette page dans Responsive Test Studio'}
   ]}
 ];
@@ -160,6 +162,22 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   });
   document.addEventListener('studio-v2:action',event=>{
     if(event.detail?.action==='core.responsive-test')openResponsiveTestStudio();
+  });
+  // Application mode and fullscreen remain separate, shared Core capabilities.
+  // Installation requires an app manifest and a compatible browser, not just a click.
+  const appModeButton=qs('[data-studio-action="core.app-mode"]',chrome);
+  const applicationModeController=createApplicationModeController({
+    button:appModeButton,
+    onMessage:message=>setStatus(message),
+    onChange:detail=>{
+      document.body.dataset.studioAppMode=detail.state;
+      document.dispatchEvent(new CustomEvent('studio-v2:app-mode-state',{detail}));
+    }
+  });
+  document.addEventListener('studio-v2:action',event=>{
+    if(event.detail?.action==='core.app-mode'&&event.detail?.element!==appModeButton){
+      applicationModeController.requestInstall();
+    }
   });
   const syncUndoRedoButtons=()=>{
     const st=globalThis.NLABStudioUndoRedo?.get?.()||{canUndo:false,canRedo:false};
