@@ -164,3 +164,27 @@ body[data-pdf-ux-pilot="2.12.0"] #uxHistoryAdvanced p{font-size:10px;line-height
 body[data-pdf-ux-pilot="2.12.0"] .studioUxTabPanel .uxFileAccordion{margin:4px 0 0}
 body[data-pdf-ux-pilot="2.12.0"] .studioUxFloat .uxHistorySidebar{padding:6px}
 
+
+
+/* Visual review: genuine header → menu → ribbon document order, no legacy floating rail. */
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome{padding-top:0!important}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioHeader,
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioMenu,
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioRibbon{
+ position:relative!important;top:auto!important;bottom:auto!important;
+ transform:none!important;margin:0!important
+}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioHeader{order:0;z-index:11;min-height:65px}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioMenu{order:1;z-index:10}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioRibbon{order:2;z-index:9}
+body[data-pdf-ux-pilot="2.12.0"] #studioCoreRail,
+body[data-pdf-ux-pilot="2.12.0"] .studioCoreRail{display:none!important}
+body[data-pdf-ux-pilot="2.12.0"] .studioGlobalNav a[href*="Info/licenses"],
+body[data-pdf-ux-pilot="2.12.0"] .studioGlobalNav a[href*="github.com"]{display:none!important}
+body[data-pdf-ux-pilot="2.12.0"] .studioAppIcon{--studio-icon:url('../../../assets/studios/pdf-studio.svg')!important}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioRibbon{display:flex;flex-wrap:nowrap;white-space:normal;max-height:88px;overflow-x:auto;overflow-y:hidden}
+body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioMenu{display:flex;overflow-x:auto;flex-wrap:nowrap}
+@media(max-width:700px){
+ body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioRibbon{height:64px!important;min-height:64px;max-height:64px}
+ body[data-pdf-ux-pilot="2.12.0"] #nlabStudioV2Chrome>.studioMenu{height:39px;min-height:39px}
+}
