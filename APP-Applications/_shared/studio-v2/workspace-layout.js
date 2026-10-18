@@ -22,6 +22,8 @@ export function mountStudioWorkspace({main,tabs=[],initial='files',title='Planch
   import('./window-system.js').then(m=>m.enhanceStudioWindow(floater,{key:'core-ux-'+detachedId,title:'Panneau · '+detachedId})).catch(()=>{});
  });
  let saved=initial;try{saved=localStorage.getItem(storageKey+':tab')||initial}catch{}
+ const detectViewport=()=>{main.dataset.layoutProfile=innerWidth<=700?'mobile':innerWidth<=1100?'tablet':'desktop'};
+ window.addEventListener('resize',detectViewport);detectViewport();
  switchTab(nodes.has(saved)?saved:initial);
  if(matchMedia('(max-width:700px)').matches)main.classList.remove('uxSidebarOpen');
  return{main,panels:nodes,switchTab,get activeTab(){return active},work:main.querySelector('#studioUxWorkBody'),actions:main.querySelector('#studioUxWorkActions')};
