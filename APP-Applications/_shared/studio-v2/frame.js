@@ -1,4 +1,5 @@
 import{openResponsiveTestStudio}from'./responsive-test-launcher.js';
+import{createFullscreenController}from'./fullscreen-service.js';
 import{qs,qsa,bindStudioChrome,applyRibbonGroups,setRibbonGroupVisible,setStatus}from'./core.js';
 import{applyStudioSettings,renderStudioSettingsPanel,saveStudioSettings,loadStudioSettings}from'./settings.js';
 import{enhanceStudioWindow,showStudioWindow,hideStudioWindow,bringStudioWindowToFront,restoreAllStudioWindows}from'./window-system.js';
@@ -35,6 +36,7 @@ const CORE_RIBBON_GROUPS=[
   {id:'core-command',label:'Commandes',scope:'core',items:[
     {id:'core-command-palette',action:'core.commands',label:'Commandes',icon:'command',scope:'core',featureId:'core.commands',capability:'core.commands',status:'stable',primary:true,shortcut:'Ctrl+K'},
     {id:'core-properties',action:'core.properties',label:'Propriétés',icon:'settings',scope:'core',featureId:'core.properties',capability:'core.properties',status:'stable'},
+    {id:'core-fullscreen',action:'core.fullscreen',label:'⛶ Plein écran',icon:'screen',scope:'core',featureId:'core.fullscreen',capability:'core.fullscreen',status:'stable',title:'Afficher / quitter le plein écran'},
     {id:'core-responsive-test',action:'core.responsive-test',label:'Test responsive',icon:'screen',scope:'core',featureId:'core.responsive-test',capability:'core.responsive-test',status:'stable',title:'Tester cette page dans Responsive Test Studio'}
   ]}
 ];
@@ -142,6 +144,19 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   document.body.dataset.studioVersion=versionInfo.version||'';
   document.body.dataset.studioCoreVersion=versionInfo.coreVersion||'';
   registerCapabilities(manifest);
+  // Reuse exactly the viewport's fullscreen controller, with the whole Studio
+  // document as the target so its shared Core ribbon stays visible.
+  const fullscreenController=createFullscreenController({
+    target:document.documentElement,
+    button:qs('[data-studio-action="core.fullscreen"]',chrome),
+    onMessage:text=>{const status=qs('#studioStatusText');if(status)status.textContent=text}
+  });
+  document.addEventListener('studio-v2:action',event=>{
+    if(event.detail?.action==='core.fullscreen'&&event.detail?.element!==fullscreenController.button) {
+      // Commands palette may trigger actions without clicking the ribbon.
+      fullscreenController.toggle();
+    }
+  });
   document.addEventListener('studio-v2:action',event=>{
     if(event.detail?.action==='core.responsive-test')openResponsiveTestStudio();
   });
