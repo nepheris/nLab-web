@@ -56,6 +56,9 @@ export function mountCoreLabUx({main,collection}){
  const links=Array.from(document.querySelectorAll('.studioGlobalNav a'));
  const info=links.find(x=>x.getAttribute('href')?.endsWith('/Info/'));if(info)info.textContent='À propos';
  const duplicate=links.find(x=>x.getAttribute('href')?.includes('/Info/licenses.html'));if(duplicate)duplicate.hidden=true;
+ // Use the actual shared Core ribbon, but order groups as in the UX reference.
+ const coreRibbon=$('.studioRibbon'),toggle=$('#studioRibbonToggle');
+ for(const key of ['core-acquisition','lab-file','core-history','lab-panels','core-command','lab-diagnostics']){const group=coreRibbon?.querySelector('[data-ribbon-group="'+key+'"]');if(group)coreRibbon.insertBefore(group,toggle)}
  const ribbon=make('div','labToolbar uxWorkMainActions','');
  ribbon.append(picker);
  const upload=make('button','','▣ Dossier');upload.type='button';upload.title='Parcourir un dossier dans le sélecteur canonique';upload.addEventListener('click',()=>picker.click());ribbon.append(upload);
