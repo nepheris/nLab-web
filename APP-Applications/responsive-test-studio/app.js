@@ -1,4 +1,4 @@
-import {mountResponsiveSimulator} from './versions/0.4.3/simulator.js';
+import {mountResponsiveSimulator} from '../_shared/responsive-test/simulator.js';
 import {mountThemeButtons} from './versions/0.4.3/theme-buttons.js';
 
 const root=document.getElementById('responsive-test');
