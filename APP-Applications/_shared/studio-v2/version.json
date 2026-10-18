@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.8.0",
+  "version": "3.9.0",
   "channel": "test",
-  "notes": "Studio Core 3.8.0 TEST — onglet Planche de travail dans rail commun, Historique enrichi (favoris canoniques, modes compact/normal/détaillé, recherche, périmètre multi-Studio, filtres complets), thème partagé auto/clair/sombre et contrastes, clavier accessible. Validation uniquement Core Test Lab 0.6.0 ; aucun déploiement métier, CURRENT inchangé.",
+  "notes": "Core 3.9.0 TEST — template-engine dates formatables avec : sur toutes les dates/temps, variables dossier/sous-dossier, module template-ux partagé familles/aides et profil personnel local, contrôles de volet latéral et aperçu, simulation des trois formats dans Lab 0.7.0 TEST. Aucun Studio métier migré, CURRENT inchangé.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
