@@ -202,7 +202,7 @@ try{
  for(const name of ['dragleave','dragend'])drop.addEventListener(name,e=>{e.preventDefault();drop.classList.remove('dragOver')});
  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('dragOver');appendFiles(e.dataTransfer?.files)});
  updateCollectionControls();
- const labUx=mountCoreLabUx({main:$('#studioMain'),collection});
+ const labUx=mountCoreLabUx({main:$('#studioMain'),collection,appendFiles});
  const openAcquisition=async()=>{
   try{
    const selected=await openInputPicker({multiple:true,folders:true,url:true,preserveSession:true,view:'icon'});
