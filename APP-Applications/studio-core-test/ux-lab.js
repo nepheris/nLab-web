@@ -230,7 +230,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
    FILESIZE:String(a?.size||0),MIME:a?.type||'',FILE_FAMILY:(a?.extension||'').toUpperCase(),
    INDEX:String(Math.max(1,collection.items.indexOf(a)+1)),
    SELECTED_COUNT:String(collection.selectedItems().length),COUNTER:String(counter).padStart(3,'0'),
-   NUMBER:String(counter),FORMAT:$('#uxSaveFormat').value,NOM:name.replace(/\\.[^.]+$/,'')
+   NUMBER:String(counter),FORMAT:$('#uxSaveFormat').value,NOM:name.replace(/\.[^.]+$/,'')
   }}
  };
  const resolved=()=>{const {name,values}=ctx();const format=$('#uxSaveFormat').value;
