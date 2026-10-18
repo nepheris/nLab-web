@@ -1,4 +1,5 @@
 import {mountStudioV2} from '../_shared/studio-v2/frame.js';
+import {mountCoreLabUx} from './ux-lab.js';
 import {resolveStudioVersions} from '../_shared/studio-v2/version-service.js';
 import {createFullscreenController} from '../_shared/studio-v2/fullscreen-service.js';
 import {createApplicationModeController} from '../_shared/studio-v2/application-mode-service.js';
@@ -22,8 +23,15 @@ const manifest={
  sourcePath:'APP-Applications/studio-core-test/index.html',
  versionsHref:'./versions.html',
  coreFeatures:{acquisition:true},
- menus:[{id:'diagnostic',label:'Diagnostics',scope:'studio'},{id:'acquisition',label:'Fichiers',scope:'studio'},{id:'specimen',label:'Échantillon',scope:'studio'},{id:'validation',label:'Validation',scope:'studio'}],
- ribbon:[{id:'lab-diagnostics',label:'Test Lab',scope:'studio',items:[
+ menus:[{id:'home',label:'Accueil',scope:'studio'},{id:'file',label:'Fichier',scope:'studio'},{id:'edit',label:'Édition',scope:'studio'},{id:'view',label:'Affichage',scope:'studio'},{id:'tools',label:'Outils',scope:'studio'}],
+ ribbon:[{id:'lab-file',label:'Fichier',scope:'studio',items:[
+  {id:'lab-ux-save',action:'lab.ux-save',label:'Enregistrer',icon:'save',scope:'studio',status:'stable'},
+  {id:'lab-ux-save-as',action:'lab.ux-save-as',label:'Enregistrer sous',icon:'save',scope:'studio',status:'stable'}
+ ]},{id:'lab-panels',label:'Panneaux',scope:'studio',items:[
+  {id:'lab-ux-files',action:'lab.ux-files',label:'Fichiers',icon:'file',scope:'studio',status:'stable'},
+  {id:'lab-ux-history',action:'lab.ux-history',label:'Historique',icon:'history',scope:'studio',status:'stable'},
+  {id:'lab-ux-properties',action:'lab.ux-properties',label:'Propriétés',icon:'settings',scope:'studio',status:'stable'}
+ ]},{id:'lab-diagnostics',label:'Validation',scope:'studio',items:[
   {id:'lab-run-action',action:'lab.run-checks',label:'Contrôles',icon:'check',scope:'studio',status:'stable'},
   {id:'lab-select-action',action:'lab.select',label:'Sélectionner',icon:'select',scope:'studio',status:'stable'},
   {id:'lab-reset-action',action:'lab.restore',label:'Réinitialiser',icon:'restore',scope:'studio',status:'stable'}
@@ -87,6 +95,7 @@ const TESTS=[
  ['storage','Stockage local navigateur',()=>{try{const k='nlab:core-lab:storage-probe';localStorage.setItem(k,'ok');const ok=localStorage.getItem(k)==='ok';localStorage.removeItem(k);return ok}catch{return false}}],
  ['acquisition','Acquisition Core partagée',()=>typeof openInputPicker==='function'&&Boolean($('#labPickerOpen'))],
  ['thumbnail-controls','Zoom, ajustement auto et rotation des vignettes',()=>Boolean(labCollectionBrowser?.thumbnailTools&&typeof labCollectionBrowser?.setThumbnailSize==='function'&&typeof labCollectionBrowser?.rotate==='function'&&$('#labThumbAuto')&&$('#labThumbPlus')&&$('#labThumbMinus'))],
+ ['workspace-ux','Espace de travail UX mutualisé',()=>Boolean($('#studioMain.studioUx')&&$('#studioUxWorkBody')&&$('#studioUxSideTitle')&&$('#uxSaveDialog')&&$('#uxPreviewCanvas'))],
  ['history-nav','Navigation historique Core',()=>Boolean($('#studioCoreRail [data-core-rail="history"]'))],
  ['manifest','Manifeste PWA accessible',async()=>{const link=$('link[rel="manifest"]');if(!link)return false;const response=await fetch(link.href,{cache:'no-store'});if(!response.ok)return false;const data=await response.json();return data.display==='standalone'&&data.start_url==='./'}]
 ];
@@ -193,6 +202,7 @@ try{
  for(const name of ['dragleave','dragend'])drop.addEventListener(name,e=>{e.preventDefault();drop.classList.remove('dragOver')});
  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('dragOver');appendFiles(e.dataTransfer?.files)});
  updateCollectionControls();
+ const labUx=mountCoreLabUx({main:$('#studioMain'),collection});
  const openAcquisition=async()=>{
   try{
    const selected=await openInputPicker({multiple:true,folders:true,url:true,preserveSession:true,view:'icon'});
@@ -239,7 +249,7 @@ try{
  publishSelection('ready');
  updateMetrics();
  await runChecks();
- window.NLabCoreLab={runChecks,getSample:readSample,getHistory:getUndoRedoState,versionInfo,collection};
+ window.NLabCoreLab={runChecks,getSample:readSample,getHistory:getUndoRedoState,versionInfo,collection,labUx};
 }catch(error){
  document.documentElement.dataset.coreLabReady='error';
  $('#labCheckSummary').textContent='Initialisation du Core impossible : '+(error.message||error);
