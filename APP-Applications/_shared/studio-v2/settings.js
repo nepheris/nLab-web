@@ -28,6 +28,8 @@ const DEFAULTS={
   historyGroupBy:'date',
   historyRetention:'keep',
   ribbonRows:'auto',
+  showCoreRail:true,
+  showResponsiveLauncher:true,
   navPlacement:'header',
   contextualHelpMode:'explicit',
   contextualHelpEnabled:true,
@@ -245,6 +247,8 @@ export function renderStudioSettingsPanel(host){
       <label class="checkboxField"><input type="checkbox" data-setting="contextualHelpEnabled"><span>Afficher l’aide contextuelle</span></label>
       <label class="field"><span>Déclenchement de l’aide</span><select data-setting="contextualHelpMode"><option value="explicit">À la demande</option><option value="auto">Automatique</option></select></label>
       <label class="field"><span>Fenêtre d’aide</span><select data-setting="contextualHelpPanelMode"><option value="free">Libre / déplaçable</option><option value="fixed-left">Fixe à gauche</option><option value="fixed-right">Fixe à droite</option><option value="hidden">Aucun / masqué</option></select></label>
+      <label class="checkboxField"><input type="checkbox" data-setting="showCoreRail"><span>Afficher la barre latérale Core (Historique, Propriétés)</span></label>
+      <label class="checkboxField"><input type="checkbox" data-setting="showResponsiveLauncher"><span>Afficher la commande facultative Test responsive</span></label>
       <label class="field"><span>Ruban</span><select data-setting="ribbonRows"><option value="auto">Auto</option><option value="one">1 ligne</option><option value="two">2 lignes</option></select></label>
       <label class="field"><span>Présentation du ruban</span><select data-setting="ribbonMode"><option value="auto">Auto</option><option value="full">Complet</option><option value="compact">Compact</option><option value="icons">Icônes seules</option><option value="primary">Actions principales</option></select></label>
       <div id="ribbon-action-settings"></div>

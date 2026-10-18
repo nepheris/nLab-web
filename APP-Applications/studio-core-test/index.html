@@ -38,6 +38,7 @@
     .labCode{overflow-wrap:anywhere;font-family:ui-monospace,Consolas,monospace;font-size:11px}
     @media(max-width:800px){.studioMain{display:block}.labSidebar{margin-bottom:10px}.labPanel{padding:12px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
+
   </style>
 </head>
 <body>
@@ -48,7 +49,7 @@
       <h1 class="labHeading">Studio Core Test Lab</h1>
       <p class="labLead">Banc d’essai du véritable Studio Core partagé. Aucun moteur métier ni ancien Studio n’est modifié ici.</p>
       <div class="labBadges">
-        <span class="labBadge">TEST 0.1.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
+        <span class="labBadge">TEST 0.2.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
       </div>
       <div class="labToolbar"><button id="labRunChecks" class="labPrimary" type="button">Exécuter les contrôles</button></div>
       <p id="labCheckSummary" class="labHint" role="status">Vérification du Core…</p>
@@ -70,8 +71,15 @@
           <button id="labAppGuide" type="button">État installation</button>
           <button id="labOpenSettings" type="button">⚙ Réglages Core</button>
           <a id="labResponsiveLink" href="../responsive-test-studio/">Simuler mobile / tablette / PC ↗</a>
-          <a href="../studios/">Retour aux Studios ↗</a>
+          <a href="../studios/">Retour aux Studios ↗</a><a href="../studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md" target="_blank" rel="noopener">Audit Core ↗</a>
         </div>
+      </section>
+      <section class="labPanel" id="labAcquisitionPanel">
+        <div class="labEyebrow">Fichiers · module commun Studio Core</div>
+        <h2 class="labHeading">Importer, parcourir et sélectionner</h2>
+        <p class="labLead">Le sélecteur canonique du Core propose fichiers, dossiers, URL, vignettes, tri et sélection. Aucune conversion n’est déclenchée automatiquement.</p>
+        <div class="labToolbar"><button id="labPickerOpen" type="button" class="labPrimary">📂 Ajouter / choisir des fichiers</button><a href="../../Library/demo/?folder=all">Parcourir les démos ↗</a></div><ul id="labPickedFiles" class="labChecks" aria-label="Fichiers sélectionnés"></ul>
+        <p id="labAcquiredInfo" class="labStatus" aria-live="polite">Aucun fichier choisi.</p>
       </section>
       <section class="labPanel">
         <div class="labEyebrow">Échantillon métier sans dépendance</div>

@@ -1,16 +1,25 @@
 {
   "name": "Studio Core Test Lab",
   "current": null,
-  "test": "0.1.0",
+  "test": "0.2.0",
   "versions": [
     {
-      "version": "0.1.0",
-      "label": "Studio Core Test Lab 0.1.0 TEST",
+      "version": "0.2.0",
+      "label": "Studio Core Test Lab 0.2.0 TEST",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-path",
-      "notes": "Laboratoire isolé : Chrome Core V2 partagé, fullscreen, contrôle d'installation PWA, commandes, paramètres, responsive et historique. Recette installation Windows/Linux/Android à effectuer sur appareil réel."
+      "notes": "Sélecteur canonique input-picker, rail Historique/Propriétés, commandes Core facultatives, audit mutualisation, galerie démos corrigée. Tests navigateur et PWA manuels requis."
+    },
+    {
+      "version": "0.1.0",
+      "label": "Studio Core Test Lab 0.1.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.1.0/",
+      "isolation": "snapshot",
+      "notes": "Premier laboratoire isolé. Snapshot conservé sous versions/0.1.0/ ; dépend du Core partagé."
     }
   ]
 }

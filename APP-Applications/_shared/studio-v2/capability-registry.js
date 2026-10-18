@@ -23,6 +23,10 @@ function registerCoreCommands(){
 
 export function registerCapabilities(manifest={}){
   registerCoreCommands();
+  if(manifest.coreFeatures?.acquisition){
+    const def={id:'core.acquire',action:'core.acquire',label:'Importer des fichiers',shortLabel:'Importer',icon:'inputAcquire',scope:'core',plugin:'studio-core',studio:manifest.id,status:'stable',group:'input',priority:'primary',keywords:['fichier','dossier','importer','sélection','glisser-déposer']};
+    REG.set(def.id,def);registerCommand(def);
+  }
   for(const group of manifest.ribbon||[])for(const item of group.items||[]){
     const id=item.capability||item.commandId||item.featureId||item.id||item.action;if(!id)continue;
     const def={
