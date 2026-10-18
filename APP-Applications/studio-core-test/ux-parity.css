@@ -196,3 +196,17 @@ body[data-studio="studio-core-test"] .studioMenu{flex-wrap:nowrap}
   grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--nlab-collection-card-width,170px)),var(--nlab-collection-card-width,170px)))!important;
  }
 }
+
+
+/* Grouped mode is a vertical sequence of independently sized thumbnail grids.
+   The legacy root display:grid was stretching/squeezing groups into its own tracks. */
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools:has(>.collectionGroup){
+ display:block!important;max-height:560px;overflow-y:auto;overflow-x:hidden;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools>.collectionGroup{
+ display:block!important;min-height:0!important;height:auto!important;overflow:visible!important;
+ margin:0 0 12px!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools>.collectionGroup>.collectionGroupBody{
+ display:grid!important;min-height:0!important;height:auto!important;align-items:start;
+}
