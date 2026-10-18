@@ -77,11 +77,12 @@ async function scenario(name,viewport){
   await page.locator('#labCommit').click();
   assert(await page.evaluate(()=>window.NLABStudioUndoRedo?.get?.().undoDepth>=1),name+': no transaction');
   // On mobile the Core uses a reduced ribbon; use its own dock to expose actions.
-  if(viewport.width<=700)await page.locator('[data-mobile-action="ribbon"]').click();
+  if(viewport.width<=700){await page.locator('#studioUxCollapse').click();await page.locator('[data-mobile-action="ribbon"]').click()};
   await page.locator('[data-studio-action="core.undo"]').click();
   assert(await page.locator('#labItemName').inputValue()==='Composant de démonstration nLab',name+': undo failed');
   await page.locator('[data-studio-action="core.redo"]').click();
   assert(await page.locator('#labItemName').inputValue()==='Échantillon modifié',name+': redo failed');
+  if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
   await page.locator('[data-ux-tab="settings"]').click();
   await page.locator('#labOpenSettings').click();
   assert(await page.locator('#studioCoreSettingsPanel').isVisible(),name+': Core settings not opened');
