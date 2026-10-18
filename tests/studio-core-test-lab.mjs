@@ -14,12 +14,18 @@ async function scenario(name,viewport){
   assert(response?.ok(),name+': HTML unavailable');
   await page.locator('html[data-core-lab-ready="1"]').waitFor({timeout:35000});
   await page.locator('html[data-core-lab-checks="pass"]').waitFor({timeout:15000});
-  assert((await page.locator('#labCheckList li.pass').count())===11,name+': 11 checks should pass');
+  assert((await page.locator('#labCheckList li.pass').count())===13,name+': 13 checks should pass');
   assert(await page.locator('.studioLogo img').count()===1,name+': Core nLab logo absent');
   assert(await page.locator('[data-studio-action="core.fullscreen"]').count()===1,name+': fullscreen missing');
   const app=page.locator('[data-studio-action="core.app-mode"]');
   assert(await app.count()===1,name+': PWA Core command missing');
   assert(['browser','installable','standalone'].includes(await app.getAttribute('data-app-mode')),name+': PWA state invalid');
+  await page.locator('#labPickerOpen').click();
+  await page.locator('#studioInputPicker').waitFor({state:'visible',timeout:12000});
+  await page.locator('#studioInputFilesNative').setInputFiles({name:'core-test-fixture.txt',mimeType:'text/plain',buffer:Buffer.from('nLab TEST fixture')});
+  await page.locator('#studioInputConfirm').click();
+  await page.locator('#labPickedFiles li').first().waitFor({timeout:12000});
+  assert((await page.locator('#labPickedFiles').textContent()).includes('core-test-fixture.txt'),name+': input-picker selection not returned');
   const resp=await page.locator('#labResponsiveLink').getAttribute('href');
   assert(resp.includes('responsive-test-studio/')&&resp.includes('url='),name+': responsive launcher URL invalid');
   await page.locator('#labItemName').fill('Échantillon modifié');
@@ -44,7 +50,7 @@ async function scenario(name,viewport){
    assert((await page.locator('body').getAttribute('data-responsive-profile'))==='mobile',name+': Core responsive profile incorrect');
   }
   assert(errors.length===0,name+': page errors '+errors.join('; '));
-  reports.push({name,status:'PASS',checks:11});
+  reports.push({name,status:'PASS',checks:13});
  }catch(error){
   reports.push({name,status:'FAIL',error:String(error?.stack||error),browserErrors:errors});
  }finally{await context.close();}
