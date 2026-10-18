@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Laboratoire isolé de validation des fonctions communes nLab Studio Core.">
+  <title>Studio Core Test Lab · nLab</title>
+  <link rel="icon" href="../../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#0057b8">
+  <link rel="stylesheet" href="../../../_shared/studio-v2/studio.css">
+  <link rel="stylesheet" href="../../../_shared/studio-v2/workspace-layout.css">
+  <link rel="stylesheet" href="./ux-parity.css">
+  <style>
+    .labSidebar,.labPanel{background:var(--nlab-card,#fff);border:1px solid var(--nlab-line,#d9e0e6);border-radius:12px;padding:16px;min-width:0}
+    .labSidebar{align-self:start}.labPanel{margin-bottom:12px}
+    .labHeading{font-size:15px;margin:0 0 9px}.labLead,.labHint{font-size:12px;line-height:1.55;color:var(--nlab-muted,#667582)}
+    .labLead{margin:0 0 12px}.labEyebrow{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--nlab-brand,#0057b8)}
+    .labToolbar,.labBadges{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+    .labToolbar button,.labToolbar a{font-size:12px;display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:8px 12px;border:1px solid var(--nlab-line,#d9e0e6);border-radius:8px;background:var(--nlab-card,#fff);color:inherit;text-decoration:none;font-weight:650}
+    .labToolbar .labPrimary{background:var(--nlab-brand,#0057b8);color:#fff;border-color:var(--nlab-brand,#0057b8)}
+    .labBadge{font-size:11px;padding:5px 8px;border:1px solid var(--nlab-line,#d9e0e6);border-radius:99px}
+    .labGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+    .labMetric{border:1px solid var(--nlab-line,#d9e0e6);padding:12px;border-radius:9px;min-width:0}
+    .labMetric strong{display:block;font-size:13px;margin:4px 0}.labMetric small{font-size:11px;line-height:1.35;color:var(--nlab-muted,#667582)}
+    .labChecks{display:grid;gap:6px;list-style:none;padding:0;margin:10px 0}
+    .labChecks li{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--nlab-line,#d9e0e6);border-radius:8px;font-size:12px}
+    .labChecks li span:first-child{width:20px;font-weight:900;text-align:center}
+    .labChecks li.pass span:first-child{color:#21804e}.labChecks li.fail span:first-child{color:#ba4c18}
+    .labChecks li.pending span:first-child{color:#93731d}
+    .labChecks li small{margin-left:auto;font-size:10px;color:var(--nlab-muted,#667582)}
+    .labField{display:grid;gap:5px;font-size:12px;font-weight:650;margin:9px 0}
+    .labField input,.labField textarea{font:inherit;width:100%;padding:10px;border:1px solid var(--nlab-line,#d9e0e6);background:var(--nlab-card,#fff);color:inherit;border-radius:7px}
+    .labField textarea{min-height:84px;resize:vertical}
+    .labStatus{padding:9px 12px;background:var(--nlab-bg,#f5f7f9);border-radius:8px;font-size:12px;margin-top:10px}
+    .labStatus:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--nlab-brand,#0057b8);outline-offset:2px}
+    .labManual{display:grid;gap:6px}.labManual label{display:flex;align-items:start;gap:8px;font-size:12px;padding:6px 0}
+    .labManual input{width:18px;height:18px;flex:none}
+    .labCode{overflow-wrap:anywhere;font-family:ui-monospace,Consolas,monospace;font-size:11px}
+    .labCollectionControls{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}
+    .labCollectionControls button,.labCollectionControls select{border:1px solid var(--nlab-line,#d9e0e6);border-radius:7px;min-height:34px;padding:5px 9px;background:var(--nlab-card,#fff);color:inherit}
+    .labCollectionControls button[aria-pressed="true"]{background:#dceefa;color:#174f75;border-color:#6ea4ca}
+    .labCollectionControls output{font-size:12px;min-width:85px;text-align:center}
+    #labCollectionDrop{border:2px dashed #99b7cd;border-radius:10px;padding:12px;text-align:center;font-size:12px;margin:8px 0;color:var(--nlab-muted,#667582)}
+    #labCollectionDrop.dragOver{background:#e5f3fb;border-color:#1976b8;color:#154767}
+    #labCollection{width:100%;max-height:460px;min-height:110px}
+    #labCollection.collectionThumbnailTools .collectionItem{min-width:0}
+    .labSubheading{font-size:12px;font-weight:700;margin:14px 0 2px}
+    @media(max-width:800px){.studioMain:not(.studioUx){display:block}.labSidebar{margin-bottom:10px}.labPanel{padding:12px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
+
+  </style>
+</head>
+<body>
+  <!-- Studio Core génère lui-même header, menus, ruban, commandes, fenêtres et statut. -->
+  <main id="studioMain" class="studioMain">
+    <aside class="studioSidebar labSidebar" aria-label="Tableau de validation">
+      <div class="labEyebrow">Zone isolée · canal TEST</div>
+      <h1 class="labHeading">Studio Core Test Lab</h1>
+      <p class="labLead">Banc d’essai du véritable Studio Core partagé. Aucun moteur métier ni ancien Studio n’est modifié ici.</p>
+      <div class="labBadges">
+        <span class="labBadge">TEST 0.5.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
+      </div>
+      <div class="labToolbar"><button id="labRunChecks" class="labPrimary" type="button">Exécuter les contrôles</button></div>
+      <p id="labCheckSummary" class="labHint" role="status">Vérification du Core…</p>
+      <ul id="labCheckList" class="labChecks" aria-label="Résultats techniques"></ul>
+      <details><summary>Comment tester</summary><p class="labHint">Utilisez le ruban Core pour ouvrir les commandes (Ctrl+K), les réglages, les propriétés, le test responsive, le plein écran et le mode application. Les contrôles qui demandent une action réelle restent à valider manuellement.</p></details>
+    </aside>
+    <section class="viewer" aria-label="Espace de test fonctionnel">
+      <section class="labPanel">
+        <div class="labEyebrow">Fonctionnalités transversales</div>
+        <h2 class="labHeading">Un Core unique pour tous les Studios</h2>
+        <p class="labLead">Les commandes du ruban sont fournies par <strong>Studio Core V2</strong>. Le plein écran natif et l’application web installée sont deux modes indépendants.</p>
+        <div class="labGrid">
+          <div class="labMetric"><small>Mode application</small><strong id="labApplicationState">Analyse…</strong><small>Installation navigateur/PWA ; ne garantit pas le hors ligne.</small></div>
+          <div class="labMetric"><small>Plein écran</small><strong id="labFullscreenState">Désactivé</strong><small>Entrez et sortez depuis le ruban Core ou avec Échap.</small></div>
+          <div class="labMetric"><small>Viewport</small><strong id="labViewport">—</strong><small id="labProfile">Profil responsive du Core.</small></div>
+          <div class="labMetric"><small>Historique</small><strong id="labHistory">—</strong><small>Transactions Annuler / Rétablir du Core.</small></div>
+        </div>
+        <div class="labToolbar">
+          <button id="labAppGuide" type="button">État installation</button>
+          <button id="labOpenSettings" type="button">⚙ Réglages Core</button>
+          <a id="labResponsiveLink" href="../../../responsive-test-studio/">Simuler mobile / tablette / PC ↗</a>
+          <a href="../../../studios/">Retour aux Studios ↗</a><a href="../../../studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md" target="_blank" rel="noopener">Audit Core ↗</a>
+        </div>
+      </section>
+      <section class="labPanel" id="labAcquisitionPanel">
+        <div class="labEyebrow">Fichiers · module commun Studio Core</div>
+        <h2 class="labHeading">Importer, parcourir et sélectionner</h2>
+        <p class="labLead">Le sélecteur canonique du Core propose fichiers, dossiers, URL, vignettes, tri et sélection. Aucune conversion n’est déclenchée automatiquement.</p>
+        <div class="labToolbar"><button id="labPickerOpen" type="button" class="labPrimary">📂 Ajouter / choisir des fichiers</button><a href="../../../../Library/demo/?folder=all">Parcourir les démos ↗</a></div>
+        <div id="labCollectionDrop" tabindex="0" role="button" aria-label="Déposer des fichiers ou cliquer pour importer">Déposer des fichiers ici, ou cliquer pour les ajouter · <strong>glisser-déposer</strong></div>
+        <input id="labFilesNative" type="file" multiple hidden>
+        <div class="labSubheading">Collection de fichiers · zoom des vignettes</div>
+        <div class="labCollectionControls" role="group" aria-label="Affichage et zoom de la collection">
+          <button id="labViewList" type="button" aria-pressed="false">☷ Liste</button><button id="labViewGrid" type="button" aria-pressed="false">▦ Grille</button><button id="labViewThumbs" type="button" aria-pressed="true">▣ Vignettes</button>
+          <button id="labThumbMinus" type="button" aria-label="Réduire les vignettes" title="Zoom arrière des vignettes">−</button>
+          <output id="labThumbSize" aria-live="polite">Auto</output>
+          <button id="labThumbPlus" type="button" aria-label="Agrandir les vignettes" title="Zoom avant des vignettes">+</button>
+          <button id="labThumbAuto" type="button" title="Adapter automatiquement les vignettes à la largeur">↔ Auto</button>
+          <label for="labCollectionSort">Trier :</label><select id="labCollectionSort"><option value="name">Nom</option><option value="type">Type</option><option value="size">Taille</option><option value="path">Dossier</option></select>
+          <button id="labSelectAllFiles" type="button">Tout sélectionner</button><button id="labInvertFiles" type="button">Inverser</button>
+        </div>
+        <div id="labCollection" class="collectionBrowser" aria-label="Collection de fichiers interactive"></div>
+        <p id="labCollectionInfo" class="labStatus" aria-live="polite">Aucun fichier dans la collection.</p>
+        <details><summary>Liste des fichiers importés</summary><ul id="labPickedFiles" class="labChecks" aria-label="Fichiers sélectionnés"></ul></details>
+        <p id="labAcquiredInfo" class="labStatus" aria-live="polite">Aucun fichier choisi.</p>
+      </section>
+      <section class="labPanel">
+        <div class="labEyebrow">Échantillon métier sans dépendance</div>
+        <h2 class="labHeading">Tester sélection, historique et préférences</h2>
+        <p class="labLead">Les modifications du champ ci-dessous sont locales à ce laboratoire. La commande « Appliquer » crée une vraie transaction Core Annuler/Rétablir.</p>
+        <label class="labField">Libellé de l’objet test
+          <input id="labItemName" autocomplete="off" value="Composant de démonstration nLab">
+        </label>
+        <label class="labField">Description test
+          <textarea id="labItemDescription">Élément synthétique pour éprouver les fonctions transversales du Studio Core.</textarea>
+        </label>
+        <div class="labToolbar">
+          <button id="labCommit" class="labPrimary" type="button">Appliquer (historique)</button>
+          <button id="labSelect" type="button">Sélectionner l’objet</button>
+          <button id="labRestore" type="button">Valeurs de démo</button>
+        </div>
+        <p id="labSampleStatus" class="labStatus" role="status">Échantillon chargé.</p>
+      </section>
+      <section class="labPanel">
+        <div class="labEyebrow">Recette humaine · non automatisée</div>
+        <h2 class="labHeading">Contrôles visuels et navigateur</h2>
+        <div class="labManual" id="labManual">
+          <label><input type="checkbox" data-manual="fullscreen"> Le bouton Core passe en plein écran et Échap en sort.</label>
+          <label><input type="checkbox" data-manual="app"> L’installation dans Chrome/Edge est proposée ou correctement expliquée.</label>
+          <label><input type="checkbox" data-manual="standalone"> Après installation, le Studio s’ouvre comme une fenêtre d’application dédiée.</label>
+          <label><input type="checkbox" data-manual="responsive"> Le rendu mobile/tablette/desktop reste lisible, sans commandes inaccessibles.</label>
+          <label><input type="checkbox" data-manual="settings"> Les préférences et le ruban Core fonctionnent après actualisation.</label>
+          <label><input type="checkbox" data-manual="collection"> La collection accepte plusieurs fichiers ; les boutons −/+ et Auto adaptent les vignettes, et les rotations ↶/↷ apparaissent sur les grandes cartes.</label>
+          <label><input type="checkbox" data-manual="undo"> Annuler puis Rétablir restaure bien les valeurs de l’échantillon.</label>
+        </div>
+        <p class="labHint">Cases de recette conservées seulement dans votre navigateur. Elles ne constituent pas une validation serveur ou une certification multi-appareils.</p>
+        <div id="labManualSummary" class="labStatus" role="status">0/6 contrôles validés localement.</div>
+      </section>
+    </section>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

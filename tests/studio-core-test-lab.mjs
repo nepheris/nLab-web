@@ -41,6 +41,18 @@ async function scenario(name,viewport){
   assert((await page.locator('#uxHistoryList .uxHistoryEntry').count())===0,name+': history search not filtering');
   await page.locator('#uxHistorySearch').fill('');
   await page.locator('[data-ux-history-type="all"]').click();
+  await page.locator('#uxHistoryScope').selectOption('all');
+  await page.locator('#uxHistoryDetail').selectOption('detailed');
+  assert(await page.locator('#uxHistoryList .uxHistoryEntry[open]').count()>=1,name+': detailed history view missing');
+  await page.locator('#uxHistoryList .uxHistoryEntryDetails button').first().click();
+  await page.locator('#uxHistoryFavoritesOnly').click();
+  assert(await page.locator('#uxHistoryList .uxHistoryEntry').count()>=1,name+': canonical favorite history filter missing');
+  await page.locator('#uxHistoryFavoritesOnly').click();
+  await page.locator('[data-ux-tab="workspace"]').click();
+  assert(await page.locator('#studioMain').getAttribute('data-work-tab-active')==='true',name+': work surface not selected');
+  assert(await page.locator('.uxSurfacePanel [data-surface-action]').count()>=6,name+': workbench controls not bound');
+  assert(await page.locator('#studioUxWorkBody').count()===1,name+': central work surface missing');
+  if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
   if(viewport.width<=700)await page.locator('#studioUxCollapse').click();
   else await page.locator('[data-ux-tab="files"]').click();
   assert((await page.locator('#uxSideFileList .uxSideFileRow').count())===1,name+': files binder out of sync');
@@ -77,7 +89,7 @@ async function scenario(name,viewport){
   assert(resp.includes('responsive-test-studio/')&&resp.includes('url='),name+': responsive launcher URL invalid');
   assert(await page.locator('#studioMain.studioUx').count()===1,name+': workspace shell missing');
   assert(await page.locator('#studioMain').getAttribute('data-layout-profile')===(viewport.width<=700?'mobile':viewport.width<=1100?'tablet':'desktop'),name+': adaptive workspace profile incorrect');
-  assert(await page.locator('.studioUxRail [data-ux-tab]').count()===7,name+': PDF-inspired tab rail missing');
+  assert(await page.locator('.studioUxRail [data-ux-tab]').count()===8,name+': Core workbench tab missing');
   await page.locator('#uxSaveAsOpen').click();
   assert(await page.locator('#uxSaveDialog').isVisible(),name+': save-as dialog missing');
   await page.locator('#uxSaveTokens .uxTokenHelp').first().click();
@@ -110,8 +122,17 @@ async function scenario(name,viewport){
   await page.locator('#studioCoreSettingsClose').click();
   await page.locator('#uxTheme').selectOption('dark');
   assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='dark',name+': dark theme missing');
+  assert((await page.locator('body').getAttribute('data-studio-ux-theme'))==='dark',name+': dark theme not applied across header and dialogs');
+  const darkContrast=await page.locator('.studioUxWorkHeader strong').first().evaluate(node=>{
+    const parse=s=>Array.from((s.match(/[\d.]+/g)||[]).slice(0,3),Number);
+    const lum=a=>{const c=a.map(x=>x/255).map(x=>x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4));return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+    const fg=parse(getComputedStyle(node).color),bg=parse(getComputedStyle(node.closest('.studioUxWorkHeader')).backgroundColor);
+    const x=lum(fg),y=lum(bg);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)
+  });
+  assert(darkContrast>=4.5,name+': insufficient dark-theme heading contrast '+darkContrast);
   await page.locator('#uxTheme').selectOption('light');
   assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='light',name+': light theme missing');
+  assert((await page.locator('body').getAttribute('data-studio-ux-theme'))==='light',name+': light theme not global');
   if(viewport.width>700){
    await page.locator('#studioUxDetach').click();
    assert(await page.locator('.studioUxFloat[data-ux-float="settings"]').isVisible(),name+': floating panel missing');
@@ -149,8 +170,14 @@ async function scenario(name,viewport){
   if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
   await page.locator('[data-ux-tab="history"]').click();
   await page.screenshot({path:'artifacts/core-lab-ux/'+name+'-history.png',fullPage:true});
+  await page.locator('[data-ux-tab="settings"]').click();
+  await page.locator('#uxTheme').selectOption('dark');
+  await page.locator('[data-ux-tab="history"]').click();
+  await page.screenshot({path:'artifacts/core-lab-ux/'+name+'-dark-history.png',fullPage:true});
+  await page.locator('[data-ux-tab="settings"]').click();
+  await page.locator('#uxTheme').selectOption('light');
     assert(errors.length===0,name+': page errors '+errors.join('; '));
-  reports.push({name,status:'PASS',checks:15});
+  reports.push({name,status:'PASS',checks:15,extra:'Workbench + history favorites/details + AA dark contrast'});
  }catch(error){
   reports.push({name,status:'FAIL',error:String(error?.stack||error),browserErrors:errors});
  }finally{await context.close();}
