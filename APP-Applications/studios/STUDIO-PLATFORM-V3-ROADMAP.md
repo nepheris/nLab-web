@@ -1,3 +1,20 @@
+## Chantier Core 3.5.0 TEST — Collection vignettes, zoom et rotations (18 octobre 2026)
+
+**Branche :** `studio-core-3-5-collection-thumbnails-20261018` · **Produit :** Core TEST 3.5.0, Studio Core Test Lab **0.3.0 TEST**.
+
+- CORE-211 **IMPLEMENTED TEST** — `collection-browser.js` opt-in `thumbnailTools:true`, zoom manuel −/+ (100–320 px), auto-ajustement par largeur, taille mémorisée par collection.
+- CORE-212 **IMPLEMENTED TEST** — Rotation visuelle ±90° sur cartes de taille suffisante, événement `rotate`, sans altérer les octets du document ; historique undo/redo raccordé dans le laboratoire uniquement.
+- CORE-213 **IMPLEMENTED TEST** — Collection Lab : import depuis le Picker partagé, import multi-fichiers natif, dropzone, Liste/Grille/Vignettes, tri, sélection totale et inversion, miniatures produites par `thumbnail-service.js`.
+- CORE-214 **AUTOMATED TESTS ADDED / CI PENDING** — Scénarios desktop/mobile de zoom, auto, rotation, fichier multiple, sélection ; tests existants et CI non encore certifiés à la rédaction.
+- CORE-215 **IMPLEMENTED TEST** — Snapshot historique Lab 0.2.0 isolé sous `versions/0.2.0/` ; 0.1.0 conservée ; CURRENT non modifié.
+- CORE-216 **PLANNED** — Raccorder progressivement PDF/Image/File à la nouvelle option si et seulement si bénéfice UX et non-régression mesurée.
+- CORE-217 **PLANNED** — Décliner maquette UX v0.5 : ruban regroupé, accordéons/panneaux dockables, nommage et sorties par templates, sélecteur couleur partagé, profils mobile/tablette/desktop. Ne pas confondre le laboratoire 0.3.0 avec l'intégralité de la maquette.
+- CORE-218 **PLANNED** — Vérifier rotations réelles produites par moteurs PDF/image, prévisualisation et export séparément de la rotation visuelle.
+ 
+**Gates :** tests Chrome desktop + mobile, snapshots, audit, déploiement `gh-pages`, recette manuelle du ruban, Android et PWA. Préserver la CI exhaustive Image Studio préexistante comme exception ouverte et non comme réussite.
+
+---
+
 # nLab Studio Platform V3 — implementation roadmap
 
 ## Chantier 3.4.1 TEST — Core Lab 0.2 et démos (18 octobre 2026)
