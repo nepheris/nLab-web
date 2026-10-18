@@ -1029,3 +1029,35 @@ body.studioMobileOptimized .ribbonInputLauncher .scopeIcon{width:38px!important;
 @media(min-width:701px){.studioCoreRail+.studioMobileBackdrop{display:none}}
 
 body.studioMobileOptimized .studioMobileDock{grid-template-columns:repeat(5,minmax(0,1fr))}
+
+
+/* Core 3.5 TEST — optional shared collection thumbnail controls (no changes for legacy collections). */
+.collectionBrowser.collectionThumbnailTools.collection-grid,
+.collectionBrowser.collectionThumbnailTools.collection-thumbs{
+ /* An older shared rule uses !important for fixed 104px thumbs; opt-in overrides it explicitly. */
+ grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--nlab-collection-card-width,160px)),1fr))!important;
+ align-content:start;gap:8px;
+}
+.collectionThumbnailTools .collectionItem{container-type:inline-size;position:relative;min-width:0}
+.collectionThumbnailTools.collection-grid .collectionItem,
+.collectionThumbnailTools.collection-thumbs .collectionItem{grid-template-columns:20px minmax(0,1fr);gap:6px}
+.collectionThumbnailTools.collection-grid .collectionThumb,
+.collectionThumbnailTools.collection-thumbs .collectionThumb{
+ grid-area:thumb;position:relative;display:grid;place-items:center;
+ width:100%;height:var(--nlab-collection-thumb-height,130px)!important;min-height:0;overflow:hidden;
+}
+.collectionThumbnailTools .collectionThumbMedia{display:grid;place-items:center;width:100%;height:100%;min-width:0;overflow:hidden}
+.collectionThumbnailTools .collectionThumbMedia img{display:block;width:100%;height:100%;object-fit:contain;transform:rotate(var(--collection-item-rotation,0deg));transition:transform 130ms ease}
+.collectionThumbnailTools .collectionThumbTools{display:none}
+.collectionThumbnailTools.collection-grid .collectionItem[data-rotate-enabled="true"] .collectionThumbTools,
+.collectionThumbnailTools.collection-thumbs .collectionItem[data-rotate-enabled="true"] .collectionThumbTools{
+ position:absolute;bottom:4px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:1;
+}
+.collectionThumbnailTools .collectionThumbTools button{
+ background:#f8fafcee;color:#163148;border:1px solid #b6cbdc;border-radius:6px;
+ width:30px;min-width:30px;height:29px;min-height:29px;padding:0;font-size:18px;cursor:pointer;
+}
+.collectionThumbnailTools .collectionThumbTools button:hover{background:#dbeffc}
+.collectionThumbnailTools .collectionThumbTools button:focus-visible{outline:2px solid #1976b8;outline-offset:1px}
+.collectionThumbnailTools.collection-list .collectionThumbTools{display:none}
+@media(prefers-reduced-motion:reduce){.collectionThumbnailTools .collectionThumbMedia img{transition:none}}
