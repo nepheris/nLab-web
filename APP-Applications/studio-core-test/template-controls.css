@@ -30,6 +30,7 @@ body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed .studi
 body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxPreview[hidden]{display:none!important}
 body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxCollectionSplit.uxPreviewHidden{grid-template-columns:minmax(0,1fr)!important}
 body[data-studio="studio-core-test"] #studioMain.studioUx .uxPreviewRestore{display:inline-flex;align-items:center}
+.studioUx .uxPreviewRestore[hidden]{display:none!important}
 body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxPreview>header{gap:7px}
 body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxPreview>header .uxPreviewHide{margin-left:auto;background:var(--ux-control,#fff);color:var(--ux-control-fg,#275576);border:1px solid var(--ux-border,#ccddea);border-radius:6px;min-width:30px;min-height:30px}
 .studioUx[data-preview-profile="tablet"] .studioUxMain{max-width:800px;margin-inline:auto;width:100%;box-shadow:0 0 0 1px var(--ux-border,#cfdce9)}
