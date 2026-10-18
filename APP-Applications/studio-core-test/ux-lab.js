@@ -1,11 +1,12 @@
 // Studio Core Test Lab 0.4 — UX 0.5 visual reference, real Core services behind the shell.
 import{mountStudioWorkspace}from'../_shared/studio-v2/workspace-layout.js';
+import{createHistorySidebar}from'../_shared/studio-v2/history-sidebar.js';
 import{TemplateEngine,templateVariableHelp}from'../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../_shared/studio-v2/output-service.js';
 import{createColorPicker}from'../_shared/studio-v2/color-control.js';
-import{loadHistory,recordHistory}from'../_shared/studio-v2/history.js';
+import{recordHistory}from'../_shared/studio-v2/history.js';
 import{thumbnailFor}from'../_shared/studio-v2/thumbnail-service.js';
-import{getUndoRedoState,undo,redo}from'../_shared/studio-v2/undo-redo.js';
+
 
 const $=q=>document.querySelector(q);
 const make=(tag,cls='',html='')=>{const el=document.createElement(tag);if(cls)el.className=cls;if(html)el.innerHTML=html;return el};
@@ -17,7 +18,7 @@ const csv=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
 const safeStore=(key,value)=>{try{localStorage.setItem(key,String(value))}catch{}};
 const safeRead=(key,fallback)=>{try{return localStorage.getItem(key)??fallback}catch{return fallback}};
 
-export function mountCoreLabUx({main,collection}){
+export function mountCoreLabUx({main,collection,appendFiles}){
  const legacyAside=main.querySelector(':scope>.labSidebar');
  const oldViewer=main.querySelector(':scope>.viewer');
  const panels=Array.from(oldViewer.children);
@@ -29,8 +30,15 @@ export function mountCoreLabUx({main,collection}){
  const acquiredInfo=$('#labAcquiredInfo'),picked=$('#labPickedFiles');
  const pickedDetails=picked.closest('details');
  const profile=make('div','studioUxFileSidebar','<strong>Collection active</strong><p id="uxFilesCount">0 fichier</p><button class="uxMiniButton" id="uxSideImport" type="button">↥ Ajouter des fichiers</button>');
- profile.append(pickedDetails);
- const history=make('div','','<p class="labHint">Activité du Studio et transactions Annuler/Rétablir.</p><div class="labToolbar"><button id="uxUndo" type="button">↶ Annuler</button><button id="uxRedo" type="button">↷ Rétablir</button><button id="uxHistoryWindow" type="button">↗ Fenêtre complète</button></div><div id="uxHistoryList"></div>');
+ const fileBar=make('div','uxFileBar','<div class="uxSidebarOverline">Collection active · <span id="uxSideFileCount">0 fichiers</span></div><div class="uxFileActions"><button id="uxSideAdd" type="button">↥ Ajouter</button><button id="uxSideFolder" type="button">▱ Dossier</button></div><button id="uxSideSamples" class="uxMiniButton" type="button">◫ Charger les 4 exemples</button>');
+ const fileAccordion=make('details','uxHistoryAccordion uxFileAccordion','<summary>Fichiers · <span id="uxSideSelected">0 sélectionné(s)</span></summary><div id="uxSideFileList" class="uxSideFileList" role="list"></div>');
+ fileAccordion.open=true;
+ const sideSelection=make('div','uxFileSelection','<button id="uxFileAll" type="button">Tout</button><button id="uxFileNone" type="button">Aucun</button><button id="uxFileInvert" type="button">Inverser</button>');
+ const sideHint=make('p','uxHistoryHint','La sélection active est partagée entre le volet, la planche de travail et les propriétés. Les fichiers restent dans leur ordre de collection.');
+ profile.replaceChildren(fileBar,fileAccordion,sideSelection,sideHint);
+ pickedDetails.hidden=true;profile.append(pickedDetails);
+ const historyView=createHistorySidebar({studio:'studio-core-test'});
+ const history=historyView.element;
  const prop=make('div','');
  prop.append(sample);
  prop.append(make('h3','labHeading','Couleur · service Core partagé'));
@@ -59,6 +67,25 @@ export function mountCoreLabUx({main,collection}){
  // Use the actual shared Core ribbon, but order groups as in the UX reference.
  const coreRibbon=$('.studioRibbon'),toggle=$('#studioRibbonToggle');
  for(const key of ['core-acquisition','lab-file','core-history','lab-panels','core-command','lab-diagnostics']){const group=coreRibbon?.querySelector('[data-ribbon-group="'+key+'"]');if(group)coreRibbon.insertBefore(group,toggle)}
+ // The accepted mockup has a dedicated menu line and a single compact ribbon row.
+ // Keep every existing action binding: only rearrange the actual Core controls.
+ document.body.dataset.navPlacement='separate';
+ // The Core starts with the menu integrated in the header. Move the existing
+ // DOM node (not a duplicate) into the canonical separate menu row.
+ const menu=$('.studioMenu'),chromeRoot=$('#nlabStudioV2Chrome');
+ if(menu&&chromeRoot&&coreRibbon){menu.classList.remove('studioMenuIntegrated');chromeRoot.insertBefore(menu,coreRibbon)}
+ const createGroup=(id,caption)=>{const el=document.createElement('div');el.className='ribbonGroup scope-core';el.dataset.ribbonGroup=id;el.dataset.scope='core';const label=document.createElement('span');label.className='ribbonLabel';label.textContent=caption;el.append(label);return el};
+ const proxy=(group,glyph,label,handler)=>{const b=document.createElement('button');b.type='button';b.className='labRibbonProxy';b.title=label;b.setAttribute('aria-label',label);const i=document.createElement('span');i.className='labRibbonGlyph';i.setAttribute('aria-hidden','true');i.textContent=glyph;const txt=document.createElement('span');txt.textContent=label;b.append(i,txt);b.addEventListener('click',handler);group.insertBefore(b,group.querySelector('.ribbonLabel'));return b};
+ const selectionGroup=createGroup('lab-selection','Sélection');
+ proxy(selectionGroup,'☑','Tout choisir',()=>collection.selectAll());
+ proxy(selectionGroup,'□','Désélect.',()=>collection.clearSelection());
+ proxy(selectionGroup,'⇄','Inverser',()=>$('#labInvertFiles').click());
+ const anchorHistory=coreRibbon?.querySelector('[data-ribbon-group="core-history"]');
+ coreRibbon?.insertBefore(selectionGroup,anchorHistory||toggle);
+ const displayGroup=createGroup('lab-display','Affichage');
+ for(const id of ['core-fullscreen','core-app-mode','core-responsive-test']){const button=coreRibbon?.querySelector('#'+id);if(button)displayGroup.insertBefore(button,displayGroup.querySelector('.ribbonLabel'))}
+ proxy(displayGroup,'⚙','Réglages',()=>$('#studioCoreSettings')?.click());
+ coreRibbon?.insertBefore(displayGroup,toggle);
  const ribbon=make('div','labToolbar uxWorkMainActions','');
  ribbon.append(picker);
  const upload=make('button','','▣ Dossier');upload.type='button';upload.title='Parcourir un dossier dans le sélecteur canonique';upload.addEventListener('click',()=>picker.click());ribbon.append(upload);
@@ -68,18 +95,66 @@ export function mountCoreLabUx({main,collection}){
  ws.actions.append(ribbon);
  const heading=make('div','studioUxInfoRow','<div><strong>Collection de fichiers</strong><span> · Cliquer pour activer et cocher pour sélectionner</span></div><span id="uxCollectionCount">0 fichier</span>');
  ctrl.classList.add('uxCollectionToolbar');
+ const groupLabel=document.createElement('label');groupLabel.textContent='Regrouper : ';
+ const groupSelect=document.createElement('select');groupSelect.id='uxCollectionGrouping';
+ for(const [value,label] of [['none','À plat'],['path','Dossier'],['type','Type'],['selected','Sélection']]){
+  const opt=document.createElement('option');opt.value=value;opt.textContent=label;groupSelect.append(opt);
+ }
+ groupSelect.value=collection.groupBy;groupLabel.append(groupSelect);
+ const centralFilter=document.createElement('input');centralFilter.id='uxCollectionFilter';centralFilter.type='search';centralFilter.placeholder='Nom, type, dossier…';centralFilter.setAttribute('aria-label','Filtrer la collection');
+ const selectVisible=document.createElement('button');selectVisible.id='uxSelectVisibleMain';selectVisible.type='button';selectVisible.textContent='Choisir visibles';
+ ctrl.append(groupLabel,centralFilter,selectVisible);
+ groupSelect.addEventListener('change',()=>collection.setGroupBy(groupSelect.value));
  const collectionSide=make('div','studioUxCollectionSide');collectionSide.append(coll,collectionInfo);
  const preview=make('section','studioUxPreview','<header><strong>Aperçu de l’élément actif</strong><small id="uxPreviewType">Aucun fichier</small></header><div class="studioUxPreviewToolbar"><label>Afficher <select id="uxPreviewScope"><option value="active">Fichier actif</option><option value="selected">Sélection (en série)</option></select></label><button id="uxPreviewMinus" type="button">−</button><output id="uxPreviewZoom">100 %</output><button id="uxPreviewPlus" type="button">+</button><button id="uxPreviewFit" type="button">1:1</button><button id="uxPreviewLeft" type="button" title="Tourner à gauche">↶ 90°</button><button id="uxPreviewRight" type="button" title="Tourner à droite">↷ 90°</button></div><div class="studioUxPreviewCanvas" id="uxPreviewCanvas"><span class="labHint">Ajoutez ou sélectionnez un fichier.</span></div><footer>Aperçu uniquement : les fichiers sources ne sont pas modifiés.</footer>');
  const split=make('div','studioUxCollectionSplit');split.append(collectionSide,preview);
  ws.work.append(heading,ctrl,split,drop,acquiredInfo,filesNative);
  // Read-only import details in the file sidebar are always present for previous Lab APIs.
- $('#uxSideImport').addEventListener('click',()=>picker.click());
+ $('#uxSideAdd').addEventListener('click',()=>picker.click());
+ $('#uxSideFolder').addEventListener('click',()=>picker.click());
+ $('#uxSideSamples').addEventListener('click',()=>{
+   if(typeof appendFiles!=='function')return;
+   const svg='<svg xmlns="http://www.w3.org/2000/svg" width="480" height="310"><rect width="480" height="310" fill="#e4f3ff"/><circle cx="350" cy="90" r="32" fill="#faca72"/><path d="M35 277 170 110 280 240 360 170 460 277" fill="#5ba084"/><text x="50" y="54" font-size="24" fill="#2574a9">Photo nLab</text></svg>';
+   const files=[
+    new File([svg],'Photo-echantillon.svg',{type:'image/svg+xml'}),
+    new File(['Nom;Quantite\nExemple;3\nTest;7\n'],'Inventaire-tests.csv',{type:'text/csv'}),
+    new File(['# Notes projet nLab\n- Import\n- Historique\n- Apercu'],'Notes-projet.md',{type:'text/markdown'}),
+    new File(['Fichier de demonstration nLab'],'Document-demo.txt',{type:'text/plain'})
+   ];
+   const folders=['Images/Octobre/Photo-echantillon.svg','Inventaires/2026/Inventaire-tests.csv','Notes-projet.md','Documents/Document-demo.txt'];
+   files.forEach((f,i)=>{f.__relativePath=folders[i]});
+   appendFiles(files);
+   $('#uxSideSamples').textContent='✓ Exemples chargés';
+ });
+ $('#uxSideImport')?.addEventListener('click',()=>picker.click());
+ $('#uxFileAll').addEventListener('click',()=>collection.selectAll());
+ $('#uxFileNone').addEventListener('click',()=>collection.clearSelection());
+ $('#uxFileInvert').addEventListener('click',()=>$('#labInvertFiles').click());
+ const renderSideFiles=()=>{
+   const host=$('#uxSideFileList');host.replaceChildren();
+   $('#uxSideFileCount').textContent=collection.items.length+' fichier(s)';
+   $('#uxSideSelected').textContent=collection.selectedItems().length+' sélectionné(s)';
+   for(const item of collection.items){
+     const row=document.createElement('div');row.className='uxSideFileRow'+(collection.activeId===item.id?' active':'');
+     const check=document.createElement('input');check.type='checkbox';check.checked=collection.selected.has(item.id);check.setAttribute('aria-label','Sélectionner '+item.label);
+     check.addEventListener('change',()=>collection.select(item.id,check.checked));
+     const button=document.createElement('button');button.type='button';button.className='uxSideFileName';button.textContent=item.label;button.title=item.relativePath||item.label;button.addEventListener('click',()=>collection.activate(item.id));
+     const type=document.createElement('small');type.textContent=(item.extension||'fichier').toUpperCase();
+     row.append(check,button,type);host.append(row);
+   }
+   if(!collection.items.length){const empty=document.createElement('p');empty.className='uxHistoryEmpty';empty.textContent='Aucun fichier importé.';host.append(empty)}
+ };
+ collection.addEventListener('selection',renderSideFiles);collection.addEventListener('activate',renderSideFiles);
+ const previousSummary=collection.setItems.bind(collection);
+ collection.setItems=(items)=>{const result=previousSummary(items);renderSideFiles();return result};
  $('#uxTogglePreview').addEventListener('click',()=>{preview.hidden=!preview.hidden;split.classList.toggle('uxPreviewHidden',preview.hidden)});
  const filter=$('#uxCollectionSearch');
  const filterCollection=()=>{const q=filter.value.trim().toLocaleLowerCase('fr');let n=0;coll.querySelectorAll('.collectionItem').forEach(el=>{const id=el.dataset.collectionId;const item=collection.items.find(x=>x.id===id);const ok=!q||[item?.label,item?.extension,item?.relativePath,item?.type].join(' ').toLocaleLowerCase('fr').includes(q);el.hidden=!ok;if(ok)n++});$('#uxSearchCount').textContent=n+' résultat(s)';};
  const observer=new MutationObserver(()=>{filterCollection();updateSummary()});
  observer.observe(coll,{childList:true,subtree:false});
- filter.addEventListener('input',filterCollection);
+ filter.addEventListener('input',()=>{centralFilter.value=filter.value;filterCollection()});
+ centralFilter.addEventListener('input',()=>{filter.value=centralFilter.value;filterCollection()});
+ selectVisible.addEventListener('click',()=>$('#uxSelectVisible').click());
  $('#uxSelectVisible').addEventListener('click',()=>{for(const el of coll.querySelectorAll('.collectionItem:not([hidden])'))collection.selected.add(el.dataset.collectionId);collection.render();collection.dispatchEvent(new CustomEvent('selection',{detail:collection.selectedItems()}))});
  let zoom=1;
  const previewUpdate=async()=>{
@@ -94,8 +169,8 @@ export function mountCoreLabUx({main,collection}){
    try{const image=await thumbnailFor(item.data,{width:400,height:560});if(box.isConnected)img.src=image.url||''}catch{caption.textContent='Aperçu indisponible : '+item.label}
   }
  };
- const selectionUpdate=()=>{updateSummary();previewUpdate()};
- function updateSummary(){$('#uxCollectionCount').textContent=collection.items.length+' fichier(s) · '+collection.selectedItems().length+' sélectionné(s)';$('#uxFilesCount').textContent=collection.items.length+' fichier(s)';}
+ const selectionUpdate=()=>{updateSummary();renderSideFiles();previewUpdate()};
+ function updateSummary(){$('#uxCollectionCount').textContent=collection.items.length+' fichier(s) · '+collection.selectedItems().length+' sélectionné(s)';const count=$('#uxFilesCount');if(count)count.textContent=collection.items.length+' fichier(s)';}
  collection.addEventListener('selection',selectionUpdate);
  collection.addEventListener('activate',selectionUpdate);
  collection.addEventListener('rotate',selectionUpdate);
@@ -104,12 +179,9 @@ export function mountCoreLabUx({main,collection}){
  $('#uxPreviewPlus').addEventListener('click',()=>zoomTo(zoom+.25));$('#uxPreviewMinus').addEventListener('click',()=>zoomTo(zoom-.25));$('#uxPreviewFit').addEventListener('click',()=>zoomTo(1));
  $('#uxPreviewLeft').addEventListener('click',()=>{const a=collection.active();if(a)collection.rotate(a.id,-90)});
  $('#uxPreviewRight').addEventListener('click',()=>{const a=collection.active();if(a)collection.rotate(a.id,90)});
- const recent=()=>{const host=$('#uxHistoryList');host.replaceChildren();const tx=getUndoRedoState(),top=make('div','uxCard','');top.textContent=tx.undoDepth+' action(s) à annuler, '+tx.redoDepth+' à rétablir';host.append(top);for(const x of loadHistory().filter(x=>x.studio==='studio-core-test').slice(0,15)){const row=make('article','uxCard'),name=make('strong',''),date=make('small','');name.textContent=x.label;date.textContent=new Date(x.timestamp).toLocaleString('fr-FR');row.append(name,date);host.append(row)}};
- document.addEventListener('studio-v2:history-changed',recent);
- document.addEventListener('studio-v2:undo-redo-changed',recent);
- $('#uxUndo').addEventListener('click',undo);$('#uxRedo').addEventListener('click',redo);
- $('#uxHistoryWindow').addEventListener('click',()=>{const win=$('#history-full-view');if(win){win.hidden=false;win.style.zIndex='350'}ws.switchTab('history')});
- recent();
+ // Both the compact sidebar and full history window share the existing Core activity store.
+ historyView.render();
+
  // A theme choice is scoped to the workspace; Core settings remain authoritative elsewhere.
  $('#uxTheme').value=safeRead('nlab:core-lab:ux-theme','auto');
  const theme=()=>{const val=$('#uxTheme').value,night=val==='dark'||(val==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);main.dataset.uxTheme=night?'dark':'light';safeStore('nlab:core-lab:ux-theme',val)};
@@ -184,6 +256,6 @@ export function mountCoreLabUx({main,collection}){
   }catch(e){$('#uxSaveStatus').textContent=e.name==='AbortError'?'Enregistrement annulé.':'Enregistrement impossible : '+(e.message||e)}
  });
  // Mount diagnostics continue to use the real Core services and their original element IDs.
- updateSummary();previewUpdate();
- return{workspace:ws,showSave,previewUpdate,updateSummary,filterCollection};
+ updateSummary();renderSideFiles();previewUpdate();
+ return{workspace:ws,historyView,showSave,previewUpdate,updateSummary,filterCollection};
 }

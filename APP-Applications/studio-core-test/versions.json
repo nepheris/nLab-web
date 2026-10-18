@@ -1,16 +1,25 @@
 {
   "name": "Studio Core Test Lab",
   "current": null,
-  "test": "0.4.0",
+  "test": "0.5.0",
   "versions": [
     {
-      "version": "0.4.0",
-      "label": "Studio Core Test Lab 0.4.0 TEST — UX 0.5",
+      "version": "0.5.0",
+      "label": "Studio Core Test Lab 0.5.0 TEST · fidélité maquette UX",
       "status": "test",
       "current": false,
       "href": "./",
       "isolation": "test-path",
-      "notes": "Espace de travail Core UX réutilisable opt-in : ruban et onglets PDF Studio, collection/aperçu mobile, historique, propriétés, couleur et Enregistrer sous avec variables du moteur partagé. Sorties limitées aux métadonnées JSON/CSV/TXT ; validation manuelle requise."
+      "notes": "Reprise fidèle de la maquette UX 0.5 : panneau Historique interactif avec timeline, filtres et accordéons, navigation compacte, panneau Fichiers synchronisé, miniatures, tri, regroupement, sélection, exemples facultatifs. Réutilisation des services de Core 3.7.0 TEST. Recette appareils réels à faire."
+    },
+    {
+      "version": "0.4.0",
+      "label": "Studio Core Test Lab 0.4.0 HISTORIQUE",
+      "status": "historical",
+      "current": false,
+      "href": "./versions/0.4.0/",
+      "isolation": "snapshot",
+      "notes": "Première implémentation de la maquette 0.5, figée avant passe fidélité visuelle ; services Core partagés évolutifs."
     },
     {
       "version": "0.3.0",

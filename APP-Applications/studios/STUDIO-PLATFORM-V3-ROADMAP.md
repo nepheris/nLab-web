@@ -1,3 +1,22 @@
+## Studio Core 3.7.0 TEST — Parité visuelle avec la maquette UX 0.5 (18 octobre 2026)
+
+**Objectif validé :** privilégier la structure de la maquette acceptée par le pilote, sans réinventer l'UX au fil des passes. Version **Lab 0.5.0 TEST** avec snapshot 0.4.0 conservé, CURRENT inchangé.
+
+| Tâche | Statut | Réalisation et gate |
+|---|---|---|
+| CORE-228 — Historique maquette | IMPLEMENTED TEST | Vraie frise d'activité, accordéons, recherche, filtres, regroupement date/type/Studio, affichage détaillé, favoris, accès fenêtre avancée |
+| CORE-229 — Annuler / Rétablir partagé | IMPLEMENTED TEST | Une seule pile commune `undo-redo.js`, indépendante du journal persistant `history.js` |
+| CORE-230 — Volet Fichiers type classeur | IMPLEMENTED TEST | Liste synchronisée avec `CollectionBrowser` + cases à cocher, élément actif, toutes/aucune/inverser, aperçu et import |
+| CORE-231 — Fidélité de la surface | IMPLEMENTED TEST | Feuille CSS opt-in lab : header, menus/ruban, rail 64 px, planche centrale, collection/vignettes, thème et responsive |
+| CORE-232 — Collection UX | IMPLEMENTED TEST | Filtre central + tri existant + regroupement réel et exemples synthétiques facultatifs (pas de fichiers personnels) |
+| CORE-233 — Anciennes versions | IMPLEMENTED TEST | Version Lab 0.4.0 copiée sous `versions/0.4.0/` ; 0.1/0.2/0.3 préservées, tous les services Core restent partagés |
+| CORE-234 — Recette visuelle et fonctionnalités | **CI PASS ciblée / recette humaine PENDING** | Chrome desktop/tablette/mobile, filtres Historique, regroupement de collection, sauvegarde CSV, PDF Studio et audit PASS ; six captures réelles examinées et corrigées ; confirmation visuelle de l'utilisateur encore requise ; suite exhaustive Image Studio timeout préexistant FAIL |
+| CORE-235 — Migration aux autres Studios | PLANNED | Uniquement après validation réelle du rendu par l'utilisateur et avec opt-in / PR séparée |
+
+**Attention :** la maquette embarquait des données synthétiques. Le Lab commence vide et propose un bouton explicite « Charger les 4 exemples » ; la collection demeure réellement locale. Ne pas déclarer comme finalisé le drag-reorder, la conversion métier et les rotations des originaux qui nécessitent leur propre service.
+
+---
+
 ## Chantier Studio Core 3.6.0 TEST — Intégration de la maquette UX 0.5 (18 octobre 2026)
 
 **Branche :** `studio-core-3-6-ux-workspace-20261018` · [PR #86](https://github.com/nepheris/nLab-web/pull/86) · **Lab 0.4.0 TEST**. Aucun changement de version CURRENT.
