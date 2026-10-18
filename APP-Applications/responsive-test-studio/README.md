@@ -1,6 +1,6 @@
-# Responsive Test Studio — 0.4.2 CURRENT / 0.4.3 TEST
+# Responsive Test Studio — 0.4.3 CURRENT
 
-Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via le catalogue nLab Studios. La **0.4.2 est CURRENT**, approuvée et figée (`versions/0.4.2/`). Les versions 0.4.1 et 0.4.0 restent accessibles dans leurs historiques autonomes. 0.4.3 TEST propose uniquement un agrandissement de la fenêtre « Modifier URL » (520 → 780 px maximum, avec adaptation sur mobile), sans modifier le CURRENT 0.4.2.
+Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via le catalogue nLab Studios. La **0.4.3 est CURRENT**, après validation de son interface et du champ de saisie URL élargi. La 0.4.2 reste utilisable en historique isolé. La version web dispose d’un manifeste d’application pour Chrome/Edge, d’un logo nLab cliquable, et d’une commande partagée par Studio Core V2.ns/0.4.2/`). Les versions 0.4.1 et 0.4.0 restent accessibles dans leurs historiques autonomes. 0.4.3 TEST propose uniquement un agrandissement de la fenêtre « Modifier URL » (520 → 780 px maximum, avec adaptation sur mobile), sans modifier le CURRENT 0.4.2.
 
 ## Usage
 
@@ -19,18 +19,25 @@ Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via
 
 ## Versions et stabilité
 
-- **0.4.3 TEST** : saisie d’URL plus large dans le panneau « Modifier URL » ; version accessible sous `./test/`, sans effet sur le CURRENT.
-- **0.4.2 CURRENT** : barre URL étendue à au moins 50 % sur ordinateur, avec commandes regroupées dans le viewport, édition en plein écran ; CSS/simulateur gelés sous `./versions/0.4.2/`.
+- **0.4.3 CURRENT** : zone Modifier URL de 780 px, lancement depuis le Core commun, manifeste d'application PC, logo et lien nLab.
+- **0.4.2 historique** : barre URL étendue à au moins 50 % sur ordinateur, avec commandes regroupées dans le viewport, édition en plein écran ; CSS/simulateur gelés sous `./versions/0.4.2/`.
 - **0.4.1 historique** : première version de la barre unifiée, préservée sous `./versions/0.4.1/`.
 - **0.4.0 historique** : précédent CURRENT, avec barre URL séparée, préservé sous `./versions/0.4.0/`.
 - **0.3.1 historique** : version native autonome préservée sous versions/0.3.1/.
 - **0.3.0 historique** : version native autonome avec ses boutons de thème dans le header, préservée sous versions/0.3.0/.
 - **0.2.0 historique** : version native autonome sous versions/0.2.0/ (moteur CSS, shell, runtime et UI figés).
 - **0.1.0 historique** : instantané natif autonome sous versions/0.1.0/ (JS/CSS copiés) ; pas de dépendance au nouveau moteur.
-- CURRENT = 0.4.2 ; TEST = 0.4.3. Les autres Studios et leurs versions historiques restent inchangés.
+- CURRENT = 0.4.3 ; TEST = aucun. Ancien lien TEST redirigé vers l’historique 0.4.3. Les autres Studios et leurs versions historiques restent inchangés.
 
 ## Tests
 
 Workflow GitHub Actions Responsive Test Studio TEST Acceptance : Chromium/Chrome Linux, bureau et viewport étroit, simulation tactile de contrôles, double vue, rotation/reload, changement de thème et métriques CSS same-origin.
 
 Un test sur téléphone Android réel reste nécessaire pour les API/permissions natives, caméra, clavier tactile et navigateur mobile.
+
+## Application web sur ordinateur et Studio Core
+
+- Ouvrir le Studio à l’adresse habituelle sur Chrome ou Edge (Windows, Linux, macOS). Le manifeste permet au navigateur de proposer, lorsqu’il la prend en charge, une installation comme application dans sa propre fenêtre. Sinon, créer un raccourci web reste possible. La page fonctionne aussi directement dans le navigateur ; aucune installation native n’est nécessaire.
+- L’action commune **Test responsive** du Studio Core V2 (ruban et palette de commandes Ctrl+K) ouvre cette application avec l’URL du Studio source dans le champ de test, sans dupliquer son moteur.
+- Le logo nLab dans l’en-tête renvoie au portail nLab. La navigation et les ressources des versions historiques restent isolées.
+- L’application ne garantit pas un fonctionnement hors connexion et les sites tiers peuvent refuser l’affichage en iframe.
