@@ -243,3 +243,35 @@ body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.col
  display:block!important;max-width:100%;font-size:10px!important;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
 }
 body[data-studio="studio-core-test"] .studioGlobalNav #studioCoreSettings{display:none!important}
+
+
+/* Final grid track sizing: each file card retains its image and its metadata row. */
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools.collection-grid,
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools.collection-thumbs,
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools .collectionGroupBody{
+ grid-auto-rows:max-content!important;align-items:start!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools .collectionItem{
+ min-height:calc(var(--nlab-collection-thumb-height,140px) + 76px)!important;
+ align-self:start!important;box-sizing:border-box!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools{
+ overflow-y:auto!important;overflow-x:hidden!important;
+}
+/* Core can integrate the menu into the header based on saved preferences.
+   In this opt-in TEST lab, keep its existing node in a separate visual row. */
+body[data-studio="studio-core-test"] .studioHeader:has(.studioMenuIntegrated){height:auto!important;min-height:60px!important}
+body[data-studio="studio-core-test"] .studioHeaderInner:has(.studioMenuIntegrated){
+ display:flex!important;flex-wrap:wrap!important;align-content:start!important;
+ height:auto!important;min-height:60px!important;
+}
+body[data-studio="studio-core-test"] .studioHeaderInner .studioMenuIntegrated{
+ order:99!important;position:static!important;top:auto!important;
+ flex:0 0 100%!important;width:100%!important;max-width:100%!important;
+ height:40px!important;min-height:40px!important;margin:0!important;
+ padding:0 14px!important;border-top:1px solid #d7e2ec!important;
+ justify-content:flex-start!important;overflow-x:auto!important;
+}
+body[data-studio="studio-core-test"] .studioHeaderInner .studioMenuIntegrated [data-menu]{
+ height:40px!important;min-height:40px!important;
+}
