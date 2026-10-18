@@ -1,3 +1,4 @@
+import {createFullscreenController} from '../studio-v2/fullscreen-service.js';
 /**
  * nLab Responsive Test Studio — reusable iframe viewport renderer.
  * Restricts CSS dimensions only; cannot emulate Android OS, UA, sensors, file permissions.
@@ -322,25 +323,11 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
    message('Zoom préféré enregistré dans ce navigateur.');
   }catch{message('Impossible d’enregistrer le zoom.')}
  });
- const isFullscreen=()=>document.fullscreenElement===ui.monitor;
- const synchronizeFullscreen=()=>{
-  const active=isFullscreen();
-  ui.fullscreenButton.textContent=active?'⛶ Quitter plein écran':'⛶ Plein écran';
-  ui.fullscreenButton.setAttribute('aria-pressed',String(active));
-  ui.monitor.dataset.fullscreen=String(active);
-  update();
- };
- const toggleFullscreen=async()=>{
-  try{
-   if(isFullscreen())await document.exitFullscreen();
-   else if(ui.monitor.requestFullscreen)await ui.monitor.requestFullscreen();
-   else{message('Le navigateur ne prend pas en charge le mode plein écran.');return false}
-   synchronizeFullscreen();
-   return true;
-  }catch{message('Plein écran non autorisé par le navigateur.');return false}
- };
- ui.fullscreenButton.addEventListener('click',toggleFullscreen);
- document.addEventListener('fullscreenchange',synchronizeFullscreen);
+ const fullscreen=createFullscreenController({
+  target:ui.monitor,button:ui.fullscreenButton,onMessage:message,onChange:update
+ });
+ const isFullscreen=fullscreen.isFullscreen;
+ const toggleFullscreen=fullscreen.toggle;
  ui.dualButton.addEventListener('click',()=>setDual(!dual));
  ui.reload.addEventListener('change',()=>{reloadOnChange=ui.reload.checked;message(reloadOnChange?'Rechargement automatique activé.':'Rechargement désactivé : le viewport se redimensionne sans navigation.')});
  query('[data-rt-load]').addEventListener('click',()=>load());
@@ -360,7 +347,7 @@ export function mountResponsiveSimulator(host,{src='../studios/',storageKey='nla
  const api={
   getState:()=>({...state,desktopResolution:desktopChoice,tabletResolution:tabletChoice,mobileResolution:mobileChoice,screenFamily:getFamily(),scale:scaleMode,manualZoomPercent:Math.round(manualScale*100),fullscreen:isFullscreen(),dual,reloadOnChange,url:currentUrl?.href||null}),
   setPreset,setFamily,setResolution,setDesktopResolution,setDimensions,setOrientation,setDual,setZoomPercent,toggleFullscreen,load,refresh,getFrame:()=>ui.frame,getFrames:()=>dual?[ui.frame,ui.frameB]:[ui.frame],
-  destroy:()=>{observer?.disconnect();document.removeEventListener('fullscreenchange',synchronizeFullscreen);if(isFullscreen())document.exitFullscreen().catch(()=>{});root.innerHTML='';delete root.__responsiveSimulator}
+  destroy:()=>{observer?.disconnect();fullscreen.destroy();root.innerHTML='';delete root.__responsiveSimulator}
  };
  root.__responsiveSimulator=api;return api;
 }

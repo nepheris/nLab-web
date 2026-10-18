@@ -1,10 +1,16 @@
-# Responsive Test Studio — 0.4.2 CURRENT / 0.4.3 TEST
+# Responsive Test Studio — 0.4.3 CURRENT
 
-Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via le catalogue nLab Studios. La **0.4.2 est CURRENT**, approuvée et figée (`versions/0.4.2/`). Les versions 0.4.1 et 0.4.0 restent accessibles dans leurs historiques autonomes. 0.4.3 TEST propose uniquement un agrandissement de la fenêtre « Modifier URL » (520 → 780 px maximum, avec adaptation sur mobile), sans modifier le CURRENT 0.4.2.
+Studio de prévisualisation responsive de nLab, avec simulation des largeurs d'écran ordinateur, tablette et téléphone depuis un navigateur. Le Studio est utilisable directement sur PC fixe et portable, ou dans une fenêtre web dédiée si le navigateur prend en charge l'installation.
+
+- **CURRENT 0.4.3**, validée : URL compacte sur au moins 50 % de la barre desktop, fenêtre « Modifier URL » élargie jusqu'à 780 px, plein écran, vue double, zoom et palettes de résolution.
+- En-tête nLab avec **logo officiel cliquable** qui renvoie à l'accueil général.
+- Commande **Test responsive** commune à Studio Core V2 : elle ouvre le Studio avec l'URL de la page de départ.
+- Les fichiers du moteur 0.4.3 sont figés dans `versions/0.4.3/`, et les versions 0.4.2 et antérieures restent autonomes.
+- Aucun canal TEST actif.
 
 ## Usage
 
-1. La présentation se trouve dans le **header nLab standard**. En **CURRENT 0.4.2**, l'URL et les boutons Modifier URL, Actualiser, Onglet, Vue double, Réglages et Plein écran sont regroupés dans **une seule barre du viewport**. Sur ordinateur, la zone URL occupe **au moins 50 % de la largeur de la barre** ; sur téléphone, elle s'adapte à l'écran. « Modifier URL » ouvre un champ superposé, même en plein écran ; Afficher valide l'URL et referme le champ.
+1. La présentation se trouve dans le **header nLab standard**. En **CURRENT 0.4.3**, l'URL et les boutons Modifier URL, Actualiser, Onglet, Vue double, Réglages et Plein écran sont regroupés dans **une seule barre du viewport**. Sur ordinateur, la zone URL occupe **au moins 50 % de la largeur de la barre** ; sur téléphone, elle s'adapte à l'écran. « Modifier URL » ouvre un champ superposé, même en plein écran ; Afficher valide l'URL et referme le champ.
 2. Dans la palette, choisir directement le **type d'écran par pictogramme SVG** : **Ordinateur** (21 formats VGA/4:3/5:4, HD/16:9, 16:10 et ultra-large/4K), **Tablette** (6 résolutions, compacte à XL), **Mobile** (9 résolutions de mini 320×568 à grand 480×960), ou **Sur mesure** (240–4096 px). Le menu Résolution n'affiche que les formats du type sélectionné. Profil PC initial : **1280 × 800 (16:10)**. Les orientations portrait/paysage restent indépendantes du choix du format.
 3. Tourner entre portrait et paysage ; l'iframe applique les dimensions CSS de l'écran, sans changer l'User-Agent ni les permissions du système.
 4. Utiliser **Vue double** pour comparer la même URL dans deux iframes côte à côte (dimensions inversées portrait/paysage). Leurs navigations deviennent indépendantes après leur chargement initial ; une nouvelle URL recharge les deux.
@@ -19,18 +25,29 @@ Studio de prévisualisation web rapide, indépendant du Core Lab, accessible via
 
 ## Versions et stabilité
 
-- **0.4.3 TEST** : saisie d’URL plus large dans le panneau « Modifier URL » ; version accessible sous `./test/`, sans effet sur le CURRENT.
-- **0.4.2 CURRENT** : barre URL étendue à au moins 50 % sur ordinateur, avec commandes regroupées dans le viewport, édition en plein écran ; CSS/simulateur gelés sous `./versions/0.4.2/`.
+- **0.4.3 CURRENT** : zone Modifier URL de 780 px, lancement depuis le Core commun, manifeste d'application PC, logo et lien nLab.
+- **0.4.2 historique** : barre URL étendue à au moins 50 % sur ordinateur, avec commandes regroupées dans le viewport, édition en plein écran ; CSS/simulateur gelés sous `./versions/0.4.2/`.
 - **0.4.1 historique** : première version de la barre unifiée, préservée sous `./versions/0.4.1/`.
 - **0.4.0 historique** : précédent CURRENT, avec barre URL séparée, préservé sous `./versions/0.4.0/`.
 - **0.3.1 historique** : version native autonome préservée sous versions/0.3.1/.
 - **0.3.0 historique** : version native autonome avec ses boutons de thème dans le header, préservée sous versions/0.3.0/.
 - **0.2.0 historique** : version native autonome sous versions/0.2.0/ (moteur CSS, shell, runtime et UI figés).
 - **0.1.0 historique** : instantané natif autonome sous versions/0.1.0/ (JS/CSS copiés) ; pas de dépendance au nouveau moteur.
-- CURRENT = 0.4.2 ; TEST = 0.4.3. Les autres Studios et leurs versions historiques restent inchangés.
+- CURRENT = 0.4.3 ; TEST = aucun. Ancien lien TEST redirigé vers l’historique 0.4.3. Les autres Studios et leurs versions historiques restent inchangés.
 
 ## Tests
 
 Workflow GitHub Actions Responsive Test Studio TEST Acceptance : Chromium/Chrome Linux, bureau et viewport étroit, simulation tactile de contrôles, double vue, rotation/reload, changement de thème et métriques CSS same-origin.
 
 Un test sur téléphone Android réel reste nécessaire pour les API/permissions natives, caméra, clavier tactile et navigateur mobile.
+
+## Application web sur ordinateur et Studio Core
+
+- Ouvrir le Studio à l’adresse habituelle sur Chrome ou Edge (Windows, Linux, macOS). Le manifeste permet au navigateur de proposer, lorsqu’il la prend en charge, une installation comme application dans sa propre fenêtre. Sinon, créer un raccourci web reste possible. La page fonctionne aussi directement dans le navigateur ; aucune installation native n’est nécessaire.
+- L’action commune **Test responsive** du Studio Core V2 (ruban et palette de commandes Ctrl+K) ouvre cette application avec l’URL du Studio source dans le champ de test, sans dupliquer son moteur.
+- Le logo nLab dans l’en-tête renvoie au portail nLab. La navigation et les ressources des versions historiques restent isolées.
+- L’application ne garantit pas un fonctionnement hors connexion et les sites tiers peuvent refuser l’affichage en iframe.
+
+## Plein écran mutualisé dans Studio Core
+
+Le mode plein écran de 0.4.3 reste visuellement et fonctionnellement identique. La version CURRENT utilise désormais `APP-Applications/_shared/studio-v2/fullscreen-service.js` via le simulateur partagé ; le snapshot autonome `versions/0.4.3/simulator.js` reste conservé sans modification. Les autres Studios V2 héritent du même bouton « ⛶ Plein écran / ⛶ Quitter plein écran » et d’une commande Core correspondante, avec sortie par Échap. Aucun code plein écran autonome n'est nécessaire dans chaque Studio.

@@ -1,0 +1,9 @@
+/* Responsive Test Studio application shell: shared nLab identity, without altering the pinned 0.4.3 renderer. */
+.site-header .nlab-home-link{display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:3px 5px;border-radius:9px;text-decoration:none}
+.site-header .nlab-home-link:hover,.site-header .nlab-home-link:focus-visible{background:var(--nlab-soft);outline-offset:2px}
+.site-header .nlab-home-link img{display:block;width:87px;height:auto;max-height:43px}
+.site-header .brand{min-width:0}
+.site-header .brand>div{min-width:0}
+.site-header .nlab-nav button[data-studio-install]{border:1px solid var(--nlab-line);background:var(--nlab-card);color:var(--nlab-ink);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:12px;font-weight:650}
+.site-header .nlab-nav button[data-studio-install][hidden]{display:none!important}
+@media(max-width:760px){.site-header .nlab-home-link{padding:2px}.site-header .nlab-home-link img{width:58px;max-height:32px}.site-header .brand{gap:5px}}

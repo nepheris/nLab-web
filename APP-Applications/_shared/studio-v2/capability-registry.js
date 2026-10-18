@@ -1,3 +1,4 @@
+import{openResponsiveTestStudio}from'./responsive-test-launcher.js';
 import{
   registerCommand,registerManifestCommands,listCommands,getCommand,commandForAction,findCommands
 }from'./command-registry.js';
@@ -12,7 +13,9 @@ function registerCoreCommands(){
     {id:'core.undo',action:'core.undo',label:'Annuler',shortLabel:'Annuler',icon:'undo',scope:'core',plugin:'studio-core',status:'stable',group:'history',shortcut:'Ctrl+Z',keywords:['retour','historique'],priority:'primary',when:()=>globalThis.NLABStudioUndoRedo?.get?.().canUndo===true},
     {id:'core.redo',action:'core.redo',label:'Rétablir',shortLabel:'Rétablir',icon:'redo',scope:'core',plugin:'studio-core',status:'stable',group:'history',shortcut:'Ctrl+Y / Ctrl+Maj+Z',keywords:['refaire','historique'],priority:'primary',when:()=>globalThis.NLABStudioUndoRedo?.get?.().canRedo===true},
     {id:'core.commands',action:'core.commands',label:'Palette de commandes',shortLabel:'Commandes',icon:'command',scope:'core',plugin:'studio-core',status:'stable',group:'navigation',shortcut:'Ctrl+K',keywords:['rechercher','palette','actions'],priority:'secondary'},
-    {id:'core.properties',action:'core.properties',label:'Propriétés',shortLabel:'Propriétés',icon:'settings',scope:'core',plugin:'studio-core',status:'stable',group:'inspect',keywords:['inspecteur','sélection','objet'],priority:'secondary',when:'active'}
+    {id:'core.properties',action:'core.properties',label:'Propriétés',shortLabel:'Propriétés',icon:'settings',scope:'core',plugin:'studio-core',status:'stable',group:'inspect',keywords:['inspecteur','sélection','objet'],priority:'secondary',when:'active'},
+    {id:'core.fullscreen',action:'core.fullscreen',label:'Plein écran',shortLabel:'Plein écran',icon:'screen',scope:'core',plugin:'studio-core',status:'stable',group:'navigation',keywords:['plein écran','quitter','fullscreen','fenêtre'],priority:'secondary'},
+    {id:'core.responsive-test',action:'core.responsive-test',label:'Test responsive',shortLabel:'Responsive',icon:'screen',scope:'core',plugin:'studio-core',status:'stable',group:'navigation',keywords:['viewport','responsive','écran','desktop','mobile','tablette'],priority:'secondary',handler:()=>openResponsiveTestStudio()}
   ];
   for(const cmd of core){REG.set(cmd.id,cmd);registerCommand(cmd)}
 }
