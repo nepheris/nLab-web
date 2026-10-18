@@ -36,6 +36,15 @@
     .labManual{display:grid;gap:6px}.labManual label{display:flex;align-items:start;gap:8px;font-size:12px;padding:6px 0}
     .labManual input{width:18px;height:18px;flex:none}
     .labCode{overflow-wrap:anywhere;font-family:ui-monospace,Consolas,monospace;font-size:11px}
+    .labCollectionControls{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}
+    .labCollectionControls button,.labCollectionControls select{border:1px solid var(--nlab-line,#d9e0e6);border-radius:7px;min-height:34px;padding:5px 9px;background:var(--nlab-card,#fff);color:inherit}
+    .labCollectionControls button[aria-pressed="true"]{background:#dceefa;color:#174f75;border-color:#6ea4ca}
+    .labCollectionControls output{font-size:12px;min-width:85px;text-align:center}
+    #labCollectionDrop{border:2px dashed #99b7cd;border-radius:10px;padding:12px;text-align:center;font-size:12px;margin:8px 0;color:var(--nlab-muted,#667582)}
+    #labCollectionDrop.dragOver{background:#e5f3fb;border-color:#1976b8;color:#154767}
+    #labCollection{width:100%;max-height:460px;min-height:110px}
+    #labCollection.collectionThumbnailTools .collectionItem{min-width:0}
+    .labSubheading{font-size:12px;font-weight:700;margin:14px 0 2px}
     @media(max-width:800px){.studioMain{display:block}.labSidebar{margin-bottom:10px}.labPanel{padding:12px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
 
@@ -49,7 +58,7 @@
       <h1 class="labHeading">Studio Core Test Lab</h1>
       <p class="labLead">Banc d’essai du véritable Studio Core partagé. Aucun moteur métier ni ancien Studio n’est modifié ici.</p>
       <div class="labBadges">
-        <span class="labBadge">TEST 0.2.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
+        <span class="labBadge">TEST 0.3.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
       </div>
       <div class="labToolbar"><button id="labRunChecks" class="labPrimary" type="button">Exécuter les contrôles</button></div>
       <p id="labCheckSummary" class="labHint" role="status">Vérification du Core…</p>
@@ -78,7 +87,22 @@
         <div class="labEyebrow">Fichiers · module commun Studio Core</div>
         <h2 class="labHeading">Importer, parcourir et sélectionner</h2>
         <p class="labLead">Le sélecteur canonique du Core propose fichiers, dossiers, URL, vignettes, tri et sélection. Aucune conversion n’est déclenchée automatiquement.</p>
-        <div class="labToolbar"><button id="labPickerOpen" type="button" class="labPrimary">📂 Ajouter / choisir des fichiers</button><a href="../../Library/demo/?folder=all">Parcourir les démos ↗</a></div><ul id="labPickedFiles" class="labChecks" aria-label="Fichiers sélectionnés"></ul>
+        <div class="labToolbar"><button id="labPickerOpen" type="button" class="labPrimary">📂 Ajouter / choisir des fichiers</button><a href="../../Library/demo/?folder=all">Parcourir les démos ↗</a></div>
+        <div id="labCollectionDrop" tabindex="0" role="button" aria-label="Déposer des fichiers ou cliquer pour importer">Déposer des fichiers ici, ou cliquer pour les ajouter · <strong>glisser-déposer</strong></div>
+        <input id="labFilesNative" type="file" multiple hidden>
+        <div class="labSubheading">Collection de fichiers · zoom des vignettes</div>
+        <div class="labCollectionControls" role="group" aria-label="Affichage et zoom de la collection">
+          <button id="labViewList" type="button" aria-pressed="false">☷ Liste</button><button id="labViewGrid" type="button" aria-pressed="false">▦ Grille</button><button id="labViewThumbs" type="button" aria-pressed="true">▣ Vignettes</button>
+          <button id="labThumbMinus" type="button" aria-label="Réduire les vignettes" title="Zoom arrière des vignettes">−</button>
+          <output id="labThumbSize" aria-live="polite">Auto</output>
+          <button id="labThumbPlus" type="button" aria-label="Agrandir les vignettes" title="Zoom avant des vignettes">+</button>
+          <button id="labThumbAuto" type="button" title="Adapter automatiquement les vignettes à la largeur">↔ Auto</button>
+          <label for="labCollectionSort">Trier :</label><select id="labCollectionSort"><option value="name">Nom</option><option value="type">Type</option><option value="size">Taille</option><option value="path">Dossier</option></select>
+          <button id="labSelectAllFiles" type="button">Tout sélectionner</button><button id="labInvertFiles" type="button">Inverser</button>
+        </div>
+        <div id="labCollection" class="collectionBrowser" aria-label="Collection de fichiers interactive"></div>
+        <p id="labCollectionInfo" class="labStatus" aria-live="polite">Aucun fichier dans la collection.</p>
+        <details><summary>Liste des fichiers importés</summary><ul id="labPickedFiles" class="labChecks" aria-label="Fichiers sélectionnés"></ul></details>
         <p id="labAcquiredInfo" class="labStatus" aria-live="polite">Aucun fichier choisi.</p>
       </section>
       <section class="labPanel">
@@ -107,6 +131,7 @@
           <label><input type="checkbox" data-manual="standalone"> Après installation, le Studio s’ouvre comme une fenêtre d’application dédiée.</label>
           <label><input type="checkbox" data-manual="responsive"> Le rendu mobile/tablette/desktop reste lisible, sans commandes inaccessibles.</label>
           <label><input type="checkbox" data-manual="settings"> Les préférences et le ruban Core fonctionnent après actualisation.</label>
+          <label><input type="checkbox" data-manual="collection"> La collection accepte plusieurs fichiers ; les boutons −/+ et Auto adaptent les vignettes, et les rotations ↶/↷ apparaissent sur les grandes cartes.</label>
           <label><input type="checkbox" data-manual="undo"> Annuler puis Rétablir restaure bien les valeurs de l’échantillon.</label>
         </div>
         <p class="labHint">Cases de recette conservées seulement dans votre navigateur. Elles ne constituent pas une validation serveur ou une certification multi-appareils.</p>
