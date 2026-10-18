@@ -61,6 +61,8 @@ async function scenario(name,viewport){
   assert(await page.locator('.studioUxRail [data-ux-tab]').count()===7,name+': PDF-inspired tab rail missing');
   await page.locator('#uxSaveAsOpen').click();
   assert(await page.locator('#uxSaveDialog').isVisible(),name+': save-as dialog missing');
+  await page.locator('#uxSaveTokens .uxTokenHelp').first().click();
+  assert((await page.locator('#uxSaveTokenHelp').textContent()).includes('STUDIO'),name+': contextual variable help missing');
   await page.locator('#uxSavePattern').fill('{STUDIO}_{DATE:YYYYMMDD}_{COUNTER}');
   await page.locator('#uxSavePath').fill('{YEAR}/{MONTH}/{DAY}');
   assert((await page.locator('#uxSavePreview').textContent()).includes('2026')||/\d{4}/.test(await page.locator('#uxSavePreview').textContent()),name+': naming preview missing year');
@@ -87,6 +89,10 @@ async function scenario(name,viewport){
   await page.locator('#labOpenSettings').click();
   assert(await page.locator('#studioCoreSettingsPanel').isVisible(),name+': Core settings not opened');
   await page.locator('#studioCoreSettingsClose').click();
+  await page.locator('#uxTheme').selectOption('dark');
+  assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='dark',name+': dark theme missing');
+  await page.locator('#uxTheme').selectOption('light');
+  assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='light',name+': light theme missing');
   if(viewport.width>1000){
    const button=page.locator('[data-studio-action="core.fullscreen"]');
    await button.click();
@@ -94,7 +100,8 @@ async function scenario(name,viewport){
    await page.keyboard.press('Escape');
    await page.waitForFunction(()=>document.fullscreenElement===null,null,{timeout:6500});
   }else{
-   assert((await page.locator('body').getAttribute('data-responsive-profile'))==='mobile',name+': Core responsive profile incorrect');
+   const profile=await page.locator('body').getAttribute('data-responsive-profile');
+   assert(viewport.width<=700?profile==='mobile':['tablet','desktop'].includes(profile),name+': Core responsive profile incorrect: '+profile);
   }
   assert(errors.length===0,name+': page errors '+errors.join('; '));
   reports.push({name,status:'PASS',checks:15});
@@ -104,6 +111,7 @@ async function scenario(name,viewport){
 }
 try{
  await scenario('desktop',{width:1440,height:900});
+ await scenario('tablette',{width:820,height:1024});
  await scenario('mobile',{width:393,height:852});
 }finally{await browser.close()}
 console.log(JSON.stringify(reports,null,2));
