@@ -1,0 +1,61 @@
+name: Studio Core Test Lab Acceptance
+on:
+  pull_request:
+    paths:
+      - 'APP-Applications/studio-core-test/**'
+      - 'APP-Applications/_shared/studio-v2/application-mode-service.js'
+      - 'APP-Applications/_shared/studio-v2/frame.js'
+      - 'APP-Applications/_shared/studio-v2/capability-registry.js'
+      - 'APP-Applications/responsive-test-studio/app.js'
+      - 'APP-Applications/studios/index.html'
+      - 'tests/studio-core-test-lab.mjs'
+      - '.github/workflows/studio-core-test-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  chrome-core-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify code syntax, isolated TEST channel and PWA manifest
+        run: |
+          node --check APP-Applications/studio-core-test/app.js
+          node --check APP-Applications/_shared/studio-v2/application-mode-service.js
+          node --check APP-Applications/_shared/studio-v2/frame.js
+          node --check APP-Applications/_shared/studio-v2/capability-registry.js
+          node --check APP-Applications/responsive-test-studio/app.js
+          node --check tests/studio-core-test-lab.mjs
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('APP-Applications')
+          m=json.loads((root/'studio-core-test/manifest.webmanifest').read_text())
+          v=json.loads((root/'studio-core-test/versions.json').read_text())
+          assert m['display']=='standalone' and m['scope']=='./' and m['start_url']=='./'
+          assert v['current'] is None and v['test']=='0.1.0'
+          catalog=json.loads((root/'studios/catalog.json').read_text())
+          assert 'studio-core-test' not in [s['id'] for s in catalog['studios']]
+          print('Isolated TEST channel: PASS')
+          PY
+      - name: Install Playwright and Chrome
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install chrome
+      - name: Serve TEST branch
+        run: |
+          python3 -m http.server 8770 --bind 127.0.0.1 >/tmp/studio-core-lab-http.log 2>&1 &
+          sleep 2
+          curl --fail http://127.0.0.1:8770/APP-Applications/studio-core-test/ >/dev/null
+      - name: Desktop and mobile real Core smoke test
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/studio-core-test-lab.mjs
+      - name: HTTP diagnostics
+        if: failure()
+        run: tail -100 /tmp/studio-core-lab-http.log || true
