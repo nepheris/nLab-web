@@ -1,15 +1,26 @@
 {
   "current": "0.9.10",
-  "test": "2.11.0",
+  "test": "2.12.0",
   "versions": [
     {
-      "version": "2.11.0",
-      "label": "PDF Studio 2.11.0 TEST",
-      "date": "2026-10-04",
+      "version": "2.12.0",
+      "label": "PDF Studio 2.12.0 TEST · UX Studio Core validée",
+      "date": "2026-10-18",
       "current": false,
       "status": "test",
-      "href": "./v2/",
-      "notes": "Convergence Core 3.0 : entrée fichier/dossier/URL/ZIP/drop via Input Picker commun, volet verrouillable/restaurable/redimensionnable/détachable et héritage des nouvelles fenêtres/thèmes Core.",
+      "href": "./v2-ux/",
+      "notes": "Premier Studio métier adoptant l’interface UX 0.5 validée : classeur Outils/Fichiers/Historique/Propriétés/Tâches/Recherche/Réglages, collection centrale avec zoom/tri/groupement, prévisualisation et moteur PDF V2 réels, historique partagé, enregistrement et classement par modèles PDF existants. Expérimentation séparée ; CURRENT 0.9.10 intacte.",
+      "isolation": "test-path-opt-in",
+      "core": "3.7.0"
+    },
+    {
+      "version": "2.11.0",
+      "label": "PDF Studio 2.11.0 HISTORIQUE",
+      "date": "2026-10-04",
+      "current": false,
+      "status": "historical",
+      "href": "./v2/?version=2.11.0&channel=historical",
+      "notes": "Convergence Core 3.0 : entrée fichier/dossier/URL/ZIP/drop via Input Picker commun, volet verrouillable/restaurable/redimensionnable/détachable et héritage des nouvelles fenêtres/thèmes Core. Code 2.11 conservé comme runtime historique (nouvelle UX désactivée).",
       "isolation": "test-runtime"
     },
     {
