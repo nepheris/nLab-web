@@ -280,14 +280,15 @@ export async function mountStudioV2({manifest,versionInfo={version:'',status:'TE
   const rail=qs('#studioCoreRail',chrome);
   const railKey='nlab-studio-v2-core-rail-collapsed';
   const syncRail=()=>{
-    const collapsed=localStorage.getItem(railKey)==='1';
+    const saved=localStorage.getItem(railKey);
+    const collapsed=saved===null?manifest.id!=='studio-core-test':saved==='1';
     rail?.classList.toggle('collapsed',collapsed);
     rail?.querySelector('[data-core-rail="toggle"]')?.setAttribute('aria-expanded',String(!collapsed));
   };
   rail?.addEventListener('click',event=>{
     const action=event.target.closest('[data-core-rail]')?.dataset.coreRail;
     if(action==='toggle'){
-      localStorage.setItem(railKey,localStorage.getItem(railKey)==='1'?'0':'1');
+      localStorage.setItem(railKey,rail.classList.contains('collapsed')?'0':'1');
       syncRail();
     }else if(action==='history'){
       const panel=qs('#history-full-view');
