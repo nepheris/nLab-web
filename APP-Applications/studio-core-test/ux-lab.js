@@ -202,7 +202,20 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  // A theme choice is scoped to the workspace; Core settings remain authoritative elsewhere.
  $('#uxTheme').value=safeRead('nlab:core-lab:ux-theme','auto');
  const uxTheme=createWorkspaceTheme({root:main,select:$('#uxTheme'),storageKey:'nlab:core-lab:ux-theme'});
- settings.querySelectorAll('[data-ux-device]').forEach(b=>b.addEventListener('click',()=>{const value=b.dataset.uxDevice;settings.querySelectorAll('[data-ux-device]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if($('#labResponsiveLink'))window.open($('#labResponsiveLink').href,'_blank','noopener');$('#labSampleStatus').textContent='Test '+value+' ouvert dans Responsive Test Studio.'}));
+ const mode=$('#uxDisplayMode');
+ const setDisplayProfile=value=>{
+  if(!['auto','desktop','tablet','mobile'].includes(value))value='auto';
+  mode.value=value;main.dataset.previewProfile=value;
+  $('#uxDisplayModeNote').textContent=value==='auto'?'Automatique : largeur du navigateur.':
+   value==='desktop'?'Bureau : largeur disponible.':
+   value==='tablet'?'Tablette : planche centrale limitée à 800 px.':
+   'Téléphone : planche centrale limitée à 430 px.';
+  settings.querySelectorAll('[data-ux-device]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.uxDevice===value)));
+  safeStore('nlab:core-lab:display-mode',value);
+ };
+ mode.addEventListener('change',()=>setDisplayProfile(mode.value));
+ settings.querySelectorAll('[data-ux-device]').forEach(b=>b.addEventListener('click',()=>setDisplayProfile(b.dataset.uxDevice)));
+ setDisplayProfile(safeRead('nlab:core-lab:display-mode','auto'));
  // Reuse existing canonical Core settings button. A duplicate panel is not created.
  const coreSettings=make('button','uxMiniButton','⚙ Réglages Core');coreSettings.addEventListener('click',()=>$('#studioCoreSettings')?.click());settings.prepend(coreSettings);
  // Core menu tabs map to content, not to parallel duplicate panels.
