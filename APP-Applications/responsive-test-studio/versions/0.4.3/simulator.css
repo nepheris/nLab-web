@@ -1,0 +1,226 @@
+/* Reusable URL-in-iframe responsive preview; settings overlay never belongs to the tested page. */
+.responsiveTestSimulator{color:#18364d;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.responsiveTestSimulator *{box-sizing:border-box}
+.responsiveTestSimulator .rt-workspace{position:relative;min-width:0}
+.responsiveTestSimulator .rt-address{display:flex;align-items:center;flex-wrap:wrap;gap:9px;padding:12px;background:#fff;border:1px solid #cadbe6;border-radius:13px}
+.responsiveTestSimulator label{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600}
+.responsiveTestSimulator button,.responsiveTestSimulator select,.responsiveTestSimulator input,.responsiveTestSimulator a{font:inherit}
+.responsiveTestSimulator button,.responsiveTestSimulator a{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:7px 10px;border:1px solid #abc0d0;border-radius:9px;background:#fff;color:#244960;cursor:pointer;text-decoration:none;white-space:nowrap}
+.responsiveTestSimulator button:hover,.responsiveTestSimulator a:hover{background:#eaf4fb}
+.responsiveTestSimulator select,.responsiveTestSimulator input{min-height:40px;border:1px solid #abc0d0;border-radius:9px;background:#fff;color:#18364d;padding:7px;max-width:100%}
+.responsiveTestSimulator input[type=number]{width:79px;font-variant-numeric:tabular-nums}
+.responsiveTestSimulator input[type=url]{min-width:220px;flex:1 1 360px}
+.responsiveTestSimulator [data-rt-load]{background:#1e619a;color:#fff;border-color:#1e619a;font-weight:700}
+.responsiveTestSimulator [data-rt-load]:hover{background:#174c78}
+.responsiveTestSimulator [data-rt-show-settings]{background:#e7f2fa}
+.responsiveTestSimulator .rt-message{min-height:22px;padding:3px 8px 1px;font-size:12px;color:#49677a}
+.responsiveTestSimulator .rt-monitor{position:relative;background:#f2f6fa;border:1px solid #cbdce7;border-radius:15px;padding:8px;min-width:0}
+.responsiveTestSimulator .rt-metrics{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:#305875;min-height:34px;padding:6px 9px}
+.responsiveTestSimulator .rt-scroll{width:100%;height:clamp(390px,calc(100dvh - 260px),950px);min-width:0;overflow:auto;border:1px solid #d1e0eb;border-radius:11px;padding:15px;display:flex;justify-content:flex-start;align-items:flex-start;background:repeating-linear-gradient(45deg,#edf4f9,#edf4f9 13px,#e5eef5 13px,#e5eef5 26px)}
+.responsiveTestSimulator .rt-stage{position:relative;flex:none;min-width:0;margin:auto}
+.responsiveTestSimulator .rt-device-frame{position:absolute;top:0;left:0;transform-origin:top left;background:#21374e;border:8px solid #21374e;border-radius:18px;box-shadow:0 12px 40px #17344840;overflow:hidden}
+.responsiveTestSimulator .rt-chrome{height:26px;background:#dfe8f0;color:#385974;display:flex;align-items:center;justify-content:space-between;padding:0 8px;gap:12px;font-size:11px}
+.responsiveTestSimulator .rt-chrome span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.responsiveTestSimulator .rt-chrome span:first-child{color:#169160}
+.responsiveTestSimulator .rt-viewport{background:#fff;overflow:hidden}
+.responsiveTestSimulator .rt-viewport iframe{display:block;border:0;background:#fff}
+.responsiveTestSimulator .rt-top{position:absolute;z-index:3;top:52px;right:17px;width:min(340px,calc(100% - 34px));background:#fff;border:1px solid #bed3e0;border-radius:12px;box-shadow:0 16px 42px #183c5b33;overflow:hidden}
+.responsiveTestSimulator .rt-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;background:#eaf4fb;border-bottom:1px solid #cbdce7;cursor:grab;user-select:none;touch-action:none}
+.responsiveTestSimulator .rt-panel-head:active{cursor:grabbing}
+.responsiveTestSimulator .rt-panel-head strong{font-size:14px}
+.responsiveTestSimulator .rt-panel-head button{min-height:32px;padding:3px 8px;font-size:12px}
+.responsiveTestSimulator .rt-panel-fields{padding:12px;display:grid;gap:10px}
+.responsiveTestSimulator .rt-preset{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.responsiveTestSimulator .rt-preset label{flex-wrap:wrap}
+.responsiveTestSimulator .rt-preset select{min-width:115px;max-width:180px}
+.responsiveTestSimulator .rt-preset button{min-height:39px}
+.responsiveTestSimulator fieldset{padding:5px 8px;border:1px solid #d7e2eb;border-radius:9px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.responsiveTestSimulator legend{color:#38576a;font-weight:700;font-size:11px;padding:0 3px}
+.responsiveTestSimulator fieldset label{display:flex;align-items:center;gap:4px;white-space:nowrap;font-weight:500}
+.responsiveTestSimulator input[type=radio]{accent-color:#1e619a;min-height:0;margin:0}
+.responsiveTestSimulator .rt-top[data-collapsed="true"]{width:max-content;max-width:calc(100% - 24px)}
+.responsiveTestSimulator .rt-top[data-collapsed="true"] .rt-panel-head{border-bottom:0}
+.responsiveTestSimulator .rt-top[data-collapsed="true"] .rt-panel-fields{display:none}
+.responsiveTestSimulator .rt-note{margin:8px 4px 0;color:#506b7e;font-size:12px}
+.responsiveTestSimulator :is(button,a,select,input):focus-visible{outline:3px solid #edae48;outline-offset:2px}
+@media(min-width:1100px){
+ .responsiveTestSimulator .rt-workspace[data-panel-open="true"] .rt-scroll{padding-right:363px}
+}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-address{padding:8px;gap:6px}
+ .responsiveTestSimulator .rt-address>label{width:100%}
+ .responsiveTestSimulator input[type=url]{min-width:0;width:100%;flex:1 1 100%}
+ .responsiveTestSimulator .rt-address button,.responsiveTestSimulator .rt-address a{padding:6px 8px;font-size:12px}
+ .responsiveTestSimulator .rt-monitor{padding:5px}
+ .responsiveTestSimulator .rt-scroll{padding:6px;height:clamp(350px,calc(100dvh - 252px),800px)}
+ .responsiveTestSimulator .rt-top{top:45px;right:10px}
+ .responsiveTestSimulator .rt-panel-head{touch-action:auto;cursor:default}
+}
+
+/* nLab shell tokens: the workspace follows the same light/dark theme as all Studios. */
+.responsiveTestSimulator{
+ --rt-surface:var(--nlab-card,#fff);
+ --rt-ink:var(--nlab-ink,#18364d);
+ --rt-muted:var(--nlab-muted,#506b7e);
+ --rt-line:var(--nlab-line,#cbdce7);
+ --rt-soft:var(--nlab-soft,#edf4f9);
+ --rt-brand:var(--nlab-brand,#0057b8);
+ color:var(--rt-ink)
+}
+.responsiveTestSimulator .rt-address,
+.responsiveTestSimulator .rt-top{background:var(--rt-surface);color:var(--rt-ink);border-color:var(--rt-line)}
+.responsiveTestSimulator button,
+.responsiveTestSimulator a,
+.responsiveTestSimulator select,
+.responsiveTestSimulator input:not([type=checkbox]):not([type=radio]){
+ background:var(--rt-surface);color:var(--rt-ink);border-color:var(--rt-line)
+}
+.responsiveTestSimulator :is(button,a):hover{background:var(--rt-soft);color:var(--rt-ink)}
+.responsiveTestSimulator [data-rt-load]{background:var(--rt-brand);color:#fff;border-color:var(--rt-brand)}
+.responsiveTestSimulator [data-rt-load]:hover{background:var(--rt-brand);filter:brightness(.9);color:#fff}
+.responsiveTestSimulator [data-rt-show-settings],
+.responsiveTestSimulator [data-rt-dual][aria-pressed=true]{background:var(--rt-soft)}
+.responsiveTestSimulator .rt-message,
+.responsiveTestSimulator .rt-metrics,
+.responsiveTestSimulator .rt-note{color:var(--rt-muted)}
+.responsiveTestSimulator .rt-monitor{background:var(--rt-surface);border-color:var(--rt-line)}
+.responsiveTestSimulator .rt-scroll{
+ background:repeating-linear-gradient(45deg,var(--rt-soft),var(--rt-soft) 13px,var(--rt-surface) 13px,var(--rt-surface) 26px);
+ border-color:var(--rt-line)
+}
+.responsiveTestSimulator .rt-panel-head{background:var(--rt-soft);border-bottom-color:var(--rt-line)}
+.responsiveTestSimulator fieldset{border-color:var(--rt-line)}
+.responsiveTestSimulator legend{color:var(--rt-muted)}
+.responsiveTestSimulator .rt-reload-label{display:flex;gap:9px;align-items:center;font-size:12px;color:var(--rt-muted);font-weight:600}
+.responsiveTestSimulator .rt-reload-label input{margin:0;accent-color:var(--rt-brand);width:17px;height:17px}
+.responsiveTestSimulator input[type=radio]{accent-color:var(--rt-brand)}
+.responsiveTestSimulator .rt-stages{display:flex;align-items:flex-start;justify-content:center;gap:0;flex:none;margin:0 auto;position:relative}
+.responsiveTestSimulator .rt-screen-title{height:29px;display:flex;justify-content:center;align-items:center;font-size:12px;font-weight:800;color:var(--rt-muted);white-space:nowrap}
+.responsiveTestSimulator .rt-stage{margin:0;position:relative;flex:none}
+.responsiveTestSimulator .rt-stage[hidden]{display:none!important}
+.responsiveTestSimulator .rt-stage .rt-device-frame{top:29px}
+.responsiveTestSimulator .rt-scroll{display:block}
+.responsiveTestSimulator .rt-device-frame{box-shadow:0 14px 32px rgba(10,26,44,.2)}
+:root[data-theme="dark"] .responsiveTestSimulator .rt-device-frame{border-color:#52697a;background:#52697a}
+:root[data-theme="dark"] .responsiveTestSimulator .rt-chrome{background:#314252;color:#e4edf6}
+:root[data-theme="dark"] .responsiveTestSimulator .rt-chrome span:first-child{color:#7de0a1}
+:root[data-theme="dark"] .responsiveTestSimulator .rt-top{box-shadow:0 16px 50px rgba(0,0,0,.55)}
+
+.responsiveTestSimulator .rt-diagnostics{font-size:11px;line-height:1.45;color:var(--rt-muted);padding:2px 9px 9px;white-space:normal;overflow-wrap:anywhere}
+
+.responsiveTestSimulator .rt-desktop-preset select{min-width:250px;max-width:310px;width:100%}
+.responsiveTestSimulator .rt-desktop-preset[hidden]{display:none!important}
+.responsiveTestSimulator .rt-desktop-preset{border-top:1px solid var(--rt-line);padding-top:8px}
+
+/* v0.3.0 — fullscreen viewport and granular saved zoom controls. */
+.responsiveTestSimulator .rt-monitor-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px}
+.responsiveTestSimulator .rt-monitor-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin:3px 5px}
+.responsiveTestSimulator .rt-monitor-actions button{min-height:34px;padding:5px 10px;font-size:12px;background:var(--rt-surface);color:var(--rt-ink)}
+.responsiveTestSimulator .rt-monitor-actions button[aria-pressed="true"]{background:var(--rt-brand);color:#fff;border-color:var(--rt-brand)}
+.responsiveTestSimulator .rt-top{max-height:calc(100% - 58px);overflow-y:auto;overflow-x:hidden}
+.responsiveTestSimulator .rt-panel-head{position:sticky;top:0;z-index:1}
+.responsiveTestSimulator .rt-zoom-editor{display:grid;grid-template-columns:42px minmax(94px,1fr) 42px;align-items:center;gap:7px;border-top:1px solid var(--rt-line);padding-top:10px}
+.responsiveTestSimulator .rt-zoom-editor button{min-height:38px;font-size:17px;font-weight:750;padding:5px}
+.responsiveTestSimulator .rt-zoom-editor input[type="range"]{display:block;width:100%;min-height:28px;height:28px;padding:0;accent-color:var(--rt-brand);cursor:pointer;min-width:0}
+.responsiveTestSimulator .rt-zoom-editor label{grid-column:1 / 2;gap:5px}
+.responsiveTestSimulator .rt-zoom-editor input[type="number"]{width:60px;min-width:60px;font-variant-numeric:tabular-nums}
+.responsiveTestSimulator .rt-zoom-editor [data-rt-zoom-save]{grid-column:2 / 4;font-size:12px}
+.responsiveTestSimulator .rt-monitor:fullscreen,
+.responsiveTestSimulator .rt-monitor[data-fullscreen="true"]{
+ width:100vw;height:100dvh;max-height:100dvh;border-radius:0;
+ padding:7px;display:flex;flex-direction:column;overflow:hidden;
+ background:var(--rt-surface);color:var(--rt-ink)
+}
+.responsiveTestSimulator .rt-monitor:fullscreen .rt-scroll,
+.responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-scroll{height:auto;min-height:0;flex:1}
+.responsiveTestSimulator .rt-monitor:fullscreen .rt-top,
+.responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-top{top:65px;max-height:calc(100% - 75px)}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-monitor-actions{margin:2px 4px}
+ .responsiveTestSimulator .rt-monitor-actions button{font-size:11px;min-height:32px}
+ .responsiveTestSimulator .rt-monitor:fullscreen .rt-top{top:74px}
+}
+
+/* Narrow layouts: keep fullscreen/settings actions unobstructed by the floating palette. */
+.responsiveTestSimulator .rt-monitor-header{position:relative;z-index:4}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-top{top:120px;max-height:calc(100% - 130px)}
+ .responsiveTestSimulator .rt-monitor:fullscreen .rt-top,
+ .responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-top{top:120px;max-height:calc(100% - 130px)}
+}
+
+/* Theme buttons live only in the floating simulator palette, with shared nLab tokens. */
+.responsiveTestSimulator .rt-theme-fieldset{width:100%;max-width:100%;margin:0;display:block}
+.responsiveTestSimulator .rt-theme-controls{display:flex;flex-wrap:wrap;gap:5px;width:100%;margin-top:2px}
+.responsiveTestSimulator .rt-theme-controls button{flex:1 1 77px;min-width:0;min-height:36px;padding:5px 8px;font-size:12px;font-weight:750;border:1px solid var(--rt-line);background:var(--rt-surface);color:var(--rt-ink)}
+.responsiveTestSimulator .rt-theme-controls button:hover{background:var(--rt-soft)}
+.responsiveTestSimulator .rt-theme-controls button[aria-pressed="true"]{background:var(--rt-brand);border-color:var(--rt-brand);color:#fff}
+.responsiveTestSimulator .rt-theme-controls button[aria-pressed="true"]:hover{background:var(--rt-brand);color:#fff;filter:brightness(.92)}
+
+/* v0.4 — compact URL strip; complete form stays available in one click. */
+.responsiveTestSimulator .rt-address{display:block;padding:7px 9px}
+.responsiveTestSimulator .rt-address-strip{display:flex;align-items:center;gap:8px;min-height:35px;min-width:0}
+.responsiveTestSimulator .rt-address-strip strong{font-size:12px;color:var(--rt-ink);white-space:nowrap}
+.responsiveTestSimulator .rt-address-strip [data-rt-url-summary]{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;color:var(--rt-muted);direction:ltr}
+.responsiveTestSimulator .rt-address-strip [data-rt-url-toggle]{min-height:32px;padding:4px 9px;font-size:12px;flex-shrink:0}
+.responsiveTestSimulator .rt-address-fields{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding-top:7px;border-top:1px solid var(--rt-line);margin-top:5px}
+.responsiveTestSimulator .rt-address-fields[hidden]{display:none!important}
+.responsiveTestSimulator .rt-address-fields input[type=url]{min-width:170px;flex:1 1 320px}
+.responsiveTestSimulator .rt-address[data-collapsed="true"] .rt-address-strip{min-height:31px}
+.responsiveTestSimulator .rt-family-fieldset{width:100%;max-width:100%;margin:0;display:block}
+.responsiveTestSimulator .rt-device-families{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.responsiveTestSimulator .rt-device-families button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;min-height:57px;padding:6px 3px;font-size:11px;font-weight:650;text-align:center;white-space:normal;border:1px solid var(--rt-line);background:var(--rt-surface);color:var(--rt-ink)}
+.responsiveTestSimulator .rt-device-families button:hover{background:var(--rt-soft)}
+.responsiveTestSimulator .rt-device-families button[aria-pressed="true"]{background:var(--rt-brand);color:#fff;border-color:var(--rt-brand)}
+.responsiveTestSimulator .rt-device-families button[aria-pressed="true"]:hover{background:var(--rt-brand);color:#fff;filter:brightness(.92)}
+.responsiveTestSimulator .rt-device-families svg{width:19px;height:19px;flex-shrink:0}
+.responsiveTestSimulator .rt-resolution-preset{width:100%;border-top:1px solid var(--rt-line);padding-top:8px}
+.responsiveTestSimulator .rt-resolution-preset[hidden]{display:none!important}
+.responsiveTestSimulator .rt-resolution-preset label{display:flex;flex-wrap:wrap;width:100%}
+.responsiveTestSimulator .rt-resolution-preset select{width:100%;max-width:100%;min-width:0}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-address{padding:5px 7px}
+ .responsiveTestSimulator .rt-address-strip{gap:5px}
+ .responsiveTestSimulator .rt-address-strip strong{font-size:11px}
+ .responsiveTestSimulator .rt-address-strip [data-rt-url-summary]{font-size:10px}
+ .responsiveTestSimulator .rt-address-fields{gap:6px}
+ .responsiveTestSimulator .rt-device-families button{min-height:61px}
+}
+
+/* 0.4.1 TEST: one integrated toolbar, including URL editing in native fullscreen. */
+.responsiveTestSimulator .rt-monitor-header{display:flex;flex-wrap:wrap;align-items:center;gap:5px;z-index:8;position:relative;min-height:44px}
+.responsiveTestSimulator .rt-monitor-header .rt-address{
+ display:block;position:relative;flex:1 1 50%;min-width:50%;max-width:none;
+ margin:0;padding:2px 3px;border:0;border-radius:7px;background:transparent;
+}
+.responsiveTestSimulator .rt-monitor-header .rt-address-strip{min-height:35px;gap:5px}
+.responsiveTestSimulator .rt-monitor-header .rt-address-strip strong{font-size:11px}
+.responsiveTestSimulator .rt-monitor-header .rt-address-strip [data-rt-url-summary]{font-size:11px}
+.responsiveTestSimulator .rt-monitor-header .rt-address-strip [data-rt-url-toggle]{min-height:32px;font-size:11px;padding:4px 7px}
+.responsiveTestSimulator .rt-monitor-header .rt-monitor-actions{display:flex;gap:5px;flex-wrap:wrap;align-items:center;justify-content:flex-end;flex:0 1 auto;margin:0 3px}
+.responsiveTestSimulator .rt-monitor-header .rt-monitor-actions button,
+.responsiveTestSimulator .rt-monitor-header .rt-monitor-actions a{font-size:11px;min-height:33px;padding:4px 7px}
+.responsiveTestSimulator .rt-monitor-header .rt-address-fields{
+ display:flex;position:absolute;top:calc(100% + 6px);left:0;z-index:12;
+ width:min(780px,calc(100vw - 36px));min-width:min(260px,calc(100vw - 36px));
+ padding:10px;border:1px solid var(--rt-line);border-radius:10px;
+ background:var(--rt-surface);box-shadow:0 14px 38px rgba(14,36,56,.25);
+ margin:0;gap:7px;
+}
+.responsiveTestSimulator .rt-monitor-header .rt-address-fields[hidden]{display:none!important}
+.responsiveTestSimulator .rt-monitor-header .rt-address-fields input[type=url]{width:100%;min-width:0;flex:1 1 220px}
+.responsiveTestSimulator .rt-monitor>.rt-message{min-height:0;font-size:11px;padding:0 8px}
+.responsiveTestSimulator .rt-monitor>.rt-metrics{min-height:24px;padding:3px 9px}
+.responsiveTestSimulator .rt-monitor .rt-diagnostics{padding:0 9px 5px}
+.responsiveTestSimulator .rt-monitor .rt-top,
+.responsiveTestSimulator .rt-monitor:fullscreen .rt-top,
+.responsiveTestSimulator .rt-monitor[data-fullscreen="true"] .rt-top{
+ top:calc(var(--rt-toolbar-height, 52px) + 48px);
+ max-height:calc(100% - var(--rt-toolbar-height, 52px) - 58px)
+}
+@media(max-width:760px){
+ .responsiveTestSimulator .rt-monitor-header .rt-address{flex:1 1 100%;min-width:0}
+ .responsiveTestSimulator .rt-monitor-header .rt-monitor-actions{flex:1 1 100%;justify-content:flex-start}
+ .responsiveTestSimulator .rt-monitor-header .rt-monitor-actions button,
+ .responsiveTestSimulator .rt-monitor-header .rt-monitor-actions a{font-size:10px;min-height:33px;padding:5px}
+}

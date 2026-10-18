@@ -1,0 +1,29 @@
+{
+  "id": "./",
+  "name": "nLab Responsive Test Studio",
+  "short_name": "Responsive Test",
+  "description": "Studio nLab de simulation responsive des pages web sur ordinateur, tablette et mobile.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone"
+  ],
+  "background_color": "#f4f6f8",
+  "theme_color": "#0057b8",
+  "icons": [
+    {
+      "src": "../../assets/branding/nlab-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "../../assets/studios/responsive-test-studio.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

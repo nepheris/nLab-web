@@ -1,4 +1,4 @@
-name: Responsive Test Studio TEST Acceptance
+name: Responsive Test Studio CURRENT Acceptance
 on:
   pull_request:
     paths:
@@ -6,13 +6,20 @@ on:
       - 'APP-Applications/_shared/responsive-test/**'
       - 'APP-Applications/studios/catalog.json'
       - 'assets/studios/responsive-test-studio.svg'
+      - 'APP-Applications/_shared/studio-v2/frame.js'
+      - 'APP-Applications/_shared/studio-v2/capability-registry.js'
+      - 'APP-Applications/_shared/studio-v2/responsive-test-launcher.js'
+      - 'APP-Applications/pdf-studio/index.html'
+      - 'tests/studio-branding.mjs'
+      - 'tests/studio-fullscreen-core.mjs'
+      - 'APP-Applications/_shared/studio-v2/fullscreen-service.js'
       - 'tests/responsive-test-studio.mjs'
       - 'tests/responsive-test-studio-toolbar.mjs'
       - 'tests/responsive-test-studio-url-editor.mjs'
       - '.github/workflows/responsive-test-studio.yml'
   push:
     branches:
-      - responsive-test-studio-v0.4.3-wide-url-editor-2026-10-17
+      - responsive-test-v0.4.3-current-core-launcher-pwa-20261018
   workflow_dispatch:
 permissions:
   contents: read
@@ -32,6 +39,12 @@ jobs:
           node --check tests/responsive-test-studio.mjs
           node --check tests/responsive-test-studio-toolbar.mjs
           node --check tests/responsive-test-studio-url-editor.mjs
+          node --check tests/studio-branding.mjs
+          node --check tests/studio-fullscreen-core.mjs
+          node --check APP-Applications/_shared/studio-v2/fullscreen-service.js
+          node --check APP-Applications/_shared/responsive-test/simulator.js
+          node --check APP-Applications/_shared/studio-v2/frame.js
+          node --check APP-Applications/_shared/studio-v2/responsive-test-launcher.js
           node --check APP-Applications/responsive-test-studio/test/app.js
           node --check APP-Applications/responsive-test-studio/versions/0.4.2/app.js
           node --check APP-Applications/responsive-test-studio/versions/0.4.2/simulator.js
@@ -56,12 +69,12 @@ jobs:
           apps=[s for s in catalog['studios'] if s.get('id')=='responsive-test-studio']
           assert len(apps)==1, 'Studio must have exactly one catalog record'
           v=json.loads((root/'responsive-test-studio/versions.json').read_text())
-          assert v['current']=='0.4.2' and v['test']=='0.4.3'
-          assert any(x['version']=='0.4.3' and x['status']=='test' and x['href']=='./test/' for x in v['versions'])
-          assert any(x['version']=='0.4.2' and x['status']=='current' and x['current'] and x['href']=='./' for x in v['versions'])
+          assert v['current']=='0.4.3' and v['test'] is None
+          assert any(x['version']=='0.4.3' and x['status']=='current' and x['current'] and x['href']=='./' for x in v['versions'])
+          assert any(x['version']=='0.4.2' and x['status']=='historical' and not x['current'] and x['href']=='./versions/0.4.2/' for x in v['versions'])
           assert any(x['version']=='0.4.1' and x['status']=='historical' and not x['current'] and x['href']=='./versions/0.4.1/' for x in v['versions'])
           assert any(x['version']=='0.4.0' and x['status']=='historical' and not x['current'] and x['href']=='./versions/0.4.0/' for x in v['versions'])
-          for version in ['0.4.2','0.4.1']:
+          for version in ['0.4.3','0.4.2','0.4.1']:
               for f in ['index.html','app.js','simulator.js','simulator.css','studio.css','site-shell.css','theme-buttons.js','application-shell-runtime.js']:
                   assert (root/'responsive-test-studio/versions'/version/f).is_file(),(version,f)
           for f in ['index.html','app.js','simulator.js','simulator.css','studio.css','site-shell.css','theme-buttons.js','application-shell-runtime.js']:
@@ -85,7 +98,7 @@ jobs:
           for f in ['index.html','app.js','simulator.js','simulator.css','studio.css']:
               assert (root/'responsive-test-studio/versions/0.1.0'/f).is_file(),f
           assert (root/'responsive-test-studio/index.html').is_file()
-          print('Responsive Test Studio registry: PASS (CURRENT 0.4.2, historical preserved)')
+          print('Responsive Test Studio registry: PASS (CURRENT 0.4.3, historical preserved)')
           PY
       - name: Install Playwright and Chrome
         run: |
@@ -101,17 +114,27 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/responsive-test-studio.mjs
-      - name: Validate 0.4.2 CURRENT viewport toolbar and half-width URL, plus historical 0.4.0
+      - name: Validate 0.4.3 CURRENT viewport toolbar and half-width URL, plus historical 0.4.0
         env:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/responsive-test-studio-toolbar.mjs
-      - name: Validate expanded URL editor in 0.4.3 TEST
+      - name: Validate expanded URL editor in 0.4.3 CURRENT
         env:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/responsive-test-studio-url-editor.mjs
-      - name: Upload TEST snapshots
+      - name: Audit clickable nLab logo, shared Studio Core and desktop manifest
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/studio-branding.mjs
+      - name: Validate shared Studio Core fullscreen control and Responsive non-regression
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/studio-fullscreen-core.mjs
+      - name: Upload CURRENT snapshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
