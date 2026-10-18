@@ -85,3 +85,13 @@ Rules:
 - canonical snake_case IDs such as `sort_az`, `view_gantt` and `view_dependency` are accepted alongside legacy Studio aliases.
 
 This makes Markdown Studio, PDF Studio, Dataset Generator Studio and every Studio V2 consumer inherit the same default icon family automatically.
+
+## Plein écran partagé — contrat Core
+
+Le même module `fullscreen-service.js` gère **entrer / quitter plein écran** pour toutes les surfaces. L'API `createFullscreenController({target,button,onChange,onMessage})` résout la mécanique native (`requestFullscreen`, `exitFullscreen`), le changement d'état `fullscreenchange`, Échap, les libellés identiques et `aria-pressed`. Le bouton est un contrôle partagé du ruban Core V2 (`core.fullscreen`) et une commande `Ctrl+K`.
+
+- **Studio V2** : cible = document entier, pour garder l'en-tête et la sortie plein écran accessibles.
+- **Responsive Test Studio CURRENT** : cible = moniteur de simulation ; le bouton reste dans le moniteur et la modification d'URL continue de fonctionner en plein écran.
+- **Version 0.4.3 archivée** : le simulateur d'origine est figé dans `versions/0.4.3/` ; l'application CURRENT consomme la version partagée, sans modifier la copie historique.
+- Aucun émulateur de système d'exploitation ni contournement des restrictions Fullscreen API ; l'activation exige un geste utilisateur et le navigateur reste maître des permissions.
+- Ne pas dupliquer la logique dans les Studios spécialisés ; pour ajouter une autre cible métier, utiliser le service Core.
