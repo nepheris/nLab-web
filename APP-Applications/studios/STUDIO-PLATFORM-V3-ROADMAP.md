@@ -1,3 +1,22 @@
+## Studio Core 3.9.0 TEST — variables, profil, prévisualisation et volet (18 octobre 2026)
+
+**Périmètre : exclusivement Studio Core Test Lab 0.7.0 TEST**. Aucun changement de CURRENT ni adoption par Image/PDF/OCR avant recette humaine.
+
+| Tâche | État | Fonction | Gate |
+| --- | --- | --- | --- |
+| CORE-251 | IMPLEMENTED TEST | Variables et jetons regroupés par familles fichier, dossiers, dates, identité, métadonnées et opérations, aide au survol/focus et exemple dynamique | Tests UI |
+| CORE-252 | IMPLEMENTED TEST | Configuration personnelle locale 00 (prénom, nom, site, service, client, projet, référence, catégorie ; dates du tampon, A/B/C/D). Synchronisation entre Réglages et Enregistrer sous | Tests navigateur ; données non transmises |
+| CORE-253 | IMPLEMENTED TEST | Syntaxe `{DATE:YYYY-MM-DD}`, `{YEAR:YY}`, `{DATE_A:DD-MM-YYYY}`, etc., dates formatées en colonnes, masques personnalisés | Tests engine Node |
+| CORE-254 | IMPLEMENTED TEST | `FOLDER`, `PARENT`, `SUBFOLDER`, `RELATIVE_FOLDER`, `RELATIVE_PATH`, chemin de classement calculé | Test dossiers |
+| CORE-255 | IMPLEMENTED TEST | Aides contextuelles aux choix Contenu (collection/sélection/session) et Format (JSON/CSV/TXT). **Aucun PDF métier exporté par le Lab** | Tests UI |
+| CORE-256 | IMPLEMENTED TEST | Rail repliable/restaurable par icône, aperçu masqué/restauré, sélection mode Auto/Bureau/Tablette/Téléphone pour simuler la planche centrale | Tests desktop/tablette/mobile |
+| CORE-257 | **CI ciblée PASS / validation humaine PENDING** | Snapshot de 0.6.0, Core 3.9.0 TEST/Lab 0.7.0, thèmes et fonctions préservés | Chrome desktop/tablette/mobile + tests de modèles Node PASS ; audits Studios, PDF V2 pilote et PDF public PASS ; suite exhaustive spécialisée Image garde son timeout historique FAIL |
+| CORE-258 | BLOCKED | Migration de ces fonctions aux Studios Image, PDF, Sky et autres | Validation Core d'abord |
+
+**Attention :** les paramètres sont stockés dans le navigateur via `localStorage`, pas synchronisés entre appareils. La vue simulée bureau/tablette/mobile n'est pas l'émulation exacte des dispositifs physiques ; Responsive Test Studio reste le banc de mesure. Les exports du Lab concernent les métadonnées de test uniquement.
+
+---
+
 ## Directive Core-first — Studio Core 3.8.0 TEST / Lab 0.6.0 (18 octobre 2026)
 
 **Décision Human00 :** aucune nouvelle migration vers Image/PDF/OCR/File avant recette et validation du Studio Core autonome. PDF Studio 2.12.0 TEST reste un pilote historique d'intégration, **pas** le point de départ des travaux UX. Ne pas promouvoir CURRENT sans validation.
