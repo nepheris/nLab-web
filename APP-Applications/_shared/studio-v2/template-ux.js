@@ -10,7 +10,12 @@ export const PROFILE_FIELDS=Object.freeze([
  {key:'CLIENT',label:'Client',description:'Client ou organisme associé'},
  {key:'PROJECT',label:'Projet',description:'Projet courant'},
  {key:'REFERENCE',label:'Référence',description:'Référence libre'},
- {key:'CATEGORY',label:'Catégorie',description:'Catégorie métier par défaut'}
+ {key:'CATEGORY',label:'Catégorie',description:'Catégorie métier par défaut'},
+ {key:'STAMP_DATE',label:'Date du tampon',description:'Date du tampon utilisée pour les modèles',type:'date'},
+ {key:'DATE_A',label:'Date A',description:'Première date personnalisée',type:'date'},
+ {key:'DATE_B',label:'Date B',description:'Deuxième date personnalisée',type:'date'},
+ {key:'DATE_C',label:'Date C',description:'Troisième date personnalisée',type:'date'},
+ {key:'DATE_D',label:'Date D',description:'Quatrième date personnalisée',type:'date'}
 ]);
 export function readTemplateProfile(){
  try{const o=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');return Object.fromEntries(PROFILE_FIELDS.map(f=>[f.key,String(o[f.key]??'').slice(0,160)]))}catch{return Object.fromEntries(PROFILE_FIELDS.map(f=>[f.key,'']))}
@@ -23,7 +28,7 @@ export function saveTemplateProfile(data){
 }
 export function templateProfileVariables(){
  const p=readTemplateProfile(),first=p.FIRST_NAME,last=p.LAST_NAME,joined=[first,last].filter(Boolean).join(' ');
- return {...p,FULL_NAME:joined,LAST_FIRST:[last,first].filter(Boolean).join(' '),DISPLAY_NAME:joined,INITIALS:((first.charAt(0)||'')+(last.charAt(0)||'')).toUpperCase()}
+ return {...Object.fromEntries(Object.entries(p).filter(([k,v])=>!['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D'].includes(k)||Boolean(v))),FULL_NAME:joined,LAST_FIRST:[last,first].filter(Boolean).join(' '),DISPLAY_NAME:joined,INITIALS:((first.charAt(0)||'')+(last.charAt(0)||'')).toUpperCase()}
 }
 export function mountTemplateProfile({host,onChange}={}){
  if(!host)return;
@@ -34,7 +39,7 @@ export function mountTemplateProfile({host,onChange}={}){
  const grid=document.createElement('div');grid.className='uxProfileGrid';const saved=readTemplateProfile();const inputs=new Map();
  for(const f of PROFILE_FIELDS){
   const label=document.createElement('label');label.textContent=f.label;label.title=f.description;
-  const input=document.createElement('input');input.type='text';input.value=saved[f.key]||'';input.maxLength=160;input.autocomplete='off';input.placeholder=f.description;input.dataset.templateProfile=f.key;input.setAttribute('aria-label',f.label);
+  const input=document.createElement('input');input.type=f.type||'text';input.value=saved[f.key]||'';input.maxLength=160;input.autocomplete='off';input.placeholder=f.description;input.dataset.templateProfile=f.key;input.setAttribute('aria-label',f.label);
   label.append(input);grid.append(label);inputs.set(f.key,input);
  }
  let pending=false;
