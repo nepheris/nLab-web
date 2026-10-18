@@ -38,6 +38,7 @@ for(const testcase of cases){
   await page.locator('#fileInput').setInputFiles({name:'pdf-ux-fixture.pdf',mimeType:'application/pdf',buffer:pdfFixture()});
   await page.waitForFunction(()=>window.__NLAB_PDF_STUDIO__?.engine?.pageCount>=1,null,{timeout:35000});
   await page.waitForFunction(()=>window.NLabPdfUxPilot?.browser?.items.length>=1,null,{timeout:35000});
+  await page.waitForFunction(()=>window.NLABStudioHistory?.load?.().some(x=>x.studio==='pdf-studio'&&x.label==='Fichier chargé'),null,{timeout:35000});
   assert((await page.locator('#pdfUxFileList .pdfUxFileRow').count())>=1,'real file list not synchronized');
   await page.locator('#pdfUxView').selectOption('list');
   assert(await page.locator('#fileCollection').evaluate(x=>x.classList.contains('collection-list')),'list view broken');
