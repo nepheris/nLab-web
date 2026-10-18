@@ -4,14 +4,14 @@
 
 | ID | Tâche | État sur branche TEST | Gate |
 | --- | --- | --- | --- |
-| STU-20261018-15 | Laboratoire isolé branché au vrai Studio Core V2, relié à la section Validation du Hub | **IMPLEMENTED / TEST** | Contrôles techniques Chrome desktop/mobile et validation utilisateur |
-| STU-20261018-16 | Exposer l'installation PWA via service + commande Core communs, sans confondre application et fullscreen | **IMPLEMENTED / TEST** | Installation manuelle Chrome/Edge/Android et état standalone à constater |
-| STU-20261018-17 | Faire consommer le service PWA commun à Responsive CURRENT sans modifier ses historiques | **IMPLEMENTED / TEST** | Non-régression Responsive CURRENT 0.4.3 |
+| STU-20261018-15 | Laboratoire isolé branché au vrai Studio Core V2, relié à la section Validation du Hub | **PUBLISHED TEST / TECH PASS** | Chrome desktop/mobile PASS ; recette utilisateur à faire |
+| STU-20261018-16 | Exposer l'installation PWA via service + commande Core communs, sans confondre application et fullscreen | **PUBLISHED TEST / PARTIAL** | Installation manuelle Chrome/Edge/Android et état standalone à constater |
+| STU-20261018-17 | Faire consommer le service PWA commun à Responsive CURRENT sans modifier ses historiques | **PUBLISHED TEST / TECH PASS** | Non-régression Responsive CURRENT 0.4.3 PASS |
 | STU-20261018-18 | Configurer un manifeste PWA dédié pour chaque Studio spécialisé éligible (15/15 à auditer) | **PARTIAL / TODO** | Éviter les manifestes partagés avec start_url erroné |
 | STU-20261018-19 | Valider interface Core et modes application + plein écran sur PC, tablette et Android | **TODO HUMAN VALIDATION** | Pas de validation présumée hors des navigateurs réellement testés |
 
-**Branche d'intégration TEST :** `studio-core-test-lab-app-mode-20261018`.
-La page `APP-Applications/studio-core-test/` n'est pas un 16e Studio métier et ne touche pas aux versions CURRENT/historiques. Les tests techniques de la page ne remplacent pas les essais physiques PWA. La fusion et la publication Pages restent soumises au contrôle CI et aux gates de livraison.
+**Intégration :** [PR #83](https://github.com/nepheris/nLab-web/pull/83) fusionnée (`17561c65`) ; les fichiers ont été vérifiés dans `main` et `gh-pages`. URL TEST : `APP-Applications/studio-core-test/`.
+La page `APP-Applications/studio-core-test/` n'est pas un 16e Studio métier et ne touche pas aux versions CURRENT/historiques. Les tests techniques de la page ne remplacent pas les essais physiques PWA. CI Core Lab Chrome desktop/mobile **PASS**, audit Studios **PASS**, Responsive CURRENT **PASS**, PDF public **PASS**. L'exhaustive spécialisée conserve le timeout Image Studio déjà suivi dans STU-20261018-10 ; la validation PWA réelle reste ouverte.
 
 ---
 
