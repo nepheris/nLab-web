@@ -58,6 +58,7 @@ async function scenario(name,viewport){
   const resp=await page.locator('#labResponsiveLink').getAttribute('href');
   assert(resp.includes('responsive-test-studio/')&&resp.includes('url='),name+': responsive launcher URL invalid');
   assert(await page.locator('#studioMain.studioUx').count()===1,name+': workspace shell missing');
+  assert(await page.locator('#studioMain').getAttribute('data-layout-profile')===(viewport.width<=700?'mobile':viewport.width<=1100?'tablet':'desktop'),name+': adaptive workspace profile incorrect');
   assert(await page.locator('.studioUxRail [data-ux-tab]').count()===7,name+': PDF-inspired tab rail missing');
   await page.locator('#uxSaveAsOpen').click();
   assert(await page.locator('#uxSaveDialog').isVisible(),name+': save-as dialog missing');
@@ -107,7 +108,7 @@ async function scenario(name,viewport){
    await page.waitForFunction(()=>document.fullscreenElement===null,null,{timeout:6500});
   }else{
    const profile=await page.locator('body').getAttribute('data-responsive-profile');
-   assert(viewport.width<=700?profile==='mobile':['tablet','desktop'].includes(profile),name+': Core responsive profile incorrect: '+profile);
+   assert(viewport.width<=700?profile==='mobile':['tablet','desktop','compact'].includes(profile),name+': Core responsive profile incorrect: '+profile);
   }
   assert(errors.length===0,name+': page errors '+errors.join('; '));
   reports.push({name,status:'PASS',checks:15});
