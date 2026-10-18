@@ -10,7 +10,7 @@
 | CORE-239 | Brancher la frise Historique commune `history-sidebar.js` et Undo/Redo, tri/sélection/zoom des fichiers | IMPLEMENTED TEST | vérification filtrage/historique |
 | CORE-240 | Fenêtre Enregistrer sous sur les **vrais** contrôles PDF `sectionOutput` et `sectionNaming` avec variables/dossier, sans export factice | IMPLEMENTED TEST | tests nommage et export PDF, permission dossier manuelle |
 | CORE-241 | Corriger le bouton d’ouverture de TEST sur l’accueil PDF : lire la route du registre | IMPLEMENTED TEST | CURRENT stable inchangée |
-| CORE-242 | Recette CI spécifique Chrome 3 profils, moteur PDF réel et sortie PDF, historique, captures + audit courant | TESTS ADDED / CI PENDING | exécution GitHub Actions puis réception utilisateur |
+| CORE-242 | Recette CI Chrome 3 profils, moteur PDF réel et sortie PDF, Historique et captures | **CI PILOTE PASS / VALIDATION UTILISATEUR PENDING** | navigateur Chrome desktop/tablette/mobile, entrée PDF et export PDF réel, annulation/historique, capture ; audit Studios PASS, PDF public et Responsive contrôlés séparément |
 | CORE-243 | Étendre la surface à Image/OCR/File | TODO APRÈS ACCEPTATION PDF | nouvelle version TEST par Studio, jamais de bascule automatique CURRENT |
 
 **Limites :** le pilote adopte l’UX pour les collections et le document, mais conserve dans Outils les contrôles complexes du PDF existant. Les rotations sur vignettes seules ne remplacent pas les opérations PDF métier. Les tests de permission locale sur Android, Drive et la suite exhaustive Image Studio sont séparés.
