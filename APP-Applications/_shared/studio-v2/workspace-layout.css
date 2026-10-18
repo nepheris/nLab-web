@@ -103,3 +103,24 @@ body[data-studio="studio-core-test"] .studioMain.studioUx{height:auto}
  .studioUx .uxSaveDialog{padding:10px}
 }
 @media(prefers-reduced-motion:reduce){.studioUx .studioUxPreviewCanvas img{transition:none}}
+
+/* Lab-selected light/dark/automatic theme is confined to opt-in shell. */
+.studioUx[data-ux-theme="dark"]{--ux-bg:#151d28;--ux-panel:#232d39;--ux-fg:#e6edf5;--ux-muted:#a4b5c5;--ux-border:#3a4c5d}
+.studioUx[data-ux-theme="dark"] .studioUxRail{background:#192532}
+.studioUx[data-ux-theme="dark"] .studioUxRail button.active,
+.studioUx[data-ux-theme="dark"] .studioUxSideContent>header,
+.studioUx[data-ux-theme="dark"] .studioUxWorkHeader,
+.studioUx[data-ux-theme="dark"] .studioUxWorkActions button,
+.studioUx[data-ux-theme="dark"] .studioUxPreview,
+.studioUx[data-ux-theme="dark"] .studioUxPreviewToolbar button,
+.studioUx[data-ux-theme="dark"] .uxCard,
+.studioUx[data-ux-theme="dark"] .uxAccordion,
+.studioUx[data-ux-theme="dark"] .uxMiniButton{background:#243446;color:#e6edf5;border-color:#435a70}
+.studioUx[data-ux-theme="dark"] .studioUxFileSidebar{background:#1c2a39;border-color:#435a70}
+.studioUx[data-ux-theme="dark"] .studioUxPreviewCanvas{background:#13202e}
+.studioUx[data-ux-theme="dark"] #labCollectionDrop{background:#243446;color:#e6edf5}
+.studioUx[data-ux-theme="dark"] input,.studioUx[data-ux-theme="dark"] select,.studioUx[data-ux-theme="dark"] textarea{background:#172534;color:#e6edf5;border-color:#496075}
+.studioUx[data-ux-theme="dark"] .collectionItem{background:#263444;color:#e6edf5;border-color:#496075}
+.studioUx[data-ux-theme="dark"] .collectionItem.active{border-color:#73b5ec}
+.studioUx .uxPreviewHidden{grid-template-columns:minmax(0,1fr)}
+.studioUx .uxPreviewHidden .studioUxPreview{display:none!important}
