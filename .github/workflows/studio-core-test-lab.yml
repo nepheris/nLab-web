@@ -12,6 +12,8 @@ on:
       - 'APP-Applications/_shared/studio-v2/collection-browser.js'
       - 'APP-Applications/_shared/studio-v2/workspace-layout.js'
       - 'APP-Applications/_shared/studio-v2/workspace-layout.css'
+      - 'APP-Applications/_shared/studio-v2/history-sidebar.js'
+      - 'APP-Applications/studio-core-test/ux-parity.css'
       - 'APP-Applications/studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md'
       - 'Library/demo/**'
       - 'APP-Applications/studios/index.html'
@@ -35,6 +37,9 @@ jobs:
           node --check APP-Applications/studio-core-test/app.js
           node --check APP-Applications/_shared/studio-v2/collection-browser.js
           node --check APP-Applications/_shared/studio-v2/workspace-layout.js
+          node --check APP-Applications/_shared/studio-v2/history-sidebar.js
+          node --check APP-Applications/studio-core-test/versions/0.4.0/app.js
+          node --check APP-Applications/studio-core-test/versions/0.4.0/ux-lab.js
           node --check APP-Applications/studio-core-test/ux-lab.js
           node --check APP-Applications/studio-core-test/versions/0.3.0/app.js
           node --check APP-Applications/studio-core-test/versions/0.2.0/app.js
@@ -51,11 +56,14 @@ jobs:
           m=json.loads((root/'studio-core-test/manifest.webmanifest').read_text())
           v=json.loads((root/'studio-core-test/versions.json').read_text())
           assert m['display']=='standalone' and m['scope']=='./' and m['start_url']=='./'
-          assert v['current'] is None and v['test']=='0.4.0'
+          assert v['current'] is None and v['test']=='0.5.0'
           assert any(x['version']=='0.1.0' and x['status']=='historical' for x in v['versions'])
           assert (root/'studio-core-test/versions/0.1.0/index.html').is_file()
           assert any(x['version']=='0.2.0' and x['status']=='historical' for x in v['versions'])
           assert any(x['version']=='0.3.0' and x['status']=='historical' for x in v['versions'])
+          assert any(x['version']=='0.4.0' and x['status']=='historical' for x in v['versions'])
+          for f in ['index.html','app.js','ux-lab.js','manifest.webmanifest']:
+            assert (root/'studio-core-test/versions/0.4.0'/f).is_file()
           for f in ['index.html','app.js','manifest.webmanifest']:
             assert (root/'studio-core-test/versions/0.3.0'/f).is_file()
           for f in ['index.html','app.js','manifest.webmanifest']:
@@ -83,6 +91,14 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/demo-explorer-folders.mjs
+      - name: Upload UX 0.5 visual parity screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-lab-ux-0.5-desktop-tablet-mobile
+          path: artifacts/core-lab-ux/
+          if-no-files-found: ignore
+          retention-days: 14
       - name: HTTP diagnostics
         if: failure()
         run: tail -100 /tmp/studio-core-lab-http.log || true

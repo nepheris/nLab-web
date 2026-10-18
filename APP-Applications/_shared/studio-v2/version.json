@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "channel": "test",
-  "notes": "Studio Core 3.6.0 TEST — workspace-layout.js + CSS communs opt-in, onglets Outils/Fichiers/Historique/Propriétés/Tâches/Recherche/Réglages, panneaux flottants via window-system, responsive desktop/tablette/mobile. Lab 0.4 UX v0.5 intégrée au vrai Core, naming via template-engine et output-service, color-control et miniatures. Aucune migration CURRENT, export métadonnées de démo uniquement.",
+  "notes": "Core 3.7.0 TEST — nouvel historique visuel en accordéons et frise chronologique via history-sidebar.js, données issues de history.js et undo-redo.js (pas de base doublonnée), amélioration du workspace layout opt-in et Lab 0.5.0 TEST rapproché de la maquette UX 0.5. Aucune adoption CURRENT. Archives Lab 0.1–0.4 conservées.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }
