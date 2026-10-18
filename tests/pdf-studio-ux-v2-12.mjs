@@ -65,7 +65,7 @@ for(const testcase of cases){
   await page.locator('[data-ux-tab="history"]').click();
   await page.screenshot({path:'artifacts/pdf-studio-ux/'+testcase.name+'-history.png',fullPage:true});
   if(testcase.width<=700)await page.locator('#studioUxCollapse').click();
-  await page.locator('button').filter({hasText:'Enregistrer sous'}).first().click();
+  await page.locator('#pdfUxSaveOpen').click();
   assert(await page.locator('#pdfUxSaveDialog').isVisible(),'Save As panel not open');
   assert(await page.locator('#sectionOutput').isVisible(),'native output section missing');
   assert(await page.locator('#sectionNaming').isVisible(),'native naming section missing');
