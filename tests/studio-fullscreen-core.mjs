@@ -17,11 +17,8 @@ async function scenario(name,path,{mobile=false,core=false}={}){
   const button=page.locator(core?'[data-studio-action="core.fullscreen"]':'[data-rt-fullscreen]');
   const target=core?'html':'[data-rt-monitor]';
   check(await button.getAttribute('aria-pressed')==='false',name+': initial aria-pressed false');
-  const source=await page.evaluate(async()=>{
-   const r=await fetch(new URL('APP-Applications/_shared/studio-v2/fullscreen-service.js',document.baseURI));
-   return r.ok;
-  });
-  check(source,name+': shared Core controller available');
+  const sharedResponse=await page.request.get(new URL('APP-Applications/_shared/studio-v2/fullscreen-service.js',base).href);
+  check(sharedResponse.ok(),name+': shared Core controller available');
   await button.click();
   check(await page.evaluate(sel=>document.fullscreenElement===document.querySelector(sel),target),name+': enters target fullscreen');
   check(await button.getAttribute('aria-pressed')==='true',name+': button is pressed in fullscreen');
@@ -37,7 +34,7 @@ async function scenario(name,path,{mobile=false,core=false}={}){
   check(await button.getAttribute('aria-pressed')==='false',name+': restored button state');
   await button.click();
   await page.keyboard.press('Escape');
-  await page.waitForFunction(()=>document.fullscreenElement===null,{timeout:6000});
+  await page.waitForFunction(()=>document.fullscreenElement===null,null,{timeout:6000});
   check(await button.getAttribute('aria-pressed')==='false',name+': Escape restores UI state');
   if(core){
    const label=button.locator('.ribbonBtnLabel');
