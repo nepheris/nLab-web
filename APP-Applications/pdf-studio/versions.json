@@ -21,7 +21,7 @@
       "status": "historical",
       "href": "./v2/?version=2.11.0&channel=historical",
       "notes": "Convergence Core 3.0 : entrée fichier/dossier/URL/ZIP/drop via Input Picker commun, volet verrouillable/restaurable/redimensionnable/détachable et héritage des nouvelles fenêtres/thèmes Core. Code 2.11 conservé comme runtime historique (nouvelle UX désactivée).",
-      "isolation": "test-runtime"
+      "isolation": "compat-runtime"
     },
     {
       "version": "2.10.0",
