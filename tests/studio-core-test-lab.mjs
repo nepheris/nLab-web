@@ -93,6 +93,12 @@ async function scenario(name,viewport){
   assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='dark',name+': dark theme missing');
   await page.locator('#uxTheme').selectOption('light');
   assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='light',name+': light theme missing');
+  if(viewport.width>700){
+   await page.locator('#studioUxDetach').click();
+   assert(await page.locator('.studioUxFloat[data-ux-float="settings"]').isVisible(),name+': floating panel missing');
+   await page.locator('.studioUxFloat[data-ux-float="settings"] [data-ux-float-close]').click();
+   assert(await page.locator('.studioUxTabPanel[data-ux-panel="settings"] #uxTheme').count()===1,name+': panel reattachment failed');
+  }
   if(viewport.width>1000){
    const button=page.locator('[data-studio-action="core.fullscreen"]');
    await button.click();
