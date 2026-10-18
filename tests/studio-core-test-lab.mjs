@@ -139,6 +139,8 @@ async function scenario(name,viewport){
   await page.locator('#uxCollectionFilter').fill('Inventaire');
   assert((await page.locator('#uxSearchCount').textContent()).includes('1 résultat'),name+': central collection filtering failed');
   await page.locator('#uxCollectionFilter').fill('');
+  await page.locator('#labThumbAuto').click();
+  await page.locator('#uxCollectionGrouping').selectOption('none');
   await mkdir('artifacts/core-lab-ux',{recursive:true});
   if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
   await page.locator('[data-ux-tab="files"]').click();
