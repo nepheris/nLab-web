@@ -1,6 +1,7 @@
 // Studio Core Test Lab 0.4 — UX 0.5 visual reference, real Core services behind the shell.
 import{mountStudioWorkspace}from'../_shared/studio-v2/workspace-layout.js';
 import{createHistorySidebar}from'../_shared/studio-v2/history-sidebar.js';
+import{createWorkspaceTheme}from'../_shared/studio-v2/workspace-theme.js';
 import{TemplateEngine,templateVariableHelp}from'../_shared/studio-v2/template-engine.js';
 import{OutputService}from'../_shared/studio-v2/output-service.js';
 import{createColorPicker}from'../_shared/studio-v2/color-control.js';
@@ -45,6 +46,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const colorHost=make('div','uxColorContainer');prop.append(colorHost);
  const pickerColor=createColorPicker({label:'Couleur de démonstration',value:'#206FAE'});
  colorHost.append(pickerColor.element);
+ const surfacePanel=make('div','uxSurfacePanel','<div class="uxSidebarOverline">Planche de travail</div><p class="uxSurfaceDescription">Espace central partagé par les Studios : collection, aperçu, zoom et transformations visuelles.</p><details class="uxHistoryAccordion" open><summary>Collection et affichage</summary><div class="uxHistoryInner uxSurfaceActions"><button type="button" data-surface-action="import">↥ Importer</button><button type="button" data-surface-action="list">☷ Liste</button><button type="button" data-surface-action="thumbs">▦ Vignettes</button><button type="button" data-surface-action="preview">◉ Afficher / masquer l’aperçu</button></div></details><details class="uxHistoryAccordion" open><summary>Enregistrement et sortie</summary><div class="uxHistoryInner uxSurfaceActions"><button type="button" data-surface-action="save">▣ Enregistrer</button><button type="button" data-surface-action="save-as">⇩ Enregistrer sous</button></div></details><details class="uxHistoryAccordion"><summary>Contrôles Core</summary><div class="uxHistoryInner"><p>Import multiple, sélection, classement, aperçu, rotation, historique et préférences : une seule implémentation partagée, sans traitement métier imposé.</p></div></details>');
  const tasks=make('div','');tasks.append(manual);
  const search=make('div','','<label class="labField">Rechercher dans la collection<input type="search" id="uxCollectionSearch" placeholder="Nom, type ou dossier…"></label><p class="labHint">Le filtre s’applique à la collection affichée.</p><button type="button" class="uxMiniButton" id="uxSelectVisible">Sélectionner les fichiers visibles</button><p id="uxSearchCount" class="labHint"></p>');
  const settings=make('div','','<h3 class="labHeading">Préférences d’affichage</h3><label class="labField">Thème<select id="uxTheme"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label><div class="uxCard"><strong>Trois profils responsive</strong><small>Desktop · Tablette · Mobile. L’interface s’adapte automatiquement à la largeur du navigateur.</small><div class="labToolbar"><button type="button" data-ux-device="desktop">🖥 Desktop</button><button type="button" data-ux-device="tablet">▣ Tablette</button><button type="button" data-ux-device="mobile">▯ Mobile</button></div></div>');
@@ -54,6 +56,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const ws=mountStudioWorkspace({main,initial:'files',title:'Planche de travail',subtitle:'Studio Core · Collection et prévisualisation',tabs:[
   {id:'tools',label:'Outils',icon:'✎',children:[tools]},
   {id:'files',label:'Fichiers',icon:'▣',children:[profile]},
+  {id:'workspace',label:'Planche',icon:'▤',workTab:true,children:[surfacePanel]},
   {id:'history',label:'Historique',icon:'◷',children:[history]},
   {id:'properties',label:'Propriétés',icon:'☷',children:[prop]},
   {id:'tasks',label:'Tâches',icon:'☑',children:[tasks]},
@@ -93,6 +96,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const saveAsButton=make('button','','⇩ Enregistrer sous');saveAsButton.id='uxSaveAsOpen';saveAsButton.type='button';ribbon.append(saveAsButton);
  const viewBtn=make('button','','◉ Aperçu');viewBtn.type='button';viewBtn.id='uxTogglePreview';ribbon.append(viewBtn);
  ws.actions.append(ribbon);
+ surfacePanel.addEventListener('click',e=>{const action=e.target.closest('[data-surface-action]')?.dataset.surfaceAction;const target={import:'#labPickerOpen',list:'#labViewList',thumbs:'#labViewThumbs',preview:'#uxTogglePreview',save:'#uxSaveOpen','save-as':'#uxSaveAsOpen'}[action];if(target)$(target)?.click()});
  const heading=make('div','studioUxInfoRow','<div><strong>Collection de fichiers</strong><span> · Cliquer pour activer et cocher pour sélectionner</span></div><span id="uxCollectionCount">0 fichier</span>');
  ctrl.classList.add('uxCollectionToolbar');
  const groupLabel=document.createElement('label');groupLabel.textContent='Regrouper : ';
@@ -184,8 +188,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
 
  // A theme choice is scoped to the workspace; Core settings remain authoritative elsewhere.
  $('#uxTheme').value=safeRead('nlab:core-lab:ux-theme','auto');
- const theme=()=>{const val=$('#uxTheme').value,night=val==='dark'||(val==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);main.dataset.uxTheme=night?'dark':'light';safeStore('nlab:core-lab:ux-theme',val)};
- $('#uxTheme').addEventListener('change',theme);theme();
+ const uxTheme=createWorkspaceTheme({root:main,select:$('#uxTheme'),storageKey:'nlab:core-lab:ux-theme'});
  settings.querySelectorAll('[data-ux-device]').forEach(b=>b.addEventListener('click',()=>{const value=b.dataset.uxDevice;settings.querySelectorAll('[data-ux-device]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if($('#labResponsiveLink'))window.open($('#labResponsiveLink').href,'_blank','noopener');$('#labSampleStatus').textContent='Test '+value+' ouvert dans Responsive Test Studio.'}));
  // Reuse existing canonical Core settings button. A duplicate panel is not created.
  const coreSettings=make('button','uxMiniButton','⚙ Réglages Core');coreSettings.addEventListener('click',()=>$('#studioCoreSettings')?.click());settings.prepend(coreSettings);
@@ -194,7 +197,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const actions={
   'lab.ux-save':()=>showSave('save'),'lab.ux-save-as':()=>showSave('save-as'),
   'lab.ux-files':()=>ws.switchTab('files'),'lab.ux-history':()=>ws.switchTab('history'),
-  'lab.ux-properties':()=>ws.switchTab('properties'),'lab.ux-settings':()=>ws.switchTab('settings'),
+  'lab.ux-properties':()=>ws.switchTab('properties'),'lab.ux-settings':()=>ws.switchTab('settings'),'lab.ux-workspace':()=>ws.switchTab('workspace'),
   'lab.ux-select-all':()=>collection.selectAll(),'lab.ux-invert':()=>$('#labInvertFiles').click()
  };
  document.addEventListener('studio-v2:action',e=>{actions[e.detail?.action]?.()});
@@ -257,5 +260,5 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  });
  // Mount diagnostics continue to use the real Core services and their original element IDs.
  updateSummary();renderSideFiles();previewUpdate();
- return{workspace:ws,historyView,showSave,previewUpdate,updateSummary,filterCollection};
+ return{workspace:ws,historyView,uxTheme,showSave,previewUpdate,updateSummary,filterCollection};
 }

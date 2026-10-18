@@ -1,0 +1,236 @@
+/* Core UX 3.8 TEST theme tokens; opt-in only via workspace-theme.js.
+   Both schemes maintain AA text contrast on their respective surfaces. */
+body[data-studio-ux-theme="light"]{
+ --ux-bg:#f1f5fa;--ux-panel:#fff;--ux-fg:#263d53;--ux-muted:#526d84;
+ --ux-border:#c8d7e5;--ux-soft:#e9f2fa;--ux-accent:#075da8;--ux-accent-soft:#dceeff;
+ --ux-control:#fff;--ux-control-fg:#214c71;--ux-preview:#e3ebf4;
+}
+body[data-studio-ux-theme="dark"]{
+ --ux-bg:#131d29;--ux-panel:#202d3c;--ux-fg:#f2f6fb;--ux-muted:#bed0df;
+ --ux-border:#587087;--ux-soft:#2d3f53;--ux-accent:#91cafa;--ux-accent-soft:#234766;
+ --ux-control:#263a4d;--ux-control-fg:#ecf5ff;--ux-preview:#182636;
+ color:var(--ux-fg);background:#111a25;
+}
+body[data-studio-ux-theme="dark"] .studioHeader,
+body[data-studio-ux-theme="dark"] .studioMenu,
+body[data-studio-ux-theme="dark"] .studioRibbon,
+body[data-studio-ux-theme="dark"] .studioHeaderInner{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] .studioMenu button,
+body[data-studio-ux-theme="dark"] .studioMenu [data-menu],
+body[data-studio-ux-theme="dark"] .studioRibbon .ribbonBtn,
+body[data-studio-ux-theme="dark"] .studioRibbon button,
+body[data-studio-ux-theme="dark"] .studioHeader a,
+body[data-studio-ux-theme="dark"] .studioHeader button{
+ color:var(--ux-fg)!important;
+}
+body[data-studio-ux-theme="dark"] .studioRibbon .ribbonLabel,
+body[data-studio-ux-theme="dark"] .studioUx small,
+body[data-studio-ux-theme="dark"] .studioUx .labHint{
+ color:var(--ux-muted)!important;
+}
+body[data-studio-ux-theme="dark"] .studioMenu [data-menu].active,
+body[data-studio-ux-theme="dark"] .studioRibbon button:hover,
+body[data-studio-ux-theme="dark"] .studioUxRail button.active{
+ background:var(--ux-accent-soft)!important;color:#f4faff!important;border-color:#79b5e7!important;
+}
+body[data-studio-ux-theme="dark"] .studioUx,
+body[data-studio-ux-theme="dark"] .studioUxMain,
+body[data-studio-ux-theme="dark"] .studioUxWorkBody{
+ background:var(--ux-bg)!important;color:var(--ux-fg)!important;
+}
+body[data-studio-ux-theme="dark"] .studioUxSidebar,
+body[data-studio-ux-theme="dark"] .studioUxSideContent,
+body[data-studio-ux-theme="dark"] .studioUxSideContent>header,
+body[data-studio-ux-theme="dark"] .studioUxWorkHeader,
+body[data-studio-ux-theme="dark"] .studioUxRail,
+body[data-studio-ux-theme="dark"] .studioUxPreview,
+body[data-studio-ux-theme="dark"] .studioUxFileSidebar,
+body[data-studio-ux-theme="dark"] .uxHistoryAccordion,
+body[data-studio-ux-theme="dark"] .uxHistoryAccordion>summary,
+body[data-studio-ux-theme="dark"] .uxHistoryEntry,
+body[data-studio-ux-theme="dark"] .uxCard,
+body[data-studio-ux-theme="dark"] .uxSideFileRow,
+body[data-studio-ux-theme="dark"] .uxFileAccordion{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] .studioUxRail{background:#182536!important}
+body[data-studio-ux-theme="dark"] .studioUx .studioUxWorkHeader strong,
+body[data-studio-ux-theme="dark"] .studioUx .studioUxInfoRow strong,
+body[data-studio-ux-theme="dark"] .studioUx .studioUxSideContent strong,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryEntryHead strong,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryGroup summary,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryAccordion summary,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistorySidebar,
+body[data-studio-ux-theme="dark"] .studioUx .collectionItem strong{
+ color:var(--ux-fg)!important;
+}
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryEyebrow,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryCounters,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryEntryHead time,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryEntryDetails,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryHint,
+body[data-studio-ux-theme="dark"] .studioUx .uxSidebarOverline,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryEmpty,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryGroupLabel,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistorySearchLabel{
+ color:var(--ux-muted)!important;
+}
+body[data-studio-ux-theme="dark"] .studioUx input,
+body[data-studio-ux-theme="dark"] .studioUx select,
+body[data-studio-ux-theme="dark"] .studioUx textarea,
+body[data-studio-ux-theme="dark"] .studioUx button,
+body[data-studio-ux-theme="dark"] .studioUx .uxMiniButton,
+body[data-studio-ux-theme="dark"] .studioUx .uxFileActions button,
+body[data-studio-ux-theme="dark"] .studioUx .uxFileSelection button,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryToolbar button,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryChips button,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryFull,
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryEntryDetails button{
+ background:var(--ux-control)!important;color:var(--ux-control-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] .studioUx button:disabled{opacity:.62}
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryChips button[aria-pressed="true"],
+body[data-studio-ux-theme="dark"] .studioUx .uxSideFileRow.active,
+body[data-studio-ux-theme="dark"] .studioUx .collectionItem.active{
+ background:var(--ux-accent-soft)!important;border-color:#81bdf0!important;
+}
+body[data-studio-ux-theme="dark"] .studioUx .collectionItem,
+body[data-studio-ux-theme="dark"] .studioUx .collectionThumb,
+body[data-studio-ux-theme="dark"] .studioUx .studioUxPreviewCanvas{
+ background:var(--ux-preview)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] .studioUx .collectionItem button,
+body[data-studio-ux-theme="dark"] .studioUx .collectionItem small,
+body[data-studio-ux-theme="dark"] .studioUx .collectionItem em,
+body[data-studio-ux-theme="dark"] .studioUx .uxSideFileName{
+ color:var(--ux-fg)!important;
+}
+body[data-studio-ux-theme="dark"] .studioUx .uxHistoryHint,
+body[data-studio-ux-theme="dark"] .studioUx .studioUxFileSidebar,
+body[data-studio-ux-theme="dark"] #labCollectionDrop{
+ background:var(--ux-soft)!important;border-color:var(--ux-border)!important;color:var(--ux-fg)!important;
+}
+body[data-studio-ux-theme="dark"] .uxSaveDialog,
+body[data-studio-ux-theme="dark"] .uxSaveDialog details,
+body[data-studio-ux-theme="dark"] .uxSaveDialog .uxSaveFields,
+body[data-studio-ux-theme="dark"] .uxSaveDialog summary,
+body[data-studio-ux-theme="dark"] .uxSaveDialog .uxSavePreview,
+body[data-studio-ux-theme="dark"] .uxSaveDialog .uxTokenDetails{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] .uxSaveDialog button,
+body[data-studio-ux-theme="dark"] .uxSaveDialog input,
+body[data-studio-ux-theme="dark"] .uxSaveDialog select,
+body[data-studio-ux-theme="dark"] .uxSaveDialog .uxToken{
+ background:var(--ux-control)!important;color:var(--ux-control-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] .uxSaveDialog .uxSavePrimary{background:#0a64b8!important;color:white!important}
+body[data-studio-ux-theme="dark"] input::placeholder{color:#becbda!important;opacity:1}
+body[data-studio-ux-theme="dark"] button:focus-visible,
+body[data-studio-ux-theme="dark"] input:focus-visible,
+body[data-studio-ux-theme="dark"] select:focus-visible{
+ outline:2px solid #a9d6ff!important;outline-offset:2px;
+}
+/* High contrast independent of the OS selected palette; links remain underlined. */
+body[data-studio-ux-theme="dark"] .studioUx a{color:#9bd6ff!important;text-decoration:underline}
+@media(prefers-reduced-motion:reduce){
+ body[data-studio-ux-theme] .studioUx *,body[data-studio-ux-theme] .studioUx *::before,
+ body[data-studio-ux-theme] .studioUx *::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+
+
+/* The approved Lab 0.5 stylesheet has high-specificity literal light colors.
+   Scope extra selectors only to the opt-in Core TEST consumer. */
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxMain,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxWorkBody{
+ background:var(--ux-bg)!important;color:var(--ux-fg)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxRail,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxSideContent,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxSideContent>header,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxWorkHeader,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxPreview>header,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxPreviewToolbar,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryAccordion>summary{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem>button[data-collection-open]{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxInfoRow strong,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem>button[data-collection-open] strong,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryEntryHead strong,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryGroup>summary,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxSideContent>header strong{
+ color:var(--ux-fg)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem>button[data-collection-open] small,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .collectionThumbnailTools .collectionItem>button[data-collection-open] em,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryCounters,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .uxHistoryHint{
+ color:var(--ux-muted)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx .studioUxPreviewCanvas{
+ background:var(--ux-preview)!important;color:var(--ux-fg)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryHint,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryCounters,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryEyebrow,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryEntryHead time,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx .uxHistoryEmpty{
+ color:var(--ux-muted)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxSurfaceDescription,
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxSurfacePanel p{
+ font-size:12px;line-height:1.5;color:var(--ux-muted)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxSurfaceActions{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxSurfaceActions button{
+ width:100%;min-height:40px;padding:8px 9px;font-size:12px;border:1px solid var(--ux-border);
+ border-radius:7px;background:var(--ux-control)!important;color:var(--ux-control-fg)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxHistoryCompact .uxHistoryEntryDetails{font-size:10px}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxHistoryCompact .uxHistoryEntryDetails p{display:none}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx .uxHistoryFull{
+ min-height:36px
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme] #studioUxWorkBody:focus{outline:none}
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx button:focus-visible,
+body[data-studio="studio-core-test"][data-studio-ux-theme] .studioUx [role="tab"]:focus-visible{
+ outline:2px solid var(--ux-accent)!important;outline-offset:2px
+}
+
+
+/* Detached Core windows and native advanced History stay readable in dark mode. */
+body[data-studio-ux-theme="dark"] .studioUxFloat,
+body[data-studio-ux-theme="dark"] .studioUxFloatHead,
+body[data-studio-ux-theme="dark"] .studioUxFloatBody,
+body[data-studio-ux-theme="dark"] #history-full-view{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] #history-full-view .historyFullControls,
+body[data-studio-ux-theme="dark"] #history-full-view .historyGroup,
+body[data-studio-ux-theme="dark"] #history-full-view .historyItem,
+body[data-studio-ux-theme="dark"] #history-full-view .historyItemBody{
+ background:var(--ux-panel)!important;color:var(--ux-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] #history-full-view button,
+body[data-studio-ux-theme="dark"] #history-full-view input,
+body[data-studio-ux-theme="dark"] #history-full-view select,
+body[data-studio-ux-theme="dark"] .studioUxFloat button,
+body[data-studio-ux-theme="dark"] .studioUxFloat input,
+body[data-studio-ux-theme="dark"] .studioUxFloat select{
+ background:var(--ux-control)!important;color:var(--ux-control-fg)!important;border-color:var(--ux-border)!important;
+}
+body[data-studio-ux-theme="dark"] #history-full-view strong,
+body[data-studio-ux-theme="dark"] #history-full-view summary,
+body[data-studio-ux-theme="dark"] #history-full-view time,
+body[data-studio-ux-theme="dark"] .studioUxFloat strong{
+ color:var(--ux-fg)!important
+}
