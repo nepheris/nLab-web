@@ -24,7 +24,7 @@ async function scenario(name,viewport){
   await page.locator('#studioInputPicker').waitFor({state:'visible',timeout:12000});
   await page.locator('#studioInputFilesNative').setInputFiles({name:'core-test-fixture.txt',mimeType:'text/plain',buffer:Buffer.from('nLab TEST fixture')});
   await page.locator('#studioInputConfirm').click();
-  await page.locator('#labPickedFiles li').first().waitFor({timeout:12000});
+  await page.locator('#labPickedFiles li').first().waitFor({state:'attached',timeout:12000});
   assert((await page.locator('#labPickedFiles').textContent()).includes('core-test-fixture.txt'),name+': input-picker selection not returned');
   await page.locator('#labCollection .collectionItem').first().waitFor({timeout:12000});
   const initial=await page.locator('#labThumbSize').textContent();
