@@ -1,4 +1,4 @@
-// Acceptance tests for CURRENT 0.4.2 (integrated URL toolbar ≥50% on desktop) and historical 0.4.0.
+// Acceptance tests for CURRENT 0.4.3 (integrated URL toolbar ≥50% on desktop) and historical 0.4.0.
 import {chromium} from 'playwright';
 import fs from 'node:fs/promises';
 const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/';
@@ -18,7 +18,7 @@ async function run(name,viewport,emulateTouch=false){
   pass('CURRENT page served',res?.ok());
   await page.locator('html[data-responsive-studio-ready="1"]').waitFor({timeout:15000});
   const monitor=page.locator('[data-rt-monitor]');
-  pass('CURRENT version 0.4.2 correctly labelled',await page.locator('.brand').textContent().then(x=>x.includes('CURRENT 0.4.2')));
+  pass('CURRENT version 0.4.2 correctly labelled',await page.locator('.brand').textContent().then(x=>x.includes('CURRENT 0.4.3')));
   pass('one viewport integrated toolbar',await monitor.locator('[data-rt-monitor-header]').count()===1 && await page.locator('[data-rt-address-bar]').count()===1 && await monitor.locator('[data-rt-address-bar]').count()===1);
   pass('one settings button',await monitor.locator('[data-rt-show-settings]').count()===1&&await monitor.locator('[data-rt-full-settings]').count()===1);
   pass('toolbar commands in viewport',await monitor.locator('[data-rt-reload],[data-rt-open],[data-rt-dual],[data-rt-fullscreen]').count()===4);
@@ -81,9 +81,9 @@ async function run(name,viewport,emulateTouch=false){
  }finally{await context.close()}
 }
 try{
- await run('desktop-042',{width:1440,height:900});
- await run('mobile-042',{width:393,height:852});
- await run('touch-042',{width:393,height:852},true);
+ await run('desktop-043',{width:1440,height:900});
+ await run('mobile-043',{width:393,height:852});
+ await run('touch-043',{width:393,height:852},true);
  const context=await browser.newContext({viewport:{width:1250,height:820}}),page=await context.newPage();
  try{
   const res=await page.goto(new URL('APP-Applications/responsive-test-studio/versions/0.4.0/',base).href,{waitUntil:'domcontentloaded',timeout:30000});
@@ -98,5 +98,5 @@ try{
  finally{await context.close()}
 }finally{await browser.close()}
 console.log(JSON.stringify({checks,failures},null,2));
-await fs.writeFile(out+'/results-042.json',JSON.stringify({checks,failures},null,2));
+await fs.writeFile(out+'/results-043.json',JSON.stringify({checks,failures},null,2));
 if(failures.length)process.exitCode=1;
