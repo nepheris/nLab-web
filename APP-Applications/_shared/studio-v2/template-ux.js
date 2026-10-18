@@ -85,7 +85,7 @@ export function createTemplateVariablePicker({host,engine,context,getTarget,refr
    const select=document.createElement('select');select.id='uxSaveDateMask';select.setAttribute('aria-label','Format de date');
    for(const [value,label]of DATE_PRESETS){const opt=document.createElement('option');opt.value=value;opt.textContent=label;select.append(opt)}
    const custom=document.createElement('input');custom.id='uxSaveDateCustom';custom.placeholder='Ex. YYYY_MM_DD';custom.setAttribute('aria-label','Masque personnalisé');custom.hidden=true;
-   const apply=()=>{custom.hidden=select.value!=='custom';mask=select.value==='custom'?custom.value:select.value;if(mask&&!/^[A-Za-z0-9 _.,:/+-]{1,80}$/.test(mask)){mask='';if(statusHost)statusHost.textContent='Masque de date invalide.'}for(const chip of box.querySelectorAll('[data-template-token]'))chip.textContent=token(chip.dataset.templateToken);refresh?.()};
+   const apply=()=>{custom.hidden=select.value!=='custom';mask=select.value==='custom'?custom.value:select.value;if(mask&&!/^[A-Za-z0-9 _.,:\/+-]{1,80}$/.test(mask)){mask='';if(statusHost)statusHost.textContent='Masque de date invalide.'}for(const chip of box.querySelectorAll('[data-template-token]'))chip.textContent=token(chip.dataset.templateToken);refresh?.()};
    select.addEventListener('change',apply);custom.addEventListener('input',apply);
    const expl=document.createElement('small');expl.className='uxFamilyHint';expl.textContent='YYYY année · MM mois · DD jour · HH heure · mm minute · ss seconde. Le signe « : » s’ajoute automatiquement.';
    options.append(select,custom,expl);box.append(options)
