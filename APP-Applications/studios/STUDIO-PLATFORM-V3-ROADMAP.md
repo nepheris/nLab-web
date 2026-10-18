@@ -8,9 +8,11 @@
 | CORE-245 | Historique Core complet, une seule source `history.js` et pile `undo-redo.js` : favoris persistants, scope Studio/tous, recherche, filtres Navigation/Type, détail compact/normal/détaillé, fenêtre avancée | IMPLEMENTED TEST | Épinglage réel, modes et filtres Chrome 3 profils |
 | CORE-246 | Gestionnaire de thème partagé `workspace-theme.js/css` : auto/clair/sombre, écoute OS et contraste sur en-tête, menu, ruban, collections, historiques, boutons et dialogues | IMPLEMENTED TEST | Contrast AA ciblé dans le navigateur et contrôle visuel des 3 profils |
 | CORE-247 | Snapshot historique du Lab 0.5.0 validé, version 0.6.0 TEST isolée ; Core 3.8.0 TEST | IMPLEMENTED TEST | `versions.json`, liens historiques et CI |
-| CORE-248 | Tests responsive, clavier, import, zoom/rotation des aperçus, sortie metadata JSON/CSV/TXT, favoris et panneaux flottants | CI PENDING | Chrome desktop/tablette/mobile + revue captures + Android manuel |
+| CORE-248 | Tests responsive, Planche, import, zoom/rotation visuelle, sortie metadata CSV, favoris, thèmes et panneaux flottants | **CI CORE PASS / recette utilisateur PENDING** | Chrome desktop/tablette/mobile, contrôle de contraste AA du titre et captures clair/sombre PASS ; audit Studios et pilote PDF PASS ; Android et validation visuelle de l'utilisateur à faire |
 | CORE-249 | Harmonisation CSS structurelle et adoption Image Studio en TEST, puis PDF, OCR, File et autres | BLOCKED — VALIDATION CORE REQUISE | Opt-in par Studio et nouvelle PR métier ; pas de CURRENT |
 | CORE-250 | Fonctions métier réellement transformatrices (édition PDF/image, OCR, export métier) | hors Core | Garder dans les moteurs spécialisés ; fournir seulement les contrats/facades communs |
+
+**Reste ouvert hors scope :** suite exhaustive spécialisée Image Studio V2 échoue toujours sur son timeout de `tests/studios-v2-exhaustive.mjs:20` ; elle n'est pas considérée validée. Aucun moteur métier Image/ PDF/ OCR n'a été modifié par cette passe.
 
 **Principes :** partir visuellement de la maquette UX 0.5 approuvée, supprimer les interfaces doublonnées, optimiser maintenance et taille CSS, garder les composants canoniques. Aucune validation esthétique définitive supposée pour la 0.6 ; utilisateur teste le Core avant déploiement.
 
