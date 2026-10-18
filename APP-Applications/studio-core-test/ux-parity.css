@@ -210,3 +210,36 @@ body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.col
 body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools>.collectionGroup>.collectionGroupBody{
  display:grid!important;min-height:0!important;height:auto!important;align-items:start;
 }
+
+
+/* File-card structural guarantee: source Core grid styles used grid-area for media;
+   a flex card prevents 2nd-row filename/metadata from being cropped after zoom. */
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools.collection-thumbs .collectionItem,
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools.collection-grid .collectionItem{
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ gap:0!important;height:auto!important;min-height:0!important;overflow:visible!important;
+ position:relative;contain:none;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools .collectionItem .collectionCheck{
+ position:absolute!important;top:7px;left:8px;z-index:4;margin:0!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools.collection-thumbs .collectionItem>.collectionThumb,
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools.collection-grid .collectionItem>.collectionThumb{
+ display:grid!important;flex:0 0 auto!important;align-self:stretch!important;
+ width:100%!important;min-height:100px!important;height:var(--nlab-collection-thumb-height,145px)!important;
+ border-radius:8px 8px 0 0!important;margin:0!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools .collectionItem>button[data-collection-open]{
+ display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important;
+ flex:0 0 auto!important;width:100%!important;min-height:64px!important;
+ text-align:left!important;padding:9px 10px 11px!important;gap:3px!important;
+ position:relative!important;visibility:visible!important;opacity:1!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools .collectionItem>button[data-collection-open] strong{
+ display:block!important;width:100%;font-size:11px!important;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools .collectionItem>button[data-collection-open] small,
+body[data-studio="studio-core-test"] #studioMain.studioUx .collectionBrowser.collectionThumbnailTools .collectionItem>button[data-collection-open] em{
+ display:block!important;max-width:100%;font-size:10px!important;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+}
+body[data-studio="studio-core-test"] .studioGlobalNav #studioCoreSettings{display:none!important}
