@@ -7,8 +7,13 @@ on:
       - 'APP-Applications/_shared/studio-v2/frame.js'
       - 'APP-Applications/_shared/studio-v2/capability-registry.js'
       - 'APP-Applications/responsive-test-studio/app.js'
+      - 'APP-Applications/_shared/studio-v2/settings.js'
+      - 'APP-Applications/_shared/studio-v2/studio.css'
+      - 'APP-Applications/studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md'
+      - 'Library/demo/**'
       - 'APP-Applications/studios/index.html'
       - 'tests/studio-core-test-lab.mjs'
+      - 'tests/demo-explorer-folders.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
   workflow_dispatch:
 permissions:
@@ -30,6 +35,7 @@ jobs:
           node --check APP-Applications/_shared/studio-v2/capability-registry.js
           node --check APP-Applications/responsive-test-studio/app.js
           node --check tests/studio-core-test-lab.mjs
+          node --check tests/demo-explorer-folders.mjs
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -37,7 +43,9 @@ jobs:
           m=json.loads((root/'studio-core-test/manifest.webmanifest').read_text())
           v=json.loads((root/'studio-core-test/versions.json').read_text())
           assert m['display']=='standalone' and m['scope']=='./' and m['start_url']=='./'
-          assert v['current'] is None and v['test']=='0.1.0'
+          assert v['current'] is None and v['test']=='0.2.0'
+          assert any(x['version']=='0.1.0' and x['status']=='historical' for x in v['versions'])
+          assert (root/'studio-core-test/versions/0.1.0/index.html').is_file()
           catalog=json.loads((root/'studios/catalog.json').read_text())
           assert 'studio-core-test' not in [s['id'] for s in catalog['studios']]
           print('Isolated TEST channel: PASS')
@@ -56,6 +64,11 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/studio-core-test-lab.mjs
+      - name: Full demo explorer, folder filter and icon preview acceptance
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/demo-explorer-folders.mjs
       - name: HTTP diagnostics
         if: failure()
         run: tail -100 /tmp/studio-core-lab-http.log || true
