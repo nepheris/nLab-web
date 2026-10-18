@@ -40,6 +40,7 @@ export function mountTemplateProfile({host,onChange}={}){
  let pending=false;
  const persist=()=>{if(pending)return;pending=true;queueMicrotask(()=>{pending=false;saveTemplateProfile(Object.fromEntries(Array.from(inputs,([k,v])=>[k,v.value])));onChange?.()})};
  grid.addEventListener('input',persist);
+ document.addEventListener('studio-v2:template-profile-changed',()=>{const latest=readTemplateProfile();for(const [k,input] of inputs)if(document.activeElement!==input)input.value=latest[k]||''});
  const reset=document.createElement('button');reset.type='button';reset.textContent='Effacer les valeurs locales';reset.addEventListener('click',()=>{for(const input of inputs.values())input.value='';persist()});
  const status=document.createElement('small');status.className='uxProfileHint';status.textContent='Ces paramètres sont personnels au navigateur actuel.';
  const body=document.createElement('div');body.className='uxSaveFields';body.append(intro,grid,reset,status);wrap.append(body);host.append(wrap);
