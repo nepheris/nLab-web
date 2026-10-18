@@ -112,6 +112,7 @@ async function scenario(name,viewport){
   assert((await page.locator('.uxTokenFamily[data-family="date"] [data-template-token="DATE_A"]').textContent()).includes(':DD-MM-YYYY'),name+': formatted date token missing');
   await page.locator('.uxTokenFamily[data-family="date"] .uxToken[data-token-key="DATE_A"] button').nth(1).click();
   assert((await page.locator('#uxSavePattern').inputValue()).includes('{DATE_A:DD-MM-YYYY}'),name+': date insertion failed');
+  await page.locator('.uxTokenFamily[data-family="folder"] summary').click();
   await page.locator('.uxToken[data-token-key="FOLDER"]').hover();
   assert((await page.locator('#uxSaveTokenHelp').textContent()).includes('Dossier parent'),name+': contextual hover variable help missing');
   await page.locator('#uxSaveContent').selectOption('selection');
