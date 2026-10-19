@@ -361,8 +361,32 @@ async function resilienceScenario(){
  }catch(error){reports.push({name:'resilience-url-storage',status:'FAIL',error:String(error?.stack||error),browserErrors:errors})}
  finally{await context.close()}
 }
+async function historicalRouteScenario(){
+ const context=await browser.newContext({viewport:{width:1200,height:800}});const checks=[];
+ try{
+  for(const version of ['0.1.0','0.2.0','0.3.0','0.4.0','0.5.0','0.6.0','0.7.0']){
+   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+   const url=new URL('APP-Applications/studio-core-test/versions/'+version+'/',base).href;
+   try{
+    const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:18000});
+    assert(response?.ok(),'archive '+version+' HTTP failed');
+    assert((await page.title()).includes('Core'),'archive '+version+' HTML identity missing');
+    const app=await page.request.get(new URL('app.js',url).href);
+    assert(app.ok(),'archive '+version+' app.js missing');
+    const manifest=await page.request.get(new URL('manifest.webmanifest',url).href);
+    assert(manifest.ok(),'archive '+version+' manifest missing');
+    await page.waitForTimeout(200);
+    assert(errors.length===0,'archive '+version+' JavaScript errors: '+errors.join('; '));
+    checks.push(version);
+   }finally{await page.close()}
+  }
+  reports.push({name:'historical-routes',status:'PASS',checks:checks.length,extra:'HTTP + JS smoke 0.1 through 0.7'});
+ }catch(error){reports.push({name:'historical-routes',status:'FAIL',error:String(error?.stack||error),validated:checks})}
+ finally{await context.close()}
+}
 try{
  await resilienceScenario();
+ await historicalRouteScenario();
  await scenario('desktop',{width:1440,height:900});
  await scenario('tablette',{width:820,height:1024});
  await scenario('mobile',{width:393,height:852});
