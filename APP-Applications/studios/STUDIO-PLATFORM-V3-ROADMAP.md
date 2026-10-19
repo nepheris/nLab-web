@@ -1,3 +1,22 @@
+## Passe de durcissement Core 3.10 — audit approfondi du 19 octobre 2026
+
+**Périmètre :** PR [#93](https://github.com/nepheris/nLab-web/pull/93), branche `studio-core-3-10-ux-polish-20261019`. Exclusivement TEST ; ni `main` ni CURRENT ni les archives ne sont promues. La réparation de composants Core réutilisés reste compatible par défaut avec les autres Studios ; tester tous les consommateurs avant adoption.
+
+| ID | Risque / correction | État de code | Gate restant |
+|---|---|---|---|
+| CORE-271 | Import profil : rejeter une date impossible (30 février, mois erroné), conserver les valeurs après rejet ; accepter le 29 février bissextile | PATCHED TEST + tests Playwright | Core CI Chrome 3 tailles, appareils réels |
+| CORE-272 | Import URL : refuser protocoles hors HTTP(S), pages HTML présentées comme fichier, réponse vide, HTTP erroné, timeout et excès de taille (lecture streaming plafonnée), expliquer les erreurs CORS | PATCHED TEST + tests browser simulés | Core CI ; diagnostic de vrais hôtes externes CORS |
+| CORE-273 | Collection partagée : aucune dépendance fatale au `localStorage` (navigation privée / SecurityError), options restaurées strictement, groupes invalides ignorés | PATCHED TEST + test stockage refusé | Core CI + régressions consommateurs |
+| CORE-274 | Fenêtres : panneau détaché reste visible en changeant d'onglet ; rattachement idempotent ; véritables liens `tab` ↔ `tabpanel` et parcours clavier | PATCHED TEST + tests navigateur | Core CI 3 tailles + inspection clavier réelle |
+| CORE-275 | Versions 0.1.0–0.7.0 : smoke HTTP de chaque archive et des ressources `app.js` et manifeste, détection d'erreurs JavaScript navigateur | TESTS AJOUTÉS | Core CI ; approfondir les comportements individuels par version |
+| CORE-276 | CI exhaustif Image Studio V2 | FAIL préexistant, **pas** un PASS Core | Diagnostic précis et correction dans chantier métier distinct, sans relever artificiellement le seuil |
+| CORE-277 | Tests Android Chrome natif, permission dossier, plein écran, invitation PWA et stockage local réel | HUMAN DEVICE GATE | Non exécuté dans la CI |
+| CORE-278 | Contrôle des versions CURRENT/TEST/historiques et plan de retour arrière avant fusion | OPEN | Inspection registry + matrice HTTP + CI générale |
+
+**Gates de merge :** Core Chrome + audit + PDF pilote PASS sur le dernier commit, vérification des historiques, échecs CI distincts explicités et décision de validation utilisateur. Une PR « mergeable » n'est pas équivalente à une release acceptable. Les fichiers personnels importés ne doivent jamais être ajoutés au dépôt.
+
+---
+
 ## Studio Core 3.10.0 TEST / Lab 0.8.0 — stabilisation ergonomique (19 octobre 2026)
 
 **Décision :** Core d’abord ; conserver le visuel de la maquette 0.5 validée et la charpente Lab 0.7. Aucune migration métier, pas de changement de CURRENT.
