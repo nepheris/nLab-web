@@ -43,7 +43,11 @@ export function mountStudioWorkspace({main,tabs=[],initial='files',title='Planch
  main.querySelector('#studioUxDetach').addEventListener('click',()=>{
   const detachedId=active,panel=nodes.get(detachedId);if(!panel)return;
   const existing=document.querySelector('[data-ux-float="'+detachedId+'"]');if(existing){existing.querySelector('[data-ux-float-close]').click();return}
-  const floater=document.createElement('div');floater.className='studioUxFloat studioWindow';floater.dataset.uxFloat=detachedId;floater.innerHTML='<header class="studioUxFloatHead"><strong>'+esc(tabs.find(t=>t.id===detachedId)?.label||detachedId)+'</strong><button type="button" data-ux-float-close aria-label="Rattacher">↙ Rattacher</button></header><div class="studioUxFloatBody"></div>';floater.querySelector('.studioUxFloatBody').append(panel);document.body.append(floater);const reattach=()=>{if(panel.parentElement===host)return;host.append(panel);floater.remove();switchTab(detachedId)};
+  const floater=document.createElement('div');floater.className='studioUxFloat studioWindow';floater.dataset.uxFloat=detachedId;floater.innerHTML='<header class="studioUxFloatHead"><strong>'+esc(tabs.find(t=>t.id===detachedId)?.label||detachedId)+'</strong><button type="button" data-ux-float-close aria-label="Rattacher">↙ Rattacher</button></header><div class="studioUxFloatBody"></div>';floater.querySelector('.studioUxFloatBody').append(panel);document.body.append(floater);
+  // Keep the shared rail accessible when a window is first detached on tablet/desktop.
+  // The window manager can still restore an explicitly moved position from its preferences.
+  if(innerWidth>700){const railRight=nav.getBoundingClientRect().right,windowWidth=Math.min(400,innerWidth*.9);floater.style.left=Math.max(8,Math.min(railRight+16,innerWidth-windowWidth-8))+'px'}
+  const reattach=()=>{if(panel.parentElement===host)return;host.append(panel);floater.remove();switchTab(detachedId)};
   floater.querySelector('[data-ux-float-close]').addEventListener('click',reattach);floater.addEventListener('studio-window-close',reattach);floater.hidden=false;
   // Use the same shared draggable/dockable Studio window manager as PDF Studio.
   import('./window-system.js').then(m=>m.enhanceStudioWindow(floater,{key:'core-ux-'+detachedId,title:'Panneau · '+detachedId})).catch(()=>{});
