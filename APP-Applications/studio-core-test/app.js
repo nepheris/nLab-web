@@ -225,15 +225,15 @@ try{
  for(const name of ['dragleave','dragend'])drop.addEventListener(name,e=>{e.preventDefault();drop.classList.remove('dragOver')});
  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('dragOver');appendFiles(e.dataTransfer?.files)});
  updateCollectionControls();
- const labUx=mountCoreLabUx({main:$('#studioMain'),collection,appendFiles,rotateSelection,clearCollection});
- const openAcquisition=async()=>{
+ const labUx=mountCoreLabUx({main:$('#studioMain'),collection,appendFiles,rotateSelection,clearCollection,onAcquire:options=>openAcquisition(options)});
+ async function openAcquisition(options={}){
   try{
-   const selected=await openInputPicker({multiple:true,folders:true,url:true,preserveSession:true,view:'icon'});
+   const selected=await openInputPicker({multiple:true,folders:true,url:true,preserveSession:true,view:'icon',...options});
    if(!selected)return;
    appendFiles(selected);
   }catch(error){$('#labAcquiredInfo').textContent='Sélection impossible : '+(error.message||error)}
- };
- $('#labPickerOpen').addEventListener('click',openAcquisition);
+ }
+ $('#labPickerOpen').addEventListener('click',()=>openAcquisition());
  document.addEventListener('studio-v2:action',e=>{
   if(e.detail?.action==='core.acquire')openAcquisition();
  });
