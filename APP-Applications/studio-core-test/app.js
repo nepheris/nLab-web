@@ -275,6 +275,6 @@ try{
  window.NLabCoreLab={runChecks,getSample:readSample,getHistory:getUndoRedoState,versionInfo,collection,labUx};
 }catch(error){
  document.documentElement.dataset.coreLabReady='error';
- $('#labCheckSummary').textContent='Initialisation du Core impossible : '+(error.message||error);
+ $('#labCheckSummary').textContent='Initialisation du Core impossible : '+(error.stack||error.message||error);
  console.error('Studio Core Test Lab',error);
 }
