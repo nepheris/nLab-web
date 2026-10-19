@@ -147,3 +147,15 @@ body[data-studio="studio-core-test"] .studioRibbon [data-studio-action="core.ful
  body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility button{font-size:10px;padding:5px 6px}
  body[data-studio="studio-core-test"] .uxSaveDialog .uxDateVisualFields{grid-template-columns:minmax(0,1fr)}
 }
+
+
+/* Leave old diagnostic bindings mounted, but display only one compact widget for sizing and selection. */
+body[data-studio="studio-core-test"] #studioMain #labThumbMinus,
+body[data-studio="studio-core-test"] #studioMain #labThumbPlus,
+body[data-studio="studio-core-test"] #studioMain #labThumbAuto,
+body[data-studio="studio-core-test"] #studioMain #labThumbSize,
+body[data-studio="studio-core-test"] #studioMain #labSelectAllFiles,
+body[data-studio="studio-core-test"] #studioMain #labInvertFiles{display:none!important}
+body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility #uxBottomUndo,
+body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility #uxBottomRedo{background:var(--ux-soft,#eef4fa)}
+body[data-studio="studio-core-test"] #studioMain #uxSelectionToggle{background:var(--ux-accent-soft,#e2effa)}
