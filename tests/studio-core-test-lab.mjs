@@ -86,7 +86,7 @@ async function scenario(name,viewport){
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': conditional deselection failed');
   await page.locator('#uxTopSelect').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': conditional select all failed');
-  await page.locator('#uxFileInvert').click();
+  await page.locator('#uxInvertMain').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': invert selection failed');
   await page.locator('#uxTopSelect').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': top selection toggle failed');
