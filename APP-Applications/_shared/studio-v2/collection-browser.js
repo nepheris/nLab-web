@@ -1,22 +1,29 @@
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const bytes=n=>{n=Number(n)||0;if(n<1024)return n+' o';if(n<1048576)return(n/1024).toFixed(n<10240?1:0)+' Ko';return(n/1048576).toFixed(1)+' Mo'};
 const ext=n=>(String(n||'').toLowerCase().match(/\.([a-z0-9]+)$/)?.[1]||'');
+const preference=(key,fallback='')=>{try{return localStorage.getItem(key)??fallback}catch{return fallback}};
+const remember=(key,value)=>{try{localStorage.setItem(key,String(value))}catch{}};
 export class CollectionBrowser extends EventTarget{
  constructor({host,view='list',key='collection',getThumbnail=null,thumbnailTools=false}={}){
   super();this.host=host;this.key=key;this.items=[];this.selected=new Set();this.activeId=null;
-  this.view=localStorage.getItem('nlab-studio-v2-'+key+'-view')||view;this.sortMode=localStorage.getItem('nlab-studio-v2-'+key+'-sort')||'name';this.sortDirection=Number(localStorage.getItem('nlab-studio-v2-'+key+'-dir')||1);this.groupBy=localStorage.getItem('nlab-studio-v2-'+key+'-group')||'none';this.getThumbnail=getThumbnail;this.groupState=this.loadGroupState();
-  this.thumbnailTools=Boolean(thumbnailTools);this.thumbnailSize=this.thumbnailTools?(localStorage.getItem('nlab-studio-v2-'+key+'-thumbsize')||'auto'):'auto';
+  const stored='nlab-studio-v2-'+key+'-';
+  this.view=['list','grid','thumbs'].includes(preference(stored+'view',view))?preference(stored+'view',view):'list';
+  this.sortMode=['name','size','type','path','pages','selected'].includes(preference(stored+'sort','name'))?preference(stored+'sort','name'):'name';
+  this.sortDirection=Number(preference(stored+'dir','1'))<0?-1:1;
+  this.groupBy=['none','path','type','size','pages','selected'].includes(preference(stored+'group','none'))?preference(stored+'group','none'):'none';
+  this.getThumbnail=getThumbnail;this.groupState=this.loadGroupState();
+  this.thumbnailTools=Boolean(thumbnailTools);this.thumbnailSize=this.thumbnailTools?preference(stored+'thumbsize','auto'):'auto';
   if(this.thumbnailTools&&this.host&&'ResizeObserver'in window){this.resizeObserver=new ResizeObserver(()=>this.updateThumbnailSizing());this.resizeObserver.observe(this.host)}
  }
- loadGroupState(){try{return JSON.parse(localStorage.getItem('nlab-studio-v2-'+this.key+'-groups')||'{}')}catch{return{}}}
- saveGroupState(){localStorage.setItem('nlab-studio-v2-'+this.key+'-groups',JSON.stringify(this.groupState))}
+ loadGroupState(){try{const value=JSON.parse(preference('nlab-studio-v2-'+this.key+'-groups','{}'));return value&&typeof value==='object'&&!Array.isArray(value)?Object.assign(Object.create(null),value):Object.create(null)}catch{return Object.create(null)}}
+ saveGroupState(){remember('nlab-studio-v2-'+this.key+'-groups',JSON.stringify(this.groupState))}
  normalize(x,i){const data=x.data??x,f=data?.file||data;return{id:x.id||('item-'+i),label:x.label||x.name||f?.name||('Élément '+(i+1)),subtitle:x.subtitle||x.type||'',thumb:x.thumb||'',data,size:x.size??f?.size??0,type:x.type||f?.type||'',extension:x.extension||ext(x.label||x.name||f?.name),pages:x.pages??x.meta?.pages??null,relativePath:x.relativePath||data?.relativePath||f?.webkitRelativePath||'',meta:{rotation:((Number(x.meta?.rotation??f?.__nlabRotation)||0)%360+360)%360,...(x.meta||{})}}}
  setItems(items=[]){const prior=this.activeId;this.items=items.map((x,i)=>this.normalize(x,i));this.selected=new Set([...this.selected].filter(id=>this.items.some(x=>x.id===id)));this.activeId=this.items.some(x=>x.id===prior)?prior:(this.items[0]?.id||null);this.sort(false);this.render();return this}
  updateItem(id,patch={}){const x=this.items.find(i=>i.id===id);if(!x)return null;Object.assign(x,patch);this.render();return x}
  setThumbnailSize(value='auto'){
   if(!this.thumbnailTools)return null;
   this.thumbnailSize=value==='auto'?'auto':Math.max(100,Math.min(320,Math.round(Number(value)||160)));
-  localStorage.setItem('nlab-studio-v2-'+this.key+'-thumbsize',String(this.thumbnailSize));this.updateThumbnailSizing();
+  remember('nlab-studio-v2-'+this.key+'-thumbsize',String(this.thumbnailSize));this.updateThumbnailSizing();
   this.dispatchEvent(new CustomEvent('thumbnail-size',{detail:{size:this.thumbnailSize}}));return this.thumbnailSize
  }
  updateThumbnailSizing(){
@@ -41,10 +48,10 @@ export class CollectionBrowser extends EventTarget{
   item.meta.rotation=((Number(item.meta.rotation||0)+Number(delta))%360+360)%360;
   this.render();this.dispatchEvent(new CustomEvent('rotate',{detail:{item,rotation:item.meta.rotation,delta:Number(delta)}}));return item.meta.rotation
  }
- setView(view){this.view=['list','grid','thumbs'].includes(view)?view:'list';localStorage.setItem('nlab-studio-v2-'+this.key+'-view',this.view);this.render()}
- setSort(mode='name',direction=1){this.sortMode=mode;this.sortDirection=direction<0?-1:1;localStorage.setItem('nlab-studio-v2-'+this.key+'-sort',this.sortMode);localStorage.setItem('nlab-studio-v2-'+this.key+'-dir',String(this.sortDirection));this.sort();this.render()}
+ setView(view){this.view=['list','grid','thumbs'].includes(view)?view:'list';remember('nlab-studio-v2-'+this.key+'-view',this.view);this.render()}
+ setSort(mode='name',direction=1){this.sortMode=mode;this.sortDirection=direction<0?-1:1;remember('nlab-studio-v2-'+this.key+'-sort',this.sortMode);remember('nlab-studio-v2-'+this.key+'-dir',String(this.sortDirection));this.sort();this.render()}
  sort(render=true){const d=this.sortDirection,mode=this.sortMode;this.items.sort((a,b)=>{let r=0;if(mode==='size')r=a.size-b.size;else if(mode==='type')r=a.extension.localeCompare(b.extension,'fr');else if(mode==='path')r=(a.relativePath||a.label).localeCompare(b.relativePath||b.label,'fr');else if(mode==='pages')r=(a.pages||0)-(b.pages||0);else if(mode==='selected')r=Number(this.selected.has(b.id))-Number(this.selected.has(a.id));else r=a.label.localeCompare(b.label,'fr');return r*d});if(render)this.render();return this.items}
- setGroupBy(mode='none'){this.groupBy=['none','path','type','size','pages','selected'].includes(mode)?mode:'none';localStorage.setItem('nlab-studio-v2-'+this.key+'-group',this.groupBy);this.render()}
+ setGroupBy(mode='none'){this.groupBy=['none','path','type','size','pages','selected'].includes(mode)?mode:'none';remember('nlab-studio-v2-'+this.key+'-group',this.groupBy);this.render()}
  toggleGroup(key){this.groupState[key]=!(this.groupState[key]!==false);this.saveGroupState();this.render()}
  collapseGroups(){const keys=[...new Set(this.items.map(x=>this.groupKey(x)).filter(Boolean))];for(const k of keys)this.groupState[k]=false;this.saveGroupState();this.render()}
  expandGroups(){const keys=[...new Set(this.items.map(x=>this.groupKey(x)).filter(Boolean))];for(const k of keys)this.groupState[k]=true;this.saveGroupState();this.render()}
