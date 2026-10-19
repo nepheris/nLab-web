@@ -61,12 +61,12 @@ async function scenario(name,viewport){
 
   const initial=await page.locator('#labThumbSize').textContent();
   assert(initial==='Auto',name+': auto-fit should be default');
-  await page.locator('#labThumbPlus').click();
+  await page.locator('#uxTilePlus').click();
   assert(/px/.test(await page.locator('#labThumbSize').textContent()),name+': thumbnail zoom + did not change size');
   const grown=await page.locator('#labThumbSize').textContent();
-  await page.locator('#labThumbMinus').click();
+  await page.locator('#uxTileMinus').click();
   assert((await page.locator('#labThumbSize').textContent())!==grown,name+': thumbnail zoom - did not change size');
-  await page.locator('#labThumbAuto').click();
+  await page.locator('#uxTileAuto').click();
   assert((await page.locator('#labThumbSize').textContent())==='Auto',name+': auto-fit reset missing');
   await page.locator('#labViewList').click();
   assert(await page.locator('#labCollection').evaluate(el=>el.classList.contains('collection-list')),name+': list view missing');
@@ -74,7 +74,7 @@ async function scenario(name,viewport){
   assert(await page.locator('#labCollection').evaluate(el=>el.classList.contains('collection-thumbs')),name+': thumbnail view missing');
   // The rotate controls are intentionally hidden on small thumbnail cards.
   // Enlarge cards before checking the contextual buttons.
-  for(let i=0;i<7;i++)await page.locator('#labThumbPlus').click();
+  for(let i=0;i<7;i++)await page.locator('#uxTilePlus').click();
   const rotateDiagnostics=await page.locator('#labCollection .collectionItem').first().evaluate(card=>{const button=card.querySelector('[data-collection-rotate="90"]'),tools=button?.parentElement,thumb=card.querySelector('.collectionThumb');return{cardWidth:card.getBoundingClientRect().width,enabled:card.dataset.rotateEnabled,view:card.closest('.collectionBrowser')?.className,toolsDisplay:tools?getComputedStyle(tools).display:'none',buttonDisplay:button?getComputedStyle(button).display:'none',thumbWidth:thumb?.getBoundingClientRect().width,zoom:card.closest('.collectionBrowser')?.dataset.thumbnailSize}});
   assert(await page.locator('#labCollection .collectionThumbTools [data-collection-rotate="90"]').first().isVisible(),name+': rotate action should be visible on large thumbnails; '+JSON.stringify(rotateDiagnostics));
   await page.locator('#labCollection .collectionThumbTools [data-collection-rotate="90"]').first().click();
@@ -82,9 +82,9 @@ async function scenario(name,viewport){
   assert(await page.evaluate(()=>window.NLABStudioUndoRedo?.get?.().undoDepth>=1),name+': thumbnail rotation missing undo transaction');
   await page.locator('#labFilesNative').setInputFiles([{name:'image-1.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="#00f"/></svg>')},{name:'image-2.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="#f00"/></svg>')}]);
   assert((await page.locator('#labCollection .collectionItem').count())===3,name+': multi-file collection expected three items');
-  await page.locator('#labSelectAllFiles').click();
+  await page.locator('#uxTopSelect').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': select all failed');
-  await page.locator('#labInvertFiles').click();
+  await page.locator('#uxFileInvert').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': invert selection failed');
   await page.locator('#uxTopSelect').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': top selection toggle failed');
@@ -106,7 +106,7 @@ async function scenario(name,viewport){
   await page.locator('#uxTopSelect').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': deselection toggle missing');
   await page.locator('#uxTextSize').fill('12');await page.locator('#uxTextSize').press('Tab');
-  await page.locator('#labThumbAuto').click();
+  await page.locator('#uxTileAuto').click();
 
   const resp=await page.locator('#labResponsiveLink').getAttribute('href');
   assert(resp.includes('responsive-test-studio/')&&resp.includes('url='),name+': responsive launcher URL invalid');
@@ -241,7 +241,7 @@ async function scenario(name,viewport){
   await page.locator('#uxCollectionFilter').fill('Inventaire');
   assert((await page.locator('#uxSearchCount').textContent()).includes('1 résultat'),name+': central collection filtering failed');
   await page.locator('#uxCollectionFilter').fill('');
-  await page.locator('#labThumbAuto').click();
+  await page.locator('#uxTileAuto').click();
   await page.locator('#uxCollectionGrouping').selectOption('none');
   await mkdir('artifacts/core-lab-ux',{recursive:true});
   if(viewport.width<=700)await page.locator('#studioUxMobileOpen').click();
