@@ -215,6 +215,20 @@ async function scenario(name,viewport){
   });
   await page.waitForFunction(()=>document.querySelector('.uxPersonalPanel [data-template-profile="SITE"]')?.value==='Site local',null,{timeout:2000});
   assert(await page.locator('.uxPersonalPanel [data-template-profile="SITE"]').inputValue()==='Site local',name+': local JSON import failed');
+  // An imported profile must reject impossible Gregorian dates atomically, not silently roll into March.
+  const importProfile=page.locator('.uxPersonalPanel [data-profile-import="true"]');
+  await importProfile.setInputFiles({
+    name:'invalid-calendar-date.json',mimeType:'application/json',
+    buffer:Buffer.from(JSON.stringify({schema:'nlab-studio-template-profile',version:1,variables:{SITE:'Should not overwrite',DATE_A:'2025-02-30'}}))
+  });
+  await page.waitForFunction(()=>document.querySelector('.uxPersonalPanel [role="status"]')?.textContent?.includes('Date invalide : DATE_A'),null,{timeout:3000});
+  assert(await page.locator('.uxPersonalPanel [data-template-profile="SITE"]').inputValue()==='Site local',name+': invalid JSON date partially overwrote saved profile');
+  await importProfile.setInputFiles({
+    name:'valid-leap-date.json',mimeType:'application/json',
+    buffer:Buffer.from(JSON.stringify({schema:'nlab-studio-template-profile',version:1,variables:{FIRST_NAME:'Essai',SITE:'Site local',DATE_A:'2024-02-29'}}))
+  });
+  await page.waitForFunction(()=>document.querySelector('.uxPersonalPanel [data-template-profile="DATE_A"]')?.value==='2024-02-29',null,{timeout:3000});
+  assert(await page.locator('.uxPersonalPanel [data-template-profile="DATE_A"]').inputValue()==='2024-02-29',name+': valid leap date rejected');
   await page.locator('[data-ux-tab="settings"]').click();
   await page.locator('#uxDisplayMode').selectOption('tablet');
   assert(await page.locator('#studioMain').getAttribute('data-preview-profile')==='tablet',name+': tablet simulation missing');
