@@ -257,9 +257,16 @@ async function scenario(name,viewport){
   assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='light',name+': light theme missing');
   assert((await page.locator('body').getAttribute('data-studio-ux-theme'))==='light',name+': light theme not global');
   if(viewport.width>700){
+   const settingsTab=page.locator('.studioUxRail [data-ux-tab="settings"]');
+   const controlled=await settingsTab.getAttribute('aria-controls');
+   assert(controlled!==null&&await page.locator('#'+controlled).getAttribute('role')==='tabpanel',name+': tab/tabpanel ARIA relationship missing');
+   assert(await settingsTab.getAttribute('aria-selected')==='true'&&await settingsTab.getAttribute('tabindex')==='0',name+': current tab keyboard state missing');
    await page.locator('#studioUxDetach').click();
-   assert(await page.locator('.studioUxFloat[data-ux-float="settings"]').isVisible(),name+': floating panel missing');
-   await page.locator('.studioUxFloat[data-ux-float="settings"] [data-ux-float-close]').click();
+   const floating=page.locator('.studioUxFloat[data-ux-float="settings"]');
+   assert(await floating.isVisible(),name+': floating panel missing');
+   await page.locator('[data-ux-tab="history"]').click();
+   assert(await floating.locator('#uxTheme').isVisible(),name+': detached settings became hidden when switching tabs');
+   await floating.locator('[data-ux-float-close]').click();
    assert(await page.locator('.studioUxTabPanel[data-ux-panel="settings"] #uxTheme').count()===1,name+': panel reattachment failed');
   }
   if(viewport.width>1000){
