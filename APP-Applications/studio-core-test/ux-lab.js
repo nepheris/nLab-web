@@ -121,7 +121,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  const saveButton=cmd('▣ Enregistrer','uxSaveOpen',()=>{},'Enregistrer les métadonnées');
  const saveAsButton=cmd('⇩ Enregistrer sous','uxSaveAsOpen',()=>{},'Enregistrer les métadonnées sous un autre nom');
  const viewBtn=cmd('◉ Aperçu','uxTogglePreview',()=>{},'Afficher ou masquer l’aperçu');
- const displayBtn=cmd('⚙ Affichage','uxDisplayButton',()=>$('#studioVisibilityOpen')?.click(),'Afficher les commandes et groupes du ruban');
+ // La commande Affichage canonique est déplacée dans le ruban, sans second bouton proxy.
  ws.actions.append(ribbon);
  surfacePanel.addEventListener('click',e=>{
   const action=e.target.closest('[data-surface-action]')?.dataset.surfaceAction;
