@@ -163,18 +163,18 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  const sizeBar=make('div','uxSizingControls','<label class="uxSizeGroup" title="Taille des vignettes"><span>▦</span><button type="button" id="uxTileMinus" aria-label="Réduire les vignettes">−</button><input type="number" id="uxTileSize" min="100" max="320" step="1" aria-label="Taille des vignettes en pixels"><span>px</span><button type="button" id="uxTilePlus" aria-label="Agrandir les vignettes">+</button><button type="button" id="uxTileAuto">Auto</button></label><label class="uxSizeGroup" title="Taille du texte"><span>Texte</span><button type="button" id="uxTextMinus" aria-label="Réduire le texte">−</button><input type="number" id="uxTextSize" min="10" max="18" step="1" aria-label="Taille des libellés en pixels"><span>px</span><button type="button" id="uxTextPlus" aria-label="Agrandir le texte">+</button></label>');
  ctrl.append(sizeBar);
  const textKey='nlab:core-lab:text-size';
- const textSize=()=>Math.max(10,Math.min(18,Math.round(Number($('#uxTextSize').value)||12)));
- const changeText=n=>{const size=Math.max(10,Math.min(18,Math.round(Number(n)||12)));$('#uxTextSize').value=String(size);coll.style.setProperty('--ux-file-font',size+'px');safeStore(textKey,size)};
- $('#uxTextSize').addEventListener('change',()=>changeText(textSize()));
- $('#uxTextMinus').addEventListener('click',()=>changeText(textSize()-1));
- $('#uxTextPlus').addEventListener('click',()=>changeText(textSize()+1));
+ const textSize=()=>Math.max(10,Math.min(18,Math.round(Number(sizeBar.querySelector('#uxTextSize').value)||12)));
+ const changeText=n=>{const size=Math.max(10,Math.min(18,Math.round(Number(n)||12)));sizeBar.querySelector('#uxTextSize').value=String(size);coll.style.setProperty('--ux-file-font',size+'px');safeStore(textKey,size)};
+ sizeBar.querySelector('#uxTextSize').addEventListener('change',()=>changeText(textSize()));
+ sizeBar.querySelector('#uxTextMinus').addEventListener('click',()=>changeText(textSize()-1));
+ sizeBar.querySelector('#uxTextPlus').addEventListener('click',()=>changeText(textSize()+1));
  changeText(safeRead(textKey,'12'));
- const updateTile=()=>{$('#uxTileSize').value=String(collection.thumbnailSize==='auto'?(parseInt(coll.style.getPropertyValue('--nlab-collection-card-width'),10)||170):collection.thumbnailSize)};
+ const updateTile=()=>{sizeBar.querySelector('#uxTileSize').value=String(collection.thumbnailSize==='auto'?(parseInt(coll.style.getPropertyValue('--nlab-collection-card-width'),10)||170):collection.thumbnailSize)};
  const resizeTile=n=>{collection.setThumbnailSize(Math.max(100,Math.min(320,Math.round(Number(n)||170))));updateTile()};
- $('#uxTileMinus').addEventListener('click',()=>resizeTile(Number($('#uxTileSize').value)-16));
- $('#uxTilePlus').addEventListener('click',()=>resizeTile(Number($('#uxTileSize').value)+16));
- $('#uxTileSize').addEventListener('change',()=>resizeTile($('#uxTileSize').value));
- $('#uxTileAuto').addEventListener('click',()=>{collection.setThumbnailSize('auto');updateTile()});
+ sizeBar.querySelector('#uxTileMinus').addEventListener('click',()=>resizeTile(Number(sizeBar.querySelector('#uxTileSize').value)-16));
+ sizeBar.querySelector('#uxTilePlus').addEventListener('click',()=>resizeTile(Number(sizeBar.querySelector('#uxTileSize').value)+16));
+ sizeBar.querySelector('#uxTileSize').addEventListener('change',()=>resizeTile(sizeBar.querySelector('#uxTileSize').value));
+ sizeBar.querySelector('#uxTileAuto').addEventListener('click',()=>{collection.setThumbnailSize('auto');updateTile()});
  collection.addEventListener('thumbnail-size',updateTile);updateTile();
  const refreshSelectionActions=()=>{
   const all=collection.items.length>0&&collection.selected.size===collection.items.length;
