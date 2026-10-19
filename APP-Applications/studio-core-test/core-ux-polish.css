@@ -248,3 +248,8 @@ body[data-studio="studio-core-test"] .studioStatus[data-core-owned]{
  }
  body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav .studioNavAction{display:none!important}
 }
+
+
+/* Window restoration has its own "Fenêtres" rail tab in Core Test Lab.
+   Do not draw a second floating restore tray over the work surface. */
+body[data-studio="studio-core-test"] #studioWindowRestoreTray{display:none!important}
