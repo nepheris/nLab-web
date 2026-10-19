@@ -20,7 +20,7 @@ const csv=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
 const safeStore=(key,value)=>{try{localStorage.setItem(key,String(value))}catch{}};
 const safeRead=(key,fallback)=>{try{return localStorage.getItem(key)??fallback}catch{return fallback}};
 
-export function mountCoreLabUx({main,collection,appendFiles}){
+export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clearCollection,onAcquire}){
  const legacyAside=main.querySelector(':scope>.labSidebar');
  const oldViewer=main.querySelector(':scope>.viewer');
  const panels=Array.from(oldViewer.children);
@@ -94,18 +94,31 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  proxy(displayGroup,'⚙','Réglages',()=>$('#studioCoreSettings')?.click());
  coreRibbon?.insertBefore(displayGroup,toggle);
  const ribbon=make('div','labToolbar uxWorkMainActions','');
- ribbon.append(picker);
- const upload=make('button','','▣ Dossier');upload.type='button';upload.title='Parcourir un dossier dans le sélecteur canonique';upload.addEventListener('click',()=>picker.click());ribbon.append(upload);
- const saveButton=make('button','','▣ Enregistrer');saveButton.id='uxSaveOpen';saveButton.type='button';ribbon.append(saveButton);
- const saveAsButton=make('button','','⇩ Enregistrer sous');saveAsButton.id='uxSaveAsOpen';saveAsButton.type='button';ribbon.append(saveAsButton);
- const viewBtn=make('button','','◉ Aperçu');viewBtn.type='button';viewBtn.id='uxTogglePreview';ribbon.append(viewBtn);
+ ribbon.append(picker);picker.textContent='↥ Importer';picker.title='Importer des fichiers, un dossier ou une URL';
+ const cmd=(label,id,handler,title='')=>{
+  const b=make('button','',label);b.type='button';b.id=id;if(title)b.title=title;b.addEventListener('click',handler);ribbon.append(b);return b
+ };
+ cmd('▤ Fichier','uxTopFile',()=>onAcquire?.({folders:false,url:true}),'Ouvrir le sélecteur de fichiers');
+ cmd('▱ Dossier','uxTopFolder',()=>onAcquire?.({folders:true,url:false}),'Ouvrir un dossier dans le sélecteur');
+ cmd('✕ Effacer','uxTopClear',()=>clearCollection?.(),'Vider la collection (annulable)');
+ const selectAllBtn=cmd('☑ Tout sélectionner','uxTopSelect',()=>collection.selected.size===collection.items.length?collection.clearSelection():collection.selectAll(),'Sélectionner ou désélectionner');
+ const selectedBtn=cmd('◉ Utiliser sélection','uxTopUseSelection',()=>useSelection(),'Afficher les fichiers cochés dans l’aperçu');
+ cmd('↶ Annuler','uxTopUndo',()=>$('#uxUndo')?.click(),'Annuler la dernière opération');
+ const saveButton=cmd('▣ Enregistrer','uxSaveOpen',()=>{},'Enregistrer les métadonnées');
+ const saveAsButton=cmd('⇩ Enregistrer sous','uxSaveAsOpen',()=>{},'Enregistrer les métadonnées sous un autre nom');
+ const viewBtn=cmd('◉ Aperçu','uxTogglePreview',()=>{},'Afficher ou masquer l’aperçu');
+ const displayBtn=cmd('⚙ Affichage','uxDisplayButton',()=>{},'Configurer les zones visibles et le ruban');
  ws.actions.append(ribbon);
- surfacePanel.addEventListener('click',e=>{const action=e.target.closest('[data-surface-action]')?.dataset.surfaceAction;const target={import:'#labPickerOpen',list:'#labViewList',thumbs:'#labViewThumbs',preview:'#uxTogglePreview',save:'#uxSaveOpen','save-as':'#uxSaveAsOpen'}[action];if(target)$(target)?.click()});
+ surfacePanel.addEventListener('click',e=>{
+  const action=e.target.closest('[data-surface-action]')?.dataset.surfaceAction;
+  const target={import:'#labPickerOpen',list:'#labViewList',thumbs:'#labViewThumbs',preview:'#uxTogglePreview',save:'#uxSaveOpen','save-as':'#uxSaveAsOpen'}[action];
+  if(target)$(target)?.click()
+ });
  const heading=make('div','studioUxInfoRow','<div><strong>Collection de fichiers</strong><span> · Cliquer pour activer et cocher pour sélectionner</span></div><span id="uxCollectionCount">0 fichier</span>');
  ctrl.classList.add('uxCollectionToolbar');
  const groupLabel=document.createElement('label');groupLabel.textContent='Regrouper : ';
  const groupSelect=document.createElement('select');groupSelect.id='uxCollectionGrouping';
- for(const [value,label] of [['none','À plat'],['path','Dossier'],['type','Type'],['selected','Sélection']]){
+ for(const [value,label] of [['none','À plat'],['path','Dossier'],['type','Type'],['size','Taille'],['pages','Pages'],['selected','Sélection']]){
   const opt=document.createElement('option');opt.value=value;opt.textContent=label;groupSelect.append(opt);
  }
  groupSelect.value=collection.groupBy;groupLabel.append(groupSelect);
@@ -113,6 +126,51 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const selectVisible=document.createElement('button');selectVisible.id='uxSelectVisibleMain';selectVisible.type='button';selectVisible.textContent='Choisir visibles';
  ctrl.append(groupLabel,centralFilter,selectVisible);
  groupSelect.addEventListener('change',()=>collection.setGroupBy(groupSelect.value));
+
+ const utilityBar=make('div','uxCollectionUtility');
+ const selectToggle=make('button','','☑ Tout sélectionner');selectToggle.id='uxSelectionToggle';selectToggle.type='button';
+ selectToggle.addEventListener('click',()=>selectAllBtn.click());
+ const selectedBottom=make('button','','◉ Utiliser sélection');selectedBottom.id='uxUseSelectionBottom';selectedBottom.type='button';selectedBottom.addEventListener('click',()=>selectedBtn.click());
+ const allRotate=make('label','uxRotateSelectionLabel','<input type="checkbox" id="uxRotateAll"> Appliquer à toute la sélection');
+ const left=make('button','','↶ −90°');left.id='uxRotateLeft';left.type='button';
+ const right=make('button','','↷ +90°');right.id='uxRotateRight';right.type='button';
+ const doRotate=delta=>{const count=rotateSelection?.(delta,$('#uxRotateAll').checked)||0;
+  if(!count)$('#uxCollectionInfo').textContent='Sélectionnez au moins un élément avant la rotation.'
+ };
+ left.addEventListener('click',()=>doRotate(-90));right.addEventListener('click',()=>doRotate(90));
+ const foldAll=make('button','','▴ Tout replier');foldAll.id='uxCollapseGroups';foldAll.type='button';foldAll.addEventListener('click',()=>collection.collapseGroups());
+ const expandAll=make('button','','▾ Tout déplier');expandAll.id='uxExpandGroups';expandAll.type='button';expandAll.addEventListener('click',()=>collection.expandGroups());
+ const dir=make('button','','A → Z');dir.id='uxSortDirection';dir.type='button';
+ dir.addEventListener('click',()=>{collection.setSort(collection.sortMode,-collection.sortDirection);updateDirection()});
+ const updateDirection=()=>{dir.textContent=collection.sortDirection>=0?'A → Z':'Z → A';dir.setAttribute('aria-label',collection.sortDirection>=0?'Ordre croissant A vers Z':'Ordre décroissant Z vers A')};
+ updateDirection();
+ utilityBar.append(selectToggle,selectedBottom,allRotate,left,right,dir,foldAll,expandAll);
+ ctrl.append(utilityBar);
+ const sizeBar=make('div','uxSizingControls','<label class="uxSizeGroup" title="Taille des vignettes"><span>▦</span><button type="button" id="uxTileMinus" aria-label="Réduire les vignettes">−</button><input type="number" id="uxTileSize" min="100" max="320" step="1" aria-label="Taille des vignettes en pixels"><span>px</span><button type="button" id="uxTilePlus" aria-label="Agrandir les vignettes">+</button><button type="button" id="uxTileAuto">Auto</button></label><label class="uxSizeGroup" title="Taille du texte"><span>Texte</span><button type="button" id="uxTextMinus" aria-label="Réduire le texte">−</button><input type="number" id="uxTextSize" min="10" max="18" step="1" aria-label="Taille des libellés en pixels"><span>px</span><button type="button" id="uxTextPlus" aria-label="Agrandir le texte">+</button></label>');
+ ctrl.append(sizeBar);
+ const textKey='nlab:core-lab:text-size';
+ const textSize=()=>Math.max(10,Math.min(18,Math.round(Number($('#uxTextSize').value)||12)));
+ const changeText=n=>{const size=Math.max(10,Math.min(18,Math.round(Number(n)||12)));$('#uxTextSize').value=String(size);coll.style.setProperty('--ux-file-font',size+'px');safeStore(textKey,size)};
+ $('#uxTextSize').addEventListener('change',()=>changeText(textSize()));
+ $('#uxTextMinus').addEventListener('click',()=>changeText(textSize()-1));
+ $('#uxTextPlus').addEventListener('click',()=>changeText(textSize()+1));
+ changeText(safeRead(textKey,'12'));
+ const updateTile=()=>{$('#uxTileSize').value=String(collection.thumbnailSize==='auto'?(parseInt(coll.style.getPropertyValue('--nlab-collection-card-width'),10)||170):collection.thumbnailSize)};
+ const resizeTile=n=>{collection.setThumbnailSize(Math.max(100,Math.min(320,Math.round(Number(n)||170))));updateTile()};
+ $('#uxTileMinus').addEventListener('click',()=>resizeTile(Number($('#uxTileSize').value)-16));
+ $('#uxTilePlus').addEventListener('click',()=>resizeTile(Number($('#uxTileSize').value)+16));
+ $('#uxTileSize').addEventListener('change',()=>resizeTile($('#uxTileSize').value));
+ $('#uxTileAuto').addEventListener('click',()=>{collection.setThumbnailSize('auto');updateTile()});
+ collection.addEventListener('thumbnail-size',updateTile);updateTile();
+ const refreshSelectionActions=()=>{
+  const all=collection.items.length>0&&collection.selected.size===collection.items.length;
+  const title=all?'□ Tout désélectionner':'☑ Tout sélectionner';
+  for(const b of [selectAllBtn,selectToggle])b.textContent=title;
+ };
+ collection.addEventListener('selection',refreshSelectionActions);
+ collection.addEventListener('activate',refreshSelectionActions);
+ const useSelection=()=>{setPreviewVisible(true);$('#uxPreviewScope').value='selected';previewUpdate()};
+
  const collectionSide=make('div','studioUxCollectionSide');collectionSide.append(coll,collectionInfo);
  const preview=make('section','studioUxPreview','<header><strong>Aperçu de l’élément actif</strong><small id="uxPreviewType">Aucun fichier</small><button type="button" id="uxPreviewCollapse" class="uxPreviewHide" title="Masquer l’aperçu" aria-label="Masquer l’aperçu">◧</button></header><div class="studioUxPreviewToolbar"><label>Afficher <select id="uxPreviewScope"><option value="active">Fichier actif</option><option value="selected">Sélection (en série)</option></select></label><button id="uxPreviewMinus" type="button">−</button><output id="uxPreviewZoom">100 %</output><button id="uxPreviewPlus" type="button">+</button><button id="uxPreviewFit" type="button">1:1</button><button id="uxPreviewLeft" type="button" title="Tourner à gauche">↶ 90°</button><button id="uxPreviewRight" type="button" title="Tourner à droite">↷ 90°</button></div><div class="studioUxPreviewCanvas" id="uxPreviewCanvas"><span class="labHint">Ajoutez ou sélectionnez un fichier.</span></div><footer>Aperçu uniquement : les fichiers sources ne sont pas modifiés.</footer>');
  const split=make('div','studioUxCollectionSplit');split.append(collectionSide,preview);
