@@ -111,8 +111,16 @@ async function fileFromUrl(url,{maxBytes=50*1024*1024}={}){
   const mime=String(r.headers.get('content-type')||'').split(';')[0].trim().toLowerCase();
   const basename=decodeURIComponent(parsed.pathname.split('/').pop()||'').toLowerCase();
   if((mime==='text/html'||mime==='application/xhtml+xml')&&!/\.html?$/.test(basename))throw new Error('URL_IMPORT_UNEXPECTED_HTML');
-  blob=await r.blob();
-  if(blob.size>limit)throw new Error('URL_IMPORT_TOO_LARGE');
+  if(r.body?.getReader){
+   const reader=r.body.getReader(),parts=[];let size=0;
+   try{
+    while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;
+     if(size>limit){controller.abort();throw new Error('URL_IMPORT_TOO_LARGE')}
+     parts.push(value)
+    }
+   }finally{try{reader.releaseLock()}catch{}}
+   blob=new Blob(parts,{type:mime})
+  }else{blob=await r.blob();if(blob.size>limit)throw new Error('URL_IMPORT_TOO_LARGE')}
   if(!blob.size)throw new Error('URL_IMPORT_EMPTY');
  }catch(e){if(e?.name==='AbortError')throw new Error('URL_IMPORT_TIMEOUT');throw e}
  finally{clearTimeout(timeout)}
