@@ -88,6 +88,8 @@ async function scenario(name,viewport){
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': invert selection failed');
   await page.locator('#uxTopSelect').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': top selection toggle failed');
+  await page.locator('#uxTopUseSelection').click();
+  assert(await page.locator('#uxPreviewScope').inputValue()==='selected',name+': selection not connected to preview');
   await page.locator('#uxRotateAll').check();
   await page.locator('#uxRotateRight').click();
   assert((await page.locator('#labCollection .collectionThumbMedia[style*="90deg"]').count())>=2,name+': batch rotation not applied to selection');
@@ -273,6 +275,11 @@ async function scenario(name,viewport){
   await page.screenshot({path:'artifacts/core-lab-ux/'+name+'-dark-history.png',fullPage:true});
   await page.locator('[data-ux-tab="settings"]').click();
   await page.locator('#uxTheme').selectOption('light');
+  if(viewport.width<=700)await page.locator('#studioUxCollapse').click();
+  await page.locator('#uxTopClear').click();
+  assert(await page.locator('#labCollection .collectionItem').count()===0,name+': clear did not empty collection');
+  await page.locator('#uxTopUndo').click();
+  assert(await page.locator('#labCollection .collectionItem').count()===7,name+': undo clear did not restore files');
     assert(errors.length===0,name+': page errors '+errors.join('; '));
   reports.push({name,status:'PASS',checks:15,extra:'Workbench + history favorites/details + AA dark contrast'});
  }catch(error){
