@@ -129,6 +129,13 @@ async function scenario(name,viewport){
     const startWidth=await grip.getAttribute('aria-valuenow');
     await page.keyboard.press('ArrowRight');
     assert(Number(await grip.getAttribute('aria-valuenow'))>Number(startWidth),name+': sidebar keyboard resizing missing');
+    const dragBefore=Number(await grip.getAttribute('aria-valuenow'));
+    const rect=await grip.boundingBox();
+    await page.mouse.move(rect.x+rect.width/2,rect.y+Math.min(60,rect.height/2));
+    await page.mouse.down();
+    await page.mouse.move(rect.x+rect.width/2+28,rect.y+Math.min(60,rect.height/2),{steps:4});
+    await page.mouse.up();
+    assert(Number(await grip.getAttribute('aria-valuenow'))>=dragBefore+14,name+': mouse drawer resizing missing');
     await page.locator('#studioUxLock').click();
     assert(await grip.getAttribute('aria-disabled')==='true',name+': drawer width lock not effective');
     await page.locator('#studioUxLock').click();
@@ -194,7 +201,16 @@ async function scenario(name,viewport){
   await page.locator('[data-ux-tab="personal"]').click();
   assert(await page.locator('.uxPersonalPanel [data-template-profile="FIRST_NAME"]').inputValue()==='Essai',name+': personal profile not synchronized');
   assert((await page.locator('.uxPersonalPanel .uxProfileVariable').count())>=8,name+': personal variable names missing');
+  const profileDownload=page.waitForEvent('download',{timeout:12000});
   await page.locator('.uxPersonalPanel .uxProfileActions button').filter({hasText:'Exporter JSON'}).click();
+  const exportedProfile=await profileDownload;
+  assert(exportedProfile.suggestedFilename()==='nlab-parametres-personnels.json',name+': profile download wrong');
+  await page.locator('.uxPersonalPanel [data-profile-import="true"]').setInputFiles({
+   name:'nlab-parametres-personnels.json',mimeType:'application/json',
+   buffer:Buffer.from(JSON.stringify({schema:'nlab-studio-template-profile',version:1,variables:{FIRST_NAME:'Essai',SITE:'Site local'}}))
+  });
+  await page.waitForFunction(()=>document.querySelector('.uxPersonalPanel [data-template-profile="SITE"]')?.value==='Site local',null,{timeout:2000});
+  assert(await page.locator('.uxPersonalPanel [data-template-profile="SITE"]').inputValue()==='Site local',name+': local JSON import failed');
   await page.locator('[data-ux-tab="settings"]').click();
   await page.locator('#uxDisplayMode').selectOption('tablet');
   assert(await page.locator('#studioMain').getAttribute('data-preview-profile')==='tablet',name+': tablet simulation missing');
