@@ -231,6 +231,14 @@ async function scenario(name,viewport){
     const x=lum(fg),y=lum(bg);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)
   });
   assert(darkContrast>=4.5,name+': insufficient dark-theme heading contrast '+darkContrast);
+  const dropContrast=await page.locator('#labCollectionDrop').evaluate(node=>{
+    const l=txt=>{const rgb=(txt.match(/[\\d.]+/g)||[]).slice(0,3).map(Number);
+      const c=rgb.map(x=>x/255).map(x=>x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4));
+      return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+    const fg=l(getComputedStyle(node).color),bg=l(getComputedStyle(node).backgroundColor);
+    return (Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05)
+  });
+  assert(dropContrast>=4.5,name+': dark drop zone illegible '+dropContrast);
   await page.locator('#uxTheme').selectOption('light');
   assert((await page.locator('#studioMain').getAttribute('data-ux-theme'))==='light',name+': light theme missing');
   assert((await page.locator('body').getAttribute('data-studio-ux-theme'))==='light',name+': light theme not global');
