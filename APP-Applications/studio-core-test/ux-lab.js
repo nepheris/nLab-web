@@ -66,7 +66,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
   {id:'tasks',label:'Tâches',icon:'☑',children:[tasks]},
   {id:'search',label:'Recherche',icon:'⌕',children:[search]},
   {id:'settings',label:'Réglages',icon:'⚙',children:[settings]}
- ],storageKey:'nlab:core-lab:ux-v1'});
+ ],storageKey:'nlab:core-lab:ux-v1',resizable:true});
  // Core header stays native; avoid competing info/licence entries only on this opted-in Lab.
  const links=Array.from(document.querySelectorAll('.studioGlobalNav a'));
  const info=links.find(x=>x.getAttribute('href')?.endsWith('/Info/'));if(info)info.textContent='À propos';
