@@ -30,27 +30,67 @@ export function templateProfileVariables(){
  const p=readTemplateProfile(),first=p.FIRST_NAME,last=p.LAST_NAME,joined=[first,last].filter(Boolean).join(' ');
  return {...Object.fromEntries(Object.entries(p).filter(([k,v])=>!['STAMP_DATE','DATE_A','DATE_B','DATE_C','DATE_D'].includes(k)||Boolean(v))),FULL_NAME:joined,LAST_FIRST:[last,first].filter(Boolean).join(' '),DISPLAY_NAME:joined,INITIALS:((first.charAt(0)||'')+(last.charAt(0)||'')).toUpperCase()}
 }
-export function mountTemplateProfile({host,onChange}={}){
+export function mountTemplateProfile({host,onChange,expanded=true}={}){
  if(!host)return;
  host.replaceChildren();
- const wrap=document.createElement('details');wrap.className='uxHistoryAccordion uxProfileSection';wrap.open=true;
- const summary=document.createElement('summary');summary.textContent='00 · Paramètres personnels (locaux)';wrap.append(summary);
- const intro=document.createElement('p');intro.className='uxProfileHint';intro.textContent='Renseignés une seule fois dans ce navigateur. Utilisés par {FIRST_NAME}, {LAST_NAME}, {FULL_NAME}, {SITE}, {SERVICE}, {CLIENT}, {PROJECT} et {REFERENCE}. Aucune transmission automatique.';
- const grid=document.createElement('div');grid.className='uxProfileGrid';const saved=readTemplateProfile();const inputs=new Map();
+ const wrap=document.createElement('details');wrap.className='uxHistoryAccordion uxProfileSection';wrap.open=expanded;
+ const summary=document.createElement('summary');summary.textContent='00 · Paramètres personnels et dates';wrap.append(summary);
+ const intro=document.createElement('p');intro.className='uxProfileHint';intro.textContent='Prénom, nom, site, projet et dates sont conservés localement sur cet appareil. Exportez un JSON pour les réutiliser sur un autre navigateur.';
+ const grid=document.createElement('div');grid.className='uxProfileGrid';const saved=readTemplateProfile(),inputs=new Map();
  for(const f of PROFILE_FIELDS){
-  const label=document.createElement('label');label.textContent=f.label;label.title=f.description;
+  const label=document.createElement('label');label.className='uxProfileField';
+  const name=document.createElement('strong');name.textContent=f.label;
   const input=document.createElement('input');input.type=f.type||'text';input.value=saved[f.key]||'';input.maxLength=160;input.autocomplete='off';input.placeholder=f.description;input.dataset.templateProfile=f.key;input.setAttribute('aria-label',f.label);
-  label.append(input);grid.append(label);inputs.set(f.key,input);
+  const token=document.createElement('small');token.className='uxProfileVariable';token.textContent='{'+f.key+'}';token.title=f.description;
+  label.append(name,input,token);grid.append(label);inputs.set(f.key,input)
  }
+ const status=document.createElement('p');status.className='uxProfileHint';status.setAttribute('role','status');status.textContent='Les valeurs ne sont pas envoyées à un serveur.';
  let pending=false;
- const persist=()=>{if(pending)return;pending=true;queueMicrotask(()=>{pending=false;saveTemplateProfile(Object.fromEntries(Array.from(inputs,([k,v])=>[k,v.value])));onChange?.()})};
- grid.addEventListener('input',persist);
- document.addEventListener('studio-v2:template-profile-changed',()=>{const latest=readTemplateProfile();for(const [k,input] of inputs)if(document.activeElement!==input)input.value=latest[k]||''});
- const reset=document.createElement('button');reset.type='button';reset.textContent='Effacer les valeurs locales';reset.addEventListener('click',()=>{for(const input of inputs.values())input.value='';persist()});
- const status=document.createElement('small');status.className='uxProfileHint';status.textContent='Ces paramètres sont personnels au navigateur actuel.';
- const body=document.createElement('div');body.className='uxSaveFields';body.append(intro,grid,reset,status);wrap.append(body);host.append(wrap);
+ const persist=()=>{
+  if(pending)return;pending=true;
+  queueMicrotask(()=>{
+   pending=false;saveTemplateProfile(Object.fromEntries(Array.from(inputs,([k,v])=>[k,v.value])));
+   status.textContent='✓ Paramètres sauvegardés dans ce navigateur.';onChange?.()
+  })
+ };
+ grid.addEventListener('input',persist);grid.addEventListener('change',persist);
+ const refresh=()=>{const latest=readTemplateProfile();for(const [k,input] of inputs)if(document.activeElement!==input)input.value=latest[k]||''};
+ document.addEventListener('studio-v2:template-profile-changed',refresh);
+ const actions=document.createElement('div');actions.className='uxProfileActions';
+ const exportBtn=document.createElement('button');exportBtn.type='button';exportBtn.textContent='↓ Exporter JSON';exportBtn.title='Télécharger vos variables et dates sur cet appareil';
+ exportBtn.addEventListener('click',()=>{
+  const object={schema:'nlab-studio-template-profile',version:1,createdAt:new Date().toISOString(),variables:readTemplateProfile()};
+  const blob=new Blob([JSON.stringify(object,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nlab-parametres-personnels.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),0);
+  status.textContent='Export JSON demandé. Conservez ce fichier à un emplacement privé.'
+ });
+ const fileInput=document.createElement('input');fileInput.type='file';fileInput.accept='.json,application/json';fileInput.hidden=true;fileInput.dataset.profileImport='true';
+ const importBtn=document.createElement('button');importBtn.type='button';importBtn.textContent='↑ Importer JSON';importBtn.title='Importer un fichier de profil préalablement exporté';importBtn.addEventListener('click',()=>fileInput.click());
+ fileInput.addEventListener('change',async()=>{
+  const file=fileInput.files?.[0];fileInput.value='';if(!file)return;
+  if(file.size>65536){status.textContent='Import refusé : taille maximale de 64 Ko.';return}
+  try{
+   const raw=JSON.parse(await file.text());
+   if(raw?.schema!=='nlab-studio-template-profile'||raw.version!==1||!raw.variables||typeof raw.variables!=='object'||Array.isArray(raw.variables))throw Error('Format de profil incompatible.');
+   for(const key of Object.keys(raw.variables))if(!PROFILE_FIELDS.some(f=>f.key===key))throw Error('Variable inconnue : '+key);
+   const obj=Object.fromEntries(PROFILE_FIELDS.map(f=>{
+    let val=raw.variables[f.key]??'';if(typeof val!=='string'||val.length>160)throw Error('Valeur invalide : '+f.key);
+    if(f.type==='date'&&val&&!/^\d{4}-\d{2}-\d{2}$/.test(val))throw Error('Date invalide : '+f.key);
+    return[f.key,val]
+   }));
+   saveTemplateProfile(obj);for(const [key,input] of inputs)input.value=obj[key]||'';
+   status.textContent='✓ Profil JSON importé : '+PROFILE_FIELDS.length+' champs connus.';onChange?.()
+  }catch(error){status.textContent='Import refusé : '+(error?.message||'JSON invalide')}
+ });
+ const reset=document.createElement('button');reset.type='button';reset.textContent='Effacer les valeurs';reset.addEventListener('click',()=>{
+  if(!confirm('Effacer toutes les variables personnelles et dates de ce navigateur ?'))return;
+  for(const input of inputs.values())input.value='';persist()
+ });
+ actions.append(exportBtn,importBtn,fileInput,reset);
+ const body=document.createElement('div');body.className='uxSaveFields';body.append(intro,grid,actions,status);wrap.append(body);host.append(wrap);
  return{inputs,element:wrap}
 }
+
 const CATEGORIES=[
  {id:'file',label:'01 · Fichier et format',description:'Nom, extension, poids, compteur et type',keys:['STUDIO','FILENAME','FULLNAME','STEM','EXT','EXT_DOT','FILESIZE','INDEX','COUNTER','NUMBER','NOM','FORMAT','MIME','FILE_FAMILY']},
  {id:'folder',label:'02 · Dossiers et chemins',description:'Dossier parent, sous-dossier et chemin relatif',keys:['FOLDER','PARENT','SUBFOLDER','SOURCE_DIR','RELATIVE_FOLDER','RELATIVE_PATH','PATH']},
