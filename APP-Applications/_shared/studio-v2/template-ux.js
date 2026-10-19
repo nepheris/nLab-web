@@ -128,7 +128,34 @@ export function createTemplateVariablePicker({host,engine,context,getTarget,refr
    const apply=()=>{custom.hidden=select.value!=='custom';mask=select.value==='custom'?custom.value:select.value;if(mask&&!/^[A-Za-z0-9 _.,:\/+-]{1,80}$/.test(mask)){mask='';if(statusHost)statusHost.textContent='Masque de date invalide.'}for(const chip of box.querySelectorAll('[data-template-token]'))chip.textContent=token(chip.dataset.templateToken);refresh?.()};
    select.addEventListener('change',apply);custom.addEventListener('input',apply);
    const expl=document.createElement('small');expl.className='uxFamilyHint';expl.textContent='YYYY année · MM mois · DD jour · HH heure · mm minute · ss seconde. Le signe « : » s’ajoute automatiquement.';
-   options.append(select,custom,expl);box.append(options)
+   options.append(select,custom,expl);
+   const visual=document.createElement('fieldset');visual.className='uxDateVisual';
+   const legend=document.createElement('legend');legend.textContent='Composer visuellement un format';visual.append(legend);
+   const row=document.createElement('div');row.className='uxDateVisualFields';
+   const choice=(title,vals)=>{
+    const label=document.createElement('label');label.textContent=title;
+    const input=document.createElement('select');
+    for(const [value,text] of vals){const opt=document.createElement('option');opt.value=value;opt.textContent=text;input.append(opt)}
+    label.append(input);row.append(label);return input
+   };
+   const order=choice('Ordre',[['YMD','Année · Mois · Jour'],['DMY','Jour · Mois · Année'],['MDY','Mois · Jour · Année']]);
+   const sep=choice('Séparateur',[['-','Tiret (-)'],['/','Barre (/)'],['.','Point (.)'],['_','Souligné (_)'],[' ','Espace'],['','Aucun']]);
+   const year=choice('Année',[['YYYY','4 chiffres'],['YY','2 chiffres'],['','Sans année']]);
+   const month=choice('Mois',[['MM','01–12'],['M','1–12'],['MMMM','En lettres'],['','Sans mois']]);
+   const day=choice('Jour',[['DD','01–31'],['D','1–31'],['','Sans jour']]);
+   const time=choice('Heure',[['','Sans heure'],['HH:mm','Heure : minute'],['HH:mm:ss','Avec secondes'],['HH-mm-ss','Avec tirets']]);
+   const sample=document.createElement('output');sample.className='uxDateVisualPreview';
+   const applyVisual=()=>{
+    const fragments=order.value.split('').map(k=>({Y:year.value,M:month.value,D:day.value}[k])).filter(Boolean);
+    const date=fragments.join(sep.value);mask=date+(time.value?(date?' ':'')+time.value:'');
+    select.value='custom';custom.hidden=false;custom.value=mask;
+    const dummy=engine?.formatDate(new Date('2026-10-18T21:39:00'),mask)||mask;
+    sample.textContent='Aperçu : '+dummy+'   →   {DATE:'+mask+'}';
+    for(const chip of box.querySelectorAll('[data-template-token]'))chip.textContent=token(chip.dataset.templateToken);
+    refresh?.()
+   };
+   for(const input of [order,sep,year,month,day,time])input.addEventListener('change',applyVisual);
+   visual.append(row,sample);box.append(options,visual)
   }
   const chips=document.createElement('div');chips.className='uxTokenList';
   for(const k of c.keys){
