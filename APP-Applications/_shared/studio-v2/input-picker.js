@@ -95,12 +95,42 @@ async function ensureJsZip(){
 function fileNameFromUrl(url,contentType=''){
  try{const u=new URL(url,location.href),raw=decodeURIComponent(u.pathname.split('/').filter(Boolean).pop()||'import-url');if(/\.[a-z0-9]{1,8}$/i.test(raw))return raw;const ext={'application/pdf':'.pdf','application/json':'.json','text/plain':'.txt','text/html':'.html','image/png':'.png','image/jpeg':'.jpg','image/webp':'.webp','image/svg+xml':'.svg'}[String(contentType).split(';')[0].toLowerCase()]||'';return raw+ext}catch{return'import-url'}
 }
-async function fileFromUrl(url){
+async function fileFromUrl(url,{maxBytes=50*1024*1024}={}){
  const value=String(url||'').trim();if(!value)throw new Error('URL_REQUIRED');
- let r;try{r=await fetch(value,{mode:'cors'})}catch{throw new Error('URL_IMPORT_BLOCKED_CORS')}
- if(!r.ok)throw new Error('URL_IMPORT_HTTP_'+r.status);
- const blob=await r.blob(),name=fileNameFromUrl(value,blob.type),file=new File([blob],name,{type:blob.type,lastModified:Date.now()});
- try{Object.defineProperty(file,'__sourceUrl',{value:value,configurable:true})}catch{}return file
+ let parsed;try{parsed=new URL(value)}catch{throw new Error('URL_IMPORT_INVALID_URL')}
+ if(!['http:','https:'].includes(parsed.protocol))throw new Error('URL_IMPORT_PROTOCOL');
+ const limit=Number.isFinite(Number(maxBytes))&&Number(maxBytes)>0?Number(maxBytes):50*1024*1024;
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
+ let r,blob;
+ try{
+  try{r=await fetch(parsed.href,{mode:'cors',signal:controller.signal,redirect:'follow'})}
+  catch(e){throw new Error(e?.name==='AbortError'?'URL_IMPORT_TIMEOUT':'URL_IMPORT_BLOCKED_CORS')}
+  if(!r.ok)throw new Error('URL_IMPORT_HTTP_'+r.status);
+  const declared=Number(r.headers.get('content-length')||0);
+  if(declared>limit)throw new Error('URL_IMPORT_TOO_LARGE');
+  const mime=String(r.headers.get('content-type')||'').split(';')[0].trim().toLowerCase();
+  const basename=decodeURIComponent(parsed.pathname.split('/').pop()||'').toLowerCase();
+  if((mime==='text/html'||mime==='application/xhtml+xml')&&!/\.html?$/.test(basename))throw new Error('URL_IMPORT_UNEXPECTED_HTML');
+  blob=await r.blob();
+  if(blob.size>limit)throw new Error('URL_IMPORT_TOO_LARGE');
+  if(!blob.size)throw new Error('URL_IMPORT_EMPTY');
+ }catch(e){if(e?.name==='AbortError')throw new Error('URL_IMPORT_TIMEOUT');throw e}
+ finally{clearTimeout(timeout)}
+ const name=fileNameFromUrl(parsed.href,blob.type),file=new File([blob],name,{type:blob.type,lastModified:Date.now()});
+ try{Object.defineProperty(file,'__sourceUrl',{value:parsed.href,configurable:true})}catch{}return file
+}
+const urlImportErrorMessage=e=>{
+ const code=String(e?.message||e||''),messages={
+  URL_REQUIRED:'Saisir une URL HTTPS ou HTTP.',
+  URL_IMPORT_INVALID_URL:'URL invalide : utilisez une adresse HTTPS ou HTTP complète.',
+  URL_IMPORT_PROTOCOL:'Protocole non autorisé : HTTPS ou HTTP uniquement.',
+  URL_IMPORT_BLOCKED_CORS:'Téléchargement impossible : accès réseau ou autorisation CORS refusés par le serveur distant.',
+  URL_IMPORT_TIMEOUT:'Le serveur ne répond pas dans le délai autorisé.',
+  URL_IMPORT_TOO_LARGE:'Le fichier dépasse la limite de taille autorisée pour les URL.',
+  URL_IMPORT_UNEXPECTED_HTML:'Le serveur renvoie une page HTML à la place du fichier demandé.',
+  URL_IMPORT_EMPTY:'Le serveur a renvoyé un fichier vide.'
+ };
+ return messages[code]||(code.startsWith('URL_IMPORT_HTTP_')?'Erreur HTTP '+code.slice(16)+' du serveur distant.':code)
 }
 async function extractZip(file){
  const JSZip=await ensureJsZip(),zip=await JSZip.loadAsync(await file.arrayBuffer()),out=[],entries=Object.entries(zip.files).filter(([,entry])=>!entry.dir),maxEntries=Number(state.options.maxArchiveEntries||500),maxBytes=Number(state.options.maxArchiveBytes||250*1024*1024);let total=0;
@@ -165,7 +195,7 @@ function ensure(){
  const fileInput=host.querySelector('#studioInputFilesNative'),folderInput=host.querySelector('#studioInputFolderNative'),cameraInput=host.querySelector('#studioInputCameraNative'),drop=host.querySelector('#studioInputDrop');
  host.querySelector('#studioInputPickFiles').onclick=()=>fileInput.click();host.querySelector('#studioInputPickFolder').onclick=()=>folderInput.click();host.querySelector('#studioInputPickCamera').onclick=()=>cameraInput.click();
  fileInput.onchange=async e=>await add([...e.target.files]);folderInput.onchange=async e=>await add([...e.target.files]);cameraInput.onchange=async e=>await add([...e.target.files]);
- host.querySelector('#studioInputUrlImport').onclick=async()=>{const input=host.querySelector('#studioInputUrl');state.error='';render(host);try{await add([await fileFromUrl(input.value)]);input.value=''}catch(e){state.error=e?.message||String(e);render(host)}};
+ host.querySelector('#studioInputUrlImport').onclick=async()=>{const input=host.querySelector('#studioInputUrl'),value=input.value;state.error='';render(host);try{await add([await fileFromUrl(value,{maxBytes:state.options.maxUrlBytes})]);input.value=''}catch(e){state.error=urlImportErrorMessage(e);render(host)}};
  host.querySelector('#studioInputClear').onclick=()=>{if(!state.files.length)return;const before=collectionSnapshot();state.files=[];state.selected.clear();state.active=null;state.meta.clear();syncSession();render(host);publishSelection('clear');transactCollection('Vider la collection',before,collectionSnapshot())};
  host.querySelector('#studioInputCancel').onclick=()=>close(null);
  host.querySelector('#studioInputConfirm').onclick=async()=>{if(state.busy)return;const chosen=selectedFiles();state.busy=true;render(host);try{syncSession();close(await materializeSelection(chosen))}catch(e){state.busy=false;const a=host.querySelector('#studioInputAccept');if(a)a.textContent='Erreur : '+(e?.message||e);render(host)}};
