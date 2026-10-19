@@ -264,6 +264,8 @@ async function scenario(name,viewport){
    await page.locator('#studioUxDetach').click();
    const floating=page.locator('.studioUxFloat[data-ux-float="settings"]');
    assert(await floating.isVisible(),name+': floating panel missing');
+   const geometry=await page.evaluate(()=>{const rect=s=>{const r=document.querySelector(s)?.getBoundingClientRect();return r?{left:r.left,right:r.right,width:r.width,top:r.top}:null};return{viewport:innerWidth,rail:rect('.studioUxRail'),tab:rect('[data-ux-tab="history"]'),float:rect('.studioUxFloat[data-ux-float="settings"]')}});
+   assert(geometry.float.left>=geometry.tab.right+2||geometry.float.right<=geometry.tab.left-2,name+': detached panel overlaps navigation '+JSON.stringify(geometry));
    await page.locator('[data-ux-tab="history"]').click();
    assert(await floating.locator('#uxTheme').isVisible(),name+': detached settings became hidden when switching tabs');
    await floating.locator('[data-ux-float-close]').click();
