@@ -75,7 +75,10 @@ export function mountTemplateProfile({host,onChange,expanded=true}={}){
    for(const key of Object.keys(raw.variables))if(!PROFILE_FIELDS.some(f=>f.key===key))throw Error('Variable inconnue : '+key);
    const obj=Object.fromEntries(PROFILE_FIELDS.map(f=>{
     let val=raw.variables[f.key]??'';if(typeof val!=='string'||val.length>160)throw Error('Valeur invalide : '+f.key);
-    if(f.type==='date'&&val&&!/^\d{4}-\d{2}-\d{2}$/.test(val))throw Error('Date invalide : '+f.key);
+    if(f.type==='date'&&val){
+      const date=/^\d{4}-\d{2}-\d{2}$/.test(val)?new Date(val+'T12:00:00Z'):null;
+      if(!date||!Number.isFinite(date.getTime())||date.toISOString().slice(0,10)!==val)throw Error('Date invalide : '+f.key);
+     }
     return[f.key,val]
    }));
    saveTemplateProfile(obj);for(const [key,input] of inputs)input.value=obj[key]||'';
