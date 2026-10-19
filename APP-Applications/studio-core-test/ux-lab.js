@@ -145,6 +145,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  const utilityBar=make('div','uxCollectionUtility');
  const selectToggle=make('button','','☑ Tout sélectionner');selectToggle.id='uxSelectionToggle';selectToggle.type='button';
  selectToggle.addEventListener('click',()=>selectAllBtn.click());
+ const invertMain=make('button','','⇄ Inverser');invertMain.id='uxInvertMain';invertMain.type='button';invertMain.addEventListener('click',()=>$('#labInvertFiles')?.click());
  const selectedBottom=make('button','','◉ Utiliser sélection');selectedBottom.id='uxUseSelectionBottom';selectedBottom.type='button';selectedBottom.addEventListener('click',()=>selectedBtn.click());
  const allRotate=make('label','uxRotateSelectionLabel','<input type="checkbox" id="uxRotateAll"> Appliquer à toute la sélection');
  const left=make('button','','↶ −90°');left.id='uxRotateLeft';left.type='button';
@@ -161,7 +162,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  updateDirection();
  const undoBottom=make('button','','↶ Annuler');undoBottom.id='uxBottomUndo';undoBottom.type='button';undoBottom.addEventListener('click',()=>$('#uxTopUndo').click());
  const redoBottom=make('button','','↷ Rétablir');redoBottom.id='uxBottomRedo';redoBottom.type='button';redoBottom.addEventListener('click',()=>$('#uxTopRedo').click());
- utilityBar.append(selectToggle,selectedBottom,allRotate,left,right,dir,foldAll,expandAll,undoBottom,redoBottom);
+ utilityBar.append(selectToggle,invertMain,selectedBottom,allRotate,left,right,dir,foldAll,expandAll,undoBottom,redoBottom);
  ctrl.append(utilityBar);
  const sizeBar=make('div','uxSizingControls','<label class="uxSizeGroup" title="Taille des vignettes"><span>▦</span><button type="button" id="uxTileMinus" aria-label="Réduire les vignettes">−</button><input type="number" id="uxTileSize" min="100" max="320" step="1" aria-label="Taille des vignettes en pixels"><span>px</span><button type="button" id="uxTilePlus" aria-label="Agrandir les vignettes">+</button><button type="button" id="uxTileAuto">Auto</button></label><label class="uxSizeGroup" title="Taille du texte"><span>Texte</span><button type="button" id="uxTextMinus" aria-label="Réduire le texte">−</button><input type="number" id="uxTextSize" min="10" max="18" step="1" aria-label="Taille des libellés en pixels"><span>px</span><button type="button" id="uxTextPlus" aria-label="Agrandir le texte">+</button></label>');
  ctrl.append(sizeBar);
