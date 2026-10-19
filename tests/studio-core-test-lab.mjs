@@ -324,7 +324,7 @@ async function resilienceScenario(){
  try{
   await page.route('**/__core_url_valid.png',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9WlV03AAAAAASUVORK5CYII=','base64')}));
   await page.route('**/__core_url_not_image.png',route=>route.fulfill({status:200,contentType:'text/html',body:'<html><title>not an image</title></html>'}));
-  await page.route('https://external-nocors.example/__core_url_cross.png',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('invalid image data')}));
+  await page.route('https://external-nocors.example/__core_url_cross.png',route=>route.abort('failed')); // Force an unreachable host; browsers may bypass CORS for mocked fulfill() responses.
   await page.goto(new URL('APP-Applications/studio-core-test/',base).href,{waitUntil:'domcontentloaded'});
   await page.locator('html[data-core-lab-ready="1"]').waitFor({timeout:16000});
   await page.locator('#labPickerOpen').click();
