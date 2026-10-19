@@ -159,3 +159,67 @@ body[data-studio="studio-core-test"] #studioMain #labInvertFiles{display:none!im
 body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility #uxBottomUndo,
 body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility #uxBottomRedo{background:var(--ux-soft,#eef4fa)}
 body[data-studio="studio-core-test"] #studioMain #uxSelectionToggle{background:var(--ux-accent-soft,#e2effa)}
+
+
+/* Visual acceptance fixes — scoped priority over the 0.5 mockup's literal whites. */
+body[data-studio="studio-core-test"] #studioMain.studioUx:not(.uxSidebarClosed) .studioUxSidebar{
+ grid-template-columns:76px minmax(0,1fr)!important
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail{
+ width:76px!important;min-width:76px!important;box-sizing:border-box
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail [data-ux-tab]{
+ width:100%;min-width:0;padding:6px 3px!important;box-sizing:border-box;overflow:hidden
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail .uxRailName{
+ display:block!important;font-size:10px!important;line-height:1.2!important;
+ white-space:nowrap!important;word-break:normal!important;hyphens:none!important;letter-spacing:-.02em
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed{
+ grid-template-columns:76px minmax(0,1fr)!important
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed .studioUxSidebar{
+ grid-template-columns:76px!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labCollectionDrop{
+ background:var(--ux-soft,#293c4d)!important;border:1px dashed var(--ux-border,#7290a6)!important;
+ color:var(--ux-fg,#f0f7ff)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labCollectionDrop *,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labCollectionInfo,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labAcquiredInfo{
+ color:var(--ux-fg,#f0f7ff)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labCollectionInfo,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labAcquiredInfo{
+ background:var(--ux-panel,#243444)!important;border:1px solid var(--ux-border,#688197)!important;
+ border-radius:7px;padding:9px 11px!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] .studioGlobalNav a,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] .studioGlobalNav button{
+ color:#f1f7ff!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioVisibilityPanel,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioVisibilityPanel section{
+ background:var(--ux-panel,#243445)!important;color:var(--ux-fg,#f0f7ff)!important;
+ border-color:var(--ux-border,#688197)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioVisibilityPanel input,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioVisibilityPanel select{
+ background:var(--ux-control,#253748)!important;color:var(--ux-control-fg,#e5f3ff)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx #labCollectionInfo,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx #labAcquiredInfo{
+ background:var(--ux-panel,#fff)!important;color:var(--ux-fg,#293f52)!important;
+ border:1px solid var(--ux-border,#cedae6)!important;border-radius:7px;padding:9px 11px!important
+}
+body[data-studio="studio-core-test"] .studioStatus[data-core-owned]{
+ position:relative!important;top:auto!important;bottom:auto!important;left:auto!important;
+ right:auto!important;width:100%!important;box-sizing:border-box!important;
+ margin:0!important;background:var(--ux-panel,#fff)!important;color:var(--ux-fg,#273e52)!important;
+ border-top:1px solid var(--ux-border,#bdcedd)!important;z-index:10!important
+}
+@media(max-width:700px){
+ body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSidebar{grid-template-columns:76px minmax(0,1fr)!important}
+ body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail{width:76px!important}
+}
