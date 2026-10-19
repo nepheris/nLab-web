@@ -118,6 +118,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  const selectAllBtn=cmd('☑ Tout sélectionner','uxTopSelect',()=>collection.selected.size===collection.items.length?collection.clearSelection():collection.selectAll(),'Sélectionner ou désélectionner');
  const selectedBtn=cmd('◉ Utiliser sélection','uxTopUseSelection',()=>useSelection(),'Afficher les fichiers cochés dans l’aperçu');
  cmd('↶ Annuler','uxTopUndo',()=>$('#uxUndo')?.click(),'Annuler la dernière opération');
+ cmd('↷ Rétablir','uxTopRedo',()=>$('#uxRedo')?.click(),'Rétablir la dernière opération');
  const saveButton=cmd('▣ Enregistrer','uxSaveOpen',()=>{},'Enregistrer les métadonnées');
  const saveAsButton=cmd('⇩ Enregistrer sous','uxSaveAsOpen',()=>{},'Enregistrer les métadonnées sous un autre nom');
  const viewBtn=cmd('◉ Aperçu','uxTogglePreview',()=>{},'Afficher ou masquer l’aperçu');
@@ -158,7 +159,9 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  dir.addEventListener('click',()=>{collection.setSort(collection.sortMode,-collection.sortDirection);updateDirection()});
  const updateDirection=()=>{dir.textContent=collection.sortDirection>=0?'A → Z':'Z → A';dir.setAttribute('aria-label',collection.sortDirection>=0?'Ordre croissant A vers Z':'Ordre décroissant Z vers A')};
  updateDirection();
- utilityBar.append(selectToggle,selectedBottom,allRotate,left,right,dir,foldAll,expandAll);
+ const undoBottom=make('button','','↶ Annuler');undoBottom.id='uxBottomUndo';undoBottom.type='button';undoBottom.addEventListener('click',()=>$('#uxTopUndo').click());
+ const redoBottom=make('button','','↷ Rétablir');redoBottom.id='uxBottomRedo';redoBottom.type='button';redoBottom.addEventListener('click',()=>$('#uxTopRedo').click());
+ utilityBar.append(selectToggle,selectedBottom,allRotate,left,right,dir,foldAll,expandAll,undoBottom,redoBottom);
  ctrl.append(utilityBar);
  const sizeBar=make('div','uxSizingControls','<label class="uxSizeGroup" title="Taille des vignettes"><span>▦</span><button type="button" id="uxTileMinus" aria-label="Réduire les vignettes">−</button><input type="number" id="uxTileSize" min="100" max="320" step="1" aria-label="Taille des vignettes en pixels"><span>px</span><button type="button" id="uxTilePlus" aria-label="Agrandir les vignettes">+</button><button type="button" id="uxTileAuto">Auto</button></label><label class="uxSizeGroup" title="Taille du texte"><span>Texte</span><button type="button" id="uxTextMinus" aria-label="Réduire le texte">−</button><input type="number" id="uxTextSize" min="10" max="18" step="1" aria-label="Taille des libellés en pixels"><span>px</span><button type="button" id="uxTextPlus" aria-label="Agrandir le texte">+</button></label>');
  ctrl.append(sizeBar);
@@ -170,7 +173,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  sizeBar.querySelector('#uxTextPlus').addEventListener('click',()=>changeText(textSize()+1));
  changeText(safeRead(textKey,'12'));
  const updateTile=()=>{sizeBar.querySelector('#uxTileSize').value=String(collection.thumbnailSize==='auto'?(parseInt(coll.style.getPropertyValue('--nlab-collection-card-width'),10)||170):collection.thumbnailSize)};
- const resizeTile=n=>{collection.setThumbnailSize(Math.max(100,Math.min(320,Math.round(Number(n)||170))));updateTile()};
+ const resizeTile=n=>{collection.setThumbnailSize(Math.max(100,Math.min(320,Math.round(Number(n)||170))));if(collection.view==='list')collection.setView('thumbs');updateTile()};
  sizeBar.querySelector('#uxTileMinus').addEventListener('click',()=>resizeTile(Number(sizeBar.querySelector('#uxTileSize').value)-16));
  sizeBar.querySelector('#uxTilePlus').addEventListener('click',()=>resizeTile(Number(sizeBar.querySelector('#uxTileSize').value)+16));
  sizeBar.querySelector('#uxTileSize').addEventListener('change',()=>resizeTile(sizeBar.querySelector('#uxTileSize').value));
