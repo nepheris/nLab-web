@@ -48,12 +48,23 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  const pickerColor=createColorPicker({label:'Couleur de démonstration',value:'#206FAE'});
  colorHost.append(pickerColor.element);
  const surfacePanel=make('div','uxSurfacePanel','<div class="uxSidebarOverline">Planche de travail</div><p class="uxSurfaceDescription">Espace central partagé par les Studios : collection, aperçu, zoom et transformations visuelles.</p><details class="uxHistoryAccordion" open><summary>Collection et affichage</summary><div class="uxHistoryInner uxSurfaceActions"><button type="button" data-surface-action="import">↥ Importer</button><button type="button" data-surface-action="list">☷ Liste</button><button type="button" data-surface-action="thumbs">▦ Vignettes</button><button type="button" data-surface-action="preview">◉ Afficher / masquer l’aperçu</button></div></details><details class="uxHistoryAccordion" open><summary>Enregistrement et sortie</summary><div class="uxHistoryInner uxSurfaceActions"><button type="button" data-surface-action="save">▣ Enregistrer</button><button type="button" data-surface-action="save-as">⇩ Enregistrer sous</button></div></details><details class="uxHistoryAccordion"><summary>Contrôles Core</summary><div class="uxHistoryInner"><p>Import multiple, sélection, classement, aperçu, rotation, historique et préférences : une seule implémentation partagée, sans traitement métier imposé.</p></div></details>');
+ const windowsPanel=make('div','uxWindowsPanel','<p class="uxHistoryEyebrow">Fenêtres et panneaux</p><p class="uxHistoryHint">Toutes ces commandes appellent les fenêtres Core existantes. Aucune deuxième fenêtre n’est créée.</p>');
+ const winItems=[
+  ['⌕ Palette de commandes','#studioCommandOpen'],['☷ Workflows','#studioWorkflowOpen'],
+  ['? Aide contextuelle','#studioContextHelpOpen'],['⚙ Paramètres Core','#studioCoreSettings'],
+  ['◫ Restaurer les fenêtres','#studioRestoreWindows'],['▤ Visibilité des menus et rubans','#studioVisibilityOpen'],
+  ['↗ Détacher le panneau actif','#studioUxDetach']
+ ];
+ for(const [label,selector] of winItems){
+  const action=make('button','uxWindowAction',label);action.type='button';
+  action.addEventListener('click',()=>$(selector)?.click());windowsPanel.append(action)
+ }
  const tasks=make('div','');tasks.append(manual);
  const search=make('div','','<label class="labField">Rechercher dans la collection<input type="search" id="uxCollectionSearch" placeholder="Nom, type ou dossier…"></label><p class="labHint">Le filtre s’applique à la collection affichée.</p><button type="button" class="uxMiniButton" id="uxSelectVisible">Sélectionner les fichiers visibles</button><p id="uxSearchCount" class="labHint"></p>');
  const settings=make('div','','<h3 class="labHeading">Préférences d’affichage</h3><label class="labField">Thème<select id="uxTheme"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label><div class="uxCard"><strong>Trois profils responsive</strong><small>Desktop · Tablette · Mobile. L’interface s’adapte automatiquement à la largeur du navigateur.</small><div class="labToolbar"><button type="button" data-ux-device="desktop">🖥 Desktop</button><button type="button" data-ux-device="tablet">▣ Tablette</button><button type="button" data-ux-device="mobile">▯ Mobile</button></div></div>');
  settings.append(feature.querySelector('.labToolbar')||document.createElement('div'));
  const displayProfile=make('div','uxDisplayProfile','<label>Prévisualisation de la planche<select id="uxDisplayMode"><option value="auto">Automatique</option><option value="desktop">Bureau</option><option value="tablet">Tablette</option><option value="mobile">Téléphone</option></select></label><p class="uxDisplayNote" id="uxDisplayModeNote">Simulation de la largeur de la planche centrale.</p>');settings.append(displayProfile);
- const profilePreferences=make('div','uxSettingsProfile');settings.prepend(profilePreferences);
+ const profilePreferences=make('div','uxSettingsProfile');const personalPanel=make('div','uxPersonalPanel');personalPanel.append(profilePreferences);
  mountTemplateProfile({host:profilePreferences,onChange:()=>{if(!$('#uxSaveDialog')?.hidden)previewName()}});
  const diagnostics=make('div','');diagnostics.append(legacyAside);
  const tools=make('div','');tools.append(feature,diagnostics);
@@ -65,6 +76,8 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
   {id:'properties',label:'Propriétés',icon:'☷',children:[prop]},
   {id:'tasks',label:'Tâches',icon:'☑',children:[tasks]},
   {id:'search',label:'Recherche',icon:'⌕',children:[search]},
+  {id:'personal',label:'Personnel',icon:'♙',children:[personalPanel]},
+  {id:'windows',label:'Fenêtres',icon:'▢',children:[windowsPanel]},
   {id:'settings',label:'Réglages',icon:'⚙',children:[settings]}
  ],storageKey:'nlab:core-lab:ux-v1',resizable:true});
  // Core header stays native; avoid competing info/licence entries only on this opted-in Lab.
@@ -92,6 +105,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  const displayGroup=createGroup('lab-display','Affichage');
  for(const id of ['core-fullscreen','core-app-mode','core-responsive-test']){const button=coreRibbon?.querySelector('#'+id);if(button)displayGroup.insertBefore(button,displayGroup.querySelector('.ribbonLabel'))}
  proxy(displayGroup,'⚙','Réglages',()=>$('#studioCoreSettings')?.click());
+ const nativeVisibility=$('#studioVisibilityOpen');if(nativeVisibility){nativeVisibility.title='Afficher ou masquer les menus, groupes et commandes du ruban';displayGroup.insertBefore(nativeVisibility,displayGroup.querySelector('.ribbonLabel'))}
  coreRibbon?.insertBefore(displayGroup,toggle);
  const ribbon=make('div','labToolbar uxWorkMainActions','');
  ribbon.append(picker);picker.textContent='↥ Importer';picker.title='Importer des fichiers, un dossier ou une URL';
@@ -107,7 +121,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  const saveButton=cmd('▣ Enregistrer','uxSaveOpen',()=>{},'Enregistrer les métadonnées');
  const saveAsButton=cmd('⇩ Enregistrer sous','uxSaveAsOpen',()=>{},'Enregistrer les métadonnées sous un autre nom');
  const viewBtn=cmd('◉ Aperçu','uxTogglePreview',()=>{},'Afficher ou masquer l’aperçu');
- const displayBtn=cmd('⚙ Affichage','uxDisplayButton',()=>{},'Configurer les zones visibles et le ruban');
+ const displayBtn=cmd('⚙ Affichage','uxDisplayButton',()=>$('#studioVisibilityOpen')?.click(),'Afficher les commandes et groupes du ruban');
  ws.actions.append(ribbon);
  surfacePanel.addEventListener('click',e=>{
   const action=e.target.closest('[data-surface-action]')?.dataset.surfaceAction;
