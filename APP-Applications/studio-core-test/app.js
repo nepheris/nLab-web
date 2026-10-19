@@ -211,6 +211,7 @@ try{
  }
  for(const [id,view] of [['labViewList','list'],['labViewGrid','grid'],['labViewThumbs','thumbs']])$(('#'+id)).addEventListener('click',()=>{collection.setView(view);updateCollectionControls()});
  function changeThumb(delta){const base=collection.thumbnailSize==='auto'?(parseInt(collection.host.style.getPropertyValue('--nlab-collection-card-width'),10)||160):Number(collection.thumbnailSize);collection.setThumbnailSize(base+delta);if(collection.view==='list')collection.setView('thumbs');updateCollectionControls()}
+ collection.addEventListener('thumbnail-size',updateCollectionControls);
  $('#labThumbPlus').addEventListener('click',()=>changeThumb(24));
  $('#labThumbMinus').addEventListener('click',()=>changeThumb(-24));
  $('#labThumbAuto').addEventListener('click',()=>{collection.setThumbnailSize('auto');updateCollectionControls()});
