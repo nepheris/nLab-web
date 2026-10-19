@@ -13,7 +13,9 @@ async function scenario(name,viewport){
  try{
   const response=await page.goto(new URL('APP-Applications/studio-core-test/',base).href,{waitUntil:'domcontentloaded',timeout:45000});
   assert(response?.ok(),name+': HTML unavailable');
-  await page.locator('html[data-core-lab-ready="1"]').waitFor({timeout:35000});
+  await page.waitForFunction(()=>['1','error'].includes(document.documentElement.dataset.coreLabReady),null,{timeout:16000});
+  const status=await page.locator('html').getAttribute('data-core-lab-ready');
+  assert(status==='1',name+': Core initialization failed: '+await page.locator('#labCheckSummary').textContent());
   await page.locator('html[data-core-lab-checks="pass"]').waitFor({timeout:15000});
   assert((await page.locator('#labCheckList li.pass').count())===15,name+': 15 checks should pass');
   assert(await page.locator('.studioLogo img').count()===1,name+': Core nLab logo absent');
