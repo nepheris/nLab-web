@@ -1,11 +1,31 @@
 // Studio Core workspace shell — opt-in layout used first by Core Test Lab.
 // The caller owns panels and commands; this module only composes navigation and layout.
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
-export function mountStudioWorkspace({main,tabs=[],initial='files',title='Planche de travail',subtitle='',storageKey='nlab-workspace-v1'}={}){
+export function mountStudioWorkspace({main,tabs=[],initial='files',title='Planche de travail',subtitle='',storageKey='nlab-workspace-v1',resizable=false}={}){
  if(!main)throw Error('Workspace main required');
  main.classList.add('studioUx');
- main.innerHTML='<aside class="studioUxSidebar"><nav class="studioUxRail" role="tablist" aria-label="Panneaux du Studio"></nav><div class="studioUxSideContent"><header><strong id="studioUxSideTitle"></strong><div><button type="button" id="studioUxDetach" title="Détacher le panneau" aria-label="Détacher le panneau">↗</button><button type="button" id="studioUxCollapse" title="Replier le volet" aria-label="Replier le volet">‹</button></div></header><div id="studioUxPanelHost"></div></div></aside><section class="studioUxMain"><header class="studioUxWorkHeader"><div><strong>'+esc(title)+'</strong><small>'+esc(subtitle)+'</small></div><div class="studioUxWorkActions" id="studioUxWorkActions"></div></header><div class="studioUxWorkBody" id="studioUxWorkBody"></div></section><button type="button" id="studioUxMobileOpen" class="studioUxMobileOpen" aria-label="Afficher les panneaux">☰ Panneaux</button>';
+ main.innerHTML='<aside class="studioUxSidebar"><nav class="studioUxRail" role="tablist" aria-label="Panneaux du Studio"></nav><div class="studioUxSideContent"><header><strong id="studioUxSideTitle"></strong><div><button type="button" id="studioUxLock" title="Verrouiller la largeur du panneau" aria-label="Verrouiller la largeur du panneau" aria-pressed="false" hidden>♧</button><button type="button" id="studioUxDetach" title="Détacher le panneau" aria-label="Détacher le panneau">↗</button><button type="button" id="studioUxCollapse" title="Replier le volet" aria-label="Replier le volet">‹</button></div></header><div id="studioUxPanelHost"></div></div><div class="studioUxResizeGrip" id="studioUxResizeGrip" role="separator" tabindex="0" aria-label="Modifier la largeur du volet" aria-orientation="vertical" hidden></div></aside><section class="studioUxMain"><header class="studioUxWorkHeader"><div><strong>'+esc(title)+'</strong><small>'+esc(subtitle)+'</small></div><div class="studioUxWorkActions" id="studioUxWorkActions"></div></header><div class="studioUxWorkBody" id="studioUxWorkBody"></div></section><button type="button" id="studioUxMobileOpen" class="studioUxMobileOpen" aria-label="Afficher les panneaux">☰ Panneaux</button>';
  const nav=main.querySelector('.studioUxRail'),host=main.querySelector('#studioUxPanelHost'),heading=main.querySelector('#studioUxSideTitle');
+ // Opt-in resizable drawer. Never resize existing studios or overwrite CURRENT layout settings.
+ if(resizable){
+  main.dataset.uxResizable='true';
+  const grip=main.querySelector('#studioUxResizeGrip'),lock=main.querySelector('#studioUxLock');
+  grip.hidden=false;lock.hidden=false;
+  const clamp=n=>Math.max(240,Math.min(520,Math.round(Number(n)||342)));
+  const get=(key,fallback)=>{try{return localStorage.getItem(storageKey+':'+key)??fallback}catch{return fallback}};
+  const put=(key,value)=>{try{localStorage.setItem(storageKey+':'+key,String(value))}catch{}};
+  let width=clamp(get('sidebar-width','342')),locked=get('sidebar-locked','false')==='true';
+  const update=()=>{main.style.setProperty('--ux-sidebar-width',width+'px');grip.setAttribute('aria-valuenow',String(width));grip.setAttribute('aria-valuemin','240');grip.setAttribute('aria-valuemax','520');grip.setAttribute('aria-valuetext',width+' pixels');grip.setAttribute('aria-disabled',String(locked));lock.setAttribute('aria-pressed',String(locked));lock.textContent=locked?'🔒':'🔓';lock.title=locked?'Déverrouiller la largeur du panneau':'Verrouiller la largeur du panneau';grip.title=locked?'Déverrouiller le panneau pour redimensionner':'Faire glisser pour modifier la largeur';main.dataset.uxSidebarLocked=String(locked)};
+  lock.addEventListener('click',()=>{locked=!locked;put('sidebar-locked',locked);update()});
+  let dragging=false;
+  grip.addEventListener('pointerdown',e=>{if(locked||e.button!==0||innerWidth<=700)return;dragging=true;grip.setPointerCapture(e.pointerId);e.preventDefault()});
+  grip.addEventListener('pointermove',e=>{if(!dragging)return;const left=main.getBoundingClientRect().left;width=clamp(e.clientX-left);update()});
+  const stop=()=>{if(!dragging)return;dragging=false;put('sidebar-width',width)};
+  grip.addEventListener('pointerup',stop);grip.addEventListener('pointercancel',stop);
+  grip.addEventListener('keydown',e=>{if(locked||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();width=e.key==='Home'?240:e.key==='End'?520:clamp(width+(e.key==='ArrowRight'?16:-16));put('sidebar-width',width);update()});
+  update();
+ }
+
  const nodes=new Map();
  for(const t of tabs){const panel=document.createElement('section');panel.className='studioUxTabPanel';panel.dataset.uxPanel=t.id;panel.hidden=true;panel.append(...(t.children||[]).filter(Boolean));nodes.set(t.id,panel);host.append(panel);const b=document.createElement('button');b.type='button';b.dataset.uxTab=t.id;b.setAttribute('role','tab');b.innerHTML='<span class="uxRailGlyph" aria-hidden="true">'+esc(t.icon||'◫')+'</span><span class="uxRailName">'+esc(t.label)+'</span>';b.title=t.label;b.setAttribute('aria-controls','studioUxPanelHost');if(t.workTab)b.dataset.uxWorkTab='true';nav.append(b)}
  const railToggle=document.createElement('button');railToggle.id='studioUxRailToggle';railToggle.className='uxRailToggle';railToggle.type='button';railToggle.title='Replier le volet gauche';nav.prepend(railToggle);
