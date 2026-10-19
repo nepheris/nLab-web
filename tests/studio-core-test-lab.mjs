@@ -84,6 +84,27 @@ async function scenario(name,viewport){
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': select all failed');
   await page.locator('#labInvertFiles').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': invert selection failed');
+  await page.locator('#uxTopSelect').click();
+  assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': top selection toggle failed');
+  await page.locator('#uxRotateAll').check();
+  await page.locator('#uxRotateRight').click();
+  assert((await page.locator('#labCollection .collectionThumbMedia[style*="90deg"]').count())>=2,name+': batch rotation not applied to selection');
+  await page.locator('#uxTileSize').fill('220');await page.locator('#uxTileSize').press('Tab');
+  assert((await page.locator('#labCollection').getAttribute('data-thumbnail-size'))==='220',name+': typed thumbnail width missing');
+  await page.locator('#uxTextSize').fill('15');await page.locator('#uxTextSize').press('Tab');
+  assert((await page.locator('#labCollection').evaluate(el=>el.style.getPropertyValue('--ux-file-font')))==='15px',name+': text sizing missing');
+  await page.locator('#uxCollectionGrouping').selectOption('size');
+  assert(await page.locator('#labCollection .collectionGroup').count()>=1,name+': size bands missing');
+  await page.locator('#uxCollapseGroups').click();
+  assert((await page.locator('#labCollection .collectionGroup.collapsed').count())>=1,name+': group collapse missing');
+  await page.locator('#uxExpandGroups').click();
+  await page.locator('#uxCollectionGrouping').selectOption('pages');
+  assert(await page.locator('#labCollection .collectionGroup').count()>=1,name+': page bands missing');
+  await page.locator('#uxCollectionGrouping').selectOption('none');
+  await page.locator('#uxTopSelect').click();
+  assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': deselection toggle missing');
+  await page.locator('#uxTextSize').fill('12');await page.locator('#uxTextSize').press('Tab');
+  await page.locator('#labThumbAuto').click();
 
   const resp=await page.locator('#labResponsiveLink').getAttribute('href');
   assert(resp.includes('responsive-test-studio/')&&resp.includes('url='),name+': responsive launcher URL invalid');
@@ -100,8 +121,21 @@ async function scenario(name,viewport){
   await page.locator('#uxPreviewRestore').click();
   assert(await page.locator('#uxPreviewCanvas').isVisible(),name+': preview did not restore');
 
+  const grip=page.locator('#studioUxResizeGrip');
+  if(viewport.width>700){
+    await grip.focus();
+    const startWidth=await grip.getAttribute('aria-valuenow');
+    await page.keyboard.press('ArrowRight');
+    assert(Number(await grip.getAttribute('aria-valuenow'))>Number(startWidth),name+': sidebar keyboard resizing missing');
+    await page.locator('#studioUxLock').click();
+    assert(await grip.getAttribute('aria-disabled')==='true',name+': drawer width lock not effective');
+    await page.locator('#studioUxLock').click();
+  }
   assert(await page.locator('#studioMain').getAttribute('data-layout-profile')===(viewport.width<=700?'mobile':viewport.width<=1100?'tablet':'desktop'),name+': adaptive workspace profile incorrect');
-  assert(await page.locator('.studioUxRail [data-ux-tab]').count()===8,name+': Core workbench tab missing');
+  assert(await page.locator('.studioUxRail [data-ux-tab]').count()===10,name+': Core personalized tabs missing');
+  assert(await page.locator('[data-ux-tab="personal"]').count()===1,name+': personal settings tab missing');
+  assert(await page.locator('[data-ux-tab="windows"]').count()===1,name+': windows tab missing');
+  assert(await page.locator('.studioLogo img').isVisible(),name+': classic nLab header logo not visible');
   await page.locator('#uxSaveAsOpen').click();
   assert(await page.locator('.uxTokenFamily').count()===6,name+': template categories missing');
   assert(await page.locator('#uxSaveProfileMount [data-template-profile="FIRST_NAME"]').count()===1,name+': personal profile 00 missing');
@@ -110,6 +144,11 @@ async function scenario(name,viewport){
   await page.locator('#uxSavePattern').fill('{FIRST_NAME}_{DATE_A:DD-MM-YYYY}');
   assert((await page.locator('#uxSavePreview').textContent()).includes('Essai_'),name+': local personal variable not resolved');
   assert((await page.locator('#uxSavePreview').textContent()).includes('03-02-2025'),name+': configured Date A not formatted');
+  await page.locator('#uxSaveDateMask').selectOption('DD-MM-YYYY');
+  const dateOrder=page.locator('.uxDateVisualFields select').nth(0);
+  await dateOrder.selectOption('DMY');
+  await page.locator('.uxDateVisualFields select').nth(1).selectOption('.');
+  assert((await page.locator('.uxDateVisualPreview').textContent()).includes('18.10.2026'),name+': visual date format builder missing');
   await page.locator('#uxSaveDateMask').selectOption('DD-MM-YYYY');
   assert((await page.locator('.uxTokenFamily[data-family="date"] [data-template-token="DATE_A"]').textContent()).includes(':DD-MM-YYYY'),name+': formatted date token missing');
   await page.locator('.uxTokenFamily[data-family="date"] .uxToken[data-token-key="DATE_A"] button').nth(1).click();
@@ -150,7 +189,11 @@ async function scenario(name,viewport){
   await page.locator('#labOpenSettings').click();
   assert(await page.locator('#studioCoreSettingsPanel').isVisible(),name+': Core settings not opened');
   await page.locator('#studioCoreSettingsClose').click();
-  assert(await page.locator('.uxSettingsProfile [data-template-profile="FIRST_NAME"]').inputValue()==='Essai',name+': personal profile not synchronized');
+  await page.locator('[data-ux-tab="personal"]').click();
+  assert(await page.locator('.uxPersonalPanel [data-template-profile="FIRST_NAME"]').inputValue()==='Essai',name+': personal profile not synchronized');
+  assert((await page.locator('.uxPersonalPanel .uxProfileVariable').count())>=8,name+': personal variable names missing');
+  await page.locator('.uxPersonalPanel .uxProfileActions button').filter({hasText:'Exporter JSON'}).click();
+  await page.locator('[data-ux-tab="settings"]').click();
   await page.locator('#uxDisplayMode').selectOption('tablet');
   assert(await page.locator('#studioMain').getAttribute('data-preview-profile')==='tablet',name+': tablet simulation missing');
   await page.locator('#uxDisplayMode').selectOption('mobile');
