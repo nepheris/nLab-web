@@ -149,7 +149,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
  const left=make('button','','↶ −90°');left.id='uxRotateLeft';left.type='button';
  const right=make('button','','↷ +90°');right.id='uxRotateRight';right.type='button';
  const doRotate=delta=>{const count=rotateSelection?.(delta,$('#uxRotateAll').checked)||0;
-  if(!count)$('#uxCollectionInfo').textContent='Sélectionnez au moins un élément avant la rotation.'
+  if(!count)$('#labCollectionInfo').textContent='Sélectionnez au moins un élément avant la rotation.'
  };
  left.addEventListener('click',()=>doRotate(-90));right.addEventListener('click',()=>doRotate(90));
  const foldAll=make('button','','▴ Tout replier');foldAll.id='uxCollapseGroups';foldAll.type='button';foldAll.addEventListener('click',()=>collection.collapseGroups());
