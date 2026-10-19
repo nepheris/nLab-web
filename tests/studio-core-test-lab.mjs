@@ -83,7 +83,9 @@ async function scenario(name,viewport){
   await page.locator('#labFilesNative').setInputFiles([{name:'image-1.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="#00f"/></svg>')},{name:'image-2.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="#f00"/></svg>')}]);
   assert((await page.locator('#labCollection .collectionItem').count())===3,name+': multi-file collection expected three items');
   await page.locator('#uxTopSelect').click();
-  assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': select all failed');
+  assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': conditional deselection failed');
+  await page.locator('#uxTopSelect').click();
+  assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===3,name+': conditional select all failed');
   await page.locator('#uxFileInvert').click();
   assert((await page.locator('#labCollection input[data-collection-select]:checked').count())===0,name+': invert selection failed');
   await page.locator('#uxTopSelect').click();
