@@ -13,9 +13,11 @@
 | CORE-265 | Groupes repliables par dossier, type, taille (3 classes) et pages (1,2,3–5,6+) ; tri sens A→Z/Z→A | IMPLEMENTED TEST | états de groupes persistants |
 | CORE-266 | Header nLab classique, Affichage dans le ruban, rail Personnel et Fenêtres, restauration des fenêtres du Core | IMPLEMENTED TEST | pas de fenêtre métier doublée |
 | CORE-267 | Contraste clair/sombre : descriptions, zone glisser-déposer, sous-sections, barres de commandes et historique | IMPLEMENTED TEST | captures Chrome 3 tailles + recette réelle |
-| CORE-268 | Lab 0.8.0 TEST, snapshot 0.7, tests anti-régression | CI PENDING / HUMAN PENDING | ne pas promouvoir CURRENT |
+| CORE-268 | Lab 0.8.0 TEST, snapshot 0.7, tests anti-régression | **CORE CI PASS ciblée / HUMAN PENDING** | Chrome desktop, tablette et mobile PASS ; contrastes en thème sombre vérifiés ; audit Studios et pilote PDF 2.12 PASS. La suite exhaustive Image Studio reste en échec historique et la suite PDF publique a montré un timeout intermittent V1/fit page sur certains runs. CURRENT inchangé |
 | CORE-269 | Import d'image par URL : reproduire le cas exact et contrôler support CORS/format | OPEN / REPRO NEEDED | aucun faux PASS déclaré |
 | CORE-270 | Déploiement Image puis PDF et autres Studios | BLOCKED — CORE VALIDATION REQUIRED | migration opt-in séparée |
+
+**Recette visuelle :** captures réelles revues pour le header, le rail, l'Historique et la planche en clair/sombre. Contrastes et footer corrigés. Reste à obtenir validation utilisateur sur navigateur et téléphone. **Fenêtres masquées** restaurables dans le rail (plateau flottant masqué dans ce Lab seulement).
 
 **Périmètre de sécurité :** l'import/export JSON du profil reste local au navigateur et contient potentiellement des informations personnelles : conserver le fichier privé. Les rotations du Lab portent uniquement sur les vignettes/aperçus, pas sur les octets originaux. La simulation de taille n'est pas la validation sur un appareil réel. 
 
