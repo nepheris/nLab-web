@@ -1,3 +1,26 @@
+## Studio Core 3.10.0 TEST / Lab 0.8.0 — stabilisation ergonomique (19 octobre 2026)
+
+**Décision :** Core d’abord ; conserver le visuel de la maquette 0.5 validée et la charpente Lab 0.7. Aucune migration métier, pas de changement de CURRENT.
+
+| ID | Action | État | Vérification |
+|---|---|---|---|
+| CORE-259 | Paramètres personnels autonomes dans le rail, nom de la variable sous chaque valeur, sauvegarde locale, import/export JSON contrôlé | IMPLEMENTED TEST | JSON valide, champs inconnus rejetés, limite 64 Ko, mise à jour instantanée |
+| CORE-260 | Composeur visuel de dates/temps (ordre, points/tirets/barres, composants, heure) avec exemple et jetons `{DATE:...}` | IMPLEMENTED TEST | masques + aperçus, tests Chrome |
+| CORE-261 | Barre latérale redimensionnable à la souris et au clavier (240–520 px), verrouillable, repliable et détachable | IMPLEMENTED TEST | souris/keyboard et mémoire locale |
+| CORE-262 | Commandes Fichier, Dossier, Effacer, Tout sélectionner/désélectionner, Utiliser sélection, Annuler en haut et bas, services uniques | IMPLEMENTED TEST | import natif partagé, vider annulable |
+| CORE-263 | Rotation −90/+90 appliquée à l'actif ou à toute la sélection, une seule transaction undo/redo | IMPLEMENTED TEST | aperçu seulement, ne change pas l'original |
+| CORE-264 | Taille vignette et taille texte en mini barre −/valeur/+ ; taille saisissable, mode Auto | IMPLEMENTED TEST | clamp, persistance |
+| CORE-265 | Groupes repliables par dossier, type, taille (3 classes) et pages (1,2,3–5,6+) ; tri sens A→Z/Z→A | IMPLEMENTED TEST | états de groupes persistants |
+| CORE-266 | Header nLab classique, Affichage dans le ruban, rail Personnel et Fenêtres, restauration des fenêtres du Core | IMPLEMENTED TEST | pas de fenêtre métier doublée |
+| CORE-267 | Contraste clair/sombre : descriptions, zone glisser-déposer, sous-sections, barres de commandes et historique | IMPLEMENTED TEST | captures Chrome 3 tailles + recette réelle |
+| CORE-268 | Lab 0.8.0 TEST, snapshot 0.7, tests anti-régression | CI PENDING / HUMAN PENDING | ne pas promouvoir CURRENT |
+| CORE-269 | Import d'image par URL : reproduire le cas exact et contrôler support CORS/format | OPEN / REPRO NEEDED | aucun faux PASS déclaré |
+| CORE-270 | Déploiement Image puis PDF et autres Studios | BLOCKED — CORE VALIDATION REQUIRED | migration opt-in séparée |
+
+**Périmètre de sécurité :** l'import/export JSON du profil reste local au navigateur et contient potentiellement des informations personnelles : conserver le fichier privé. Les rotations du Lab portent uniquement sur les vignettes/aperçus, pas sur les octets originaux. La simulation de taille n'est pas la validation sur un appareil réel. 
+
+---
+
 ## Studio Core 3.9.0 TEST — variables, profil, prévisualisation et volet (18 octobre 2026)
 
 **Périmètre : exclusivement Studio Core Test Lab 0.7.0 TEST**. Aucun changement de CURRENT ni adoption par Image/PDF/OCR avant recette humaine.
