@@ -310,7 +310,52 @@ async function scenario(name,viewport){
   reports.push({name,status:'FAIL',error:String(error?.stack||error),browserErrors:errors});
  }finally{await context.close();}
 }
+async function resilienceScenario(){
+ const context=await browser.newContext({viewport:{width:1200,height:850}});
+ const page=await context.newPage();const errors=[];
+ page.on('pageerror',error=>errors.push(error.message));
+ try{
+  await page.route('**/__core_url_valid.png',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9WlV03AAAAAASUVORK5CYII=','base64')}));
+  await page.route('**/__core_url_not_image.png',route=>route.fulfill({status:200,contentType:'text/html',body:'<html><title>not an image</title></html>'}));
+  await page.route('https://external-nocors.example/__core_url_cross.png',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('invalid image data')}));
+  await page.goto(new URL('APP-Applications/studio-core-test/',base).href,{waitUntil:'domcontentloaded'});
+  await page.locator('html[data-core-lab-ready="1"]').waitFor({timeout:16000});
+  await page.locator('#labPickerOpen').click();
+  await page.locator('#studioInputPicker').waitFor({state:'visible'});
+  const input=page.locator('#studioInputUrl'),importButton=page.locator('#studioInputUrlImport'),message=page.locator('#studioInputAccept');
+  await input.fill('ftp://example.invalid/file.png');await importButton.click();
+  await page.waitForFunction(()=>document.querySelector('#studioInputAccept')?.textContent?.includes('Protocole non autorisé'),null,{timeout:5000});
+  await input.fill(new URL('APP-Applications/studio-core-test/__core_url_not_image.png',base).href);await importButton.click();
+  await page.waitForFunction(()=>document.querySelector('#studioInputAccept')?.textContent?.includes('page HTML'),null,{timeout:5000});
+  assert((await page.locator('#studioInputList [data-input-item]').count())===0,'misleading HTML response imported as PNG');
+  await input.fill('https://external-nocors.example/__core_url_cross.png');await importButton.click();
+  await page.waitForFunction(()=>document.querySelector('#studioInputAccept')?.textContent?.includes('CORS'),null,{timeout:5000});
+  await input.fill(new URL('APP-Applications/studio-core-test/__core_url_valid.png',base).href);await importButton.click();
+  await page.waitForFunction(()=>document.querySelector('#studioInputList')?.textContent?.includes('__core_url_valid.png'),null,{timeout:5000});
+  assert((await message.textContent()).includes('Tous formats'),'URL success retained earlier error state');
+  await page.locator('#studioInputCancel').click();
+  const storage=await page.evaluate(async()=>{
+   const module=await import('../_shared/studio-v2/collection-browser.js');
+   const beforeGet=Storage.prototype.getItem,beforeSet=Storage.prototype.setItem;
+   Storage.prototype.getItem=function(){throw new DOMException('Denied','SecurityError')};
+   Storage.prototype.setItem=function(){throw new DOMException('Denied','SecurityError')};
+   try{
+    const host=document.createElement('div'),c=new module.CollectionBrowser({host,key:'blocked-storage',thumbnailTools:true});
+    c.setItems([{id:'1',name:'no-storage.png',size:123,type:'image/png'}]);
+    c.setSort('size',-1);c.setGroupBy('type');c.collapseGroups();c.expandGroups();
+    c.setView('thumbs');c.setThumbnailSize(220);c.selectAll();
+    const ok=c.items.length===1&&c.selected.size===1&&c.thumbnailSize===220&&c.view==='thumbs';
+    c.resizeObserver?.disconnect();return ok;
+   }finally{Storage.prototype.getItem=beforeGet;Storage.prototype.setItem=beforeSet}
+  });
+  assert(storage,'collection throws when browser storage is denied');
+  assert(errors.length===0,'resilience browser errors: '+errors.join('; '));
+  reports.push({name:'resilience-url-storage',status:'PASS',checks:4,extra:'URL/CORS/MIME, accepted PNG and blocked localStorage'});
+ }catch(error){reports.push({name:'resilience-url-storage',status:'FAIL',error:String(error?.stack||error),browserErrors:errors})}
+ finally{await context.close()}
+}
 try{
+ await resilienceScenario();
  await scenario('desktop',{width:1440,height:900});
  await scenario('tablette',{width:820,height:1024});
  await scenario('mobile',{width:393,height:852});
