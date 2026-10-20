@@ -32,6 +32,21 @@ _Décision de pilotage au 20 octobre 2026 — document de suivi sur la branche *
 | STU-B08 | P2 | QR/Barcode : couverture formats, scan image, erreurs de validation et symbologies partagées | Service commun existant | Oui : scénarios synthétiques indépendants | Tests multi-formats sans régression UI |
 | STU-B09 | P2 | PWA par Studio : manifestes, `start_url`, icônes, offline explicite, installation | Couverture partielle | Oui en **audit statique** ; installation effective sur appareil réel à valider | Manifestes par Studio + test Chrome/Android individuel |
 
+## Réconciliation technique des PR historiques (audit des fichiers du 20/10)
+
+L'inventaire des fichiers modifiés révèle des collisions **avant fusion**. Ces nombres sont des chevauchements de chemins GitHub, pas une preuve de conflits textuels identiques ; GitHub indique néanmoins les PR #67, #70, #71 et #72 **non fusionnables** avec `main` à la date de l'audit.
+
+| PR en collision | Chemins communs | Décision technique |
+| --- | ---: | --- |
+| #70 ↔ #71 | **13** fichiers | Extraire les tests Core B02–B09 utiles, supprimer la duplication des composants `color-picker`, `input-picker`, `viewer-control`; ne pas fusionner deux versions divergentes du Core |
+| #70 ↔ #93 | **2** (`input-picker.js`, `studio.css`) | Préférer le Core 3.10 stabilisé comme base ; reporter et tester uniquement les correctifs manquants |
+| #71 ↔ #93 | **2** (mêmes modules Core) | Rejouer les scénarios de #71 contre #93 ; ne pas restaurer l'ancien CSS ou écraser le nouveau picker |
+| #67 ↔ #70 | **1** (`tests/studio-version-history.mjs`) | Canoniser la gate d'archives sur la matrice la plus récente sans supprimer les 128 historiques du lot antérieur |
+| #70 ↔ #72 | **1** (validateur du registre) | Revalider la cohérence du catalogue après résolution |
+| #71 ↔ #72 | **3** (validateurs Guide Froid, features et registres) | Ne pas cherry-pick des validateurs obsolètes isolément |
+
+Les branches #67/#70/#71/#72 ont divergé de `main`; **aucune fusion en bloc**. Pour chaque candidat à la reprise : base actuelle → copie minimale des changements utiles → tests spécifiques → CI globale → décision explicite. La PR #94 est séparée et ne partage aucun fichier avec #93.
+
 ## Dépendances et ordre de livraison
 ```text
 [A] Core 3.10 TEST — CI, correction, recette humaine
