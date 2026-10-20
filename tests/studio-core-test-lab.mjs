@@ -326,6 +326,8 @@ async function resilienceScenario(){
  try{
   await page.route('**/__core_url_valid.png',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9WlV03AAAAAASUVORK5CYII=','base64')}));
   await page.route('**/__core_url_not_image.png',route=>route.fulfill({status:200,contentType:'text/html',body:'<html><title>not an image</title></html>'}));
+  await page.route('**/__core_url_missing.png',route=>route.fulfill({status:404,contentType:'text/plain',body:'Not found'}));
+  await page.route('**/__core_url_empty.png',route=>route.fulfill({status:200,contentType:'image/png',body:''}));
   await page.route('https://external-nocors.example/__core_url_cross.png',route=>route.abort('failed')); // Force an unreachable host; browsers may bypass CORS for mocked fulfill() responses.
   await page.goto(new URL('APP-Applications/studio-core-test/',base).href,{waitUntil:'domcontentloaded'});
   await page.locator('html[data-core-lab-ready="1"]').waitFor({timeout:16000});
@@ -337,6 +339,11 @@ async function resilienceScenario(){
   await input.fill(new URL('APP-Applications/studio-core-test/__core_url_not_image.png',base).href);await importButton.click();
   await page.waitForFunction(()=>document.querySelector('#studioInputAccept')?.textContent?.includes('page HTML'),null,{timeout:5000});
   assert((await page.locator('#studioInputList [data-input-item]').count())===0,'misleading HTML response imported as PNG');
+  await input.fill(new URL('APP-Applications/studio-core-test/__core_url_missing.png',base).href);await importButton.click();
+  await page.waitForFunction(()=>document.querySelector('#studioInputAccept')?.textContent?.includes('Erreur HTTP 404'),null,{timeout:5000});
+  await input.fill(new URL('APP-Applications/studio-core-test/__core_url_empty.png',base).href);await importButton.click();
+  await page.waitForFunction(()=>document.querySelector('#studioInputAccept')?.textContent?.includes('fichier vide'),null,{timeout:5000});
+  assert((await page.locator('#studioInputList [data-input-item]').count())===0,'failed HTTP or empty response contaminated import selection');
   await input.fill('https://external-nocors.example/__core_url_cross.png');await importButton.click();
   await page.waitForFunction(()=>document.querySelector('#studioInputAccept')?.textContent?.includes('CORS'),null,{timeout:5000});
   await input.fill(new URL('APP-Applications/studio-core-test/__core_url_valid.png',base).href);await importButton.click();
@@ -359,7 +366,7 @@ async function resilienceScenario(){
   });
   assert(storage,'collection throws when browser storage is denied');
   assert(errors.length===0,'resilience browser errors: '+errors.join('; '));
-  reports.push({name:'resilience-url-storage',status:'PASS',checks:4,extra:'URL/CORS/MIME, accepted PNG and blocked localStorage'});
+  reports.push({name:'resilience-url-storage',status:'PASS',checks:6,extra:'URL/CORS/HTTP/MIME/empty, accepted PNG and blocked localStorage'});
  }catch(error){reports.push({name:'resilience-url-storage',status:'FAIL',error:String(error?.stack||error),browserErrors:errors})}
  finally{await context.close()}
 }
