@@ -1,3 +1,5 @@
+> **Pilotage multi-Studio (20/10/2026)** : [plan de priorités et chantiers autonomes](./STUDIOS-PRIORITES-AUTONOMIE-2026-10-20.md). Core 3.10 #93 en priorité ; Image CI #94, Legacy #70/#67, Responsive #72 et Hub en pistes indépendantes. Aucun CURRENT ni archive ne doit être modifié automatiquement.
+
 ## Passe de durcissement Core 3.10 — audit approfondi du 19 octobre 2026
 
 **Périmètre :** PR [#93](https://github.com/nepheris/nLab-web/pull/93), branche `studio-core-3-10-ux-polish-20261019`. Exclusivement TEST ; ni `main` ni CURRENT ni les archives ne sont promues. La réparation de composants Core réutilisés reste compatible par défaut avec les autres Studios ; tester tous les consommateurs avant adoption.
