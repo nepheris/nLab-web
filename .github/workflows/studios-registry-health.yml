@@ -5,8 +5,11 @@ on:
       - 'APP-Applications/studios/catalog.json'
       - 'APP-Applications/**/versions.json'
       - 'APP-Applications/**/manifest.webmanifest'
+      - 'APP-Applications/studios/index.html'
+      - 'APP-Applications/studios/health.html'
       - 'scripts/studios_health_audit.py'
       - 'tests/test_studios_health_audit.py'
+      - 'tests/studios-hub-health-browser.mjs'
       - '.github/workflows/studios-registry-health.yml'
   workflow_dispatch:
 permissions:
@@ -15,7 +18,7 @@ jobs:
   static-health:
     name: Catalog, versions, historic paths and PWA static inventory
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -28,6 +31,18 @@ jobs:
       - name: Repository health report
         run: |
           python scripts/studios_health_audit.py --strict
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium for Hub acceptance
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install chromium
+      - name: Browser acceptance of the Hub health view
+        run: |
+          python3 -m http.server 8779 --bind 127.0.0.1 >/tmp/studio-health-http.log 2>&1 &
+          curl --retry 15 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:8779/APP-Applications/studios/health.html >/dev/null
+          NLAB_BASE_URL=http://127.0.0.1:8779/ node tests/studios-hub-health-browser.mjs
       - name: Publish audit artifacts
         if: always()
         uses: actions/upload-artifact@v4
