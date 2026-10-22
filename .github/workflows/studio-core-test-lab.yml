@@ -26,6 +26,8 @@ on:
       - 'APP-Applications/studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md'
       - 'Library/demo/**'
       - 'APP-Applications/studios/index.html'
+      - 'APP-Applications/_shared/studio-v2/csv-safe.js'
+      - 'tests/studio-core-csv-safe.mjs'
       - 'tests/studio-core-color-control.mjs'
       - 'scripts/run-core-test-preview.py'
       - 'tests/studio-core-test-lab.mjs'
@@ -63,6 +65,8 @@ jobs:
           node tests/studio-core-template-ux.mjs
           node --check tests/studio-core-color-control.mjs
           node tests/studio-core-color-control.mjs
+          node --check tests/studio-core-csv-safe.mjs
+          node tests/studio-core-csv-safe.mjs
           node --check APP-Applications/studio-core-test/versions/0.3.0/app.js
           node --check APP-Applications/studio-core-test/versions/0.2.0/app.js
           node --check APP-Applications/_shared/studio-v2/application-mode-service.js
