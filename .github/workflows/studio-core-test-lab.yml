@@ -83,6 +83,12 @@ jobs:
           v=json.loads((root/'studio-core-test/versions.json').read_text())
           assert m['display']=='standalone' and m['scope']=='./' and m['start_url']=='./'
           assert v['current'] is None and v['test']=='0.8.0'
+          html=(root/'studio-core-test/index.html').read_text(encoding='utf-8')
+          import re
+          assert 'id="labVersionBadge">TEST 0.8.0' in html, 'Lab badge must match canonical TEST version'
+          manual_count=len(re.findall(r'data-manual="',html))
+          assert manual_count==7 and '0/7 contrôles validés localement.' in html, 'Manual recipe must count all 7 checks'
+          assert 'ACCEPTANCE-CHECKLIST-3.10.md' in html, 'Human acceptance checklist missing from UI'
           assert any(x['version']=='0.1.0' and x['status']=='historical' for x in v['versions'])
           assert (root/'studio-core-test/versions/0.1.0/index.html').is_file()
           assert any(x['version']=='0.2.0' and x['status']=='historical' for x in v['versions'])
