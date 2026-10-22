@@ -1,0 +1,255 @@
+/* Studio Core 3.10 TEST visual corrections — the approved UX 0.5 remains
+   the baseline. No specialized Studio opts into this stylesheet. */
+body[data-studio="studio-core-test"] .studioHeader .studioLogo img{height:35px!important;max-width:138px!important;opacity:1!important;visibility:visible!important;display:block!important}
+body[data-studio="studio-core-test"] .studioHeader .studioBrand>b{font-weight:800;font-size:15px;letter-spacing:.01em}
+body[data-studio="studio-core-test"] .studioHeader .studioPill.local{font-size:10px}
+body[data-studio="studio-core-test"] #studioMain.studioUx[data-ux-resizable="true"]:not(.uxSidebarClosed){
+ grid-template-columns:var(--ux-sidebar-width,342px) minmax(0,1fr)!important
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSidebar{position:relative}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxResizeGrip{
+ position:absolute!important;right:-5px;top:52px;bottom:0;width:10px;z-index:40;
+ cursor:col-resize;background:transparent;border:0;border-radius:5px;touch-action:none
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxResizeGrip:hover,
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxResizeGrip:focus-visible{background:#65afe5aa;outline:1px solid #348bce}
+body[data-studio="studio-core-test"] #studioMain[data-ux-sidebar-locked="true"] .studioUxResizeGrip{cursor:not-allowed}
+body[data-studio="studio-core-test"] #studioUxLock{
+ display:inline-grid;place-items:center;width:29px;height:29px;font-size:14px;border:1px solid var(--ux-border,#bed0df);border-radius:6px;
+ color:var(--ux-control-fg,#245a80);background:var(--ux-control,#fff)
+}
+body[data-studio="studio-core-test"] #studioUxLock[hidden]{display:none!important}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSideContent>header>div{display:flex;gap:4px;align-items:center}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSideContent>header button{
+ width:28px;min-width:28px;min-height:28px;padding:3px;border:1px solid var(--ux-border,#d3dfed);border-radius:6px
+}
+body[data-studio="studio-core-test"] #studioMain .studioUxWorkHeader{gap:9px}
+body[data-studio="studio-core-test"] #studioMain .uxWorkMainActions{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+body[data-studio="studio-core-test"] #studioMain .uxWorkMainActions button{
+ min-height:32px;font-size:11px;font-weight:650;padding:6px 9px;border-radius:7px
+}
+body[data-studio="studio-core-test"] #studioMain .uxWorkMainActions #uxTopUseSelection{background:var(--ux-accent-soft,#e2f1ff);border-color:#9bc9ef}
+body[data-studio="studio-core-test"] #studioMain .studioUxWorkActions{align-self:center;min-width:0}
+body[data-studio="studio-core-test"] #studioMain .studioUxWorkHeader strong{color:var(--ux-fg,#25455c)}
+body[data-studio="studio-core-test"] #studioMain .studioUxInfoRow{color:var(--ux-fg,#28485d)!important;font-size:12px;line-height:1.5;gap:6px;margin-bottom:3px}
+body[data-studio="studio-core-test"] #studioMain .studioUxInfoRow span{color:var(--ux-muted,#526d84)!important;line-height:1.5}
+body[data-studio="studio-core-test"] #studioMain .uxCollectionToolbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:8px}
+body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility{
+ display:flex;flex:1 0 100%;gap:6px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--ux-border,#cfdae7);
+ border-bottom:1px solid var(--ux-border,#cfdae7);padding:7px 2px;background:var(--ux-soft,#eef4fa);border-radius:5px
+}
+body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility button{
+ min-height:31px;font-size:11px;white-space:normal;padding:5px 8px;border:1px solid var(--ux-border,#c9d9e7);
+ background:var(--ux-control,#fff);color:var(--ux-control-fg,#204d74);border-radius:6px
+}
+body[data-studio="studio-core-test"] #studioMain .uxRotateSelectionLabel{
+ display:inline-flex;align-items:center;gap:5px;white-space:normal;padding:4px 7px;font-size:11px;
+ color:var(--ux-fg,#29475b);font-weight:600
+}
+body[data-studio="studio-core-test"] #studioMain .uxRotateSelectionLabel input{width:16px;height:16px;accent-color:#0c78ca}
+body[data-studio="studio-core-test"] #studioMain .uxSizingControls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;max-width:100%}
+body[data-studio="studio-core-test"] #studioMain .uxSizeGroup{
+ display:inline-flex;align-items:center;gap:3px;max-width:100%;min-height:32px;
+ padding:3px 5px;border:1px solid var(--ux-border,#c6d7e5);background:var(--ux-panel,#fff);border-radius:8px;
+ color:var(--ux-fg,#234058);font-size:11px
+}
+body[data-studio="studio-core-test"] #studioMain .uxSizeGroup input[type="number"]{
+ width:54px;min-width:54px;max-width:54px;min-height:27px;box-sizing:border-box;
+ padding:3px 5px;text-align:center;font-size:11px;border:1px solid var(--ux-border,#c7dae9);
+ color:var(--ux-control-fg,#234f75);background:var(--ux-control,#fff);border-radius:5px
+}
+body[data-studio="studio-core-test"] #studioMain .uxSizeGroup button{
+ min-width:28px;min-height:29px;padding:4px 6px;font-weight:750;font-size:12px;border:1px solid transparent;border-radius:5px
+}
+body[data-studio="studio-core-test"] #studioMain .uxSizeGroup button:hover{border-color:var(--ux-border,#b6cbdc)}
+body[data-studio="studio-core-test"] #studioMain .collectionThumbnailTools .collectionItem>button[data-collection-open] strong{font-size:var(--ux-file-font,12px)!important;line-height:1.45!important}
+body[data-studio="studio-core-test"] #studioMain .collectionThumbnailTools .collectionItem>button[data-collection-open] small,
+body[data-studio="studio-core-test"] #studioMain .collectionThumbnailTools .collectionItem>button[data-collection-open] em{
+ font-size:clamp(10px,calc(var(--ux-file-font,12px) - 1px),17px)!important;line-height:1.4!important
+}
+body[data-studio="studio-core-test"] #studioMain .collectionGroup{
+ border:1px solid var(--ux-border,#bfd2e3);border-radius:8px;background:var(--ux-panel,#fff);
+ padding:0 7px 7px;margin-bottom:11px
+}
+body[data-studio="studio-core-test"] #studioMain .collectionGroupHead{
+ width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+ text-align:left;font-size:12px;font-weight:800;background:var(--ux-soft,#eaf3fa);
+ color:var(--ux-fg,#25485f);border:0;border-radius:6px;min-height:35px;padding:7px 10px
+}
+body[data-studio="studio-core-test"] #studioMain .collectionGroupHead b{margin-left:auto;font-size:15px}
+body[data-studio="studio-core-test"] #studioMain .collectionGroupHead small{font-size:10px;color:var(--ux-muted,#587085)}
+body[data-studio="studio-core-test"] #studioMain .collectionGroupBody[hidden]{display:none!important}
+body[data-studio="studio-core-test"] #studioMain .collectionGroup.collapsed{padding-bottom:0}
+body[data-studio="studio-core-test"] #labCollectionDrop{
+ background:var(--ux-soft,#edf5fb)!important;color:var(--ux-fg,#29475c)!important;
+ border:1px dashed var(--ux-border,#9ebed6)!important;line-height:1.55;font-size:12px;font-weight:650
+}
+body[data-studio="studio-core-test"] #labCollectionDrop *{color:var(--ux-fg,#2a4860)!important}
+body[data-studio="studio-core-test"] #labAcquiredInfo,
+body[data-studio="studio-core-test"] #labCollectionInfo{color:var(--ux-muted,#567188)!important;line-height:1.5;overflow-wrap:anywhere}
+body[data-studio="studio-core-test"] #studioMain .studioUxPreviewToolbar{
+ background:var(--ux-panel,#fff)!important;color:var(--ux-fg,#2b4960)!important
+}
+body[data-studio="studio-core-test"] #studioMain .studioUxPreviewToolbar label{color:var(--ux-fg,#264963)!important}
+body[data-studio="studio-core-test"] #studioMain .studioUxPreview>footer{color:var(--ux-muted,#557389)!important;font-size:11px}
+body[data-studio="studio-core-test"] #studioMain .uxWindowAction{
+ width:100%;min-height:37px;text-align:left;border:1px solid var(--ux-border,#cbdae5);
+ background:var(--ux-control,#fff);color:var(--ux-control-fg,#275779);border-radius:7px;padding:8px 10px;font-size:12px
+}
+body[data-studio="studio-core-test"] #studioMain .uxWindowsPanel{display:grid;gap:8px}
+body[data-studio="studio-core-test"] #studioMain .uxPersonalPanel{display:grid;gap:9px}
+body[data-studio="studio-core-test"] #studioMain .uxPersonalPanel .uxHistoryEyebrow{margin-bottom:4px}
+body[data-studio="studio-core-test"] #studioMain .uxProfileField{min-width:0}
+body[data-studio="studio-core-test"] #studioMain .uxProfileVariable{
+ font:10px/1.3 ui-monospace,monospace;letter-spacing:.01em;color:var(--ux-muted,#61788e);
+ padding:4px 6px;background:var(--ux-soft,#edf4fa);border:1px solid var(--ux-border,#cdddea);border-radius:4px
+}
+body[data-studio="studio-core-test"] #studioMain .uxProfileActions{display:flex;flex-wrap:wrap;gap:7px}
+body[data-studio="studio-core-test"] #studioMain .uxProfileActions button{
+ min-height:33px;padding:6px 10px;border:1px solid var(--ux-border,#cbd9e7);border-radius:7px;
+ color:var(--ux-control-fg,#23547a);background:var(--ux-control,#fff);font-size:11px
+}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxDateVisual{border:1px solid var(--ux-border,#bfd4e5);border-radius:8px;background:var(--ux-soft,#edf4fa);padding:10px;min-width:0}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxDateVisual legend{font-weight:750;font-size:12px;padding:0 5px;color:var(--ux-fg,#26475e)}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxDateVisualFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxDateVisualFields label{display:grid;gap:5px;min-width:0;font-size:11px}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxDateVisualFields select{
+ max-width:100%;min-height:33px;background:var(--ux-control,#fff);color:var(--ux-control-fg,#264c67);border:1px solid var(--ux-border,#c3d8e7)
+}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxDateVisualPreview{
+ display:block;margin:9px 0 0;padding:9px;background:var(--ux-panel,#fff);color:var(--ux-fg,#264860);
+ border:1px solid var(--ux-border,#c6dae9);border-radius:6px;font:11px/1.5 ui-monospace,monospace;overflow-wrap:anywhere
+}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxProfileSection{margin-bottom:9px}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxProfileVariable{display:block;font-size:10px;color:var(--ux-muted,#58718a)}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxProfileActions{display:flex;gap:6px;flex-wrap:wrap}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxProfileActions button{min-height:33px;padding:6px 10px;font-size:11px}
+body[data-studio="studio-core-test"] .uxSaveDialog .uxProfileGrid strong{color:var(--ux-fg,#26495e);font-size:11px}
+body[data-studio="studio-core-test"] .uxHistoryGroup>summary{margin:8px 0 4px!important;padding:8px 10px!important;line-height:1.5;word-spacing:2px}
+body[data-studio="studio-core-test"] .uxHistoryEntry{padding:8px 8px 11px 13px!important;margin:5px 0 9px 4px!important}
+body[data-studio="studio-core-test"] .uxHistoryEntryHead{display:flex!important;gap:14px!important;align-items:flex-start!important;line-height:1.5}
+body[data-studio="studio-core-test"] .uxHistoryEntryHead strong{flex:1;min-width:0}
+body[data-studio="studio-core-test"] .uxHistoryEntryHead time{margin-left:auto;padding-left:7px;white-space:nowrap;font-size:10px!important;color:var(--ux-muted,#607c90)!important}
+body[data-studio="studio-core-test"] .uxHistoryEntryDetails{display:grid;gap:7px;padding:8px 3px 6px!important;line-height:1.55}
+body[data-studio="studio-core-test"] .uxHistoryCounters,
+body[data-studio="studio-core-test"] .uxHistoryEyebrow{line-height:1.7;letter-spacing:.025em}
+body[data-studio="studio-core-test"] #studioVisibilityOpen{display:flex;align-items:center;gap:4px;flex-direction:column;justify-content:center}
+body[data-studio="studio-core-test"] .studioRibbon #studioVisibilityOpen .scopeIcon{display:inline-flex}
+body[data-studio="studio-core-test"] .studioRibbon [data-studio-action="core.fullscreen"] .scopeIcon svg{width:18px;height:18px}
+@media(max-width:1150px){
+ body[data-studio="studio-core-test"] #studioMain .studioUxWorkHeader{flex-wrap:wrap}
+ body[data-studio="studio-core-test"] #studioMain .uxWorkMainActions{width:100%}
+}
+@media(max-width:700px){
+ body[data-studio="studio-core-test"] #studioMain.studioUx[data-ux-resizable="true"]{display:block!important}
+ body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxResizeGrip{display:none!important}
+ body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility{gap:3px}
+ body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility button{font-size:10px;padding:5px 6px}
+ body[data-studio="studio-core-test"] .uxSaveDialog .uxDateVisualFields{grid-template-columns:minmax(0,1fr)}
+}
+
+
+/* Leave old diagnostic bindings mounted, but display only one compact widget for sizing and selection. */
+body[data-studio="studio-core-test"] #studioMain #labThumbMinus,
+body[data-studio="studio-core-test"] #studioMain #labThumbPlus,
+body[data-studio="studio-core-test"] #studioMain #labThumbAuto,
+body[data-studio="studio-core-test"] #studioMain #labThumbSize,
+body[data-studio="studio-core-test"] #studioMain #labSelectAllFiles,
+body[data-studio="studio-core-test"] #studioMain #labInvertFiles{display:none!important}
+body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility #uxBottomUndo,
+body[data-studio="studio-core-test"] #studioMain .uxCollectionUtility #uxBottomRedo{background:var(--ux-soft,#eef4fa)}
+body[data-studio="studio-core-test"] #studioMain #uxSelectionToggle{background:var(--ux-accent-soft,#e2effa)}
+
+
+/* Visual acceptance fixes — scoped priority over the 0.5 mockup's literal whites. */
+body[data-studio="studio-core-test"] #studioMain.studioUx:not(.uxSidebarClosed) .studioUxSidebar{
+ grid-template-columns:76px minmax(0,1fr)!important
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail{
+ width:76px!important;min-width:76px!important;box-sizing:border-box
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail [data-ux-tab]{
+ width:100%;min-width:0;padding:6px 3px!important;box-sizing:border-box;overflow:hidden
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail .uxRailName{
+ display:block!important;font-size:10px!important;line-height:1.2!important;
+ white-space:nowrap!important;word-break:normal!important;hyphens:none!important;letter-spacing:-.02em
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed{
+ grid-template-columns:76px minmax(0,1fr)!important
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx.uxSidebarClosed .studioUxSidebar{
+ grid-template-columns:76px!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labCollectionDrop{
+ background:var(--ux-soft,#293c4d)!important;border:1px dashed var(--ux-border,#7290a6)!important;
+ color:var(--ux-fg,#f0f7ff)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labCollectionDrop *,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labCollectionInfo,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labAcquiredInfo{
+ color:var(--ux-fg,#f0f7ff)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labCollectionInfo,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioMain.studioUx #labAcquiredInfo{
+ background:var(--ux-panel,#243444)!important;border:1px solid var(--ux-border,#688197)!important;
+ border-radius:7px;padding:9px 11px!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] .studioGlobalNav a,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] .studioGlobalNav button{
+ color:#f1f7ff!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioVisibilityPanel,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioVisibilityPanel section{
+ background:var(--ux-panel,#243445)!important;color:var(--ux-fg,#f0f7ff)!important;
+ border-color:var(--ux-border,#688197)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioVisibilityPanel input,
+body[data-studio="studio-core-test"][data-studio-ux-theme="dark"] #studioVisibilityPanel select{
+ background:var(--ux-control,#253748)!important;color:var(--ux-control-fg,#e5f3ff)!important
+}
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx #labCollectionInfo,
+body[data-studio="studio-core-test"][data-studio-ux-theme="light"] #studioMain.studioUx #labAcquiredInfo{
+ background:var(--ux-panel,#fff)!important;color:var(--ux-fg,#293f52)!important;
+ border:1px solid var(--ux-border,#cedae6)!important;border-radius:7px;padding:9px 11px!important
+}
+body[data-studio="studio-core-test"] .studioStatus[data-core-owned]{
+ position:relative!important;top:auto!important;bottom:auto!important;left:auto!important;
+ right:auto!important;width:100%!important;box-sizing:border-box!important;
+ margin:0!important;background:var(--ux-panel,#fff)!important;color:var(--ux-fg,#273e52)!important;
+ border-top:1px solid var(--ux-border,#bdcedd)!important;z-index:10!important
+}
+@media(max-width:700px){
+ body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSidebar{grid-template-columns:76px minmax(0,1fr)!important}
+ body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail{width:76px!important}
+}
+
+
+/* Classic nLab navigation in the header, without duplicated floating-window shortcuts.
+   On small screens it yields to the existing mobile dock and menu bar. */
+@media(min-width:1101px){
+ body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav{
+  display:flex!important;align-items:center;justify-content:flex-end;gap:5px!important;overflow:visible!important
+ }
+ body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav a:not([hidden]):not([href*="/Info/licenses.html"]){
+  display:inline-flex!important;visibility:visible!important;align-items:center;
+  white-space:nowrap;padding:7px 10px!important;font-size:12px!important;
+  color:var(--ux-fg,#284a68)!important;text-decoration:none
+ }
+ body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav .studioNavAction{
+  display:none!important
+ }
+}
+@media(min-width:701px) and (max-width:1100px){
+ body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav{display:flex!important;align-items:center}
+ body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav a[href*="/APP-Applications/studios/"],
+ body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav a[href$="/Info/"]{
+  display:inline-flex!important;visibility:visible!important
+ }
+ body[data-studio="studio-core-test"] .studioHeader .studioGlobalNav .studioNavAction{display:none!important}
+}
+
+
+/* Window restoration has its own "Fenêtres" rail tab in Core Test Lab.
+   Do not draw a second floating restore tray over the work surface. */
+body[data-studio="studio-core-test"] #studioWindowRestoreTray{display:none!important}

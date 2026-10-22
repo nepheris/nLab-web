@@ -19,11 +19,17 @@ on:
       - 'APP-Applications/_shared/studio-v2/template-engine.js'
       - 'APP-Applications/_shared/studio-v2/template-ux.js'
       - 'APP-Applications/studio-core-test/template-controls.css'
+      - 'APP-Applications/studio-core-test/core-ux-polish.css'
+      - 'APP-Applications/_shared/studio-v2/collection-browser.js'
       - 'tests/studio-core-template-ux.mjs'
       - 'APP-Applications/studio-core-test/ux-parity.css'
       - 'APP-Applications/studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md'
       - 'Library/demo/**'
       - 'APP-Applications/studios/index.html'
+      - 'APP-Applications/_shared/studio-v2/csv-safe.js'
+      - 'tests/studio-core-csv-safe.mjs'
+      - 'tests/studio-core-color-control.mjs'
+      - 'scripts/run-core-test-preview.py'
       - 'tests/studio-core-test-lab.mjs'
       - 'tests/demo-explorer-folders.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
@@ -57,6 +63,10 @@ jobs:
           node --check APP-Applications/studio-core-test/versions/0.6.0/ux-lab.js
           node --check tests/studio-core-template-ux.mjs
           node tests/studio-core-template-ux.mjs
+          node --check tests/studio-core-color-control.mjs
+          node tests/studio-core-color-control.mjs
+          node --check tests/studio-core-csv-safe.mjs
+          node tests/studio-core-csv-safe.mjs
           node --check APP-Applications/studio-core-test/versions/0.3.0/app.js
           node --check APP-Applications/studio-core-test/versions/0.2.0/app.js
           node --check APP-Applications/_shared/studio-v2/application-mode-service.js
@@ -72,7 +82,13 @@ jobs:
           m=json.loads((root/'studio-core-test/manifest.webmanifest').read_text())
           v=json.loads((root/'studio-core-test/versions.json').read_text())
           assert m['display']=='standalone' and m['scope']=='./' and m['start_url']=='./'
-          assert v['current'] is None and v['test']=='0.7.0'
+          assert v['current'] is None and v['test']=='0.8.0'
+          html=(root/'studio-core-test/index.html').read_text(encoding='utf-8')
+          import re
+          assert 'id="labVersionBadge">TEST 0.8.0' in html, 'Lab badge must match canonical TEST version'
+          manual_count=len(re.findall(r'data-manual="',html))
+          assert manual_count==7 and '0/7 contrôles validés localement.' in html, 'Manual recipe must count all 7 checks'
+          assert 'ACCEPTANCE-CHECKLIST-3.10.md' in html, 'Human acceptance checklist missing from UI'
           assert any(x['version']=='0.1.0' and x['status']=='historical' for x in v['versions'])
           assert (root/'studio-core-test/versions/0.1.0/index.html').is_file()
           assert any(x['version']=='0.2.0' and x['status']=='historical' for x in v['versions'])
@@ -80,6 +96,9 @@ jobs:
           assert any(x['version']=='0.4.0' and x['status']=='historical' for x in v['versions'])
           assert any(x['version']=='0.5.0' and x['status']=='historical' for x in v['versions'])
           assert any(x['version']=='0.6.0' and x['status']=='historical' for x in v['versions'])
+          assert any(x['version']=='0.7.0' and x['status']=='historical' for x in v['versions'])
+          for f in ['index.html','app.js','ux-lab.js','ux-parity.css','template-controls.css','manifest.webmanifest']:
+            assert (root/'studio-core-test/versions/0.7.0'/f).is_file()
           for f in ['index.html','app.js','ux-lab.js','ux-parity.css','manifest.webmanifest']:
             assert (root/'studio-core-test/versions/0.6.0'/f).is_file()
           for f in ['index.html','app.js','ux-lab.js','ux-parity.css','manifest.webmanifest']:
@@ -113,6 +132,28 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/demo-explorer-folders.mjs
+      - name: Package offline localhost preview kit for human acceptance
+        run: |
+          python3 scripts/run-core-test-preview.py --check
+          mkdir -p artifacts/core-preview-kit
+          git rev-parse HEAD > artifacts/core-preview-kit/CHECKOUT-SHA.txt
+          git archive --format=zip \
+            --prefix=nlab-core-3.10-test/ \
+            --output="$PWD/artifacts/core-preview-kit/core-test-kit.zip" HEAD \
+            index.html APP-Applications FRMW-Frameworks Library/demo assets Info \
+            scripts/run-core-test-preview.py
+          unzip -tq artifacts/core-preview-kit/core-test-kit.zip
+          unzip -p artifacts/core-preview-kit/core-test-kit.zip \
+            nlab-core-3.10-test/APP-Applications/studio-core-test/versions.json | python3 -c \
+            "import json,sys; d=json.load(sys.stdin); assert d['test']=='0.8.0' and d['current'] is None"
+          echo "Core TEST kit archive checked (no CURRENT promotion)"
+      - name: Upload user acceptance kit for Linux and Android
+        uses: actions/upload-artifact@v4
+        with:
+          name: nlab-core-3.10-test-kit
+          path: artifacts/core-preview-kit/
+          if-no-files-found: error
+          retention-days: 14
       - name: Upload UX 0.5 visual parity screenshots
         if: always()
         uses: actions/upload-artifact@v4

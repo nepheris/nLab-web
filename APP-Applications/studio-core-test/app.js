@@ -186,8 +186,32 @@ try{
   }
   publishCollection('rotate');
  });
+ function rotateSelection(delta,all=false){
+  const targets=all?collection.selectedItems():collection.active()?[collection.active()]:[];
+  if(!targets.length)return 0;
+  const ids=targets.map(x=>x.id),rotateBatch=step=>{
+   rotationUndo=true;
+   try{for(const id of ids)collection.rotate(id,step)}
+   finally{rotationUndo=false}
+   publishCollection('batch-rotation')
+  };
+  rotateBatch(delta);
+  pushUndoRedo({label:'Rotation visuelle '+(delta>0?'+':'')+delta+'° · '+ids.length+' fichier(s)',meta:{studio:'studio-core-test',thumbnail:true,batch:true},undo:()=>rotateBatch(-delta),redo:()=>rotateBatch(delta)});
+  recordHistory({studio:'studio-core-test',type:'action',label:'Rotation '+ids.length+' élément(s)',detail:delta+'° (aperçu seulement)'});
+  return ids.length
+ }
+ function clearCollection(){
+  if(!collection.items.length)return;
+  const priorItems=[...collection.items],priorSelection=[...collection.selected],priorActive=collection.activeId,priorAcquired=[...acquiredFiles];
+  const restore=()=>{acquiredFiles=[...priorAcquired];collection.setItems(priorItems);collection.selected=new Set(priorSelection);if(priorActive)collection.activate(priorActive);collection.render();publishCollection('restore-clear')};
+  const clear=()=>{acquiredFiles=[];collection.selected.clear();collection.setItems([]);$('#labAcquiredInfo').textContent='Collection vide.';$('#labPickedFiles').replaceChildren();publishCollection('clear')};
+  clear();
+  pushUndoRedo({label:'Vider la collection ('+priorItems.length+' fichiers)',meta:{studio:'studio-core-test'},undo:restore,redo:clear});
+  recordHistory({studio:'studio-core-test',type:'file',label:'Collection vidée',detail:priorItems.length+' fichiers (annulable)'})
+ }
  for(const [id,view] of [['labViewList','list'],['labViewGrid','grid'],['labViewThumbs','thumbs']])$(('#'+id)).addEventListener('click',()=>{collection.setView(view);updateCollectionControls()});
  function changeThumb(delta){const base=collection.thumbnailSize==='auto'?(parseInt(collection.host.style.getPropertyValue('--nlab-collection-card-width'),10)||160):Number(collection.thumbnailSize);collection.setThumbnailSize(base+delta);if(collection.view==='list')collection.setView('thumbs');updateCollectionControls()}
+ collection.addEventListener('thumbnail-size',updateCollectionControls);
  $('#labThumbPlus').addEventListener('click',()=>changeThumb(24));
  $('#labThumbMinus').addEventListener('click',()=>changeThumb(-24));
  $('#labThumbAuto').addEventListener('click',()=>{collection.setThumbnailSize('auto');updateCollectionControls()});
@@ -202,15 +226,15 @@ try{
  for(const name of ['dragleave','dragend'])drop.addEventListener(name,e=>{e.preventDefault();drop.classList.remove('dragOver')});
  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('dragOver');appendFiles(e.dataTransfer?.files)});
  updateCollectionControls();
- const labUx=mountCoreLabUx({main:$('#studioMain'),collection,appendFiles});
- const openAcquisition=async()=>{
+ const labUx=mountCoreLabUx({main:$('#studioMain'),collection,appendFiles,rotateSelection,clearCollection,onAcquire:options=>openAcquisition(options)});
+ async function openAcquisition(options={}){
   try{
-   const selected=await openInputPicker({multiple:true,folders:true,url:true,preserveSession:true,view:'icon'});
+   const selected=await openInputPicker({multiple:true,folders:true,url:true,preserveSession:true,view:'icon',...options});
    if(!selected)return;
    appendFiles(selected);
   }catch(error){$('#labAcquiredInfo').textContent='Sélection impossible : '+(error.message||error)}
- };
- $('#labPickerOpen').addEventListener('click',openAcquisition);
+ }
+ $('#labPickerOpen').addEventListener('click',()=>openAcquisition());
  document.addEventListener('studio-v2:action',e=>{
   if(e.detail?.action==='core.acquire')openAcquisition();
  });
@@ -252,6 +276,6 @@ try{
  window.NLabCoreLab={runChecks,getSample:readSample,getHistory:getUndoRedoState,versionInfo,collection,labUx};
 }catch(error){
  document.documentElement.dataset.coreLabReady='error';
- $('#labCheckSummary').textContent='Initialisation du Core impossible : '+(error.message||error);
+ $('#labCheckSummary').textContent='Initialisation du Core impossible : '+(error.stack||error.message||error);
  console.error('Studio Core Test Lab',error);
 }

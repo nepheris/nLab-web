@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="./ux-parity.css">
   <link rel="stylesheet" href="../_shared/studio-v2/workspace-theme.css">
   <link rel="stylesheet" href="./template-controls.css">
+  <link rel="stylesheet" href="./core-ux-polish.css">
   <style>
     .labSidebar,.labPanel{background:var(--nlab-card,#fff);border:1px solid var(--nlab-line,#d9e0e6);border-radius:12px;padding:16px;min-width:0}
     .labSidebar{align-self:start}.labPanel{margin-bottom:12px}
@@ -62,9 +63,9 @@
       <h1 class="labHeading">Studio Core Test Lab</h1>
       <p class="labLead">Banc d’essai du véritable Studio Core partagé. Aucun moteur métier ni ancien Studio n’est modifié ici.</p>
       <div class="labBadges">
-        <span class="labBadge">TEST 0.5.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
+        <span class="labBadge" id="labVersionBadge">TEST 0.8.0</span><span class="labBadge" id="labCoreVersion">Core —</span>
       </div>
-      <div class="labToolbar"><button id="labRunChecks" class="labPrimary" type="button">Exécuter les contrôles</button></div>
+      <div class="labToolbar"><button id="labRunChecks" class="labPrimary" type="button">Exécuter les contrôles</button><a href="./ACCEPTANCE-CHECKLIST-3.10.md" target="_blank" rel="noopener">Recette complète C-01 à C-16 ↗</a></div>
       <p id="labCheckSummary" class="labHint" role="status">Vérification du Core…</p>
       <ul id="labCheckList" class="labChecks" aria-label="Résultats techniques"></ul>
       <details><summary>Comment tester</summary><p class="labHint">Utilisez le ruban Core pour ouvrir les commandes (Ctrl+K), les réglages, les propriétés, le test responsive, le plein écran et le mode application. Les contrôles qui demandent une action réelle restent à valider manuellement.</p></details>
@@ -101,7 +102,7 @@
           <output id="labThumbSize" aria-live="polite">Auto</output>
           <button id="labThumbPlus" type="button" aria-label="Agrandir les vignettes" title="Zoom avant des vignettes">+</button>
           <button id="labThumbAuto" type="button" title="Adapter automatiquement les vignettes à la largeur">↔ Auto</button>
-          <label for="labCollectionSort">Trier :</label><select id="labCollectionSort"><option value="name">Nom</option><option value="type">Type</option><option value="size">Taille</option><option value="path">Dossier</option></select>
+          <label for="labCollectionSort">Trier :</label><select id="labCollectionSort"><option value="name">Nom</option><option value="type">Type</option><option value="size">Taille</option><option value="path">Dossier</option><option value="pages">Nombre de pages</option></select>
           <button id="labSelectAllFiles" type="button">Tout sélectionner</button><button id="labInvertFiles" type="button">Inverser</button>
         </div>
         <div id="labCollection" class="collectionBrowser" aria-label="Collection de fichiers interactive"></div>
@@ -138,8 +139,8 @@
           <label><input type="checkbox" data-manual="collection"> La collection accepte plusieurs fichiers ; les boutons −/+ et Auto adaptent les vignettes, et les rotations ↶/↷ apparaissent sur les grandes cartes.</label>
           <label><input type="checkbox" data-manual="undo"> Annuler puis Rétablir restaure bien les valeurs de l’échantillon.</label>
         </div>
-        <p class="labHint">Cases de recette conservées seulement dans votre navigateur. Elles ne constituent pas une validation serveur ou une certification multi-appareils.</p>
-        <div id="labManualSummary" class="labStatus" role="status">0/6 contrôles validés localement.</div>
+        <p class="labHint"><a href="./TESTER-LINUX-ANDROID.md" target="_blank" rel="noopener">Guide de test PC Linux et Android ↗</a> · Cases de recette conservées seulement dans votre navigateur. Elles ne constituent pas une validation serveur ou une certification multi-appareils.</p>
+        <div id="labManualSummary" class="labStatus" role="status">0/7 contrôles validés localement.</div>
       </section>
     </section>
   </main>

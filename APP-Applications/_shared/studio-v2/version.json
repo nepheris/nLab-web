@@ -1,7 +1,7 @@
 {
   "schema": "nlab-studio-core-version/v1",
-  "version": "3.9.0",
+  "version": "3.10.0",
   "channel": "test",
-  "notes": "Core 3.9.0 TEST — template-engine dates formatables avec : sur toutes les dates/temps, variables dossier/sous-dossier, module template-ux partagé familles/aides et profil personnel local, contrôles de volet latéral et aperçu, simulation des trois formats dans Lab 0.7.0 TEST. Aucun Studio métier migré, CURRENT inchangé.",
+  "notes": "Studio Core 3.10.0 TEST — largeur volet opt-in réglable/verrouillable, regroupements collections repliables (types, dossiers, taille, pages), profil JSON et compositeur visuel des dates, actions mutualisées de sélection/rotation et panneaux; Lab 0.8.0 TEST, aucun autre Studio adopté.",
   "metadata_source": "canonical version registry + Git commit metadata"
 }

@@ -1,3 +1,49 @@
+> **Pilotage multi-Studio (20/10/2026)** : [plan de priorités et chantiers autonomes](./STUDIOS-PRIORITES-AUTONOMIE-2026-10-20.md). Core 3.10 #93 en priorité ; Image CI #94, Legacy #70/#67, Responsive #72 et Hub en pistes indépendantes. Aucun CURRENT ni archive ne doit être modifié automatiquement.
+
+## Passe de durcissement Core 3.10 — audit approfondi du 19 octobre 2026
+
+**Périmètre :** PR [#93](https://github.com/nepheris/nLab-web/pull/93), branche `studio-core-3-10-ux-polish-20261019`. Exclusivement TEST ; ni `main` ni CURRENT ni les archives ne sont promues. La réparation de composants Core réutilisés reste compatible par défaut avec les autres Studios ; tester tous les consommateurs avant adoption.
+
+| ID | Risque / correction | État de code | Gate restant |
+|---|---|---|---|
+| CORE-271 | Import profil : rejeter une date impossible (30 février, mois erroné), conserver les valeurs après rejet ; accepter le 29 février bissextile | PATCHED TEST + tests Playwright | Core CI Chrome 3 tailles, appareils réels |
+| CORE-272 | Import URL : refuser protocoles hors HTTP(S), pages HTML présentées comme fichier, réponse vide, HTTP erroné, timeout et excès de taille (lecture streaming plafonnée), expliquer les erreurs CORS | PATCHED TEST + tests browser simulés | Core CI ; diagnostic de vrais hôtes externes CORS |
+| CORE-273 | Collection partagée : aucune dépendance fatale au `localStorage` (navigation privée / SecurityError), options restaurées strictement, groupes invalides ignorés | PATCHED TEST + test stockage refusé | Core CI + régressions consommateurs |
+| CORE-274 | Fenêtres : panneau détaché reste visible en changeant d'onglet ; rattachement idempotent ; véritables liens `tab` ↔ `tabpanel` et parcours clavier | PATCHED TEST + tests navigateur | Core CI 3 tailles + inspection clavier réelle |
+| CORE-275 | Versions 0.1.0–0.7.0 : smoke HTTP de chaque archive et des ressources `app.js` et manifeste, détection d'erreurs JavaScript navigateur | TESTS AJOUTÉS | Core CI ; approfondir les comportements individuels par version |
+| CORE-276 | CI exhaustif Image Studio V2 | FAIL préexistant, **pas** un PASS Core | Diagnostic précis et correction dans chantier métier distinct, sans relever artificiellement le seuil |
+| CORE-277 | Tests Android Chrome natif, permission dossier, plein écran, invitation PWA et stockage local réel | HUMAN DEVICE GATE | Non exécuté dans la CI |
+| CORE-278 | Contrôle des versions CURRENT/TEST/historiques et plan de retour arrière avant fusion | OPEN | Inspection registry + matrice HTTP + CI générale |
+
+**Gates de merge :** Core Chrome + audit + PDF pilote PASS sur le dernier commit, vérification des historiques, échecs CI distincts explicités et décision de validation utilisateur. Une PR « mergeable » n'est pas équivalente à une release acceptable. Les fichiers personnels importés ne doivent jamais être ajoutés au dépôt.
+
+---
+
+## Studio Core 3.10.0 TEST / Lab 0.8.0 — stabilisation ergonomique (19 octobre 2026)
+
+**Décision :** Core d’abord ; conserver le visuel de la maquette 0.5 validée et la charpente Lab 0.7. Aucune migration métier, pas de changement de CURRENT.
+
+| ID | Action | État | Vérification |
+|---|---|---|---|
+| CORE-259 | Paramètres personnels autonomes dans le rail, nom de la variable sous chaque valeur, sauvegarde locale, import/export JSON contrôlé | IMPLEMENTED TEST | JSON valide, champs inconnus rejetés, limite 64 Ko, mise à jour instantanée |
+| CORE-260 | Composeur visuel de dates/temps (ordre, points/tirets/barres, composants, heure) avec exemple et jetons `{DATE:...}` | IMPLEMENTED TEST | masques + aperçus, tests Chrome |
+| CORE-261 | Barre latérale redimensionnable à la souris et au clavier (240–520 px), verrouillable, repliable et détachable | IMPLEMENTED TEST | souris/keyboard et mémoire locale |
+| CORE-262 | Commandes Fichier, Dossier, Effacer, Tout sélectionner/désélectionner, Utiliser sélection, Annuler en haut et bas, services uniques | IMPLEMENTED TEST | import natif partagé, vider annulable |
+| CORE-263 | Rotation −90/+90 appliquée à l'actif ou à toute la sélection, une seule transaction undo/redo | IMPLEMENTED TEST | aperçu seulement, ne change pas l'original |
+| CORE-264 | Taille vignette et taille texte en mini barre −/valeur/+ ; taille saisissable, mode Auto | IMPLEMENTED TEST | clamp, persistance |
+| CORE-265 | Groupes repliables par dossier, type, taille (3 classes) et pages (1,2,3–5,6+) ; tri sens A→Z/Z→A | IMPLEMENTED TEST | états de groupes persistants |
+| CORE-266 | Header nLab classique, Affichage dans le ruban, rail Personnel et Fenêtres, restauration des fenêtres du Core | IMPLEMENTED TEST | pas de fenêtre métier doublée |
+| CORE-267 | Contraste clair/sombre : descriptions, zone glisser-déposer, sous-sections, barres de commandes et historique | IMPLEMENTED TEST | captures Chrome 3 tailles + recette réelle |
+| CORE-268 | Lab 0.8.0 TEST, snapshot 0.7, tests anti-régression | **CORE CI PASS ciblée / HUMAN PENDING** | Chrome desktop, tablette et mobile PASS ; contrastes en thème sombre vérifiés ; audit Studios et pilote PDF 2.12 PASS. La suite exhaustive Image Studio reste en échec historique et la suite PDF publique a montré un timeout intermittent V1/fit page sur certains runs. CURRENT inchangé |
+| CORE-269 | Import d'image par URL : reproduire le cas exact et contrôler support CORS/format | OPEN / REPRO NEEDED | aucun faux PASS déclaré |
+| CORE-270 | Déploiement Image puis PDF et autres Studios | BLOCKED — CORE VALIDATION REQUIRED | migration opt-in séparée |
+
+**Recette visuelle :** captures réelles revues pour le header, le rail, l'Historique et la planche en clair/sombre. Contrastes et footer corrigés. Reste à obtenir validation utilisateur sur navigateur et téléphone. **Fenêtres masquées** restaurables dans le rail (plateau flottant masqué dans ce Lab seulement).
+
+**Périmètre de sécurité :** l'import/export JSON du profil reste local au navigateur et contient potentiellement des informations personnelles : conserver le fichier privé. Les rotations du Lab portent uniquement sur les vignettes/aperçus, pas sur les octets originaux. La simulation de taille n'est pas la validation sur un appareil réel. 
+
+---
+
 ## Studio Core 3.9.0 TEST — variables, profil, prévisualisation et volet (18 octobre 2026)
 
 **Périmètre : exclusivement Studio Core Test Lab 0.7.0 TEST**. Aucun changement de CURRENT ni adoption par Image/PDF/OCR avant recette humaine.

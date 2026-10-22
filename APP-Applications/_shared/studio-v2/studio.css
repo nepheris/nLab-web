@@ -223,6 +223,10 @@ body.studioRibbonCollapsed .ribbonContext{
   .studioGlobalNav a[href*="github.com"]{display:none}
   .studioBrand small{max-width:220px}
 }
+@media(max-width:700px){
+  /* On a real phone the detachable UX workspace still uses the safe full-width window. */
+  .studioUxFloat.studioWindow{left:8px!important;right:8px!important;top:8px!important;width:auto!important;max-width:none!important;transform:none!important}
+}
 @media(max-width:620px){
   .studioLogo{width:72px}.studioLogo img{width:72px}
   .studioBrand b{font-size:16px}
@@ -457,7 +461,7 @@ img,canvas,svg,video{max-width:100%}
   .studioMain.sidebarCompact .studioSidebar{display:block}
   .studioRibbon{gap:2px;padding-left:8px;padding-right:8px}
   .ribbonBtn{min-width:54px}
-  .studioWindow,.historyFullView{left:8px!important;right:8px!important;top:8px!important;width:auto!important;max-width:none!important;transform:none!important}
+  .studioWindow:not(.studioUxFloat),.historyFullView{left:8px!important;right:8px!important;top:8px!important;width:auto!important;max-width:none!important;transform:none!important}
 }
 @media(max-width:620px){
   :root{--studio-touch-target:44px;--studio-mobile-gap:6px}

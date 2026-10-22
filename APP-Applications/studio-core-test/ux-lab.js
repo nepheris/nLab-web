@@ -7,6 +7,7 @@ import{mountTemplateProfile,templateProfileVariables,createTemplateVariablePicke
 import{OutputService}from'../_shared/studio-v2/output-service.js';
 import{createColorPicker}from'../_shared/studio-v2/color-control.js';
 import{recordHistory}from'../_shared/studio-v2/history.js';
+import{csvCell}from'../_shared/studio-v2/csv-safe.js';
 import{thumbnailFor}from'../_shared/studio-v2/thumbnail-service.js';
 
 
@@ -16,11 +17,11 @@ const safePart=s=>String(s||'').replace(/[<>:"|?*\x00-\x1f/\\]/g,'_').replace(/^
 const safeKey='nlab:core-lab:export-counter:v1';
 const exts=['json','csv','txt'];
 const MIME={json:'application/json',csv:'text/csv',txt:'text/plain'};
-const csv=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
+
 const safeStore=(key,value)=>{try{localStorage.setItem(key,String(value))}catch{}};
 const safeRead=(key,fallback)=>{try{return localStorage.getItem(key)??fallback}catch{return fallback}};
 
-export function mountCoreLabUx({main,collection,appendFiles}){
+export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clearCollection,onAcquire}){
  const legacyAside=main.querySelector(':scope>.labSidebar');
  const oldViewer=main.querySelector(':scope>.viewer');
  const panels=Array.from(oldViewer.children);
@@ -48,12 +49,23 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const pickerColor=createColorPicker({label:'Couleur de démonstration',value:'#206FAE'});
  colorHost.append(pickerColor.element);
  const surfacePanel=make('div','uxSurfacePanel','<div class="uxSidebarOverline">Planche de travail</div><p class="uxSurfaceDescription">Espace central partagé par les Studios : collection, aperçu, zoom et transformations visuelles.</p><details class="uxHistoryAccordion" open><summary>Collection et affichage</summary><div class="uxHistoryInner uxSurfaceActions"><button type="button" data-surface-action="import">↥ Importer</button><button type="button" data-surface-action="list">☷ Liste</button><button type="button" data-surface-action="thumbs">▦ Vignettes</button><button type="button" data-surface-action="preview">◉ Afficher / masquer l’aperçu</button></div></details><details class="uxHistoryAccordion" open><summary>Enregistrement et sortie</summary><div class="uxHistoryInner uxSurfaceActions"><button type="button" data-surface-action="save">▣ Enregistrer</button><button type="button" data-surface-action="save-as">⇩ Enregistrer sous</button></div></details><details class="uxHistoryAccordion"><summary>Contrôles Core</summary><div class="uxHistoryInner"><p>Import multiple, sélection, classement, aperçu, rotation, historique et préférences : une seule implémentation partagée, sans traitement métier imposé.</p></div></details>');
+ const windowsPanel=make('div','uxWindowsPanel','<p class="uxHistoryEyebrow">Fenêtres et panneaux</p><p class="uxHistoryHint">Toutes ces commandes appellent les fenêtres Core existantes. Aucune deuxième fenêtre n’est créée.</p>');
+ const winItems=[
+  ['⌕ Palette de commandes','#studioCommandOpen'],['☷ Workflows','#studioWorkflowOpen'],
+  ['? Aide contextuelle','#studioContextHelpOpen'],['⚙ Paramètres Core','#studioCoreSettings'],
+  ['◫ Restaurer les fenêtres','#studioRestoreWindows'],['▤ Visibilité des menus et rubans','#studioVisibilityOpen'],
+  ['↗ Détacher le panneau actif','#studioUxDetach']
+ ];
+ for(const [label,selector] of winItems){
+  const action=make('button','uxWindowAction',label);action.type='button';
+  action.addEventListener('click',()=>$(selector)?.click());windowsPanel.append(action)
+ }
  const tasks=make('div','');tasks.append(manual);
  const search=make('div','','<label class="labField">Rechercher dans la collection<input type="search" id="uxCollectionSearch" placeholder="Nom, type ou dossier…"></label><p class="labHint">Le filtre s’applique à la collection affichée.</p><button type="button" class="uxMiniButton" id="uxSelectVisible">Sélectionner les fichiers visibles</button><p id="uxSearchCount" class="labHint"></p>');
  const settings=make('div','','<h3 class="labHeading">Préférences d’affichage</h3><label class="labField">Thème<select id="uxTheme"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label><div class="uxCard"><strong>Trois profils responsive</strong><small>Desktop · Tablette · Mobile. L’interface s’adapte automatiquement à la largeur du navigateur.</small><div class="labToolbar"><button type="button" data-ux-device="desktop">🖥 Desktop</button><button type="button" data-ux-device="tablet">▣ Tablette</button><button type="button" data-ux-device="mobile">▯ Mobile</button></div></div>');
  settings.append(feature.querySelector('.labToolbar')||document.createElement('div'));
  const displayProfile=make('div','uxDisplayProfile','<label>Prévisualisation de la planche<select id="uxDisplayMode"><option value="auto">Automatique</option><option value="desktop">Bureau</option><option value="tablet">Tablette</option><option value="mobile">Téléphone</option></select></label><p class="uxDisplayNote" id="uxDisplayModeNote">Simulation de la largeur de la planche centrale.</p>');settings.append(displayProfile);
- const profilePreferences=make('div','uxSettingsProfile');settings.prepend(profilePreferences);
+ const profilePreferences=make('div','uxSettingsProfile');const personalPanel=make('div','uxPersonalPanel');personalPanel.append(profilePreferences);
  mountTemplateProfile({host:profilePreferences,onChange:()=>{if(!$('#uxSaveDialog')?.hidden)previewName()}});
  const diagnostics=make('div','');diagnostics.append(legacyAside);
  const tools=make('div','');tools.append(feature,diagnostics);
@@ -65,8 +77,10 @@ export function mountCoreLabUx({main,collection,appendFiles}){
   {id:'properties',label:'Propriétés',icon:'☷',children:[prop]},
   {id:'tasks',label:'Tâches',icon:'☑',children:[tasks]},
   {id:'search',label:'Recherche',icon:'⌕',children:[search]},
+  {id:'personal',label:'Personnel',icon:'♙',children:[personalPanel]},
+  {id:'windows',label:'Fenêtres',icon:'▢',children:[windowsPanel]},
   {id:'settings',label:'Réglages',icon:'⚙',children:[settings]}
- ],storageKey:'nlab:core-lab:ux-v1'});
+ ],storageKey:'nlab:core-lab:ux-v1',resizable:true});
  // Core header stays native; avoid competing info/licence entries only on this opted-in Lab.
  const links=Array.from(document.querySelectorAll('.studioGlobalNav a'));
  const info=links.find(x=>x.getAttribute('href')?.endsWith('/Info/'));if(info)info.textContent='À propos';
@@ -92,20 +106,35 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const displayGroup=createGroup('lab-display','Affichage');
  for(const id of ['core-fullscreen','core-app-mode','core-responsive-test']){const button=coreRibbon?.querySelector('#'+id);if(button)displayGroup.insertBefore(button,displayGroup.querySelector('.ribbonLabel'))}
  proxy(displayGroup,'⚙','Réglages',()=>$('#studioCoreSettings')?.click());
+ const nativeVisibility=$('#studioVisibilityOpen');if(nativeVisibility){nativeVisibility.title='Afficher ou masquer les menus, groupes et commandes du ruban';displayGroup.insertBefore(nativeVisibility,displayGroup.querySelector('.ribbonLabel'))}
  coreRibbon?.insertBefore(displayGroup,toggle);
  const ribbon=make('div','labToolbar uxWorkMainActions','');
- ribbon.append(picker);
- const upload=make('button','','▣ Dossier');upload.type='button';upload.title='Parcourir un dossier dans le sélecteur canonique';upload.addEventListener('click',()=>picker.click());ribbon.append(upload);
- const saveButton=make('button','','▣ Enregistrer');saveButton.id='uxSaveOpen';saveButton.type='button';ribbon.append(saveButton);
- const saveAsButton=make('button','','⇩ Enregistrer sous');saveAsButton.id='uxSaveAsOpen';saveAsButton.type='button';ribbon.append(saveAsButton);
- const viewBtn=make('button','','◉ Aperçu');viewBtn.type='button';viewBtn.id='uxTogglePreview';ribbon.append(viewBtn);
+ ribbon.append(picker);picker.textContent='↥ Importer';picker.title='Importer des fichiers, un dossier ou une URL';
+ const cmd=(label,id,handler,title='')=>{
+  const b=make('button','',label);b.type='button';b.id=id;if(title)b.title=title;b.addEventListener('click',handler);ribbon.append(b);return b
+ };
+ cmd('▤ Fichier','uxTopFile',()=>onAcquire?.({folders:false,url:true}),'Ouvrir le sélecteur de fichiers');
+ cmd('▱ Dossier','uxTopFolder',()=>onAcquire?.({folders:true,url:false}),'Ouvrir un dossier dans le sélecteur');
+ cmd('✕ Effacer','uxTopClear',()=>clearCollection?.(),'Vider la collection (annulable)');
+ const selectAllBtn=cmd('☑ Tout sélectionner','uxTopSelect',()=>collection.selected.size===collection.items.length?collection.clearSelection():collection.selectAll(),'Sélectionner ou désélectionner');
+ const selectedBtn=cmd('◉ Utiliser sélection','uxTopUseSelection',()=>useSelection(),'Afficher les fichiers cochés dans l’aperçu');
+ cmd('↶ Annuler','uxTopUndo',()=>$('#uxUndo')?.click(),'Annuler la dernière opération');
+ cmd('↷ Rétablir','uxTopRedo',()=>$('#uxRedo')?.click(),'Rétablir la dernière opération');
+ const saveButton=cmd('▣ Enregistrer','uxSaveOpen',()=>{},'Enregistrer les métadonnées');
+ const saveAsButton=cmd('⇩ Enregistrer sous','uxSaveAsOpen',()=>{},'Enregistrer les métadonnées sous un autre nom');
+ const viewBtn=cmd('◉ Aperçu','uxTogglePreview',()=>{},'Afficher ou masquer l’aperçu');
+ // La commande Affichage canonique est déplacée dans le ruban, sans second bouton proxy.
  ws.actions.append(ribbon);
- surfacePanel.addEventListener('click',e=>{const action=e.target.closest('[data-surface-action]')?.dataset.surfaceAction;const target={import:'#labPickerOpen',list:'#labViewList',thumbs:'#labViewThumbs',preview:'#uxTogglePreview',save:'#uxSaveOpen','save-as':'#uxSaveAsOpen'}[action];if(target)$(target)?.click()});
+ surfacePanel.addEventListener('click',e=>{
+  const action=e.target.closest('[data-surface-action]')?.dataset.surfaceAction;
+  const target={import:'#labPickerOpen',list:'#labViewList',thumbs:'#labViewThumbs',preview:'#uxTogglePreview',save:'#uxSaveOpen','save-as':'#uxSaveAsOpen'}[action];
+  if(target)$(target)?.click()
+ });
  const heading=make('div','studioUxInfoRow','<div><strong>Collection de fichiers</strong><span> · Cliquer pour activer et cocher pour sélectionner</span></div><span id="uxCollectionCount">0 fichier</span>');
  ctrl.classList.add('uxCollectionToolbar');
  const groupLabel=document.createElement('label');groupLabel.textContent='Regrouper : ';
  const groupSelect=document.createElement('select');groupSelect.id='uxCollectionGrouping';
- for(const [value,label] of [['none','À plat'],['path','Dossier'],['type','Type'],['selected','Sélection']]){
+ for(const [value,label] of [['none','À plat'],['path','Dossier'],['type','Type'],['size','Taille'],['pages','Pages'],['selected','Sélection']]){
   const opt=document.createElement('option');opt.value=value;opt.textContent=label;groupSelect.append(opt);
  }
  groupSelect.value=collection.groupBy;groupLabel.append(groupSelect);
@@ -113,6 +142,54 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const selectVisible=document.createElement('button');selectVisible.id='uxSelectVisibleMain';selectVisible.type='button';selectVisible.textContent='Choisir visibles';
  ctrl.append(groupLabel,centralFilter,selectVisible);
  groupSelect.addEventListener('change',()=>collection.setGroupBy(groupSelect.value));
+
+ const utilityBar=make('div','uxCollectionUtility');
+ const selectToggle=make('button','','☑ Tout sélectionner');selectToggle.id='uxSelectionToggle';selectToggle.type='button';
+ selectToggle.addEventListener('click',()=>selectAllBtn.click());
+ const invertMain=make('button','','⇄ Inverser');invertMain.id='uxInvertMain';invertMain.type='button';invertMain.addEventListener('click',()=>$('#labInvertFiles')?.click());
+ const selectedBottom=make('button','','◉ Utiliser sélection');selectedBottom.id='uxUseSelectionBottom';selectedBottom.type='button';selectedBottom.addEventListener('click',()=>selectedBtn.click());
+ const allRotate=make('label','uxRotateSelectionLabel','<input type="checkbox" id="uxRotateAll"> Appliquer à toute la sélection');
+ const left=make('button','','↶ −90°');left.id='uxRotateLeft';left.type='button';
+ const right=make('button','','↷ +90°');right.id='uxRotateRight';right.type='button';
+ const doRotate=delta=>{const count=rotateSelection?.(delta,$('#uxRotateAll').checked)||0;
+  if(!count)$('#labCollectionInfo').textContent='Sélectionnez au moins un élément avant la rotation.'
+ };
+ left.addEventListener('click',()=>doRotate(-90));right.addEventListener('click',()=>doRotate(90));
+ const foldAll=make('button','','▴ Tout replier');foldAll.id='uxCollapseGroups';foldAll.type='button';foldAll.addEventListener('click',()=>collection.collapseGroups());
+ const expandAll=make('button','','▾ Tout déplier');expandAll.id='uxExpandGroups';expandAll.type='button';expandAll.addEventListener('click',()=>collection.expandGroups());
+ const dir=make('button','','A → Z');dir.id='uxSortDirection';dir.type='button';
+ dir.addEventListener('click',()=>{collection.setSort(collection.sortMode,-collection.sortDirection);updateDirection()});
+ const updateDirection=()=>{dir.textContent=collection.sortDirection>=0?'A → Z':'Z → A';dir.setAttribute('aria-label',collection.sortDirection>=0?'Ordre croissant A vers Z':'Ordre décroissant Z vers A')};
+ updateDirection();
+ const undoBottom=make('button','','↶ Annuler');undoBottom.id='uxBottomUndo';undoBottom.type='button';undoBottom.addEventListener('click',()=>$('#uxTopUndo').click());
+ const redoBottom=make('button','','↷ Rétablir');redoBottom.id='uxBottomRedo';redoBottom.type='button';redoBottom.addEventListener('click',()=>$('#uxTopRedo').click());
+ utilityBar.append(selectToggle,invertMain,selectedBottom,allRotate,left,right,dir,foldAll,expandAll,undoBottom,redoBottom);
+ ctrl.append(utilityBar);
+ const sizeBar=make('div','uxSizingControls','<label class="uxSizeGroup" title="Taille des vignettes"><span>▦</span><button type="button" id="uxTileMinus" aria-label="Réduire les vignettes">−</button><input type="number" id="uxTileSize" min="100" max="320" step="1" aria-label="Taille des vignettes en pixels"><span>px</span><button type="button" id="uxTilePlus" aria-label="Agrandir les vignettes">+</button><button type="button" id="uxTileAuto">Auto</button></label><label class="uxSizeGroup" title="Taille du texte"><span>Texte</span><button type="button" id="uxTextMinus" aria-label="Réduire le texte">−</button><input type="number" id="uxTextSize" min="10" max="18" step="1" aria-label="Taille des libellés en pixels"><span>px</span><button type="button" id="uxTextPlus" aria-label="Agrandir le texte">+</button></label>');
+ ctrl.append(sizeBar);
+ const textKey='nlab:core-lab:text-size';
+ const textSize=()=>Math.max(10,Math.min(18,Math.round(Number(sizeBar.querySelector('#uxTextSize').value)||12)));
+ const changeText=n=>{const size=Math.max(10,Math.min(18,Math.round(Number(n)||12)));sizeBar.querySelector('#uxTextSize').value=String(size);coll.style.setProperty('--ux-file-font',size+'px');safeStore(textKey,size)};
+ sizeBar.querySelector('#uxTextSize').addEventListener('change',()=>changeText(textSize()));
+ sizeBar.querySelector('#uxTextMinus').addEventListener('click',()=>changeText(textSize()-1));
+ sizeBar.querySelector('#uxTextPlus').addEventListener('click',()=>changeText(textSize()+1));
+ changeText(safeRead(textKey,'12'));
+ const updateTile=()=>{sizeBar.querySelector('#uxTileSize').value=String(collection.thumbnailSize==='auto'?(parseInt(coll.style.getPropertyValue('--nlab-collection-card-width'),10)||170):collection.thumbnailSize)};
+ const resizeTile=n=>{collection.setThumbnailSize(Math.max(100,Math.min(320,Math.round(Number(n)||170))));if(collection.view==='list')collection.setView('thumbs');updateTile()};
+ sizeBar.querySelector('#uxTileMinus').addEventListener('click',()=>resizeTile(Number(sizeBar.querySelector('#uxTileSize').value)-16));
+ sizeBar.querySelector('#uxTilePlus').addEventListener('click',()=>resizeTile(Number(sizeBar.querySelector('#uxTileSize').value)+16));
+ sizeBar.querySelector('#uxTileSize').addEventListener('change',()=>resizeTile(sizeBar.querySelector('#uxTileSize').value));
+ sizeBar.querySelector('#uxTileAuto').addEventListener('click',()=>{collection.setThumbnailSize('auto');updateTile()});
+ collection.addEventListener('thumbnail-size',updateTile);updateTile();
+ const refreshSelectionActions=()=>{
+  const all=collection.items.length>0&&collection.selected.size===collection.items.length;
+  const title=all?'□ Tout désélectionner':'☑ Tout sélectionner';
+  for(const b of [selectAllBtn,selectToggle])b.textContent=title;
+ };
+ collection.addEventListener('selection',refreshSelectionActions);
+ collection.addEventListener('activate',refreshSelectionActions);
+ const useSelection=()=>{setPreviewVisible(true);$('#uxPreviewScope').value='selected';previewUpdate()};
+
  const collectionSide=make('div','studioUxCollectionSide');collectionSide.append(coll,collectionInfo);
  const preview=make('section','studioUxPreview','<header><strong>Aperçu de l’élément actif</strong><small id="uxPreviewType">Aucun fichier</small><button type="button" id="uxPreviewCollapse" class="uxPreviewHide" title="Masquer l’aperçu" aria-label="Masquer l’aperçu">◧</button></header><div class="studioUxPreviewToolbar"><label>Afficher <select id="uxPreviewScope"><option value="active">Fichier actif</option><option value="selected">Sélection (en série)</option></select></label><button id="uxPreviewMinus" type="button">−</button><output id="uxPreviewZoom">100 %</output><button id="uxPreviewPlus" type="button">+</button><button id="uxPreviewFit" type="button">1:1</button><button id="uxPreviewLeft" type="button" title="Tourner à gauche">↶ 90°</button><button id="uxPreviewRight" type="button" title="Tourner à droite">↷ 90°</button></div><div class="studioUxPreviewCanvas" id="uxPreviewCanvas"><span class="labHint">Ajoutez ou sélectionnez un fichier.</span></div><footer>Aperçu uniquement : les fichiers sources ne sont pas modifiés.</footer>');
  const split=make('div','studioUxCollectionSplit');split.append(collectionSide,preview);
@@ -289,7 +366,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
   return chosen==='session'?{kind:'core-test-session',version:'0.7.0',date:new Date().toISOString(),sample:{name:$('#labItemName').value,description:$('#labItemDescription').value},files}:files}
  function serialize(data,format){if(format==='json')return JSON.stringify(data,null,2);
   const rows=Array.isArray(data)?data:data.files||[];
-  if(format==='csv'){const cols=['name','type','size','relativePath','rotationPreview'];return [cols.map(csv).join(';'),...rows.map(row=>cols.map(k=>csv(row[k])).join(';'))].join('\n')}
+  if(format==='csv'){const cols=['name','type','size','relativePath','rotationPreview'];return [cols.map(csvCell).join(';'),...rows.map(row=>cols.map(k=>csvCell(row[k])).join(';'))].join('\n')}
   return (Array.isArray(data)?data:data.files||[]).map(x=>x.name+' · '+x.type+' · '+x.size+' octets · '+x.rotationPreview+'° (aperçu)').join('\n')}
  $('#uxSaveConfirm').addEventListener('click',async()=>{const x=previewName(),data=serialize(payload(),x.format),blob=new Blob([data],{type:MIME[x.format]||'text/plain'}),dest=$('#uxSaveDestination').value;
   try{
