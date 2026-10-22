@@ -48,6 +48,24 @@ class StudioHealthAuditTests(unittest.TestCase):
         self.assertEqual(result["studios"][0]["archive_files_checked"], 2)
         self.assertIn("| example |", audit.markdown(result))
 
+    def test_manifest_link_is_not_installability_proof(self):
+        home = self.apps / "example"
+        (home / "index.html").write_text(
+            '<html><head><link rel="manifest" href="./install.webmanifest"></head></html>',
+            encoding="utf-8")
+        (home / "install.webmanifest").write_text(
+            json.dumps({"name": "Example", "start_url": "./", "scope": "./",
+                        "display": "standalone", "icons": [{"src": "icon.png"}]}),
+            encoding="utf-8")
+        report = audit.scan(self.root)
+        self.assertEqual(report["studios"][0]["manifest_link"], "linked-file")
+        self.assertEqual(report["summary"]["linked_manifests"], 1)
+        self.assertEqual(report["studios"][0]["pwa_installability"], "not-verified")
+        (home / "install.webmanifest").unlink()
+        report = audit.scan(self.root)
+        self.assertEqual(report["studios"][0]["manifest_link"], "missing-target")
+        self.assertIn("manifest-link-missing", {f["code"] for f in report["findings"]})
+
     def test_invalid_current_pointer_is_blocking(self):
         self.save({"current": "99.0.0", "test": None,
                    "versions": [{"version": "1.0.0", "status": "current", "href": "./"}]})
