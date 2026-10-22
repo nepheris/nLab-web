@@ -43,6 +43,18 @@ jobs:
           python3 -m http.server 8779 --bind 127.0.0.1 >/tmp/studio-health-http.log 2>&1 &
           curl --retry 15 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:8779/APP-Applications/studios/health.html >/dev/null
           NLAB_BASE_URL=http://127.0.0.1:8779/ node tests/studios-hub-health-browser.mjs
+      - name: Chromium smoke of every canonical historical URL
+        run: |
+          python3 -m http.server 8780 --bind 127.0.0.1 >/tmp/studios-history-http.log 2>&1 &
+          curl --retry 15 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:8780/APP-Applications/studios/ >/dev/null
+          mkdir -p artifacts/studios-health
+          NLAB_BASE_URL=http://127.0.0.1:8780/ node tests/studio-version-history.mjs > artifacts/studios-health/history-browser.json
+          python3 - <<'PY'
+          import json
+          data=json.load(open('artifacts/studios-health/history-browser.json',encoding='utf-8'))
+          print('Historic browser smoke: ',data.get('total'), 'checked,',len(data.get('failed',[])),'failed')
+          assert data.get('ok') and not data.get('failed')
+          PY
       - name: Publish audit artifacts
         if: always()
         uses: actions/upload-artifact@v4
