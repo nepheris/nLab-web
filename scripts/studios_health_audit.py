@@ -5,6 +5,7 @@ import argparse
 import json
 import re
 from datetime import datetime, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -40,6 +41,27 @@ def local_resource(base: Path, href: str, root: Path):
     return resolved, None
 
 
+class _ManifestLinks(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.hrefs = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag.lower() != "link":
+            return
+        values = dict(attrs)
+        if "manifest" in str(values.get("rel") or "").lower().split():
+            self.hrefs.append(values.get("href") or "")
+
+
+def declared_manifest_links(document: Path):
+    if not document.is_file():
+        return []
+    parser = _ManifestLinks()
+    parser.feed(document.read_text(encoding="utf-8"))
+    return parser.hrefs
+
+
 def scan(root: Path):
     app = root / "APP-Applications"
     catalog_path = app / "studios" / "catalog.json"
@@ -68,7 +90,7 @@ def scan(root: Path):
         home = app / sid
         record = {"id": sid, "name": entry.get("name", sid), "catalog_status": entry.get("status"),
                   "current": None, "test": None, "version_count": 0, "historical_count": 0,
-                  "archive_files_checked": 0, "manifest": "absent", "pwa_installability": "not-verified"}
+                  "archive_files_checked": 0, "manifest": "absent", "manifest_link": "not-declared", "pwa_installability": "not-verified"}
         records.append(record)
         declared = entry.get("version_registry", "../" + sid + "/versions.json")
         path, error = local_resource(app / "studios", declared, root)
@@ -136,6 +158,21 @@ def scan(root: Path):
                         note(sid, "warning", "manifest-field-missing", f"{field} missing")
                 if not manifest.get("icons"):
                     note(sid, "warning", "manifest-icons-missing", "No declared icons")
+        # The presence of a manifest.webmanifest is distinct from the launch page
+        # actually advertising it. Neither condition proves Chrome/Android installability.
+        declared_links = declared_manifest_links(home / "index.html")
+        if declared_links:
+            link_target, link_error = local_resource(home, declared_links[0], root)
+            if link_error == "remote link (not checked)":
+                record["manifest_link"] = "remote-unverified"
+            elif link_error:
+                record["manifest_link"] = "invalid"
+                note(sid, "warning", "manifest-link-invalid", link_error)
+            elif link_target and link_target.is_file():
+                record["manifest_link"] = "linked-file"
+            else:
+                record["manifest_link"] = "missing-target"
+                note(sid, "warning", "manifest-link-missing", str(declared_links[0]))
         icon, issue = local_resource(app / "studios", entry.get("icon", ""), root)
         if icon is not None and not icon.is_file():
             note(sid, "warning", "catalog-icon-missing", str(icon.relative_to(root)))
@@ -147,7 +184,8 @@ def scan(root: Path):
                         "historical": sum(r["historical_count"] for r in records),
                         "errors": sum(f["severity"] == "error" for f in findings),
                         "warnings": sum(f["severity"] == "warning" for f in findings),
-                        "manifests": sum(r["manifest"] == "present" for r in records)},
+                        "manifests": sum(r["manifest"] == "present" for r in records),
+                        "linked_manifests": sum(r["manifest_link"] == "linked-file" for r in records)},
             "findings": findings, "studios": records,
             "limitations": "Static repository scan: no browser/Android/HTTP/PWA installation guarantee."}
 
@@ -158,10 +196,10 @@ def markdown(report):
              f"**{s['studios']}** Studios/apps · **{s['entries']}** versions · **{s.get('historical',0)}** historiques · "
              f"**{s['errors']}** erreurs · **{s['warnings']}** alertes", "",
              "Static audit only. No claim of deployed URLs or device/PWA validation.", "",
-             "| Studio | CURRENT | TEST | Versions | Historiques | Manifeste |",
-             "|---|---|---|---:|---:|---|"]
+             "| Studio | CURRENT | TEST | Versions | Historiques | Manifeste local | Lien dans accueil |",
+             "|---|---|---|---:|---:|---|---|"]
     for row in report["studios"]:
-        lines.append(f"| {row['id']} | {row['current'] or '—'} | {row['test'] or '—'} | {row['version_count']} | {row['historical_count']} | {row['manifest']} |")
+        lines.append(f"| {row['id']} | {row['current'] or '—'} | {row['test'] or '—'} | {row['version_count']} | {row['historical_count']} | {row['manifest']} | {row['manifest_link']} |")
     lines += ["", "## Findings", ""]
     lines += [f"- **{f['severity']}** `{f.get('id','catalog')}` / `{f['code']}`: {f['detail']}" for f in report["findings"]] or ["No findings."]
     return "\n".join(lines) + "\n"
