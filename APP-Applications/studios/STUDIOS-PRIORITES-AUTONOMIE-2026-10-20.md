@@ -47,6 +47,27 @@ L'inventaire des fichiers modifiés révèle des collisions **avant fusion**. Ce
 
 Les branches #67/#70/#71/#72 ont divergé de `main`; **aucune fusion en bloc**. Pour chaque candidat à la reprise : base actuelle → copie minimale des changements utiles → tests spécifiques → CI globale → décision explicite. La PR #94 est séparée et ne partage aucun fichier avec #93.
 
+## Point d'avancement vérifié — 22 octobre 2026
+
+Cette section complète la baseline du 20 octobre. **Seules les branches TEST/DRAFT ont été modifiées.** Les validations ci-dessous sont des résultats CI datés, pas des GO utilisateurs.
+
+| ID / chantier | Fait pendant les passes autonomes | Preuve / statut |
+|---|---|---|
+| STU-A01 Core 3.10 | Renforcement des tests réels du composant de couleurs **déjà canonique** `color-control.js` : HEX/RGB/HSL et UI Chrome ; aucun ancien color-picker concurrent importé de #71. Préparation du protocole C-01 à C-16 pour Desktop/Android. | [PR #93](https://github.com/nepheris/nLab-web/pull/93) : Core Chrome [PASS](https://github.com/nepheris/nLab-web/actions/runs/39758839693), PDF pilote et audit PASS ; recette sur appareils encore PENDING. |
+| STU-A02 Imports | HTTP 404, réponse vide, protocole erroné, HTML trompeur, refus réseau/CORS et profil JSON impossible, tous couverts en TEST. | PR #93, tests Chrome ciblés PASS. |
+| STU-A04 Archives / Legacy | Nouvel audit réutilisable des registres, plus test Chromium des URL réellement versionnées. Remplacement de l'attente fragile de 250 ms par contrôle asynchrone d'identité et du statut HISTORICAL, sans toucher aux snapshots. | [PR #95](https://github.com/nepheris/nLab-web/pull/95) : **140/140 URL PASS**, 18 Studios/apps, 108 historiques, 0 incohérence statique ; [preuves CI](https://github.com/nepheris/nLab-web/actions/runs/39759282780). |
+| STU-B01 Image Studio | Le test de calibration attend le redécodage après rotation/miroir, clique sur le vrai canvas et dispose de diagnostics. La CI reconnaît les PR qui ne modifient que les tests. | [PR #94](https://github.com/nepheris/nLab-web/pull/94) : 2 exécutions complètes spécialisées PASS ; DRAFT non fusionnée. |
+| STU-B03 Legacy | Inspection des chevauchements des PR anciennes #67/#70/#71/#72. Les branchements divergents restent incompatibles avec la base moderne. | #95 fournit une nouvelle gate indépendante ; aucune purge ni fusion en bloc. |
+| STU-B04 Responsive | La version 0.4.3 CURRENT est plus avancée que les sources de #72 (simulateur partagé contemporain, plein écran et URL modifiable). | Préserver CURRENT ; reprendre seulement les tests réellement manquants de #72, après comparaison API. |
+| STU-B05 Studio Hub | Nouvelle page `APP-Applications/studios/health.html` à l'identité nLab, recherche/filtres et navigation ; génération JSON/Markdown + captures sans écriture sur CURRENT. | [PR #95](https://github.com/nepheris/nLab-web/pull/95) : tests Desktop/Mobile PASS ; page non publiée tant que DRAFT non fusionnée. |
+| STU-B06 PDF | Contrôle pilote métier toujours isolé des éditions du Core. | PR #93 pilote PDF CI PASS, migration UI métiers BLOQUÉE par GO Core. |
+| STU-B07/B08 OCR et QR | Les moteurs spécialisés sont inclus dans le run exhaustive V2 passé intégralement sur #94, sans modifier leurs runtimes. | Tests existants PASS sur #94 ; étendre fixtures ultérieurement sans dupliquer le Core. |
+| STU-B09 PWA | Scan initial des manifestes à la racine : 1 présent parmi 18 Studio/apps. Un manifeste peut être rangé dans un snapshot ou une autre route. | Audit statique uniquement ; recette HTTPS/Chrome Android toujours PENDING. |
+
+**Gates restantes :** validateur spécialisé de #93 peut échouer tant que la correction test-only de #94 n'est pas intégrée à sa base. Ne pas assimiler cet échec au succès ciblé Core et ne pas le masquer. Réconciliation contrôlée de #94 en premier, puis branche Core #93, recette réelle du Core, décision GO/NO-GO ; adoption opt-in ultérieure des Studios métiers. La CI du Hub #95 n'est pas la preuve de production publique du nouveau tableau.
+
+---
+
 ## Dépendances et ordre de livraison
 ```text
 [A] Core 3.10 TEST — CI, correction, recette humaine
