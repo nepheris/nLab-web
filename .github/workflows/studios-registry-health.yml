@@ -1,0 +1,38 @@
+name: Studios Registry Health Preflight
+on:
+  pull_request:
+    paths:
+      - 'APP-Applications/studios/catalog.json'
+      - 'APP-Applications/**/versions.json'
+      - 'APP-Applications/**/manifest.webmanifest'
+      - 'scripts/studios_health_audit.py'
+      - 'tests/test_studios_health_audit.py'
+      - '.github/workflows/studios-registry-health.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-health:
+    name: Catalog, versions, historic paths and PWA static inventory
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Self-tests and syntax
+        run: |
+          python -m py_compile scripts/studios_health_audit.py tests/test_studios_health_audit.py
+          python -m unittest discover -s tests -p test_studios_health_audit.py -v
+      - name: Repository health report
+        run: |
+          python scripts/studios_health_audit.py --strict
+      - name: Publish audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studios-registry-health
+          path: artifacts/studios-health/
+          retention-days: 14
+          if-no-files-found: warn
