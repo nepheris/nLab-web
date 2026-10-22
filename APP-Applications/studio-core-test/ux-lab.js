@@ -7,6 +7,7 @@ import{mountTemplateProfile,templateProfileVariables,createTemplateVariablePicke
 import{OutputService}from'../_shared/studio-v2/output-service.js';
 import{createColorPicker}from'../_shared/studio-v2/color-control.js';
 import{recordHistory}from'../_shared/studio-v2/history.js';
+import{csvCell}from'../_shared/studio-v2/csv-safe.js';
 import{thumbnailFor}from'../_shared/studio-v2/thumbnail-service.js';
 
 
@@ -16,7 +17,7 @@ const safePart=s=>String(s||'').replace(/[<>:"|?*\x00-\x1f/\\]/g,'_').replace(/^
 const safeKey='nlab:core-lab:export-counter:v1';
 const exts=['json','csv','txt'];
 const MIME={json:'application/json',csv:'text/csv',txt:'text/plain'};
-const csv=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
+
 const safeStore=(key,value)=>{try{localStorage.setItem(key,String(value))}catch{}};
 const safeRead=(key,fallback)=>{try{return localStorage.getItem(key)??fallback}catch{return fallback}};
 
@@ -365,7 +366,7 @@ export function mountCoreLabUx({main,collection,appendFiles,rotateSelection,clea
   return chosen==='session'?{kind:'core-test-session',version:'0.7.0',date:new Date().toISOString(),sample:{name:$('#labItemName').value,description:$('#labItemDescription').value},files}:files}
  function serialize(data,format){if(format==='json')return JSON.stringify(data,null,2);
   const rows=Array.isArray(data)?data:data.files||[];
-  if(format==='csv'){const cols=['name','type','size','relativePath','rotationPreview'];return [cols.map(csv).join(';'),...rows.map(row=>cols.map(k=>csv(row[k])).join(';'))].join('\n')}
+  if(format==='csv'){const cols=['name','type','size','relativePath','rotationPreview'];return [cols.map(csvCell).join(';'),...rows.map(row=>cols.map(k=>csvCell(row[k])).join(';'))].join('\n')}
   return (Array.isArray(data)?data:data.files||[]).map(x=>x.name+' · '+x.type+' · '+x.size+' octets · '+x.rotationPreview+'° (aperçu)').join('\n')}
  $('#uxSaveConfirm').addEventListener('click',async()=>{const x=previewName(),data=serialize(payload(),x.format),blob=new Blob([data],{type:MIME[x.format]||'text/plain'}),dest=$('#uxSaveDestination').value;
   try{
