@@ -319,6 +319,34 @@ async function scenario(name,viewport){
   reports.push({name,status:'FAIL',error:String(error?.stack||error),browserErrors:errors});
  }finally{await context.close();}
 }
+async function canonicalColorScenario(){
+ const context=await browser.newContext({viewport:{width:1120,height:800}});
+ const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ try{
+  await page.goto(new URL('APP-Applications/studio-core-test/',base).href,{waitUntil:'domcontentloaded'});
+  await page.locator('html[data-core-lab-ready="1"]').waitFor({timeout:16000});
+  const result=await page.evaluate(async()=>{
+   const {createColorPicker}=await import('../_shared/studio-v2/color-control.js');
+   let changed=0;const picker=createColorPicker({value:'#FF0080',format:'hex',onChange:()=>changed++});
+   document.body.append(picker.element);
+   const el=picker.element,input=el.querySelector('.nlabColorPickerText'),format=el.querySelector('.nlabColorPickerFormat');
+   const verify=(value,message)=>{if(!value)throw Error(message)};
+   verify(picker.control.value==='#FF0080','initial HEX failed');
+   format.value='rgb';format.dispatchEvent(new Event('change',{bubbles:true}));
+   verify(input.value==='rgb(255, 0, 128)','RGB format view failed');
+   format.value='hsl';format.dispatchEvent(new Event('change',{bubbles:true}));
+   input.value='hsl(240, 100%, 50%)';input.dispatchEvent(new Event('change',{bubbles:true}));
+   verify(picker.control.value==='#0000FF','HSL conversion failed');
+   input.value='invalid';input.dispatchEvent(new Event('change',{bubbles:true}));
+   verify(picker.control.value==='#0000FF'&&input.value==='hsl(240, 100%, 50%)','invalid color was not rejected');
+   verify(changed>=3,'change notifications missing');
+   picker.control.destroy();el.remove();return{changed}
+  });
+  assert(errors.length===0,'canonical color browser errors '+errors.join('; '));
+  reports.push({name:'canonical-color-control',status:'PASS',checks:5,extra:'HEX / RGB / HSL with native shared component'});
+ }catch(error){reports.push({name:'canonical-color-control',status:'FAIL',error:String(error?.stack||error),browserErrors:errors})}
+ finally{await context.close()}
+}
 async function resilienceScenario(){
  const context=await browser.newContext({viewport:{width:1200,height:850}});
  const page=await context.newPage();const errors=[];
@@ -394,6 +422,7 @@ async function historicalRouteScenario(){
  finally{await context.close()}
 }
 try{
+ await canonicalColorScenario();
  await resilienceScenario();
  await historicalRouteScenario();
  await scenario('desktop',{width:1440,height:900});
