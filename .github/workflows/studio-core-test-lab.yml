@@ -27,6 +27,7 @@ on:
       - 'Library/demo/**'
       - 'APP-Applications/studios/index.html'
       - 'tests/studio-core-color-control.mjs'
+      - 'scripts/run-core-test-preview.py'
       - 'tests/studio-core-test-lab.mjs'
       - 'tests/demo-explorer-folders.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
@@ -121,6 +122,28 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/demo-explorer-folders.mjs
+      - name: Package offline localhost preview kit for human acceptance
+        run: |
+          python3 scripts/run-core-test-preview.py --check
+          mkdir -p artifacts/core-preview-kit
+          git rev-parse HEAD > artifacts/core-preview-kit/CHECKOUT-SHA.txt
+          git archive --format=zip \
+            --prefix=nlab-core-3.10-test/ \
+            --output="$PWD/artifacts/core-preview-kit/core-test-kit.zip" HEAD \
+            index.html APP-Applications FRMW-Frameworks Library/demo assets Info \
+            scripts/run-core-test-preview.py
+          unzip -tq artifacts/core-preview-kit/core-test-kit.zip
+          unzip -p artifacts/core-preview-kit/core-test-kit.zip \
+            nlab-core-3.10-test/APP-Applications/studio-core-test/versions.json | python3 -c \
+            "import json,sys; d=json.load(sys.stdin); assert d['test']=='0.8.0' and d['current'] is None"
+          echo "Core TEST kit archive checked (no CURRENT promotion)"
+      - name: Upload user acceptance kit for Linux and Android
+        uses: actions/upload-artifact@v4
+        with:
+          name: nlab-core-3.10-test-kit
+          path: artifacts/core-preview-kit/
+          if-no-files-found: error
+          retention-days: 14
       - name: Upload UX 0.5 visual parity screenshots
         if: always()
         uses: actions/upload-artifact@v4
