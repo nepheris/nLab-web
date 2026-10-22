@@ -26,6 +26,7 @@ on:
       - 'APP-Applications/studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md'
       - 'Library/demo/**'
       - 'APP-Applications/studios/index.html'
+      - 'tests/studio-core-color-control.mjs'
       - 'tests/studio-core-test-lab.mjs'
       - 'tests/demo-explorer-folders.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
@@ -59,6 +60,8 @@ jobs:
           node --check APP-Applications/studio-core-test/versions/0.6.0/ux-lab.js
           node --check tests/studio-core-template-ux.mjs
           node tests/studio-core-template-ux.mjs
+          node --check tests/studio-core-color-control.mjs
+          node tests/studio-core-color-control.mjs
           node --check APP-Applications/studio-core-test/versions/0.3.0/app.js
           node --check APP-Applications/studio-core-test/versions/0.2.0/app.js
           node --check APP-Applications/_shared/studio-v2/application-mode-service.js
