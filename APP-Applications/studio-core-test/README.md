@@ -41,6 +41,12 @@ Il faut distinguer :
 - Les données du profil sont conservées dans le stockage local du navigateur ; l'export JSON personnel doit être stocké de manière privée.
 - Ne promouvoir ni Core Lab vers CURRENT ni ses fonctions dans tous les Studios métiers avant la validation humaine et les contrôles de régression correspondants.
 
+## Recette concrète et validation humaine
+
+Le [protocole Core 3.10 C-01 à C-16](./ACCEPTANCE-CHECKLIST-3.10.md) est le **seul passage en GO/NO-GO réel** après les contrôles automatisés : PC Chrome/Linux et Android Chrome, plein écran, responsive tactile, sélection de fichiers, panneau détaché, profils, PWA et retour arrière.
+
+Les correctifs du scénario global Image sont réconciliés dans la branche Core TEST depuis le 22/10/2026, à partir de la [PR Image #94](https://github.com/nepheris/nLab-web/pull/94) précédemment validée. Les résultats CI doivent être vérifiés sur le **dernier SHA de la PR Core #93** avant de déclarer le contrôle global réussi ; les résultats antérieurs de #94 ne s'y substituent pas.
+
 ## Décision de livraison
 
 La PR 3.10 reste une version candidate TEST. Après CI ciblée, revue des erreurs globales, vérification des archives et validation réelle desktop/Android, planifier la propagation **par Studio et par capacité** sans duplication de code. Les anciennes versions CURRENT restent inchangées.
