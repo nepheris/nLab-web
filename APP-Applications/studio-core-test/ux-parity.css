@@ -329,3 +329,42 @@ body[data-studio="studio-core-test"] #studioMain.uxWorkHidden .studioUxWorkBody{
 body[data-studio="studio-core-test"] #studioMain.uxWorkHidden .studioUxMain{min-height:0!important;height:auto!important}
 body[data-studio="studio-core-test"] #studioMain #uxToggleWork{font-size:11px;white-space:normal}
 body[data-studio="studio-core-test"] #studioMain .uxWorkVisibilitySetting{display:flex;align-items:center;gap:8px;margin:8px 0}
+
+/* Core TEST header aligned to Responsive Test Studio 0.4.2 reference:
+   one compact band, nLab wordmark, app name/purpose, navigation on right. */
+body[data-studio="studio-core-test"] .studioHeader{
+ height:auto!important;min-height:76px!important;padding:0 16px!important;
+ overflow:visible!important
+}
+body[data-studio="studio-core-test"] .studioHeaderInner{
+ width:100%!important;max-width:none!important;min-height:76px!important;
+ height:auto!important;display:flex!important;align-items:center!important;
+ flex-wrap:wrap!important;gap:12px!important;padding:8px 0!important
+}
+body[data-studio="studio-core-test"] .studioLogo{flex:0 0 92px!important;width:92px!important}
+body[data-studio="studio-core-test"] .studioLogo img{width:92px!important}
+body[data-studio="studio-core-test"] .studioIdentity{flex:1 1 230px!important;min-width:180px!important}
+body[data-studio="studio-core-test"] .studioBrand b{font-size:20px!important;line-height:1.15!important}
+body[data-studio="studio-core-test"] .studioBrand small{
+ font-size:11px!important;max-width:100%!important;white-space:normal!important
+}
+body[data-studio="studio-core-test"] .studioGlobalNav{
+ margin-left:auto!important;flex:0 1 auto!important;display:flex!important;
+ align-items:center!important;flex-wrap:wrap!important;justify-content:flex-end!important;
+ gap:5px!important;min-width:0!important
+}
+body[data-studio="studio-core-test"] .studioGlobalNav a,
+body[data-studio="studio-core-test"] .studioGlobalNav button{
+ font-size:11px!important;padding:7px 8px!important;min-height:32px!important;
+ border-radius:8px!important
+}
+body[data-studio="studio-core-test"] .studioRibbon .labRibbonVisibility{
+ display:inline-flex!important;align-items:center;gap:4px;min-width:64px;
+ align-self:center;padding:7px 8px;white-space:nowrap;border-radius:8px
+}
+body[data-studio="studio-core-test"] .studioRibbon .labRibbonVisibility svg{width:15px;height:15px}
+@media(max-width:800px){
+ body[data-studio="studio-core-test"] .studioHeaderInner{gap:8px!important}
+ body[data-studio="studio-core-test"] .studioIdentity{flex-basis:165px!important}
+ body[data-studio="studio-core-test"] .studioGlobalNav{flex:1 1 100%!important;justify-content:flex-start!important}
+}
