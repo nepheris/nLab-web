@@ -110,6 +110,23 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  for(const id of ['core-fullscreen','core-app-mode','core-responsive-test']){const button=coreRibbon?.querySelector('#'+id);if(button)displayGroup.insertBefore(button,displayGroup.querySelector('.ribbonLabel'))}
  proxy(displayGroup,'⚙','Réglages',()=>$('#studioCoreSettings')?.click());
  coreRibbon?.insertBefore(displayGroup,toggle);
+ // Relocate the canonical visibility control into the ribbon — never clone its handler.
+ const visibilityOpen=$('#studioVisibilityOpen');
+ if(visibilityOpen){
+  visibilityOpen.classList.remove('studioMenuUtility');
+  visibilityOpen.classList.add('labRibbonVisibility');
+  visibilityOpen.title='Afficher ou masquer les menus et les groupes du ruban';
+  visibilityOpen.setAttribute('aria-label','Affichage du ruban');
+  displayGroup.insertBefore(visibilityOpen,displayGroup.querySelector('.ribbonLabel'));
+ }
+ // Restore-windows stays in the same compact ribbon display group.
+ const restoreWindows=$('#studioRestoreWindows');
+ if(restoreWindows){
+  restoreWindows.classList.remove('studioMenuUtility');
+  restoreWindows.classList.add('labRibbonVisibility');
+  displayGroup.insertBefore(restoreWindows,displayGroup.querySelector('.ribbonLabel'));
+ }
+
 
  // The existing "Affichage" strip is the canonical ribbon editor.
  // No separate list, settings key or duplicated ribbon configuration in the lab.
