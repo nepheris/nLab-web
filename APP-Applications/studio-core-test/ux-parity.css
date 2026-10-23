@@ -302,3 +302,16 @@ body.themeDark[data-studio="studio-core-test"] #studioMain.studioUx #labCollecti
  outline:2px solid #8acfff;
  outline-offset:2px;
 }
+
+
+/* Core Lab ribbon personalization: never mutate shared command registry. */
+body[data-studio="studio-core-test"] .studioRibbon .ribbonGroup.uxRibbonGroupHidden{display:none!important}
+body[data-studio="studio-core-test"] .studioRibbon .labRibbonEdit{
+ flex:none;align-self:center;min-height:32px;padding:5px 9px;border:1px solid var(--nlab-line,#536578);
+ border-radius:7px;background:var(--nlab-card,#263747);color:inherit;cursor:pointer;font-size:11px
+}
+body[data-studio="studio-core-test"] .uxRibbonEditor{border:1px solid var(--nlab-line,#536578);border-radius:8px;padding:10px;margin:12px 0;min-width:0}
+body[data-studio="studio-core-test"] .uxRibbonEditor legend{font-weight:700;padding:0 6px}
+body[data-studio="studio-core-test"] .uxRibbonChoices{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin:10px 0}
+body[data-studio="studio-core-test"] .uxRibbonChoice{display:flex;align-items:center;gap:6px;font-size:12px}
+body[data-studio="studio-core-test"] .uxRibbonChoice input{accent-color:#3282ca}
