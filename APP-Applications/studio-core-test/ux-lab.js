@@ -128,6 +128,30 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const saveAsButton=make('button','','⇩ Enregistrer sous');saveAsButton.id='uxSaveAsOpen';saveAsButton.type='button';ribbon.append(saveAsButton);
  const viewBtn=make('button','','◉ Aperçu');viewBtn.type='button';viewBtn.id='uxTogglePreview';ribbon.append(viewBtn);
  ws.actions.append(ribbon);
+
+ // One workspace-visibility state, shared by the work-header button and Display settings.
+ const workPane=main.querySelector('.studioUxMain');
+ const workKey='nlab:core-lab:work-visible:v1';
+ const workToggle=make('button','uxMiniButton','');
+ workToggle.type='button';workToggle.id='uxToggleWork';
+ const workSetting=make('label','uxWorkVisibilitySetting','<input type="checkbox" id="uxShowWork"> Afficher la planche de travail');
+ appearanceSection.append(workSetting);
+ const workCheckbox=workSetting.querySelector('input');
+ const setWorkVisible=(visible,persist=true)=>{
+  const on=Boolean(visible);
+  main.classList.toggle('uxWorkHidden',!on);
+  workToggle.textContent=on?'▣ Masquer la planche':'▣ Afficher la planche';
+  workToggle.setAttribute('aria-expanded',String(on));
+  workToggle.setAttribute('aria-label',on?'Masquer la planche de travail':'Afficher la planche de travail');
+  workCheckbox.checked=on;
+  if(persist)try{localStorage.setItem(workKey,on?'1':'0')}catch{}
+ };
+ workToggle.addEventListener('click',()=>setWorkVisible(main.classList.contains('uxWorkHidden')));
+ workCheckbox.addEventListener('change',()=>setWorkVisible(workCheckbox.checked));
+ ws.actions.prepend(workToggle);
+ let savedWork='1';try{savedWork=localStorage.getItem(workKey)||'1'}catch{}
+ setWorkVisible(savedWork!=='0',false);
+
  surfacePanel.addEventListener('click',e=>{const action=e.target.closest('[data-surface-action]')?.dataset.surfaceAction;const target={import:'#labPickerOpen',list:'#labViewList',thumbs:'#labViewThumbs',preview:'#uxTogglePreview',save:'#uxSaveOpen','save-as':'#uxSaveAsOpen'}[action];if(target)$(target)?.click()});
  const heading=make('div','studioUxInfoRow','<div><strong>Collection de fichiers</strong><span> · Cliquer pour activer et cocher pour sélectionner</span></div><span id="uxCollectionCount">0 fichier</span>');
  ctrl.classList.add('uxCollectionToolbar');
