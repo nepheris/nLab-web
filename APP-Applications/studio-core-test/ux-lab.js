@@ -115,6 +115,37 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  for(const id of ['core-fullscreen','core-app-mode','core-responsive-test']){const button=coreRibbon?.querySelector('#'+id);if(button)displayGroup.insertBefore(button,displayGroup.querySelector('.ribbonLabel'))}
  proxy(displayGroup,'⚙','Réglages',()=>$('#studioCoreSettings')?.click());
  coreRibbon?.insertBefore(displayGroup,toggle);
+
+ // Opt-in ribbon editor: groups are presentation-only; commands stay registered.
+ // Group selection is persisted locally and can be reset without losing commands.
+ const ribbonConfigKey='nlab:core-lab:ribbon-groups:v1';
+ const ribbonGroups=Array.from(coreRibbon?.querySelectorAll('[data-ribbon-group]')||[])
+  .filter(group=>group.dataset.ribbonGroup!=='lab-diagnostics' && group.dataset.ribbonGroup!=='core-command');
+ const groupLabel=group=>(group.querySelector('.ribbonLabel')?.textContent||group.dataset.ribbonGroup||'Groupe').trim();
+ let storedGroups={};
+ try{const saved=JSON.parse(localStorage.getItem(ribbonConfigKey)||'{}');if(saved&&typeof saved==='object'&&!Array.isArray(saved))storedGroups=saved}catch{}
+ const editor=document.createElement('fieldset');editor.className='uxRibbonEditor';
+ editor.innerHTML='<legend>Personnaliser le ruban</legend><p class="labHint">Choisir les groupes visibles. Les commandes restent accessibles dans le Studio.</p>';
+ const choices=document.createElement('div');choices.className='uxRibbonChoices';editor.append(choices);
+ const applyGroups=()=>{
+  for(const group of ribbonGroups){const key=group.dataset.ribbonGroup;group.classList.toggle('uxRibbonGroupHidden',storedGroups[key]===false)}
+ };
+ const persistGroups=()=>{try{localStorage.setItem(ribbonConfigKey,JSON.stringify(storedGroups))}catch{}applyGroups()};
+ for(const group of ribbonGroups){
+  const label=document.createElement('label');label.className='uxRibbonChoice';
+  const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=storedGroups[group.dataset.ribbonGroup]!==false;
+  checkbox.addEventListener('change',()=>{storedGroups[group.dataset.ribbonGroup]=checkbox.checked;persistGroups()});
+  label.append(checkbox,document.createTextNode(' '+groupLabel(group)));choices.append(label);
+ }
+ const resetRibbon=document.createElement('button');resetRibbon.type='button';resetRibbon.textContent='Réinitialiser le ruban';
+ resetRibbon.addEventListener('click',()=>{storedGroups={};choices.querySelectorAll('input').forEach(input=>input.checked=true);persistGroups()});
+ editor.append(resetRibbon);settings.append(editor);
+ const editRibbon=document.createElement('button');editRibbon.type='button';editRibbon.className='labRibbonEdit';editRibbon.textContent='⚙ Ruban';
+ editRibbon.title='Personnaliser les groupes de commandes du ruban';
+ editRibbon.setAttribute('aria-label','Personnaliser le ruban');
+ editRibbon.addEventListener('click',()=>{ws.switchTab('settings');editor.scrollIntoView({block:'nearest'});editor.querySelector('input')?.focus()});
+ coreRibbon?.insertBefore(editRibbon,toggle);applyGroups();
+
  const ribbon=make('div','labToolbar uxWorkMainActions','');
  ribbon.append(picker);
  const upload=make('button','','▣ Dossier');upload.type='button';upload.title='Parcourir un dossier dans le sélecteur canonique';upload.addEventListener('click',()=>picker.click());ribbon.append(upload);
