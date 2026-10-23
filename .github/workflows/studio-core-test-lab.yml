@@ -13,6 +13,8 @@ on:
       - 'APP-Applications/_shared/studio-v2/workspace-layout.js'
       - 'APP-Applications/_shared/studio-v2/workspace-layout.css'
       - 'APP-Applications/_shared/studio-v2/workspace-theme.js'
+      - 'APP-Applications/_shared/studio-v2/theme-service.js'
+      - 'APP-Applications/_shared/studio-v2/test-theme-service.mjs'
       - 'APP-Applications/_shared/studio-v2/workspace-theme.css'
       - 'APP-Applications/_shared/studio-v2/history.js'
       - 'APP-Applications/_shared/studio-v2/history-sidebar.js'
@@ -45,6 +47,9 @@ jobs:
           node --check APP-Applications/_shared/studio-v2/collection-browser.js
           node --check APP-Applications/_shared/studio-v2/workspace-layout.js
           node --check APP-Applications/_shared/studio-v2/workspace-theme.js
+          node --check APP-Applications/_shared/studio-v2/theme-service.js
+          node --check APP-Applications/_shared/studio-v2/settings.js
+          node --test APP-Applications/_shared/studio-v2/test-theme-service.mjs
           node --check APP-Applications/_shared/studio-v2/history.js
           node --check APP-Applications/_shared/studio-v2/history-sidebar.js
           node --check APP-Applications/studio-core-test/versions/0.4.0/app.js
