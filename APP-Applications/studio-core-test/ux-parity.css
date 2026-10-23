@@ -275,3 +275,30 @@ body[data-studio="studio-core-test"] .studioHeaderInner .studioMenuIntegrated{
 body[data-studio="studio-core-test"] .studioHeaderInner .studioMenuIntegrated [data-menu]{
  height:40px!important;min-height:40px!important;
 }
+
+
+/* Core Lab 0.7 dark theme contrast: collection info and import drop target.
+   Override the light-only lab rules, including the !important drop background. */
+body.themeDark[data-studio="studio-core-test"] #studioMain.studioUx #labCollectionInfo,
+body.themeDark[data-studio="studio-core-test"] #studioMain.studioUx #labAcquiredInfo{
+ background:#253442!important;
+ color:#e4eef7!important;
+ border:1px solid #456079!important;
+}
+body.themeDark[data-studio="studio-core-test"] #studioMain.studioUx #labCollectionDrop{
+ background:#253442!important;
+ color:#e4eef7!important;
+ border:1px dashed #7297b8!important;
+}
+body.themeDark[data-studio="studio-core-test"] #studioMain.studioUx #labCollectionDrop strong{
+ color:inherit!important;
+}
+body.themeDark[data-studio="studio-core-test"] #studioMain.studioUx #labCollectionDrop.dragOver{
+ background:#194767!important;
+ color:#fff!important;
+ border-color:#8acfff!important;
+}
+body.themeDark[data-studio="studio-core-test"] #studioMain.studioUx #labCollectionDrop:focus-visible{
+ outline:2px solid #8acfff;
+ outline-offset:2px;
+}
