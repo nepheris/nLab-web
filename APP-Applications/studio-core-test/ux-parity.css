@@ -368,3 +368,62 @@ body[data-studio="studio-core-test"] .studioRibbon .labRibbonVisibility svg{widt
  body[data-studio="studio-core-test"] .studioIdentity{flex-basis:165px!important}
  body[data-studio="studio-core-test"] .studioGlobalNav{flex:1 1 100%!important;justify-content:flex-start!important}
 }
+
+
+/* Core TEST: one design vocabulary for every menu, list, properties pane
+   and settings window. No duplicate widgets, light/dark use the same tokens. */
+body[data-studio="studio-core-test"]{
+ --ux-panel-bg:#fff;--ux-panel-alt:#f3f7fb;--ux-panel-text:#263d52;
+ --ux-panel-muted:#59718a;--ux-panel-line:#d3dfea;--ux-panel-active:#e6f3ff;
+ --ux-panel-focus:#1478c8;
+}
+body.themeDark[data-studio="studio-core-test"]{
+ --ux-panel-bg:#202a34;--ux-panel-alt:#293746;--ux-panel-text:#e6edf5;
+ --ux-panel-muted:#b6c9da;--ux-panel-line:#496074;--ux-panel-active:#294b68;
+ --ux-panel-focus:#82c4fc;
+}
+body[data-studio="studio-core-test"] #studioCoreSettingsPanel,
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSideContent,
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSideContent>header,
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxTabPanel{
+ background:var(--ux-panel-bg)!important;color:var(--ux-panel-text)!important;
+ border-color:var(--ux-panel-line)!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSideContent>header strong,
+body[data-studio="studio-core-test"] #studioCoreSettingsPanel strong,
+body[data-studio="studio-core-test"] #studioCoreSettingsPanel h3{color:var(--ux-panel-text)!important}
+body[data-studio="studio-core-test"] .uxSettingsSection,
+body[data-studio="studio-core-test"] .uxHistoryAccordion,
+body[data-studio="studio-core-test"] #studioCoreSettingsPanel .coreSettingsGrid section{
+ background:var(--ux-panel-bg)!important;border:1px solid var(--ux-panel-line)!important;
+ color:var(--ux-panel-text)!important;border-radius:9px;
+}
+body[data-studio="studio-core-test"] .uxSettingsSection>summary,
+body[data-studio="studio-core-test"] .uxHistoryAccordion>summary,
+body[data-studio="studio-core-test"] #studioCoreSettingsPanel .coreSettingsHead,
+body[data-studio="studio-core-test"] #studioCoreSettingsPanel .studioWindowBar{
+ background:var(--ux-panel-alt)!important;color:var(--ux-panel-text)!important;
+ border-color:var(--ux-panel-line)!important;font-size:12px;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail{
+ background:var(--ux-panel-alt)!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail [data-ux-tab]{
+ color:var(--ux-panel-muted)!important;
+}
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxRail [data-ux-tab].active{
+ background:var(--ux-panel-active)!important;color:var(--ux-panel-text)!important;
+ border-color:var(--ux-panel-focus)!important;
+}
+body[data-studio="studio-core-test"] #studioCoreSettingsPanel :is(button,input,select,textarea),
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSideContent :is(button,input,select,textarea){
+ color:var(--ux-panel-text);border-color:var(--ux-panel-line);
+}
+body[data-studio="studio-core-test"] #studioCoreSettingsPanel :is(input,select,textarea),
+body[data-studio="studio-core-test"] #studioMain.studioUx .studioUxSideContent :is(input,select,textarea){
+ background:var(--ux-panel-alt);color:var(--ux-panel-text);
+}
+body[data-studio="studio-core-test"] :is(#studioCoreSettingsPanel,#studioMain.studioUx)
+ :is(button,input,select,textarea,summary):focus-visible{
+ outline:2px solid var(--ux-panel-focus)!important;outline-offset:2px;
+}
