@@ -268,9 +268,8 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  // Both the compact sidebar and full history window share the existing Core activity store.
  historyView.render();
 
- // A theme choice is scoped to the workspace; Core settings remain authoritative elsewhere.
- $('#uxTheme').value=safeRead('nlab:core-lab:ux-theme','auto');
- const uxTheme=createWorkspaceTheme({root:main,select:$('#uxTheme'),storageKey:'nlab:core-lab:ux-theme'});
+ // Both the lab workspace and the Studio shell now inherit the same Core appearance policy.
+ const uxTheme=createWorkspaceTheme({root:main,select:$('#uxTheme')});
  const mode=$('#uxDisplayMode');
  const setDisplayProfile=value=>{
   if(!['auto','desktop','tablet','mobile'].includes(value))value='auto';
