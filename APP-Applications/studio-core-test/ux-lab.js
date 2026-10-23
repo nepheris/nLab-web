@@ -65,7 +65,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const responsiveCard=settings.querySelector('.uxCard');
  const legacyToolbar=settings.querySelector('.labToolbar');
  personalSection.append(profilePreferences);
- if(themeField)appearanceSection.append(themeField);
+ if(themeField)coreSection.append(themeField);
  if(responsiveCard)appearanceSection.append(responsiveCard);
  if(legacyToolbar)appearanceSection.append(legacyToolbar);
  appearanceSection.append(displayProfile);
