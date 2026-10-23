@@ -121,7 +121,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const ribbonConfigKey='nlab:core-lab:ribbon-groups:v1';
  const ribbonGroups=Array.from(coreRibbon?.querySelectorAll('[data-ribbon-group]')||[])
   .filter(group=>group.dataset.ribbonGroup!=='lab-diagnostics' && group.dataset.ribbonGroup!=='core-command');
- const groupLabel=group=>(group.querySelector('.ribbonLabel')?.textContent||group.dataset.ribbonGroup||'Groupe').trim();
+ const ribbonGroupName=group=>(group.querySelector('.ribbonLabel')?.textContent||group.dataset.ribbonGroup||'Groupe').trim();
  let storedGroups={};
  try{const saved=JSON.parse(localStorage.getItem(ribbonConfigKey)||'{}');if(saved&&typeof saved==='object'&&!Array.isArray(saved))storedGroups=saved}catch{}
  const editor=document.createElement('fieldset');editor.className='uxRibbonEditor';
@@ -135,7 +135,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
   const label=document.createElement('label');label.className='uxRibbonChoice';
   const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=storedGroups[group.dataset.ribbonGroup]!==false;
   checkbox.addEventListener('change',()=>{storedGroups[group.dataset.ribbonGroup]=checkbox.checked;persistGroups()});
-  label.append(checkbox,document.createTextNode(' '+groupLabel(group)));choices.append(label);
+  label.append(checkbox,document.createTextNode(' '+ribbonGroupName(group)));choices.append(label);
  }
  const resetRibbon=document.createElement('button');resetRibbon.type='button';resetRibbon.textContent='Réinitialiser le ruban';
  resetRibbon.addEventListener('click',()=>{storedGroups={};choices.querySelectorAll('input').forEach(input=>input.checked=true);persistGroups()});
