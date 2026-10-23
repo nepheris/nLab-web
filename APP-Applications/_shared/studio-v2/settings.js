@@ -1,9 +1,11 @@
 import{qs,qsa,setRibbonGroupVisible,applyRibbonGroups}from'./core.js';
 import{setIconTheme,iconThemeNames}from'./icon-registry.js';
+import{applySharedTheme,DEFAULT_ACCENT,normalizedAccent,ACCENT_PRESETS}from'./theme-service.js';
 
 const KEY='nlab-studio-v2-settings';
 const DEFAULTS={
   theme:'system',
+  accentColor:DEFAULT_ACCENT,
   iconTheme:'nlab-line',
   architectureMarkers:false,
   showUiIds:false,
@@ -77,8 +79,7 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   b.classList.toggle('hideDevelopment',!settings.showDevelopment);
   b.classList.toggle('hideScopeBadges',!settings.showScopeBadges);
   b.classList.toggle('hideDevBadges',!settings.showDevBadges);
-  const dark=settings.theme==='dark'||(settings.theme==='system'&&matchMedia?.('(prefers-color-scheme: dark)').matches);
-  b.classList.toggle('themeDark',!!dark);
+  applySharedTheme(b,settings);
   const profile=resolvedResponsiveProfile(settings);
   const ribbonMode=resolvedRibbonMode(settings,profile);
   b.dataset.responsivePreference=settings.responsiveProfile||'auto';
@@ -112,6 +113,7 @@ export function applyStudioSettings(settings=loadStudioSettings()){
     const mqMobile=matchMedia('(max-width: 700px)'),mqCompact=matchMedia('(max-width: 1100px)');
     const refresh=()=>{const current=loadStudioSettings();if((current.responsiveProfile||'auto')==='auto')applyStudioSettings(current)};
     mqMobile.addEventListener?.('change',refresh);mqCompact.addEventListener?.('change',refresh);
+    matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{const current=loadStudioSettings();if(current.theme==='system')applyStudioSettings(current)});
   }
   return settings;
 }
@@ -130,6 +132,9 @@ export function renderStudioSettingsPanel(host){
           <option value="dark">Sombre</option>
         </select>
       </label>
+      <label class="field"><span>Couleur dominante commune</span><input type="color" data-setting="accentColor" aria-label="Couleur dominante de tous les Studios" value="${normalizedAccent(s.accentColor)}"></label>
+      <div class="studioAccentPresets" role="group" aria-label="Couleurs dominantes prédéfinies">${Object.entries(ACCENT_PRESETS).map(([name,hex])=>'<button type="button" data-accent-preset="'+hex+'" title="'+name+'" aria-label="Couleur '+name+'" style="--studio-preset-color:'+hex+'"></button>').join('')}</div>
+      <p class="settingsHint">La couleur est partagée en clair, sombre et automatique ; le Core ajuste sa lisibilité.</p>
       <label class="field"><span>Thème d’icônes</span>
         <select data-setting="iconTheme">
           ${iconThemeNames().map(id=>'<option value="'+id+'">'+id+'</option>').join('')}
@@ -262,6 +267,7 @@ export function renderStudioSettingsPanel(host){
   </div>
   <div class="coreSettingsDangerBottom"><button type="button" data-core-pref="reset-ui">⚠ Réinitialiser l'interface</button><span>Même action qu’en haut du panneau.</span></div>`;
   host.querySelector('[data-setting="theme"]').value=s.theme;
+  host.querySelector('[data-setting="accentColor"]').value=normalizedAccent(s.accentColor);
   for(const k of ['fontFamily','density','responsiveProfile','ribbonMode','sidebarMode','headerMode','historyLimit','historyGroupBy','historyRetention','ribbonRows','thumbnailQuality','specializedStudioPolicy','navPlacement','contextualHelpMode','contextualHelpPanelMode','coreSettingsPanelMode']){const el=host.querySelector('[data-setting="'+k+'"]');if(el)el.value=s[k]}
   const iconThemeSelect=host.querySelector('[data-setting="iconTheme"]');if(iconThemeSelect)iconThemeSelect.value=s.iconTheme||'nlab-line';
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
@@ -307,6 +313,7 @@ export function renderStudioSettingsPanel(host){
     ribbonHost.innerHTML='<h4>Groupes du ruban</h4>'+groups.map(g=>'<label class="checkboxField"><input type="checkbox" data-ribbon-setting="'+g.id+'" '+(localStorage.getItem('nlab-studio-v2-ribbon-'+g.id)==='0'?'':'checked')+'><span>'+g.label+'</span></label>').join('');
     ribbonHost.querySelectorAll('[data-ribbon-setting]').forEach(el=>el.addEventListener('change',()=>{setRibbonGroupVisible(el.dataset.ribbonSetting,el.checked);applyRibbonGroups()}));
   }
+  host.querySelectorAll('[data-accent-preset]').forEach(button=>button.addEventListener('click',()=>{const input=host.querySelector('[data-setting="accentColor"]');input.value=button.dataset.accentPreset;saveStudioSettings({accentColor:input.value})}));
   host.querySelectorAll('[data-setting-number]').forEach(el=>el.addEventListener('change',()=>{const k=el.dataset.settingNumber,v=Math.max(220,Math.min(720,Number(el.value)||360));const range=host.querySelector('[data-setting="'+k+'"]');if(range)range.value=v;saveStudioSettings({[k]:v})}));
   host.querySelectorAll('[data-setting]').forEach(el=>{
     const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth','historyLimit','collectionThumbnailSize'].includes(k))v=Number(v);saveStudioSettings({[k]:v});if(k==='historyGroupBy'){try{localStorage.setItem('nlab-studio-v2-history-filter',JSON.stringify({...JSON.parse(localStorage.getItem('nlab-studio-v2-history-filter')||'{}'),groupBy:v}))}catch{}}document.dispatchEvent(new CustomEvent('studio-v2:history-changed'));const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %';const t=host.querySelector('[data-thumbnail-size-value]');if(t)t.textContent=Math.round(Number(loadStudioSettings().collectionThumbnailSize||104))+' px'};
