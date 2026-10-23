@@ -55,6 +55,21 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const displayProfile=make('div','uxDisplayProfile','<label>Prévisualisation de la planche<select id="uxDisplayMode"><option value="auto">Automatique</option><option value="desktop">Bureau</option><option value="tablet">Tablette</option><option value="mobile">Téléphone</option></select></label><p class="uxDisplayNote" id="uxDisplayModeNote">Simulation de la largeur de la planche centrale.</p>');settings.append(displayProfile);
  const profilePreferences=make('div','uxSettingsProfile');settings.prepend(profilePreferences);
  mountTemplateProfile({host:profilePreferences,onChange:()=>{if(!$('#uxSaveDialog')?.hidden)previewName()}});
+ // Group settings by purpose, keeping the personal profile first.
+ // Existing controls are moved (not recreated), preserving listeners and persistence.
+ const section=(title,open=false)=>{const details=document.createElement('details');details.className='uxSettingsSection';details.open=open;const summary=document.createElement('summary');summary.textContent=title;details.append(summary);return details};
+ const personalSection=section('Paramètres personnels',true);
+ const coreSection=section('Réglages du Core');
+ const appearanceSection=section('Préférences d’affichage',true);
+ const themeField=settings.querySelector('label.labField:has(#uxTheme)');
+ const responsiveCard=settings.querySelector('.uxCard');
+ const legacyToolbar=settings.querySelector('.labToolbar');
+ personalSection.append(profilePreferences);
+ if(themeField)appearanceSection.append(themeField);
+ if(responsiveCard)appearanceSection.append(responsiveCard);
+ if(legacyToolbar)appearanceSection.append(legacyToolbar);
+ appearanceSection.append(displayProfile);
+ settings.replaceChildren(personalSection,coreSection,appearanceSection);
  const diagnostics=make('div','');diagnostics.append(legacyAside);
  const tools=make('div','');tools.append(feature,diagnostics);
  const ws=mountStudioWorkspace({main,initial:'files',title:'Planche de travail',subtitle:'Studio Core · Collection et prévisualisation',tabs:[
@@ -78,7 +93,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const ribbonPreference=document.createElement('label');
  ribbonPreference.className='labField uxRibbonVisibilitySetting';
  ribbonPreference.innerHTML='<span>Ruban</span><span><input type="checkbox" id="uxShowRibbon"> Afficher le ruban</span>';
- settings.append(ribbonPreference);
+ appearanceSection.append(ribbonPreference);
  const showRibbon=ribbonPreference.querySelector('#uxShowRibbon');
  const syncRibbonVisibility=()=>{
   const visible=!document.body.classList.contains('studioRibbonCollapsed');
@@ -139,12 +154,12 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  }
  const resetRibbon=document.createElement('button');resetRibbon.type='button';resetRibbon.textContent='Réinitialiser le ruban';
  resetRibbon.addEventListener('click',()=>{storedGroups={};choices.querySelectorAll('input').forEach(input=>input.checked=true);persistGroups()});
- editor.append(resetRibbon);settings.append(editor);
+ editor.append(resetRibbon);appearanceSection.append(editor);
  const editRibbon=document.createElement('button');editRibbon.type='button';editRibbon.className='labRibbonEdit';editRibbon.textContent='⚙ Ruban';
  editRibbon.title='Personnaliser les groupes de commandes du ruban';
  editRibbon.setAttribute('aria-label','Personnaliser le ruban');
- editRibbon.addEventListener('click',()=>{ws.switchTab('settings');editor.scrollIntoView({block:'nearest'});editor.querySelector('input')?.focus()});
- coreRibbon?.insertBefore(editRibbon,toggle);applyGroups();
+ editRibbon.addEventListener('click',()=>{ws.switchTab('settings');appearanceSection.open=true;editor.scrollIntoView({block:'nearest'});editor.querySelector('input')?.focus()});
+ displayGroup.insertBefore(editRibbon,displayGroup.querySelector('.ribbonLabel'));applyGroups();
 
  const ribbon=make('div','labToolbar uxWorkMainActions','');
  ribbon.append(picker);
@@ -270,7 +285,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  settings.querySelectorAll('[data-ux-device]').forEach(b=>b.addEventListener('click',()=>setDisplayProfile(b.dataset.uxDevice)));
  setDisplayProfile(safeRead('nlab:core-lab:display-mode','auto'));
  // Reuse existing canonical Core settings button. A duplicate panel is not created.
- const coreSettings=make('button','uxMiniButton','⚙ Réglages Core');coreSettings.addEventListener('click',()=>$('#studioCoreSettings')?.click());settings.prepend(coreSettings);
+ const coreSettings=make('button','uxMiniButton','⚙ Ouvrir les réglages du Core');coreSettings.addEventListener('click',()=>$('#studioCoreSettings')?.click());coreSection.append(coreSettings);
  // Core menu tabs map to content, not to parallel duplicate panels.
  document.addEventListener('studio-v2:menu',e=>{const target={home:'files',file:'files',edit:'properties',view:'settings',tools:'tools',diagnostic:'tools',acquisition:'files',specimen:'properties',validation:'tasks'}[e.detail?.tab];if(target)ws.switchTab(target)});
  const actions={
