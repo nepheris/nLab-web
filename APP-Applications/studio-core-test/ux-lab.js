@@ -60,7 +60,7 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const ws=mountStudioWorkspace({main,initial:'files',title:'Planche de travail',subtitle:'Studio Core · Collection et prévisualisation',tabs:[
   {id:'tools',label:'Outils',icon:'✎',children:[tools]},
   {id:'files',label:'Fichiers',icon:'▣',children:[profile]},
-  {id:'workspace',label:'Planche',icon:'▤',workTab:true,children:[surfacePanel]},
+  {id:'workspace',label:'Planche de travail',icon:'▤',workTab:true,children:[surfacePanel]},
   {id:'history',label:'Historique',icon:'◷',children:[history]},
   {id:'properties',label:'Propriétés',icon:'☷',children:[prop]},
   {id:'tasks',label:'Tâches',icon:'☑',children:[tasks]},
@@ -73,6 +73,28 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const duplicate=links.find(x=>x.getAttribute('href')?.includes('/Info/licenses.html'));if(duplicate)duplicate.hidden=true;
  // Use the actual shared Core ribbon, but order groups as in the UX reference.
  const coreRibbon=$('.studioRibbon'),toggle=$('#studioRibbonToggle');
+ // A single user-facing vocabulary for the Core ribbon in the Display preferences.
+ // Reuse the existing Core collapse command and persistence key, never duplicate state.
+ const ribbonPreference=document.createElement('label');
+ ribbonPreference.className='labField uxRibbonVisibilitySetting';
+ ribbonPreference.innerHTML='<span>Ruban</span><span><input type="checkbox" id="uxShowRibbon"> Afficher le ruban</span>';
+ settings.append(ribbonPreference);
+ const showRibbon=ribbonPreference.querySelector('#uxShowRibbon');
+ const syncRibbonVisibility=()=>{
+  const visible=!document.body.classList.contains('studioRibbonCollapsed');
+  showRibbon.checked=visible;
+  showRibbon.setAttribute('aria-label','Afficher le ruban');
+  toggle?.setAttribute('aria-label',visible?'Masquer le ruban':'Afficher le ruban');
+  toggle?.setAttribute('title',visible?'Masquer le ruban':'Afficher le ruban');
+ };
+ showRibbon.addEventListener('change',()=>{
+  const visible=!document.body.classList.contains('studioRibbonCollapsed');
+  if(showRibbon.checked!==visible)toggle?.click();
+  syncRibbonVisibility();
+ });
+ toggle?.addEventListener('click',()=>queueMicrotask(syncRibbonVisibility));
+ syncRibbonVisibility();
+
  for(const key of ['core-acquisition','lab-file','core-history','lab-panels','core-command','lab-diagnostics']){const group=coreRibbon?.querySelector('[data-ribbon-group="'+key+'"]');if(group)coreRibbon.insertBefore(group,toggle)}
  // The accepted mockup has a dedicated menu line and a single compact ribbon row.
  // Keep every existing action binding: only rearrange the actual Core controls.
