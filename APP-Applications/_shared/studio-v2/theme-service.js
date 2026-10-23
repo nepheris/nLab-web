@@ -28,7 +28,7 @@ export function applySharedTheme(root,{theme='system',accentColor=DEFAULT_ACCENT
   const base=normalizedAccent(accentColor);
   // Brighten the selected hue on dark surfaces; preserve one preference in both modes.
   const accent=dark?mix(base,'#FFFFFF',.24):base;
-  const soft=mix(accent,dark?'#202D3C':'#FFFFFF',dark?.77:.87);
+  const soft=mix(accent,dark?'#202D3C':'#FFFFFF',dark ? 0.77 : 0.87);
   root.style.setProperty('--nlab-brand',accent);
   root.style.setProperty('--nlab-accent',accent);
   root.style.setProperty('--nlab-brand-soft',soft);
