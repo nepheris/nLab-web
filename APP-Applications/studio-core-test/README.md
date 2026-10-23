@@ -1,9 +1,9 @@
-# Studio Core Test Lab — TEST 0.2.0
+# Studio Core Test Lab — TEST 0.7.0
 
 Surface de diagnostic isolée : `APP-Applications/studio-core-test/`.
 
 ## Objectif
-Vérifier le véritable Studio Core V2 partagé (Core 3.4.1 TEST) et préparer une propagation contrôlée à l'ensemble des Studios nLab, sans dupliquer le code du Core ni modifier les archives historiques.
+Vérifier le véritable Studio Core V2 partagé (Core 3.9.0 TEST) et préparer une propagation contrôlée à l'ensemble des Studios nLab, sans dupliquer le code du Core ni modifier les archives historiques.
 
 ## Périmètre couvert
 - Header nLab / navigation, ruban, menus, réglages et commandes Core.
@@ -35,3 +35,12 @@ La surface TEST est volontairement absente des 15 Studios métier comptabilisés
 - Explorateur de démos : toutes les entrées de manifests, dossier Icônes normal, preview valide ou fallback.
 - L'historique 0.1.0 est conservé dans `versions/0.1.0/`.
 - Audit de mutualisation : `../studios/STUDIO-CORE-V0.2-MUTUALIZATION-AUDIT.md`.
+
+
+## Reprise de validation — 23 octobre 2026
+
+- Source des versions : `APP-Applications/studio-core-test/versions.json` (Test Lab 0.7.0 TEST) et `APP-Applications/_shared/studio-v2/version.json` (Studio Core 3.9.0 TEST). Les versions publiées doivent être consultées dans les registres, jamais déduites de ce README.
+- La validation automatisée du laboratoire est définie dans `tests/studio-core-test-lab.mjs` (Playwright). Des suites complémentaires existent : `tests/studio-fullscreen-core.mjs`, `tests/studio-core-template-ux.mjs` et `tests/studio-branding.mjs`.
+- Critère préalable à toute migration de PDF/Image : résultats CI réels, vérification manuelle Linux/Chrome et Android/Chrome, non-régression historique et procédure de retour arrière.
+- Fonction développée, passage CI et validation sur appareil sont trois preuves distinctes. Aucun résultat nouveau n'est présumé PASS par cette mise à jour documentaire.
+- Cible de priorité : Core, puis Image, puis PDF ; autres Studios en maintenance/corrections bloquantes pendant la clôture de ce trio.
