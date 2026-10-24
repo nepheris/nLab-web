@@ -126,6 +126,7 @@ a:hover{color:var(--ui-accent)}
  .identity small{font-size:10px}
  .purpose{display:block;font-size:11px}
  .headerControls{width:100%;margin:0;justify-content:space-between;gap:6px}
+ .shareMenu{left:0;right:auto;max-width:calc(100vw - 20px)}
  .themeControl select{max-width:160px}
  .header nav{width:100%;gap:4px}
  .header nav a{min-height:40px;display:inline-flex;align-items:center}
