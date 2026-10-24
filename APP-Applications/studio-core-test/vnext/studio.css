@@ -1,98 +1,161 @@
-:root{font-family:Inter,Arial,sans-serif;color-scheme:light;--bg:#eef3f8;--panel:#fff;--muted:#64798b;--text:#243748;--border:#cbd9e5;--active:#e6f2ff;--accent:#086bbb}*{box-sizing:border-box}body{margin:0;color:var(--text);background:var(--bg)}button,input,select{font:inherit}button{cursor:pointer;border:1px solid var(--border);background:var(--panel);color:inherit;border-radius:8px;padding:8px 11px}button:hover,button:focus-visible{background:var(--active);outline-color:var(--accent)}button[aria-pressed=true]{background:var(--active);border-color:var(--accent)}.header{min-height:76px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:10px 18px;flex-wrap:wrap}.logo{width:92px;max-height:46px}.identity{display:grid;gap:4px}.identity strong{font-size:20px}.identity small{color:var(--muted);font-size:12px}.header nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}.header a{color:inherit;text-decoration:none;padding:7px;border-radius:8px}.header a:hover{background:var(--active)}.app{display:grid;grid-template-columns:72px minmax(0,1fr);min-height:calc(100dvh - 76px)}.rail{padding:8px 4px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:5px}.rail button{display:grid;place-items:center;gap:4px;border-color:transparent}.rail span{font-size:10px}.workspace{min-width:0}.ribbon{background:var(--panel);display:flex;gap:6px;padding:10px;border-bottom:1px solid var(--border);flex-wrap:wrap}.displayMenu{display:flex;flex-wrap:wrap;gap:16px;padding:12px;background:var(--panel);border-bottom:1px solid var(--border)}.displayMenu[hidden]{display:none}.displayMenu label{display:inline-flex;gap:6px;align-items:center}.layout{display:grid;grid-template-columns:var(--side-width,310px) minmax(0,1fr);min-height:65vh}.side{position:relative;background:var(--panel);border-right:1px solid var(--border);min-width:0}.panelHead{display:flex;align-items:center;gap:7px;padding:10px 12px;border-bottom:1px solid var(--border);min-height:52px}.panelHead strong{margin-right:auto}.panelHead button{font-size:12px;padding:5px 8px}#panelBody{padding:12px;display:grid;gap:10px;align-content:start}.resizer{position:absolute;top:0;right:-4px;width:8px;height:100%;cursor:col-resize;z-index:4}.board{min-width:0;padding:0 0 24px}.board .panelHead{background:var(--panel)}#boardBody{padding:24px}#boardBody h1{font-size:21px}#filesList{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px}.row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.hint{color:var(--muted);font-size:12px}.section{padding:10px;border:1px solid var(--border);border-radius:8px}.section summary{cursor:pointer;font-weight:600}.is-work-hidden .board #boardBody{display:none}.is-side-hidden .layout{grid-template-columns:minmax(0,1fr)}.is-side-hidden .side{display:none}.is-ribbon-hidden .ribbon [data-cmd]:not([data-cmd=toggle-work]){display:none}.floating{position:fixed;right:18px;top:110px;background:var(--panel);border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 35px #0002;width:min(400px,90vw);z-index:20;resize:both;overflow:auto}.floating[hidden]{display:none}.floating .content{padding:12px}body.dark{color-scheme:dark;--bg:#161d25;--panel:#222e3a;--text:#e5edf5;--muted:#b9c8d6;--border:#44596b;--active:#305372;--accent:#81bdfa}@media(max-width:700px){.header nav{margin-left:0;width:100%}.app{grid-template-columns:58px minmax(0,1fr)}.rail span{font-size:9px}.layout{grid-template-columns:minmax(0,1fr)}.side{border-bottom:1px solid var(--border)}.resizer{display:none}#boardBody{padding:12px}}
-/* Typography parity with Responsive Test Studio CURRENT 0.4.2.
-   Same system font, 15px/1.6 baseline, and 17px/13px header hierarchy. */
-body{font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+/* nLab Core VNext — one isolated, token-driven design system.
+ * Visual baseline: Responsive Test Studio 0.4.2. No CSS inheritance from legacy Core.
+ * Panels, menus, windows, lists and controls use these same semantic tokens.
+ */
+:root{
+ color-scheme:light;
+ font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+ --ui-bg:#f4f6f8;--ui-surface:#fff;--ui-text:#1f2933;--ui-muted:#667582;
+ --ui-border:#d9e0e6;--ui-soft:#eef5fb;--ui-accent:#0057b8;--ui-shadow:0 12px 34px #1f293314;
+ --ui-radius:9px;--ui-touch:40px;
+}
+body.dark{
+ color-scheme:dark;
+ --ui-bg:#161b20;--ui-surface:#20262c;--ui-text:#e7edf2;--ui-muted:#aebfcf;
+ --ui-border:#39434c;--ui-soft:#263847;--ui-accent:#92c9ff;--ui-shadow:0 14px 36px #0005;
+}
+*{box-sizing:border-box}
+html{min-height:100%}
+body{margin:0;min-height:100dvh;background:var(--ui-bg);color:var(--ui-text);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
 button,input,select,textarea{font:inherit}
-.header{gap:16px;padding:9px clamp(12px,2.3vw,36px)}
-.identity strong{font-size:17px;line-height:1.3;font-weight:700}
-.identity small{font-size:12px;line-height:1.4}
-.header nav a{font-size:13px;font-weight:650}
-.rail button{font-size:17px;line-height:1.2}
-.rail button span{font-size:10px;line-height:1.3}
+button,select,input,textarea{color:var(--ui-text)}
+button{cursor:pointer;min-height:var(--ui-touch);padding:7px 10px;border:1px solid var(--ui-border);
+ background:var(--ui-surface);border-radius:var(--ui-radius)}
+button:hover,button[aria-pressed="true"]{background:var(--ui-soft);border-color:var(--ui-accent)}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{
+ outline:2px solid var(--ui-accent);outline-offset:2px}
+input[type="checkbox"]{accent-color:var(--ui-accent)}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--ui-accent)}
+[hidden]{display:none!important}
 
-
-/* VNext header controls — same compact language as Responsive Test Studio 0.4.2. */
-.header{position:relative;isolation:isolate}
-.brandLogo{display:flex;align-items:center;flex:0 0 auto}
-.identity{min-width:0;flex:1 1 220px}
-.identity .purpose{font-weight:400;color:var(--muted)}
+/* Brand and navigation: compact shared header. */
+.header{min-height:76px;padding:9px clamp(12px,2.3vw,36px);display:flex;flex-wrap:wrap;align-items:center;
+ gap:12px;background:var(--ui-surface);border-bottom:1px solid var(--ui-border);position:relative;z-index:30}
+.brandLogo{flex:0 0 auto;display:flex;align-items:center}
+.logo{width:92px;height:auto;max-height:44px}
+.identity{flex:1 1 180px;min-width:0;display:grid;gap:2px}
+.identity strong{font-size:17px;line-height:1.3}
+.identity small{font-size:12px;line-height:1.4;color:var(--ui-muted)}
+.purpose{font-weight:400;color:var(--ui-muted)}
 .headerControls{display:flex;align-items:center;gap:8px;flex:0 0 auto}
 .headerControls :is(button,select){min-height:40px}
+.themeControl{display:inline-flex;align-items:center;gap:5px;color:var(--ui-muted);font-size:12px}
+.themeControl select{background:var(--ui-surface);border:1px solid var(--ui-border);
+ border-radius:var(--ui-radius);padding:7px 9px;max-width:170px}
+.header nav{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-left:auto}
+.header nav a{font-size:13px;font-weight:650;padding:7px 10px;border-radius:var(--ui-radius);white-space:nowrap}
+.header nav a:hover{background:var(--ui-soft)}
 .shareGroup{position:relative}
-#shareBtn{display:inline-flex;align-items:center;gap:8px;font-weight:650;white-space:nowrap}
-.shareMenu{position:absolute;top:calc(100% + 6px);right:0;z-index:25;min-width:210px;
- display:grid;gap:3px;padding:6px;background:var(--panel);border:1px solid var(--border);
- border-radius:11px;box-shadow:0 12px 28px #0003}
-.shareMenu[hidden]{display:none}
-.shareMenu button{text-align:left;border-color:transparent;background:transparent;white-space:nowrap}
-.shareMenu button:is(:hover,:focus-visible){background:var(--active)}
-.themeControl{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-size:12px}
-.themeControl select{border-radius:8px;border:1px solid var(--border);color:var(--text);background:var(--panel);padding:7px 9px}
-.header nav{align-items:center}
-.header nav a{white-space:nowrap}
-.modal{border:1px solid var(--border);border-radius:12px;padding:0;max-width:min(360px,calc(100vw - 24px));
- width:100%;background:var(--panel);color:var(--text);box-shadow:0 18px 50px #0004}
+#shareBtn{display:inline-flex;align-items:center;gap:7px;font-weight:650;white-space:nowrap}
+.shareMenu{position:absolute;top:calc(100% + 6px);right:0;z-index:35;min-width:212px;display:grid;
+ gap:3px;padding:6px;background:var(--ui-surface);border:1px solid var(--ui-border);
+ border-radius:var(--ui-radius);box-shadow:var(--ui-shadow)}
+.shareMenu button{min-height:40px;text-align:left;white-space:nowrap;border-color:transparent;background:transparent}
+.shareMenu button:hover,.shareMenu button:focus-visible{background:var(--ui-soft)}
+
+/* Studio rail, ribbon, panels, working area. */
+.app{display:grid;grid-template-columns:72px minmax(0,1fr);min-height:calc(100dvh - 76px)}
+.rail{display:flex;flex-direction:column;gap:5px;padding:8px 4px;background:var(--ui-surface);
+ border-right:1px solid var(--ui-border)}
+.rail button{display:grid;place-items:center;gap:4px;min-width:0;min-height:56px;border-color:transparent;
+ font-size:18px;line-height:1.2}
+.rail button span{font-size:10px;line-height:1.3}
+.workspace{min-width:0}
+.ribbon{display:flex;align-items:center;gap:6px;padding:10px;background:var(--ui-surface);
+ border-bottom:1px solid var(--ui-border);overflow-x:auto}
+.ribbon button{flex:0 0 auto;white-space:nowrap}
+.displayMenu{display:flex;flex-wrap:wrap;gap:14px;padding:11px 12px;background:var(--ui-surface);
+ border-bottom:1px solid var(--ui-border)}
+.displayMenu label{display:inline-flex;align-items:center;gap:7px;min-height:36px}
+.layout{display:grid;grid-template-columns:var(--side-width,310px) minmax(0,1fr);min-height:65vh}
+.side{position:relative;min-width:0;background:var(--ui-surface);border-right:1px solid var(--ui-border)}
+.panelHead{display:flex;align-items:center;gap:7px;padding:8px 12px;min-height:52px;
+ background:var(--ui-surface);border-bottom:1px solid var(--ui-border)}
+.panelHead strong{font-size:14px;margin-right:auto}
+.panelHead button{min-height:34px;font-size:12px;padding:5px 8px}
+#panelBody{display:grid;gap:10px;align-content:start;padding:12px}
+.resizer{position:absolute;right:-4px;top:0;width:8px;height:100%;z-index:4;cursor:col-resize}
+.board{min-width:0;padding:0 0 24px}
+#boardBody{padding:24px}
+#boardBody h1{font-size:21px;line-height:1.25}
+#filesList,.section{background:var(--ui-surface);color:var(--ui-text);
+ border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:12px;min-width:0}
+.section summary{cursor:pointer;font-weight:650}
+.section .hint{font-size:12px}
+.row{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.hint{font-size:12px;color:var(--ui-muted)}
+.is-work-hidden .board #boardBody{display:none}
+.is-side-hidden .layout{grid-template-columns:minmax(0,1fr)}
+.is-side-hidden .side{display:none}
+.is-ribbon-hidden .ribbon [data-cmd]:not([data-cmd="toggle-work"]){display:none}
+
+/* Universal floating windows and dialogs. */
+.floating,.modal{background:var(--ui-surface);color:var(--ui-text);
+ border:1px solid var(--ui-border);border-radius:12px;box-shadow:var(--ui-shadow)}
+.floating{position:fixed;right:18px;top:110px;width:min(400px,90vw);
+ z-index:25;resize:both;overflow:auto;max-height:calc(100dvh - 100px)}
+.floating .content{padding:12px}
+.modal{max-width:min(360px,calc(100vw - 24px));width:100%;padding:0}
 .modal::backdrop{background:#0009}
-.modalBody{padding:15px;display:grid;gap:12px}
-#qrCanvas{min-height:224px;display:grid;place-items:center;background:white;color:#223242;
- border-radius:10px;padding:8px}
-#qrCanvas img,#qrCanvas canvas{max-width:100%}
-#qrUrl{margin:0;font-size:12px;overflow-wrap:anywhere}
-.uiNotice{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
- background:var(--panel);color:var(--text);padding:12px 16px;border:1px solid var(--border);
- border-radius:10px;box-shadow:0 5px 24px #0004;z-index:1000;max-width:90vw}
-.uiNotice[hidden]{display:none}
-button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.modalBody{display:grid;gap:12px;padding:15px}
+#qrCanvas{min-height:224px;padding:8px;background:#fff;color:#243748;
+ display:grid;place-items:center;border-radius:10px}
+#qrCanvas :is(img,canvas){max-width:100%}
+#qrUrl{margin:0;overflow-wrap:anywhere;font-size:12px}
+.uiNotice{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:100;
+ padding:12px 16px;max-width:90vw;background:var(--ui-surface);color:var(--ui-text);
+ border:1px solid var(--ui-border);border-radius:10px;box-shadow:var(--ui-shadow)}
+
+/* Tablet: wrap header links onto a dedicated navigation row. */
 @media(max-width:900px){
  .identity{flex-basis:180px}
  .headerControls{margin-left:auto}
- .header nav{flex:1 1 100%;margin-left:0;gap:4px;border-top:1px solid var(--border);
-  padding-top:5px;overflow-x:auto;scrollbar-width:thin}
+ .header nav{flex:1 1 100%;margin:0;padding-top:5px;border-top:1px solid var(--ui-border);
+ flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
 }
+
+/* Mobile: accessible compact navigation, touch-friendly controls, stacked panels. */
 @media(max-width:700px){
+ :root{--ui-touch:44px}
  html,body{max-width:100%;overflow-x:hidden}
  .header{gap:8px;padding:9px 10px}
  .logo{width:72px}
- .identity{flex:1 1 150px}
+ .identity{flex:1 1 145px}
  .identity strong{font-size:16px}
  .identity small{font-size:10px}
- .identity .purpose{display:block;font-size:11px}
- .headerControls{width:100%;justify-content:space-between;margin:0;gap:6px}
- .headerControls :is(button,select){min-height:44px}
- #shareBtn{padding:8px 12px}
- .themeControl{gap:5px}
+ .purpose{display:block;font-size:11px}
+ .headerControls{width:100%;margin:0;justify-content:space-between;gap:6px}
  .themeControl select{max-width:160px}
- .header nav{width:100%;justify-content:flex-start;gap:6px}
+ .header nav{width:100%;gap:4px}
  .header nav a{min-height:40px;display:inline-flex;align-items:center}
  .app{display:block;min-height:calc(100dvh - 150px)}
- .rail{display:flex;flex-direction:row;align-items:stretch;gap:4px;max-width:100%;
-  padding:6px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--border);
-  scrollbar-width:thin}
- .rail button{display:flex;flex:1 0 auto;flex-direction:column;min-width:62px;min-height:52px}
+ .rail{flex-direction:row;align-items:stretch;gap:4px;padding:6px;max-width:100%;
+  overflow-x:auto;border-right:0;border-bottom:1px solid var(--ui-border);scrollbar-width:thin}
+ .rail button{display:flex;flex-direction:column;flex:1 0 auto;min-width:62px;min-height:52px}
  .rail button span{font-size:10px}
- .ribbon{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;gap:5px;
-  padding:7px;scrollbar-width:thin}
- .ribbon button{flex:0 0 auto;min-height:44px;white-space:nowrap}
- .displayMenu{display:grid;grid-template-columns:1fr;gap:4px;padding:9px}
- .displayMenu[hidden]{display:none}
+ .ribbon{padding:7px;gap:5px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+ .ribbon button{min-height:44px}
+ .displayMenu{display:grid;grid-template-columns:1fr;gap:3px;padding:9px}
  .displayMenu label{min-height:40px}
  .layout{display:flex;flex-direction:column;min-height:0}
- .side{width:100%;border-right:0;min-height:0}
- .side .resizer{display:none}
- .side #panelBody{max-height:38dvh;overflow-y:auto}
- .board{width:100%;min-width:0}
- .panelHead{min-height:48px}
+ .side{width:100%;border:0;border-bottom:1px solid var(--ui-border)}
+ #panelBody{max-height:38dvh;overflow-y:auto}
+ .resizer{display:none}
+ .board{width:100%}
  #boardBody{padding:12px}
- .floating{position:fixed;left:8px!important;right:8px!important;top:12dvh!important;
-  width:auto!important;max-width:calc(100vw - 16px);max-height:75dvh;resize:none}
+ .floating{left:8px!important;right:8px!important;top:12dvh!important;width:auto!important;
+  max-width:calc(100vw - 16px);max-height:75dvh;resize:none}
  .uiNotice{bottom:max(16px,env(safe-area-inset-bottom))}
 }
 @media(max-width:390px){
- .headerControls .themeControl span{display:none}
+ .themeControl span{display:none}
  .themeControl select{max-width:145px}
  .identity{flex-basis:120px}
- .header nav a{font-size:12px;padding:5px}
+ .header nav a{font-size:12px;padding:5px 7px}
 }
+
+/* Browser print/PDF: include content, omit editing chrome and modal controls. */
 @media print{
  body{background:#fff!important;color:#000!important}
  .header{border:0;padding:8px!important}
