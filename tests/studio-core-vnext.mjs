@@ -3,7 +3,7 @@
 import {chromium} from 'playwright';
 
 const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/';
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true,...(process.env.NLAB_BROWSER_CHANNEL?{channel:process.env.NLAB_BROWSER_CHANNEL}:{})});
 const scenarios=[
  {name:'desktop',viewport:{width:1366,height:850},mobile:false},
  {name:'tablet',viewport:{width:768,height:1024},mobile:false},
