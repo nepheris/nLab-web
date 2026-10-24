@@ -1,3 +1,4 @@
+import {mountShareMenu} from '../../_shared/nlab-share-menu.js';
 // VNext experimental shell: one command dispatcher, shared panels and local preferences.
 // Functional bridge to the existing Studio Core services is intentionally not implemented yet.
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
@@ -52,85 +53,8 @@ const grip=$('.resizer');grip.addEventListener('pointerdown',e=>{if(state.locked
 grip.addEventListener('keydown',e=>{if(state.locked)return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){state.width=Math.max(210,Math.min(550,state.width+(e.key==='ArrowLeft'?-15:15)));persist();render();e.preventDefault()}});
 render();
 
-// Header actions: a single shared dropdown on desktop and mobile.
-const shareBtn=$('#shareBtn'),shareMenu=$('#shareMenu'),qrDialog=$('#qrDialog');
-function showShareMenu(open){
- shareMenu.hidden=!open;
- shareBtn.setAttribute('aria-expanded',String(open));
-}
-shareBtn.addEventListener('click',()=>showShareMenu(shareMenu.hidden));
-document.addEventListener('pointerdown',e=>{
- if(!e.target.closest('.shareGroup'))showShareMenu(false);
-});
-document.addEventListener('keydown',e=>{
- if(e.key==='Escape')showShareMenu(false);
-});
-const notice=$('#uiNotice');
-let noticeTimer;
-function inform(message){
- notice.textContent=message;
- notice.hidden=false;
- clearTimeout(noticeTimer);
- noticeTimer=setTimeout(()=>{notice.hidden=true},3500);
-}
-async function copyPageUrl(){
- try{await navigator.clipboard.writeText(location.href);return true}catch{}
- // Clipboard API may be unavailable: simple same-origin fallback for desktop browsers.
- const input=document.createElement('textarea');
- input.value=location.href;input.style.position='fixed';input.style.opacity='0';
- document.body.append(input);input.select();
- let ok=false;try{ok=document.execCommand('copy')}catch{}
- input.remove();return ok;
-}
-let qrLoader;
-function ensureQr(){
- if(window.QRCode)return Promise.resolve(window.QRCode);
- if(!qrLoader)qrLoader=new Promise((resolve,reject)=>{
-  const script=document.createElement('script');
-  script.src='https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
-  script.onload=()=>window.QRCode?resolve(window.QRCode):reject(Error('QR indisponible'));
-  script.onerror=()=>reject(Error('La bibliothèque QR n’est pas accessible'));
-  document.head.append(script);
- });
- return qrLoader;
-}
-async function showQr(){
- const host=$('#qrCanvas');
- host.textContent='Chargement du QR code…';
- $('#qrUrl').textContent=location.href;
- if(typeof qrDialog.showModal==='function')qrDialog.showModal();
- else qrDialog.setAttribute('open','');
- try{
-  const QR=await ensureQr();
-  if(!qrDialog.open)return;
-  host.replaceChildren();
-  new QR(host,{text:location.href,width:208,height:208,correctLevel:QR.CorrectLevel.M});
- }catch{
-  host.textContent='QR indisponible sans connexion. Utilisez « Copier le lien ».';
- }
-}
-document.addEventListener('click',async e=>{
- const option=e.target.closest('[data-share]');
- if(!option)return;
- const action=option.dataset.share;
- if(action==='link'){
-  showShareMenu(false);
-  try{
-   if(navigator.share){await navigator.share({title:document.title,url:location.href});return}
-  }catch(error){if(error?.name==='AbortError')return}
-  inform(await copyPageUrl()?'Lien copié':'Impossible de partager ou copier le lien');
- }else if(action==='copy'){
-  inform(await copyPageUrl()?'Lien copié':'Copie impossible');
- }else if(action==='qr'){
-  showShareMenu(false);await showQr();
- }else if(action==='pdf'){
-  showShareMenu(false);window.print();
- }
-});
-$('#closeQr').addEventListener('click',()=>qrDialog.close?.());
-qrDialog.addEventListener('click',e=>{
- if(e.target===qrDialog)qrDialog.close?.();
-});
+// Single share controller: reusable by other Studios once validated.
+mountShareMenu({trigger:$('#shareBtn'),menu:$('#shareMenu'),dialog:$('#qrDialog'),notice:$('#uiNotice')});
 const themeHeader=$('#themeHeader');
 themeHeader.value=state.theme;
 themeHeader.addEventListener('change',()=>{
