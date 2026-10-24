@@ -9,3 +9,96 @@ button,input,select,textarea{font:inherit}
 .header nav a{font-size:13px;font-weight:650}
 .rail button{font-size:17px;line-height:1.2}
 .rail button span{font-size:10px;line-height:1.3}
+
+
+/* VNext header controls — same compact language as Responsive Test Studio 0.4.2. */
+.header{position:relative;isolation:isolate}
+.brandLogo{display:flex;align-items:center;flex:0 0 auto}
+.identity{min-width:0;flex:1 1 220px}
+.identity .purpose{font-weight:400;color:var(--muted)}
+.headerControls{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.headerControls :is(button,select){min-height:40px}
+.shareGroup{position:relative}
+#shareBtn{display:inline-flex;align-items:center;gap:8px;font-weight:650;white-space:nowrap}
+.shareMenu{position:absolute;top:calc(100% + 6px);right:0;z-index:25;min-width:210px;
+ display:grid;gap:3px;padding:6px;background:var(--panel);border:1px solid var(--border);
+ border-radius:11px;box-shadow:0 12px 28px #0003}
+.shareMenu[hidden]{display:none}
+.shareMenu button{text-align:left;border-color:transparent;background:transparent;white-space:nowrap}
+.shareMenu button:is(:hover,:focus-visible){background:var(--active)}
+.themeControl{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-size:12px}
+.themeControl select{border-radius:8px;border:1px solid var(--border);color:var(--text);background:var(--panel);padding:7px 9px}
+.header nav{align-items:center}
+.header nav a{white-space:nowrap}
+.modal{border:1px solid var(--border);border-radius:12px;padding:0;max-width:min(360px,calc(100vw - 24px));
+ width:100%;background:var(--panel);color:var(--text);box-shadow:0 18px 50px #0004}
+.modal::backdrop{background:#0009}
+.modalBody{padding:15px;display:grid;gap:12px}
+#qrCanvas{min-height:224px;display:grid;place-items:center;background:white;color:#223242;
+ border-radius:10px;padding:8px}
+#qrCanvas img,#qrCanvas canvas{max-width:100%}
+#qrUrl{margin:0;font-size:12px;overflow-wrap:anywhere}
+.uiNotice{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+ background:var(--panel);color:var(--text);padding:12px 16px;border:1px solid var(--border);
+ border-radius:10px;box-shadow:0 5px 24px #0004;z-index:1000;max-width:90vw}
+.uiNotice[hidden]{display:none}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(max-width:900px){
+ .identity{flex-basis:180px}
+ .headerControls{margin-left:auto}
+ .header nav{flex:1 1 100%;margin-left:0;gap:4px;border-top:1px solid var(--border);
+  padding-top:5px;overflow-x:auto;scrollbar-width:thin}
+}
+@media(max-width:700px){
+ html,body{max-width:100%;overflow-x:hidden}
+ .header{gap:8px;padding:9px 10px}
+ .logo{width:72px}
+ .identity{flex:1 1 150px}
+ .identity strong{font-size:16px}
+ .identity small{font-size:10px}
+ .identity .purpose{display:block;font-size:11px}
+ .headerControls{width:100%;justify-content:space-between;margin:0;gap:6px}
+ .headerControls :is(button,select){min-height:44px}
+ #shareBtn{padding:8px 12px}
+ .themeControl{gap:5px}
+ .themeControl select{max-width:160px}
+ .header nav{width:100%;justify-content:flex-start;gap:6px}
+ .header nav a{min-height:40px;display:inline-flex;align-items:center}
+ .app{display:block;min-height:calc(100dvh - 150px)}
+ .rail{display:flex;flex-direction:row;align-items:stretch;gap:4px;max-width:100%;
+  padding:6px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--border);
+  scrollbar-width:thin}
+ .rail button{display:flex;flex:1 0 auto;flex-direction:column;min-width:62px;min-height:52px}
+ .rail button span{font-size:10px}
+ .ribbon{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;gap:5px;
+  padding:7px;scrollbar-width:thin}
+ .ribbon button{flex:0 0 auto;min-height:44px;white-space:nowrap}
+ .displayMenu{display:grid;grid-template-columns:1fr;gap:4px;padding:9px}
+ .displayMenu[hidden]{display:none}
+ .displayMenu label{min-height:40px}
+ .layout{display:flex;flex-direction:column;min-height:0}
+ .side{width:100%;border-right:0;min-height:0}
+ .side .resizer{display:none}
+ .side #panelBody{max-height:38dvh;overflow-y:auto}
+ .board{width:100%;min-width:0}
+ .panelHead{min-height:48px}
+ #boardBody{padding:12px}
+ .floating{position:fixed;left:8px!important;right:8px!important;top:12dvh!important;
+  width:auto!important;max-width:calc(100vw - 16px);max-height:75dvh;resize:none}
+ .uiNotice{bottom:max(16px,env(safe-area-inset-bottom))}
+}
+@media(max-width:390px){
+ .headerControls .themeControl span{display:none}
+ .themeControl select{max-width:145px}
+ .identity{flex-basis:120px}
+ .header nav a{font-size:12px;padding:5px}
+}
+@media print{
+ body{background:#fff!important;color:#000!important}
+ .header{border:0;padding:8px!important}
+ .headerControls,.header nav,.rail,.ribbon,.displayMenu,.side,.modal,.uiNotice,
+ .board .panelHead button{display:none!important}
+ .app,.workspace,.layout{display:block!important;min-height:0!important}
+ .board #boardBody{display:block!important;padding:8px!important}
+ #filesList{border-color:#999}
+}
