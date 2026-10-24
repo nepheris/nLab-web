@@ -7,8 +7,10 @@ const browser=await chromium.launch({headless:true,...(process.env.NLAB_BROWSER_
 const scenarios=[
  {name:'desktop',viewport:{width:1366,height:850},mobile:false},
  {name:'tablet',viewport:{width:768,height:1024},mobile:false},
+ {name:'android-narrow',viewport:{width:320,height:700},mobile:true},
  {name:'android-small',viewport:{width:360,height:780},mobile:true},
  {name:'android-wide',viewport:{width:412,height:915},mobile:true},
+ {name:'android-landscape',viewport:{width:844,height:390},mobile:true},
 ];
 const records=[];
 async function runScenario({name,viewport,mobile}){
