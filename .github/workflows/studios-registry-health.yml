@@ -1,0 +1,75 @@
+name: Studios Registry Health Preflight
+on:
+  pull_request:
+    paths:
+      - 'APP-Applications/studios/catalog.json'
+      - 'APP-Applications/**/versions.json'
+      - 'APP-Applications/**/manifest.webmanifest'
+      - 'APP-Applications/studios/index.html'
+      - 'APP-Applications/studios/health.html'
+      - 'scripts/studios_health_audit.py'
+      - 'tests/test_studios_health_audit.py'
+      - 'tests/studios-hub-health-browser.mjs'
+      - '.github/workflows/studios-registry-health.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-health:
+    name: Catalog, versions, historic paths and PWA static inventory
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Self-tests and syntax
+        run: |
+          python -m py_compile scripts/studios_health_audit.py tests/test_studios_health_audit.py
+          python -m unittest discover -s tests -p test_studios_health_audit.py -v
+      - name: Repository health report
+        run: |
+          python scripts/studios_health_audit.py --strict
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium for Hub acceptance
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install chromium
+      - name: Browser acceptance of the Hub health view
+        run: |
+          python3 -m http.server 8779 --bind 127.0.0.1 >/tmp/studio-health-http.log 2>&1 &
+          curl --retry 15 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:8779/APP-Applications/studios/health.html >/dev/null
+          NLAB_BASE_URL=http://127.0.0.1:8779/ node tests/studios-hub-health-browser.mjs
+      - name: Chromium smoke of every canonical historical URL
+        run: |
+          python3 -m http.server 8780 --bind 127.0.0.1 >/tmp/studios-history-http.log 2>&1 &
+          curl --retry 15 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:8780/APP-Applications/studios/ >/dev/null
+          mkdir -p artifacts/studios-health
+          set +e
+          NLAB_BASE_URL=http://127.0.0.1:8780/ node tests/studio-version-history.mjs > artifacts/studios-health/history-browser.json
+          result=$?
+          set -e
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          source=Path('artifacts/studios-health/history-browser.json')
+          try:
+              data=json.loads(source.read_text(encoding='utf-8'))
+              print('Historic browser smoke:',data.get('total'),'checked,',len(data.get('failed',[])),'failed')
+              for entry in data.get('failed',[])[:35]:
+                  print('HISTORICAL FAIL:',json.dumps(entry,ensure_ascii=False))
+          except Exception as exc:
+              print('Historical report could not be decoded:',exc)
+          PY
+          exit "$result"
+      - name: Publish audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studios-registry-health
+          path: artifacts/studios-health/
+          retention-days: 14
+          if-no-files-found: warn
