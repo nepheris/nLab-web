@@ -6,7 +6,6 @@ const key='nlab:core-vnext:ui:v1';
 let state={panel:'files',work:true,sidebar:true,ribbon:true,locked:false,width:310,theme:'auto',files:[]};
 try{const saved=JSON.parse(localStorage.getItem(key)||'{}');for(const k of ['panel','work','sidebar','ribbon','locked','width','theme'])if(Object.hasOwn(saved,k))state[k]=saved[k]}catch{}
 const persist=()=>{try{const {files,...preferences}=state;localStorage.setItem(key,JSON.stringify(preferences))}catch{}};
-const safe=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','"':'&quot;',"'":'&#39;'}[c]));
 const dispatch=cmd=>{
  if(cmd==='import'){$('#fileInput').click();return}
  if(cmd==='save'||cmd==='save-as'){const data=JSON.stringify({files:state.files.map(x=>({name:x.name,size:x.size,type:x.type})),preferences:{panel:state.panel,width:state.width}},null,2);const a=document.createElement('a'),url=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.href=url;a.download='core-vnext-demo.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),500);return}
@@ -40,6 +39,7 @@ function render(){
  $$('[data-cmd="toggle-work"]').forEach(b=>b.textContent=state.work?'▤ Masquer la planche':'▤ Afficher la planche');
  $('[data-cmd=lock]').textContent=state.locked?'🔒':'🔓';
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
+ const sharedTheme=$('#themeHeader');if(sharedTheme)sharedTheme.value=state.theme;
  panelContent();
 }
 function openWindow(){
@@ -60,11 +60,6 @@ themeHeader.value=state.theme;
 themeHeader.addEventListener('change',()=>{
  state.theme=themeHeader.value;persist();render();
 });
-const existingRender=render;
-render=function(){
- existingRender();
- themeHeader.value=state.theme;
-};
 if(window.matchMedia){
  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='auto')render()});
 }
