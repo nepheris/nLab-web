@@ -1,5 +1,11 @@
 name: Studio Core Test Lab Acceptance
 on:
+  push:
+    paths:
+      - 'APP-Applications/studio-core-test/vnext/**'
+      - 'APP-Applications/_shared/nlab-share-menu.js'
+      - 'tests/studio-core-vnext.mjs'
+      - '.github/workflows/studio-core-test-lab.yml'
   pull_request:
     paths:
       - 'APP-Applications/studio-core-test/**'
@@ -25,6 +31,8 @@ on:
       - 'Library/demo/**'
       - 'APP-Applications/studios/index.html'
       - 'tests/studio-core-test-lab.mjs'
+      - 'tests/studio-core-vnext.mjs'
+      - 'APP-Applications/_shared/nlab-share-menu.js'
       - 'tests/demo-explorer-folders.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
   workflow_dispatch:
@@ -42,6 +50,9 @@ jobs:
       - name: Verify code syntax, isolated TEST channel and PWA manifest
         run: |
           node --check APP-Applications/studio-core-test/app.js
+          node --check APP-Applications/studio-core-test/vnext/app.js
+          node --check APP-Applications/_shared/nlab-share-menu.js
+          node --check tests/studio-core-vnext.mjs
           node --check APP-Applications/_shared/studio-v2/collection-browser.js
           node --check APP-Applications/_shared/studio-v2/workspace-layout.js
           node --check APP-Applications/_shared/studio-v2/workspace-theme.js
@@ -108,6 +119,11 @@ jobs:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/studio-core-test-lab.mjs
+      - name: VNext header share and responsive smoke acceptance
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/studio-core-vnext.mjs
       - name: Full demo explorer, folder filter and icon preview acceptance
         env:
           NLAB_BASE_URL: http://127.0.0.1:8770/
