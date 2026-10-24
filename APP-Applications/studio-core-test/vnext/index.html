@@ -1,4 +1,73 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Studio Core — VNext prototype</title><link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./studio.css"></head>
-<body><header class="header"><a href="../../../" aria-label="Accueil nLab"><img class="logo" src="../../../assets/branding/nlab-wordmark.svg" alt="nLab"></a><div class="identity"><strong>Studio Core</strong><small>Laboratoire d'interface unifiée · VNext expérimental</small></div><nav aria-label="Navigation"><a href="../">Core actuel</a><a href="../../studios/">Studios</a><a href="../versions.html">Versions</a></nav></header>
-<div class="app"><aside class="rail" aria-label="Navigation des panneaux"><button data-panel="files">▣<span>Fichiers</span></button><button data-panel="tools">⚒<span>Outils</span></button><button data-panel="history">◷<span>Historique</span></button><button data-panel="properties">☷<span>Propriétés</span></button><button data-panel="settings">⚙<span>Réglages</span></button></aside><section class="workspace"><div class="ribbon"><button id="displayBtn" aria-expanded="false">◉ Affichage ▾</button><button data-cmd="import">↥ Importer</button><button data-cmd="save">▣ Enregistrer</button><button data-cmd="save-as">⇩ Enregistrer sous</button><button data-cmd="windows">▦ Fenêtres</button><button data-cmd="toggle-work">▤ Masquer la planche</button></div><div id="displayMenu" class="displayMenu" hidden><label><input type="checkbox" data-visible="work" checked> Planche de travail</label><label><input type="checkbox" data-visible="sidebar" checked> Panneau latéral</label><label><input type="checkbox" data-visible="ribbon" checked> Commandes du ruban</label></div><div class="layout"><section class="side"><div class="panelHead"><strong id="panelTitle">Fichiers</strong><button data-cmd="lock" title="Verrouiller le panneau">♧</button><button data-cmd="collapse" title="Masquer le panneau">×</button></div><div id="panelBody"></div><div class="resizer" role="separator" aria-orientation="vertical" aria-label="Redimensionner le panneau" tabindex="0"></div></section><main class="board"><div class="panelHead"><strong>Planche de travail</strong><button data-cmd="toggle-work">Masquer</button></div><div id="boardBody"><h1>Planche de travail</h1><p>Prototype de reconstruction du Core : mêmes commandes et mêmes composants dans chaque panneau.</p><div id="filesList" aria-live="polite">Aucun fichier importé.</div></div></main></div></section></div><input id="fileInput" type="file" multiple hidden><script type="module" src="./app.js"></script></body></html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#f4f6f8">
+  <title>Studio Core — VNext prototype</title>
+  <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./studio.css">
+</head>
+<body>
+  <header class="header">
+    <a class="brandLogo" href="../../../" aria-label="Accueil nLab"><img class="logo" src="../../../assets/branding/nlab-wordmark.svg" alt="nLab"></a>
+    <div class="identity"><strong>Studio Core <span class="purpose">· Interface unifiée</span></strong><small>Fonctions transversales nLab · VNext expérimentale</small></div>
+    <div class="headerControls">
+      <div class="shareGroup">
+        <button type="button" id="shareBtn" aria-haspopup="true" aria-controls="shareMenu" aria-expanded="false">↗ Partager <span aria-hidden="true">⌄</span></button>
+        <div id="shareMenu" class="shareMenu" hidden role="group" aria-label="Options de partage">
+          <button type="button" data-share="link">🔗 Partager le lien</button>
+          <button type="button" data-share="qr">▦ QR code</button>
+          <button type="button" data-share="pdf">▤ Imprimer / PDF</button>
+        </div>
+      </div>
+      <label class="themeControl"><span>Thème</span><select id="themeHeader" aria-label="Thème de l'interface"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label>
+    </div>
+    <nav aria-label="Navigation"><a href="../">Core actuel</a><a href="../../studios/">Tous les Studios</a><a href="../versions.html">Versions</a></nav>
+  </header>
+
+  <div class="app">
+    <aside class="rail" aria-label="Navigation des panneaux">
+      <button type="button" data-panel="files">▣<span>Fichiers</span></button>
+      <button type="button" data-panel="tools">⚒<span>Outils</span></button>
+      <button type="button" data-panel="history">◷<span>Historique</span></button>
+      <button type="button" data-panel="properties">☷<span>Propriétés</span></button>
+      <button type="button" data-panel="settings">⚙<span>Réglages</span></button>
+    </aside>
+    <section class="workspace">
+      <div class="ribbon" role="toolbar" aria-label="Commandes du Studio">
+        <button type="button" id="displayBtn" aria-controls="displayMenu" aria-expanded="false">◉ Affichage ▾</button>
+        <button type="button" data-cmd="import">↥ Importer</button>
+        <button type="button" data-cmd="save">▣ Enregistrer</button>
+        <button type="button" data-cmd="save-as">⇩ Enregistrer sous</button>
+        <button type="button" data-cmd="windows">▦ Fenêtres</button>
+        <button type="button" data-cmd="toggle-work">▤ Masquer la planche</button>
+      </div>
+      <div id="displayMenu" class="displayMenu" hidden aria-label="Options d'affichage">
+        <label><input type="checkbox" data-visible="work"> Planche de travail</label>
+        <label><input type="checkbox" data-visible="sidebar"> Panneau latéral</label>
+        <label><input type="checkbox" data-visible="ribbon"> Commandes du ruban</label>
+      </div>
+      <div class="layout">
+        <section class="side">
+          <div class="panelHead"><strong id="panelTitle">Fichiers</strong><button type="button" data-cmd="lock" title="Verrouiller le panneau">🔓</button><button type="button" data-cmd="collapse" title="Masquer le panneau">×</button></div>
+          <div id="panelBody"></div>
+          <div class="resizer" role="separator" aria-orientation="vertical" aria-label="Redimensionner le panneau" tabindex="0"></div>
+        </section>
+        <main class="board"><div class="panelHead"><strong>Planche de travail</strong><button type="button" data-cmd="toggle-work">Masquer</button></div>
+          <div id="boardBody"><h1>Planche de travail</h1><p>Prototype de reconstruction du Core : mêmes commandes et mêmes composants dans chaque panneau.</p><div id="filesList" aria-live="polite">Aucun fichier importé.</div></div>
+        </main>
+      </div>
+    </section>
+  </div>
+
+  <dialog id="qrDialog" class="modal" aria-labelledby="qrTitle">
+    <div class="panelHead"><strong id="qrTitle">QR code de cette page</strong><button type="button" id="closeQr" aria-label="Fermer">×</button></div>
+    <div class="modalBody"><div id="qrCanvas" aria-live="polite">Chargement…</div><p id="qrUrl"></p><button type="button" data-share="copy">Copier le lien</button></div>
+  </dialog>
+  <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
+  <input id="fileInput" type="file" multiple hidden>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
