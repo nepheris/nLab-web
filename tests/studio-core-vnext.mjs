@@ -1,0 +1,69 @@
+// Studio Core VNext — isolated responsive/header smoke checks.
+// Run with: NLAB_BASE_URL=http://127.0.0.1:8770/ node tests/studio-core-vnext.mjs
+import {chromium} from 'playwright';
+
+const base=process.env.NLAB_BASE_URL||'http://127.0.0.1:8770/';
+const browser=await chromium.launch({headless:true});
+const scenarios=[
+ {name:'desktop',viewport:{width:1366,height:850},mobile:false},
+ {name:'tablet',viewport:{width:768,height:1024},mobile:false},
+ {name:'android-small',viewport:{width:360,height:780},mobile:true},
+ {name:'android-wide',viewport:{width:412,height:915},mobile:true},
+];
+const records=[];
+async function runScenario({name,viewport,mobile}){
+ const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile});
+ const page=await context.newPage();
+ const errors=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ const url=new URL('APP-Applications/studio-core-test/vnext/',base).href;
+ try{
+  const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
+  if(!response?.ok())throw Error('HTML indisponible : '+response?.status());
+  await page.locator('#shareBtn').waitFor({state:'visible'});
+  await page.locator('[data-panel="settings"]').click();
+  await page.locator('#themeHeader').selectOption('dark');
+  if(!(await page.locator('body').evaluate(el=>el.classList.contains('dark'))))throw Error('Thème sombre non appliqué');
+  if(await page.locator('#theme').inputValue()!=='dark')throw Error('Préférence thème non synchronisée');
+
+  await page.locator('#shareBtn').click();
+  if(await page.locator('#shareMenu').isHidden())throw Error('Menu Partager fermé');
+  if(await page.locator('#shareMenu [data-share]').count()!==3)throw Error('Les trois choix manquent');
+
+  await page.evaluate(()=>{window.__printed=false;window.print=()=>window.__printed=true});
+  await page.locator('[data-share="pdf"]').click();
+  if(!(await page.evaluate(()=>window.__printed)))throw Error('Action Imprimer/PDF non appelée');
+
+  await page.locator('#shareBtn').click();
+  await page.locator('#shareMenu [data-share="qr"]').click();
+  if(!(await page.locator('#qrDialog').evaluate(el=>el.open)))throw Error('Fenêtre QR absente');
+  await page.locator('#closeQr').click();
+  if(await page.locator('#qrDialog').evaluate(el=>el.open))throw Error('QR non refermé');
+
+  await page.locator('#displayBtn').click();
+  const workCheckbox=page.locator('[data-visible="work"]');
+  await workCheckbox.uncheck();
+  if(!(await page.locator('.workspace').evaluate(el=>el.classList.contains('is-work-hidden'))))throw Error('Planche non masquée');
+  await page.reload({waitUntil:'domcontentloaded'});
+  if(!(await page.locator('.workspace').evaluate(el=>el.classList.contains('is-work-hidden'))))throw Error('Planche non mémorisée');
+  await page.locator('[data-cmd="toggle-work"]').first().click();
+  if(await page.locator('.workspace').evaluate(el=>el.classList.contains('is-work-hidden')))throw Error('Planche non réaffichée');
+  if(!(await page.locator('body').evaluate(el=>el.classList.contains('dark'))))throw Error('Thème non mémorisé');
+
+  const result=await page.evaluate(()=>({viewport:innerWidth,documentWidth:document.documentElement.scrollWidth,
+   shareVisible:!!document.querySelector('#shareBtn')?.getClientRects().length,
+   railVisible:!!document.querySelector('.rail')?.getClientRects().length}));
+  if(result.documentWidth>result.viewport+2)throw Error('Débordement horizontal : '+JSON.stringify(result));
+  if(!result.shareVisible||!result.railVisible)throw Error('Contrôles essentiels invisibles');
+  if(errors.length)throw Error('Erreurs JavaScript : '+errors.join(' | '));
+  records.push({name,status:'PASS',...result});
+ }catch(error){records.push({name,status:'FAIL',error:String(error.message),errors});throw error}
+ finally{await context.close()}
+}
+try{
+ for(const s of scenarios)await runScenario(s);
+ console.log(JSON.stringify({suite:'studio-core-vnext',records},null,2));
+}catch(error){
+ console.error(JSON.stringify({suite:'studio-core-vnext',records},null,2));
+ process.exitCode=1;
+}finally{await browser.close()}
