@@ -8,6 +8,8 @@ on:
       - 'APP-Applications/_shared/nlab-share-menu.js'
       - 'APP-Applications/_shared/studio-v2/sidebar-controller.js'
       - 'APP-Applications/_shared/studio-v2/window-system.js'
+      - 'APP-Applications/_shared/studio-v2/core.js'
+      - 'APP-Applications/_shared/studio-v2/workspace-chrome.css'
       - 'tests/studio-core-vnext.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
   pull_request:
@@ -17,6 +19,10 @@ on:
       - 'APP-Applications/_shared/studio-v2/frame.js'
       - 'APP-Applications/_shared/studio-v2/capability-registry.js'
       - 'APP-Applications/responsive-test-studio/app.js'
+      - 'APP-Applications/_shared/studio-v2/sidebar-controller.js'
+      - 'APP-Applications/_shared/studio-v2/window-system.js'
+      - 'APP-Applications/_shared/studio-v2/workspace-chrome.css'
+      - 'APP-Applications/_shared/studio-v2/core.js'
       - 'APP-Applications/_shared/studio-v2/settings.js'
       - 'APP-Applications/_shared/studio-v2/studio.css'
       - 'APP-Applications/_shared/studio-v2/collection-browser.js'
@@ -57,6 +63,7 @@ jobs:
           node --check APP-Applications/studio-core-test/vnext/app.js
           node --check APP-Applications/_shared/studio-v2/sidebar-controller.js
           node --check APP-Applications/_shared/studio-v2/window-system.js
+          node --check APP-Applications/_shared/studio-v2/core.js
           node --check APP-Applications/_shared/nlab-share-menu.js
           node --check tests/studio-core-vnext.mjs
           node --check APP-Applications/_shared/studio-v2/collection-browser.js
