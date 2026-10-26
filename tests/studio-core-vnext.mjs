@@ -93,6 +93,14 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('.rail [data-panel="files"]').click();
   await page.locator('.rail [data-panel="history"]').click();
   if((await page.locator('.uxHistorySidebar').count())!==1)throw Error('Historique cloné après navigation');
+  // The existing command palette must find VNext's registered Core commands.
+  await page.locator('.ribbon [data-cmd="commands"]').click();
+  await page.locator('#studioCommandPalette').waitFor({state:'visible'});
+  await page.locator('#command-palette-search').fill('Importer');
+  await page.locator('[data-command-id="core-vnext.import"]').waitFor({state:'visible'});
+  await page.locator('#command-palette-close').click();
+  if(!(await page.locator('#studioCommandPalette').isHidden()))throw Error('Palette canonique non refermée');
+
   await page.locator('#shareBtn').click();
   if(await page.locator('#shareMenu').isHidden())throw Error('Menu Partager fermé');
   if(await page.locator('#shareMenu [data-share]').count()!==3)throw Error('Les trois choix manquent');
