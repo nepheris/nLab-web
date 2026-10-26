@@ -35,7 +35,7 @@ async function runScenario({name,viewport,mobile}){
   const iconSetting=page.locator('#panelBody [data-setting="iconTheme"]');
   if(!(await iconSetting.isVisible()))throw Error('Sélecteur d’icônes Core indisponible');
   const appearance=page.locator('.coreSettingsSection').filter({has:page.locator('[data-setting-number="sidebarWidth"]')});
-  if(!(await appearance.evaluate(el=>el.open)))await appearance.locator('summary').click();
+  if(!(await appearance.evaluate(el=>el.open)))await appearance.locator(':scope > summary').click();
   await page.locator('[data-setting-number="sidebarWidth"]').fill('420');
   await page.locator('[data-setting-number="sidebarWidth"]').dispatchEvent('change');
   if(await page.locator('.layout').evaluate(el=>getComputedStyle(el).getPropertyValue('--side-width').trim())!=='420px')throw Error('Largeur panneau non synchronisée');
