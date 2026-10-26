@@ -1,5 +1,6 @@
 import{enhanceStudioWindow}from'./window-system.js';
 import{icon}from'./icon-registry.js';
+import{studioViewIcon}from'./view-modes.js';
 import{pushUndoRedo}from'./undo-redo.js';
 
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -152,7 +153,7 @@ function ensure(){
  let host=document.querySelector('#studioInputPicker');if(host)return host;
  host=document.createElement('div');host.id='studioInputPicker';host.className='studioInputPicker studioWindow scope-core';host.dataset.scope='core';host.hidden=true;
  host.innerHTML='<div class="studioInputPickerBody">'+
- '<div class="inputPickerActions"><button id="studioInputPickFiles" type="button">Fichier(s)</button><button id="studioInputPickFolder" type="button">Dossier</button><button id="studioInputPickCamera" type="button">Photo</button><button id="studioInputClear" type="button">Tout effacer</button><span class="inputPickerSpacer"></span><div class="inputPickerViews" role="group" aria-label="Mode d’affichage"><button type="button" data-input-view="text">Liste</button><button type="button" data-input-view="icon">Icônes</button><button type="button" data-input-view="preview">Vignettes</button></div></div>'+ 
+ '<div class="inputPickerActions"><button id="studioInputPickFiles" type="button">Fichier(s)</button><button id="studioInputPickFolder" type="button">Dossier</button><button id="studioInputPickCamera" type="button">Photo</button><button id="studioInputClear" type="button">Tout effacer</button><span class="inputPickerSpacer"></span><div class="inputPickerViews" role="group" aria-label="Mode d’affichage"><button type="button" data-input-view="text" title="Vue liste">'+studioViewIcon('list')+'<span>Liste</span></button><button type="button" data-input-view="icon" title="Vue icônes">'+studioViewIcon('icons')+'<span>Icônes</span></button><button type="button" data-input-view="preview" title="Vue vignettes">'+studioViewIcon('thumbs')+'<span>Vignettes</span></button><button type="button" data-input-view="table" title="Vue tableau">'+studioViewIcon('table')+'<span>Tableau</span></button></div></div>'+ 
  '<div class="inputPickerCollectionBar"><button type="button" data-input-select-all>Tout sélectionner</button><button type="button" data-input-select-none>Tout désélectionner</button><span data-input-selection-count>0 sélectionné</span><label>Tri <select data-input-sort><option value="order">Ordre</option><option value="name">Nom</option><option value="path">Chemin</option><option value="type">Type</option><option value="size">Taille</option><option value="pages">Pages</option></select></label><button type="button" data-input-sort-dir title="Inverser le tri">A→Z</button><label>Grouper <select data-input-group><option value="none">Aucun</option><option value="folder">Dossier</option><option value="type">Type</option></select></label><label class="inputPickerScale">Vignettes <input data-input-thumb-scale type="range" min="0.7" max="1.8" step="0.1" value="1"><output data-input-thumb-output>100 %</output></label><label class="inputPickerScale">Texte <input data-input-text-scale type="range" min="0.8" max="1.5" step="0.1" value="1"><output data-input-text-output>100 %</output></label></div>'+
  '<input id="studioInputFilesNative" type="file" multiple hidden><input id="studioInputFolderNative" type="file" webkitdirectory multiple hidden><input id="studioInputCameraNative" type="file" accept="image/*" capture="environment" hidden>'+
  '<div class="inputPickerUrlRow"><input id="studioInputUrl" type="url" inputmode="url" placeholder="https://… image, PDF, texte, JSON…"><button id="studioInputUrlImport" type="button">Importer URL</button></div>'+
@@ -202,6 +203,12 @@ function textItem(f,i){
  const m=metaFor(f),pages=m.pages?' · '+m.pages+' page'+(m.pages>1?'s':''):'',path=f.webkitRelativePath||f.__relativePath||'';
  return '<div class="studioInputItem studioInputTextItem '+(state.active===keyOf(f)?'active':'')+'" data-input-item="'+i+'"><img class="studioInputTypeIcon" src="'+asset('filetype',iconName(f))+'" alt=""><div><strong>'+esc(f.name)+'</strong><small>'+typeLabel(f)+' · '+formatKb(f.size)+pages+(path?' · '+esc(path):'')+'</small></div>'+fileActions(f,i)+'</div>'
 }
+function tableItem(f,i){
+ return '<div class="studioInputTableItem '+(state.active===keyOf(f)?'active':'')+'" data-input-item="'+i+'">'
+  +'<span class="studioInputTableName"><img class="studioInputTypeIcon" src="'+asset('filetype',iconName(f))+'" alt=""><strong>'+esc(f.name)+'</strong></span>'
+  +'<span>'+esc(typeLabel(f))+'</span><span>'+esc(formatKb(f.size))+'</span>'
+  +'<span class="studioInputTablePath">'+esc(folderPathOf(f)||'—')+'</span>'+fileActions(f,i)+'</div>';
+}
 function iconItem(f,i){
  const m=metaFor(f),pages=m.pages?'<span>'+m.pages+' p.</span>':'';
  return '<div class="studioInputCard '+(state.active===keyOf(f)?'active':'')+'" data-input-item="'+i+'"><div class="studioInputVisual"><img class="studioInputFileIcon" src="'+asset('filetype',iconName(f))+'" alt=""><span class="studioInputTypeBadge">'+typeLabel(f)+'</span></div><strong title="'+esc(f.name)+'">'+esc(f.name)+'</strong><small>'+formatKb(f.size)+' '+pages+'<br>'+esc(folderPathOf(f))+'</small>'+fileActions(f,i)+'</div>'
@@ -219,9 +226,9 @@ function render(host=ensure()){
  host.querySelector('[data-input-selection-count]').textContent=selected.length+' sélectionné'+(selected.length>1?'s':'');host.querySelector('[data-input-sort]').value=state.sortBy;host.querySelector('[data-input-group]').value=state.groupBy;host.querySelector('[data-input-sort-dir]').textContent=state.sortDir==='asc'?'A→Z':'Z→A';host.querySelector('[data-input-thumb-scale]').value=String(state.thumbScale);host.querySelector('[data-input-text-scale]').value=String(state.textScale);host.querySelector('[data-input-thumb-output]').textContent=Math.round(state.thumbScale*100)+' %';host.querySelector('[data-input-text-output]').textContent=Math.round(state.textScale*100)+' %';
  list.style.setProperty('--input-thumb-scale',String(state.thumbScale));list.style.setProperty('--input-text-scale',String(state.textScale));
  const rows=orderedFiles();let filesHtml='';
- if(state.groupBy==='none')filesHtml=rows.map(({f,i})=>state.view==='preview'?previewItem(f,i):state.view==='icon'?iconItem(f,i):textItem(f,i)).join('');
- else{const groups=new Map();for(const row of rows){const g=groupKey(row.f);if(!groups.has(g))groups.set(g,[]);groups.get(g).push(row)}filesHtml=[...groups].map(([g,items])=>'<section class="studioInputGroup"><h4>'+esc(g)+' <small>'+items.length+'</small></h4><div class="studioInputGroupItems">'+items.map(({f,i})=>state.view==='preview'?previewItem(f,i):state.view==='icon'?iconItem(f,i):textItem(f,i)).join('')+'</div></section>').join('')}
- list.dataset.view=state.view;list.innerHTML=filesHtml||'<div class="studioInputEmpty">Aucun fichier sélectionné.</div>';
+ if(state.groupBy==='none')filesHtml=rows.map(({f,i})=>state.view==='preview'?previewItem(f,i):state.view==='icon'?iconItem(f,i):state.view==='table'?tableItem(f,i):textItem(f,i)).join('');
+ else{const groups=new Map();for(const row of rows){const g=groupKey(row.f);if(!groups.has(g))groups.set(g,[]);groups.get(g).push(row)}filesHtml=[...groups].map(([g,items])=>'<section class="studioInputGroup"><h4>'+esc(g)+' <small>'+items.length+'</small></h4><div class="studioInputGroupItems">'+items.map(({f,i})=>state.view==='preview'?previewItem(f,i):state.view==='icon'?iconItem(f,i):state.view==='table'?tableItem(f,i):textItem(f,i)).join('')+'</div></section>').join('')}
+ list.dataset.view=state.view;list.innerHTML=(state.view==='table'&&rows.length?'<div class="studioInputTableHeader" aria-hidden="true"><span>Nom</span><span>Type</span><span>Taille</span><span>Dossier</span><span>Actions</span></div>':'')+(filesHtml||'<div class="studioInputEmpty">Aucun fichier sélectionné.</div>');
  const confirm=host.querySelector('#studioInputConfirm');confirm.disabled=!selected.length||state.busy;confirm.textContent=state.busy?'Préparation…':'Utiliser la sélection ('+selected.length+')'
 }
 async function rotateImageFile(file,deg){
@@ -243,7 +250,7 @@ function close(value){const host=ensure();syncSession();host.hidden=true;const r
 export function openInputPicker(options={}){
  const host=ensure();let saved='text';try{saved=localStorage.getItem('nlab.inputPicker.view')||'text'}catch{}
  const preserve=options.preserveSession!==false,initial=Array.isArray(options.files)?options.files:(preserve?[...sessionFiles]:[]),sel=preserve?new Set([...sessionSelected].filter(k=>initial.some(f=>keyOf(f)===k))):new Set();if(!sel.size)for(const f of initial)sel.add(keyOf(f));
- state={files:initial,options:{multiple:true,folders:true,url:true,expandZip:true,accept:'',view:saved,preserveSession:true,...options},resolve:null,view:['text','icon','preview'].includes(options.view)?options.view:saved,meta:new Map(),busy:false,error:'',selected:sel,active:initial[0]?keyOf(initial[0]):null,sortBy:'order',sortDir:'asc',groupBy:'none',thumbScale:1,textScale:1};render(host);publishSelection('open');host.hidden=false;host.style.zIndex='260';analyzeVisible();return new Promise(resolve=>{state.resolve=resolve})
+ state={files:initial,options:{multiple:true,folders:true,url:true,expandZip:true,accept:'',view:saved,preserveSession:true,...options},resolve:null,view:['text','icon','preview','table'].includes(options.view)?options.view:saved,meta:new Map(),busy:false,error:'',selected:sel,active:initial[0]?keyOf(initial[0]):null,sortBy:'order',sortDir:'asc',groupBy:'none',thumbScale:1,textScale:1};render(host);publishSelection('open');host.hidden=false;host.style.zIndex='260';analyzeVisible();return new Promise(resolve=>{state.resolve=resolve})
 }
 export function mountInputPicker(){ensure();return{open:openInputPicker}}
 export{filesFromDrop,materializeSelection};
