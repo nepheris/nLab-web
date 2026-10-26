@@ -253,6 +253,7 @@ async function runScenario({name,viewport,mobile}){
    if(!writes[0].path.includes(yyyy+'/')||!writes[0].path.endsWith('vnext-test_TEST.txt'))
     throw Error('Arborescence avancée non créée : '+writes[0].path);
    if(writes[0].content!=='Fichier réel nLab TEST')throw Error('Contenu du fichier modifié lors de l’enregistrement');
+   await advanced.locator('.coreAdvancedDetails').filter({hasText:'Mémoriser ce modèle'}).locator('summary').click();
    await advanced.locator('[data-save="template-label"]').fill('Modèle VNext TEST');
    await advanced.locator('[data-save-action="memorize-name"]').click();
    if((await advanced.locator('[data-save="naming"] option').count())<2)
