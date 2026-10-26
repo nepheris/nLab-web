@@ -135,7 +135,7 @@ function render(){
  $('.layout').style.setProperty('--side-width',Math.max(220,Math.min(720,Number(preferences.sidebarWidth)||360))+'px');
  $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'})[state.panel];
  $$('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===state.panel)));
- $('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
+ $$('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
  $$('[data-cmd="toggle-work"]').forEach(b=>b.textContent=state.work?'▤ Masquer la planche':'▤ Afficher la planche');
  $('[data-cmd=lock]').textContent=preferences.sidebarLocked?'🔒':'🔓';
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
@@ -171,7 +171,7 @@ function openFloatingPanel(id){
 document.addEventListener('click',e=>{const b=e.target.closest('[data-cmd]');if(b)dispatch(b.dataset.cmd);const p=e.target.closest('[data-panel]');if(p){state.panel=p.dataset.panel;saveStudioSettings({sidebarMode:'normal'});persist();render()}});
 document.addEventListener('studio-v2:settings-changed',()=>{syncCoreAppearance();render()});
 $('#displayBtn').onclick=()=>{$('#displayMenu').hidden=!$('#displayMenu').hidden;render()};
-$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{
+$$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{
  const visible=b.checked;
  if(b.dataset.visible==='work')state.work=visible;
  if(b.dataset.visible==='sidebar')saveStudioSettings({sidebarMode:visible?'normal':'hidden'});
