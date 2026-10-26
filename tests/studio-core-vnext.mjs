@@ -23,6 +23,19 @@ async function runScenario({name,viewport,mobile}){
   const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
   if(!response?.ok())throw Error('HTML indisponible : '+response?.status());
   await page.locator('#shareBtn').waitFor({state:'visible'});
+  // The shared Core help surface explains commands at hover and keyboard focus.
+  if(!mobile){
+   await page.locator('.ribbon [data-cmd="import"]').hover();
+   await page.locator('#studioHoverHelp').waitFor({state:'visible'});
+   const info=await page.locator('#studioHoverHelp').textContent();
+   if(!info.includes('dossiers')||!info.includes('ZIP'))throw Error('Aide Importer non descriptive');
+   await page.locator('#sidebarLock').focus();
+   const label=await page.locator('#studioHoverHelp').textContent();
+   if(!label.toLowerCase().includes('verrou'))throw Error('Aide cadenas absente au focus clavier');
+   await page.keyboard.press('Escape');
+   if(!(await page.locator('#studioHoverHelp').isHidden()))throw Error('L’aide ne se ferme pas avec Échap');
+  }
+
   await page.locator('[data-panel="settings"]').click();
   await page.locator('#themeHeader').selectOption('dark');
   if(!(await page.locator('body').evaluate(el=>el.classList.contains('dark'))))throw Error('Thème sombre non appliqué');
@@ -39,6 +52,19 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('[data-setting-number="sidebarWidth"]').fill('420');
   await page.locator('[data-setting-number="sidebarWidth"]').dispatchEvent('change');
   if(await page.locator('.layout').evaluate(el=>getComputedStyle(el).getPropertyValue('--side-width').trim())!=='420px')throw Error('Largeur panneau non synchronisée');
+  if(!mobile&&viewport.width>=1300){
+   // The obsolete 720px product limit is gone; only actual workspace size limits dragging.
+   await page.locator('[data-setting-number="sidebarWidth"]').fill('980');
+   await page.locator('[data-setting-number="sidebarWidth"]').dispatchEvent('change');
+   if(await page.locator('.layout').evaluate(el=>getComputedStyle(el).getPropertyValue('--side-width').trim())!=='980px')
+    throw Error('La largeur reste plafonnée sous 980 pixels');
+   if(Number(await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab-studio-v2-settings')).sidebarWidth))!==980)
+    throw Error('Largeur personnalisée supérieure à 720px non enregistrée');
+   const max=Number(await page.locator('.side .resizer').getAttribute('aria-valuemax'));
+   if(max<980)throw Error('La plage de redimensionnement est encore plafonnée à 720px');
+   await page.locator('[data-setting-number="sidebarWidth"]').fill('420');
+   await page.locator('[data-setting-number="sidebarWidth"]').dispatchEvent('change');
+  }
   await page.locator('[data-setting="sidebarLocked"]').check();
   if(await page.locator('#sidebarLock').getAttribute('aria-pressed')!=='true')throw Error('Verrouillage du panneau non synchronisé');
   if((await page.locator('#sidebarLock svg').count())!==1)throw Error('Cadenas commun des fenêtres absent');
