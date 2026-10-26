@@ -72,3 +72,15 @@ Livrables réellement ajoutés dans \`vnext/\` :
 **État de validation au dépôt du présent rapport :** inspection de syntaxe de \`app.js\` réussie ; au moins une exécution de CI VNext a signalé une erreur d'initialisation JavaScript dans la synchronisation du thème. Un correctif a été enregistré en commit \`c3a03ab997d455d9f10fdc6a98a8cc820348eef5\` et un nouveau run a été déclenché. **Ne pas déduire PASS tant que le run corrigé n'est pas conclu et la recette humaine validée.**
 
 **Gate HUMAN00, inchangé : NO-GO CURRENT**, aucune migration automatique Image Studio / PDF Studio.
+
+
+## État technique vérifié — 26 octobre 2026, fin de la passe
+
+- **CI PASS** : [Actions run 40298016082](https://github.com/nepheris/nLab-web/actions/runs/40298016082), exécution du 26/10/2026, suite `chrome-core-lab` complète **success**.
+- **Core VNext PASS (6 viewports)** : desktop 1366 px, tablette 768 px, smartphones 320/360/412 px et orientation paysage 844 px. Scénarios Chromium : partage/QR/impression, thèmes, import de fichier réel, aperçu texte, historique, propriétés, enregistrement direct et sous un autre nom, gestionnaire canonique de fenêtres avec verrouillage/ancrage/minimisation, visibilité de la planche et absence de scroll horizontal.
+- **Test Lab existant 0.7.0 PASS** : correction des commandes initialement écartées par un regroupement de paramètres (`ux-lab.js`) ; test adapté aux sections repliables (`tests/studio-core-test-lab.mjs`). Trois scénarios bureau/tablette/mobile.
+- **Démos PASS** : suite `tests/demo-explorer-folders.mjs` également exécutée.
+- Cette validation est automatisée **dans Chrome sur runner Linux avec viewports simulés**, et non sur un téléphone Android physique ou Safari/Windows.
+- **NO-GO pour promotion CURRENT et migration Image/PDF** : les 86 contrôles de parité Core, les fonctionnalités avancées (édition, annuler/rétablir, personnalisation détaillée) et le contrôle de design HUMAN00 restent à valider.
+
+La présente section remplace l'état CI provisoire noté dans la section « Reprise autonome » ci-dessus ; elle n'emporte aucune clôture de TSK canonique.
