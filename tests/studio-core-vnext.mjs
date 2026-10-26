@@ -51,7 +51,10 @@ async function runScenario({name,viewport,mobile}){
   if(!(await appearance.evaluate(el=>el.open)))await appearance.locator(':scope > summary').click();
   await page.locator('[data-setting-number="sidebarWidth"]').fill('420');
   await page.locator('[data-setting-number="sidebarWidth"]').dispatchEvent('change');
-  if(await page.locator('.layout').evaluate(el=>getComputedStyle(el).getPropertyValue('--side-width').trim())!=='420px')throw Error('Largeur panneau non synchronisée');
+  const sidebarDisplayed=Number(await page.locator('.layout').evaluate(el=>parseInt(getComputedStyle(el).getPropertyValue('--side-width'),10)));
+  const sidebarAvailable=Number(await page.locator('.layout').evaluate(el=>Math.max(220,Math.floor(el.getBoundingClientRect().width)-24)));
+  if(sidebarDisplayed!==Math.min(420,sidebarAvailable))throw Error('Largeur panneau non synchronisée avec la largeur disponible');
+  if(Number(await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab-studio-v2-settings')).sidebarWidth))!==420)throw Error('Préférence de largeur perdue sur petit écran');
   if(!mobile&&viewport.width>=1300){
    // The obsolete 720px product limit is gone; only actual workspace size limits dragging.
    await page.locator('[data-setting-number="sidebarWidth"]').fill('980');
