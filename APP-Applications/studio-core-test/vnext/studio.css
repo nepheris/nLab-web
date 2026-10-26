@@ -1,3 +1,7 @@
+/* Reuse canonical Core component styling as a lower-priority layer.
+ * VNext remains the sole owner of colors and surfaces via semantic tokens. */
+@import url("../../_shared/studio-v2/studio.css") layer(core-components);
+
 /* nLab Core VNext — one isolated, token-driven design system.
  * Visual baseline: Responsive Test Studio 0.4.2. No CSS inheritance from legacy Core.
  * Panels, menus, windows, lists and controls use these same semantic tokens.
@@ -284,4 +288,33 @@ a:hover{color:var(--ui-accent)}
  .previewPanel{page-break-before:always}
  .collectionBrowser{max-height:none;overflow:visible}
  .corePreviewFrame{min-height:40vh}
+}
+
+/* Token bridge for reused canonical Core services; no second theme state. */
+:root{
+ --nlab-bg:var(--ui-bg);--nlab-ink:var(--ui-text);--nlab-line:var(--ui-border);
+ --nlab-muted:var(--ui-muted);--nlab-card:var(--ui-surface);
+}
+body.dark{--nlab-bg:var(--ui-bg);--nlab-ink:var(--ui-text);--nlab-line:var(--ui-border);
+ --nlab-muted:var(--ui-muted);--nlab-card:var(--ui-surface)}
+/* Shared InputPicker — only skin the canonical component, never reimplement it. */
+.studioInputPicker{
+ color:var(--ui-text);background:var(--ui-surface);border:1px solid var(--ui-border);
+ border-radius:var(--ui-radius);box-shadow:var(--ui-shadow);
+ z-index:320;max-width:calc(100vw - 12px);
+}
+.studioInputPicker :is(input,select,textarea){
+ color:var(--ui-text);background:var(--ui-surface);border-color:var(--ui-border)
+}
+.studioInputPicker :is(.inputPickerActions,.inputPickerCollectionBar,.inputPickerFooter,.inputPickerUrlRow){
+ background:var(--ui-surface);color:var(--ui-text)
+}
+.studioInputPicker :is(.studioInputItem,.studioInputDrop,.studioInputList){
+ background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)
+}
+.studioInputPicker button:focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+@media(max-width:700px){
+ .studioInputPicker{position:fixed;left:6px!important;right:6px!important;top:max(8px,env(safe-area-inset-top))!important;
+ transform:none!important;width:auto!important;max-height:calc(100dvh - 18px)!important;overflow:auto}
+ .studioInputPickerBody{max-height:calc(100dvh - 50px);overflow:auto}
 }
