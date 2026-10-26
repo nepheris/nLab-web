@@ -9,6 +9,7 @@ import {icon as sharedIcon} from '../../_shared/studio-v2/icon-registry.js';
 import {loadStudioSettings,saveStudioSettings,applyStudioSettings,renderStudioSettingsPanel,syncStudioSettingsPanel} from '../../_shared/studio-v2/settings.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
+import {mountStudioSidebarControls} from '../../_shared/studio-v2/sidebar-controller.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
 // VNext experimental shell: one command dispatcher, shared panels and local preferences.
 // Functional bridge to the existing Studio Core services is intentionally not implemented yet.
@@ -44,6 +45,7 @@ const syncCoreAppearance=()=>{
 };
 let coreSettingsHost;
 let adapter;
+let sidebarController;
 const inform=message=>notifyUi($('#uiNotice'),message);
 const runAction=async cmd=>{
  if(cmd==='import'){
@@ -69,8 +71,8 @@ const runAction=async cmd=>{
  if(cmd==='remove-files'){adapter.removeSelected();return}
  if(cmd==='clear-files'){adapter.clear();return}
  if(cmd==='toggle-work')state.work=!state.work;
- if(cmd==='collapse')saveStudioSettings({sidebarMode:'hidden'});
- if(cmd==='lock')saveStudioSettings({sidebarLocked:!currentPrefs().sidebarLocked});
+ if(cmd==='collapse'){sidebarController.close();return}
+ if(cmd==='lock'){sidebarController.toggleLock();return}
  if(cmd==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
  if(cmd==='properties'){document.dispatchEvent(new Event('studio-v2:open-properties'));return}
  if(cmd==='windows'){openWindow();return}
@@ -144,14 +146,11 @@ function render(){
  syncCoreAppearance();
  const preferences=currentPrefs();
  $('.workspace').classList.toggle('is-work-hidden',!state.work);
- $('.workspace').classList.toggle('is-side-hidden',preferences.sidebarMode==='hidden');
  $('.workspace').classList.toggle('is-ribbon-hidden',!ribbonVisible());
- $('.layout').style.setProperty('--side-width',Math.max(220,Math.min(720,Number(preferences.sidebarWidth)||360))+'px');
  $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'})[state.panel];
  $$('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===state.panel)));
  $$('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
  $$('[data-work-label]').forEach(label=>{label.textContent=state.work?'Masquer la planche':'Afficher la planche'});
- $('[data-cmd=lock]').textContent=preferences.sidebarLocked?'🔒':'🔓';
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  panelContent();
  if(coreSettingsHost)syncStudioSettingsPanel(coreSettingsHost,preferences);
@@ -246,26 +245,11 @@ $('#saveAsForm').addEventListener('submit',async e=>{
  try{const result=await adapter.saveSelected({name});$('#saveAsDialog').close();inform('Copie enregistrée : '+result.name)}
  catch(error){inform(error.message||'Enregistrement impossible')}
 });
-const grip=$('.resizer');
-let dragWidth=null;
-grip.addEventListener('pointerdown',e=>{
- if(currentPrefs().sidebarLocked)return;
- e.preventDefault();grip.setPointerCapture(e.pointerId)
-});
-grip.addEventListener('pointermove',e=>{
- if(!grip.hasPointerCapture(e.pointerId))return;
- dragWidth=Math.max(220,Math.min(720,e.clientX-$('.rail').getBoundingClientRect().right));
- $('.layout').style.setProperty('--side-width',dragWidth+'px')
-});
-grip.addEventListener('pointerup',()=>{
- if(dragWidth!==null){saveStudioSettings({sidebarWidth:dragWidth});dragWidth=null}
-});
-grip.addEventListener('keydown',e=>{
- if(currentPrefs().sidebarLocked)return;
- if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
-  saveStudioSettings({sidebarWidth:Math.max(220,Math.min(720,(Number(currentPrefs().sidebarWidth)||360)+(e.key==='ArrowLeft'?-15:15)))});
-  e.preventDefault();
- }
+// Only the shared Studio sidebar adapter owns collapse/restore/resize/lock.
+sidebarController=mountStudioSidebarControls({
+ layout:$('.layout'),side:$('.side'),rail:$('.rail'),
+ collapseButton:$('#sidebarCollapse'),restoreButton:$('#sidebarToggle'),
+ lockButton:$('#sidebarLock'),handle:$('.resizer')
 });
 render();
 
