@@ -80,6 +80,7 @@ async function runScenario({name,viewport,mobile}){
    if(!(await page.locator('[data-ribbon-group="'+hiddenGroup+'"]').isHidden()))throw Error('Groupe ruban incorrect : '+tab);
   }
   // Keyboard navigation and context panels use the same shared ribbon engine.
+  await page.locator('[data-ribbon-tab="file"]').click();
   await page.locator('[data-ribbon-tab="file"]').focus();
   await page.keyboard.press('ArrowRight');
   if(await page.locator('[data-ribbon-tab="edit"]').getAttribute('aria-selected')!=='true')throw Error('Navigation clavier du ruban inactive');
