@@ -2,6 +2,7 @@ import {createCoreAdapter} from './core-adapter.js';
 import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
 import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
 import {registerCommand,executeCommand} from '../../_shared/studio-v2/command-registry.js';
+import {mountCommandPalette} from '../../_shared/studio-v2/command-palette.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
@@ -40,6 +41,7 @@ const runAction=async cmd=>{
  if(cmd==='toggle-work')state.work=!state.work;
  if(cmd==='collapse')state.sidebar=false;
  if(cmd==='lock')state.locked=!state.locked;
+ if(cmd==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
  if(cmd==='windows'){openWindow();return}
  if(cmd==='float-panel'){openFloatingPanel(state.panel);return}
  persist();render();
@@ -50,7 +52,7 @@ const coreActions={
  undo:'Annuler',redo:'Rétablir','select-all':'Tout sélectionner',
  'remove-files':'Retirer les fichiers','clear-files':'Vider la collection',
  'toggle-work':'Afficher ou masquer la planche','collapse':'Masquer le panneau',
- lock:'Verrouiller le panneau',windows:'Fenêtres',
+ lock:'Verrouiller le panneau',windows:'Fenêtres',commands:'Palette de commandes',
  'float-panel':'Détacher le panneau'
 };
 for(const [name,label] of Object.entries(coreActions)){
@@ -170,6 +172,7 @@ grip.addEventListener('keydown',e=>{if(state.locked)return;if(e.key==='ArrowLeft
 render();
 
 // Single share controller: reusable by other Studios once validated.
+mountCommandPalette();
 mountShareMenu({trigger:$('#shareBtn'),menu:$('#shareMenu'),dialog:$('#qrDialog'),notice:$('#uiNotice')});
 createFullscreenController({target:$('.app'),button:$('#fullscreenBtn'),onMessage:message=>inform(message)});
 document.addEventListener('keydown',e=>{
