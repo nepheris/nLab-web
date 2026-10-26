@@ -9,7 +9,8 @@ let prefs=load();
 function save(){localStorage.setItem(KEY,JSON.stringify(prefs))}
 function emit(panel,key,action,extra={}){const detail={key,action,...extra};panel?.dispatchEvent(new CustomEvent('studio-window-state',{detail}));document.dispatchEvent(new CustomEvent('studio-v2:window-state',{detail}))}
 function cfg(key){return prefs.windows[key]=prefs.windows[key]||{locked:false,docked:false,collapsed:false,scrollX:true,scrollY:true,size:'normal',hidden:false,restorable:false,left:null,top:null,width:null,height:null}}
-function svg(name){
+// Shared SVG glyphs for windows AND docked sidebar controls; one visual source.
+export function studioWindowControlIcon(name){
  const p={
   grip:'<circle cx="8" cy="6" r="1"/><circle cx="16" cy="6" r="1"/><circle cx="8" cy="12" r="1"/><circle cx="16" cy="12" r="1"/><circle cx="8" cy="18" r="1"/><circle cx="16" cy="18" r="1"/>',
   collapse:'<path d="M5 12h14"/>',expand:'<path d="M5 12h14M12 5v14"/>',
@@ -67,9 +68,9 @@ function sync(panel,key){
   panel.style.right='auto';panel.style.transform='none';
  }
  const lock=panel.querySelector('[data-win-lock]'),dock=panel.querySelector('[data-win-dock]'),collapse=panel.querySelector('[data-win-collapse]'),sx=panel.querySelector('[data-win-scroll-x]'),sy=panel.querySelector('[data-win-scroll-y]'),size=panel.querySelector('[data-win-size]');
- if(lock){lock.innerHTML=svg(c.locked?'lock':'unlock');lock.classList.toggle('active',!!c.locked);lock.classList.toggle('locked',!!c.locked);lock.title=c.locked?'Déverrouiller la fenêtre':'Verrouiller la fenêtre'}
- if(dock){dock.innerHTML=svg(c.docked?'free':'dock');dock.classList.toggle('active',!!c.docked);dock.title=c.docked?'Détacher la fenêtre':'Rattacher / ancrer la fenêtre'}
- if(collapse){collapse.innerHTML=svg(c.collapsed?'expand':'collapse');collapse.classList.toggle('active',!!c.collapsed);collapse.title=c.collapsed?'Tout déplier':'Tout plier'}
+ if(lock){lock.innerHTML=studioWindowControlIcon(c.locked?'lock':'unlock');lock.classList.toggle('active',!!c.locked);lock.classList.toggle('locked',!!c.locked);lock.title=c.locked?'Déverrouiller la fenêtre':'Verrouiller la fenêtre'}
+ if(dock){dock.innerHTML=studioWindowControlIcon(c.docked?'free':'dock');dock.classList.toggle('active',!!c.docked);dock.title=c.docked?'Détacher la fenêtre':'Rattacher / ancrer la fenêtre'}
+ if(collapse){collapse.innerHTML=studioWindowControlIcon(c.collapsed?'expand':'collapse');collapse.classList.toggle('active',!!c.collapsed);collapse.title=c.collapsed?'Tout déplier':'Tout plier'}
  if(sx){sx.classList.toggle('active',c.scrollX!==false);sx.title=(c.scrollX===false?'Activer':'Désactiver')+' le défilement horizontal'}
  if(sy){sy.classList.toggle('active',c.scrollY!==false);sy.title=(c.scrollY===false?'Activer':'Désactiver')+' le défilement vertical'}
  if(size){size.classList.toggle('active',c.size==='large');size.title=c.size==='large'?'Taille normale':'Agrandir la fenêtre'}
@@ -78,14 +79,14 @@ function sync(panel,key){
 function addBar(panel,key,title){
  if(panel.querySelector(':scope > .studioWindowBar'))return;
  const bar=document.createElement('div');bar.className='studioWindowBar';
- bar.innerHTML='<span class="studioWindowGrip" data-win-grip title="Déplacer la fenêtre">'+svg('grip')+'</span><strong>'+String(title||key)+'</strong><span class="grow"></span>'+
+ bar.innerHTML='<span class="studioWindowGrip" data-win-grip title="Déplacer la fenêtre">'+studioWindowControlIcon('grip')+'</span><strong>'+String(title||key)+'</strong><span class="grow"></span>'+
  '<button type="button" data-win-collapse title="Tout plier" aria-label="Plier ou déplier"></button>'+
- '<button type="button" data-win-size title="Agrandir la fenêtre" aria-label="Taille normale ou large">'+svg('size')+'</button>'+
+ '<button type="button" data-win-size title="Agrandir la fenêtre" aria-label="Taille normale ou large">'+studioWindowControlIcon('size')+'</button>'+
  '<button type="button" data-win-lock title="Verrouiller la fenêtre" aria-label="Verrouiller ou déverrouiller"></button>'+
  '<button type="button" data-win-dock title="Rattacher / ancrer" aria-label="Détacher ou rattacher"></button>'+
- '<button type="button" data-win-scroll-x title="Défilement horizontal" aria-label="Défilement horizontal">'+svg('scrollX')+'</button>'+
- '<button type="button" data-win-scroll-y title="Défilement vertical" aria-label="Défilement vertical">'+svg('scrollY')+'</button>'+
- '<button type="button" data-win-close title="Masquer la fenêtre" aria-label="Masquer">'+svg('close')+'</button>';
+ '<button type="button" data-win-scroll-x title="Défilement horizontal" aria-label="Défilement horizontal">'+studioWindowControlIcon('scrollX')+'</button>'+
+ '<button type="button" data-win-scroll-y title="Défilement vertical" aria-label="Défilement vertical">'+studioWindowControlIcon('scrollY')+'</button>'+
+ '<button type="button" data-win-close title="Masquer la fenêtre" aria-label="Masquer">'+studioWindowControlIcon('close')+'</button>';
  panel.insertBefore(bar,panel.firstChild);
 }
 function constrain(panel){
