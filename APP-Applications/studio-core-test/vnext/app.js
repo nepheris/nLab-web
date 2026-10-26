@@ -1,4 +1,5 @@
 import {createCoreAdapter} from './core-adapter.js';
+import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountShareMenu} from '../../_shared/nlab-share-menu.js';
 // VNext experimental shell: one command dispatcher, shared panels and local preferences.
@@ -128,6 +129,12 @@ render();
 
 // Single share controller: reusable by other Studios once validated.
 mountShareMenu({trigger:$('#shareBtn'),menu:$('#shareMenu'),dialog:$('#qrDialog'),notice:$('#uiNotice')});
+createFullscreenController({target:$('.app'),button:$('#fullscreenBtn'),onMessage:message=>inform(message)});
+document.addEventListener('keydown',e=>{
+ if(e.defaultPrevented||e.target.closest('input,textarea,select,[contenteditable]'))return;
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='o'){e.preventDefault();dispatch('import')}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();dispatch('save')}
+});
 const themeHeader=$('#themeHeader');
 themeHeader.value=state.theme;
 themeHeader.addEventListener('change',()=>{
