@@ -5,6 +5,7 @@
 import {CollectionBrowser} from '../../_shared/studio-v2/collection-browser.js';
 import {thumbnailFor} from '../../_shared/studio-v2/thumbnail-service.js';
 import {OutputService} from '../../_shared/studio-v2/output-service.js';
+import {renderMarkdownFilePreview,renderPlainTextPreview} from '../../_shared/studio-v2/file-preview-service.js';
 import {recordHistory,loadHistory} from '../../_shared/studio-v2/history.js';
 import {pushUndoRedo,undo,redo,getUndoRedoState,subscribeUndoRedo} from '../../_shared/studio-v2/undo-redo.js';
 
@@ -111,11 +112,13 @@ export function createCoreAdapter({collectionHost,previewHost,onUpdate}={}){
    frame.title='Aperçu PDF : '+file.name;frame.src=lastUrl;previewHost.append(frame);return;
   }
   if(EXTS_TEXT.has(ext)&&file.size<=1048576){
+   // Reuse the canonical markdown/plain text renderer. Render off-DOM to avoid
+   // attaching stale asynchronous results after a different file is selected.
    try{
-    const text=await file.text();
-    if(collection.activeId!==target.id)return;
-    const pre=document.createElement('pre');
-    pre.className='corePreviewText';pre.textContent=text.slice(0,25000);previewHost.append(pre);
+    const region=document.createElement('div');region.className='corePreviewText';
+    if(ext==='md'||ext==='markdown')await renderMarkdownFilePreview(file,region,{maxChars:25000});
+    else await renderPlainTextPreview(file,region,{maxChars:25000});
+    if(collection.activeId===target.id)previewHost.append(region);
    }catch{previewHost.append(document.createTextNode('Aperçu texte indisponible.'))}
    return;
   }
