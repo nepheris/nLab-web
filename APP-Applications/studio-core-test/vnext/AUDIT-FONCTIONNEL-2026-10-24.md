@@ -144,3 +144,23 @@ Instruction HUMAN00 : **VNext est une nouvelle interface sur le Core existant ; 
 - Les essais de viewport Chrome en CI ne valent pas validation tactile Android physique, ni recette des **86 contrôles**.
 - Le CSS Core existant est importé en couche de compatibilité ; les surcharges VNext ne doivent définir que l'agencement du nouveau shell et les variables de thème. La suppression des styles historiques doit être progressive et précédée de tests multi-Studio.
 - **NO-GO** pour promouvoir VNext en CURRENT et pour basculer Image Studio/PDF Studio sans validation HUMAN00.
+
+## Revue ergonomique HUMAN00 — 26 octobre 2026 : ruban et volets partagés
+
+Référence reçue : la fenêtre commune « Choisir une entrée » (mêmes pictogrammes verrouiller/déverrouiller, plier/déplier, réduire et restaurer), et souhait d'un **ruban d'icônes à groupes de commandes proche d'Office 365**. Le Core TEST actuel ne doit perdre aucune fonctionnalité : les commandes redondantes sont regroupées graphiquement, les opérations restent confiées aux services Core.
+
+### Développements
+
+- `studio-v2/window-system.js` expose `studioWindowControlIcon` : **une seule source d'icônes de verrouillage et repli** pour fenêtres flottantes et volet latéral.
+- `studio-v2/sidebar-controller.js` (nouveau composant partagé) : replier, déplier, verrouiller, adapter la largeur au pointeur ou aux flèches clavier, conserver largeur/verrouillage/visibilité par `settings.js`. VNext n'exécute plus son ancien contrôleur local.
+- `studio-v2/core.js` expose `mountStudioRibbonTabs` : contrôleur générique d'onglets de ruban. Un Studio spécialisé pourra déclarer des groupes supplémentaires **sans recopier la gestion des onglets ni celle des commandes**.
+- `studio-v2/workspace-chrome.css` : CSS du volet et du ruban mutualisé ; VNext le charge après sa feuille de thème. Les tokens héritent du thème clair/sombre du Core.
+- **Ruban VNext** : Accueil / Fichier / Édition / Affichage / Outils. Groupes AFFICHAGE, FICHIERS, HISTORIQUE, PANNEAUX, FENÊTRES ET OUTILS. Le ruban n'est pas remplacé par un simple menu ; il reste visible et présente les actions avec icônes et labels.
+- Les commandes de l'onglet PANNEAUX (« Réglages », « Propriétés ») passent par le même registre de commandes et ouvrent les panneaux **déjà existants**, sans nouveau formulaire ni doublon. « 👁 Affichage » est placé dans le ruban.
+- Tests Playwright ajoutés : tabulation des groupes, navigation clavier, unicité des commandes, repli/déploiement de volet, verrou, égalité des icônes fenêtre/volet, glisser et clavier pour la largeur, persistance du paramètre Core.
+
+### Traçabilité et périmètre
+
+CI pré-factorisation du CSS : [run 40316364357](https://github.com/nepheris/nLab-web/actions/runs/40316364357), `success`, suite Chrome VNext + Core Lab historique + démos. Nouvelle CI en cours après extraction du CSS, à ne pas déclarer PASS sans résultat réel.
+
+**Garde-fous :** aucune version CURRENT modifiée, aucune suppression de service Core historique, aucun GO HUMAN00. Restent la parité complète des 86 contrôles, les modèles de sortie, les intégrations spécialisées, le comportement tactile sur Android réel et la vérification esthétique.
