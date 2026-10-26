@@ -12,6 +12,10 @@ on:
       - 'APP-Applications/_shared/studio-v2/window-system.js'
       - 'APP-Applications/_shared/studio-v2/core.js'
       - 'APP-Applications/_shared/studio-v2/workspace-chrome.css'
+      - 'APP-Applications/_shared/studio-v2/advanced-output-ui.js'
+      - 'APP-Applications/_shared/studio-v2/advanced-output.css'
+      - 'APP-Applications/_shared/studio-v2/output-service.js'
+      - 'APP-Applications/_shared/studio-v2/personal-profile-service.js'
       - 'tests/studio-core-vnext.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
   pull_request:
@@ -35,6 +39,9 @@ on:
       - 'APP-Applications/_shared/studio-v2/history.js'
       - 'APP-Applications/_shared/studio-v2/history-sidebar.js'
       - 'APP-Applications/_shared/studio-v2/template-engine.js'
+      - 'APP-Applications/_shared/studio-v2/advanced-output-ui.js'
+      - 'APP-Applications/_shared/studio-v2/advanced-output.css'
+      - 'APP-Applications/_shared/studio-v2/output-service.js'
       - 'APP-Applications/_shared/studio-v2/template-ux.js'
       - 'APP-Applications/studio-core-test/template-controls.css'
       - 'tests/studio-core-template-ux.mjs'
@@ -81,6 +88,8 @@ jobs:
           node --check APP-Applications/studio-core-test/versions/0.5.0/ux-lab.js
           node --check APP-Applications/studio-core-test/ux-lab.js
           node --check APP-Applications/_shared/studio-v2/template-ux.js
+          node --check APP-Applications/_shared/studio-v2/advanced-output-ui.js
+          node --check APP-Applications/_shared/studio-v2/output-service.js
           node --check APP-Applications/_shared/studio-v2/template-engine.js
           node --check APP-Applications/studio-core-test/versions/0.6.0/ux-lab.js
           node --check tests/studio-core-template-ux.mjs
