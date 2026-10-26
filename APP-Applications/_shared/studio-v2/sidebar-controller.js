@@ -5,7 +5,11 @@
  */
 import {loadStudioSettings,saveStudioSettings} from './settings.js';
 import {studioWindowControlIcon} from './window-system.js';
-const clampWidth=(width)=>Math.max(220,Math.min(720,Math.round(Number(width)||360)));
+// Width is limited by *available workspace space*, never by an arbitrary 720px cap.
+const clampWidth=(width,layout)=>{
+ const available=Math.max(220,Math.floor(layout.getBoundingClientRect().width)-24);
+ return Math.max(220,Math.min(available,Math.round(Number(width)||360)));
+};
 
 export function mountStudioSidebarControls({
  layout,side,rail,collapseButton,restoreButton,lockButton,handle,
@@ -16,7 +20,7 @@ export function mountStudioSidebarControls({
  let dragging=null;
  const getState=()=>{
   const settings=loadStudioSettings();
-  return {expanded:settings.sidebarMode!=='hidden',locked:!!settings.sidebarLocked,width:clampWidth(settings.sidebarWidth)};
+  return {expanded:settings.sidebarMode!=='hidden',locked:!!settings.sidebarLocked,width:clampWidth(settings.sidebarWidth,layout)};
  };
  const paint=()=>{
   const state=getState();
@@ -40,7 +44,7 @@ export function mountStudioSidebarControls({
   lockButton.setAttribute('aria-pressed',String(state.locked));
   handle.setAttribute('aria-valuenow',String(state.width));
   handle.setAttribute('aria-valuemin','220');
-  handle.setAttribute('aria-valuemax','720');
+  handle.setAttribute('aria-valuemax',String(Math.max(220,Math.floor(layout.getBoundingClientRect().width)-24)));
   handle.setAttribute('aria-valuetext',state.width+' pixels');
   handle.tabIndex=state.locked?-1:0;
   handle.title=state.locked?'Déverrouiller pour redimensionner':'Glisser pour ajuster la largeur';
@@ -60,7 +64,7 @@ export function mountStudioSidebarControls({
  };
  const pointerMove=e=>{
   if(!dragging||e.pointerId!==dragging.id)return;
-  const width=clampWidth(dragging.startWidth+(e.clientX-dragging.startX));
+  const width=clampWidth(dragging.startWidth+(e.clientX-dragging.startX),layout)
   layout.style.setProperty('--side-width',width+'px');
   handle.setAttribute('aria-valuenow',String(width));
  };
@@ -77,9 +81,9 @@ export function mountStudioSidebarControls({
   if(getState().locked)return;
   if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
    e.preventDefault();
-   saveStudioSettings({sidebarWidth:clampWidth(getState().width+(e.key==='ArrowLeft'?-16:16))});
+   saveStudioSettings({sidebarWidth:clampWidth(getState().width+(e.key==='ArrowLeft'?-16:16),layout)});
   }else if(e.key==='Home'){e.preventDefault();saveStudioSettings({sidebarWidth:220})}
-  else if(e.key==='End'){e.preventDefault();saveStudioSettings({sidebarWidth:720})}
+  else if(e.key==='End'){e.preventDefault();saveStudioSettings({sidebarWidth:clampWidth(layout.getBoundingClientRect().width,layout)})}
  };
  const onSettings=()=>paint();
  const onResize=()=>paint();
@@ -96,7 +100,7 @@ export function mountStudioSidebarControls({
  paint();
  return {
   paint,getState,toggle,toggleLock:lock,open:()=>saveStudioSettings({sidebarMode:'normal'}),
-  close:collapse,setWidth:width=>saveStudioSettings({sidebarWidth:clampWidth(width)}),
+  close:collapse,setWidth:width=>saveStudioSettings({sidebarWidth:clampWidth(width,layout)}),
   destroy(){
    collapseButton.removeEventListener('click',collapse);
    restoreButton.removeEventListener('click',toggle);
