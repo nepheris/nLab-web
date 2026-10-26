@@ -69,3 +69,47 @@ export function applyRibbonGroups(prefix='nlab-studio-v2-ribbon-'){
 export function setRibbonGroupVisible(group,visible,prefix='nlab-studio-v2-ribbon-'){
   localStorage.setItem(prefix+group,visible?'1':'0');applyRibbonGroups(prefix);
 }
+
+/**
+ * Shared ribbon-tab presentation controller. Commands stay owned by the
+ * Studio command registry; tabs only select which pre-existing groups appear.
+ * A specialized Studio may extend "views" without cloning Core actions.
+ */
+export function mountStudioRibbonTabs({tabs,groups,views,initial='home'}={}){
+ const root=typeof tabs==='string'?qs(tabs):tabs;
+ const ribbon=typeof groups==='string'?qs(groups):groups;
+ if(!root||!ribbon)throw new TypeError('Ribbon tabs and groups are required');
+ const allTabs=qsa('[data-ribbon-tab]',root);
+ const allGroups=qsa('[data-ribbon-group]',ribbon);
+ let selected=initial;
+ const select=(name,{focus=false}={})=>{
+  if(!Object.hasOwn(views||{},name))return false;
+  selected=name;
+  for(const tab of allTabs){
+   const active=tab.dataset.ribbonTab===selected;
+   tab.setAttribute('aria-selected',String(active));
+   tab.tabIndex=active?0:-1;
+   if(active&&focus)tab.focus();
+  }
+  for(const group of allGroups){
+   group.hidden=!(views[name]||[]).includes(group.dataset.ribbonGroup);
+  }
+  root.dispatchEvent(new CustomEvent('studio-v2:ribbon-tab',{detail:{tab:name,bubble:false}}));
+  return true;
+ };
+ const click=e=>{const b=e.target.closest('[data-ribbon-tab]');if(b&&root.contains(b))select(b.dataset.ribbonTab)};
+ const keyboard=e=>{
+  if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+  const index=allTabs.findIndex(b=>b.dataset.ribbonTab===selected);
+  const next=e.key==='Home'?0:e.key==='End'?allTabs.length-1:
+   (index+(e.key==='ArrowRight'?1:-1)+allTabs.length)%allTabs.length;
+  if(next<0)return;
+  e.preventDefault();select(allTabs[next].dataset.ribbonTab,{focus:true});
+ };
+ root.addEventListener('click',click);
+ root.addEventListener('keydown',keyboard);
+ select(Object.hasOwn(views||{},initial)?initial:Object.keys(views||{})[0]);
+ return{select,get activeTab(){return selected},destroy(){
+  root.removeEventListener('click',click);root.removeEventListener('keydown',keyboard);
+ }};
+}
