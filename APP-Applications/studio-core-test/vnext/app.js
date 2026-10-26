@@ -3,6 +3,7 @@ import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
 import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
 import {registerCommand,executeCommand} from '../../_shared/studio-v2/command-registry.js';
 import {mountCommandPalette} from '../../_shared/studio-v2/command-palette.js';
+import {icon as sharedIcon} from '../../_shared/studio-v2/icon-registry.js';
 import {loadStudioSettings,saveStudioSettings,applyStudioSettings,renderStudioSettingsPanel,syncStudioSettingsPanel} from '../../_shared/studio-v2/settings.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
@@ -126,6 +127,16 @@ function syncUndoButtons(){
  $$('[data-cmd="undo"]').forEach(el=>{el.disabled=!state.canUndo;el.title=state.canUndo?'Annuler : '+state.undoLabel:'Rien à annuler'});
  $$('[data-cmd="redo"]').forEach(el=>{el.disabled=!state.canRedo;el.title=state.canRedo?'Rétablir : '+state.redoLabel:'Rien à rétablir'});
 }
+// Shared icon registry is the only source of pictograms across all Core Studios.
+function hydrateCoreIcons(){
+ document.querySelectorAll('[data-core-icon]').forEach(slot=>{
+  const name=slot.dataset.coreIcon;
+  if(slot.dataset.renderedIcon===name&&slot.dataset.renderedTheme===currentPrefs().iconTheme)return;
+  slot.innerHTML=sharedIcon(name);
+  slot.dataset.renderedIcon=name;
+  slot.dataset.renderedTheme=currentPrefs().iconTheme;
+ });
+}
 function render(){
  syncCoreAppearance();
  const preferences=currentPrefs();
@@ -136,11 +147,12 @@ function render(){
  $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'})[state.panel];
  $$('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===state.panel)));
  $$('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
- $$('[data-cmd="toggle-work"]').forEach(b=>b.textContent=state.work?'▤ Masquer la planche':'▤ Afficher la planche');
+ $('[data-work-label]').forEach(label=>{label.textContent=state.work?'Masquer la planche':'Afficher la planche'});
  $('[data-cmd=lock]').textContent=preferences.sidebarLocked?'🔒':'🔓';
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  panelContent();
  if(coreSettingsHost)syncStudioSettingsPanel(coreSettingsHost,preferences);
+ hydrateCoreIcons();
  syncUndoButtons();
 }
 const floating=new Map();
