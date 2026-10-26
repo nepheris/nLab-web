@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f4f6f8">
   <title>Studio Core — VNext prototype</title>
   <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./studio.css?v=20261026-13">
+  <link rel="stylesheet" href="./studio.css?v=20261026-14">
   <link rel="stylesheet" href="../../_shared/studio-v2/workspace-chrome.css?v=20261026-5">
   <link rel="stylesheet" href="../../_shared/studio-v2/advanced-output.css?v=20261026-1">
 </head>
@@ -52,6 +52,7 @@
           <div class="ribbonCommands">
             <button type="button" id="displayBtn" aria-controls="displayMenu" aria-expanded="false" aria-label="Configurer l’affichage" title="Configurer l’affichage"><span data-core-icon="eye" aria-hidden="true"></span><span>Affichage ▾</span></button>
             <button type="button" data-cmd="toggle-work" title="Afficher ou masquer la planche de travail"><span data-core-icon="eyeOff" aria-hidden="true"></span><span data-work-label>Masquer la planche</span></button>
+            <button type="button" data-cmd="toggle-preview" title="Afficher ou masquer l’aperçu du fichier"><span data-core-icon="eye" aria-hidden="true"></span><span data-preview-label>Aperçu</span></button>
           </div><span class="ribbonGroupLabel">AFFICHAGE</span>
         </div>
         <div class="ribbonGroup" data-ribbon-group="files">
@@ -86,6 +87,7 @@
         <label><input type="checkbox" data-visible="work"> Planche de travail</label>
         <label><input type="checkbox" data-visible="sidebar"> Panneau latéral</label>
         <label><input type="checkbox" data-visible="ribbon"> Commandes du ruban</label>
+        <label><input type="checkbox" data-visible="preview"> Aperçu du fichier</label>
       </div>
       <div class="layout">
         <section class="side" id="studioSide">
@@ -96,10 +98,10 @@
         <main class="board"><div class="panelHead"><strong>Planche de travail</strong><button type="button" data-cmd="toggle-work"><span data-core-icon="eyeOff" aria-hidden="true"></span><span data-work-label>Masquer</span></button></div>
           <div id="boardBody">
  <div class="collectionToolbar" role="group" aria-label="Affichage des fichiers">
-  <label>Vue <select id="collectionView"><option value="list">Liste</option><option value="grid">Cartes</option><option value="thumbs">Vignettes</option></select></label>
+  <div id="collectionViewModes" aria-label="Mode d’affichage de la collection"></div><select id="collectionView" aria-label="Vue de la collection" hidden><option value="list">Liste</option><option value="grid">Icônes</option><option value="thumbs">Vignettes</option><option value="table">Tableau</option></select>
   <label>Trier <select id="collectionSort"><option value="name">Nom</option><option value="type">Type</option><option value="size">Taille</option></select></label>
   <button type="button" data-cmd="select-all">Tout sélectionner</button>
-  <button type="button" data-cmd="remove-files">Retirer sélection</button>
+  <button type="button" data-cmd="remove-files">Retirer sélection</button><button type="button" id="togglePreview" data-cmd="toggle-preview" aria-pressed="true" aria-controls="filePreview" title="Afficher ou masquer le volet d’aperçu"><span data-core-icon="eye" aria-hidden="true"></span><span id="previewToggleLabel">Masquer l’aperçu</span></button>
  </div>
  <div class="boardGrid"><div class="collectionPanel"><h2>Collection <output id="collectionCount">0 fichier</output></h2>
   <div id="filesList" class="collectionBrowser" aria-label="Collection de fichiers" aria-live="polite"></div>
@@ -128,6 +130,6 @@
   </dialog>
   <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
   <input id="fileInput" type="file" multiple hidden>
-  <script type="module" src="./app.js?v=20261026-14"></script>
+  <script type="module" src="./app.js?v=20261026-15"></script>
 </body>
 </html>
