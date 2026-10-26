@@ -194,6 +194,20 @@ $$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{
 coreSettingsHost=document.createElement('div');
 coreSettingsHost.className='coreSettingsSurface';
 renderStudioSettingsPanel(coreSettingsHost);
+// The personal profile is the existing Core component, mounted only when opened.
+const personalProfileSection=document.createElement('details');
+personalProfileSection.className='coreSettingsSection';
+personalProfileSection.innerHTML='<summary>Profil personnel nLab</summary><div class="coreSettingsSectionBody" data-profile-host><p class="hint">Ouvrez cette section pour charger le profil portable commun.</p></div>';
+coreSettingsHost.querySelector('.coreSettingsGrid')?.append(personalProfileSection);
+let profileLoading=null;
+personalProfileSection.addEventListener('toggle',()=>{
+ if(!personalProfileSection.open||profileLoading)return;
+ const host=personalProfileSection.querySelector('[data-profile-host]');
+ profileLoading=import('../../_shared/studio-v2/personal-profile-ui.js')
+  .then(({mountPersonalProfileUI})=>mountPersonalProfileUI(host))
+  .catch(error=>{host.textContent='Chargement du profil indisponible : '+(error.message||error)});
+});
+
 adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePreview'),onUpdate:core=>{
  $('#collectionCount').textContent=core.size+' fichier(s)';
  if(adapter&&(state.panel==='files'||state.panel==='properties'||state.panel==='history'))panelContent();
