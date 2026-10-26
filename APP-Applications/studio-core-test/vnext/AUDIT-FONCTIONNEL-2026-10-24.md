@@ -164,3 +164,12 @@ Référence reçue : la fenêtre commune « Choisir une entrée » (mêmes picto
 CI pré-factorisation du CSS : [run 40316364357](https://github.com/nepheris/nLab-web/actions/runs/40316364357), `success`, suite Chrome VNext + Core Lab historique + démos. Nouvelle CI en cours après extraction du CSS, à ne pas déclarer PASS sans résultat réel.
 
 **Garde-fous :** aucune version CURRENT modifiée, aucune suppression de service Core historique, aucun GO HUMAN00. Restent la parité complète des 86 contrôles, les modèles de sortie, les intégrations spécialisées, le comportement tactile sur Android réel et la vérification esthétique.
+
+## Mise à jour 26/10 — Profil personnel indépendant et cadenas du volet
+
+- Entrée **Profil nLab** autonome dans le rail de gauche, immédiatement avant **Réglages**, avec une icône `profile` provenant du registre commun `studio-v2/icon-registry.js`. Le profil n'est plus injecté dans la fenêtre Réglages.
+- Le panneau monte à la demande **l'unique composant existant** `personal-profile-ui.js` ; il conserve l'identité, les tampons, signatures, logos, variables, import/export ZIP et modes de stockage locaux du Core. Aucun moteur parallèle, aucune donnée personnelle mise dans les fichiers publics du dépôt.
+- Un même contrôleur `sidebar-controller.js` gère la largeur du panneau, son repli et le **verrouillage réel**. Le cadenas fermé désactive la poignée et empêche le redimensionnement ; le cadenas ouvert restaure glisser-déposer et clavier. L'état est partagé avec `settings.js` et mémorisé. L'icône verrouillée est visuellement active.
+- Le rail met en surbrillance l'onglet actuellement sélectionné pour tous les panneaux. Les styles du profil reprennent les tokens Core clair/sombre.
+- **CI Chrome [run 40322449396](https://github.com/nepheris/nLab-web/actions/runs/40322449396) : success** après changements et rechargement des feuilles CSS. Les tests vérifient la présence et la position de l'icône, l'unicité du profil, son ZIP, la synchronisation du cadenas, l'impossibilité de déplacer le panneau verrouillé, le déverrouillage et les suites de non-régression sur 6 viewports.
+- **NO-GO CURRENT** : validation visuelle HUMAN00 et contrôle sur matériel mobile réel toujours en attente.
