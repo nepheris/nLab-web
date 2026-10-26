@@ -1,4 +1,5 @@
 import {createCoreAdapter} from './core-adapter.js';
+import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
@@ -12,7 +13,13 @@ const persist=()=>{try{const {files,...preferences}=state;localStorage.setItem(k
 let adapter;
 const inform=message=>notifyUi($('#uiNotice'),message);
 const dispatch=async cmd=>{
- if(cmd==='import'){$('#fileInput').click();return}
+ if(cmd==='import'){
+  try{
+   const files=await openInputPicker({multiple:true,folders:true,url:true,expandZip:true,view:'icon',preserveSession:false});
+   if(files?.length)adapter.addFiles(files);
+  }catch(error){inform(error.message||'Import impossible')}
+  return;
+ }
  if(cmd==='save'){
   try{const result=await adapter.saveSelected();inform('Enregistré : '+result.name)}
   catch(error){inform(error.message||'Enregistrement impossible')}return;
