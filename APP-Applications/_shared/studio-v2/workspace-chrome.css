@@ -16,6 +16,22 @@
 .layout.is-side-hidden{grid-template-columns:minmax(0,1fr)}
 .layout.is-side-hidden .side{display:none}
 .rail #sidebarToggle[aria-expanded="false"]{background:var(--ui-soft,var(--nlab-card,#eef5fb));border-color:var(--ui-accent,#1676c1)}
+
+/* A visible, persistent restore affordance (even when the panel is display:none).
+   Uses exactly the same arrows / padlock icon source as floating windows. */
+.rail #sidebarToggle{gap:3px;align-content:center;min-width:40px}
+.rail #sidebarToggle .sidebarRestoreLabel{font-size:9px;line-height:1.2;letter-spacing:0;
+ text-align:center;color:inherit;white-space:nowrap}
+.rail #sidebarToggle.sidebarNeedsRestore{border:1px solid var(--ui-accent,#1676c1);
+ color:var(--ui-accent,#1676c1);font-weight:650;
+ background:var(--ui-soft,var(--nlab-card,#eef5fb))}
+.side .panelHead #sidebarCollapse{display:inline-flex;flex:0 0 auto;align-items:center;
+ justify-content:center;border-color:var(--ui-border,var(--nlab-line,#d9e0e6))}
+.side .panelHead #sidebarCollapse:hover,.side .panelHead #sidebarCollapse:focus-visible{
+ color:var(--ui-accent,#1676c1);background:var(--ui-soft,var(--nlab-card,#eef5fb))}
+.side .panelHead #sidebarLock{display:inline-flex;flex:0 0 auto}
+.side .panelHead #panelTitle{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 /* Office-style ribbon: tabs own only visibility, commands stay in the Core registry. */
 .ribbonTabs{display:flex;gap:2px;align-items:end;overflow-x:auto;scrollbar-width:thin;
  background:var(--ui-surface,var(--nlab-card,#fff));border-bottom:1px solid var(--ui-border,var(--nlab-line,#d9e0e6));padding:5px 10px 0}
