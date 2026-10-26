@@ -135,12 +135,12 @@ export function createCoreAdapter({collectionHost,previewHost,onUpdate}={}){
  collection.addEventListener('activate',()=>{previewActive();notify()});
  collection.addEventListener('selection',notify);
  collection.addEventListener('rotate',()=>notify());
- async function saveSelected({name=null}={}){
+ async function saveSelected({name=null,parts=[]}={}){
   const data=selectedFiles();
   if(!data.length)throw Error('Sélectionnez un fichier avant de l’enregistrer.');
   const file=data[0];
   // Name changes are allowed; bytes and MIME type remain unchanged (not conversion).
-  const result=await output.saveBlob(file,name||file.name);
+  const result=await output.saveBlob(file,name||file.name,{parts});
   history('Fichier enregistré',result.name,'file');
   return result;
  }
