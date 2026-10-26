@@ -1,5 +1,6 @@
 import {createCoreAdapter} from './core-adapter.js';
 import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
+import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
@@ -51,9 +52,8 @@ function panelMarkup(id){
  }else if(id==='tools'){
   content='<p class="hint">Outils communs liés au fichier actif. Les commandes d’édition avancées ne sont pas encore migrées.</p><button data-cmd="import">↥ Importer</button><button data-cmd="float-panel">↗ Détacher ce panneau</button>';
  }else if(id==='history'){
-  const records=adapter.loadHistory().filter(x=>x.studio==='studio-core-vnext').slice(0,30);
-  const stack=adapter.getUndoRedoState();
-  content='<div class="row"><button data-cmd="undo" '+(stack.canUndo?'':'disabled')+'>↶ Annuler</button><button data-cmd="redo" '+(stack.canRedo?'':'disabled')+'>↷ Rétablir</button></div><details class="section" open><summary>Activité récente · '+records.length+'</summary><ol class="coreHistoryList">'+records.map(x=>'<li><strong>'+escapeHtml(x.label)+'</strong><small>'+escapeHtml(new Date(x.timestamp).toLocaleString('fr-FR'))+'</small><p>'+escapeHtml(x.detail||'')+'</p></li>').join('')+'</ol>'+(records.length?'':'<p class="hint">Aucune activité.</p>')+'</details>';
+  // Rendered by the existing Core history-sidebar service, not copied as markup.
+  content='';
  }else if(id==='properties'){
   const item=adapter.active();
   content='<div class="section"><strong>Propriétés du fichier actif</strong>'+(item?'<dl><dt>Nom</dt><dd>'+escapeHtml(item.label)+'</dd><dt>Format</dt><dd>'+escapeHtml(item.extension||'—')+'</dd><dt>Taille</dt><dd>'+Number(item.size||0).toLocaleString('fr-FR')+' octets</dd><dt>Sélection</dt><dd>'+adapter.collection.selectedItems().length+' fichier(s)</dd></dl>':'<p class="hint">Sélectionnez un fichier dans la collection.</p>')+'</div>';
@@ -62,9 +62,14 @@ function panelMarkup(id){
  }
  return content+common;
 }
+let canonicalHistory;
 function panelContent(){
- $('#panelBody').innerHTML=panelMarkup(state.panel);
- $$('[data-theme-select]').forEach(el=>el.value=state.theme);
+ const host=$('#panelBody');
+ if(state.panel==='history'&&canonicalHistory){
+  if(!host.contains(canonicalHistory.element))host.replaceChildren(canonicalHistory.element);
+  canonicalHistory.render();
+ }else host.innerHTML=panelMarkup(state.panel);
+ $('[data-theme-select]').forEach(el=>el.value=state.theme);
 }
 function syncUndoButtons(){
  if(!adapter)return;
@@ -122,7 +127,8 @@ adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePr
  $('#collectionCount').textContent=core.size+' fichier(s)';
  if(adapter&&(state.panel==='files'||state.panel==='properties'||state.panel==='history'))panelContent();
 }});
-adapter.subscribeUndoRedo(()=>{syncUndoButtons();if(state.panel==='history')panelContent()});
+adapter.subscribeUndoRedo(()=>{syncUndoButtons();if(state.panel==='history')canonicalHistory?.render()});
+canonicalHistory=createHistorySidebar({studio:'studio-core-vnext'});
 $('#fileInput').addEventListener('change',e=>{adapter.addFiles(e.target.files);e.target.value=''});
 $('#collectionView').value=adapter.collection.view;
 $('#collectionSort').value=adapter.collection.sortMode;
