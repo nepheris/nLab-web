@@ -139,3 +139,40 @@ body[data-ribbon-mode="primary"] .ribbonGroupLabel{font-size:9px}
 .rail [data-panel][aria-pressed="true"] [data-core-icon]{
  color:var(--ui-accent,#1676c1)
 }
+
+
+/* Universal nLab file views: same SVG icon language for selectors/pickers/studios. */
+.studioViewModes{display:flex;align-items:center;flex-wrap:wrap;gap:4px;min-width:0}
+.studioViewModes .studioViewMode,.studioInputPicker .inputPickerViews [data-input-view]{
+ display:inline-flex;align-items:center;justify-content:center;gap:5px;
+ border:1px solid var(--ui-border,var(--nlab-line,#d9e0e6));
+ background:var(--ui-surface,var(--nlab-card,#fff));border-radius:7px;
+ color:var(--ui-text,var(--nlab-ink,#243340));
+ padding:6px 8px;min-height:36px;font-size:11px
+}
+.studioViewIcon,.studioInputPicker .inputPickerViews svg{display:inline-flex;align-items:center}
+.studioViewIcon svg,.studioInputPicker .inputPickerViews svg{height:17px;width:17px;
+ stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.studioViewModes [aria-pressed=true],.studioInputPicker .inputPickerViews .active{
+ background:var(--ui-soft,var(--nlab-bg,#eef5fb));border-color:var(--ui-accent,#1676c1);
+ color:var(--ui-accent,#1676c1)
+}
+.studioInputPicker .inputPickerViews{display:flex;flex-wrap:wrap;gap:4px}
+.studioInputPicker .inputPickerViews [data-input-view]{display:inline-flex;gap:5px}
+.studioInputPicker #studioInputList[data-view=table]{display:block;overflow-x:auto}
+.studioInputPicker .studioInputTableHeader,.studioInputPicker .studioInputTableItem{
+ display:grid;grid-template-columns:minmax(140px,2fr) 68px 70px minmax(85px,1.3fr) auto;
+ min-width:560px;align-items:center;gap:6px;padding:6px;
+ font-size:11px;border-bottom:1px solid var(--ui-border,var(--nlab-line,#d9e0e6))}
+.studioInputPicker .studioInputTableHeader{position:sticky;top:0;z-index:1;
+ background:var(--ui-soft,var(--nlab-bg,#eef5fb));font-weight:700}
+.studioInputPicker .studioInputTableItem.active{background:var(--ui-soft,var(--nlab-bg,#eef5fb))}
+.studioInputPicker .studioInputTableItem .studioInputTableName{display:flex;align-items:center;gap:6px;min-width:0}
+.studioInputPicker .studioInputTableItem .studioInputTableName strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.studioInputPicker .studioInputTableItem .studioInputTablePath{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.studioInputPicker .studioInputTableItem .studioInputTypeIcon{height:24px;width:24px;flex:0 0 24px}
+@media(max-width:700px){
+ .studioViewModes .studioViewMode{min-height:44px;padding:8px}
+ .studioInputPicker .inputPickerViews [data-input-view]{min-height:42px}
+ .studioInputPicker .studioInputTableHeader,.studioInputPicker .studioInputTableItem{min-width:530px}
+}
