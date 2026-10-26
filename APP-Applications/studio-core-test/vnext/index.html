@@ -7,9 +7,9 @@
   <meta name="theme-color" content="#f4f6f8">
   <title>Studio Core — VNext prototype</title>
   <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./studio.css?v=20261026-14">
-  <link rel="stylesheet" href="../../_shared/studio-v2/workspace-chrome.css?v=20261026-5">
-  <link rel="stylesheet" href="../../_shared/studio-v2/advanced-output.css?v=20261026-1">
+  <link rel="stylesheet" href="./studio.css?v=20261026-15">
+  <link rel="stylesheet" href="../../_shared/studio-v2/workspace-chrome.css?v=20261026-6">
+  <link rel="stylesheet" href="../../_shared/studio-v2/advanced-output.css?v=20261026-2">
 </head>
 <body>
   <header class="header">
@@ -60,7 +60,7 @@
             <button type="button" data-cmd="import" title="Importer des fichiers"><span data-core-icon="inputAcquire" aria-hidden="true"></span><span>Importer</span></button>
             <button type="button" data-cmd="save" title="Enregistrer"><span data-core-icon="save" aria-hidden="true"></span><span>Enregistrer</span></button>
             <button type="button" data-cmd="save-as" title="Enregistrer sous"><span data-core-icon="download" aria-hidden="true"></span><span>Enregistrer sous</span></button>
-            <button type="button" data-cmd="save-advanced" title="Enregistrer avec modèles de renommage, variables et sous-dossiers"><span data-core-icon="folderOpen" aria-hidden="true"></span><span>Enregistrement avancé</span></button>
+            <button type="button" data-cmd="save-advanced" title="Enregistrer et classer : modèles de renommage, variables, dossier source et sous-dossiers"><span data-core-icon="folderOpen" aria-hidden="true"></span><span>Enregistrer et classer</span></button>
           </div><span class="ribbonGroupLabel">FICHIERS</span>
         </div>
         <div class="ribbonGroup" data-ribbon-group="history">
@@ -119,7 +119,7 @@
     <div class="modalBody"><div id="qrCanvas" aria-live="polite">Chargement…</div><p id="qrUrl"></p><button type="button" data-share="copy">Copier le lien</button></div>
   </dialog>
   <dialog id="advancedSaveDialog" class="modal coreAdvancedDialog" aria-labelledby="advancedSaveTitle">
-    <div class="panelHead"><strong id="advancedSaveTitle">Enregistrement avancé · Modèles et classement</strong><button type="button" id="closeAdvancedSave" aria-label="Fermer l’enregistrement avancé">×</button></div>
+    <div class="panelHead"><strong id="advancedSaveTitle">Enregistrer et classer · Modèles et dossiers</strong><button type="button" id="closeAdvancedSave" aria-label="Fermer l’enregistrement avancé">×</button></div>
     <div id="advancedSavePanel" class="modalBody" aria-label="Options d'enregistrement avancé"></div>
   </dialog>
   <dialog id="saveAsDialog" class="modal" aria-labelledby="saveAsTitle">
@@ -130,6 +130,6 @@
   </dialog>
   <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
   <input id="fileInput" type="file" multiple hidden>
-  <script type="module" src="./app.js?v=20261026-15"></script>
+  <script type="module" src="./app.js?v=20261026-16"></script>
 </body>
 </html>
