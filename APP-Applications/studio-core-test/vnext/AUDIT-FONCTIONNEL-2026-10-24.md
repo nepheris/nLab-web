@@ -173,3 +173,20 @@ CI pré-factorisation du CSS : [run 40316364357](https://github.com/nepheris/nLa
 - Le rail met en surbrillance l'onglet actuellement sélectionné pour tous les panneaux. Les styles du profil reprennent les tokens Core clair/sombre.
 - **CI Chrome [run 40322449396](https://github.com/nepheris/nLab-web/actions/runs/40322449396) : success** après changements et rechargement des feuilles CSS. Les tests vérifient la présence et la position de l'icône, l'unicité du profil, son ZIP, la synchronisation du cadenas, l'impossibilité de déplacer le panneau verrouillé, le déverrouillage et les suites de non-régression sur 6 viewports.
 - **NO-GO CURRENT** : validation visuelle HUMAN00 et contrôle sur matériel mobile réel toujours en attente.
+
+## Enregistrement avancé partagé — raccordement 26/10/2026
+
+Directive HUMAN00 : intégrer les **fonctions d'enregistrement avancé existantes**, sans dupliquer ni le moteur de modèles ni les variables du profil personnel. Ajout en TEST au Core VNext :
+
+- Ruban **Fichier → Enregistrement avancé**, également disponible depuis le panneau **Fichiers**. L'enregistrement simple et « Enregistrer sous » restent inchangés.
+- Fenêtre commune fournie par `studio-v2/advanced-output-ui.js` + `advanced-output.css` ; c'est uniquement un **adaptateur graphique**.
+- `TemplateEngine` pour résoudre `{FILENAME}`, `{DATE:YYYY-MM-DD}`, `{YEAR}`, `{MONTH}`, `{CLIENT}`, `{PROJECT}`, `{FIRST_NAME}`, `{INITIALS}`, etc. Préfixe, modèle de nom, suffixe, extension source préservée et aperçu du nom.
+- **Modèles personnels de renommage et de classement** issus de `personal-profile-service.js` ; ils peuvent être sélectionnés, personnalisés et sauvegardés dans le profil nLab (donc exportables via le ZIP existant). Sélecteur de variables `template-ux.js` directement monté, familles et formats de dates conservés.
+- **Destination** via `OutputService.chooseDirectory()` et `loadLastDirectory()`; les sous-dossiers sont réellement créés par `OutputService.targetDir(parts)`. Le chemin calculé est affiché avant enregistrement ; seul le **fichier sélectionné** est écrit, sans modification des octets.
+- **Repli explicite** : sans accès natif au répertoire, un téléchargement simple reste possible **sans sous-dossiers**. Si un modèle demande une arborescence sans dossier choisi, l'enregistrement est bloqué avec explication au lieu de prétendre créer le dossier.
+- Le choix de dossier est soumis aux permissions du navigateur (File System Access API, notamment Chrome/Chromium). Les modèles restent locaux, les poignées de dossier sont mémorisées par le service existant dans IndexedDB ; aucune sauvegarde dans GitHub.
+- Extension/dossiers sécurisés par les fonctions existantes du Core et normalisation des segments de dossier dans l'adaptateur ; pas de réécriture du module spécialisé PDF Studio.
+
+**Validation Chrome CI : [run 40325299018](https://github.com/nepheris/nLab-web/actions/runs/40325299018), success.** Scénarios : ouverture par ruban, sélection d'un modèle personnel, prévisualisation d'un chemin année/mois/nom, sélection des variables, refus de créer un sous-dossier sans destination, API dossier simulée avec création des niveaux et écriture du **contenu original identique**, mémorisation d'un modèle, téléchargement simple et non-régression sur les six viewports plus l'ancien Core Lab.
+
+**Gates ouvertes :** recette HUMAN00 de l'UX, autorisations de dossier sur poste réel, tests Android physique, compatibilité des modèles et des destinations avec les Studios Image/PDF. **NO-GO CURRENT.**
