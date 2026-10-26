@@ -57,3 +57,18 @@ Suite ajoutée : `tests/studio-core-vnext.mjs`. Elle couvre structure, thème, p
 
 ## Décision release
 **NO-GO** pour promouvoir VNext au rang de Core CURRENT, ou pour faire migrer Image Studio / PDF Studio. Continuer le développement en `vnext/` sans modifier les archives et versions CURRENT.
+
+
+## Reprise autonome — 26 octobre 2026 (mise à jour des preuves)
+
+Livrables réellement ajoutés dans \`vnext/\` :
+- \`core-adapter.js\` : adaptateur aux **services existants**, dont \`CollectionBrowser\`, \`thumbnailFor\`, \`OutputService\`, \`recordHistory\` et \`loadHistory\`. Import de fichiers locaux, liste/cartes/vignettes, tri, sélection, aperçu image/texte/PDF, retrait de la sélection et enregistrement d'un fichier non modifié.
+- \`app.js\` : répartit les commandes du ruban et des panneaux vers **un même dispatcher** ; le gestionnaire \`window-system.js\` partagé contrôle les fenêtres flottantes (minimiser, ancrer, verrouiller, déplacer et restaurer). Le volet Fichiers, l'Historique et les Propriétés utilisent les données du même adaptateur.
+- \`index.html\` et \`studio.css\` : planche de travail, collection, aperçu, glisser-déposer, dialogue Enregistrer sous, habillage homogène du gestionnaire Core, responsive tactile et thèmes ; plein écran utilise \`fullscreen-service.js\`.
+- \`tests/studio-core-vnext.mjs\` : tests de l'import/aperçu, de la sauvegarde réelle, de l'historique, des fenêtres, du partage et des six formats d'écran. Le pipeline GitHub Actions a été configuré pour les exécuter avant l'ancien Lab.
+
+**Limites :** l'enregistrement réexporte les octets du fichier actif, pas une édition de contenu ; l'import est actuellement natif (sélecteur et glisser-déposer) et ne couvre pas encore la totalité du picker Core (dossiers, ZIP, URL). L'historique est réel mais limité à une liste d'activité, sans favoris et sans annuler/rétablir. Les fonctionnalités métier Image/PDF ne sont pas migrées.
+
+**État de validation au dépôt du présent rapport :** inspection de syntaxe de \`app.js\` réussie ; au moins une exécution de CI VNext a signalé une erreur d'initialisation JavaScript dans la synchronisation du thème. Un correctif a été enregistré en commit \`c3a03ab997d455d9f10fdc6a98a8cc820348eef5\` et un nouveau run a été déclenché. **Ne pas déduire PASS tant que le run corrigé n'est pas conclu et la recette humaine validée.**
+
+**Gate HUMAN00, inchangé : NO-GO CURRENT**, aucune migration automatique Image Studio / PDF Studio.
