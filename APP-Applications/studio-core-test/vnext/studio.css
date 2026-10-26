@@ -473,3 +473,15 @@ body{font-family:var(--studio-font-family,system-ui,-apple-system,"Segoe UI",san
  #coreViewerToolbar button{min-height:44px}
 }
 
+
+/* Sidebars may grow beyond the old 720px limit; keep the workboard isolated
+   instead of letting nested file previews create page-wide horizontal scroll. */
+.board{min-width:0;overflow-x:auto}
+.boardGrid{min-width:0}
+.boardGrid>*{min-width:0}
+@container (max-width:760px){
+ .boardGrid{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:700px){
+ .board{overflow-x:clip}
+}
