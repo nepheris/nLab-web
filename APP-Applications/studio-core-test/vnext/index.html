@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f4f6f8">
   <title>Studio Core — VNext prototype</title>
   <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./studio.css?v=20261026-6">
+  <link rel="stylesheet" href="./studio.css?v=20261026-7">
 </head>
 <body>
   <header class="header">
@@ -37,7 +37,14 @@
       <button type="button" data-panel="settings"><span data-core-icon="settings" aria-hidden="true"></span><span>Réglages</span></button>
     </aside>
     <section class="workspace">
-      <div class="ribbon" role="toolbar" aria-label="Ruban du Studio Core">
+      <nav class="ribbonTabs" role="tablist" aria-label="Onglets du ruban">
+        <button type="button" role="tab" data-ribbon-tab="home" aria-selected="true" aria-controls="coreRibbon">Accueil</button>
+        <button type="button" role="tab" data-ribbon-tab="file" aria-selected="false" aria-controls="coreRibbon">Fichier</button>
+        <button type="button" role="tab" data-ribbon-tab="edit" aria-selected="false" aria-controls="coreRibbon">Édition</button>
+        <button type="button" role="tab" data-ribbon-tab="display" aria-selected="false" aria-controls="coreRibbon">Affichage</button>
+        <button type="button" role="tab" data-ribbon-tab="tools" aria-selected="false" aria-controls="coreRibbon">Outils</button>
+      </nav>
+      <div id="coreRibbon" class="ribbon" role="toolbar" aria-label="Ruban du Studio Core">
         <div class="ribbonGroup ribbonGroupDisplay" data-ribbon-group="display">
           <div class="ribbonCommands">
             <button type="button" id="displayBtn" aria-controls="displayMenu" aria-expanded="false" aria-label="Configurer l’affichage" title="Configurer l’affichage"><span data-core-icon="eye" aria-hidden="true"></span><span>Affichage ▾</span></button>
@@ -107,6 +114,6 @@
   </dialog>
   <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
   <input id="fileInput" type="file" multiple hidden>
-  <script type="module" src="./app.js?v=20261026-6"></script>
+  <script type="module" src="./app.js?v=20261026-7"></script>
 </body>
 </html>
