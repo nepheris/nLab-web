@@ -3,6 +3,7 @@ import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
 import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
 import {registerCommand,executeCommand} from '../../_shared/studio-v2/command-registry.js';
 import {mountCommandPalette} from '../../_shared/studio-v2/command-palette.js';
+import {mountPropertyInspector} from '../../_shared/studio-v2/property-inspector.js';
 import {icon as sharedIcon} from '../../_shared/studio-v2/icon-registry.js';
 import {loadStudioSettings,saveStudioSettings,applyStudioSettings,renderStudioSettingsPanel,syncStudioSettingsPanel} from '../../_shared/studio-v2/settings.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
@@ -70,6 +71,7 @@ const runAction=async cmd=>{
  if(cmd==='collapse')saveStudioSettings({sidebarMode:'hidden'});
  if(cmd==='lock')saveStudioSettings({sidebarLocked:!currentPrefs().sidebarLocked});
  if(cmd==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
+ if(cmd==='properties'){document.dispatchEvent(new Event('studio-v2:open-properties'));return}
  if(cmd==='windows'){openWindow();return}
  if(cmd==='float-panel'){openFloatingPanel(state.panel);return}
  persist();render();
@@ -80,7 +82,7 @@ const coreActions={
  undo:'Annuler',redo:'Rétablir','select-all':'Tout sélectionner',
  'remove-files':'Retirer les fichiers','clear-files':'Vider la collection',
  'toggle-work':'Afficher ou masquer la planche','collapse':'Masquer le panneau',
- lock:'Verrouiller le panneau',windows:'Fenêtres',commands:'Palette de commandes',
+ lock:'Verrouiller le panneau',windows:'Fenêtres',commands:'Palette de commandes',properties:'Propriétés du fichier',
  'float-panel':'Détacher le panneau'
 };
 for(const [name,label] of Object.entries(coreActions)){
@@ -102,8 +104,8 @@ function panelMarkup(id){
   // Rendered by the existing Core history-sidebar service, not copied as markup.
   content='';
  }else if(id==='properties'){
-  const item=adapter.active();
-  content='<div class="section"><strong>Propriétés du fichier actif</strong>'+(item?'<dl><dt>Nom</dt><dd>'+escapeHtml(item.label)+'</dd><dt>Format</dt><dd>'+escapeHtml(item.extension||'—')+'</dd><dt>Taille</dt><dd>'+Number(item.size||0).toLocaleString('fr-FR')+' octets</dd><dt>Sélection</dt><dd>'+adapter.collection.selectedItems().length+' fichier(s)</dd></dl>':'<p class="hint">Sélectionnez un fichier dans la collection.</p>')+'</div>';
+  // Inspectors live in Core's property-inspector.js, not in a VNext-specific form.
+  content='<p class="hint">L’inspecteur commun affiche les propriétés de la sélection active.</p><button data-cmd="properties">☷ Ouvrir les propriétés</button>';
  }else if(id==='settings'){
   // The existing Core settings UI is rehomed as a single DOM node in panelContent.
   content='';
@@ -257,6 +259,7 @@ grip.addEventListener('keydown',e=>{
 render();
 
 // Single share controller: reusable by other Studios once validated.
+mountPropertyInspector();
 mountCommandPalette();
 mountShareMenu({trigger:$('#shareBtn'),menu:$('#shareMenu'),dialog:$('#qrDialog'),notice:$('#uiNotice')});
 createFullscreenController({target:$('.app'),button:$('#fullscreenBtn'),onMessage:message=>inform(message)});
