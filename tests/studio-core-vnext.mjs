@@ -71,9 +71,25 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('[data-setting="sidebarLocked"]').check();
   if(await page.locator('#sidebarLock').getAttribute('aria-pressed')!=='true')throw Error('Verrouillage du panneau non synchronisé');
   if((await page.locator('#sidebarLock svg').count())!==1)throw Error('Cadenas commun des fenêtres absent');
+  if(await page.locator('#sidebarLock').getAttribute('data-locked')!=='true')
+   throw Error('Cadenas n’indique pas l’état verrouillé');
+  if(await page.locator('.side .resizer').getAttribute('aria-disabled')!=='true')
+   throw Error('Poignée encore active lorsque la largeur est verrouillée');
+  if(!mobile&&viewport.width>=1000){
+   const g=page.locator('.side .resizer'),rect=await g.boundingBox();
+   const before=Number(await page.locator('.layout').evaluate(el=>parseInt(getComputedStyle(el).getPropertyValue('--side-width'),10)));
+   await page.mouse.move(rect.x+rect.width/2,rect.y+32);await page.mouse.down();
+   await page.mouse.move(rect.x+rect.width/2+55,rect.y+32);await page.mouse.up();
+   const after=Number(await page.locator('.layout').evaluate(el=>parseInt(getComputedStyle(el).getPropertyValue('--side-width'),10)));
+   if(after!==before)throw Error('Le cadenas actif ne bloque pas la largeur du volet');
+  }
   // A locked sidebar must not be resized. The same preference powers settings and controls.
   await page.locator('#sidebarLock').click();
   if(await page.locator('[data-setting="sidebarLocked"]').isChecked())throw Error('Le cadenas n’est pas synchronisé aux réglages');
+  if(await page.locator('#sidebarLock').getAttribute('data-locked')!=='false')
+   throw Error('Cadenas non désactivé après déverrouillage');
+  if(await page.locator('.side .resizer').getAttribute('aria-disabled')!=='false')
+   throw Error('Poignée non réactivée après déverrouillage');
   await page.locator('[data-setting="sidebarLocked"]').uncheck();
   // Same two-place sidebar control: fold arrow beside padlock; restore arrow in fixed rail.
   const fold=page.locator('#sidebarCollapse'),restore=page.locator('#sidebarToggle');
@@ -141,10 +157,30 @@ async function runScenario({name,viewport,mobile}){
    if((await page.locator(selector).count())!==1)throw Error('Icône nLab partagée manquante : '+selector);
   }
   if(name==='desktop'){
-   const personal=page.locator('.coreSettingsSection').filter({has:page.locator('[data-profile-host]')});
-   await personal.locator(':scope > summary').click();
-   await page.locator('[data-profile-save]').waitFor({state:'visible',timeout:20000});
-   if((await page.locator('[data-profile-security-mode]').count())!==1)throw Error('Profil personnel Core dupliqué ou absent');
+   // Dedicated rail item before Settings; the canonical profile UI is mounted once.
+   const profileTab=page.locator('.rail [data-panel="profile"]');
+   const settingsTab=page.locator('.rail [data-panel="settings"]');
+   if(await profileTab.evaluate(el=>el.nextElementSibling?.dataset.panel)!=='settings')
+    throw Error('Profil personnel absent avant Réglages dans la barre de gauche');
+   if((await profileTab.locator('[data-core-icon="profile"] svg').count())!==1)
+    throw Error('Icône Profil non issue du registre nLab');
+   if((await page.locator('.coreSettingsSurface [data-profile-host]').count())!==0)
+    throw Error('Profil encore intégré en doublon aux Réglages');
+   await profileTab.click();
+   if(await page.locator('#panelTitle').textContent()!=='Profil personnel nLab')
+    throw Error('Profil nLab non ouvert dans son panneau indépendant');
+   await page.locator('#panelBody .personalProfileSurface [data-profile-save]').waitFor({state:'visible',timeout:20000});
+   if((await page.locator('[data-profile-security-mode]').count())!==1)
+    throw Error('Profil personnel Core dupliqué ou absent');
+   if((await page.locator('#panelBody [data-profile-export]').count())!==1)
+    throw Error('Export ZIP du profil Core indisponible');
+   await settingsTab.click();
+   if((await page.locator('.coreSettingsSurface [data-profile-host]').count())!==0)
+    throw Error('Profil personnel toujours affiché dans les Réglages');
+   await profileTab.click();
+   if((await page.locator('#panelBody .personalProfileCard').count())!==1)
+    throw Error('Profil personnel cloné après navigation');
+   await settingsTab.click();
   }
 
 
