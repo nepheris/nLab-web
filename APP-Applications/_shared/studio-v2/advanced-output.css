@@ -1,0 +1,72 @@
+/* Shared nLab Studio advanced output UI.
+   Only the interface; file saving, templates and variables stay in their Core services. */
+.coreAdvancedDialog{
+ width:min(840px,calc(100vw - 20px));max-width:calc(100vw - 20px);
+ max-height:calc(100dvh - 28px);overflow:auto;
+ color:var(--ui-text,var(--nlab-ink,#242a32));
+ background:var(--ui-surface,var(--nlab-card,#fff));
+ border:1px solid var(--ui-border,var(--nlab-line,#d7dfe7));
+ border-radius:12px;box-shadow:0 16px 55px #0004;padding:0;
+}
+.coreAdvancedDialog::backdrop{background:#0009}
+.coreAdvancedDialog>.panelHead{position:sticky;top:0;z-index:3;
+ background:var(--ui-soft,var(--nlab-bg,#f3f6fa));border-bottom:1px solid var(--ui-border,var(--nlab-line,#d7dfe7))}
+.coreAdvancedOutput{display:grid;gap:11px;padding:12px;min-width:0}
+.coreAdvancedOutput>label,.coreAdvancedOutput details label{display:grid;gap:5px;min-width:0;font-size:12px}
+.coreAdvancedOutput input:not([type=radio]),.coreAdvancedOutput select{
+ width:100%;min-width:0;min-height:38px;border:1px solid var(--ui-border,var(--nlab-line,#d7dfe7));
+ border-radius:7px;background:var(--ui-surface,var(--nlab-card,#fff));
+ color:var(--ui-text,var(--nlab-ink,#242a32));padding:7px 9px;font:inherit;
+}
+.coreAdvancedOutput input:focus-visible,.coreAdvancedOutput select:focus-visible,
+.coreAdvancedOutput button:focus-visible{outline:2px solid var(--ui-accent,#3584db);outline-offset:2px}
+.coreAdvancedOutput button{
+ min-height:36px;padding:7px 10px;border:1px solid var(--ui-border,var(--nlab-line,#d7dfe7));
+ background:var(--ui-surface,var(--nlab-card,#fff));color:var(--ui-text,var(--nlab-ink,#242a32));
+ border-radius:7px;cursor:pointer;font-size:12px
+}
+.coreAdvancedOutput button:hover{background:var(--ui-soft,var(--nlab-bg,#f3f6fa))}
+.coreAdvancedOutput button:disabled{opacity:.55;cursor:wait}
+.coreAdvancedActions{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.coreAdvancedHint{color:var(--ui-muted,var(--nlab-muted,#657888));font-size:11px;line-height:1.5;margin:3px 0}
+.coreAdvancedDestination,.coreAdvancedTarget{
+ border:1px solid var(--ui-border,var(--nlab-line,#d7dfe7));border-radius:9px;
+ margin:0;padding:9px;min-width:0
+}
+.coreAdvancedDestination legend,.coreAdvancedTarget legend{font-size:12px;font-weight:700;padding:0 5px}
+.coreAdvancedDetails{border:1px solid var(--ui-border,var(--nlab-line,#d7dfe7));
+ border-radius:9px;padding:9px;min-width:0}
+.coreAdvancedDetails>summary{cursor:pointer;font-size:12px;font-weight:700;padding:6px}
+.coreAdvancedDetails[open]{display:grid;gap:9px}
+.coreAdvancedTarget{display:flex;flex-wrap:wrap;gap:10px}
+.coreAdvancedTarget label{display:inline-flex!important;align-items:center;gap:4px;cursor:pointer}
+.coreAdvancedPreview{display:grid;gap:6px;padding:12px;
+ background:var(--ui-soft,var(--nlab-bg,#f3f6fa));
+ border:1px solid var(--ui-border,var(--nlab-line,#d7dfe7));border-radius:9px}
+.coreAdvancedPreview strong{font-size:12px}
+.coreAdvancedPreview output{font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;
+ overflow-wrap:anywhere;white-space:pre-wrap;min-height:22px}
+.coreAdvancedPreview small{font-size:11px;color:var(--ui-muted,var(--nlab-muted,#657888))}
+.coreAdvancedOutput [data-save-status]{font-size:12px;min-height:16px;margin:0}
+.coreAdvancedOutput [data-save-status][data-error=true]{color:#db5656;font-weight:600}
+.coreAdvancedSubmit{justify-content:flex-end}
+.coreAdvancedSubmit button{background:var(--ui-accent,#1976c9);color:white;border-color:transparent;font-weight:700}
+.coreAdvancedSubmit button:hover{background:var(--ui-accent,#1976c9);filter:brightness(1.09)}
+.coreAdvancedTokenPicker{display:grid;gap:7px;max-height:48dvh;overflow:auto;padding:4px}
+.coreAdvancedTokenPicker .uxTokenFamily{border:1px solid var(--ui-border,var(--nlab-line,#d7dfe7));
+ border-radius:7px;padding:8px}
+.coreAdvancedTokenPicker .uxTokenFamily>summary{font-size:11px;font-weight:700;cursor:pointer}
+.coreAdvancedTokenPicker .uxFamilyHint{font-size:10px;color:var(--ui-muted,var(--nlab-muted,#657888))}
+.coreAdvancedTokenPicker .uxTokenList{display:flex;flex-wrap:wrap;gap:5px}
+.coreAdvancedTokenPicker .uxToken{display:inline-flex;align-items:center;gap:3px;max-width:100%}
+.coreAdvancedTokenPicker .uxToken button{font-size:10px;min-height:29px;padding:4px 6px}
+.coreAdvancedTokenPicker .uxTokenTooltip{display:none}
+.coreAdvancedTokenPicker .uxDateFormatRow{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.coreAdvancedTokenPicker .uxDateFormatRow select{max-width:235px}
+@media(max-width:700px){
+ .coreAdvancedDialog{width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
+ .coreAdvancedOutput{padding:9px;gap:9px}
+ .coreAdvancedOutput button{min-height:44px}
+ .coreAdvancedActions>*{flex:1 1 128px}
+ .coreAdvancedTarget label{flex:1 0 90px}
+}
