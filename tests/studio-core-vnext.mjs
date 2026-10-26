@@ -68,6 +68,31 @@ async function runScenario({name,viewport,mobile}){
   await floating.locator('[data-win-close]').click();
   if(!(await floating.isHidden()))throw Error('Fenêtre non masquée');
 
+  // One actual Core InputPicker (no VNext-specific modal/processing copy).
+  await page.locator('.ribbon [data-cmd="import"]').click();
+  await page.locator('#studioInputPicker').waitFor({state:'visible'});
+  if(!(await page.locator('#studioInputPickFolder').isVisible()))throw Error('Sélection Dossier Core manquante');
+  if(!(await page.locator('#studioInputUrl').isVisible()))throw Error('Import URL Core manquant');
+  await page.locator('#studioInputFilesNative').setInputFiles({
+   name:'shared-picker.txt',mimeType:'text/plain',buffer:Buffer.from('Test canonique')
+  });
+  await page.locator('#studioInputConfirm').click();
+  await page.waitForFunction(()=>document.querySelectorAll('#filesList .collectionItem').length===2);
+
+  // Both Undo and Redo must use the common Core undo-redo service.
+  await page.locator('.ribbon [data-cmd="undo"]').click();
+  await page.waitForFunction(()=>document.querySelectorAll('#filesList .collectionItem').length===1);
+  await page.locator('.ribbon [data-cmd="redo"]').click();
+  await page.waitForFunction(()=>document.querySelectorAll('#filesList .collectionItem').length===2);
+
+  // The original history sidebar is moved, never cloned or reimplemented.
+  await page.locator('[data-panel="history"]').click();
+  await page.locator('#uxHistorySearch').fill('Import');
+  if((await page.locator('.uxHistorySidebar').count())!==1)throw Error('Historique dupliqué');
+  if((await page.locator('#uxHistoryList .uxHistoryEntry').count())<1)throw Error('Recherche historique Core inactive');
+  await page.locator('[data-panel="files"]').click();
+  await page.locator('[data-panel="history"]').click();
+  if((await page.locator('.uxHistorySidebar').count())!==1)throw Error('Historique cloné après navigation');
   await page.locator('#shareBtn').click();
   if(await page.locator('#shareMenu').isHidden())throw Error('Menu Partager fermé');
   if(await page.locator('#shareMenu [data-share]').count()!==3)throw Error('Les trois choix manquent');

@@ -93,8 +93,8 @@
     {
       "path": "files/demo-input/Data/dataset-validation-complet.xlsx",
       "category": "Data",
-      "size": 83545,
-      "sha256": "da7e57567bef18abbc5c30a75cc9644e853f1cbec04c3a45121ad10fb1488f8c",
+      "size": 83546,
+      "sha256": "1ff261ca9ea9770e0eb62416a9cf86546a0c2727bb8889c2f15ff95349cc0cd3",
       "href": "./files/demo-input/Data/dataset-validation-complet.xlsx",
       "preview": "download"
     },
@@ -366,7 +366,7 @@
       "path": "files/demo-input/Office/document-demo.docx",
       "category": "Office",
       "size": 37171,
-      "sha256": "11f11190dfc2cf2158b23b691a52ba6bc424b1efa35caa0020cbc9286c11a897",
+      "sha256": "8165951c443830cd46a4ec74c03c57a0de381049b742894fa1f9da81299cf678",
       "href": "./files/demo-input/Office/document-demo.docx",
       "preview": "download"
     },
@@ -374,7 +374,7 @@
       "path": "files/demo-input/PDF/pdf-formulaire-acroform.pdf",
       "category": "PDF",
       "size": 8752,
-      "sha256": "561cc0208d985b0613d6b1f07b4710c68342df5de3804c5f93a78abf39cbbccf",
+      "sha256": "a1eb1a2d1f66214d5b51cf02ee19553c3b165607a0ae8356ef906d49387246d7",
       "href": "./files/demo-input/PDF/pdf-formulaire-acroform.pdf",
       "preview": "pdf"
     },
@@ -382,7 +382,7 @@
       "path": "files/demo-input/PDF/pdf-multipage-orientations.pdf",
       "category": "PDF",
       "size": 2439,
-      "sha256": "d2efca0fbbaaa6cb3eda215623c2f1bedac5a5c4124a3bf89e6e5d6bec86c92e",
+      "sha256": "65e96649029b20a875796e7e768ede4a96b043db6902f9ce6945edff13a8e3b7",
       "href": "./files/demo-input/PDF/pdf-multipage-orientations.pdf",
       "preview": "pdf"
     },
@@ -390,7 +390,7 @@
       "path": "files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
       "category": "PDF",
       "size": 149500,
-      "sha256": "a9ddde457cd63ccb84010b0ddbbf239237f36708395b90f16a69e8db8f786742",
+      "sha256": "efdce8c9004f9ff7466164d948c60b317fc80763d2812f0b0e90b821f2c64124",
       "href": "./files/demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
       "preview": "pdf"
     },
@@ -398,7 +398,7 @@
       "path": "files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
       "category": "PDF",
       "size": 116805,
-      "sha256": "a714ed45a71fcf6e2f1859a7f8d4380b31962b09b5f58c72c3f6dba7768e5094",
+      "sha256": "1371e9d31053973a80715afcfbab3373caa591dc7d19421d454c002c06f11d5c",
       "href": "./files/demo-input/PDF/pdf-scan-image-only-propre.pdf",
       "preview": "pdf"
     },
@@ -406,7 +406,7 @@
       "path": "files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
       "category": "PDF",
       "size": 116698,
-      "sha256": "d4a9a35610242b187c12611f30df43829a50276a40d64f0641df51148a445e8d",
+      "sha256": "7ad4411d60a7b42f72024bfef9779b1f8298face972abc62128c50b0c783948b",
       "href": "./files/demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
       "preview": "pdf"
     },
@@ -414,7 +414,7 @@
       "path": "files/demo-input/PDF/pdf-texte-actif.pdf",
       "category": "PDF",
       "size": 3377,
-      "sha256": "86ce38432c4368d0681daa190f6271c544a7c6611dadd73597ce513523be7e13",
+      "sha256": "3035331e242e3fb392748cf7788fc23bfd3f8ae349f6511a1f8b57e301ede21b",
       "href": "./files/demo-input/PDF/pdf-texte-actif.pdf",
       "preview": "pdf"
     },
@@ -478,7 +478,7 @@
       "path": "files/demo-input/Zip/archive-imbriquee-demo.zip",
       "category": "Zip",
       "size": 715,
-      "sha256": "5f72be3567d49e68c33b70f997ff902de661873e7d9af67f5f1c14df07fcdeec",
+      "sha256": "53284e0aeb7d97d394513de806781c928132130547a740f79df68aa45bcdcbcf",
       "href": "./files/demo-input/Zip/archive-imbriquee-demo.zip",
       "preview": "download"
     }

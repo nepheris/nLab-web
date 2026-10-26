@@ -89,8 +89,8 @@
     {
       "path": "demo-input/Data/donnees-synthetiques.xlsx",
       "category": "Data",
-      "size": 8485,
-      "sha256": "950608c3247d70cf9f28d188ab24ec78a7b889e1c5ee6735504b8f8fa11e40d7"
+      "size": 8486,
+      "sha256": "0bcd44b61522b8d079f1d27d22b73a446fd0c74eee4bbec52871e6f334633134"
     },
     {
       "path": "demo-input/Data/notes-demo.txt",
@@ -168,13 +168,13 @@
       "path": "demo-input/Office/document-demo.docx",
       "category": "Office",
       "size": 37171,
-      "sha256": "414dfd9c564142d34fdc3d69ddfe37f20cf4b9fdd62db4ffd039a4c30006cc0c"
+      "sha256": "8165951c443830cd46a4ec74c03c57a0de381049b742894fa1f9da81299cf678"
     },
     {
       "path": "demo-input/Office/document-demo.odt",
       "category": "Office",
       "size": 1161,
-      "sha256": "3e7a5d81ee5cc4712a8ea9833a8c4480acb77abca56017e890b7487b99bd72fe"
+      "sha256": "233e45794116bb0c65794537924d84a609427a5eb8e7b03364b9953e72fa451c"
     },
     {
       "path": "demo-input/Office/document-demo.rtf",
@@ -186,43 +186,43 @@
       "path": "demo-input/PDF/pdf-formulaire-acroform.pdf",
       "category": "PDF",
       "size": 8752,
-      "sha256": "c93e4c7a4854647c4d1cc5a833068639d3d14788ef2ad2ef8b7a936f31706a00"
+      "sha256": "a1eb1a2d1f66214d5b51cf02ee19553c3b165607a0ae8356ef906d49387246d7"
     },
     {
       "path": "demo-input/PDF/pdf-multipage-orientations.pdf",
       "category": "PDF",
       "size": 2439,
-      "sha256": "0a47a903e5ffc885d416acee0786fb1b6ff0002730a6ebdc1dd40bc89c7cb826"
+      "sha256": "65e96649029b20a875796e7e768ede4a96b043db6902f9ce6945edff13a8e3b7"
     },
     {
       "path": "demo-input/PDF/pdf-scan-image-only-incline-bruite.pdf",
       "category": "PDF",
       "size": 149500,
-      "sha256": "938148193469c17b3255d2ae317759706adc07c64d1af322b2be543e9b8a0301"
+      "sha256": "efdce8c9004f9ff7466164d948c60b317fc80763d2812f0b0e90b821f2c64124"
     },
     {
       "path": "demo-input/PDF/pdf-scan-image-only-propre.pdf",
       "category": "PDF",
       "size": 116805,
-      "sha256": "ecd28816bd9dec80f0b6c55dedde68f0396e9dba59fe0853d67674417c3df2dd"
+      "sha256": "1371e9d31053973a80715afcfbab3373caa591dc7d19421d454c002c06f11d5c"
     },
     {
       "path": "demo-input/PDF/pdf-scan-pseudo-manuscrit.pdf",
       "category": "PDF",
       "size": 116698,
-      "sha256": "5a14e2c150271e6d6a23e41c1109f0e334073b9eacea15f912fabff2417166cd"
+      "sha256": "7ad4411d60a7b42f72024bfef9779b1f8298face972abc62128c50b0c783948b"
     },
     {
       "path": "demo-input/PDF/pdf-texte-actif.pdf",
       "category": "PDF",
       "size": 3377,
-      "sha256": "bdd73fa947ddcdcd2d277ffa1ba665e8ff29441207ede18a3f2fa7a178813591"
+      "sha256": "3035331e242e3fb392748cf7788fc23bfd3f8ae349f6511a1f8b57e301ede21b"
     },
     {
       "path": "demo-input/Zip/archive-imbriquee-demo.zip",
       "category": "Zip",
       "size": 715,
-      "sha256": "d57043703f15d7189b1c684c95ea3c1e0ed0d0906f5ecc6c250edaf04df2f917"
+      "sha256": "53284e0aeb7d97d394513de806781c928132130547a740f79df68aa45bcdcbcf"
     },
     {
       "path": "demo-output/README.txt",
