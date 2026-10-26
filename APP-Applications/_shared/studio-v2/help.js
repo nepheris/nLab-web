@@ -1,3 +1,4 @@
+import {getCommand} from './command-registry.js';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 export function featureMeta(feature={},fallback={}){
@@ -127,4 +128,88 @@ export function renderContextualHelp(host,el,{manifest={},versionInfo={},feature
     '</details></article>';
   host.querySelector('[data-copy-dev-ref]')?.addEventListener('click',async e=>{try{await navigator.clipboard.writeText(ref);e.currentTarget.textContent='Référence copiée'}catch{}});
   return m;
+}
+
+/**
+ * Contextual hover/focus help for all Studio components.
+ * Reads descriptions from the canonical command registry, then help.js metadata,
+ * not from a second command implementation. Rendering is delegated, so controls
+ * mounted later (InputPicker, properties, personal profile) work automatically.
+ */
+export function mountStudioHoverHelp({root=document.body,commandPrefix='',descriptions={}}={}){
+ const bubble=document.createElement('div');
+ bubble.className='studioHoverHelp';
+ bubble.id='studioHoverHelp';
+ bubble.setAttribute('role','tooltip');
+ bubble.setAttribute('aria-live','off');
+ bubble.hidden=true;
+ const heading=document.createElement('strong'),detail=document.createElement('span');
+ bubble.append(heading,detail);
+ document.body.append(bubble);
+ let active=null;
+ const selector='button, [role="button"], [role="tab"], [role="separator"], select, input:not([type="hidden"]), textarea, summary, a[href]';
+ const find=e=>e.target instanceof Element?e.target.closest(selector):null;
+ const readable=el=>{
+  const command=el.dataset.cmd?getCommand(commandPrefix+el.dataset.cmd):null;
+  const key=el.id||el.dataset.cmd||el.dataset.panel||el.dataset.ribbonTab||el.dataset.share||el.dataset.setting||el.dataset.settingNumber||'';
+  const label=el.getAttribute('aria-label')||command?.label||
+   el.closest('label')?.querySelector('span')?.textContent?.trim()||
+   el.textContent?.trim()?.replace(/\\s+/g,' ').slice(0,72)||key||'Commande';
+  let summary=el.dataset.helpSummary||command?.help?.summary||command?.summary||descriptions[key];
+  if(!summary&&el.dataset.panel)summary='Ouvre le panneau '+label+' dans le volet latéral du Studio.';
+  if(!summary&&el.dataset.ribbonTab)summary='Affiche les commandes du ruban '+label+', sans changer leurs fonctions.';
+  if(!summary&&el.dataset.setting)summary='Modifie le réglage « '+label+' » partagé par les Studios nLab, enregistré sur cet appareil.';
+  if(!summary&&el.dataset.settingNumber)summary='Saisit une valeur pour « '+label+' » dans les paramètres communs du Core.';
+  if(!summary&&el.matches('select'))summary='Choisissez une option. Ce réglage est appliqué à l’interface actuelle.';
+  if(!summary&&el.matches('input'))summary='Saisissez ou ajustez la valeur utilisée par cette fonctionnalité.';
+  if(!summary&&el.matches('summary'))summary='Déplie ou replie les options de cette section.';
+  if(!summary&&el.hasAttribute('href'))summary='Ouvre '+label+'.';
+  return{label,summary:summary||el.getAttribute('title')||'Active la commande '+label+'.'};
+ };
+ const place=()=>{
+  if(!active||bubble.hidden)return;
+  const r=active.getBoundingClientRect(),b=bubble.getBoundingClientRect();
+  let left=Math.min(Math.max(8,r.left),Math.max(8,window.innerWidth-b.width-8));
+  let top=r.bottom+9;
+  if(top+b.height>window.innerHeight-8)top=Math.max(8,r.top-b.height-9);
+  bubble.style.left=left+'px';bubble.style.top=top+'px';
+ };
+ const show=el=>{
+  if(!el||!root.contains(el)||el.disabled||el.closest('[hidden],[inert]'))return hide();
+  if(active===el)return;
+  hide();
+  active=el;
+  const message=readable(el);
+  if(!message.summary)return hide();
+  heading.textContent=message.label;
+  detail.textContent=message.summary;
+  if(el.hasAttribute('title')){el.dataset.hoverOriginalTitle=el.getAttribute('title');el.removeAttribute('title')}
+  bubble.hidden=false;place();
+ };
+ const hide=()=>{
+  if(active?.hasAttribute('data-hover-original-title')){
+   if(!active.hasAttribute('title'))active.title=active.dataset.hoverOriginalTitle;
+   delete active.dataset.hoverOriginalTitle;
+  }
+  active=null;bubble.hidden=true;
+ };
+ const over=e=>{const el=find(e);if(el)show(el)};
+ const out=e=>{if(active&&e.target instanceof Node&&active.contains(e.target)&&!(e.relatedTarget instanceof Node&&active.contains(e.relatedTarget)))hide()};
+ const focus=e=>{const el=find(e);if(el)show(el)};
+ const blur=e=>{if(active&&e.target instanceof Node&&active.contains(e.target))hide()};
+ const scroll=()=>active?place():null;
+ const key=e=>{if(e.key==='Escape')hide()};
+ root.addEventListener('pointerover',over);
+ root.addEventListener('pointerout',out);
+ root.addEventListener('focusin',focus);
+ root.addEventListener('focusout',blur);
+ document.addEventListener('keydown',key);
+ window.addEventListener('resize',scroll);
+ window.addEventListener('scroll',scroll,true);
+ return{hide,destroy(){
+  hide();root.removeEventListener('pointerover',over);root.removeEventListener('pointerout',out);
+  root.removeEventListener('focusin',focus);root.removeEventListener('focusout',blur);
+  document.removeEventListener('keydown',key);window.removeEventListener('resize',scroll);
+  window.removeEventListener('scroll',scroll,true);bubble.remove();
+ }};
 }
