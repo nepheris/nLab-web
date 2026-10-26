@@ -114,16 +114,16 @@ jobs:
           python3 -m http.server 8770 --bind 127.0.0.1 >/tmp/studio-core-lab-http.log 2>&1 &
           sleep 2
           curl --fail http://127.0.0.1:8770/APP-Applications/studio-core-test/ >/dev/null
-      - name: Desktop and mobile real Core smoke test
-        env:
-          NLAB_BASE_URL: http://127.0.0.1:8770/
-          NLAB_BROWSER_CHANNEL: chrome
-        run: node tests/studio-core-test-lab.mjs
       - name: VNext header share and responsive smoke acceptance
         env:
           NLAB_BASE_URL: http://127.0.0.1:8770/
           NLAB_BROWSER_CHANNEL: chrome
         run: node tests/studio-core-vnext.mjs
+      - name: Desktop and mobile real Core smoke test
+        env:
+          NLAB_BASE_URL: http://127.0.0.1:8770/
+          NLAB_BROWSER_CHANNEL: chrome
+        run: node tests/studio-core-test-lab.mjs
       - name: Full demo explorer, folder filter and icon preview acceptance
         env:
           NLAB_BASE_URL: http://127.0.0.1:8770/
