@@ -1,6 +1,7 @@
 import {createCoreAdapter} from './core-adapter.js';
 import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
 import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
+import {registerCommand,executeCommand} from '../../_shared/studio-v2/command-registry.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
@@ -13,7 +14,7 @@ try{const saved=JSON.parse(localStorage.getItem(key)||'{}');for(const k of ['pan
 const persist=()=>{try{const {files,...preferences}=state;localStorage.setItem(key,JSON.stringify(preferences))}catch{}};
 let adapter;
 const inform=message=>notifyUi($('#uiNotice'),message);
-const dispatch=async cmd=>{
+const runAction=async cmd=>{
  if(cmd==='import'){
   try{
    const files=await openInputPicker({multiple:true,folders:true,url:true,expandZip:true,view:'icon',preserveSession:false});
@@ -43,6 +44,22 @@ const dispatch=async cmd=>{
  if(cmd==='float-panel'){openFloatingPanel(state.panel);return}
  persist();render();
 };
+// All menu/ribbon/side-panel actions are registered once with the existing Core registry.
+const coreActions={
+ import:'Importer',save:'Enregistrer','save-as':'Enregistrer sous',
+ undo:'Annuler',redo:'Rétablir','select-all':'Tout sélectionner',
+ 'remove-files':'Retirer les fichiers','clear-files':'Vider la collection',
+ 'toggle-work':'Afficher ou masquer la planche','collapse':'Masquer le panneau',
+ lock:'Verrouiller le panneau',windows:'Fenêtres',
+ 'float-panel':'Détacher le panneau'
+};
+for(const [name,label] of Object.entries(coreActions)){
+ registerCommand({id:'core-vnext.'+name,action:'core-vnext.'+name,
+  studio:'studio-core-vnext',plugin:'studio-core',label,
+  group:['import','save','save-as'].includes(name)?'Fichiers':'Interface',
+  handler:()=>runAction(name)});
+}
+const dispatch=cmd=>executeCommand('core-vnext.'+cmd,{source:'core-vnext-ui'});
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function panelMarkup(id){
  const common='<details class="section"><summary>Options du panneau</summary><p class="hint">Même structure et mêmes commandes dans tous les panneaux.</p></details>';
