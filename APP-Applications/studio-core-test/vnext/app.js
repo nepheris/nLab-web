@@ -11,6 +11,7 @@ import {loadStudioSettings,saveStudioSettings,applyStudioSettings,renderStudioSe
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountStudioSidebarControls} from '../../_shared/studio-v2/sidebar-controller.js';
+import {mountStudioHoverHelp} from '../../_shared/studio-v2/help.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
 // VNext experimental shell: one command dispatcher, shared panels and local preferences.
 // Functional bridge to the existing Studio Core services is intentionally not implemented yet.
@@ -25,7 +26,7 @@ try{
  if(!localStorage.getItem('nlab-studio-v2-settings')){
   const migrated={};
   if(['auto','dark','light'].includes(legacy.theme))migrated.theme=legacy.theme==='auto'?'system':legacy.theme;
-  if(Number.isFinite(Number(legacy.width)))migrated.sidebarWidth=Math.max(220,Math.min(720,Number(legacy.width)));
+  if(Number.isFinite(Number(legacy.width)))migrated.sidebarWidth=Math.max(220,Number(legacy.width));
   if(typeof legacy.locked==='boolean')migrated.sidebarLocked=legacy.locked;
   if(legacy.sidebar===false)migrated.sidebarMode='hidden';
   if(Object.keys(migrated).length)saveStudioSettings(migrated);
@@ -92,9 +93,30 @@ const coreActions={
  'show-properties':'Panneau Propriétés','show-settings':'Panneau Réglages Core',
  'float-panel':'Détacher le panneau'
 };
+
+const coreActionHelp={
+ import:'Ouvre le sélecteur partagé du Core pour importer des fichiers, dossiers, ZIP ou une URL.',
+ save:'Enregistre le fichier sélectionné dans son format d’origine, sans conversion.',
+ 'save-as':'Enregistre une copie du fichier actif sous le nom de votre choix.',
+ undo:'Annule la dernière modification de la collection dans la pile d’historique commune.',
+ redo:'Rétablit la dernière modification annulée.',
+ 'select-all':'Sélectionne tous les fichiers actuellement présents dans la collection.',
+ 'remove-files':'Retire les fichiers sélectionnés de la collection, sans effacer les fichiers sources.',
+ 'clear-files':'Vide la collection de travail sans supprimer les fichiers de votre ordinateur.',
+ 'toggle-work':'Affiche ou masque la planche de travail, sans perdre les fichiers ouverts.',
+ collapse:'Replie le panneau latéral ; la flèche dans la barre reste disponible pour le rouvrir.',
+ lock:'Empêche ou autorise le redimensionnement du panneau latéral.',
+ windows:'Ouvre le gestionnaire de fenêtres pour les déplacer, ancrer et minimiser.',
+ commands:'Recherche une commande du Studio et permet de l’exécuter au clavier (Ctrl+K).',
+ properties:'Affiche les propriétés du fichier actif dans l’inspecteur partagé du Core.',
+ 'show-properties':'Affiche le panneau Propriétés dans le volet latéral.',
+ 'show-settings':'Affiche les paramètres partagés du Core : thème, icônes, ruban et fenêtres.',
+ 'float-panel':'Détache ce panneau dans une fenêtre ancrable et repositionnable.'
+};
 for(const [name,label] of Object.entries(coreActions)){
  registerCommand({id:'core-vnext.'+name,action:'core-vnext.'+name,
   studio:'studio-core-vnext',plugin:'studio-core',label,
+  help:{summary:coreActionHelp[name]},summary:coreActionHelp[name],
   group:['import','save','save-as'].includes(name)?'Fichiers':'Interface',
   handler:()=>runAction(name)});
 }
@@ -273,6 +295,33 @@ render();
 // Single share controller: reusable by other Studios once validated.
 mountPropertyInspector();
 mountCommandPalette();
+// The reusable Core contextual-help controller describes current and future
+// controls using registered commands or existing help metadata.
+mountStudioHoverHelp({
+ root:document.body,
+ commandPrefix:'core-vnext.',
+ descriptions:{
+  shareBtn:'Regroupe le partage de lien, le QR code et l’impression en PDF.',
+  displayBtn:'Ouvre les options communes pour afficher ou masquer la planche, le ruban et le volet.',
+  sidebarToggle:'Replie ou déplie le volet latéral. La largeur choisie est mémorisée.',
+  sidebarCollapse:'Replie le volet à partir de son en-tête ; la flèche de rappel reste visible.',
+  sidebarLock:'Verrouille ou déverrouille la largeur du volet latéral.',
+  themeHeader:'Sélectionne le thème clair, sombre ou automatique pour tous les composants Core.',
+  fullscreenBtn:'Bascule le Studio en plein écran avec le même contrôleur que les autres Studios.',
+  collectionView:'Change la présentation des fichiers entre liste, cartes et vignettes.',
+  collectionSort:'Trie les fichiers par nom, type ou taille.',
+  fileDrop:'Dépose des fichiers locaux pour les ajouter à la collection active.',
+  'link':'Copie l’adresse de ce Studio ou utilise le partage natif du navigateur.',
+  'qr':'Affiche un QR code contenant le lien vers la page active.',
+  'pdf':'Ouvre la fenêtre d’impression pour créer un PDF de la page.',
+  'auto':'Le thème suit automatiquement les préférences de votre système.',
+  'work':'Masque ou réaffiche la planche de travail.',
+  'sidebar':'Masque ou réaffiche le panneau latéral.',
+  'ribbon':'Affiche ou masque les commandes du ruban.',
+  sidebarWidth:'Règle la largeur du panneau sans limite fixe à 720 px. Vous pouvez aussi glisser son bord.'
+ }
+});
+
 mountShareMenu({trigger:$('#shareBtn'),menu:$('#shareMenu'),dialog:$('#qrDialog'),notice:$('#uiNotice')});
 createFullscreenController({target:$('.app'),button:$('#fullscreenBtn'),onMessage:message=>inform(message)});
 document.addEventListener('keydown',e=>{
