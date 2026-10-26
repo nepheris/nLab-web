@@ -1,7 +1,7 @@
 import {createCoreAdapter} from './core-adapter.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
-import {mountShareMenu} from '../../_shared/nlab-share-menu.js';
+import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
 // VNext experimental shell: one command dispatcher, shared panels and local preferences.
 // Functional bridge to the existing Studio Core services is intentionally not implemented yet.
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
@@ -10,6 +10,7 @@ let state={panel:'files',work:true,sidebar:true,ribbon:true,locked:false,width:3
 try{const saved=JSON.parse(localStorage.getItem(key)||'{}');for(const k of ['panel','work','sidebar','ribbon','locked','width','theme'])if(Object.hasOwn(saved,k))state[k]=saved[k]}catch{}
 const persist=()=>{try{const {files,...preferences}=state;localStorage.setItem(key,JSON.stringify(preferences))}catch{}};
 let adapter;
+const inform=message=>notifyUi($('#uiNotice'),message);
 const dispatch=async cmd=>{
  if(cmd==='import'){$('#fileInput').click();return}
  if(cmd==='save'){
