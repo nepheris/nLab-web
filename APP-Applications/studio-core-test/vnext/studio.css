@@ -426,19 +426,23 @@ body{font-family:var(--studio-font-family,system-ui,-apple-system,"Segoe UI",san
 }
 
 /* Canonical Core portable profile: same tokens as settings, narrow panels first. */
-.coreSettingsSurface .personalProfileCard{min-width:0;max-width:100%;background:var(--ui-surface);
+.personalProfileSurface{width:100%;min-width:0;display:grid;gap:10px;color:var(--ui-text)}
+.personalProfileSurface .personalProfileCard{box-sizing:border-box}
+.personalProfileSurface :is(.personalProfileHead,.profileActions){min-width:0}
+
+.personalProfileSurface .personalProfileCard{min-width:0;max-width:100%;background:var(--ui-surface);
  color:var(--ui-text);border-color:var(--ui-border);border-radius:var(--ui-radius);padding:9px}
-.coreSettingsSurface :is(.profileGrid2,.profileVariableGrid){grid-template-columns:minmax(0,1fr);gap:8px}
-.coreSettingsSurface .personalProfileCard :is(input,select,textarea){width:100%;max-width:100%;min-width:0;
+.personalProfileSurface :is(.profileGrid2,.profileVariableGrid){grid-template-columns:minmax(0,1fr);gap:8px}
+.personalProfileSurface .personalProfileCard :is(input,select,textarea){width:100%;max-width:100%;min-width:0;
  min-height:36px;background:var(--ui-surface);color:var(--ui-text);border:1px solid var(--ui-border)}
-.coreSettingsSurface .personalProfileCard :is(details,section,.profileAssetRow){
+.personalProfileSurface .personalProfileCard :is(details,section,.profileAssetRow){
  min-width:0;max-width:100%;border-color:var(--ui-border)}
-.coreSettingsSurface .personalProfileCard :is(.profileActions,.profileAssetRow){flex-wrap:wrap}
-.coreSettingsSurface .personalProfileCard button{min-height:36px;font-size:11px}
-.coreSettingsSurface .personalProfileHead strong{font-size:13px}
-.coreSettingsSurface .personalProfileHead small{font-size:11px;color:var(--ui-muted)}
-.coreSettingsSurface .profileVariableGrid span{font-size:11px}
-.coreSettingsSurface .profileVariableGrid code{font-size:11px;color:var(--ui-accent)}
+.personalProfileSurface .personalProfileCard :is(.profileActions,.profileAssetRow){flex-wrap:wrap}
+.personalProfileSurface .personalProfileCard button{min-height:36px;font-size:11px}
+.personalProfileSurface .personalProfileHead strong{font-size:13px}
+.personalProfileSurface .personalProfileHead small{font-size:11px;color:var(--ui-muted)}
+.personalProfileSurface .profileVariableGrid span{font-size:11px}
+.personalProfileSurface .profileVariableGrid code{font-size:11px;color:var(--ui-accent)}
 
 /* Canonical Core property inspector uses the same nLab window tokens. */
 .studioPropertyInspector{background:var(--ui-surface);color:var(--ui-text);
