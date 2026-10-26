@@ -91,3 +91,20 @@ body[data-ribbon-mode="primary"] .ribbonGroupLabel{font-size:9px}
  .ribbonCommands button{min-width:58px;min-height:60px}
  .side .resizer{display:none}
 }
+
+/* Reusable contextual help surface for all nLab Studios.
+   Descriptions are provided by help.js / the Core command registry. */
+.studioHoverHelp{
+ position:fixed;z-index:100000;width:max-content;max-width:min(330px,calc(100vw - 16px));
+ display:grid;gap:5px;padding:10px 12px;
+ border:1px solid var(--ui-border,var(--nlab-line,#d9e0e6));
+ border-radius:9px;background:var(--ui-surface,var(--nlab-card,#fff));
+ color:var(--ui-text,var(--nlab-ink,#202830));
+ box-shadow:0 10px 30px #0003;pointer-events:none;
+ font-family:var(--studio-font-family,system-ui,sans-serif);
+ font-size:12px;line-height:1.4;text-align:left;overflow-wrap:anywhere
+}
+.studioHoverHelp[hidden]{display:none!important}
+.studioHoverHelp strong{font-size:12px;font-weight:700;color:var(--ui-text,var(--nlab-ink,#202830))}
+.studioHoverHelp span{font-size:11px;color:var(--ui-muted,var(--nlab-muted,#647587));line-height:1.5}
+@media(max-width:700px){.studioHoverHelp{max-width:calc(100vw - 16px)}}
