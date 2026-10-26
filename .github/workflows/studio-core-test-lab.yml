@@ -6,6 +6,8 @@ on:
       - 'APP-Applications/studio-core-test/ux-lab.js'
       - 'tests/studio-core-test-lab.mjs'
       - 'APP-Applications/_shared/nlab-share-menu.js'
+      - 'APP-Applications/_shared/studio-v2/sidebar-controller.js'
+      - 'APP-Applications/_shared/studio-v2/window-system.js'
       - 'tests/studio-core-vnext.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
   pull_request:
@@ -42,7 +44,7 @@ permissions:
   contents: read
 jobs:
   chrome-core-lab:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -53,6 +55,8 @@ jobs:
         run: |
           node --check APP-Applications/studio-core-test/app.js
           node --check APP-Applications/studio-core-test/vnext/app.js
+          node --check APP-Applications/_shared/studio-v2/sidebar-controller.js
+          node --check APP-Applications/_shared/studio-v2/window-system.js
           node --check APP-Applications/_shared/nlab-share-menu.js
           node --check tests/studio-core-vnext.mjs
           node --check APP-Applications/_shared/studio-v2/collection-browser.js
