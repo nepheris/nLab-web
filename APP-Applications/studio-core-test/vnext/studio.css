@@ -489,3 +489,31 @@ body{font-family:var(--studio-font-family,system-ui,-apple-system,"Segoe UI",san
 @media(max-width:700px){
  .board{overflow-x:clip}
 }
+
+
+/* File preview shares one persisted visibility state with Ribbon and Display menu. */
+.workspace.is-preview-hidden .previewPanel{display:none!important}
+.workspace.is-preview-hidden .boardGrid{grid-template-columns:minmax(0,1fr)!important}
+.collectionToolbar #togglePreview[aria-pressed="false"]{border-color:var(--ui-accent)}
+#togglePreview{display:inline-flex;align-items:center;gap:5px}
+#togglePreview [data-core-icon] svg{height:16px;width:16px;stroke:currentColor;fill:none}
+.collectionBrowser.collection-table{display:block;overflow-x:auto}
+.collectionBrowser .collectionTableHead,
+.collectionBrowser.collection-table .collectionItem{
+ display:grid;grid-template-columns:24px 48px minmax(125px,2fr) 72px 75px minmax(95px,1fr);
+ align-items:center;gap:7px;min-width:560px;box-sizing:border-box}
+.collectionBrowser .collectionTableHead{background:var(--ui-soft);font-size:10px;font-weight:700;
+ color:var(--ui-muted);padding:8px 5px;position:sticky;top:0;z-index:3}
+.collectionBrowser.collection-table .collectionItem{margin:4px 0;padding:5px}
+.collectionBrowser.collection-table .collectionItem .collectionThumb{height:35px;width:42px}
+.collectionBrowser.collection-table .collectionItem>[data-collection-open]{padding:3px}
+.collectionBrowser.collection-table .collectionItem>[data-collection-open] :is(small,em){display:none}
+.collectionBrowser .collectionTableType,
+.collectionBrowser .collectionTableSize,.collectionBrowser .collectionTablePath{display:none}
+.collectionBrowser.collection-table .collectionTableType,
+.collectionBrowser.collection-table .collectionTableSize,.collectionBrowser.collection-table .collectionTablePath{
+ display:block;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.collectionBrowser.collection-table .collectionTablePath{color:var(--ui-muted)}
+.collectionBrowser.collection-table .collectionGroupBody{display:block}
+@media(max-width:700px){.collectionBrowser.collection-table .collectionItem,
+ .collectionBrowser .collectionTableHead{min-width:530px}}
