@@ -14,7 +14,7 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
   throw new TypeError('Advanced output requires host, OutputService, getFile, onSave');
  host.classList.add('coreAdvancedOutput');
  host.innerHTML=[
-  '<p class="coreAdvancedHint">Renommage et classement basés sur les modèles et variables du profil personnel nLab. Le contenu du fichier reste inchangé.</p>',
+  '<p class="coreAdvancedHint">Renommage et classement basés sur les modèles et variables du profil personnel nLab. Le contenu du fichier reste inchangé. « Même dossier source » demande une autorisation explicite.</p>',
   '<label>Modèle de renommage<select data-save="naming"></select></label>',
   '<label>Préfixe<input data-save="prefix" placeholder="Ex. DOC_"></label>',
   '<label>Nom avec variables (extension conservée)<input data-save="name" value="{FILENAME}" spellcheck="false"></label>',
@@ -24,6 +24,7 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
   '<fieldset class="coreAdvancedDestination"><legend>Destination</legend>',
   '<div class="coreAdvancedActions"><button type="button" data-save-action="choose">Choisir un dossier…</button>',
   '<button type="button" data-save-action="recent">Dernier dossier</button>',
+  '<button type="button" data-save-action="source">Même dossier que le fichier source…</button>',
   '<button type="button" data-save-action="download">Téléchargement simple</button></div>',
   '<p data-save-destination class="coreAdvancedHint" role="status"></p></fieldset>',
   '<details class="coreAdvancedDetails"><summary>Variables disponibles : insérer dans le nom ou les sous-dossiers</summary>',
@@ -45,7 +46,7 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
  ].join('');
  const field=name=>get(host,'[data-save="'+name+'"]');
  const nameSelect=field('naming'),folderSelect=field('classification'),preview=get(host,'[data-save-preview]');
- const engine=new TemplateEngine();let target='name',busy=false;
+ const engine=new TemplateEngine();let target='name',busy=false,sourceDirectory=false;
  const status=(message,error=false)=>{const el=get(host,'[data-save-status]');el.textContent=message;el.dataset.error=String(error)};
  const populate=(type,select,selected)=>{
   const items=listPersonalTemplates(type);
@@ -95,7 +96,7 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
     :'Téléchargement du fichier directement dans le dossier choisi par votre navigateur.';
   }catch(e){preview.textContent=e.message;get(host,'[data-save-hint]').textContent=''}
   get(host,'[data-save-destination]').textContent=output.handle
-   ?'Dossier actif : '+output.handle.name
+   ?(sourceDirectory?'Dossier source confirmé : ':'Dossier actif : ')+output.handle.name
    :'Téléchargement simple : aucun dossier ni sous-dossier créé.';
  };
  createTemplateVariablePicker({
@@ -126,12 +127,19 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
    status('Modèle enregistré dans le profil personnel nLab.');return;
   }
   try{
-   if(action==='choose'){await output.chooseDirectory();status('Dossier choisi.');return refresh()}
-   if(action==='recent'){await output.loadLastDirectory();status('Dernier dossier réutilisé.');return refresh()}
-   if(action==='download'){output.handle=null;status('Téléchargement simple sélectionné.');return refresh()}
+   if(action==='source'){
+    await output.chooseSourceDirectory(fileContext().file);
+    sourceDirectory=true;
+    status('Dossier source vérifié. Un nom différent évite d’écraser l’original.');
+    return refresh();
+   }
+   if(action==='choose'){await output.chooseDirectory();sourceDirectory=false;status('Dossier choisi.');return refresh()}
+   if(action==='recent'){await output.loadLastDirectory();sourceDirectory=false;status('Dernier dossier réutilisé.');return refresh()}
+   if(action==='download'){output.handle=null;sourceDirectory=false;status('Téléchargement simple sélectionné.');return refresh()}
    if(action==='save'){
     const p=plan();
     if(p.parts.length&&!output.handle)throw new Error('Choisissez un dossier pour créer les sous-dossiers.');
+    if(sourceDirectory&&!p.parts.length&&p.name===p.file.name)throw new Error('Pour ne pas écraser le fichier source, choisissez un autre nom ou créez un sous-dossier.');
     busy=true;button.disabled=true;
     try{await onSave(p);status('Enregistré : '+p.relativePath);refresh()}
     finally{busy=false;button.disabled=false}
