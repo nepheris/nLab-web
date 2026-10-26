@@ -46,12 +46,24 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('#sidebarLock').click();
   if(await page.locator('[data-setting="sidebarLocked"]').isChecked())throw Error('Le cadenas n’est pas synchronisé aux réglages');
   await page.locator('[data-setting="sidebarLocked"]').uncheck();
-  // The same collapsed sidebar can always be reopened via the persistent rail.
-  await page.locator('#sidebarCollapse').click();
+  // Same two-place sidebar control: fold arrow beside padlock; restore arrow in fixed rail.
+  const fold=page.locator('#sidebarCollapse'),restore=page.locator('#sidebarToggle');
+  if(!(await fold.isVisible()))throw Error('Flèche de repli absente à côté du cadenas');
+  if(!(await page.locator('#sidebarLock').isVisible()))throw Error('Cadenas du volet absent');
+  if(!(await fold.evaluate(el=>el.previousElementSibling?.id==='sidebarLock')))throw Error('Flèche mal placée dans le panneau');
+  if(!(await fold.locator('svg path').count()))throw Error('Icône de repli non présente');
+  await fold.click();
   if(!(await page.locator('.layout').evaluate(el=>el.classList.contains('is-side-hidden'))))throw Error('Panneau non replié');
-  if(await page.locator('#sidebarToggle').getAttribute('aria-expanded')!=='false')throw Error('État du panneau non synchronisé');
+  if(await restore.getAttribute('aria-expanded')!=='false')throw Error('État du volet non synchronisé');
+  if(!(await restore.isVisible()))throw Error('Rappel pour déplier le volet masqué');
+  if(await restore.getAttribute('data-state')!=='closed')throw Error('Flèche du rail non passée en ouverture');
+  if((await restore.locator('.sidebarRestoreLabel').textContent())!=='Afficher')throw Error('Libellé de rappel incorrect');
+  if(!(await page.locator('.side').evaluate(el=>el.getAttribute('aria-hidden')==='true')))throw Error('Volet masqué encore accessible');
+  await page.reload({waitUntil:'domcontentloaded'});
+  if(await page.locator('#sidebarToggle').getAttribute('data-state')!=='closed')throw Error('Volet masqué non mémorisé');
   await page.locator('#sidebarToggle').click();
   if(await page.locator('.layout').evaluate(el=>el.classList.contains('is-side-hidden')))throw Error('Panneau non déplié');
+  if(await page.locator('#sidebarCollapse').getAttribute('aria-expanded')!=='true')throw Error('Flèche de repli non restaurée');
   // Resize from the SAME persisted Core sidebarWidth setting (mouse + keyboard).
   if(!mobile&&viewport.width>=1000){
    const grip=page.locator('.side .resizer');
