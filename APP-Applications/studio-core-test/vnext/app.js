@@ -76,6 +76,8 @@ const runAction=async cmd=>{
  if(cmd==='lock'){sidebarController.toggleLock();return}
  if(cmd==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
  if(cmd==='properties'){document.dispatchEvent(new Event('studio-v2:open-properties'));return}
+ if(cmd==='show-properties'){openPanel('properties');return}
+ if(cmd==='show-settings'){openPanel('settings');return}
  if(cmd==='windows'){openWindow();return}
  if(cmd==='float-panel'){openFloatingPanel(state.panel);return}
  persist();render();
@@ -87,6 +89,7 @@ const coreActions={
  'remove-files':'Retirer les fichiers','clear-files':'Vider la collection',
  'toggle-work':'Afficher ou masquer la planche','collapse':'Masquer le panneau',
  lock:'Verrouiller le panneau',windows:'Fenêtres',commands:'Palette de commandes',properties:'Propriétés du fichier',
+ 'show-properties':'Panneau Propriétés','show-settings':'Panneau Réglages Core',
  'float-panel':'Détacher le panneau'
 };
 for(const [name,label] of Object.entries(coreActions)){
@@ -96,6 +99,8 @@ for(const [name,label] of Object.entries(coreActions)){
   handler:()=>runAction(name)});
 }
 const dispatch=cmd=>executeCommand('core-vnext.'+cmd,{source:'core-vnext-ui'});
+function openPanel(id){state.panel=id;saveStudioSettings({sidebarMode:'normal'});persist();render()}
+
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function panelMarkup(id){
  const common='<details class="section"><summary>Options du panneau</summary><p class="hint">Même structure et mêmes commandes dans tous les panneaux.</p></details>';
@@ -147,11 +152,11 @@ function hydrateCoreIcons(){
 const ribbonController=mountStudioRibbonTabs({
  tabs:'.ribbonTabs',groups:'#coreRibbon',
  views:{
-  home:['display','files','history','windows'],
+  home:['display','files','history','panels','windows'],
   file:['display','files'],
   edit:['display','history'],
-  display:['display','windows'],
-  tools:['display','windows']
+  display:['display','panels','windows'],
+  tools:['display','panels','windows']
  },initial:'home'
 });
 function render(){
@@ -195,7 +200,7 @@ function openFloatingPanel(id){
  if(id==='settings'&&coreSettingsHost)el.querySelector('.content').replaceChildren(coreSettingsHost);
  if(id==='history'&&canonicalHistory){el.querySelector('.content').replaceChildren(canonicalHistory.element);canonicalHistory.render()}
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-cmd]');if(b)dispatch(b.dataset.cmd);const p=e.target.closest('[data-panel]');if(p){state.panel=p.dataset.panel;saveStudioSettings({sidebarMode:'normal'});persist();render()}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-cmd]');if(b)dispatch(b.dataset.cmd);const p=e.target.closest('[data-panel]');if(p)openPanel(p.dataset.panel)});
 document.addEventListener('studio-v2:settings-changed',()=>{syncCoreAppearance();render()});
 $('#displayBtn').onclick=()=>{$('#displayMenu').hidden=!$('#displayMenu').hidden;render()};
 $$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{
