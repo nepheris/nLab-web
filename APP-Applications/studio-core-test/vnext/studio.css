@@ -166,3 +166,122 @@ a:hover{color:var(--ui-accent)}
  .board #boardBody{display:block!important;padding:8px!important}
  #filesList{border-color:#999}
 }
+
+
+/* Core services, skinned with the SAME VNext design tokens:
+   CollectionBrowser + canonical window-system.js. */
+.collectionToolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px}
+.collectionToolbar label{display:inline-flex;align-items:center;gap:6px;font-size:12px}
+.collectionToolbar select{border:1px solid var(--ui-border);border-radius:var(--ui-radius);
+ background:var(--ui-surface);padding:7px}
+.boardGrid{display:grid;grid-template-columns:minmax(260px,1fr) minmax(250px,0.85fr);gap:12px}
+.collectionPanel,.previewPanel{min-width:0;padding:12px;border:1px solid var(--ui-border);
+ background:var(--ui-surface);border-radius:var(--ui-radius)}
+.collectionPanel h2,.previewPanel h2{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:14px}
+#collectionCount{margin-left:auto;font-size:11px;color:var(--ui-muted)}
+.collectionBrowser{display:grid;align-content:start;gap:6px;max-height:min(54dvh,550px);
+ overflow:auto;padding:3px}
+.collectionBrowser.collection-grid,.collectionBrowser.collection-thumbs{
+ grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--nlab-collection-card-width,160px)),1fr));
+}
+.collectionItem{display:grid;grid-template-columns:26px 52px minmax(0,1fr);align-items:center;
+ gap:6px;padding:6px;border:1px solid var(--ui-border);border-radius:8px;background:var(--ui-surface);min-width:0}
+.collectionItem.active{border-color:var(--ui-accent);background:var(--ui-soft)}
+.collectionCheck{display:grid;place-items:center}
+.collectionCheck input{width:17px;height:17px}
+.collectionThumb{width:50px;height:55px;display:grid;place-items:center;position:relative;
+ background:var(--ui-soft);border-radius:6px;overflow:hidden}
+.collectionThumbMedia,.collectionThumbMedia img{display:block;max-width:100%;max-height:100%}
+.collectionThumbMedia img{object-fit:contain;transform:rotate(var(--collection-item-rotation,0deg))}
+.collectionThumbPlaceholder{display:grid;place-items:center;width:26px;height:33px;
+ border:1px dashed var(--ui-border);background:var(--ui-surface)}
+.collectionThumbTools{position:absolute;bottom:0;left:0;right:0;display:none;justify-content:center;gap:2px;
+ background:var(--ui-surface);padding:2px}
+.collectionThumbTools button{min-height:25px;padding:1px 6px}
+.collectionItem:hover .collectionThumbTools,.collectionItem:focus-within .collectionThumbTools{display:flex}
+.collectionItem>[data-collection-open]{border:0;background:transparent;min-width:0;display:block;
+ text-align:left;padding:4px 5px}
+.collectionItem>[data-collection-open] :is(strong,small,em){display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.collectionItem>[data-collection-open] strong{font-size:12px}
+.collectionItem>[data-collection-open] :is(small,em){font-size:10px;font-style:normal;color:var(--ui-muted)}
+.collection-grid .collectionItem,.collection-thumbs .collectionItem{display:flex;flex-direction:column;
+ align-items:stretch;position:relative;gap:4px}
+.collection-grid .collectionCheck,.collection-thumbs .collectionCheck{position:absolute;top:8px;left:8px;z-index:2}
+.collection-grid .collectionThumb,.collection-thumbs .collectionThumb{width:100%;height:var(--nlab-collection-thumb-height,125px)}
+.collection-grid .collectionItem>[data-collection-open],.collection-thumbs .collectionItem>[data-collection-open]{
+ width:100%;padding:5px 7px;text-align:left}
+.collectionGroup{grid-column:1/-1;min-width:0}
+.collectionGroupHead{display:flex;align-items:center;gap:8px;width:100%}
+.collectionGroupHead small{margin-left:auto}
+.collectionGroupBody{display:grid;gap:6px;grid-template-columns:inherit;margin-top:5px}
+.collectionEmpty{padding:16px;color:var(--ui-muted);text-align:center}
+.dropTarget{margin-top:12px;padding:13px;border:1px dashed var(--ui-border);border-radius:8px;
+ background:var(--ui-soft);font-size:12px;text-align:center;cursor:pointer}
+.dropTarget.dragOver{border-color:var(--ui-accent);outline:2px solid var(--ui-accent);outline-offset:1px}
+#filePreview{min-height:130px;font-size:13px;overflow:hidden}
+.corePreviewImage{display:block;max-width:100%;max-height:55dvh;object-fit:contain;margin:8px auto}
+.corePreviewFrame{width:100%;min-height:45dvh;border:1px solid var(--ui-border);background:white}
+.corePreviewText{white-space:pre-wrap;overflow:auto;max-height:54dvh;padding:10px;margin:0;
+ border:1px solid var(--ui-border);background:var(--ui-soft);font:12px/1.5 ui-monospace,monospace}
+.coreHistoryList{display:grid;gap:8px;padding-left:22px;font-size:12px}
+.coreHistoryList li{border-bottom:1px solid var(--ui-border);padding-bottom:5px;overflow-wrap:anywhere}
+.coreHistoryList small{display:block;color:var(--ui-muted)}
+.coreHistoryList p{margin:2px 0}
+.section dl{display:grid;grid-template-columns:auto 1fr;column-gap:10px;font-size:12px}
+.section dt{font-weight:650}
+.section dd{margin:0;overflow-wrap:anywhere}
+.panelButtonList{display:flex;flex-wrap:wrap;gap:8px}
+#saveAsForm .modalBody label{display:grid;gap:4px}
+#saveAsName{width:100%;padding:9px;border-radius:8px;border:1px solid var(--ui-border);
+ background:var(--ui-surface)}
+
+/* Canonical window-system.js controls — no parallel window manager. */
+.studioWindow{resize:both;overflow:auto;min-width:280px;min-height:90px;
+ max-width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
+.studioWindow[hidden]{display:none!important}
+.studioWindowBar{position:sticky;top:0;z-index:4;display:flex;align-items:center;
+ gap:4px;padding:6px;border-bottom:1px solid var(--ui-border);background:var(--ui-soft)}
+.studioWindowBar strong{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.studioWindowBar .grow{flex:1}
+.studioWindowBar button{padding:0;min-height:30px;min-width:30px;display:grid;
+ place-items:center;background:var(--ui-surface)}
+.studioWindowBar svg,.studioWindowGrip svg{width:17px;height:17px;stroke:currentColor;
+ fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.studioWindowGrip{display:grid;place-items:center;flex:0 0 24px;cursor:grab}
+.studioWindowBar button.active{background:var(--ui-soft);border-color:var(--ui-accent)}
+.studioWindowLocked,.studioWindowCollapsed{resize:none}
+.studioWindowCollapsed>*:not(.studioWindowBar){display:none!important}
+.studioWindowDocked{left:10px!important;right:10px!important;top:100px!important;
+ width:auto!important;resize:vertical}
+.studioWindowLarge{width:min(920px,calc(100vw - 24px))!important}
+.studioWindowRestoreTray{position:fixed;right:0;top:42%;z-index:410;pointer-events:none}
+.studioWindowRestoreToggle{pointer-events:auto;background:var(--ui-surface);padding:7px;
+ min-width:40px;border-radius:8px 0 0 8px}
+.studioWindowRestorePanel{position:absolute;right:43px;top:0;width:min(275px,calc(100vw - 56px));
+ padding:10px;background:var(--ui-surface);color:var(--ui-text);
+ border:1px solid var(--ui-border);border-radius:10px;box-shadow:var(--ui-shadow);
+ pointer-events:auto}
+.studioWindowRestorePanel[hidden]{display:none!important}
+.studioWindowRestoreHead{display:flex;justify-content:space-between;gap:8px}
+.studioWindowRestorePanel button{min-height:35px;margin:3px}
+.studioWindowRestorePanel button[data-win-restore]{display:block;width:100%;text-align:left}
+@media(max-width:850px){.boardGrid{grid-template-columns:1fr}}
+@media(max-width:700px){
+ .collectionToolbar{gap:5px}
+ .collectionToolbar label{min-width:0}
+ .collectionToolbar select{max-width:130px}
+ .collectionBrowser{max-height:38dvh}
+ .collection-grid,.collection-thumbs{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+ .studioWindow{min-width:0}
+ .studioWindowBar{gap:2px;flex-wrap:wrap}
+ .studioWindowBar button{min-width:32px;min-height:32px}
+ .studioWindowDocked{left:6px!important;right:6px!important;top:8dvh!important}
+}
+@media print{
+ .collectionToolbar,.dropTarget,.studioWindowRestoreTray,.floating{display:none!important}
+ .boardGrid{display:block}
+ .collectionPanel{border:0}
+ .previewPanel{page-break-before:always}
+ .collectionBrowser{max-height:none;overflow:visible}
+ .corePreviewFrame{min-height:40vh}
+}
