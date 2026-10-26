@@ -3,7 +3,7 @@ import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
 import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
 import {registerCommand,executeCommand} from '../../_shared/studio-v2/command-registry.js';
 import {mountCommandPalette} from '../../_shared/studio-v2/command-palette.js';
-import {loadStudioSettings,saveStudioSettings,applyStudioSettings,renderStudioSettingsPanel} from '../../_shared/studio-v2/settings.js';
+import {loadStudioSettings,saveStudioSettings,applyStudioSettings,renderStudioSettingsPanel,syncStudioSettingsPanel} from '../../_shared/studio-v2/settings.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
@@ -140,6 +140,7 @@ function render(){
  $('[data-cmd=lock]').textContent=preferences.sidebarLocked?'🔒':'🔓';
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  panelContent();
+ if(coreSettingsHost)syncStudioSettingsPanel(coreSettingsHost,preferences);
  syncUndoButtons();
 }
 const floating=new Map();
