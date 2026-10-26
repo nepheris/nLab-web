@@ -13,7 +13,12 @@ async function scenario(name,viewport){
  try{
   const response=await page.goto(new URL('APP-Applications/studio-core-test/',base).href,{waitUntil:'domcontentloaded',timeout:45000});
   assert(response?.ok(),name+': HTML unavailable');
-  await page.locator('html[data-core-lab-ready="1"]').waitFor({timeout:35000});
+  await page.waitForFunction(()=>['1','error'].includes(document.documentElement.dataset.coreLabReady),null,{timeout:35000});
+  const readiness=await page.locator('html').getAttribute('data-core-lab-ready');
+  if(readiness!=='1'){
+   const message=await page.locator('#labCheckSummary').textContent().catch(()=>'');
+   throw Error(name+': Core Lab initialization '+readiness+' — '+message);
+  }
   await page.locator('html[data-core-lab-checks="pass"]').waitFor({timeout:15000});
   assert((await page.locator('#labCheckList li.pass').count())===15,name+': 15 checks should pass');
   assert(await page.locator('.studioLogo img').count()===1,name+': Core nLab logo absent');
