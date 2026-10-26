@@ -184,6 +184,18 @@ async function runScenario({name,viewport,mobile}){
   }
 
 
+  if(name==='desktop'){
+   await page.locator('.rail [data-panel="tools"]').click();
+   const swatch=page.locator('.coreToolsSwatch');
+   await page.locator('.nlabColorPickerVisual').fill('#ff8040');
+   if(!(await swatch.textContent()).includes('#FF8040'))throw Error('Sélecteur couleur Core non fonctionnel');
+   await page.locator('.nlabDateInput').fill('2026-12-31');
+   await page.locator('.nlabDateInput').dispatchEvent('change');
+   if((await page.locator('.nlabDateFormatted').textContent())!=='31/12/2026')
+    throw Error('Contrôle de date commun non synchronisé');
+   await page.locator('.rail [data-panel="files"]').click();
+  }
+
   // Canonical collection, preview, history and properties use real Core services.
   await page.locator('#fileInput').setInputFiles({name:'vnext-test.txt',mimeType:'text/plain',buffer:Buffer.from('Fichier réel nLab TEST')});
   await page.locator('#filesList .collectionItem').first().waitFor({state:'visible'});
@@ -250,6 +262,14 @@ async function runScenario({name,viewport,mobile}){
   const yyyy=String(new Date().getFullYear());
   if(!plannedPath.includes(yyyy+'/')||!plannedPath.endsWith('vnext-test_TEST.txt'))
    throw Error('Aperçu des modèles nLab invalide : '+plannedPath);
+  if(name==='desktop'){
+   await advanced.locator('.nlabDateInput').fill('2026-12-31');
+   await advanced.locator('.nlabDateInput').dispatchEvent('change');
+   await advanced.locator('[data-save="name"]').fill('{FILENAME}_{DATE_A:YYYYMMDD}');
+   if(!(await advanced.locator('[data-save-preview]').textContent()).endsWith('vnext-test_20261231.txt'))
+    throw Error('Date A non injectée dans le moteur de nom du Core');
+   await advanced.locator('[data-save="name"]').fill('{FILENAME}_TEST');
+  }
   if((await advanced.locator('[data-template-token="CLIENT"]').count())!==1)
    throw Error('Sélecteur de variables nLab non partagé');
   await advanced.locator('[data-save-action="save"]').click();
@@ -263,6 +283,7 @@ async function runScenario({name,viewport,mobile}){
      name:parts.at(-1)||'Destination TEST',
      getDirectoryHandle:async part=>directory([...parts,part]),
      getFileHandle:async filename=>({
+      getFile:async()=>new File(['Fichier réel nLab TEST'],filename,{type:'text/plain'}),
       createWritable:async()=>({
        write:async blob=>window.__advancedWrites.push({path:[...parts,filename].join('/'),content:await blob.text()}),
        close:async()=>{}
@@ -283,6 +304,26 @@ async function runScenario({name,viewport,mobile}){
    await advanced.locator('[data-save-action="memorize-name"]').click();
    if((await advanced.locator('[data-save="naming"] option').count())<2)
     throw Error('Modèle de nom personnel non mémorisé');
+   // The explicitly selected source directory must be verified; direct overwrite is blocked.
+   await advanced.locator('[data-save="classification"]').selectOption('root');
+   await advanced.locator('[data-save="name"]').fill('{FILENAME}');
+   await advanced.locator('[data-save="prefix"]').fill('');
+   await advanced.locator('[data-save="suffix"]').fill('');
+   await advanced.locator('[data-save-action="source"]').click();
+   if(!(await advanced.locator('[data-save-destination]').textContent()).includes('Dossier source confirmé'))
+    throw Error('Dossier source non confirmé');
+   await advanced.locator('[data-save-action="save"]').click();
+   if(!(await advanced.locator('[data-save-status]').textContent()).includes('ne pas écraser'))
+    throw Error('Écrasement du fichier source autorisé par erreur');
+   if((await page.evaluate(()=>window.__advancedWrites.length))!==1)
+    throw Error('Le fichier source a été écrasé');
+   await advanced.locator('[data-save="suffix"]').fill('_archive');
+   await advanced.locator('[data-save-action="save"]').click();
+   await page.waitForFunction(()=>window.__advancedWrites.length===2);
+   const second=await page.evaluate(()=>window.__advancedWrites[1]);
+   if(!second.path.endsWith('vnext-test_archive.txt')||second.content!=='Fichier réel nLab TEST')
+    throw Error('Classement dans le même dossier incorrect');
+
   }else{
    // Browser download must remain available when no destination directory is chosen.
    await advanced.locator('[data-save="classification"]').selectOption('root');
