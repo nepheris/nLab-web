@@ -175,14 +175,14 @@ export function mountStudioHoverHelp({root=document.body,commandPrefix='',descri
   bubble.style.left=left+'px';bubble.style.top=top+'px';
  };
  const show=el=>{
-  if(!el||!root.contains(el)||el.disabled||el.closest('[hidden],[inert]'))return hide();
+  if(!el||!root.contains(el)||el.closest('[hidden],[inert]'))return hide();
   if(active===el)return;
   hide();
   active=el;
   const message=readable(el);
   if(!message.summary)return hide();
   heading.textContent=message.label;
-  detail.textContent=message.summary;
+  detail.textContent=el.disabled?'Commande temporairement indisponible. '+message.summary:message.summary;
   if(el.hasAttribute('title')){el.dataset.hoverOriginalTitle=el.getAttribute('title');el.removeAttribute('title')}
   bubble.hidden=false;place();
  };
