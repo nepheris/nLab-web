@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f4f6f8">
   <title>Studio Core — VNext prototype</title>
   <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./studio.css?v=20261024-2">
+  <link rel="stylesheet" href="./studio.css?v=20261026-1">
 </head>
 <body>
   <header class="header">
@@ -56,7 +56,19 @@
           <div class="resizer" role="separator" aria-orientation="vertical" aria-label="Redimensionner le panneau" tabindex="0"></div>
         </section>
         <main class="board"><div class="panelHead"><strong>Planche de travail</strong><button type="button" data-cmd="toggle-work">Masquer</button></div>
-          <div id="boardBody"><h1>Planche de travail</h1><p>Prototype de reconstruction du Core : mêmes commandes et mêmes composants dans chaque panneau.</p><div id="filesList" aria-live="polite">Aucun fichier importé.</div></div>
+          <div id="boardBody">
+ <div class="collectionToolbar" role="group" aria-label="Affichage des fichiers">
+  <label>Vue <select id="collectionView"><option value="list">Liste</option><option value="grid">Cartes</option><option value="thumbs">Vignettes</option></select></label>
+  <label>Trier <select id="collectionSort"><option value="name">Nom</option><option value="type">Type</option><option value="size">Taille</option></select></label>
+  <button type="button" data-cmd="select-all">Tout sélectionner</button>
+  <button type="button" data-cmd="remove-files">Retirer sélection</button>
+ </div>
+ <div class="boardGrid"><div class="collectionPanel"><h2>Collection <output id="collectionCount">0 fichier</output></h2>
+  <div id="filesList" class="collectionBrowser" aria-label="Collection de fichiers" aria-live="polite"></div>
+  <div class="dropTarget" id="fileDrop" tabindex="0" role="button" aria-label="Déposer des fichiers ou ouvrir le sélecteur">↥ Déposer des fichiers ici, ou cliquer pour importer</div>
+ </div>
+ <div class="previewPanel"><h2>Aperçu du fichier actif</h2><div id="filePreview" aria-live="polite">Aucun fichier actif.</div></div></div>
+ </div>
         </main>
       </div>
     </section>
@@ -66,8 +78,14 @@
     <div class="panelHead"><strong id="qrTitle">QR code de cette page</strong><button type="button" id="closeQr" aria-label="Fermer">×</button></div>
     <div class="modalBody"><div id="qrCanvas" aria-live="polite">Chargement…</div><p id="qrUrl"></p><button type="button" data-share="copy">Copier le lien</button></div>
   </dialog>
+  <dialog id="saveAsDialog" class="modal" aria-labelledby="saveAsTitle">
+    <form method="dialog" id="saveAsForm"><div class="panelHead"><strong id="saveAsTitle">Enregistrer une copie</strong><button type="button" id="cancelSaveAs" aria-label="Fermer">×</button></div>
+    <div class="modalBody"><p class="hint">Enregistre le fichier sélectionné sans convertir son format.</p>
+    <label>Nom du fichier <input id="saveAsName" name="filename" required maxlength="255" autocomplete="off"></label>
+    <button id="confirmSaveAs" type="submit">Enregistrer</button></div></form>
+  </dialog>
   <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
   <input id="fileInput" type="file" multiple hidden>
-  <script type="module" src="./app.js?v=20261024-2"></script>
+  <script type="module" src="./app.js?v=20261026-1"></script>
 </body>
 </html>
