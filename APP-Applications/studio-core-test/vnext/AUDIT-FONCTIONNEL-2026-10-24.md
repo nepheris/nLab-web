@@ -84,3 +84,32 @@ Livrables réellement ajoutés dans \`vnext/\` :
 - **NO-GO pour promotion CURRENT et migration Image/PDF** : les 86 contrôles de parité Core, les fonctionnalités avancées (édition, annuler/rétablir, personnalisation détaillée) et le contrôle de design HUMAN00 restent à valider.
 
 La présente section remplace l'état CI provisoire noté dans la section « Reprise autonome » ci-dessus ; elle n'emporte aucune clôture de TSK canonique.
+
+## Politique « zéro duplication » — intégration du 26/10/2026
+
+Instruction HUMAN00 : **VNext est une nouvelle interface sur le Core existant ; ne jamais créer un second moteur pour une fonction déjà implémentée.** Une action unique peut être exposée à plusieurs endroits ; tous invoquent la même commande/module.
+
+| Fonctionnalité | Module canonique réutilisé | Point d'entrée dans VNext | Intégration |
+|---|---|---|---|
+| Sélection/import fichiers, dossiers, URL, ZIP | `studio-v2/input-picker.js` | Ruban et panneau « Importer » | **Raccordé**, gestion de fichiers Core |
+| Collection, grille, vignettes, sélection | `studio-v2/collection-browser.js` + `thumbnail-service.js` | Planche de travail | **Raccordé**, pas de navigateur de fichiers réécrit |
+| Historique, recherche, favoris et regroupement | `studio-v2/history-sidebar.js` + `history.js` | Onglet Historique | **Raccordé**, instance DOM unique déplacée entre les vues |
+| Annuler / Rétablir | `studio-v2/undo-redo.js` | Ruban et historique | **Raccordé**, transactions de collection branchées sur la pile commune |
+| Registre des commandes | `studio-v2/command-registry.js` | Ruban, panneaux et raccourcis | **Raccordé**, action `core-vnext.*` exécutée par le registre existant |
+| Palette de commandes | `studio-v2/command-palette.js` | Bouton Commandes et Ctrl+K | **Raccordé**, UI canonique montée directement |
+| Enregistrement de fichier brut | `studio-v2/output-service.js` | Ruban et panneau Fichiers | **Raccordé** pour la sortie sans conversion |
+| Fenêtres flottantes | `studio-v2/window-system.js` | Gestionnaire Fenêtres et détachement | **Raccordé** pour contrôles de base |
+| Plein écran | `studio-v2/fullscreen-service.js` | Ruban | **Raccordé** |
+| Partager lien / QR / imprimer | `_shared/nlab-share-menu.js` | Menu Partager du header | **Commun** ; extraction récente à harmoniser avec les autres pages |
+
+### Encore à raccorder — ne pas réécrire
+- `studio-v2/settings.js` : paramètres avancés du Core, préférences ruban et disposition.
+- `studio-v2/personal-profile-service.js` et `personal-profile-ui.js` : profil personnel.
+- `studio-v2/template-engine.js` et `template-ux.js` : noms, dates, variables, modèles et choix de sortie.
+- `studio-v2/context-selection.js`, `property-inspector.js` et `context-menu.js` : propriétés et commandes contextuelles.
+- `studio-v2/viewer-control.js` et `file-preview-service.js` : zoom/navigation/aperçus enrichis.
+- `studio-v2/workspace-layout.js`, `workspace-theme.js` : état commun du panneau et des thèmes (la préférence VNext reste actuellement locale).
+- `studio-v2/application-mode-service.js` : mode application / PWA.
+- Tests de parité, accessibilité et intégration métiers Image/PDF, puis **validation HUMAN00** avant CURRENT.
+
+**Vérification :** la CI exige l'ouverture réelle de l'InputPicker existant, l'appel Annuler/Rétablir de la pile commune, le filtre de l'Historique partagé, la découverte des commandes dans la palette, et les tests mobiles. Aucun module CURRENT n'est réécrit et aucune version CURRENT n'est promue.
