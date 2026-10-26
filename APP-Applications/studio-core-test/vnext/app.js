@@ -154,13 +154,13 @@ let ribbonTab='home';
 function selectRibbonTab(id,{focus=false}={}){
  if(!Object.hasOwn(ribbonViews,id))return;
  ribbonTab=id;
- $('[data-ribbon-tab]').forEach(button=>{
+ $$('[data-ribbon-tab]').forEach(button=>{
   const active=button.dataset.ribbonTab===id;
   button.setAttribute('aria-selected',String(active));
   button.tabIndex=active?0:-1;
   if(active&&focus)button.focus();
  });
- $('[data-ribbon-group]').forEach(group=>{
+ $$('[data-ribbon-group]').forEach(group=>{
   group.hidden=!ribbonViews[id].includes(group.dataset.ribbonGroup);
  });
 }
