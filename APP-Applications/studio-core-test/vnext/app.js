@@ -1,4 +1,5 @@
 import {createCoreAdapter} from './core-adapter.js';
+import {mountStudioRibbonTabs} from '../../_shared/studio-v2/core.js';
 import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
 import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
 import {registerCommand,executeCommand} from '../../_shared/studio-v2/command-registry.js';
@@ -142,42 +143,17 @@ function hydrateCoreIcons(){
   slot.dataset.renderedTheme=currentPrefs().iconTheme;
  });
 }
-// Office-style ribbon is a view over registered Core commands — never a second dispatcher.
-const ribbonViews={
- home:['display','files','history','windows'],
- file:['display','files'],
- edit:['display','history'],
- display:['display','windows'],
- tools:['display','windows']
-};
-let ribbonTab='home';
-function selectRibbonTab(id,{focus=false}={}){
- if(!Object.hasOwn(ribbonViews,id))return;
- ribbonTab=id;
- $$('[data-ribbon-tab]').forEach(button=>{
-  const active=button.dataset.ribbonTab===id;
-  button.setAttribute('aria-selected',String(active));
-  button.tabIndex=active?0:-1;
-  if(active&&focus)button.focus();
- });
- $$('[data-ribbon-group]').forEach(group=>{
-  group.hidden=!ribbonViews[id].includes(group.dataset.ribbonGroup);
- });
-}
-const ribbonNavigation=$('.ribbonTabs');
-ribbonNavigation.addEventListener('click',event=>{
- const tab=event.target.closest('[data-ribbon-tab]');
- if(tab)selectRibbonTab(tab.dataset.ribbonTab);
+// Shared ribbon presentation: specialized Studios only contribute additional groups.
+const ribbonController=mountStudioRibbonTabs({
+ tabs:'.ribbonTabs',groups:'#coreRibbon',
+ views:{
+  home:['display','files','history','windows'],
+  file:['display','files'],
+  edit:['display','history'],
+  display:['display','windows'],
+  tools:['display','windows']
+ },initial:'home'
 });
-ribbonNavigation.addEventListener('keydown',event=>{
- if(!['ArrowRight','ArrowLeft','Home','End'].includes(event.key))return;
- const tabs=$('[data-ribbon-tab]');
- const current=tabs.findIndex(t=>t.dataset.ribbonTab===ribbonTab);
- const next=event.key==='Home'?0:event.key==='End'?tabs.length-1:
-  (current+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
- event.preventDefault();selectRibbonTab(tabs[next].dataset.ribbonTab,{focus:true});
-});
-selectRibbonTab('home');
 function render(){
  syncCoreAppearance();
  const preferences=currentPrefs();
