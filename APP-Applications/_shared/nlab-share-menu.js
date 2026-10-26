@@ -2,16 +2,21 @@
  * This module owns the share/link/QR/print actions, not the header layout.
  * QRCode.js pinned at the same version as the existing nLab page actions.
  */
+const feedbackTimers=new WeakMap();
+export function notifyUi(host,message){
+ if(!host)return;
+ const old=feedbackTimers.get(host);
+ if(old)clearTimeout(old);
+ host.textContent=String(message);
+ host.hidden=false;
+ feedbackTimers.set(host,setTimeout(()=>{host.hidden=true;feedbackTimers.delete(host)},3500));
+}
 export function mountShareMenu({trigger,menu,dialog,notice}={}){
  if(!trigger||!menu||!dialog)return()=>{};
  const close=()=>{menu.hidden=true;trigger.setAttribute('aria-expanded','false')};
  const setOpen=open=>{menu.hidden=!open;trigger.setAttribute('aria-expanded',String(open))};
- let timeout,qrLoader;
- function notify(message){
-  if(!notice)return;
-  notice.textContent=message;notice.hidden=false;
-  clearTimeout(timeout);timeout=setTimeout(()=>notice.hidden=true,3500);
- }
+ let qrLoader;
+ const notify=message=>notifyUi(notice,message);
  async function copyLink(){
   try{await navigator.clipboard.writeText(location.href);return true}catch{}
   const input=document.createElement('textarea');
@@ -79,6 +84,5 @@ export function mountShareMenu({trigger,menu,dialog,notice}={}){
   dialog.removeEventListener('click',onAction);
   dialog.querySelector('#closeQr')?.removeEventListener('click',closeQr);
   dialog.removeEventListener('click',backdrop);
-  clearTimeout(timeout);
  };
 }
