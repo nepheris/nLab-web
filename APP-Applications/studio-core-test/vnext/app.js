@@ -147,7 +147,7 @@ function render(){
  $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'})[state.panel];
  $$('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===state.panel)));
  $$('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
- $('[data-work-label]').forEach(label=>{label.textContent=state.work?'Masquer la planche':'Afficher la planche'});
+ $$('[data-work-label]').forEach(label=>{label.textContent=state.work?'Masquer la planche':'Afficher la planche'});
  $('[data-cmd=lock]').textContent=preferences.sidebarLocked?'🔒':'🔓';
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  panelContent();
