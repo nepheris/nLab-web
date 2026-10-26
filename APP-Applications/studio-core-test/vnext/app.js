@@ -93,7 +93,7 @@ const runAction=async cmd=>{
 };
 // All menu/ribbon/side-panel actions are registered once with the existing Core registry.
 const coreActions={
- import:'Importer',save:'Enregistrer','save-as':'Enregistrer sous','save-advanced':'Enregistrement avancé',
+ import:'Importer',save:'Enregistrer','save-as':'Enregistrer sous','save-advanced':'Enregistrer et classer',
  undo:'Annuler',redo:'Rétablir','select-all':'Tout sélectionner',
  'remove-files':'Retirer les fichiers','clear-files':'Vider la collection',
  'toggle-work':'Afficher ou masquer la planche','toggle-preview':'Afficher ou masquer l’aperçu','collapse':'Masquer le panneau',
@@ -140,7 +140,7 @@ function panelMarkup(id){
  const common='<details class="section"><summary>Options du panneau</summary><p class="hint">Même structure et mêmes commandes dans tous les panneaux.</p></details>';
  let content='';
  if(id==='files'){
-  content='<button data-cmd="import">↥ Importer</button><button data-cmd="save">▣ Enregistrer</button><button data-cmd="save-as">⇩ Enregistrer sous</button><button data-cmd="save-advanced">▣ Enregistrement avancé</button><button data-cmd="select-all">☑ Tout sélectionner</button><button data-cmd="remove-files">− Retirer la sélection</button><p class="hint">'+adapter.size+' fichier(s) dans la collection.</p>';
+  content='<button data-cmd="import">↥ Importer</button><button data-cmd="save">▣ Enregistrer</button><button data-cmd="save-as">⇩ Enregistrer sous</button><button data-cmd="save-advanced">▣ Enregistrer et classer</button><button data-cmd="select-all">☑ Tout sélectionner</button><button data-cmd="remove-files">− Retirer la sélection</button><p class="hint">'+adapter.size+' fichier(s) dans la collection.</p>';
  }else if(id==='tools'){
   content='<p class="hint">Outils communs liés au fichier actif. Les commandes d’édition avancées ne sont pas encore migrées.</p><button data-cmd="import">↥ Importer</button><button data-cmd="float-panel">↗ Détacher ce panneau</button>';
  }else if(id==='history'){
