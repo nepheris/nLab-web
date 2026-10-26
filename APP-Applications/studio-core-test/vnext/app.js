@@ -15,6 +15,8 @@ import {mountStudioHoverHelp} from '../../_shared/studio-v2/help.js';
 import {mountAdvancedOutputUI} from '../../_shared/studio-v2/advanced-output-ui.js';
 import {mountStudioViewModes} from '../../_shared/studio-v2/view-modes.js';
 import {mountDropZone} from '../../_shared/studio-v2/drop-zone.js';
+import {createColorPicker} from '../../_shared/studio-v2/color-control.js';
+import {createStudioDatePicker} from '../../_shared/studio-v2/date-control.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
 // VNext graphical shell: the existing Core services, one command registry and shared panels.
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
@@ -48,6 +50,7 @@ const syncCoreAppearance=()=>{
  const input=$('#themeHeader');if(input)input.value=themeChoice();
 };
 let coreSettingsHost;
+let studioToolsHost;
 let adapter;
 let sidebarController;
 const inform=message=>notifyUi($('#uiNotice'),message);
@@ -164,6 +167,8 @@ function panelContent(){
   canonicalHistory.render();
  }else if(state.panel==='settings'&&coreSettingsHost){
   if(!host.contains(coreSettingsHost))host.replaceChildren(coreSettingsHost);
+ }else if(state.panel==='tools'&&studioToolsHost){
+  if(!host.contains(studioToolsHost))host.replaceChildren(studioToolsHost);
  }else if(state.panel==='profile'&&personalProfileHost){
   if(!host.contains(personalProfileHost))host.replaceChildren(personalProfileHost);
   loadPersonalProfilePanel();
@@ -275,6 +280,18 @@ $$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{
 coreSettingsHost=document.createElement('div');
 coreSettingsHost.className='coreSettingsSurface';
 renderStudioSettingsPanel(coreSettingsHost);
+// Common UI test surface: the tools are directly mounted from Core modules.
+studioToolsHost=document.createElement('section');
+studioToolsHost.className='coreToolsReference';
+studioToolsHost.innerHTML='<h3>Contrôles nLab partagés</h3><p class="hint">Composants communs : couleur HEX/RGB/HSL, date et import de dossiers.</p><div data-tool-color></div><div data-tool-date></div><div data-tool-swatch class="coreToolsSwatch"></div><button type="button" data-cmd="import">Importer un fichier ou dossier</button>';
+const swatch=studioToolsHost.querySelector('[data-tool-swatch]');
+const color=createColorPicker({label:'Sélecteur de couleur Core',value:'#0057B8',onChange:(hex,meta)=>{
+ swatch.style.backgroundColor=hex;swatch.textContent='Couleur : '+meta.display;
+}});
+studioToolsHost.querySelector('[data-tool-color]').append(color.element);
+const date=createStudioDatePicker({label:'Sélecteur de date Core',value:new Date().toLocaleDateString('sv-SE'),format:'DD/MM/YYYY'});
+studioToolsHost.querySelector('[data-tool-date]').append(date.element);
+
 // Profile has its own left-rail panel, not an accordion inside shared Settings.
 // One instance of the EXISTING Core profile module; no duplicated inputs or storage.
 const personalProfileHost=document.createElement('section');
