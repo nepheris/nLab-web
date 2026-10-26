@@ -217,6 +217,7 @@ async function runScenario({name,viewport,mobile}){
   // Advanced save must reuse personal naming/classification templates and Core OutputService.
   await page.locator('.ribbon [data-cmd="save-advanced"]').click();
   const advanced=page.locator('#advancedSaveDialog');
+  await advanced.waitFor({state:'visible'});
   if(!(await advanced.evaluate(el=>el.open)))throw Error('Enregistrement avancé non ouvert');
   await advanced.locator('[data-save="naming"]').selectOption('date-name');
   await advanced.locator('[data-save="classification"]').selectOption('year-month');
