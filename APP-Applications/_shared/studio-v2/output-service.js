@@ -6,6 +6,20 @@ async function permission(h,mode='readwrite'){if(!h)return false;const o={mode};
 export class OutputService{
  constructor(){this.handle=null}
  async chooseDirectory(){if(!window.showDirectoryPicker)throw new Error('Choix de dossier non pris en charge par ce navigateur');this.handle=await showDirectoryPicker({mode:'readwrite'});await putHandle('output',this.handle);return this.handle}
+ async chooseSourceDirectory(file){
+  if(!file?.name)throw new Error('Fichier requis');
+  if(!window.showDirectoryPicker)throw new Error('Le navigateur ne permet pas de choisir un dossier');
+  const folder=await showDirectoryPicker({mode:'readwrite'});
+  let original;
+  try{
+   const handle=await folder.getFileHandle(file.name,{create:false});
+   original=await handle.getFile();
+  }catch{throw new Error('Le dossier choisi ne contient pas le fichier source');}
+  if(original.size!==file.size)throw new Error('Le fichier source ne correspond pas au dossier choisi');
+  this.handle=folder;
+  await putHandle('output',folder);
+  return folder;
+ }
  async loadLastDirectory(){const h=await getHandle('output');if(!h||!(await permission(h)))throw new Error('Dernière destination indisponible');this.handle=h;return h}
  structureParts(mode,ctx={},custom=''){const d=new Date(),year=String(ctx.YEAR||d.getFullYear()),month=String(ctx.MONTH||d.getMonth()+1).padStart(2,'0'),t=String(ctx.TREATMENT||'TRAITEMENT');if(mode==='treatment')return[t];if(mode==='year-month')return[year,month];if(mode==='year-month-week')return[year,month,'S'+String(ctx.WEEK||'')];if(mode==='treatment-date')return[t,year,month];if(mode==='custom')return String(custom||'').split(/[\\/]+/).filter(Boolean);return[]}
  async targetDir(parts=[]){if(!this.handle)return null;let d=this.handle;for(const raw of parts){const p=String(raw).trim().replace(/[<>:"|?*\x00-\x1F]/g,'_');if(p)d=await d.getDirectoryHandle(p,{create:true})}return d}
