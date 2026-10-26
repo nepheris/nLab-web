@@ -13,6 +13,12 @@ on:
       - 'APP-Applications/_shared/studio-v2/core.js'
       - 'APP-Applications/_shared/studio-v2/workspace-chrome.css'
       - 'APP-Applications/_shared/studio-v2/advanced-output-ui.js'
+      - 'APP-Applications/_shared/studio-v2/view-modes.js'
+      - 'APP-Applications/_shared/studio-v2/color-control.js'
+      - 'APP-Applications/_shared/studio-v2/date-control.js'
+      - 'APP-Applications/_shared/studio-v2/drop-zone.js'
+      - 'APP-Applications/_shared/studio-v2/input-picker.js'
+      - 'APP-Applications/_shared/studio-v2/collection-browser.js'
       - 'APP-Applications/_shared/studio-v2/advanced-output.css'
       - 'APP-Applications/_shared/studio-v2/output-service.js'
       - 'APP-Applications/_shared/studio-v2/personal-profile-service.js'
@@ -89,6 +95,10 @@ jobs:
           node --check APP-Applications/studio-core-test/ux-lab.js
           node --check APP-Applications/_shared/studio-v2/template-ux.js
           node --check APP-Applications/_shared/studio-v2/advanced-output-ui.js
+          node --check APP-Applications/_shared/studio-v2/view-modes.js
+          node --check APP-Applications/_shared/studio-v2/date-control.js
+          node --check APP-Applications/_shared/studio-v2/drop-zone.js
+          node --check APP-Applications/_shared/studio-v2/input-picker.js
           node --check APP-Applications/_shared/studio-v2/output-service.js
           node --check APP-Applications/_shared/studio-v2/template-engine.js
           node --check APP-Applications/studio-core-test/versions/0.6.0/ux-lab.js
