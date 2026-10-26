@@ -2,6 +2,16 @@ import{qs,qsa,setRibbonGroupVisible,applyRibbonGroups}from'./core.js';
 import{setIconTheme,iconThemeNames}from'./icon-registry.js';
 
 const KEY='nlab-studio-v2-settings';
+// Sidebar width has no fixed upper product limit: the drag handle is bounded
+// by the actual workspace, and a saved preferred width may exceed this viewport.
+const sidebarRangeMax=(requested=360)=>Math.max(220,Number(requested)||360,(typeof window!=='undefined'?window.innerWidth-96:1200));
+function syncSidebarWidthInputs(host,value){
+ const slider=host?.querySelector('[data-setting="sidebarWidth"]');
+ const number=host?.querySelector('[data-setting-number="sidebarWidth"]');
+ if(slider){slider.max=String(sidebarRangeMax(value));slider.value=String(value)}
+ if(number){number.removeAttribute('max');number.value=String(value)}
+}
+
 const DEFAULTS={
   theme:'system',
   iconTheme:'nlab-line',
@@ -129,6 +139,7 @@ export function syncStudioSettingsPanel(host,settings=loadStudioSettings()){
  host.querySelectorAll('[data-setting-number]').forEach(el=>{
   if(document.activeElement!==el)el.value=String(settings[el.dataset.settingNumber]??'')
  });
+ syncSidebarWidthInputs(host,settings.sidebarWidth);
  const scale=host.querySelector('[data-scale-value]');
  if(scale)scale.textContent=Math.round(Number(settings.fontScale||1)*100)+' %';
  const thumb=host.querySelector('[data-thumbnail-size-value]');
@@ -258,7 +269,7 @@ export function renderStudioSettingsPanel(host){
           <option value="hidden">Masqué</option>
         </select>
       </label>
-      <label class="field"><span>Largeur du volet</span><div class="settingsDualInput"><input type="range" min="220" max="720" step="10" data-setting="sidebarWidth"><input type="number" min="220" max="720" step="10" data-setting-number="sidebarWidth"></div></label>
+      <label class="field"><span>Largeur du volet</span><div class="settingsDualInput"><input type="range" min="220" step="1" data-setting="sidebarWidth"><input type="number" min="220" step="1" data-setting-number="sidebarWidth"></div></label>
       <label class="checkboxField"><input type="checkbox" data-setting="sidebarLocked"><span>Figer la largeur du volet</span></label>
       <label class="checkboxField"><input type="checkbox" data-setting="floatingWindows"><span>Fenêtres flottantes / ancrables</span></label>
       <label class="field"><span>Fenêtre Paramètres Studio Core</span><select data-setting="coreSettingsPanelMode"><option value="free">Libre / déplaçable</option><option value="fixed-left">Fixe à gauche</option><option value="fixed-right">Fixe à droite</option><option value="hidden">Aucun / masqué</option></select></label>
@@ -285,7 +296,7 @@ export function renderStudioSettingsPanel(host){
   const iconThemeSelect=host.querySelector('[data-setting="iconTheme"]');if(iconThemeSelect)iconThemeSelect.value=s.iconTheme||'nlab-line';
   host.querySelector('[data-setting="fontScale"]').value=s.fontScale;
   host.querySelector('[data-setting="sidebarWidth"]').value=s.sidebarWidth;
-  const sidebarNumber=host.querySelector('[data-setting-number="sidebarWidth"]');if(sidebarNumber)sidebarNumber.value=s.sidebarWidth;
+  syncSidebarWidthInputs(host,s.sidebarWidth);
   host.querySelector('[data-setting="collectionThumbnailSize"]').value=s.collectionThumbnailSize;
   const scaleOut=host.querySelector('[data-scale-value]');if(scaleOut)scaleOut.textContent=Math.round(Number(s.fontScale||1)*100)+' %';const thumbOut=host.querySelector('[data-thumbnail-size-value]');if(thumbOut)thumbOut.textContent=Math.round(Number(s.collectionThumbnailSize||104))+' px';
   for(const k of ['architectureMarkers','showUiIds','showDevelopment','showScopeBadges','showDevBadges','mobileAutoOptimize','floatingWindows','headerVisible','headerShadow','headerBlur','sidebarLocked','contextualHelpEnabled']){
@@ -326,9 +337,9 @@ export function renderStudioSettingsPanel(host){
     ribbonHost.innerHTML='<h4>Groupes du ruban</h4>'+groups.map(g=>'<label class="checkboxField"><input type="checkbox" data-ribbon-setting="'+g.id+'" '+(localStorage.getItem('nlab-studio-v2-ribbon-'+g.id)==='0'?'':'checked')+'><span>'+g.label+'</span></label>').join('');
     ribbonHost.querySelectorAll('[data-ribbon-setting]').forEach(el=>el.addEventListener('change',()=>{setRibbonGroupVisible(el.dataset.ribbonSetting,el.checked);applyRibbonGroups()}));
   }
-  host.querySelectorAll('[data-setting-number]').forEach(el=>el.addEventListener('change',()=>{const k=el.dataset.settingNumber,v=Math.max(220,Math.min(720,Number(el.value)||360));const range=host.querySelector('[data-setting="'+k+'"]');if(range)range.value=v;saveStudioSettings({[k]:v})}));
+  host.querySelectorAll('[data-setting-number]').forEach(el=>el.addEventListener('change',()=>{const k=el.dataset.settingNumber,v=Math.max(220,Math.round(Number(el.value)||360));syncSidebarWidthInputs(host,v);saveStudioSettings({[k]:v})}));
   host.querySelectorAll('[data-setting]').forEach(el=>{
-    const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth','historyLimit','collectionThumbnailSize'].includes(k))v=Number(v);saveStudioSettings({[k]:v});if(k==='historyGroupBy'){try{localStorage.setItem('nlab-studio-v2-history-filter',JSON.stringify({...JSON.parse(localStorage.getItem('nlab-studio-v2-history-filter')||'{}'),groupBy:v}))}catch{}}document.dispatchEvent(new CustomEvent('studio-v2:history-changed'));const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %';const t=host.querySelector('[data-thumbnail-size-value]');if(t)t.textContent=Math.round(Number(loadStudioSettings().collectionThumbnailSize||104))+' px'};
+    const handler=()=>{const k=el.dataset.setting;let v=el.type==='checkbox'?el.checked:el.value;if(['fontScale','sidebarWidth','historyLimit','collectionThumbnailSize'].includes(k))v=Number(v);saveStudioSettings({[k]:v});if(k==='sidebarWidth')syncSidebarWidthInputs(host,v);if(k==='historyGroupBy'){try{localStorage.setItem('nlab-studio-v2-history-filter',JSON.stringify({...JSON.parse(localStorage.getItem('nlab-studio-v2-history-filter')||'{}'),groupBy:v}))}catch{}}document.dispatchEvent(new CustomEvent('studio-v2:history-changed'));const o=host.querySelector('[data-scale-value]');if(o)o.textContent=Math.round(Number(loadStudioSettings().fontScale||1)*100)+' %';const t=host.querySelector('[data-thumbnail-size-value]');if(t)t.textContent=Math.round(Number(loadStudioSettings().collectionThumbnailSize||104))+' px'};
     el.addEventListener('change',handler);if(el.type==='range')el.addEventListener('input',handler);
   });
   host.querySelector('[data-core-pref="expand-ribbon"]')?.addEventListener('click',()=>{localStorage.setItem('nlab-studio-v2-ribbon-collapsed','0');location.reload()});
