@@ -69,13 +69,13 @@ function panelContent(){
   if(!host.contains(canonicalHistory.element))host.replaceChildren(canonicalHistory.element);
   canonicalHistory.render();
  }else host.innerHTML=panelMarkup(state.panel);
- $('[data-theme-select]').forEach(el=>el.value=state.theme);
+ $$('[data-theme-select]').forEach(el=>el.value=state.theme);
 }
 function syncUndoButtons(){
  if(!adapter)return;
  const state=adapter.getUndoRedoState();
- $('[data-cmd="undo"]').forEach(el=>{el.disabled=!state.canUndo;el.title=state.canUndo?'Annuler : '+state.undoLabel:'Rien à annuler'});
- $('[data-cmd="redo"]').forEach(el=>{el.disabled=!state.canRedo;el.title=state.canRedo?'Rétablir : '+state.redoLabel:'Rien à rétablir'});
+ $$('[data-cmd="undo"]').forEach(el=>{el.disabled=!state.canUndo;el.title=state.canUndo?'Annuler : '+state.undoLabel:'Rien à annuler'});
+ $$('[data-cmd="redo"]').forEach(el=>{el.disabled=!state.canRedo;el.title=state.canRedo?'Rétablir : '+state.redoLabel:'Rien à rétablir'});
 }
 function render(){
  document.body.classList.toggle('dark',state.theme==='dark'||state.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
@@ -91,7 +91,7 @@ function render(){
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  const sharedTheme=$('#themeHeader');if(sharedTheme)sharedTheme.value=state.theme;
  panelContent();
- $('[data-theme-select]').forEach(x=>x.value=state.theme);
+ $$('[data-theme-select]').forEach(x=>x.value=state.theme);
  syncUndoButtons();
 }
 const floating=new Map();
