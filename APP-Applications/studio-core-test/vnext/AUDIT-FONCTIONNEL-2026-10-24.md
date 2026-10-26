@@ -190,3 +190,27 @@ Directive HUMAN00 : intégrer les **fonctions d'enregistrement avancé existante
 **Validation Chrome CI : [run 40325299018](https://github.com/nepheris/nLab-web/actions/runs/40325299018), success.** Scénarios : ouverture par ruban, sélection d'un modèle personnel, prévisualisation d'un chemin année/mois/nom, sélection des variables, refus de créer un sous-dossier sans destination, API dossier simulée avec création des niveaux et écriture du **contenu original identique**, mémorisation d'un modèle, téléchargement simple et non-régression sur les six viewports plus l'ancien Core Lab.
 
 **Gates ouvertes :** recette HUMAN00 de l'UX, autorisations de dossier sur poste réel, tests Android physique, compatibilité des modèles et des destinations avec les Studios Image/PDF. **NO-GO CURRENT.**
+
+## 26/10/2026 — Vues universelles, aperçu, contrôles communs et classement
+
+**Instruction HUMAN00 :** un seul langage visuel SVG pour les modes Liste / Icônes / Vignettes / Tableau dans les Studios et leurs sélecteurs ; masquer/réafficher l'aperçu ; mêmes composants couleurs, dates et dépôt fichiers/dossiers ; « Enregistrer et classer » avec variables, préréglages et destination dans le dossier source ou une arborescence.
+
+### Raccordements livrés dans `nLab-web` (TEST)
+
+| Périmètre | Réutilisation / source unique | Comportement |
+|---|---|---|
+| Icônes des vues | `studio-v2/view-modes.js` et `icon-registry.js` | 4 boutons SVG Liste, Icônes, Vignettes, Tableau ; mêmes SVG dans le sélecteur d'entrée du Core et dans VNext. |
+| Collection | `studio-v2/collection-browser.js` | Quatrième vue `table` avec colonnes Nom/Type/Taille/Dossier ; tri, sélection et préférences conservés. |
+| Prévisualisation | `studio-core-test/vnext/app.js` | Un état `preview` mémorisé, commandé depuis ruban, barre des fichiers et Affichage. Aucune destruction du fichier actif lorsque l'aperçu est masqué. |
+| Sélecteur couleur | `studio-v2/color-control.js` | Reprise du contrôle HEX/RGB/HSL existant, montré dans « Outils » VNext ; tokens CSS communs. |
+| Sélecteur date | `studio-v2/date-control.js` avec `template-engine.js` | Même icône SVG Calendrier et même champ date natif ; contrôle visible dans « Outils » et date A utilisée dans le modèle de sauvegarde `{DATE_A}`. |
+| Glisser-déposer | `studio-v2/drop-zone.js` | Zone de dépôt VNext branchée sur le service existant, prenant en charge fichiers et dossiers récursifs lorsqu'exposés par le navigateur. |
+| Enregistrer et classer | `advanced-output-ui.js`, `template-engine.js`, `template-ux.js`, `personal-profile-service.js`, `output-service.js` | Préréglages de renommage et classement, insertion de variables, aperçu du chemin, destination explicite, sous-dossiers réels et conservation des octets source. |
+| Dossier source | `OutputService.chooseSourceDirectory(file)` | L'utilisateur autorise explicitement le dossier source ; le service vérifie nom et taille du fichier. Écrasement direct interdit si le nom reste identique sans sous-dossier. |
+| Modèles de classification | `personal-profile-service.js` | Préréglages supplémentaires année/mois/semaine et client/projet/année, réutilisables par les Studios. |
+
+**Limites :** le navigateur ne livre pas automatiquement de permission d'écriture dans le dossier d'un fichier importé ; la sélection manuelle est obligatoire. Comparer le nom et la taille vérifie une correspondance apparente et ne constitue pas une preuve cryptographique d'identité. Le téléchargement simple ne crée pas de sous-dossiers. Une refonte de tous les Studios vers ces contrôles partagés demande une migration distincte : le code commun est prêt, mais Image/PDF CURRENT n'ont pas été basculés.
+
+**Preuve GitHub Actions :** [run 40354224272](https://github.com/nepheris/nLab-web/actions/runs/40354224272) : **SUCCESS**. VNext testé sur six viewports Chrome (1366, 768, 320, 360, 412, 844 px), avec contrôles du sélecteur 4 vues, du mode Tableau, de l'aperçu masquable, des champs couleur/date, du modèle `DATE_A`, des dossiers simulés (dont source autorisée), de l'interdiction d'écraser l'original et des non-régressions anciennes. Ce PASS navigateur n'est **pas** une validation physique Android ni une décision HUMAN00.
+
+**Statut : PARTIAL / TEST — NO-GO CURRENT.**
