@@ -14,7 +14,7 @@ const scenarios=[
 ];
 const records=[];
 async function runScenario({name,viewport,mobile}){
- const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile});
+ const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile,acceptDownloads:true});
  const page=await context.newPage();
  const errors=[];
  page.on('pageerror',e=>errors.push(e.message));
@@ -26,7 +26,33 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('[data-panel="settings"]').click();
   await page.locator('#themeHeader').selectOption('dark');
   if(!(await page.locator('body').evaluate(el=>el.classList.contains('dark'))))throw Error('Thème sombre non appliqué');
-  if(await page.locator('#theme').inputValue()!=='dark')throw Error('Préférence thème non synchronisée');
+  if(await page.locator('#panelBody [data-theme-select]').inputValue()!=='dark')throw Error('Préférence thème non synchronisée');
+
+  // Canonical collection, preview, history and properties use real Core services.
+  await page.locator('#fileInput').setInputFiles({name:'vnext-test.txt',mimeType:'text/plain',buffer:Buffer.from('Fichier réel nLab TEST')});
+  await page.locator('#filesList .collectionItem').first().waitFor({state:'visible'});
+  if((await page.locator('#filesList .collectionItem').count())!==1)throw Error('Collection Core non alimentée');
+  await page.getByText('Fichier réel nLab TEST',{exact:false}).first().waitFor({state:'visible'});
+  await page.locator('[data-panel="history"]').click();
+  await page.getByText('Import de fichiers',{exact:false}).first().waitFor({state:'visible'});
+  await page.locator('[data-panel="properties"]').click();
+  await page.getByText('vnext-test.txt',{exact:false}).first().waitFor({state:'visible'});
+  // Real unmodified-file export through the shared OutputService.
+  const downloadPromise=page.waitForEvent('download');
+  await page.locator('.ribbon [data-cmd="save"]').click();
+  const download=await downloadPromise;
+  if(download.suggestedFilename()!=='vnext-test.txt')throw Error('Nom de sauvegarde inattendu');
+  // Shared window manager: close/reopen, lock, dock and minimize.
+  await page.locator('.ribbon [data-cmd="windows"]').click();
+  const floating=page.locator('[data-vnext-floating="windows"]');
+  await floating.waitFor({state:'visible'});
+  for(const control of ['lock','dock','collapse','close'])
+   if((await floating.locator('[data-win-'+control+']').count())!==1)throw Error('Contrôle de fenêtre manquant : '+control);
+  await floating.locator('[data-win-collapse]').click();
+  if(!(await floating.evaluate(el=>el.classList.contains('studioWindowCollapsed'))))throw Error('Fenêtre non repliée');
+  await floating.locator('[data-win-collapse]').click();
+  await floating.locator('[data-win-close]').click();
+  if(!(await floating.isHidden()))throw Error('Fenêtre non masquée');
 
   await page.locator('#shareBtn').click();
   if(await page.locator('#shareMenu').isHidden())throw Error('Menu Partager fermé');
