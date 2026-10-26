@@ -176,3 +176,26 @@ body[data-ribbon-mode="primary"] .ribbonGroupLabel{font-size:9px}
  .studioInputPicker .inputPickerViews [data-input-view]{min-height:42px}
  .studioInputPicker .studioInputTableHeader,.studioInputPicker .studioInputTableItem{min-width:530px}
 }
+
+/* Common color/date controls: native pickers, one theme in all Studios. */
+.nlabColorPicker,.nlabDatePicker{display:grid;gap:6px;padding:9px;
+ border:1px solid var(--ui-border,var(--nlab-line,#d9e0e6));border-radius:9px;
+ background:var(--ui-surface,var(--nlab-card,#fff));min-width:0}
+.nlabColorPickerLabel,.nlabDateLabel{font-size:12px;font-weight:650;color:var(--ui-text,var(--nlab-ink,#243340))}
+.nlabColorPickerRow,.nlabDateRow{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.nlabColorPickerRow>*,.nlabDateRow>*{min-height:38px;border-radius:7px;
+ border:1px solid var(--ui-border,var(--nlab-line,#d9e0e6))}
+.nlabColorPickerVisual{height:40px;width:58px;padding:2px;background:var(--ui-surface,var(--nlab-card,#fff))}
+.nlabColorPickerFormat{min-width:74px;width:auto}
+.nlabColorPickerText{flex:1 1 110px;min-width:100px}
+.nlabColorPicker :is(select,input:not([type=color])),.nlabDatePicker input{
+ color:var(--ui-text,var(--nlab-ink,#243340));background:var(--ui-surface,var(--nlab-card,#fff));padding:7px}
+.nlabDateIcon{display:grid;place-items:center;border:0;min-height:28px}
+.nlabDateIcon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+.nlabDateFormatted{font-size:11px;color:var(--ui-muted,var(--nlab-muted,#738493))}
+.nlabDateInput{flex:1 1 160px;min-width:0}
+.coreToolsReference{display:grid;gap:12px;min-width:0}
+.coreToolsReference h3{font-size:13px;margin:0}
+.coreToolsSwatch{min-height:44px;border-radius:7px;padding:10px;
+ color:white;font-size:11px;text-shadow:0 1px 2px #0008;
+ background-color:#0057b8}
