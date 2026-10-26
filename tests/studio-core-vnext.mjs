@@ -310,6 +310,12 @@ async function runScenario({name,viewport,mobile}){
    await advanced.locator('[data-save="prefix"]').fill('');
    await advanced.locator('[data-save="suffix"]').fill('');
    await advanced.locator('[data-save-action="source"]').click();
+   await page.waitForFunction(()=>{
+    const label=document.querySelector('#advancedSaveDialog [data-save-destination]')?.textContent||'';
+    const message=document.querySelector('#advancedSaveDialog [data-save-status]')?.textContent||'';
+    return label.includes('Dossier source confirmé')||message.includes('fichier source');
+   });
+
    if(!(await advanced.locator('[data-save-destination]').textContent()).includes('Dossier source confirmé'))
     throw Error('Dossier source non confirmé');
    await advanced.locator('[data-save-action="save"]').click();
