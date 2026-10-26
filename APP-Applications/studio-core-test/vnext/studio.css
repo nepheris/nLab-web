@@ -439,3 +439,17 @@ body{font-family:var(--studio-font-family,system-ui,-apple-system,"Segoe UI",san
 .coreSettingsSurface .personalProfileHead small{font-size:11px;color:var(--ui-muted)}
 .coreSettingsSurface .profileVariableGrid span{font-size:11px}
 .coreSettingsSurface .profileVariableGrid code{font-size:11px;color:var(--ui-accent)}
+
+/* Canonical Core property inspector uses the same nLab window tokens. */
+.studioPropertyInspector{background:var(--ui-surface);color:var(--ui-text);
+ border:1px solid var(--ui-border);border-radius:var(--ui-radius);box-shadow:var(--ui-shadow);
+ max-width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
+.studioPropertyInspector .propertyInspectorBody{background:var(--ui-surface);color:var(--ui-text);
+ display:grid;gap:8px;min-width:0}
+.studioPropertyInspector .propertyInspectorSummary{display:flex;gap:8px;flex-wrap:wrap}
+.studioPropertyInspector .propertyInspectorFields{display:grid;gap:8px}
+.studioPropertyInspector .propertyField{display:grid;gap:4px;font-size:12px}
+.studioPropertyInspector .propertyField input{min-height:36px;min-width:0;width:100%;max-width:100%;
+ background:var(--ui-surface);color:var(--ui-text);border:1px solid var(--ui-border);border-radius:7px;padding:7px}
+@media(max-width:700px){.studioPropertyInspector{width:calc(100vw - 12px);min-width:0;
+ top:6dvh!important;left:6px!important;right:6px!important;transform:none!important}}
