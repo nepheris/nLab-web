@@ -90,7 +90,7 @@ export function mountStudioSidebarControls({
  window.addEventListener('resize',onResize);
  paint();
  return {
-  paint,getState,toggle,open:()=>saveStudioSettings({sidebarMode:'normal'}),
+  paint,getState,toggle,toggleLock:lock,open:()=>saveStudioSettings({sidebarMode:'normal'}),
   close:collapse,setWidth:width=>saveStudioSettings({sidebarWidth:clampWidth(width)}),
   destroy(){
    collapseButton.removeEventListener('click',collapse);
