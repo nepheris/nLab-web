@@ -12,6 +12,7 @@ import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-ser
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountStudioSidebarControls} from '../../_shared/studio-v2/sidebar-controller.js';
 import {mountStudioHoverHelp} from '../../_shared/studio-v2/help.js';
+import {mountAdvancedOutputUI} from '../../_shared/studio-v2/advanced-output-ui.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
 // VNext graphical shell: the existing Core services, one command registry and shared panels.
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
@@ -60,6 +61,7 @@ const runAction=async cmd=>{
   try{const result=await adapter.saveSelected();inform('Enregistré : '+result.name)}
   catch(error){inform(error.message||'Enregistrement impossible')}return;
  }
+ if(cmd==='save-advanced'){openAdvancedSave();return}
  if(cmd==='save-as'){
   const selected=adapter.selectedFiles()[0];
   if(!selected){inform('Sélectionnez un fichier avant Enregistrer sous');return}
@@ -85,7 +87,7 @@ const runAction=async cmd=>{
 };
 // All menu/ribbon/side-panel actions are registered once with the existing Core registry.
 const coreActions={
- import:'Importer',save:'Enregistrer','save-as':'Enregistrer sous',
+ import:'Importer',save:'Enregistrer','save-as':'Enregistrer sous','save-advanced':'Enregistrement avancé',
  undo:'Annuler',redo:'Rétablir','select-all':'Tout sélectionner',
  'remove-files':'Retirer les fichiers','clear-files':'Vider la collection',
  'toggle-work':'Afficher ou masquer la planche','collapse':'Masquer le panneau',
@@ -99,6 +101,7 @@ const coreActionHelp={
  import:'Ouvre le sélecteur partagé du Core pour importer des fichiers, dossiers, ZIP ou une URL.',
  save:'Enregistre le fichier sélectionné dans son format d’origine, sans conversion.',
  'save-as':'Enregistre une copie du fichier actif sous le nom de votre choix.',
+ 'save-advanced':'Enregistre avec un modèle de renommage, vos variables personnelles et des sous-dossiers créés dans la destination choisie.',
  undo:'Annule la dernière modification de la collection dans la pile d’historique commune.',
  redo:'Rétablit la dernière modification annulée.',
  'select-all':'Sélectionne tous les fichiers actuellement présents dans la collection.',
@@ -119,7 +122,7 @@ for(const [name,label] of Object.entries(coreActions)){
  registerCommand({id:'core-vnext.'+name,action:'core-vnext.'+name,
   studio:'studio-core-vnext',plugin:'studio-core',label,
   help:{summary:coreActionHelp[name]},summary:coreActionHelp[name],
-  group:['import','save','save-as'].includes(name)?'Fichiers':'Interface',
+  group:['import','save','save-as','save-advanced'].includes(name)?'Fichiers':'Interface',
   handler:()=>runAction(name)});
 }
 const dispatch=cmd=>executeCommand('core-vnext.'+cmd,{source:'core-vnext-ui'});
@@ -130,7 +133,7 @@ function panelMarkup(id){
  const common='<details class="section"><summary>Options du panneau</summary><p class="hint">Même structure et mêmes commandes dans tous les panneaux.</p></details>';
  let content='';
  if(id==='files'){
-  content='<button data-cmd="import">↥ Importer</button><button data-cmd="save">▣ Enregistrer</button><button data-cmd="save-as">⇩ Enregistrer sous</button><button data-cmd="select-all">☑ Tout sélectionner</button><button data-cmd="remove-files">− Retirer la sélection</button><p class="hint">'+adapter.size+' fichier(s) dans la collection.</p>';
+  content='<button data-cmd="import">↥ Importer</button><button data-cmd="save">▣ Enregistrer</button><button data-cmd="save-as">⇩ Enregistrer sous</button><button data-cmd="save-advanced">▣ Enregistrement avancé</button><button data-cmd="select-all">☑ Tout sélectionner</button><button data-cmd="remove-files">− Retirer la sélection</button><p class="hint">'+adapter.size+' fichier(s) dans la collection.</p>';
  }else if(id==='tools'){
   content='<p class="hint">Outils communs liés au fichier actif. Les commandes d’édition avancées ne sont pas encore migrées.</p><button data-cmd="import">↥ Importer</button><button data-cmd="float-panel">↗ Détacher ce panneau</button>';
  }else if(id==='history'){
@@ -204,6 +207,25 @@ function render(){
  hydrateCoreIcons();
  syncUndoButtons();
 }
+// One shared Core advanced-output surface; the engine and profile models live
+// in existing studio-v2 modules. Reopen to refresh the active file preview.
+let advancedOutputControls=null;
+function openAdvancedSave(){
+ const file=adapter.selectedFiles()[0];
+ if(!file){inform('Sélectionnez un fichier avant l’enregistrement avancé.');return}
+ const dialog=$('#advancedSaveDialog');
+ if(!advancedOutputControls){
+  advancedOutputControls=mountAdvancedOutputUI({
+   host:$('#advancedSavePanel'),output:adapter.output,
+   getFile:()=>adapter.selectedFiles()[0],
+   onSave:async plan=>adapter.saveSelected({name:plan.name,parts:plan.parts})
+  });
+ }
+ advancedOutputControls.refresh();
+ dialog.showModal();
+}
+$('#closeAdvancedSave').addEventListener('click',()=>$('#advancedSaveDialog').close());
+
 const floating=new Map();
 function createFloating(key,title,html){
  let el=floating.get(key);
@@ -332,6 +354,7 @@ mountStudioHoverHelp({
   'sidebar':'Masque ou réaffiche le panneau latéral.',
   'ribbon':'Affiche ou masque les commandes du ruban.',
   sidebarWidth:'Règle la largeur du panneau sans limite fixe à 720 px. Vous pouvez aussi glisser son bord.',
+  advancedSaveDialog:'Renommer le fichier avec des variables, puis choisir un dossier et une arborescence de sortie.',
   profile:'Ouvre votre profil nLab local, avec les tampons, signatures, variables et modèles exportables en ZIP.'
  }
 });
