@@ -22,11 +22,15 @@ export function mountStudioSidebarControls({
   const state=getState();
   layout.classList.toggle('is-side-hidden',!state.expanded);
   layout.style.setProperty('--side-width',state.width+'px');
-  collapseButton.innerHTML=studioWindowControlIcon('collapse');
-  restoreButton.innerHTML=studioWindowControlIcon(state.expanded?'collapse':'expand');
+  // Two entry points, one Core preference: fold beside the lock, restore from rail.
+  collapseButton.innerHTML=studioWindowControlIcon('sidebarLeft');
+  restoreButton.innerHTML=studioWindowControlIcon(state.expanded?'sidebarLeft':'sidebarRight')
+   +'<span class="sidebarRestoreLabel">'+(state.expanded?'Volet':'Afficher')+'</span>';
   lockButton.innerHTML=studioWindowControlIcon(state.locked?'lock':'unlock');
-  collapseButton.title='Replier le volet latéral';
-  restoreButton.title=state.expanded?'Masquer le volet latéral':'Déplier le volet latéral';
+  side.setAttribute('aria-hidden',String(!state.expanded));
+  restoreButton.classList.toggle('sidebarNeedsRestore',!state.expanded);
+  collapseButton.title='Replier le volet latéral (rappel dans la barre de navigation)';
+  restoreButton.title=state.expanded?'Replier le volet latéral':'Afficher le volet latéral';
   lockButton.title=state.locked?'Déverrouiller le volet latéral':'Verrouiller le volet latéral';
   collapseButton.setAttribute('aria-label',collapseButton.title);
   restoreButton.setAttribute('aria-label',restoreButton.title);
@@ -40,6 +44,7 @@ export function mountStudioSidebarControls({
   handle.setAttribute('aria-valuetext',state.width+' pixels');
   handle.tabIndex=state.locked?-1:0;
   handle.title=state.locked?'Déverrouiller pour redimensionner':'Glisser pour ajuster la largeur';
+  restoreButton.dataset.state=state.expanded?'open':'closed';
   onState(state);
   return state;
  };
