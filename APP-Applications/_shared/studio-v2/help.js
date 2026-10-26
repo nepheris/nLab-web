@@ -154,7 +154,7 @@ export function mountStudioHoverHelp({root=document.body,commandPrefix='',descri
   const key=el.id||el.dataset.cmd||el.dataset.panel||el.dataset.ribbonTab||el.dataset.share||el.dataset.setting||el.dataset.settingNumber||'';
   const label=el.getAttribute('aria-label')||command?.label||
    el.closest('label')?.querySelector('span')?.textContent?.trim()||
-   el.textContent?.trim()?.replace(/\\s+/g,' ').slice(0,72)||key||'Commande';
+   el.textContent?.trim()?.replace(/\s+/g,' ').slice(0,72)||key||'Commande';
   let summary=el.dataset.helpSummary||command?.help?.summary||command?.summary||descriptions[key];
   if(!summary&&el.dataset.panel)summary='Ouvre le panneau '+label+' dans le volet latéral du Studio.';
   if(!summary&&el.dataset.ribbonTab)summary='Affiche les commandes du ruban '+label+', sans changer leurs fonctions.';
