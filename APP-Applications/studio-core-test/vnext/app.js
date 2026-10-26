@@ -3,6 +3,7 @@ import {openInputPicker} from '../../_shared/studio-v2/input-picker.js';
 import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
 import {registerCommand,executeCommand} from '../../_shared/studio-v2/command-registry.js';
 import {mountCommandPalette} from '../../_shared/studio-v2/command-palette.js';
+import {loadStudioSettings,saveStudioSettings,applyStudioSettings,renderStudioSettingsPanel} from '../../_shared/studio-v2/settings.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
 import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
@@ -10,9 +11,35 @@ import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
 // Functional bridge to the existing Studio Core services is intentionally not implemented yet.
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const key='nlab:core-vnext:ui:v1';
-let state={panel:'files',work:true,sidebar:true,ribbon:true,locked:false,width:310,theme:'auto',files:[]};
-try{const saved=JSON.parse(localStorage.getItem(key)||'{}');for(const k of ['panel','work','sidebar','ribbon','locked','width','theme'])if(Object.hasOwn(saved,k))state[k]=saved[k]}catch{}
+let state={panel:'files',work:true,files:[]};
+try{const saved=JSON.parse(localStorage.getItem(key)||'{}');for(const k of ['panel','work'])if(Object.hasOwn(saved,k))state[k]=saved[k]}catch{}
 const persist=()=>{try{const {files,...preferences}=state;localStorage.setItem(key,JSON.stringify(preferences))}catch{}};
+// One-time migration of TEST-only preferences into the existing Core settings store.
+try{
+ const legacy=JSON.parse(localStorage.getItem(key)||'{}');
+ if(!localStorage.getItem('nlab-studio-v2-settings')){
+  const migrated={};
+  if(['auto','dark','light'].includes(legacy.theme))migrated.theme=legacy.theme==='auto'?'system':legacy.theme;
+  if(Number.isFinite(Number(legacy.width)))migrated.sidebarWidth=Math.max(220,Math.min(720,Number(legacy.width)));
+  if(typeof legacy.locked==='boolean')migrated.sidebarLocked=legacy.locked;
+  if(legacy.sidebar===false)migrated.sidebarMode='hidden';
+  if(Object.keys(migrated).length)saveStudioSettings(migrated);
+ }
+ if(typeof legacy.ribbon==='boolean'&&localStorage.getItem('nlab-studio-v2-ribbon-collapsed')===null){
+  localStorage.setItem('nlab-studio-v2-ribbon-collapsed',legacy.ribbon?'0':'1');
+ }
+}catch{}
+applyStudioSettings();
+const currentPrefs=()=>loadStudioSettings();
+const ribbonVisible=()=>{try{return localStorage.getItem('nlab-studio-v2-ribbon-collapsed')!=='1'}catch{return true}};
+const setRibbonVisible=visible=>{try{localStorage.setItem('nlab-studio-v2-ribbon-collapsed',visible?'0':'1')}catch{}};
+const themeChoice=()=>currentPrefs().theme==='system'?'auto':currentPrefs().theme;
+const syncCoreAppearance=()=>{
+ const dark=document.body.classList.contains('themeDark');
+ document.body.classList.toggle('dark',dark);
+ const input=$('#themeHeader');if(input)input.value=themeChoice();
+};
+let coreSettingsHost;
 let adapter;
 const inform=message=>notifyUi($('#uiNotice'),message);
 const runAction=async cmd=>{
@@ -39,8 +66,8 @@ const runAction=async cmd=>{
  if(cmd==='remove-files'){adapter.removeSelected();return}
  if(cmd==='clear-files'){adapter.clear();return}
  if(cmd==='toggle-work')state.work=!state.work;
- if(cmd==='collapse')state.sidebar=false;
- if(cmd==='lock')state.locked=!state.locked;
+ if(cmd==='collapse')saveStudioSettings({sidebarMode:'hidden'});
+ if(cmd==='lock')saveStudioSettings({sidebarLocked:!currentPrefs().sidebarLocked});
  if(cmd==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
  if(cmd==='windows'){openWindow();return}
  if(cmd==='float-panel'){openFloatingPanel(state.panel);return}
@@ -77,7 +104,9 @@ function panelMarkup(id){
   const item=adapter.active();
   content='<div class="section"><strong>Propriétés du fichier actif</strong>'+(item?'<dl><dt>Nom</dt><dd>'+escapeHtml(item.label)+'</dd><dt>Format</dt><dd>'+escapeHtml(item.extension||'—')+'</dd><dt>Taille</dt><dd>'+Number(item.size||0).toLocaleString('fr-FR')+' octets</dd><dt>Sélection</dt><dd>'+adapter.collection.selectedItems().length+' fichier(s)</dd></dl>':'<p class="hint">Sélectionnez un fichier dans la collection.</p>')+'</div>';
  }else if(id==='settings'){
-  content='<details class="section" open><summary>Personnalisation de l’interface</summary><label class="row">Thème <select data-theme-select aria-label="Thème"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label><p class="hint">Le choix est synchronisé avec le thème du header.</p></details><details class="section"><summary>Ruban et panneaux</summary><p class="hint">Les options sont centralisées dans « Affichage ».</p><button type="button" data-cmd="toggle-work">Afficher / masquer la planche</button></details>';
+  // The existing Core settings UI is rehomed as a single DOM node in panelContent.
+  content='';
+
  }
  return content+common;
 }
@@ -87,8 +116,9 @@ function panelContent(){
  if(state.panel==='history'&&canonicalHistory){
   if(!host.contains(canonicalHistory.element))host.replaceChildren(canonicalHistory.element);
   canonicalHistory.render();
+ }else if(state.panel==='settings'&&coreSettingsHost){
+  if(!host.contains(coreSettingsHost))host.replaceChildren(coreSettingsHost);
  }else host.innerHTML=panelMarkup(state.panel);
- $$('[data-theme-select]').forEach(el=>el.value=state.theme);
 }
 function syncUndoButtons(){
  if(!adapter)return;
@@ -97,20 +127,19 @@ function syncUndoButtons(){
  $$('[data-cmd="redo"]').forEach(el=>{el.disabled=!state.canRedo;el.title=state.canRedo?'Rétablir : '+state.redoLabel:'Rien à rétablir'});
 }
 function render(){
- document.body.classList.toggle('dark',state.theme==='dark'||state.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
+ syncCoreAppearance();
+ const preferences=currentPrefs();
  $('.workspace').classList.toggle('is-work-hidden',!state.work);
- $('.workspace').classList.toggle('is-side-hidden',!state.sidebar);
- $('.workspace').classList.toggle('is-ribbon-hidden',!state.ribbon);
- $('.layout').style.setProperty('--side-width',state.width+'px');
+ $('.workspace').classList.toggle('is-side-hidden',preferences.sidebarMode==='hidden');
+ $('.workspace').classList.toggle('is-ribbon-hidden',!ribbonVisible());
+ $('.layout').style.setProperty('--side-width',Math.max(220,Math.min(720,Number(preferences.sidebarWidth)||360))+'px');
  $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'})[state.panel];
  $$('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===state.panel)));
- $$('[data-visible]').forEach(b=>b.checked=state[b.dataset.visible]);
+ $('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
  $$('[data-cmd="toggle-work"]').forEach(b=>b.textContent=state.work?'▤ Masquer la planche':'▤ Afficher la planche');
- $('[data-cmd=lock]').textContent=state.locked?'🔒':'🔓';
+ $('[data-cmd=lock]').textContent=preferences.sidebarLocked?'🔒':'🔓';
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
- const sharedTheme=$('#themeHeader');if(sharedTheme)sharedTheme.value=state.theme;
  panelContent();
- $$('[data-theme-select]').forEach(x=>x.value=state.theme);
  syncUndoButtons();
 }
 const floating=new Map();
@@ -136,12 +165,22 @@ function openWindow(){
 function openFloatingPanel(id){
  const names={files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'};
  const el=createFloating('panel-'+id,names[id]||id,panelMarkup(id));
- el.querySelectorAll('[data-theme-select]').forEach(x=>x.value=state.theme);
+ if(id==='settings'&&coreSettingsHost)el.querySelector('.content').replaceChildren(coreSettingsHost);
+ if(id==='history'&&canonicalHistory){el.querySelector('.content').replaceChildren(canonicalHistory.element);canonicalHistory.render()}
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-cmd]');if(b)dispatch(b.dataset.cmd);const p=e.target.closest('[data-panel]');if(p){state.panel=p.dataset.panel;state.sidebar=true;persist();render()}});
-document.addEventListener('change',e=>{if(e.target.matches('[data-theme-select]')){state.theme=e.target.value;persist();render()}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-cmd]');if(b)dispatch(b.dataset.cmd);const p=e.target.closest('[data-panel]');if(p){state.panel=p.dataset.panel;saveStudioSettings({sidebarMode:'normal'});persist();render()}});
+document.addEventListener('studio-v2:settings-changed',()=>{syncCoreAppearance();render()});
 $('#displayBtn').onclick=()=>{$('#displayMenu').hidden=!$('#displayMenu').hidden;render()};
-$$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{state[b.dataset.visible]=b.checked;persist();render()}));
+$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{
+ const visible=b.checked;
+ if(b.dataset.visible==='work')state.work=visible;
+ if(b.dataset.visible==='sidebar')saveStudioSettings({sidebarMode:visible?'normal':'hidden'});
+ if(b.dataset.visible==='ribbon')setRibbonVisible(visible);
+ persist();render();
+}));
+coreSettingsHost=document.createElement('div');
+coreSettingsHost.className='coreSettingsSurface';
+renderStudioSettingsPanel(coreSettingsHost);
 adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePreview'),onUpdate:core=>{
  $('#collectionCount').textContent=core.size+' fichier(s)';
  if(adapter&&(state.panel==='files'||state.panel==='properties'||state.panel==='history'))panelContent();
@@ -167,8 +206,27 @@ $('#saveAsForm').addEventListener('submit',async e=>{
  try{const result=await adapter.saveSelected({name});$('#saveAsDialog').close();inform('Copie enregistrée : '+result.name)}
  catch(error){inform(error.message||'Enregistrement impossible')}
 });
-const grip=$('.resizer');grip.addEventListener('pointerdown',e=>{if(state.locked)return;e.preventDefault();grip.setPointerCapture(e.pointerId)});grip.addEventListener('pointermove',e=>{if(!grip.hasPointerCapture(e.pointerId))return;state.width=Math.max(210,Math.min(550,e.clientX-$('.rail').getBoundingClientRect().right));$('.layout').style.setProperty('--side-width',state.width+'px')});grip.addEventListener('pointerup',()=>persist());
-grip.addEventListener('keydown',e=>{if(state.locked)return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){state.width=Math.max(210,Math.min(550,state.width+(e.key==='ArrowLeft'?-15:15)));persist();render();e.preventDefault()}});
+const grip=$('.resizer');
+let dragWidth=null;
+grip.addEventListener('pointerdown',e=>{
+ if(currentPrefs().sidebarLocked)return;
+ e.preventDefault();grip.setPointerCapture(e.pointerId)
+});
+grip.addEventListener('pointermove',e=>{
+ if(!grip.hasPointerCapture(e.pointerId))return;
+ dragWidth=Math.max(220,Math.min(720,e.clientX-$('.rail').getBoundingClientRect().right));
+ $('.layout').style.setProperty('--side-width',dragWidth+'px')
+});
+grip.addEventListener('pointerup',()=>{
+ if(dragWidth!==null){saveStudioSettings({sidebarWidth:dragWidth});dragWidth=null}
+});
+grip.addEventListener('keydown',e=>{
+ if(currentPrefs().sidebarLocked)return;
+ if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
+  saveStudioSettings({sidebarWidth:Math.max(220,Math.min(720,(Number(currentPrefs().sidebarWidth)||360)+(e.key==='ArrowLeft'?-15:15)))});
+  e.preventDefault();
+ }
+});
 render();
 
 // Single share controller: reusable by other Studios once validated.
@@ -183,11 +241,12 @@ document.addEventListener('keydown',e=>{
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();dispatch('redo')}
 });
 const themeHeader=$('#themeHeader');
-themeHeader.value=state.theme;
+themeHeader.value=themeChoice();
 themeHeader.addEventListener('change',()=>{
- state.theme=themeHeader.value;persist();render();
+ saveStudioSettings({theme:themeHeader.value==='auto'?'system':themeHeader.value});
 });
-
 if(window.matchMedia){
- matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='auto')render()});
+ matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{
+  if(currentPrefs().theme==='system'){applyStudioSettings();render()}
+ });
 }
