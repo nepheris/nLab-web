@@ -42,6 +42,18 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('[data-setting="sidebarLocked"]').check();
   if((await page.locator('[data-cmd="lock"]').first().textContent())!=='🔒')throw Error('Verrouillage Core non synchronisé');
   await page.locator('[data-setting="sidebarLocked"]').uncheck();
+  // Icons in navigation, header and ribbon must come from the shared icon registry.
+  for(const selector of ['.rail [data-panel="files"] [data-core-icon] svg',
+   '.ribbon [data-cmd="import"] [data-core-icon] svg','#shareBtn [data-core-icon] svg']){
+   if((await page.locator(selector).count())!==1)throw Error('Icône nLab partagée manquante : '+selector);
+  }
+  if(name==='desktop'){
+   const personal=page.locator('.coreSettingsSection').filter({has:page.locator('[data-profile-host]')});
+   await personal.locator(':scope > summary').click();
+   await page.locator('[data-profile-save]').waitFor({state:'visible',timeout:20000});
+   if((await page.locator('[data-profile-security-mode]').count())!==1)throw Error('Profil personnel Core dupliqué ou absent');
+  }
+
 
   // Canonical collection, preview, history and properties use real Core services.
   await page.locator('#fileInput').setInputFiles({name:'vnext-test.txt',mimeType:'text/plain',buffer:Buffer.from('Fichier réel nLab TEST')});
