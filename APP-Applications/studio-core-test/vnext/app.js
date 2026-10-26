@@ -23,6 +23,8 @@ const dispatch=async cmd=>{
   $('#saveAsName').value=selected.name;
   $('#saveAsDialog').showModal();return;
  }
+ if(cmd==='undo'){try{await adapter.undo()}catch(error){inform(error.message)}return}
+ if(cmd==='redo'){try{await adapter.redo()}catch(error){inform(error.message)}return}
  if(cmd==='select-all'){adapter.collection.selectAll();return}
  if(cmd==='remove-files'){adapter.removeSelected();return}
  if(cmd==='clear-files'){adapter.clear();return}
@@ -43,7 +45,8 @@ function panelMarkup(id){
   content='<p class="hint">Outils communs liés au fichier actif. Les commandes d’édition avancées ne sont pas encore migrées.</p><button data-cmd="import">↥ Importer</button><button data-cmd="float-panel">↗ Détacher ce panneau</button>';
  }else if(id==='history'){
   const records=adapter.loadHistory().filter(x=>x.studio==='studio-core-vnext').slice(0,30);
-  content='<details class="section" open><summary>Activité récente · '+records.length+'</summary><ol class="coreHistoryList">'+records.map(x=>'<li><strong>'+escapeHtml(x.label)+'</strong><small>'+escapeHtml(new Date(x.timestamp).toLocaleString('fr-FR'))+'</small><p>'+escapeHtml(x.detail||'')+'</p></li>').join('')+'</ol>'+(records.length?'':'<p class="hint">Aucune activité.</p>')+'</details>';
+  const stack=adapter.getUndoRedoState();
+  content='<div class="row"><button data-cmd="undo" '+(stack.canUndo?'':'disabled')+'>↶ Annuler</button><button data-cmd="redo" '+(stack.canRedo?'':'disabled')+'>↷ Rétablir</button></div><details class="section" open><summary>Activité récente · '+records.length+'</summary><ol class="coreHistoryList">'+records.map(x=>'<li><strong>'+escapeHtml(x.label)+'</strong><small>'+escapeHtml(new Date(x.timestamp).toLocaleString('fr-FR'))+'</small><p>'+escapeHtml(x.detail||'')+'</p></li>').join('')+'</ol>'+(records.length?'':'<p class="hint">Aucune activité.</p>')+'</details>';
  }else if(id==='properties'){
   const item=adapter.active();
   content='<div class="section"><strong>Propriétés du fichier actif</strong>'+(item?'<dl><dt>Nom</dt><dd>'+escapeHtml(item.label)+'</dd><dt>Format</dt><dd>'+escapeHtml(item.extension||'—')+'</dd><dt>Taille</dt><dd>'+Number(item.size||0).toLocaleString('fr-FR')+' octets</dd><dt>Sélection</dt><dd>'+adapter.collection.selectedItems().length+' fichier(s)</dd></dl>':'<p class="hint">Sélectionnez un fichier dans la collection.</p>')+'</div>';
@@ -55,6 +58,12 @@ function panelMarkup(id){
 function panelContent(){
  $('#panelBody').innerHTML=panelMarkup(state.panel);
  $$('[data-theme-select]').forEach(el=>el.value=state.theme);
+}
+function syncUndoButtons(){
+ if(!adapter)return;
+ const state=adapter.getUndoRedoState();
+ $('[data-cmd="undo"]').forEach(el=>{el.disabled=!state.canUndo;el.title=state.canUndo?'Annuler : '+state.undoLabel:'Rien à annuler'});
+ $('[data-cmd="redo"]').forEach(el=>{el.disabled=!state.canRedo;el.title=state.canRedo?'Rétablir : '+state.redoLabel:'Rien à rétablir'});
 }
 function render(){
  document.body.classList.toggle('dark',state.theme==='dark'||state.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
@@ -70,7 +79,8 @@ function render(){
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  const sharedTheme=$('#themeHeader');if(sharedTheme)sharedTheme.value=state.theme;
  panelContent();
- $$('[data-theme-select]').forEach(x=>x.value=state.theme);
+ $('[data-theme-select]').forEach(x=>x.value=state.theme);
+ syncUndoButtons();
 }
 const floating=new Map();
 function createFloating(key,title,html){
@@ -105,6 +115,7 @@ adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePr
  $('#collectionCount').textContent=core.size+' fichier(s)';
  if(adapter&&(state.panel==='files'||state.panel==='properties'||state.panel==='history'))panelContent();
 }});
+adapter.subscribeUndoRedo(()=>{syncUndoButtons();if(state.panel==='history')panelContent()});
 $('#fileInput').addEventListener('change',e=>{adapter.addFiles(e.target.files);e.target.value=''});
 $('#collectionView').value=adapter.collection.view;
 $('#collectionSort').value=adapter.collection.sortMode;
@@ -135,6 +146,8 @@ document.addEventListener('keydown',e=>{
  if(e.defaultPrevented||e.target.closest('input,textarea,select,[contenteditable]'))return;
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='o'){e.preventDefault();dispatch('import')}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();dispatch('save')}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();dispatch(e.shiftKey?'redo':'undo')}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();dispatch('redo')}
 });
 const themeHeader=$('#themeHeader');
 themeHeader.value=state.theme;
