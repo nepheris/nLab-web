@@ -69,7 +69,7 @@ function render(){
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  const sharedTheme=$('#themeHeader');if(sharedTheme)sharedTheme.value=state.theme;
  panelContent();
- $('[data-theme-select]').forEach(x=>x.value=state.theme);
+ $$('[data-theme-select]').forEach(x=>x.value=state.theme);
 }
 const floating=new Map();
 function createFloating(key,title,html){
