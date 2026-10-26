@@ -42,6 +42,10 @@ export function mountStudioSidebarControls({
   collapseButton.setAttribute('aria-expanded',String(state.expanded));
   restoreButton.setAttribute('aria-expanded',String(state.expanded));
   lockButton.setAttribute('aria-pressed',String(state.locked));
+  side.classList.toggle('sidebarWidthLocked',state.locked);
+  handle.setAttribute('aria-disabled',String(state.locked));
+  handle.setAttribute('aria-label',state.locked?'Largeur verrouillée : déverrouiller avec le cadenas':'Redimensionner le panneau en faisant glisser sa bordure');
+  lockButton.dataset.locked=state.locked?'true':'false';
   handle.setAttribute('aria-valuenow',String(state.width));
   handle.setAttribute('aria-valuemin','220');
   handle.setAttribute('aria-valuemax',String(Math.max(220,Math.floor(layout.getBoundingClientRect().width)-24)));
