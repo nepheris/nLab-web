@@ -1,6 +1,7 @@
 /** Shared advanced output controls: only orchestration of existing Core services. */
 import {TemplateEngine} from './template-engine.js';
 import {createTemplateVariablePicker} from './template-ux.js';
+import {createStudioDatePicker} from './date-control.js';
 import {listPersonalTemplates,savePersonalTemplate,profileTemplateValues} from './personal-profile-service.js';
 
 const get=(host,s)=>host.querySelector(s);
@@ -21,6 +22,7 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
   '<label>Suffixe<input data-save="suffix" placeholder="Ex. _{DATE:YYYYMMDD}"></label>',
   '<label>Modèle de classement<select data-save="classification"></select></label>',
   '<label>Dossier / sous-dossiers, séparés par /<input data-save="path" placeholder="Ex. {YEAR}/{MONTH}/{CLIENT}" spellcheck="false"></label>',
+  '<div data-save-date-picker></div>',
   '<fieldset class="coreAdvancedDestination"><legend>Destination</legend>',
   '<div class="coreAdvancedActions"><button type="button" data-save-action="choose">Choisir un dossier…</button>',
   '<button type="button" data-save-action="recent">Dernier dossier</button>',
@@ -47,6 +49,8 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
  const field=name=>get(host,'[data-save="'+name+'"]');
  const nameSelect=field('naming'),folderSelect=field('classification'),preview=get(host,'[data-save-preview]');
  const engine=new TemplateEngine();let target='name',busy=false,sourceDirectory=false;
+ const datePicker=createStudioDatePicker({label:'Date A — variable {DATE_A} pour cette opération',value:new Date().toLocaleDateString('sv-SE'),onChange:()=>refresh()});
+ get(host,'[data-save-date-picker]').append(datePicker.element);
  const status=(message,error=false)=>{const el=get(host,'[data-save-status]');el.textContent=message;el.dataset.error=String(error)};
  const populate=(type,select,selected)=>{
   const items=listPersonalTemplates(type);
@@ -71,9 +75,9 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
   const path=String(file.webkitRelativePath||'');
   const dir=path.split('/').slice(0,-1).join('/');
   const profile=profileTemplateValues();
-  const extra={FILESIZE:String(file.size),MIME:file.type||'',SOURCE_DIR:dir,RELATIVE_FOLDER:dir,
+  const extra={DATE_A:datePicker.value,FILESIZE:String(file.size),MIME:file.type||'',SOURCE_DIR:dir,RELATIVE_FOLDER:dir,
    FOLDER:dir.split('/').filter(Boolean).at(-1)||'',PARENT:dir.split('/').filter(Boolean).at(-1)||'',PATH:path||file.name};
-  engine.setValues(profile);
+  engine.setValues({...profile,DATE_A:datePicker.value});
   return{file,extra,values:{...profile,...extra}};
  };
  const plan=()=>{
@@ -155,6 +159,6 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
  return{refresh,plan,destroy(){
   host.removeEventListener('click',click);host.removeEventListener('input',input);
   host.removeEventListener('change',change);
-  document.removeEventListener('nlab:personal-profile-changed',profileChanged)
+  document.removeEventListener('nlab:personal-profile-changed',profileChanged);datePicker.destroy()
  }};
 }
