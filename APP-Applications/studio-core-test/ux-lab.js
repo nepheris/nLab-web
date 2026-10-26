@@ -63,11 +63,11 @@ export function mountCoreLabUx({main,collection,appendFiles}){
  const appearanceSection=section('Affichage, ruban et espace de travail');
  const themeField=settings.querySelector('label.labField:has(#uxTheme)');
  const responsiveCard=settings.querySelector('.uxCard');
- const legacyToolbar=settings.querySelector('.labToolbar');
+ const featureToolbar=settings.querySelector(':scope > .labToolbar');
  personalSection.append(profilePreferences);
  if(themeField)coreSection.append(themeField);
  if(responsiveCard)appearanceSection.append(responsiveCard);
- if(legacyToolbar)appearanceSection.append(legacyToolbar);
+ if(featureToolbar)coreSection.append(featureToolbar);
  appearanceSection.append(displayProfile);
  const unifiedSettings=section('Personnalisation de l’interface',true);
  unifiedSettings.append(personalSection,coreSection,appearanceSection);
