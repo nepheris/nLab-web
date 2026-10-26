@@ -26,7 +26,22 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('[data-panel="settings"]').click();
   await page.locator('#themeHeader').selectOption('dark');
   if(!(await page.locator('body').evaluate(el=>el.classList.contains('dark'))))throw Error('Thème sombre non appliqué');
-  if(await page.locator('#panelBody [data-theme-select]').inputValue()!=='dark')throw Error('Préférence thème non synchronisée');
+  if(await page.locator('#panelBody [data-setting="theme"]').inputValue()!=='dark')throw Error('Thème non synchronisé avec le moteur Core');
+  if((await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab-studio-v2-settings')||'{}').theme))!=='dark')throw Error('Thème non mémorisé dans les préférences Core');
+  await page.locator('#panelBody [data-setting="theme"]').selectOption('light');
+  if(await page.locator('#themeHeader').inputValue()!=='light')throw Error('Header non synchronisé depuis les paramètres Core');
+  await page.locator('#panelBody [data-setting="theme"]').selectOption('dark');
+  // Sidebar size/lock and icon theme must share the same canonical preference store.
+  const iconSetting=page.locator('#panelBody [data-setting="iconTheme"]');
+  if(!(await iconSetting.isVisible()))throw Error('Sélecteur d’icônes Core indisponible');
+  const appearance=page.locator('.coreSettingsSection').filter({has:page.locator('[data-setting-number="sidebarWidth"]')});
+  if(!(await appearance.getAttribute('open')))await appearance.locator('summary').click();
+  await page.locator('[data-setting-number="sidebarWidth"]').fill('420');
+  await page.locator('[data-setting-number="sidebarWidth"]').dispatchEvent('change');
+  if(await page.locator('.layout').evaluate(el=>getComputedStyle(el).getPropertyValue('--side-width').trim())!=='420px')throw Error('Largeur panneau non synchronisée');
+  await page.locator('[data-setting="sidebarLocked"]').check();
+  if((await page.locator('[data-cmd="lock"]').first().textContent())!=='🔒')throw Error('Verrouillage Core non synchronisé');
+  await page.locator('[data-setting="sidebarLocked"]').uncheck();
 
   // Canonical collection, preview, history and properties use real Core services.
   await page.locator('#fileInput').setInputFiles({name:'vnext-test.txt',mimeType:'text/plain',buffer:Buffer.from('Fichier réel nLab TEST')});
@@ -124,6 +139,7 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('[data-cmd="toggle-work"]').first().click();
   if(await page.locator('.workspace').evaluate(el=>el.classList.contains('is-work-hidden')))throw Error('Planche non réaffichée');
   if(!(await page.locator('body').evaluate(el=>el.classList.contains('dark'))))throw Error('Thème non mémorisé');
+  if(await page.locator('#themeHeader').inputValue()!=='dark')throw Error('Header non mémorisé depuis moteur Core');
 
   const result=await page.evaluate(()=>({viewport:innerWidth,documentWidth:document.documentElement.scrollWidth,
    shareVisible:!!document.querySelector('#shareBtn')?.getClientRects().length,
