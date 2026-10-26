@@ -108,3 +108,24 @@ body[data-ribbon-mode="primary"] .ribbonGroupLabel{font-size:9px}
 .studioHoverHelp strong{font-size:12px;font-weight:700;color:var(--ui-text,var(--nlab-ink,#202830))}
 .studioHoverHelp span{font-size:11px;color:var(--ui-muted,var(--nlab-muted,#647587));line-height:1.5}
 @media(max-width:700px){.studioHoverHelp{max-width:calc(100vw - 16px)}}
+
+/* Canonical active/inactive lock and obvious resizable divider for every Studio. */
+.side .panelHead #sidebarLock[aria-pressed="true"]{
+ border-color:var(--ui-accent,#1676c1)!important;
+ color:var(--ui-accent,#1676c1)!important;
+ background:var(--ui-soft,var(--nlab-card,#eef5fb))!important;
+ box-shadow:inset 0 0 0 1px var(--ui-accent,#1676c1)
+}
+.side .panelHead #sidebarLock[aria-pressed="false"]{
+ border-color:var(--ui-border,var(--nlab-line,#d9e0e6));
+ background:var(--ui-surface,var(--nlab-card,#fff));
+ color:var(--ui-text,var(--nlab-ink,#202830))
+}
+.side .resizer{cursor:col-resize;opacity:1}
+.side .resizer::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+ height:48px;width:4px;border-radius:6px;background:var(--ui-border,var(--nlab-line,#d9e0e6));
+ box-shadow:0 0 0 2px var(--ui-surface,var(--nlab-card,#fff))}
+.side .resizer:hover::before,.side .resizer:focus-visible::before{
+ background:var(--ui-accent,#1676c1)}
+.side.sidebarWidthLocked .resizer{cursor:not-allowed;pointer-events:none}
+.side.sidebarWidthLocked .resizer::before{opacity:.35}
