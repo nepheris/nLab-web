@@ -4,6 +4,7 @@ import {createHistorySidebar} from '../../_shared/studio-v2/history-sidebar.js';
 import {registerCommand,executeCommand} from '../../_shared/studio-v2/command-registry.js';
 import {mountCommandPalette} from '../../_shared/studio-v2/command-palette.js';
 import {mountPropertyInspector} from '../../_shared/studio-v2/property-inspector.js';
+import {mountViewerControls} from '../../_shared/studio-v2/viewer-control.js';
 import {icon as sharedIcon} from '../../_shared/studio-v2/icon-registry.js';
 import {loadStudioSettings,saveStudioSettings,applyStudioSettings,renderStudioSettingsPanel,syncStudioSettingsPanel} from '../../_shared/studio-v2/settings.js';
 import {createFullscreenController} from '../../_shared/studio-v2/fullscreen-service.js';
@@ -216,6 +217,16 @@ adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePr
 }});
 adapter.subscribeUndoRedo(()=>{syncUndoButtons();if(state.panel==='history')canonicalHistory?.render()});
 canonicalHistory=createHistorySidebar({studio:'studio-core-vnext'});
+// Zoom/fit interface is the existing shared ViewerControl; VNext only applies its
+// command to the currently displayed preview (image, text, markdown or PDF frame).
+const viewerControls=mountViewerControls('#coreViewerToolbar',{value:100,min:25,max:400,step:25});
+const viewerToolbar=$('#coreViewerToolbar');
+viewerToolbar.addEventListener('studio-v2:viewer-command',e=>{
+ const action=e.detail?.action;
+ const ratio=action==='fit'||action==='actual'?1:Number(e.detail?.ratio)||1;
+ $('#filePreview').style.setProperty('--core-preview-scale',String(ratio));
+ $('#filePreview').dataset.viewerFit=String(action==='fit');
+});
 $('#fileInput').addEventListener('change',e=>{adapter.addFiles(e.target.files);e.target.value=''});
 $('#collectionView').value=adapter.collection.view;
 $('#collectionSort').value=adapter.collection.sortMode;
