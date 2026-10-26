@@ -189,6 +189,30 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('#filesList .collectionItem').first().waitFor({state:'visible'});
   if((await page.locator('#filesList .collectionItem').count())!==1)throw Error('Collection Core non alimentée');
   await page.getByText('Fichier réel nLab TEST',{exact:false}).first().waitFor({state:'visible'});
+  // All four file views use the same Core SVGs, with real table rendering.
+  for(const [mode,clazz] of [
+   ['list','collection-list'],['icons','collection-grid'],
+   ['thumbs','collection-thumbs'],['table','collection-table']]){
+   await page.locator('#collectionViewModes [data-studio-view="'+mode+'"]').click();
+   if(!(await page.locator('#filesList').evaluate((el,cls)=>el.classList.contains(cls),clazz)))
+    throw Error('Vue Core non activée : '+mode);
+   if((await page.locator('#collectionViewModes [data-studio-view="'+mode+'"] svg').count())!==1)
+    throw Error('SVG partagé absent : '+mode);
+  }
+  if((await page.locator('#filesList .collectionTableHead').count())!==1)
+   throw Error('Entêtes du tableau non présentes');
+  await page.locator('#collectionViewModes [data-studio-view="list"]').click();
+  await page.locator('#togglePreview').click();
+  if(!(await page.locator('.workspace').evaluate(el=>el.classList.contains('is-preview-hidden'))))
+   throw Error('Masquage de l’aperçu indisponible');
+  await page.locator('#displayBtn').click();
+  if(await page.locator('[data-visible="preview"]').isChecked())
+   throw Error('Commande Affichage non synchronisée avec l’aperçu');
+  await page.locator('[data-visible="preview"]').check();
+  if(await page.locator('.workspace').evaluate(el=>el.classList.contains('is-preview-hidden')))
+   throw Error('Aperçu non rétabli');
+  await page.locator('#displayBtn').click();
+
   await page.locator('#coreViewerToolbar [data-viewer-plus]').click();
   if(await page.locator('#filePreview').evaluate(el=>el.style.getPropertyValue('--core-preview-scale'))!=='1.25')throw Error('Zoom Core ViewerControl non appliqué');
   await page.locator('#coreViewerToolbar [data-viewer-fit]').click();
@@ -295,6 +319,14 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('.ribbon [data-cmd="import"]').click();
   await page.locator('#studioInputPicker').waitFor({state:'visible'});
   if(!(await page.locator('#studioInputPickFolder').isVisible()))throw Error('Sélection Dossier Core manquante');
+  for(const v of ['text','icon','preview','table']){
+   const button=page.locator('#studioInputPicker [data-input-view="'+v+'"]');
+   if((await button.locator('svg').count())!==1)throw Error('SVG de vue manquant dans le sélecteur : '+v);
+  }
+  await page.locator('#studioInputPicker [data-input-view="table"]').click();
+  if((await page.locator('#studioInputList').getAttribute('data-view'))!=='table')
+   throw Error('Mode tableau du sélecteur de fichiers absent');
+
   if(!(await page.locator('#studioInputUrl').isVisible()))throw Error('Import URL Core manquant');
   await page.locator('#studioInputFilesNative').setInputFiles({
    name:'shared-picker.txt',mimeType:'text/plain',buffer:Buffer.from('Test canonique')
