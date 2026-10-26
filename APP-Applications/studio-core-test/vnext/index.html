@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f4f6f8">
   <title>Studio Core — VNext prototype</title>
   <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./studio.css?v=20261026-4">
+  <link rel="stylesheet" href="./studio.css?v=20261026-5">
 </head>
 <body>
   <header class="header">
@@ -15,7 +15,7 @@
     <div class="identity"><strong>Studio Core <span class="purpose">· Interface unifiée</span></strong><small>Fonctions transversales nLab · VNext expérimentale</small></div>
     <div class="headerControls">
       <div class="shareGroup">
-        <button type="button" id="shareBtn" aria-haspopup="true" aria-controls="shareMenu" aria-expanded="false">↗ Partager <span aria-hidden="true">⌄</span></button>
+        <button type="button" id="shareBtn" aria-haspopup="true" aria-controls="shareMenu" aria-expanded="false"><span data-core-icon="share" aria-hidden="true"></span> Partager <span aria-hidden="true">⌄</span></button>
         <div id="shareMenu" class="shareMenu" hidden role="group" aria-label="Options de partage">
           <button type="button" data-share="link">🔗 Partager le lien</button>
           <button type="button" data-share="qr">▦ QR code</button>
@@ -29,24 +29,24 @@
 
   <div class="app">
     <aside class="rail" aria-label="Navigation des panneaux">
-      <button type="button" data-panel="files">▣<span>Fichiers</span></button>
-      <button type="button" data-panel="tools">⚒<span>Outils</span></button>
-      <button type="button" data-panel="history">◷<span>Historique</span></button>
-      <button type="button" data-panel="properties">☷<span>Propriétés</span></button>
-      <button type="button" data-panel="settings">⚙<span>Réglages</span></button>
+      <button type="button" data-panel="files"><span data-core-icon="folder" aria-hidden="true"></span><span>Fichiers</span></button>
+      <button type="button" data-panel="tools"><span data-core-icon="edit" aria-hidden="true"></span><span>Outils</span></button>
+      <button type="button" data-panel="history"><span data-core-icon="history" aria-hidden="true"></span><span>Historique</span></button>
+      <button type="button" data-panel="properties"><span data-core-icon="metadata" aria-hidden="true"></span><span>Propriétés</span></button>
+      <button type="button" data-panel="settings"><span data-core-icon="settings" aria-hidden="true"></span><span>Réglages</span></button>
     </aside>
     <section class="workspace">
       <div class="ribbon" role="toolbar" aria-label="Commandes du Studio">
-        <button type="button" id="displayBtn" aria-controls="displayMenu" aria-expanded="false">◉ Affichage ▾</button>
-        <button type="button" data-cmd="import">↥ Importer</button>
-        <button type="button" data-cmd="undo" disabled aria-label="Annuler la dernière modification">↶ Annuler</button>
-        <button type="button" data-cmd="redo" disabled aria-label="Rétablir la modification annulée">↷ Rétablir</button>
-        <button type="button" data-cmd="save">▣ Enregistrer</button>
-        <button type="button" data-cmd="save-as">⇩ Enregistrer sous</button>
-        <button type="button" data-cmd="windows">▦ Fenêtres</button>
-        <button type="button" data-cmd="commands" title="Rechercher une commande (Ctrl+K)">⌕ Commandes</button>
-        <button type="button" id="fullscreenBtn" aria-pressed="false">⛶ Plein écran</button>
-        <button type="button" data-cmd="toggle-work">▤ Masquer la planche</button>
+        <button type="button" id="displayBtn" aria-controls="displayMenu" aria-expanded="false"><span data-core-icon="eye" aria-hidden="true"></span><span>Affichage ▾</span></button>
+        <button type="button" data-cmd="import"><span data-core-icon="inputAcquire" aria-hidden="true"></span><span>Importer</span></button>
+        <button type="button" data-cmd="undo" disabled aria-label="Annuler la dernière modification"><span data-core-icon="undo" aria-hidden="true"></span><span>Annuler</span></button>
+        <button type="button" data-cmd="redo" disabled aria-label="Rétablir la modification annulée"><span data-core-icon="redo" aria-hidden="true"></span><span>Rétablir</span></button>
+        <button type="button" data-cmd="save"><span data-core-icon="save" aria-hidden="true"></span><span>Enregistrer</span></button>
+        <button type="button" data-cmd="save-as"><span data-core-icon="download" aria-hidden="true"></span><span>Enregistrer sous</span></button>
+        <button type="button" data-cmd="windows"><span data-core-icon="grid" aria-hidden="true"></span><span>Fenêtres</span></button>
+        <button type="button" data-cmd="commands" title="Rechercher une commande (Ctrl+K)"><span data-core-icon="command" aria-hidden="true"></span><span>Commandes</span></button>
+        <button type="button" id="fullscreenBtn" aria-pressed="false"><span data-core-icon="expand" aria-hidden="true"></span><span>Plein écran</span></button>
+        <button type="button" data-cmd="toggle-work"><span data-core-icon="eyeOff" aria-hidden="true"></span><span data-work-label>Masquer la planche</span></button>
       </div>
       <div id="displayMenu" class="displayMenu" hidden aria-label="Options d'affichage">
         <label><input type="checkbox" data-visible="work"> Planche de travail</label>
@@ -59,7 +59,7 @@
           <div id="panelBody"></div>
           <div class="resizer" role="separator" aria-orientation="vertical" aria-label="Redimensionner le panneau" tabindex="0"></div>
         </section>
-        <main class="board"><div class="panelHead"><strong>Planche de travail</strong><button type="button" data-cmd="toggle-work">Masquer</button></div>
+        <main class="board"><div class="panelHead"><strong>Planche de travail</strong><button type="button" data-cmd="toggle-work"><span data-core-icon="eyeOff" aria-hidden="true"></span><span data-work-label>Masquer</span></button></div>
           <div id="boardBody">
  <div class="collectionToolbar" role="group" aria-label="Affichage des fichiers">
   <label>Vue <select id="collectionView"><option value="list">Liste</option><option value="grid">Cartes</option><option value="thumbs">Vignettes</option></select></label>
@@ -90,6 +90,6 @@
   </dialog>
   <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
   <input id="fileInput" type="file" multiple hidden>
-  <script type="module" src="./app.js?v=20261026-4"></script>
+  <script type="module" src="./app.js?v=20261026-5"></script>
 </body>
 </html>
