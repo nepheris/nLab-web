@@ -60,6 +60,11 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('#filesList .collectionItem').first().waitFor({state:'visible'});
   if((await page.locator('#filesList .collectionItem').count())!==1)throw Error('Collection Core non alimentée');
   await page.getByText('Fichier réel nLab TEST',{exact:false}).first().waitFor({state:'visible'});
+  await page.locator('#coreViewerToolbar [data-viewer-plus]').click();
+  if(await page.locator('#filePreview').evaluate(el=>el.style.getPropertyValue('--core-preview-scale'))!=='1.25')throw Error('Zoom Core ViewerControl non appliqué');
+  await page.locator('#coreViewerToolbar [data-viewer-fit]').click();
+  if(await page.locator('#filePreview').evaluate(el=>el.style.getPropertyValue('--core-preview-scale'))!=='1')throw Error('Ajustement ViewerControl non appliqué');
+
   await page.locator('.rail [data-panel="history"]').click();
   await page.getByText('Import de fichiers',{exact:false}).first().waitFor({state:'visible'});
   await page.locator('[data-panel="properties"]').click();

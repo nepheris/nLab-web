@@ -453,3 +453,22 @@ body{font-family:var(--studio-font-family,system-ui,-apple-system,"Segoe UI",san
  background:var(--ui-surface);color:var(--ui-text);border:1px solid var(--ui-border);border-radius:7px;padding:7px}
 @media(max-width:700px){.studioPropertyInspector{width:calc(100vw - 12px);min-width:0;
  top:6dvh!important;left:6px!important;right:6px!important;transform:none!important}}
+
+/* ViewerControl is the shared Core implementation; only the preview host is adapted. */
+#coreViewerToolbar{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin:0 0 10px;min-width:0}
+#coreViewerToolbar button{min-height:34px;padding:5px 8px;font-size:11px}
+#coreViewerToolbar .coreViewerPercent{display:flex;align-items:center;gap:2px}
+#coreViewerToolbar [data-viewer-percent]{width:62px;min-height:34px;padding:5px;
+ background:var(--ui-surface);color:var(--ui-text);border:1px solid var(--ui-border);border-radius:6px}
+#coreViewerToolbar select{min-height:34px;max-width:105px;background:var(--ui-surface);
+ color:var(--ui-text);border:1px solid var(--ui-border);border-radius:6px}
+#coreViewerToolbar .coreViewerState{font-size:11px;color:var(--ui-muted)}
+#filePreview{--core-preview-scale:1;overflow:auto;min-width:0}
+#filePreview .corePreviewImage{width:calc(100% * var(--core-preview-scale,1));max-width:none}
+#filePreview .corePreviewFrame{width:calc(100% * var(--core-preview-scale,1));max-width:none}
+#filePreview .corePreviewText :is(pre,code){font-size:calc(12px * var(--core-preview-scale,1))}
+#filePreview .markdownPreviewBody{font-size:calc(13px * var(--core-preview-scale,1))}
+@media(max-width:700px){
+ #coreViewerToolbar{gap:4px}
+ #coreViewerToolbar button{min-height:44px}
+}
