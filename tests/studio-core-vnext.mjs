@@ -63,7 +63,10 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('.rail [data-panel="history"]').click();
   await page.getByText('Import de fichiers',{exact:false}).first().waitFor({state:'visible'});
   await page.locator('[data-panel="properties"]').click();
-  await page.getByText('vnext-test.txt',{exact:false}).first().waitFor({state:'visible'});
+  await page.locator('#panelBody [data-cmd="properties"]').click();
+  await page.locator('#studioPropertyInspector').waitFor({state:'visible'});
+  if(await page.locator('#studioPropertyInspector [data-property-key="name"]').inputValue()!=='vnext-test.txt')throw Error('Propriétés Core non reliées au fichier actif');
+  await page.locator('#studioPropertyInspector [data-win-close]').click();
   // Real unmodified-file export through the shared OutputService.
   const downloadPromise=page.waitForEvent('download');
   await page.locator('.ribbon [data-cmd="save"]').click();
