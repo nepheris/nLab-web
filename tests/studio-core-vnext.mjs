@@ -79,10 +79,20 @@ async function runScenario({name,viewport,mobile}){
    if(await page.locator('[data-ribbon-group="'+activeGroup+'"]').isHidden())throw Error('Groupe ruban manquant : '+tab);
    if(!(await page.locator('[data-ribbon-group="'+hiddenGroup+'"]').isHidden()))throw Error('Groupe ruban incorrect : '+tab);
   }
+  // Keyboard navigation and context panels use the same shared ribbon engine.
+  await page.locator('[data-ribbon-tab="file"]').focus();
+  await page.keyboard.press('ArrowRight');
+  if(await page.locator('[data-ribbon-tab="edit"]').getAttribute('aria-selected')!=='true')throw Error('Navigation clavier du ruban inactive');
   await page.locator('[data-ribbon-tab="home"]').click();
   if((await page.locator('.ribbon [data-cmd="save"]').count())!==1)throw Error('Enregistrer dupliqué dans le ruban');
   if((await page.locator('.ribbon [data-cmd="undo"]').count())!==1)throw Error('Annuler dupliqué dans le ruban');
   if((await page.locator('.ribbonGroupLabel').count())<4)throw Error('Groupes de ruban absent');
+  await page.locator('.ribbon [data-cmd="show-properties"]').click();
+  if(await page.locator('#panelTitle').textContent()!=='Propriétés')throw Error('Ruban Propriétés non raccordé au panneau');
+  await page.locator('.ribbon [data-cmd="show-settings"]').click();
+  if(await page.locator('#panelTitle').textContent()!=='Réglages')throw Error('Ruban Réglages non raccordé au panneau Core');
+  if((await page.locator('.coreSettingsSurface').count())!==1)throw Error('Réglages Core dupliqués');
+
   // Icons in navigation, header and ribbon must come from the shared icon registry.
   for(const selector of ['.rail [data-panel="files"] [data-core-icon] svg',
    '.ribbon [data-cmd="import"] [data-core-icon] svg','#shareBtn [data-core-icon] svg']){
@@ -130,6 +140,9 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('.ribbon [data-cmd="windows"]').click();
   const floating=page.locator('[data-vnext-floating="windows"]');
   await floating.waitFor({state:'visible'});
+  const sharedLockSvg=await page.locator('#sidebarLock svg').evaluate(el=>el.outerHTML);
+  const windowLockSvg=await floating.locator('[data-win-lock] svg').evaluate(el=>el.outerHTML);
+  if(sharedLockSvg!==windowLockSvg)throw Error('Icônes cadenas différentes entre fenêtre et volet');
   for(const control of ['lock','dock','collapse','close'])
    if((await floating.locator('[data-win-'+control+']').count())!==1)throw Error('Contrôle de fenêtre manquant : '+control);
   await floating.locator('[data-win-lock]').click();
