@@ -13,8 +13,7 @@ import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shar
 import {mountStudioSidebarControls} from '../../_shared/studio-v2/sidebar-controller.js';
 import {mountStudioHoverHelp} from '../../_shared/studio-v2/help.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
-// VNext experimental shell: one command dispatcher, shared panels and local preferences.
-// Functional bridge to the existing Studio Core services is intentionally not implemented yet.
+// VNext graphical shell: the existing Core services, one command registry and shared panels.
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const key='nlab:core-vnext:ui:v1';
 let state={panel:'files',work:true,files:[]};
@@ -79,6 +78,7 @@ const runAction=async cmd=>{
  if(cmd==='properties'){document.dispatchEvent(new Event('studio-v2:open-properties'));return}
  if(cmd==='show-properties'){openPanel('properties');return}
  if(cmd==='show-settings'){openPanel('settings');return}
+ if(cmd==='show-profile'){openPanel('profile');return}
  if(cmd==='windows'){openWindow();return}
  if(cmd==='float-panel'){openFloatingPanel(state.panel);return}
  persist();render();
@@ -91,6 +91,7 @@ const coreActions={
  'toggle-work':'Afficher ou masquer la planche','collapse':'Masquer le panneau',
  lock:'Verrouiller le panneau',windows:'Fenêtres',commands:'Palette de commandes',properties:'Propriétés du fichier',
  'show-properties':'Panneau Propriétés','show-settings':'Panneau Réglages Core',
+ 'show-profile':'Profil personnel nLab',
  'float-panel':'Détacher le panneau'
 };
 
@@ -111,6 +112,7 @@ const coreActionHelp={
  properties:'Affiche les propriétés du fichier actif dans l’inspecteur partagé du Core.',
  'show-properties':'Affiche le panneau Propriétés dans le volet latéral.',
  'show-settings':'Affiche les paramètres partagés du Core : thème, icônes, ruban et fenêtres.',
+ 'show-profile':'Ouvre le profil personnel nLab : identité, tampons, signatures, logos, variables et import/export ZIP.',
  'float-panel':'Détache ce panneau dans une fenêtre ancrable et repositionnable.'
 };
 for(const [name,label] of Object.entries(coreActions)){
@@ -137,6 +139,9 @@ function panelMarkup(id){
  }else if(id==='properties'){
   // Inspectors live in Core's property-inspector.js, not in a VNext-specific form.
   content='<p class="hint">L’inspecteur commun affiche les propriétés de la sélection active.</p><button data-cmd="properties">☷ Ouvrir les propriétés</button>';
+ }else if(id==='profile'){
+  // Uses the single existing Core personal-profile-ui.js instance.
+  content='';
  }else if(id==='settings'){
   // The existing Core settings UI is rehomed as a single DOM node in panelContent.
   content='';
@@ -152,6 +157,9 @@ function panelContent(){
   canonicalHistory.render();
  }else if(state.panel==='settings'&&coreSettingsHost){
   if(!host.contains(coreSettingsHost))host.replaceChildren(coreSettingsHost);
+ }else if(state.panel==='profile'&&personalProfileHost){
+  if(!host.contains(personalProfileHost))host.replaceChildren(personalProfileHost);
+  loadPersonalProfilePanel();
  }else host.innerHTML=panelMarkup(state.panel);
 }
 function syncUndoButtons(){
@@ -186,7 +194,7 @@ function render(){
  const preferences=currentPrefs();
  $('.workspace').classList.toggle('is-work-hidden',!state.work);
  $('.workspace').classList.toggle('is-ribbon-hidden',!ribbonVisible());
- $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'})[state.panel];
+ $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',profile:'Profil personnel nLab',settings:'Réglages'})[state.panel];
  $$('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===state.panel)));
  $$('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
  $$('[data-work-label]').forEach(label=>{label.textContent=state.work?'Masquer la planche':'Afficher la planche'});
@@ -214,12 +222,13 @@ function createFloating(key,title,html){
  return el;
 }
 function openWindow(){
- createFloating('windows','Fenêtres','<p class="hint">Gestionnaire commun : déplacer, ancrer, verrouiller, réduire, agrandir et restaurer.</p><div class="panelButtonList"><button data-panel="files">Fichiers</button><button data-panel="history">Historique</button><button data-panel="properties">Propriétés</button><button data-panel="settings">Réglages</button></div>');
+ createFloating('windows','Fenêtres','<p class="hint">Gestionnaire commun : déplacer, ancrer, verrouiller, réduire, agrandir et restaurer.</p><div class="panelButtonList"><button data-panel="files">Fichiers</button><button data-panel="history">Historique</button><button data-panel="properties">Propriétés</button><button data-panel="profile">Profil personnel</button><button data-panel="settings">Réglages</button></div>');
 }
 function openFloatingPanel(id){
- const names={files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'};
+ const names={files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',profile:'Profil personnel nLab',settings:'Réglages'};
  const el=createFloating('panel-'+id,names[id]||id,panelMarkup(id));
  if(id==='settings'&&coreSettingsHost)el.querySelector('.content').replaceChildren(coreSettingsHost);
+ if(id==='profile'&&personalProfileHost){el.querySelector('.content').replaceChildren(personalProfileHost);loadPersonalProfilePanel()}
  if(id==='history'&&canonicalHistory){el.querySelector('.content').replaceChildren(canonicalHistory.element);canonicalHistory.render()}
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-cmd]');if(b)dispatch(b.dataset.cmd);const p=e.target.closest('[data-panel]');if(p)openPanel(p.dataset.panel)});
@@ -235,19 +244,23 @@ $$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{
 coreSettingsHost=document.createElement('div');
 coreSettingsHost.className='coreSettingsSurface';
 renderStudioSettingsPanel(coreSettingsHost);
-// The personal profile is the existing Core component, mounted only when opened.
-const personalProfileSection=document.createElement('details');
-personalProfileSection.className='coreSettingsSection';
-personalProfileSection.innerHTML='<summary>Profil personnel nLab</summary><div class="coreSettingsSectionBody" data-profile-host><p class="hint">Ouvrez cette section pour charger le profil portable commun.</p></div>';
-coreSettingsHost.querySelector('.coreSettingsGrid')?.append(personalProfileSection);
+// Profile has its own left-rail panel, not an accordion inside shared Settings.
+// One instance of the EXISTING Core profile module; no duplicated inputs or storage.
+const personalProfileHost=document.createElement('section');
+personalProfileHost.className='personalProfileSurface';
+personalProfileHost.dataset.profileHost='true';
+personalProfileHost.textContent='Chargement du profil personnel…';
 let profileLoading=null;
-personalProfileSection.addEventListener('toggle',()=>{
- if(!personalProfileSection.open||profileLoading)return;
- const host=personalProfileSection.querySelector('[data-profile-host]');
+function loadPersonalProfilePanel(){
+ if(profileLoading)return profileLoading;
  profileLoading=import('../../_shared/studio-v2/personal-profile-ui.js')
-  .then(({mountPersonalProfileUI})=>mountPersonalProfileUI(host))
-  .catch(error=>{host.textContent='Chargement du profil indisponible : '+(error.message||error)});
-});
+  .then(({mountPersonalProfileUI})=>mountPersonalProfileUI(personalProfileHost))
+  .catch(error=>{
+   personalProfileHost.textContent='Profil indisponible : '+(error.message||error);
+   profileLoading=null; // Allow retry when the user returns to the panel.
+  });
+ return profileLoading;
+}
 
 adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePreview'),onUpdate:core=>{
  $('#collectionCount').textContent=core.size+' fichier(s)';
@@ -318,7 +331,8 @@ mountStudioHoverHelp({
   'work':'Masque ou réaffiche la planche de travail.',
   'sidebar':'Masque ou réaffiche le panneau latéral.',
   'ribbon':'Affiche ou masque les commandes du ruban.',
-  sidebarWidth:'Règle la largeur du panneau sans limite fixe à 720 px. Vous pouvez aussi glisser son bord.'
+  sidebarWidth:'Règle la largeur du panneau sans limite fixe à 720 px. Vous pouvez aussi glisser son bord.',
+  profile:'Ouvre votre profil nLab local, avec les tampons, signatures, variables et modèles exportables en ZIP.'
  }
 });
 
