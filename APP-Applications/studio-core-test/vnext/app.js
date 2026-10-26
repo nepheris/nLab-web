@@ -208,11 +208,11 @@ function render(){
  $('.workspace').classList.toggle('is-preview-hidden',!state.preview);
  $('#togglePreview').setAttribute('aria-pressed',String(state.preview));
  $('#previewToggleLabel').textContent=state.preview?'Masquer l’aperçu':'Afficher l’aperçu';
- $('[data-preview-label]').forEach(el=>{el.textContent=state.preview?'Masquer l’aperçu':'Afficher l’aperçu'});
+ $$('[data-preview-label]').forEach(el=>{el.textContent=state.preview?'Masquer l’aperçu':'Afficher l’aperçu'});
  $('.workspace').classList.toggle('is-ribbon-hidden',!ribbonVisible());
  $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',profile:'Profil personnel nLab',settings:'Réglages'})[state.panel];
  $$('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===state.panel)));
- $('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='preview'?state.preview:b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
+ $$('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='preview'?state.preview:b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
  $$('[data-work-label]').forEach(label=>{label.textContent=state.work?'Masquer la planche':'Afficher la planche'});
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  panelContent();
