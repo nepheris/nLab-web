@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - 'APP-Applications/studio-core-test/vnext/**'
+      - 'APP-Applications/studio-core-test/ux-lab.js'
+      - 'tests/studio-core-test-lab.mjs'
       - 'APP-Applications/_shared/nlab-share-menu.js'
       - 'tests/studio-core-vnext.mjs'
       - '.github/workflows/studio-core-test-lab.yml'
