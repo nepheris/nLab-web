@@ -90,9 +90,9 @@ a:hover{color:var(--ui-accent)}
 .row{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 .hint{font-size:12px;color:var(--ui-muted)}
 .is-work-hidden .board #boardBody{display:none}
-.is-side-hidden .layout{grid-template-columns:minmax(0,1fr)}
-.is-side-hidden .side{display:none}
-.is-ribbon-hidden .ribbon [data-cmd]:not([data-cmd="toggle-work"]){display:none}
+.layout.is-side-hidden{grid-template-columns:minmax(0,1fr)}
+.layout.is-side-hidden .side{display:none}
+.workspace.is-ribbon-hidden .ribbonGroup:not(.ribbonGroupDisplay){display:none}
 
 /* Universal floating windows and dialogs. */
 .floating,.modal{background:var(--ui-surface);color:var(--ui-text);
@@ -471,4 +471,65 @@ body{font-family:var(--studio-font-family,system-ui,-apple-system,"Segoe UI",san
 @media(max-width:700px){
  #coreViewerToolbar{gap:4px}
  #coreViewerToolbar button{min-height:44px}
+}
+
+/* Shared Studio docked sidebar: controls and icons from window-system.js. */
+.rail #sidebarToggle{display:grid;place-items:center;min-height:38px;flex:0 0 auto;
+ padding:6px;border:1px solid var(--ui-border);color:var(--ui-text);background:var(--ui-soft)}
+.rail #sidebarToggle svg,.panelHead .panelControl svg{display:block;width:18px;height:18px;
+ fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.panelHead .panelControl{min-width:35px;min-height:35px;padding:5px;
+ display:inline-flex;align-items:center;justify-content:center}
+.panelHead #sidebarLock[aria-pressed="true"]{border-color:var(--ui-accent);
+ background:var(--ui-soft);color:var(--ui-accent)}
+.side .resizer{width:10px;right:-5px;touch-action:none;cursor:col-resize}
+.side .resizer:focus-visible,.side .resizer:hover{background:var(--ui-accent);opacity:.55}
+.layout.is-side-resizing{user-select:none;cursor:col-resize}
+.layout.is-side-hidden{grid-template-columns:minmax(0,1fr)}
+.layout.is-side-hidden .side{display:none}
+.rail #sidebarToggle[aria-expanded="false"]{background:var(--ui-soft);border-color:var(--ui-accent)}
+/* Office-style ribbon: tabs own only visibility, commands stay in the Core registry. */
+.ribbonTabs{display:flex;gap:2px;align-items:end;overflow-x:auto;scrollbar-width:thin;
+ background:var(--ui-surface);border-bottom:1px solid var(--ui-border);padding:5px 10px 0}
+.ribbonTabs button{flex:0 0 auto;border:0;border-bottom:3px solid transparent;
+ border-radius:7px 7px 0 0;min-height:36px;padding:6px 15px;
+ background:transparent;color:var(--ui-text);font-size:12px;font-weight:600}
+.ribbonTabs button[aria-selected="true"]{border-bottom-color:var(--ui-accent);
+ background:var(--ui-soft);color:var(--ui-text)}
+.ribbonTabs button:hover{background:var(--ui-soft)}
+.ribbon{min-height:104px;display:flex;gap:0;padding:6px 5px;align-items:stretch;
+ overflow-x:auto;scrollbar-width:thin;overscroll-behavior-x:contain}
+.ribbonGroup{display:flex;flex-direction:column;flex:0 0 auto;align-self:stretch;
+ padding:2px 10px;min-width:120px;border-right:1px solid var(--ui-border);gap:4px}
+.ribbonGroup:last-child{border-right:0}
+.ribbonCommands{flex:1;display:flex;flex-wrap:nowrap;align-items:center;gap:5px;min-height:63px}
+.ribbonCommands button{display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:4px;flex:0 0 auto;min-width:64px;min-height:62px;max-width:104px;
+ border:1px solid transparent;background:transparent;padding:6px;
+ font-size:10px;line-height:1.25;text-align:center;white-space:normal;
+ overflow-wrap:anywhere;border-radius:7px}
+.ribbonCommands button:hover,.ribbonCommands button:focus-visible{background:var(--ui-soft);
+ border-color:var(--ui-border)}
+.ribbonCommands button:disabled{opacity:.46;cursor:not-allowed}
+.ribbonCommands button [data-core-icon] .studioIcon{width:23px;height:23px}
+.ribbonGroupLabel{font-size:9px;font-weight:650;color:var(--ui-muted);
+ text-align:center;letter-spacing:.04em;white-space:nowrap;line-height:1.3}
+.ribbonGroup[hidden]{display:none!important}
+.workspace.is-ribbon-hidden .ribbonGroup:not(.ribbonGroupDisplay){display:none}
+.workspace.is-ribbon-hidden .ribbonTabs{display:flex}
+.workspace.is-ribbon-hidden .ribbon{min-height:76px}
+body[data-ribbon-mode="icons"] .ribbonCommands button{min-width:43px;max-width:55px;font-size:0}
+body[data-ribbon-mode="icons"] .ribbonCommands button>span:not([data-core-icon]){display:none}
+body[data-ribbon-mode="primary"] .ribbonCommands button{min-height:52px}
+body[data-ribbon-mode="primary"] .ribbonGroupLabel{font-size:9px}
+@media(max-width:700px){
+ .rail #sidebarToggle{min-height:50px;min-width:45px}
+ .layout.is-side-hidden{display:flex}
+ .layout.is-side-hidden .side{display:none}
+ .ribbonTabs{padding:3px 6px 0}
+ .ribbonTabs button{min-height:44px;padding:8px 11px}
+ .ribbon{min-height:94px;padding:5px 4px}
+ .ribbonGroup{padding:2px 7px;min-width:98px}
+ .ribbonCommands button{min-width:58px;min-height:60px}
+ .side .resizer{display:none}
 }
