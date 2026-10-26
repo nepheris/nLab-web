@@ -115,6 +115,25 @@ export function applyStudioSettings(settings=loadStudioSettings()){
   }
   return settings;
 }
+// Synchronize an already-mounted settings surface without recreating its controls.
+ // Used by any Studio hosting the canonical Core settings UI (e.g. Core VNext).
+export function syncStudioSettingsPanel(host,settings=loadStudioSettings()){
+ if(!host)return;
+ host.querySelectorAll('[data-setting]').forEach(el=>{
+  const value=settings[el.dataset.setting];
+  if(value===undefined)return;
+  if(el.type==='checkbox'){el.checked=Boolean(value);return}
+  if(document.activeElement===el&&el.type==='range')return;
+  el.value=String(value)
+ });
+ host.querySelectorAll('[data-setting-number]').forEach(el=>{
+  if(document.activeElement!==el)el.value=String(settings[el.dataset.settingNumber]??'')
+ });
+ const scale=host.querySelector('[data-scale-value]');
+ if(scale)scale.textContent=Math.round(Number(settings.fontScale||1)*100)+' %';
+ const thumb=host.querySelector('[data-thumbnail-size-value]');
+ if(thumb)thumb.textContent=Math.round(Number(settings.collectionThumbnailSize||104))+' px';
+}
 export function renderStudioSettingsPanel(host){
   if(!host)return;
   const s=loadStudioSettings();
