@@ -68,6 +68,7 @@ function render(){
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  const sharedTheme=$('#themeHeader');if(sharedTheme)sharedTheme.value=state.theme;
  panelContent();
+ $('[data-theme-select]').forEach(x=>x.value=state.theme);
 }
 const floating=new Map();
 function createFloating(key,title,html){
@@ -98,9 +99,9 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-cmd]');if(
 document.addEventListener('change',e=>{if(e.target.matches('[data-theme-select]')){state.theme=e.target.value;persist();render()}});
 $('#displayBtn').onclick=()=>{$('#displayMenu').hidden=!$('#displayMenu').hidden;render()};
 $$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{state[b.dataset.visible]=b.checked;persist();render()}));
-adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePreview'),onUpdate:()=>{
- $('#collectionCount').textContent=adapter.size+' fichier(s)';
- if(state.panel==='files'||state.panel==='properties'||state.panel==='history')panelContent();
+adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePreview'),onUpdate:core=>{
+ $('#collectionCount').textContent=core.size+' fichier(s)';
+ if(adapter&&(state.panel==='files'||state.panel==='properties'||state.panel==='history'))panelContent();
 }});
 $('#fileInput').addEventListener('change',e=>{adapter.addFiles(e.target.files);e.target.value=''});
 $('#collectionView').value=adapter.collection.view;
