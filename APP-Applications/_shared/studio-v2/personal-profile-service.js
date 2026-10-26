@@ -57,6 +57,8 @@ export function createDefaultPersonalProfile(){
     {id:'root',label:'Racine',template:''},
     {id:'treatment',label:'Traitement',template:'{TREATMENT}'},
     {id:'year-month',label:'Année / mois',template:'{YEAR}/{MONTH}'},
+    {id:'year-month-week',label:'Année / mois / semaine',template:'{YEAR}/{MONTH}/S{WEEK}'},
+    {id:'client-project-year',label:'Client / projet / année',template:'{CLIENT}/{PROJECT}/{YEAR}'},
     {id:'treatment-date',label:'Traitement / année / mois',template:'{TREATMENT}/{YEAR}/{MONTH}'},
     {id:'client-project',label:'Client / projet',template:'{CLIENT}/{PROJECT}'}
    ],
