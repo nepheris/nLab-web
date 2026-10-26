@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f4f6f8">
   <title>Studio Core — VNext prototype</title>
   <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./studio.css?v=20261026-7">
+  <link rel="stylesheet" href="./studio.css?v=20261026-8">
 </head>
 <body>
   <header class="header">
@@ -64,6 +64,12 @@
             <button type="button" data-cmd="redo" disabled aria-label="Rétablir la modification annulée" title="Rétablir"><span data-core-icon="redo" aria-hidden="true"></span><span>Rétablir</span></button>
           </div><span class="ribbonGroupLabel">HISTORIQUE</span>
         </div>
+        <div class="ribbonGroup" data-ribbon-group="panels">
+          <div class="ribbonCommands">
+            <button type="button" data-cmd="show-properties" title="Afficher les propriétés"><span data-core-icon="metadata" aria-hidden="true"></span><span>Propriétés</span></button>
+            <button type="button" data-cmd="show-settings" title="Afficher les réglages du Core"><span data-core-icon="settings" aria-hidden="true"></span><span>Réglages</span></button>
+          </div><span class="ribbonGroupLabel">PANNEAUX</span>
+        </div>
         <div class="ribbonGroup" data-ribbon-group="windows">
           <div class="ribbonCommands">
             <button type="button" data-cmd="windows" title="Fenêtres"><span data-core-icon="grid" aria-hidden="true"></span><span>Fenêtres</span></button>
@@ -114,6 +120,6 @@
   </dialog>
   <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
   <input id="fileInput" type="file" multiple hidden>
-  <script type="module" src="./app.js?v=20261026-7"></script>
+  <script type="module" src="./app.js?v=20261026-8"></script>
 </body>
 </html>
