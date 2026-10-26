@@ -1,3 +1,5 @@
+import {createCoreAdapter} from './core-adapter.js';
+import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shared/studio-v2/window-system.js';
 import {mountShareMenu} from '../../_shared/nlab-share-menu.js';
 // VNext experimental shell: one command dispatcher, shared panels and local preferences.
 // Functional bridge to the existing Studio Core services is intentionally not implemented yet.
@@ -6,26 +8,51 @@ const key='nlab:core-vnext:ui:v1';
 let state={panel:'files',work:true,sidebar:true,ribbon:true,locked:false,width:310,theme:'auto',files:[]};
 try{const saved=JSON.parse(localStorage.getItem(key)||'{}');for(const k of ['panel','work','sidebar','ribbon','locked','width','theme'])if(Object.hasOwn(saved,k))state[k]=saved[k]}catch{}
 const persist=()=>{try{const {files,...preferences}=state;localStorage.setItem(key,JSON.stringify(preferences))}catch{}};
-const dispatch=cmd=>{
+let adapter;
+const dispatch=async cmd=>{
  if(cmd==='import'){$('#fileInput').click();return}
- if(cmd==='save'||cmd==='save-as'){const data=JSON.stringify({files:state.files.map(x=>({name:x.name,size:x.size,type:x.type})),preferences:{panel:state.panel,width:state.width}},null,2);const a=document.createElement('a'),url=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.href=url;a.download='core-vnext-demo.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),500);return}
+ if(cmd==='save'){
+  try{const result=await adapter.saveSelected();inform('Enregistré : '+result.name)}
+  catch(error){inform(error.message||'Enregistrement impossible')}return;
+ }
+ if(cmd==='save-as'){
+  const selected=adapter.selectedFiles()[0];
+  if(!selected){inform('Sélectionnez un fichier avant Enregistrer sous');return}
+  $('#saveAsName').value=selected.name;
+  $('#saveAsDialog').showModal();return;
+ }
+ if(cmd==='select-all'){adapter.collection.selectAll();return}
+ if(cmd==='remove-files'){adapter.removeSelected();return}
+ if(cmd==='clear-files'){adapter.clear();return}
  if(cmd==='toggle-work')state.work=!state.work;
  if(cmd==='collapse')state.sidebar=false;
  if(cmd==='lock')state.locked=!state.locked;
- if(cmd==='windows')openWindow();
+ if(cmd==='windows'){openWindow();return}
+ if(cmd==='float-panel'){openFloatingPanel(state.panel);return}
  persist();render();
 };
+const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function panelMarkup(id){
+ const common='<details class="section"><summary>Options du panneau</summary><p class="hint">Même structure et mêmes commandes dans tous les panneaux.</p></details>';
+ let content='';
+ if(id==='files'){
+  content='<button data-cmd="import">↥ Importer</button><button data-cmd="save">▣ Enregistrer</button><button data-cmd="save-as">⇩ Enregistrer sous</button><button data-cmd="select-all">☑ Tout sélectionner</button><button data-cmd="remove-files">− Retirer la sélection</button><p class="hint">'+adapter.size+' fichier(s) dans la collection.</p>';
+ }else if(id==='tools'){
+  content='<p class="hint">Outils communs liés au fichier actif. Les commandes d’édition avancées ne sont pas encore migrées.</p><button data-cmd="import">↥ Importer</button><button data-cmd="float-panel">↗ Détacher ce panneau</button>';
+ }else if(id==='history'){
+  const records=adapter.loadHistory().filter(x=>x.studio==='studio-core-vnext').slice(0,30);
+  content='<details class="section" open><summary>Activité récente · '+records.length+'</summary><ol class="coreHistoryList">'+records.map(x=>'<li><strong>'+escapeHtml(x.label)+'</strong><small>'+escapeHtml(new Date(x.timestamp).toLocaleString('fr-FR'))+'</small><p>'+escapeHtml(x.detail||'')+'</p></li>').join('')+'</ol>'+(records.length?'':'<p class="hint">Aucune activité.</p>')+'</details>';
+ }else if(id==='properties'){
+  const item=adapter.active();
+  content='<div class="section"><strong>Propriétés du fichier actif</strong>'+(item?'<dl><dt>Nom</dt><dd>'+escapeHtml(item.label)+'</dd><dt>Format</dt><dd>'+escapeHtml(item.extension||'—')+'</dd><dt>Taille</dt><dd>'+Number(item.size||0).toLocaleString('fr-FR')+' octets</dd><dt>Sélection</dt><dd>'+adapter.collection.selectedItems().length+' fichier(s)</dd></dl>':'<p class="hint">Sélectionnez un fichier dans la collection.</p>')+'</div>';
+ }else if(id==='settings'){
+  content='<details class="section" open><summary>Personnalisation de l’interface</summary><label class="row">Thème <select data-theme-select aria-label="Thème"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label><p class="hint">Le choix est synchronisé avec le thème du header.</p></details><details class="section"><summary>Ruban et panneaux</summary><p class="hint">Les options sont centralisées dans « Affichage ».</p><button type="button" data-cmd="toggle-work">Afficher / masquer la planche</button></details>';
+ }
+ return content+common;
+}
 function panelContent(){
- const common='<details class="section" open><summary>Options du panneau</summary><p class="hint">Les panneaux utilisent les mêmes titres, boutons et sections repliables.</p></details>';
- const sections={
- files:'<button data-cmd="import">↥ Importer des fichiers</button><button data-cmd="save">▣ Enregistrer</button><button data-cmd="save-as">⇩ Enregistrer sous</button>',
- tools:'<p class="hint">Outils communs — emplacements des commandes contextuelles.</p>',
- history:'<details class="section" open><summary>Historique</summary><p class="hint">Aucune action de production enregistrée dans ce prototype.</p></details>',
- properties:'<div class="section"><strong>Propriétés</strong><p class="hint">Sélectionnez un fichier pour en afficher les caractéristiques.</p></div>',
- settings:'<details class="section" open><summary>Personnalisation de l’interface</summary><label class="row">Thème <select id="theme"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label><p class="hint">Les options de visibilité sont les mêmes que dans « Affichage ».</p></details>'
- };
- $('#panelBody').innerHTML=(sections[state.panel]||sections.files)+common;
- const theme=$('#theme');if(theme){theme.value=state.theme;theme.addEventListener('change',()=>{state.theme=theme.value;persist();render()})}
+ $('#panelBody').innerHTML=panelMarkup(state.panel);
+ $$('[data-theme-select]').forEach(el=>el.value=state.theme);
 }
 function render(){
  document.body.classList.toggle('dark',state.theme==='dark'||state.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
@@ -42,13 +69,58 @@ function render(){
  const sharedTheme=$('#themeHeader');if(sharedTheme)sharedTheme.value=state.theme;
  panelContent();
 }
-function openWindow(){
- let box=$('#vnextWindow');if(!box){box=document.createElement('section');box.id='vnextWindow';box.className='floating';box.innerHTML='<div class="panelHead"><strong>Fenêtres</strong><button id="minWindow">−</button><button id="closeWindow">×</button></div><div class="content">Panneaux : Fichiers, Outils, Historique, Propriétés, Réglages.</div>';document.body.append(box);$('#closeWindow').onclick=()=>box.hidden=true;$('#minWindow').onclick=()=>box.querySelector('.content').hidden=!box.querySelector('.content').hidden;}box.hidden=false;
+const floating=new Map();
+function createFloating(key,title,html){
+ let el=floating.get(key);
+ if(!el){
+  el=document.createElement('section');
+  el.className='floating';
+  el.dataset.vnextFloating=key;
+  el.hidden=true;
+  el.innerHTML='<div class="content"></div>';
+  document.body.append(el);
+  enhanceStudioWindow(el,{key:'vnext-'+key,title,restorable:true,escapeCloses:true});
+  floating.set(key,el);
+ }
+ el.querySelector('.content').innerHTML=html;
+ showStudioWindow('vnext-'+key);
+ return el;
 }
-document.addEventListener('click',e=>{let b=e.target.closest('[data-cmd]');if(b)dispatch(b.dataset.cmd);let p=e.target.closest('[data-panel]');if(p){state.panel=p.dataset.panel;state.sidebar=true;persist();render()}});
+function openWindow(){
+ createFloating('windows','Fenêtres','<p class="hint">Gestionnaire commun : déplacer, ancrer, verrouiller, réduire, agrandir et restaurer.</p><div class="panelButtonList"><button data-panel="files">Fichiers</button><button data-panel="history">Historique</button><button data-panel="properties">Propriétés</button><button data-panel="settings">Réglages</button></div>');
+}
+function openFloatingPanel(id){
+ const names={files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',settings:'Réglages'};
+ const el=createFloating('panel-'+id,names[id]||id,panelMarkup(id));
+ el.querySelectorAll('[data-theme-select]').forEach(x=>x.value=state.theme);
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-cmd]');if(b)dispatch(b.dataset.cmd);const p=e.target.closest('[data-panel]');if(p){state.panel=p.dataset.panel;state.sidebar=true;persist();render()}});
+document.addEventListener('change',e=>{if(e.target.matches('[data-theme-select]')){state.theme=e.target.value;persist();render()}});
 $('#displayBtn').onclick=()=>{$('#displayMenu').hidden=!$('#displayMenu').hidden;render()};
 $$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{state[b.dataset.visible]=b.checked;persist();render()}));
-$('#fileInput').addEventListener('change',e=>{state.files=Array.from(e.target.files||[]);$('#filesList').textContent=state.files.length?state.files.map(f=>f.name).join(' · '):'Aucun fichier importé.';});
+adapter=createCoreAdapter({collectionHost:$('#filesList'),previewHost:$('#filePreview'),onUpdate:()=>{
+ $('#collectionCount').textContent=adapter.size+' fichier(s)';
+ if(state.panel==='files'||state.panel==='properties'||state.panel==='history')panelContent();
+}});
+$('#fileInput').addEventListener('change',e=>{adapter.addFiles(e.target.files);e.target.value=''});
+$('#collectionView').value=adapter.collection.view;
+$('#collectionSort').value=adapter.collection.sortMode;
+$('#collectionView').addEventListener('change',e=>adapter.collection.setView(e.target.value));
+$('#collectionSort').addEventListener('change',e=>adapter.collection.setSort(e.target.value));
+const fileDrop=$('#fileDrop');
+fileDrop.addEventListener('click',()=>$('#fileInput').click());
+fileDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('#fileInput').click()}});
+fileDrop.addEventListener('dragover',e=>{e.preventDefault();fileDrop.classList.add('dragOver')});
+fileDrop.addEventListener('dragleave',()=>fileDrop.classList.remove('dragOver'));
+fileDrop.addEventListener('drop',e=>{e.preventDefault();fileDrop.classList.remove('dragOver');adapter.addFiles(e.dataTransfer?.files)});
+$('#cancelSaveAs').addEventListener('click',()=>$('#saveAsDialog').close());
+$('#saveAsForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const name=$('#saveAsName').value.trim();
+ if(!name)return;
+ try{const result=await adapter.saveSelected({name});$('#saveAsDialog').close();inform('Copie enregistrée : '+result.name)}
+ catch(error){inform(error.message||'Enregistrement impossible')}
+});
 const grip=$('.resizer');grip.addEventListener('pointerdown',e=>{if(state.locked)return;e.preventDefault();grip.setPointerCapture(e.pointerId)});grip.addEventListener('pointermove',e=>{if(!grip.hasPointerCapture(e.pointerId))return;state.width=Math.max(210,Math.min(550,e.clientX-$('.rail').getBoundingClientRect().right));$('.layout').style.setProperty('--side-width',state.width+'px')});grip.addEventListener('pointerup',()=>persist());
 grip.addEventListener('keydown',e=>{if(state.locked)return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){state.width=Math.max(210,Math.min(550,state.width+(e.key==='ArrowLeft'?-15:15)));persist();render();e.preventDefault()}});
 render();
@@ -60,6 +132,7 @@ themeHeader.value=state.theme;
 themeHeader.addEventListener('change',()=>{
  state.theme=themeHeader.value;persist();render();
 });
+
 if(window.matchMedia){
  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='auto')render()});
 }
