@@ -14,6 +14,9 @@ export function studioWindowControlIcon(name){
  const p={
   grip:'<circle cx="8" cy="6" r="1"/><circle cx="16" cy="6" r="1"/><circle cx="8" cy="12" r="1"/><circle cx="16" cy="12" r="1"/><circle cx="8" cy="18" r="1"/><circle cx="16" cy="18" r="1"/>',
   collapse:'<path d="M5 12h14"/>',expand:'<path d="M5 12h14M12 5v14"/>',
+  // Docked-side-panel arrows: same SVG builder as floating-window commands.
+  sidebarLeft:'<path d="m15 5-7 7 7 7"/><path d="M20 4v16"/>',
+  sidebarRight:'<path d="m9 5 7 7-7 7"/><path d="M4 4v16"/>',
   lock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
   unlock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 7-2.6"/>',
   dock:'<path d="M4 5h16v5H4zM4 14h16v5H4z"/>',
