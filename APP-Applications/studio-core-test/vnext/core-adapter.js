@@ -6,6 +6,7 @@ import {CollectionBrowser} from '../../_shared/studio-v2/collection-browser.js';
 import {thumbnailFor} from '../../_shared/studio-v2/thumbnail-service.js';
 import {OutputService} from '../../_shared/studio-v2/output-service.js';
 import {renderMarkdownFilePreview,renderPlainTextPreview} from '../../_shared/studio-v2/file-preview-service.js';
+import {setSelection} from '../../_shared/studio-v2/context-selection.js';
 import {recordHistory,loadHistory} from '../../_shared/studio-v2/history.js';
 import {pushUndoRedo,undo,redo,getUndoRedoState,subscribeUndoRedo} from '../../_shared/studio-v2/undo-redo.js';
 
@@ -26,7 +27,14 @@ export function createCoreAdapter({collectionHost,previewHost,onUpdate}={}){
  function history(label,detail='',type='action'){
   recordHistory({studio:'studio-core-vnext',type,label,detail});
  }
- function notify(){if(onUpdate)onUpdate(api)}
+ function publishContext(){
+  const activeItem=collection.active();
+  const activeFile=activeItem?entries.get(activeItem.id)?.file:null;
+  const selected=collection.selectedItems().map(item=>entries.get(item.id)?.file).filter(Boolean);
+  setSelection(selected,{active:activeFile||null,scope:'collection',kind:'file',
+   meta:{collection:'core-vnext',count:files.length}},'core-vnext');
+ }
+ function notify(){publishContext();if(onUpdate)onUpdate(api)}
  function revoke(){if(lastUrl){URL.revokeObjectURL(lastUrl);lastUrl=null}}
  function active(){return collection.active()}
  function selectedFiles(){
