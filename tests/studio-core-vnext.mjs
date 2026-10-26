@@ -33,7 +33,7 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('#filesList .collectionItem').first().waitFor({state:'visible'});
   if((await page.locator('#filesList .collectionItem').count())!==1)throw Error('Collection Core non alimentée');
   await page.getByText('Fichier réel nLab TEST',{exact:false}).first().waitFor({state:'visible'});
-  await page.locator('[data-panel="history"]').click();
+  await page.locator('.rail [data-panel="history"]').click();
   await page.getByText('Import de fichiers',{exact:false}).first().waitFor({state:'visible'});
   await page.locator('[data-panel="properties"]').click();
   await page.getByText('vnext-test.txt',{exact:false}).first().waitFor({state:'visible'});
@@ -86,12 +86,12 @@ async function runScenario({name,viewport,mobile}){
   await page.waitForFunction(()=>document.querySelectorAll('#filesList .collectionItem').length===2);
 
   // The original history sidebar is moved, never cloned or reimplemented.
-  await page.locator('[data-panel="history"]').click();
+  await page.locator('.rail [data-panel="history"]').click();
   await page.locator('#uxHistorySearch').fill('Import');
   if((await page.locator('.uxHistorySidebar').count())!==1)throw Error('Historique dupliqué');
   if((await page.locator('#uxHistoryList .uxHistoryEntry').count())<1)throw Error('Recherche historique Core inactive');
-  await page.locator('[data-panel="files"]').click();
-  await page.locator('[data-panel="history"]').click();
+  await page.locator('.rail [data-panel="files"]').click();
+  await page.locator('.rail [data-panel="history"]').click();
   if((await page.locator('.uxHistorySidebar').count())!==1)throw Error('Historique cloné après navigation');
   await page.locator('#shareBtn').click();
   if(await page.locator('#shareMenu').isHidden())throw Error('Menu Partager fermé');
