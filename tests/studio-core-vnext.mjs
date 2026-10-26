@@ -42,12 +42,26 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('.ribbon [data-cmd="save"]').click();
   const download=await downloadPromise;
   if(download.suggestedFilename()!=='vnext-test.txt')throw Error('Nom de sauvegarde inattendu');
+  // Save As must preserve the real file content and offer a distinct name.
+  await page.locator('.ribbon [data-cmd="save-as"]').click();
+  await page.locator('#saveAsName').fill('vnext-copie.txt');
+  const renamedDownloadPromise=page.waitForEvent('download');
+  await page.locator('#confirmSaveAs').click();
+  const renamedDownload=await renamedDownloadPromise;
+  if(renamedDownload.suggestedFilename()!=='vnext-copie.txt')throw Error('Enregistrer sous ne respecte pas le nom');
+  if(await page.locator('#saveAsDialog').evaluate(el=>el.open))throw Error('Dialogue Enregistrer sous non fermé');
   // Shared window manager: close/reopen, lock, dock and minimize.
   await page.locator('.ribbon [data-cmd="windows"]').click();
   const floating=page.locator('[data-vnext-floating="windows"]');
   await floating.waitFor({state:'visible'});
   for(const control of ['lock','dock','collapse','close'])
    if((await floating.locator('[data-win-'+control+']').count())!==1)throw Error('Contrôle de fenêtre manquant : '+control);
+  await floating.locator('[data-win-lock]').click();
+  if(!(await floating.evaluate(el=>el.classList.contains('studioWindowLocked'))))throw Error('Fenêtre non verrouillée');
+  await floating.locator('[data-win-lock]').click();
+  await floating.locator('[data-win-dock]').click();
+  if(!(await floating.evaluate(el=>el.classList.contains('studioWindowDocked'))))throw Error('Fenêtre non ancrée');
+  await floating.locator('[data-win-dock]').click();
   await floating.locator('[data-win-collapse]').click();
   if(!(await floating.evaluate(el=>el.classList.contains('studioWindowCollapsed'))))throw Error('Fenêtre non repliée');
   await floating.locator('[data-win-collapse]').click();
