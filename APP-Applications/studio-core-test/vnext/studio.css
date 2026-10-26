@@ -476,7 +476,7 @@ body{font-family:var(--studio-font-family,system-ui,-apple-system,"Segoe UI",san
 
 /* Sidebars may grow beyond the old 720px limit; keep the workboard isolated
    instead of letting nested file previews create page-wide horizontal scroll. */
-.board{min-width:0;overflow-x:auto}
+.board{min-width:0;overflow-x:auto;container-type:inline-size}
 .boardGrid{min-width:0}
 .boardGrid>*{min-width:0}
 @container (max-width:760px){
