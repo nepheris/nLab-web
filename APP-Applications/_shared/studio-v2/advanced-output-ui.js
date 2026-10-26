@@ -49,7 +49,7 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
  const field=name=>get(host,'[data-save="'+name+'"]');
  const nameSelect=field('naming'),folderSelect=field('classification'),preview=get(host,'[data-save-preview]');
  const engine=new TemplateEngine();let target='name',busy=false,sourceDirectory=false;
- const datePicker=createStudioDatePicker({label:'Date A — variable {DATE_A} pour cette opération',value:new Date().toLocaleDateString('sv-SE'),onChange:()=>refresh()});
+ const datePicker=createStudioDatePicker({label:'Date A — variable {DATE_A} pour cette opération',value:new Date().toLocaleDateString('sv-SE')});
  get(host,'[data-save-date-picker]').append(datePicker.element);
  const status=(message,error=false)=>{const el=get(host,'[data-save-status]');el.textContent=message;el.dataset.error=String(error)};
  const populate=(type,select,selected)=>{
@@ -115,6 +115,7 @@ export function mountAdvancedOutputUI({host,output,getFile,onSave}={}){
   if(e.target.name==='save-target')target=e.target.value;
   refresh();
  };
+ datePicker.input.addEventListener('change',()=>refresh());
  const input=e=>{if(e.target.matches('[data-save]'))refresh()};
  const click=async e=>{
   const button=e.target.closest('[data-save-action]');if(!button||busy)return;
