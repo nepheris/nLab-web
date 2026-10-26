@@ -13,12 +13,14 @@ import {enhanceStudioWindow,showStudioWindow,hideStudioWindow} from '../../_shar
 import {mountStudioSidebarControls} from '../../_shared/studio-v2/sidebar-controller.js';
 import {mountStudioHoverHelp} from '../../_shared/studio-v2/help.js';
 import {mountAdvancedOutputUI} from '../../_shared/studio-v2/advanced-output-ui.js';
+import {mountStudioViewModes} from '../../_shared/studio-v2/view-modes.js';
+import {mountDropZone} from '../../_shared/studio-v2/drop-zone.js';
 import {mountShareMenu,notifyUi} from '../../_shared/nlab-share-menu.js';
 // VNext graphical shell: the existing Core services, one command registry and shared panels.
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const key='nlab:core-vnext:ui:v1';
-let state={panel:'files',work:true,files:[]};
-try{const saved=JSON.parse(localStorage.getItem(key)||'{}');for(const k of ['panel','work'])if(Object.hasOwn(saved,k))state[k]=saved[k]}catch{}
+let state={panel:'files',work:true,preview:true,files:[]};
+try{const saved=JSON.parse(localStorage.getItem(key)||'{}');for(const k of ['panel','work','preview'])if(Object.hasOwn(saved,k))state[k]=saved[k]}catch{}
 const persist=()=>{try{const {files,...preferences}=state;localStorage.setItem(key,JSON.stringify(preferences))}catch{}};
 // One-time migration of TEST-only preferences into the existing Core settings store.
 try{
@@ -74,6 +76,7 @@ const runAction=async cmd=>{
  if(cmd==='remove-files'){adapter.removeSelected();return}
  if(cmd==='clear-files'){adapter.clear();return}
  if(cmd==='toggle-work')state.work=!state.work;
+ if(cmd==='toggle-preview')state.preview=!state.preview;
  if(cmd==='collapse'){sidebarController.close();return}
  if(cmd==='lock'){sidebarController.toggleLock();return}
  if(cmd==='commands'){document.dispatchEvent(new Event('studio-v2:open-command-palette'));return}
@@ -90,7 +93,7 @@ const coreActions={
  import:'Importer',save:'Enregistrer','save-as':'Enregistrer sous','save-advanced':'Enregistrement avancé',
  undo:'Annuler',redo:'Rétablir','select-all':'Tout sélectionner',
  'remove-files':'Retirer les fichiers','clear-files':'Vider la collection',
- 'toggle-work':'Afficher ou masquer la planche','collapse':'Masquer le panneau',
+ 'toggle-work':'Afficher ou masquer la planche','toggle-preview':'Afficher ou masquer l’aperçu','collapse':'Masquer le panneau',
  lock:'Verrouiller le panneau',windows:'Fenêtres',commands:'Palette de commandes',properties:'Propriétés du fichier',
  'show-properties':'Panneau Propriétés','show-settings':'Panneau Réglages Core',
  'show-profile':'Profil personnel nLab',
@@ -108,6 +111,7 @@ const coreActionHelp={
  'remove-files':'Retire les fichiers sélectionnés de la collection, sans effacer les fichiers sources.',
  'clear-files':'Vide la collection de travail sans supprimer les fichiers de votre ordinateur.',
  'toggle-work':'Affiche ou masque la planche de travail, sans perdre les fichiers ouverts.',
+ 'toggle-preview':'Affiche ou masque le volet de prévisualisation sans fermer le fichier actif. Le réglage est mémorisé.',
  collapse:'Replie le panneau latéral ; la flèche dans la barre reste disponible pour le rouvrir.',
  lock:'Empêche ou autorise le redimensionnement du panneau latéral.',
  windows:'Ouvre le gestionnaire de fenêtres pour les déplacer, ancrer et minimiser.',
@@ -196,10 +200,14 @@ function render(){
  syncCoreAppearance();
  const preferences=currentPrefs();
  $('.workspace').classList.toggle('is-work-hidden',!state.work);
+ $('.workspace').classList.toggle('is-preview-hidden',!state.preview);
+ $('#togglePreview').setAttribute('aria-pressed',String(state.preview));
+ $('#previewToggleLabel').textContent=state.preview?'Masquer l’aperçu':'Afficher l’aperçu';
+ $('[data-preview-label]').forEach(el=>{el.textContent=state.preview?'Masquer l’aperçu':'Afficher l’aperçu'});
  $('.workspace').classList.toggle('is-ribbon-hidden',!ribbonVisible());
  $('#panelTitle').textContent=({files:'Fichiers',tools:'Outils',history:'Historique',properties:'Propriétés',profile:'Profil personnel nLab',settings:'Réglages'})[state.panel];
  $$('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===state.panel)));
- $$('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
+ $('[data-visible]').forEach(b=>b.checked=b.dataset.visible==='preview'?state.preview:b.dataset.visible==='work'?state.work:b.dataset.visible==='sidebar'?preferences.sidebarMode!=='hidden':ribbonVisible());
  $$('[data-work-label]').forEach(label=>{label.textContent=state.work?'Masquer la planche':'Afficher la planche'});
  $('#displayBtn').setAttribute('aria-expanded',String(!$('#displayMenu').hidden));
  panelContent();
@@ -259,6 +267,7 @@ $('#displayBtn').onclick=()=>{$('#displayMenu').hidden=!$('#displayMenu').hidden
 $$('[data-visible]').forEach(b=>b.addEventListener('change',()=>{
  const visible=b.checked;
  if(b.dataset.visible==='work')state.work=visible;
+ if(b.dataset.visible==='preview')state.preview=visible;
  if(b.dataset.visible==='sidebar')saveStudioSettings({sidebarMode:visible?'normal':'hidden'});
  if(b.dataset.visible==='ribbon')setRibbonVisible(visible);
  persist();render();
@@ -301,16 +310,23 @@ viewerToolbar.addEventListener('studio-v2:viewer-command',e=>{
  $('#filePreview').dataset.viewerFit=String(action==='fit');
 });
 $('#fileInput').addEventListener('change',e=>{adapter.addFiles(e.target.files);e.target.value=''});
+const viewModes=mountStudioViewModes({host:$('#collectionViewModes'),
+ value:adapter.collection.view==='grid'?'icons':adapter.collection.view,
+ onChange:view=>{
+  const mode=view==='icons'?'grid':view;
+  adapter.collection.setView(mode);$('#collectionView').value=mode;
+ }});
 $('#collectionView').value=adapter.collection.view;
 $('#collectionSort').value=adapter.collection.sortMode;
-$('#collectionView').addEventListener('change',e=>adapter.collection.setView(e.target.value));
+$('#collectionView').addEventListener('change',e=>{adapter.collection.setView(e.target.value);viewModes.setValue(e.target.value==='grid'?'icons':e.target.value)});
 $('#collectionSort').addEventListener('change',e=>adapter.collection.setSort(e.target.value));
 const fileDrop=$('#fileDrop');
 fileDrop.addEventListener('click',()=>$('#fileInput').click());
 fileDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('#fileInput').click()}});
-fileDrop.addEventListener('dragover',e=>{e.preventDefault();fileDrop.classList.add('dragOver')});
-fileDrop.addEventListener('dragleave',()=>fileDrop.classList.remove('dragOver'));
-fileDrop.addEventListener('drop',e=>{e.preventDefault();fileDrop.classList.remove('dragOver');adapter.addFiles(e.dataTransfer?.files)});
+mountDropZone(fileDrop,{
+ onFiles:files=>adapter.addFiles(files),
+ onStateChange:mode=>fileDrop.classList.toggle('dragOver',mode==='over')
+});
 $('#cancelSaveAs').addEventListener('click',()=>$('#saveAsDialog').close());
 $('#saveAsForm').addEventListener('submit',async e=>{
  e.preventDefault();
@@ -343,7 +359,8 @@ mountStudioHoverHelp({
   sidebarLock:'Verrouille ou déverrouille la largeur du volet latéral.',
   themeHeader:'Sélectionne le thème clair, sombre ou automatique pour tous les composants Core.',
   fullscreenBtn:'Bascule le Studio en plein écran avec le même contrôleur que les autres Studios.',
-  collectionView:'Change la présentation des fichiers entre liste, cartes et vignettes.',
+  collectionView:'Présente la collection en liste, icônes, vignettes ou tableau, avec les icônes partagées nLab.',
+  togglePreview:'Masque ou réaffiche le volet d’aperçu sans fermer le fichier sélectionné.',
   collectionSort:'Trie les fichiers par nom, type ou taille.',
   fileDrop:'Dépose des fichiers locaux pour les ajouter à la collection active.',
   'link':'Copie l’adresse de ce Studio ou utilise le partage natif du navigateur.',
