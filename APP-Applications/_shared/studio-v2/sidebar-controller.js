@@ -70,7 +70,7 @@ export function mountStudioSidebarControls({
  };
  const pointerDone=e=>{
   if(!dragging||e.pointerId!==dragging.id)return;
-  const width=clampWidth(dragging.startWidth+(e.clientX-dragging.startX));
+  const width=clampWidth(dragging.startWidth+(e.clientX-dragging.startX),layout);
   dragging=null;
   layout.classList.remove('is-side-resizing');
   if(handle.hasPointerCapture?.(e.pointerId))handle.releasePointerCapture(e.pointerId);
