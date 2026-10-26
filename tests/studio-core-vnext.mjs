@@ -52,6 +52,24 @@ async function runScenario({name,viewport,mobile}){
   if(await page.locator('#sidebarToggle').getAttribute('aria-expanded')!=='false')throw Error('État du panneau non synchronisé');
   await page.locator('#sidebarToggle').click();
   if(await page.locator('.layout').evaluate(el=>el.classList.contains('is-side-hidden')))throw Error('Panneau non déplié');
+  // Resize from the SAME persisted Core sidebarWidth setting (mouse + keyboard).
+  if(!mobile&&viewport.width>=1000){
+   const grip=page.locator('.side .resizer');
+   const rect=await grip.boundingBox();
+   const original=Number(await page.locator('.layout').evaluate(el=>parseInt(getComputedStyle(el).getPropertyValue('--side-width'),10)));
+   await page.mouse.move(rect.x+rect.width/2,rect.y+36);
+   await page.mouse.down();
+   await page.mouse.move(rect.x+rect.width/2+35,rect.y+36,{steps:3});
+   await page.mouse.up();
+   const stretched=Number(await page.locator('.layout').evaluate(el=>parseInt(getComputedStyle(el).getPropertyValue('--side-width'),10)));
+   if(stretched<original+20)throw Error('Glisser pour redimensionner le panneau inopérant');
+   await grip.focus();await page.keyboard.press('ArrowLeft');
+   const adjusted=Number(await page.locator('.layout').evaluate(el=>parseInt(getComputedStyle(el).getPropertyValue('--side-width'),10)));
+   if(adjusted!==stretched-16)throw Error('Redimensionnement clavier du panneau inopérant');
+   if(Number(await page.evaluate(()=>JSON.parse(localStorage.getItem('nlab-studio-v2-settings')).sidebarWidth))!==adjusted)
+    throw Error('Largeur du volet non mémorisée par le Core');
+  }
+
   if(await page.locator('[data-visible="sidebar"]').isChecked()!==true)throw Error('Menu Affichage non synchronisé');
 
   // Office-like tabs are alternate views of the SAME Core commands, not duplicated actions.
