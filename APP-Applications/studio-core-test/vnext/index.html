@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f4f6f8">
   <title>Studio Core — VNext prototype</title>
   <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./studio.css?v=20261026-10">
+  <link rel="stylesheet" href="./studio.css?v=20261026-11">
   <link rel="stylesheet" href="../../_shared/studio-v2/workspace-chrome.css?v=20261026-4">
 </head>
 <body>
@@ -35,6 +35,7 @@
       <button type="button" data-panel="tools"><span data-core-icon="edit" aria-hidden="true"></span><span>Outils</span></button>
       <button type="button" data-panel="history"><span data-core-icon="history" aria-hidden="true"></span><span>Historique</span></button>
       <button type="button" data-panel="properties"><span data-core-icon="metadata" aria-hidden="true"></span><span>Propriétés</span></button>
+      <button type="button" data-panel="profile" title="Profil personnel nLab : identité, modèles, tampons, signatures et ZIP" aria-label="Profil personnel nLab"><span data-core-icon="profile" aria-hidden="true"></span><span>Profil nLab</span></button>
       <button type="button" data-panel="settings"><span data-core-icon="settings" aria-hidden="true"></span><span>Réglages</span></button>
     </aside>
     <section class="workspace">
@@ -88,7 +89,7 @@
         <section class="side" id="studioSide">
           <div class="panelHead"><strong id="panelTitle">Fichiers</strong><button type="button" id="sidebarLock" class="panelControl" aria-pressed="false" title="Verrouiller le volet" aria-label="Verrouiller le volet"></button><button type="button" id="sidebarCollapse" class="panelControl" aria-controls="studioSide" aria-expanded="true" title="Replier le volet" aria-label="Replier le volet"></button></div>
           <div id="panelBody"></div>
-          <div class="resizer" role="separator" aria-orientation="vertical" aria-label="Redimensionner le panneau latéral" aria-valuemin="220" aria-valuemax="720" tabindex="0"></div>
+          <div class="resizer" role="separator" aria-orientation="vertical" aria-label="Redimensionner le panneau latéral" aria-valuemin="220" aria-valuemax="1200" tabindex="0"></div>
         </section>
         <main class="board"><div class="panelHead"><strong>Planche de travail</strong><button type="button" data-cmd="toggle-work"><span data-core-icon="eyeOff" aria-hidden="true"></span><span data-work-label>Masquer</span></button></div>
           <div id="boardBody">
@@ -121,6 +122,6 @@
   </dialog>
   <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
   <input id="fileInput" type="file" multiple hidden>
-  <script type="module" src="./app.js?v=20261026-10"></script>
+  <script type="module" src="./app.js?v=20261026-11"></script>
 </body>
 </html>
