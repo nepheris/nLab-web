@@ -6,6 +6,7 @@ import {CollectionBrowser} from '../../_shared/studio-v2/collection-browser.js';
 import {thumbnailFor} from '../../_shared/studio-v2/thumbnail-service.js';
 import {OutputService} from '../../_shared/studio-v2/output-service.js';
 import {recordHistory,loadHistory} from '../../_shared/studio-v2/history.js';
+import {pushUndoRedo,undo,redo,getUndoRedoState,subscribeUndoRedo} from '../../_shared/studio-v2/undo-redo.js';
 
 const EXTS_TEXT=new Set(['txt','md','markdown','json','csv','tsv','yaml','yml','xml','html','css','js','mjs','svg','log']);
 const extension=name=>String(name||'').split('.').pop()?.toLowerCase()||'';
@@ -31,6 +32,28 @@ export function createCoreAdapter({collectionHost,previewHost,onUpdate}={}){
   const selection=collection.selectedItems();
   return (selection.length?selection:active()?[active()]:[]).map(i=>entries.get(i.id)?.file).filter(Boolean);
  }
+ function snapshot(){return{files:[...files],selected:[...collection.selected],activeId:collection.activeId}}
+ function restore(snapshotState){
+  files.splice(0,files.length,...snapshotState.files);
+  entries.clear();
+  for(const entry of files)entries.set(entry.id,entry);
+  collection.selected=new Set(snapshotState.selected);
+  collection.activeId=snapshotState.activeId;
+  sync();
+  history('Collection restaurée','Annuler / rétablir');
+ }
+ function transact(label,action){
+  const before=snapshot();
+  const value=action();
+  const after=snapshot();
+  pushUndoRedo({
+   label,
+   undo:()=>restore(before),
+   redo:()=>restore(after),
+   meta:{studio:'studio-core-vnext',scope:'collection'}
+  });
+  return value;
+ }
  function sync(){
   collection.setItems(files.map(entry=>({
    id:entry.id,label:entry.file.name,data:entry.file,size:entry.file.size,
@@ -41,24 +64,30 @@ export function createCoreAdapter({collectionHost,previewHost,onUpdate}={}){
  function addFiles(input){
   const batch=Array.from(input||[]).filter(f=>f instanceof File);
   if(!batch.length)return 0;
-  for(const file of batch){
-   const entry={id:'core-file-'+(++seq),file};
-   entries.set(entry.id,entry);files.push(entry);
-  }
-  sync();
+  transact('Importer '+batch.length+' fichier(s)',()=>{
+   for(const file of batch){
+    const entry={id:'core-file-'+(++seq),file};
+    entries.set(entry.id,entry);files.push(entry);
+   }
+   sync();
+  });
   history('Import de fichiers',batch.length+' fichier(s)','file');
   return batch.length;
  }
  function clear(){
-  files.length=0;entries.clear();collection.clearSelection();revoke();sync();
+  if(!files.length)return;
+  transact('Vider la collection',()=>{files.length=0;entries.clear();collection.clearSelection();revoke();sync()});
   history('Collection vidée');
  }
  function removeSelected(){
   const ids=new Set(collection.selectedItems().map(i=>i.id));
   if(!ids.size&&active())ids.add(active().id);
   if(!ids.size)return 0;
-  for(let i=files.length-1;i>=0;i--)if(ids.has(files[i].id)){entries.delete(files[i].id);files.splice(i,1)}
-  sync();history('Fichiers retirés',ids.size+' élément(s)');
+  transact('Retirer '+ids.size+' fichier(s)',()=>{
+   for(let i=files.length-1;i>=0;i--)if(ids.has(files[i].id)){entries.delete(files[i].id);files.splice(i,1)}
+   sync();
+  });
+  history('Fichiers retirés',ids.size+' élément(s)');
   return ids.size;
  }
  async function previewActive(){
@@ -107,7 +136,7 @@ export function createCoreAdapter({collectionHost,previewHost,onUpdate}={}){
  function destroy(){revoke();collection.resizeObserver?.disconnect?.()}
  const api={collection,addFiles,clear,removeSelected,active,selectedFiles,
   get size(){return files.length},get items(){return collection.items},
-  previewActive,saveSelected,destroy,history,loadHistory,output};
+  previewActive,saveSelected,destroy,history,loadHistory,output,undo,redo,getUndoRedoState,subscribeUndoRedo};
  sync();
  return api;
 }
