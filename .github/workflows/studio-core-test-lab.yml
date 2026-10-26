@@ -7,6 +7,8 @@ on:
       - 'tests/studio-core-test-lab.mjs'
       - 'APP-Applications/_shared/nlab-share-menu.js'
       - 'APP-Applications/_shared/studio-v2/sidebar-controller.js'
+      - 'APP-Applications/_shared/studio-v2/help.js'
+      - 'APP-Applications/_shared/studio-v2/settings.js'
       - 'APP-Applications/_shared/studio-v2/window-system.js'
       - 'APP-Applications/_shared/studio-v2/core.js'
       - 'APP-Applications/_shared/studio-v2/workspace-chrome.css'
@@ -62,6 +64,8 @@ jobs:
           node --check APP-Applications/studio-core-test/app.js
           node --check APP-Applications/studio-core-test/vnext/app.js
           node --check APP-Applications/_shared/studio-v2/sidebar-controller.js
+          node --check APP-Applications/_shared/studio-v2/help.js
+          node --check APP-Applications/_shared/studio-v2/settings.js
           node --check APP-Applications/_shared/studio-v2/window-system.js
           node --check APP-Applications/_shared/studio-v2/core.js
           node --check APP-Applications/_shared/nlab-share-menu.js
