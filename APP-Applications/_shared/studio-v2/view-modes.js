@@ -5,6 +5,7 @@ export const STUDIO_VIEW_MODES=Object.freeze([
  {id:'thumbs',label:'Vignettes',icon:'image'},
  {id:'table',label:'Tableau',icon:'table'}
 ]);
+export function studioViewIcon(mode){const found=STUDIO_VIEW_MODES.find(x=>x.id===mode)||STUDIO_VIEW_MODES[0];return icon(found.icon)}
 export function mountStudioViewModes({host,value='list',onChange}={}){
  if(!host)throw new TypeError('View host required');
  host.classList.add('studioViewModes');
