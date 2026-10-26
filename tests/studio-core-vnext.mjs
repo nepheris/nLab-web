@@ -40,8 +40,31 @@ async function runScenario({name,viewport,mobile}){
   await page.locator('[data-setting-number="sidebarWidth"]').dispatchEvent('change');
   if(await page.locator('.layout').evaluate(el=>getComputedStyle(el).getPropertyValue('--side-width').trim())!=='420px')throw Error('Largeur panneau non synchronisée');
   await page.locator('[data-setting="sidebarLocked"]').check();
-  if((await page.locator('[data-cmd="lock"]').first().textContent())!=='🔒')throw Error('Verrouillage Core non synchronisé');
+  if(await page.locator('#sidebarLock').getAttribute('aria-pressed')!=='true')throw Error('Verrouillage du panneau non synchronisé');
+  if((await page.locator('#sidebarLock svg').count())!==1)throw Error('Cadenas commun des fenêtres absent');
+  // A locked sidebar must not be resized. The same preference powers settings and controls.
+  await page.locator('#sidebarLock').click();
+  if(await page.locator('[data-setting="sidebarLocked"]').isChecked())throw Error('Le cadenas n’est pas synchronisé aux réglages');
   await page.locator('[data-setting="sidebarLocked"]').uncheck();
+  // The same collapsed sidebar can always be reopened via the persistent rail.
+  await page.locator('#sidebarCollapse').click();
+  if(!(await page.locator('.layout').evaluate(el=>el.classList.contains('is-side-hidden'))))throw Error('Panneau non replié');
+  if(await page.locator('#sidebarToggle').getAttribute('aria-expanded')!=='false')throw Error('État du panneau non synchronisé');
+  await page.locator('#sidebarToggle').click();
+  if(await page.locator('.layout').evaluate(el=>el.classList.contains('is-side-hidden')))throw Error('Panneau non déplié');
+  if(await page.locator('[data-visible="sidebar"]').isChecked()!==true)throw Error('Menu Affichage non synchronisé');
+
+  // Office-like tabs are alternate views of the SAME Core commands, not duplicated actions.
+  for(const [tab,activeGroup,hiddenGroup] of [
+   ['file','files','history'],['edit','history','files'],['display','windows','files']]){
+   await page.locator('[data-ribbon-tab="'+tab+'"]').click();
+   if(await page.locator('[data-ribbon-group="'+activeGroup+'"]').isHidden())throw Error('Groupe ruban manquant : '+tab);
+   if(!(await page.locator('[data-ribbon-group="'+hiddenGroup+'"]').isHidden()))throw Error('Groupe ruban incorrect : '+tab);
+  }
+  await page.locator('[data-ribbon-tab="home"]').click();
+  if((await page.locator('.ribbon [data-cmd="save"]').count())!==1)throw Error('Enregistrer dupliqué dans le ruban');
+  if((await page.locator('.ribbon [data-cmd="undo"]').count())!==1)throw Error('Annuler dupliqué dans le ruban');
+  if((await page.locator('.ribbonGroupLabel').count())<4)throw Error('Groupes de ruban absent');
   // Icons in navigation, header and ribbon must come from the shared icon registry.
   for(const selector of ['.rail [data-panel="files"] [data-core-icon] svg',
    '.ribbon [data-cmd="import"] [data-core-icon] svg','#shareBtn [data-core-icon] svg']){
