@@ -214,6 +214,60 @@ async function runScenario({name,viewport,mobile}){
   const renamedDownload=await renamedDownloadPromise;
   if(renamedDownload.suggestedFilename()!=='vnext-copie.txt')throw Error('Enregistrer sous ne respecte pas le nom');
   if(await page.locator('#saveAsDialog').evaluate(el=>el.open))throw Error('Dialogue Enregistrer sous non fermé');
+  // Advanced save must reuse personal naming/classification templates and Core OutputService.
+  await page.locator('.ribbon [data-cmd="save-advanced"]').click();
+  const advanced=page.locator('#advancedSaveDialog');
+  if(!(await advanced.evaluate(el=>el.open)))throw Error('Enregistrement avancé non ouvert');
+  await advanced.locator('[data-save="naming"]').selectOption('date-name');
+  await advanced.locator('[data-save="classification"]').selectOption('year-month');
+  await advanced.locator('[data-save="name"]').fill('{FILENAME}_TEST');
+  const plannedPath=(await advanced.locator('[data-save-preview]').textContent()).trim();
+  const yyyy=String(new Date().getFullYear());
+  if(!plannedPath.includes(yyyy+'/')||!plannedPath.endsWith('vnext-test_TEST.txt'))
+   throw Error('Aperçu des modèles nLab invalide : '+plannedPath);
+  if((await advanced.locator('[data-template-token="CLIENT"]').count())!==1)
+   throw Error('Sélecteur de variables nLab non partagé');
+  await advanced.locator('[data-save-action="save"]').click();
+  if(!(await advanced.locator('[data-save-status]').textContent()).includes('Choisissez un dossier'))
+   throw Error('Enregistrement dans sous-dossiers permis sans destination réelle');
+  if(name==='desktop'){
+   // Emulate the real File System Access API; assert nested paths and original bytes.
+   await page.evaluate(()=>{
+    window.__advancedWrites=[];
+    const directory=parts=>({
+     name:parts.at(-1)||'Destination TEST',
+     getDirectoryHandle:async part=>directory([...parts,part]),
+     getFileHandle:async filename=>({
+      createWritable:async()=>({
+       write:async blob=>window.__advancedWrites.push({path:[...parts,filename].join('/'),content:await blob.text()}),
+       close:async()=>{}
+      })
+     })
+    });
+    window.showDirectoryPicker=async()=>directory(['Destination TEST']);
+   });
+   await advanced.locator('[data-save-action="choose"]').click();
+   await advanced.locator('[data-save-action="save"]').click();
+   await page.waitForFunction(()=>window.__advancedWrites?.length===1);
+   const writes=await page.evaluate(()=>window.__advancedWrites);
+   if(!writes[0].path.includes(yyyy+'/')||!writes[0].path.endsWith('vnext-test_TEST.txt'))
+    throw Error('Arborescence avancée non créée : '+writes[0].path);
+   if(writes[0].content!=='Fichier réel nLab TEST')throw Error('Contenu du fichier modifié lors de l’enregistrement');
+   await advanced.locator('[data-save="template-label"]').fill('Modèle VNext TEST');
+   await advanced.locator('[data-save-action="memorize-name"]').click();
+   if((await advanced.locator('[data-save="naming"] option').count())<2)
+    throw Error('Modèle de nom personnel non mémorisé');
+  }else{
+   // Browser download must remain available when no destination directory is chosen.
+   await advanced.locator('[data-save="classification"]').selectOption('root');
+   const advancedDownload=page.waitForEvent('download');
+   await advanced.locator('[data-save-action="save"]').click();
+   if((await advancedDownload).suggestedFilename()!=='vnext-test_TEST.txt')
+    throw Error('Téléchargement avancé avec renommage manquant');
+  }
+  await page.locator('#closeAdvancedSave').click();
+  if(await advanced.evaluate(el=>el.open))throw Error('Enregistrement avancé non refermé');
+
   // Shared window manager: close/reopen, lock, dock and minimize.
   await page.locator('.ribbon [data-cmd="windows"]').click();
   const floating=page.locator('[data-vnext-floating="windows"]');
