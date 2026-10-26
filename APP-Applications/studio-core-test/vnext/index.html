@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f4f6f8">
   <title>Studio Core — VNext prototype</title>
   <link rel="icon" href="../../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./studio.css?v=20261026-2">
+  <link rel="stylesheet" href="./studio.css?v=20261026-3">
 </head>
 <body>
   <header class="header">
@@ -39,6 +39,8 @@
       <div class="ribbon" role="toolbar" aria-label="Commandes du Studio">
         <button type="button" id="displayBtn" aria-controls="displayMenu" aria-expanded="false">◉ Affichage ▾</button>
         <button type="button" data-cmd="import">↥ Importer</button>
+        <button type="button" data-cmd="undo" disabled aria-label="Annuler la dernière modification">↶ Annuler</button>
+        <button type="button" data-cmd="redo" disabled aria-label="Rétablir la modification annulée">↷ Rétablir</button>
         <button type="button" data-cmd="save">▣ Enregistrer</button>
         <button type="button" data-cmd="save-as">⇩ Enregistrer sous</button>
         <button type="button" data-cmd="windows">▦ Fenêtres</button>
@@ -87,6 +89,6 @@
   </dialog>
   <div id="uiNotice" class="uiNotice" role="status" aria-live="polite" hidden></div>
   <input id="fileInput" type="file" multiple hidden>
-  <script type="module" src="./app.js?v=20261026-2"></script>
+  <script type="module" src="./app.js?v=20261026-3"></script>
 </body>
 </html>
