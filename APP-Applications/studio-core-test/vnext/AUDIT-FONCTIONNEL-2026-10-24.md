@@ -113,3 +113,34 @@ Instruction HUMAN00 : **VNext est une nouvelle interface sur le Core existant ; 
 - Tests de parité, accessibilité et intégration métiers Image/PDF, puis **validation HUMAN00** avant CURRENT.
 
 **Vérification :** la CI exige l'ouverture réelle de l'InputPicker existant, l'appel Annuler/Rétablir de la pile commune, le filtre de l'Historique partagé, la découverte des commandes dans la palette, et les tests mobiles. Aucun module CURRENT n'est réécrit et aucune version CURRENT n'est promue.
+
+## Contrat transversal Core VNext → Studios spécialisés — 26/10/2026
+
+**Directive HUMAN00 :** la VNext est uniquement la façade graphique du socle commun nLab. Les Studios spécialisés ajoutent des modules métier, pas de nouveaux moteurs de fenêtres, préférences, sélection, visualisation, historique, commandes ou icônes.
+
+### Intégrations vérifiables dans le code
+
+| Domaine commun | Source canonique | Raccordement VNext |
+|---|---|---|
+| Thèmes clair/sombre/système, police, densité, responsive, largeur, verrouillage, modes du ruban | `studio-v2/settings.js` | Le panneau « Réglages » monte `renderStudioSettingsPanel`. Header et panneaux partagent `load/save/applyStudioSettings`, synchronisation via `syncStudioSettingsPanel`. Plus de second état thème/largeur/verrouillage. |
+| Iconographie et variantes graphiques | `studio-v2/icon-registry.js` | Icônes communes dans header, rail et ruban, régénérées lors du changement de thème d'icônes. |
+| Imports fichiers/dossiers/URL/ZIP | `studio-v2/input-picker.js` | Import du ruban/panneau vers `openInputPicker`. |
+| Collection et aperçus miniatures | `studio-v2/collection-browser.js`, `thumbnail-service.js` | Adaptateur Core VNext, mêmes sources et sélection active. |
+| Aperçus texte et Markdown | `studio-v2/file-preview-service.js` | Fonctions `renderPlainTextPreview` et `renderMarkdownFilePreview` utilisées, sans parseur parallèle. |
+| Zoom, ajustement | `studio-v2/viewer-control.js` | Barre canonique dans la zone d'aperçu ; événements ViewerControl consommés par le conteneur. |
+| Propriétés et sélection contextuelle | `studio-v2/context-selection.js`, `property-inspector.js` | L'adaptateur publie les fichiers actifs et sélectionnés ; l'onglet Propriétés ouvre l'inspecteur unique. |
+| Historique / favoris / recherche / Annuler-Rétablir | `history-sidebar.js`, `history.js`, `undo-redo.js` | Historique natif monté une seule fois et transactions d'import/suppression enregistrées. |
+| Registre et palette de commandes | `command-registry.js`, `command-palette.js` | Boutons ruban et panneaux appelant le même registre ; palette Core accessible via Ctrl+K. |
+| Fenêtres | `window-system.js` | Fenêtres déplaçables, ancrables, verrouillables, réductibles et restaurables. |
+| Plein écran | `fullscreen-service.js` | Contrôleur Core unique. |
+| Profil personnel, variables, ressources | `personal-profile-ui.js` / `personal-profile-service.js` | Section « Profil personnel nLab » du panneau Core chargée à l'ouverture, sans UI dupliquée. |
+| Sauvegarde brute | `output-service.js` | Enregistrement simple et Enregistrer sous ; éditeurs métier non migrés. |
+
+### Limites explicites et prochaines intégrations
+
+- La VNext est toujours **un laboratoire isolé**, pas encore un shell partagé injecté dans chaque Studio. Factoriser le conteneur graphique commun seulement après validation visuelle HUMAN00.
+- Restent à raccorder : `template-engine.js`, `template-ux.js` (modèles et variables de sortie), `workspace-layout.js` (docking/disposition complète), `application-mode-service.js` et manifeste PWA, palette d'aide contextuelle, visualisations/éditeurs métiers Image/PDF.
+- Les vignettes et contrôles partagés ont été intégrés ; les modes de rendu PDF avancés, rotations et conversions doivent toujours être branchés aux modules spécialisés existants, **sans duplication**.
+- Les essais de viewport Chrome en CI ne valent pas validation tactile Android physique, ni recette des **86 contrôles**.
+- Le CSS Core existant est importé en couche de compatibilité ; les surcharges VNext ne doivent définir que l'agencement du nouveau shell et les variables de thème. La suppression des styles historiques doit être progressive et précédée de tests multi-Studio.
+- **NO-GO** pour promouvoir VNext en CURRENT et pour basculer Image Studio/PDF Studio sans validation HUMAN00.
