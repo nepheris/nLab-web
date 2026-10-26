@@ -359,3 +359,54 @@ body.dark{--nlab-bg:var(--ui-bg);--nlab-ink:var(--ui-text);--nlab-line:var(--ui-
 .commandPaletteWindow :is(input,button){color:var(--ui-text);background:var(--ui-surface)}
 .commandPaletteWindow .commandPaletteList{max-height:55dvh;overflow:auto}
 @media(max-width:700px){.commandPaletteWindow{top:4dvh;max-height:90dvh;width:calc(100vw - 24px);min-width:0}}
+
+/* One Core settings panel moved between the sidebar and floating window.
+   Never recreate the preferences controls or their listeners in VNext. */
+.coreSettingsSurface{width:100%;min-width:0;color:var(--ui-text)}
+.coreSettingsSurface .coreSettingsGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.coreSettingsSurface .coreSettingsSection{
+ background:var(--ui-surface);border:1px solid var(--ui-border);
+ border-radius:var(--ui-radius);overflow:hidden
+}
+.coreSettingsSurface .coreSettingsSection>summary{
+ background:var(--ui-soft);color:var(--ui-text);
+ padding:10px 12px;font-size:12px;cursor:pointer
+}
+.coreSettingsSurface .coreSettingsSection>summary:before{
+ background:var(--ui-surface);color:var(--ui-accent)
+}
+.coreSettingsSurface .coreSettingsSectionBody{display:grid;gap:8px;padding:12px;min-width:0}
+.coreSettingsSurface .coreSettingsSectionBody :is(input,select,textarea){
+ max-width:100%;min-width:0;min-height:34px;background:var(--ui-surface);
+ color:var(--ui-text);border:1px solid var(--ui-border);border-radius:7px
+}
+.coreSettingsSurface .coreSettingsSectionBody .field{display:grid;gap:4px;min-width:0;font-size:12px}
+.coreSettingsSurface .coreSettingsSectionBody .checkboxField{
+ display:flex;align-items:center;gap:8px;min-width:0;font-size:12px
+}
+.coreSettingsSurface .checkboxField input{min-height:16px}
+.coreSettingsSurface .settingsDualInput{display:flex;flex-wrap:wrap;gap:8px}
+.coreSettingsSurface .settingsDualInput [type=range]{flex:1 1 120px}
+.coreSettingsSurface .settingsDualInput [type=number]{flex:0 1 80px}
+.coreSettingsSurface .coreSettingsAccordionToolbar{position:static;display:flex;gap:8px;flex-wrap:wrap;background:transparent}
+.coreSettingsSurface .coreSettingsDangerTop,.coreSettingsSurface .coreSettingsDangerBottom{
+ display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:9px;
+ border:1px solid var(--ui-border);background:var(--ui-soft);
+ color:var(--ui-text);border-radius:var(--ui-radius);font-size:11px
+}
+.coreSettingsSurface .coreSettingsDangerTop button,
+.coreSettingsSurface .coreSettingsDangerBottom button{
+ background:var(--ui-surface);border-color:var(--ui-border);color:var(--ui-text)
+}
+body[data-header-mode=sticky] .header{position:sticky;top:0}
+body[data-header-mode=static] .header{position:relative}
+body[data-header-mode=fixed] .header{position:sticky;top:0}
+body.headerHidden .header{display:none}
+body.headerShadow .header{box-shadow:var(--ui-shadow)}
+body.headerBlur .header{backdrop-filter:blur(8px)}
+body{font-family:var(--studio-font-family,system-ui,-apple-system,"Segoe UI",sans-serif);
+ font-size:calc(15px * var(--studio-font-scale,1))}
+@media(max-width:700px){
+ .coreSettingsSurface .coreSettingsSectionBody{padding:9px}
+ .coreSettingsSurface .coreSettingsSection>summary{min-height:44px}
+}
