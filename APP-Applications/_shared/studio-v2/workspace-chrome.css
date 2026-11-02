@@ -199,3 +199,26 @@ body[data-ribbon-mode="primary"] .ribbonGroupLabel{font-size:9px}
 .coreToolsSwatch{min-height:44px;border-radius:7px;padding:10px;
  color:white;font-size:11px;text-shadow:0 1px 2px #0008;
  background-color:#0057b8}
+
+
+/* VNext visual reference: productivity-editor spacing, not a cloudHQ skin.
+   Shared contract: command groups, clear active tabs, consistent tooltips and focus. */
+.ribbonTabs{gap:4px;padding:6px 12px 0;border-bottom-width:1px}
+.ribbonTabs button{padding:8px 15px;letter-spacing:.01em;transition:background-color .12s ease,color .12s ease}
+.ribbonTabs button[aria-selected="true"]{border-bottom-width:3px;font-weight:700}
+.ribbon{padding:8px 9px;gap:3px}
+.ribbonGroup{padding-inline:11px;gap:5px}
+.ribbonCommands{gap:6px}
+.ribbonCommands button{border-radius:8px;padding:7px 6px;transition:background-color .12s ease,border-color .12s ease}
+.ribbonCommands button:hover{border-color:var(--ui-accent,#1676c1)}
+.ribbonCommands button:focus-visible,.ribbonTabs button:focus-visible{
+ outline:2px solid var(--ui-accent,#1676c1);outline-offset:-2px
+}
+.ribbonGroupLabel{font-size:10px;letter-spacing:.055em;padding-top:2px}
+@media(max-width:700px){
+ .ribbonTabs{padding:4px 5px 0;gap:2px}
+ .ribbonTabs button{padding:8px 10px}
+ .ribbon{padding:6px 4px}
+ .ribbonGroup{padding-inline:7px}
+ .ribbonCommands button{min-height:58px}
+}
