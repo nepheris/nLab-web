@@ -167,13 +167,13 @@ async function saveGeneratedStampSvgAsset(){
 async function stampImageData(){
  if(generatedStampActive){const svg=refreshStampSvgPreview();return stampSvgToPngDataUrl(svg,stampSvgColor(),2)}
  const id=$('#stampImageAsset')?.value;if(!id)return null;const a=await getPersonalAsset(id);if(!a?.blob)throw new Error('Image du tampon indisponible.');
- return objectLayer.setImageBlob(a.blob,'image')
+ return objectLayer.setImageBlob(a.blob,'stamp')
 }
 async function refreshStampPreview(){
  if(!$('#stampPreview'))return;syncStampDates();const text=templates.resolve($('#stampTemplate').value||'',engine.fileName,outputContext());$('#stampPreview').textContent=text||'—';
  const id=$('#stampImageAsset')?.value,box=$('#stampImagePreview');if(!box)return;if(!id){box.innerHTML='<span>Aucune image</span>';return}
  const a=await getPersonalAsset(id);if(!a?.blob){box.innerHTML='<span>Image indisponible</span>';return}
- const data=await objectLayer.setImageBlob(a.blob,'image');box.innerHTML='<img src="'+data+'" alt="Aperçu image tampon">'
+ const data=await objectLayer.setImageBlob(a.blob,'stamp');box.innerHTML='<img src="'+data+'" alt="Aperçu image tampon">'
 }
 function prepareImagePlacement(){
  if(!engine.pageCount){setStatus('Chargez un PDF avant d’insérer une image.');return}
