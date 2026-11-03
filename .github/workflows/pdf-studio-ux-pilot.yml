@@ -34,6 +34,7 @@ jobs:
           node --check APP-Applications/pdf-studio/v2-ux/pdf-ux.js
           node --check APP-Applications/pdf-studio/v2/pdf-v2.js
           node --check APP-Applications/pdf-studio/v2/object-layer.js
+          find APP-Applications/_shared/studio-v2 APP-Applications/pdf-studio/v2 APP-Applications/pdf-studio/v2-ux -name '*.js' -print0 | xargs -0 -n1 node --check
           node --check tests/pdf-studio-ux-v2-12.mjs
           python3 - <<'PY'
           import json
