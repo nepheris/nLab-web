@@ -312,7 +312,15 @@ signatureOpacityControl=mountSteppedPresetControl($('#signatureOpacityControl'),
 codeSizeControl=mountSteppedPresetControl($('#codeSizeControl'),{min:4,max:40,step:1,value:12,unit:'%',presets:[{id:'small',label:'Petit',value:8,min:4,max:10},{id:'normal',label:'Standard',value:12,min:11,max:20},{id:'large',label:'Grand',value:28,min:21,max:40}],describe:(v,p)=>v+' % · '+(p?.label||'Personnalisé')});
 objectOpacityControl?.addEventListener('change',e=>{$('#objectOpacity').value=e.detail.value;objectLayer.setStyle({opacity:e.detail.value/100});if(objectLayer.selected())objectLayer.updateSelected({opacity:e.detail.value/100})});
 objectPenWidthControl?.addEventListener('change',e=>{$('#objectPenWidth').value=e.detail.value;objectLayer.setStyle({penWidth:e.detail.value});if(objectLayer.selected()?.type==='pen')objectLayer.updateSelected({width:e.detail.value})});
-signatureWidthControl?.addEventListener('change',e=>$('#signatureWidthPct').value=e.detail.value);signatureOpacityControl?.addEventListener('change',e=>$('#signatureOpacityPct').value=e.detail.value);codeSizeControl?.addEventListener('change',e=>$('#qrWidthPct').value=e.detail.value);
+signatureWidthControl?.addEventListener('change',e=>{
+ $('#signatureWidthPct').value=e.detail.value;
+ if(objectLayer.selected()?.type==='signature')objectLayer.updateSelected({wPct:Number(e.detail.value)});
+});
+signatureOpacityControl?.addEventListener('change',e=>{
+ $('#signatureOpacityPct').value=e.detail.value;
+ if(objectLayer.selected()?.type==='signature')objectLayer.updateSelected({opacity:Number(e.detail.value)/100});
+});
+codeSizeControl?.addEventListener('change',e=>$('#qrWidthPct').value=e.detail.value);
 bindColorHexControl({colorInput:$('#objectColor'),hexInput:$('#objectColorHex'),onChange:()=>{objectLayer.setStyle({color:$('#objectColor').value})}});
 bindColorHexControl({colorInput:$('#redactionColor'),hexInput:$('#redactionColorHex'),onChange:v=>{objectLayer.setStyle({redactionColor:v})}});
 $$('[data-redaction-color]').forEach(b=>b.onclick=()=>{const v=b.dataset.redactionColor;$('#redactionColor').value=v;$('#redactionColorHex').value=v.toUpperCase();$$('[data-redaction-color]').forEach(x=>x.classList.toggle('active',x===b));objectLayer.setStyle({redactionColor:v})});
@@ -454,7 +462,7 @@ $('#signaturePosition').onchange=()=>{$('#signatureCustomPosition').hidden=$('#s
 $('#saveSignatureDssUrl').onclick=()=>{try{signatureService.setBaseUrl($('#signatureDssUrl').value);$('#signatureCryptoStatus').textContent='URL DSS enregistrée.'}catch(e){$('#signatureCryptoStatus').textContent=e.message}};
 $('#testSignatureDss').onclick=async()=>{try{$('#signatureCryptoStatus').textContent='Test DSS…';const r=await signatureService.health();$('#signatureCryptoStatus').textContent=JSON.stringify(r,null,2)}catch(e){$('#signatureCryptoStatus').textContent=e.message}};
 $('#validateSignaturePdf').onclick=()=>validateCurrentSignature().catch(e=>$('#signatureCryptoStatus').textContent=e.message);
-$('#placeVisualSignature').onclick=async()=>{try{const id=$('#signatureAssetSelect').value;if(!id)throw new Error('Choisissez une signature ou un paraphe.');const a=await getPersonalAsset(id);if(!a?.blob)throw new Error('Image de signature/paraphe indisponible.');await objectLayer.setImageBlob(a.blob,'signature');openToolSection('#sectionAnnotations');activateObjectTool('signature');setStatus('Cliquez à l’emplacement voulu sur la page, déplacez et redimensionnez la signature ; sa position sera conservée dans le PDF exporté.')}catch(e){setStatus(e.message)}};
+$('#placeVisualSignature').onclick=async()=>{try{const id=$('#signatureAssetSelect').value;if(!id)throw new Error('Choisissez une signature ou un paraphe.');const a=await getPersonalAsset(id);if(!a?.blob)throw new Error('Image de signature/paraphe indisponible.');await objectLayer.setImageBlob(a.blob,'signature');objectLayer.setSignaturePlacement({widthPct:Number($('#signatureWidthPct').value)||24,opacity:(Number($('#signatureOpacityPct').value)||100)/100});openToolSection('#sectionAnnotations');activateObjectTool('signature');setStatus('Cliquez à l’emplacement voulu sur la page, déplacez et redimensionnez la signature ; sa position sera conservée dans le PDF exporté.')}catch(e){setStatus(e.message)}};
 $('#applyVisualSignature').onclick=()=>applyVisualSignature().catch(e=>setStatus(e.message));
 $('#applyCryptographicSignature').onclick=()=>applyCryptographicSignature().catch(e=>{const m=e?.message||String(e);if($('#signatureCryptoStatus'))$('#signatureCryptoStatus').textContent='Échec : '+m;setStatus(m)});
 $('#signatureDssUrl').value=signatureService.baseUrl||'';
