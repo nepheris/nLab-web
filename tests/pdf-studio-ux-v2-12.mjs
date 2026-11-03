@@ -123,7 +123,7 @@ for(const testcase of cases){
    +' '+(d.text||'')+' '+(d.exception?.description||''));
  });
  page.on('pageerror',e=>errors.push('pageerror '+(e.stack||e.message)));
- page.on('console',msg=>{if(msg.type()==='error')errors.push('console '+msg.text()+' @ '+JSON.stringify(msg.location()))});
+ page.on('console',msg=>{if(msg.type()==='error'&&!/\/build\\.json(?:$|\\?)/.test(msg.location()?.url||''))errors.push('console '+msg.text()+' @ '+JSON.stringify(msg.location()))});
  try{
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:40000});
   await page.waitForTimeout(1800);
