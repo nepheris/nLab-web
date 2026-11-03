@@ -188,7 +188,7 @@ function prepareImagePlacement(){
 function activateObjectTool(tool){
  assertPdfMutationAllowed();if(!engine.pageCount){setStatus('Chargez un PDF.');return}
  objectLayer.setText($('#objectText')?.value||'Texte');objectLayer.setStyle({color:$('#objectColor')?.value||'#316D9A',fontSize:Number($('#objectFontSize')?.value)||12,opacity:(Number($('#objectOpacity')?.value)||100)/100,penWidth:Number($('#objectPenWidth')?.value)||2});
- objectLayer.setTool(tool);$$$('[data-object-tool]').forEach(b=>b.classList.toggle('active',b.dataset.objectTool===tool));setStatus(tool==='select'?'Mode sélection des objets.':'Cliquez dans la page pour placer/utiliser : '+tool)
+ objectLayer.setTool(tool);$$document.querySelectorAll('[data-object-tool]').forEach(b=>b.classList.toggle('active',b.dataset.objectTool===tool));setStatus(tool==='select'?'Mode sélection des objets.':'Cliquez dans la page pour placer/utiliser : '+tool)
 }
 
 
