@@ -116,6 +116,12 @@ await mkdir('artifacts/pdf-studio-ux',{recursive:true});
 for(const testcase of cases){
  const context=await browser.newContext({viewport:{width:testcase.width,height:testcase.height},acceptDownloads:true,permissions:['clipboard-read','clipboard-write']});
  const page=await context.newPage();const errors=[];
+ const cdp=await context.newCDPSession(page);
+ await cdp.send('Runtime.enable');
+ cdp.on('Runtime.exceptionThrown',({exceptionDetails:d})=>{
+  errors.push('CDP '+(d.url||'<anonymous>')+':'+(d.lineNumber+1)+':'+(d.columnNumber+1)
+   +' '+(d.text||'')+' '+(d.exception?.description||''));
+ });
  page.on('pageerror',e=>errors.push('pageerror '+(e.stack||e.message)));
  page.on('console',msg=>{if(msg.type()==='error')errors.push('console '+msg.text()+' @ '+JSON.stringify(msg.location()))});
  try{
