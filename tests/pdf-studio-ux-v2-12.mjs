@@ -33,6 +33,11 @@ async function verifySignatureAndImagePlacement(page){
  },type);
  const canvas=page.locator('#mainPageGrid .pageTile[data-page="1"] canvas');
  await canvas.waitFor({state:'visible'});
+ await canvas.scrollIntoViewIfNeeded();
+ await page.waitForFunction(()=>{
+  const c=document.querySelector('#mainPageGrid .pageTile[data-page="1"] canvas');
+  return c?.dataset.rendered==='1'&&c.width>400&&c.height>c.width*1.2;
+ },null,{timeout:25000});
  await page.waitForFunction(()=>{
   const t=document.querySelector('#mainPageGrid .pageTile[data-page="1"]'),c=t?.querySelector('canvas'),l=t?.querySelector('.pageObjectLayer');
   if(!l||!c||!c.width)return false;
