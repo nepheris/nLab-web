@@ -44,7 +44,20 @@ async function verifySignatureAndImagePlacement(page){
   await canvas.scrollIntoViewIfNeeded();
   const cr=await canvas.boundingBox();
   await page.mouse.click(cr.x+cr.width*x/100,cr.y+cr.height*y/100);
-  await page.locator('#mainPageGrid .pdfObject.'+kind).waitFor({state:'visible'});
+  try{await page.locator('#mainPageGrid .pdfObject.'+kind).waitFor({state:'visible',timeout:6000})}
+  catch(error){
+   const state=await page.evaluate(({kind,x,y})=>{
+    const studio=window.__NLAB_PDF_STUDIO__,tile=document.querySelector('#mainPageGrid .pageTile[data-page="1"]');
+    const canvas=tile?.querySelector('canvas'),layer=tile?.querySelector('.pageObjectLayer');
+    const r=canvas?.getBoundingClientRect(),point=r?document.elementFromPoint(r.x+r.width*x/100,r.y+r.height*y/100):null;
+    return{kind,tool:studio?.objectLayer?.tool,imageSources:Object.fromEntries(
+     Object.entries(studio?.objectLayer?.imageSources||{}).map(([k,v])=>[k,!!v])),
+     annotations:studio?.engine?.annotations(1).map(a=>({type:a.type,x:a.xPct,y:a.yPct})),
+     layerRect:layer?.getBoundingClientRect().toJSON(),canvasRect:r?.toJSON(),
+     pointTarget:point?.outerHTML?.slice(0,220),status:document.querySelector('#studioStatus')?.textContent}
+   },{kind,x,y});
+   throw Error('Unable to place '+kind+': '+JSON.stringify(state)+' : '+error.message);
+  }
   const a=await getObject(kind);
   assert(!!a,'Objet '+kind+' non créé sur la page');
   assert(Math.abs(a.x-x)<1.3&&Math.abs(a.y-y)<1.3,'Placement '+kind+' calculé sur le mauvais conteneur');
