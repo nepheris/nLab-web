@@ -188,7 +188,7 @@ function prepareImagePlacement(){
 function activateObjectTool(tool){
  assertPdfMutationAllowed();if(!engine.pageCount){setStatus('Chargez un PDF.');return}
  objectLayer.setText($('#objectText')?.value||'Texte');objectLayer.setStyle({color:$('#objectColor')?.value||'#316D9A',fontSize:Number($('#objectFontSize')?.value)||12,opacity:(Number($('#objectOpacity')?.value)||100)/100,penWidth:Number($('#objectPenWidth')?.value)||2});
- objectLayer.setTool(tool);$$document.querySelectorAll('[data-object-tool]').forEach(b=>b.classList.toggle('active',b.dataset.objectTool===tool));setStatus(tool==='select'?'Mode sélection des objets.':'Cliquez dans la page pour placer/utiliser : '+tool)
+ objectLayer.setTool(tool);document.querySelectorAll('[data-object-tool]').forEach(b=>b.classList.toggle('active',b.dataset.objectTool===tool));setStatus(tool==='select'?'Mode sélection des objets.':'Cliquez dans la page pour placer/utiliser : '+tool)
 }
 
 
@@ -304,7 +304,7 @@ $('#applyStampScope')?.addEventListener('click',async()=>{try{
  const pages=toolPages('stampScope'),pos=$('#stampPosition').value;if(pos==='manual')throw new Error('Pour appliquer le tampon à une portée, choisissez une position prédéfinie. Utilisez « Placer manuellement » pour le placement libre.');const xy={ 'top-left':[6,7],'top-right':[65,7],'bottom-left':[6,82],'bottom-right':[65,82],center:[35,45]}[pos];
  for(const p of pages)objectLayer.addAt(p,xy[0],xy[1],'stamp');objectLayer.setTool('select');objectLayer.render();setStatus('Tampon ajouté sur '+pages.length+' page(s).')
 }catch(e){setStatus(e.message)}});
-$('[data-object-tool]').forEach(b=>b.addEventListener('click',()=>b.dataset.objectTool==='image'?prepareImagePlacement():activateObjectTool(b.dataset.objectTool)));
+document.querySelectorAll('[data-object-tool]').forEach(b=>b.addEventListener('click',()=>b.dataset.objectTool==='image'?prepareImagePlacement():activateObjectTool(b.dataset.objectTool)));
 objectOpacityControl=mountSteppedPresetControl($('#objectOpacityControl'),{min:5,max:100,step:1,value:100,unit:'%',presets:[{id:'light',label:'Léger',value:35,min:5,max:49},{id:'medium',label:'Moyen',value:70,min:50,max:89},{id:'opaque',label:'Opaque',value:100,min:90,max:100}],describe:(v,p)=>v+' % · '+(p?.label||'Personnalisé')});
 objectPenWidthControl=mountSteppedPresetControl($('#objectPenWidthControl'),{min:1,max:20,step:1,value:2,unit:'px',presets:[{id:'fine',label:'Fin',value:1,min:1,max:2},{id:'normal',label:'Normal',value:3,min:3,max:5},{id:'thick',label:'Épais',value:8,min:6,max:12},{id:'very-thick',label:'Très épais',value:16,min:13,max:20}],describe:(v,p)=>v+' px · '+(p?.label||'Personnalisé')});
 signatureWidthControl=mountSteppedPresetControl($('#signatureWidthControl'),{min:3,max:80,step:1,value:24,unit:'%',presets:[{id:'small',label:'Petite',value:12,min:3,max:17},{id:'normal',label:'Standard',value:24,min:18,max:34},{id:'large',label:'Grande',value:45,min:35,max:80}],describe:(v,p)=>v+' % · '+(p?.label||'Personnalisée')});
