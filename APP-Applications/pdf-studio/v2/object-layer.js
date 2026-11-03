@@ -16,7 +16,13 @@ async function normalizedImageDataUrl(blob){
 function miniSvg(name){const id={move:'move',rotate:'rotateRight',lock:'lock',unlock:'unlock',delete:'delete'}[name]||name;return icon(id,{label:''})}
 function dataUrlBytes(dataUrl){const [head,b64]=String(dataUrl).split(','),bin=atob(b64||''),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return{bytes:u,type:/png/i.test(head)?'png':'jpg'}}
 export class PdfObjectLayer extends EventTarget{
- constructor({engine,mainHost,templates}={}){super();this.engine=engine;this.mainHost=mainHost;this.templates=templates;this.tool='select';this.selectedId=null;this.style={color:'#316D9A',fontSize:12,opacity:1,penWidth:2,highlightColor:'#FFEB3B',redactionColor:'#000000'};this.text='Texte';this.imageData=null;this.imageKind='image';this.stamp={template:'VALIDÉ\n{DISPLAY_NAME}\n{STAMP_DATE:DD/MM/YYYY}',imageData:null,color:'#316D9A'};this.penDraft=null}
+ constructor({engine,mainHost,templates}={}){super();this.engine=engine;this.mainHost=mainHost;this.templates=templates;this.tool='select';this.selectedId=null;this.style={color:'#316D9A',fontSize:12,opacity:1,penWidth:2,highlightColor:'#FFEB3B',redactionColor:'#000000'};this.text='Texte';this.imageData=null;this.imageKind='image';this.stamp={template:'VALIDÉ\n{DISPLAY_NAME}\n{STAMP_DATE:DD/MM/YYYY}',imageData:null,color:'#316D9A'};this.penDraft=null;
+  this.resizeObserver=typeof ResizeObserver!=='undefined'?new ResizeObserver(entries=>{
+   for(const entry of entries){const tile=entry.target.closest('.pageTile');if(tile)this.alignLayer(tile)}
+  }):null;
+  this.onWindowResize=()=>this.alignAllLayers();
+  window.addEventListener('resize',this.onWindowResize);
+ }
  setTool(tool){this.tool=tool||'select';this.render();this.dispatchEvent(new CustomEvent('toolchange',{detail:{tool:this.tool}}))}
  setStyle(next={}){this.style={...this.style,...next};this.render()}
  setText(text){this.text=String(text||'Texte')}
@@ -24,7 +30,18 @@ export class PdfObjectLayer extends EventTarget{
  setImageData(dataUrl,kind='image'){this.imageData=dataUrl||null;this.imageKind=kind}
  setStamp({template,imageData,color}={}){if(template!=null)this.stamp.template=String(template);if(imageData!==undefined)this.stamp.imageData=imageData;if(color)this.stamp.color=String(color)}
  hasObjects(){return this.engine.pageAnnotations&&[...this.engine.pageAnnotations.values()].some(a=>a?.length)}
- pointPct(ev,wrap){const r=wrap.getBoundingClientRect();return{x:clamp((ev.clientX-r.left)/r.width*100,0,99),y:clamp((ev.clientY-r.top)/r.height*100,0,99)}}
+ // Percent coordinates ALWAYS refer to the visible PDF canvas, not the page
+ // tile containing its caption/margins. This is independent of zoom or layout.
+ canvasRect(tile){return(tile.querySelector('canvas')||tile).getBoundingClientRect()}
+ pointPct(ev,tile){const r=this.canvasRect(tile);return{x:clamp((ev.clientX-r.left)/Math.max(1,r.width)*100,0,99),y:clamp((ev.clientY-r.top)/Math.max(1,r.height)*100,0,99)}}
+ alignLayer(tile){
+  const layer=tile.querySelector('.pageObjectLayer'),canvas=tile.querySelector('canvas');
+  if(!layer||!canvas)return;
+  const t=tile.getBoundingClientRect(),r=canvas.getBoundingClientRect();
+  Object.assign(layer.style,{inset:'auto',left:(r.left-t.left)+'px',top:(r.top-t.top)+'px',width:r.width+'px',height:r.height+'px'});
+ }
+ alignAllLayers(){for(const tile of this.mainHost?.querySelectorAll('.pageTile')||[])this.alignLayer(tile)}
+ destroy(){this.resizeObserver?.disconnect();window.removeEventListener('resize',this.onWindowResize)}
  add(page,obj){return this.engine.addAnnotation(page,{id:uid(),rotation:0,opacity:this.style.opacity,locked:false,...obj})}
  addAt(page,x,y,type=this.tool){
   if(type==='text')return this.add(page,{type:'text',xPct:x,yPct:y,text:this.text,fontSize:this.style.fontSize,color:this.style.color,wPct:28});
@@ -42,10 +59,13 @@ export class PdfObjectLayer extends EventTarget{
  deleteSelected(){if(!this.selectedId)return false;const ok=this.engine.removeAnnotation(this.selectedId);if(ok)this.selectedId=null;return ok}
  render(){
   if(!this.mainHost)return;
+  this.resizeObserver?.disconnect();
   for(const tile of this.mainHost.querySelectorAll('.pageTile')){
    const page=Number(tile.dataset.page),canvas=tile.querySelector('canvas');if(!canvas)continue;tile.classList.add('objectLayerHost');
    let layer=tile.querySelector('.pageObjectLayer');if(!layer){layer=document.createElement('div');layer.className='pageObjectLayer';tile.append(layer)}
-   layer.dataset.page=page;layer.style.pointerEvents=this.tool==='select'?'auto':'auto';layer.innerHTML='';
+   layer.dataset.page=page;layer.style.pointerEvents='auto';layer.innerHTML='';
+   this.alignLayer(tile);
+   this.resizeObserver?.observe(tile);this.resizeObserver?.observe(canvas);
    const anns=this.engine.annotations(page),all=[...anns];if(this.penDraft?.page===page)all.push({...this.penDraft,id:'__draft'});
    for(const a of all)this.renderObject(layer,tile,a,page);
    layer.onpointerdown=e=>this.surfaceDown(e,layer,tile,page);
@@ -79,8 +99,56 @@ export class PdfObjectLayer extends EventTarget{
   else if(a.type==='stamp'){let h='';if(a.imageDataUrl)h+='<img src="'+a.imageDataUrl+'" alt="">';h+='<span>'+String(a.text||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])).replace(/\n/g,'<br>')+'</span>';el.innerHTML=h;el.style.fontSize=(a.fontSize||12)+'px'}
   else {el.textContent=a.text||'';el.style.fontSize=(a.fontSize||12)+'px'}
   if(a.type==='text'||a.type==='stamp')el.ondblclick=e=>{if(this.tool!=='select'||a.locked)return;e.stopPropagation();const next=prompt(a.type==='stamp'?'Modifier le texte du tampon':'Modifier le texte',a.text||'');if(next===null)return;a.text=next;this.engine.dispatchEvent(new Event('annotations'));this.render()};
-  el.onpointerdown=e=>{if(this.tool!=='select')return;e.stopPropagation();this.selectedId=a.id;this.dispatchEvent(new CustomEvent('select',{detail:{object:a,page}}));if(a.locked){this.render();return}const start=this.pointPct(e,tile),sx=a.xPct||0,sy=a.yPct||0;el.setPointerCapture?.(e.pointerId);const mv=ev=>{const p=this.pointPct(ev,tile);a.xPct=clamp(sx+p.x-start.x,0,97);a.yPct=clamp(sy+p.y-start.y,0,97);el.style.left=a.xPct+'%';el.style.top=a.yPct+'%'};const up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);this.engine.dispatchEvent(new Event('annotations'));this.render()};el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);this.render()};
-  if(a.id===this.selectedId&&!a.locked){const h=document.createElement('span');h.className='pdfObjectResize';h.title='Redimensionner';h.onpointerdown=e=>{e.stopPropagation();const start=this.pointPct(e,tile),sw=a.wPct||20,sh=a.hPct||5;h.setPointerCapture?.(e.pointerId);const mv=ev=>{const p=this.pointPct(ev,tile);a.wPct=clamp(sw+p.x-start.x,3,95);if(a.type==='highlight'||a.type==='redaction')a.hPct=clamp(sh+p.y-start.y,1,60);this.render()};const up=()=>{h.removeEventListener('pointermove',mv);h.removeEventListener('pointerup',up);this.engine.dispatchEvent(new Event('annotations'))};h.addEventListener('pointermove',mv);h.addEventListener('pointerup',up)};el.append(h)}
+  el.onpointerdown=e=>{
+   if(this.tool!=='select'||e.target.closest('.pdfObjectResize,.pdfObjectMiniBar button'))return;
+   e.stopPropagation();this.selectedId=a.id;
+   this.dispatchEvent(new CustomEvent('select',{detail:{object:a,page}}));
+   if(a.locked){this.render();return}
+   const start=this.pointPct(e,tile),sx=a.xPct||0,sy=a.yPct||0;
+   el.classList.add('selected');
+   el.setPointerCapture?.(e.pointerId);
+   const mv=ev=>{
+    if(ev.pointerId!==e.pointerId)return;
+    const p=this.pointPct(ev,tile),limitX=100-(a.wPct||0);
+    const h=el.getBoundingClientRect().height/Math.max(1,this.canvasRect(tile).height)*100;
+    a.xPct=clamp(sx+p.x-start.x,0,Math.max(0,limitX));
+    a.yPct=clamp(sy+p.y-start.y,0,Math.max(0,100-h));
+    el.style.left=a.xPct+'%';el.style.top=a.yPct+'%';
+   };
+   const up=ev=>{
+    if(ev.pointerId!==e.pointerId)return;
+    el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);
+    el.removeEventListener('pointercancel',up);
+    if(el.hasPointerCapture?.(ev.pointerId))el.releasePointerCapture(ev.pointerId);
+    this.engine.dispatchEvent(new Event('annotations'));this.render();
+   };
+   el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);
+   el.addEventListener('pointercancel',up);
+   // Do not call render() here: it would remove the pointer-capturing object.
+  };
+  if(a.id===this.selectedId&&!a.locked){const h=document.createElement('span');h.className='pdfObjectResize';h.title='Redimensionner';h.onpointerdown=e=>{
+   e.stopPropagation();const start=this.pointPct(e,tile),sw=a.wPct||20,sh=a.hPct||5;
+   h.setPointerCapture?.(e.pointerId);
+   const mv=ev=>{
+    if(ev.pointerId!==e.pointerId)return;
+    const p=this.pointPct(ev,tile);
+    a.wPct=clamp(sw+p.x-start.x,3,Math.max(3,100-(a.xPct||0)));
+    el.style.width=a.wPct+'%';
+    if(a.type==='highlight'||a.type==='redaction'){
+     a.hPct=clamp(sh+p.y-start.y,1,Math.max(1,100-(a.yPct||0)));
+     el.style.height=(a.hPct/100*this.canvasRect(tile).height)+'px';
+    }
+   };
+   const up=ev=>{
+    if(ev.pointerId!==e.pointerId)return;
+    h.removeEventListener('pointermove',mv);h.removeEventListener('pointerup',up);
+    h.removeEventListener('pointercancel',up);
+    if(h.hasPointerCapture?.(ev.pointerId))h.releasePointerCapture(ev.pointerId);
+    this.engine.dispatchEvent(new Event('annotations'));this.render();
+   };
+   h.addEventListener('pointermove',mv);h.addEventListener('pointerup',up);
+   h.addEventListener('pointercancel',up);
+  };el.append(h)}
   if(a.id===this.selectedId){const bar=document.createElement('span');bar.className='pdfObjectMiniBar';bar.innerHTML='<span class="pdfObjectMove" title="Déplacer">'+miniSvg('move')+'</span><button type="button" data-obj-rotate title="Tourner +90°" aria-label="Tourner">'+miniSvg('rotate')+'</button><button type="button" data-obj-lock title="'+(a.locked?'Déverrouiller':'Verrouiller')+'" aria-label="'+(a.locked?'Déverrouiller':'Verrouiller')+'">'+miniSvg(a.locked?'lock':'unlock')+'</button><button type="button" data-obj-delete title="Supprimer" aria-label="Supprimer">'+miniSvg('delete')+'</button>';bar.querySelector('[data-obj-rotate]').onclick=e=>{e.stopPropagation();a.rotation=(Number(a.rotation)||0)+90;this.engine.dispatchEvent(new Event('annotations'));this.render()};bar.querySelector('[data-obj-lock]').onclick=e=>{e.stopPropagation();a.locked=!a.locked;this.engine.dispatchEvent(new Event('annotations'));this.render()};bar.querySelector('[data-obj-delete]').onclick=e=>{e.stopPropagation();this.engine.removeAnnotation(a.id);this.selectedId=null;this.render()};el.append(bar)}
   layer.append(el)
  }
@@ -89,7 +157,15 @@ export class PdfObjectLayer extends EventTarget{
   for(let p=1;p<=doc.getPageCount();p++){const page=doc.getPage(p-1),{width,height}=page.getSize();for(const a of this.engine.annotations(p)){const c=hexRgb(a.color),color=PDFLib.rgb(c.r,c.g,c.b),x=(a.xPct||0)/100*width,yTop=(a.yPct||0)/100*height;
    if(a.type==='text'||a.type==='stamp'){let textY=height-yTop-(a.fontSize||12);if(a.type==='stamp'&&a.imageDataUrl){const d=dataUrlBytes(a.imageDataUrl),img=d.type==='png'?await doc.embedPng(d.bytes):await doc.embedJpg(d.bytes),w=(a.wPct||30)/100*width,h=w*(img.height/img.width);page.drawImage(img,{x,y:height-yTop-h,width:w,height:h,opacity:a.opacity??1});textY=height-yTop-h-(a.fontSize||12)-4}for(const [i,line] of String(a.text||'').split(/\n/).entries())page.drawText(line,{x,y:textY-i*(a.fontSize||12)*1.25,size:a.fontSize||12,font,color,rotate:PDFLib.degrees(Number(a.rotation)||0),opacity:a.opacity??1})}
    else if(a.type==='highlight'||a.type==='redaction'){page.drawRectangle({x,y:height-yTop-(a.hPct||5)/100*height,width:(a.wPct||20)/100*width,height:(a.hPct||5)/100*height,color,opacity:a.opacity??(a.type==='highlight'?.35:1),rotate:PDFLib.degrees(Number(a.rotation)||0)})}
-   else if(a.type==='image'||a.type==='signature'){const d=dataUrlBytes(a.dataUrl),img=d.type==='png'?await doc.embedPng(d.bytes):await doc.embedJpg(d.bytes),w=(a.wPct||20)/100*width,h=w*(img.height/img.width);page.drawImage(img,{x,y:height-yTop-h,width:w,height:h,rotate:PDFLib.degrees(Number(a.rotation)||0),opacity:a.opacity??1})}
+   else if(a.type==='image'||a.type==='signature'){
+    const d=dataUrlBytes(a.dataUrl),img=d.type==='png'?await doc.embedPng(d.bytes):await doc.embedJpg(d.bytes);
+    const w=(a.wPct||20)/100*width,h=w*(img.height/img.width);
+    // Anchor the image's top-left to the exact point placed on the visible page.
+    // For rotation, pdf-lib rotates around bottom-left while CSS rotates around top-left.
+    const angle=(Number(a.rotation)||0)*Math.PI/180;
+    page.drawImage(img,{x:x+h*Math.sin(angle),y:height-yTop-h*Math.cos(angle),
+     width:w,height:h,rotate:PDFLib.degrees(Number(a.rotation)||0),opacity:a.opacity??1});
+   }
    else if(a.type==='pen'&&a.points?.length>1){for(let i=1;i<a.points.length;i++){const A=a.points[i-1],B=a.points[i];page.drawLine({start:{x:A.x/100*width,y:height-A.y/100*height},end:{x:B.x/100*width,y:height-B.y/100*height},thickness:a.width||2,color,opacity:a.opacity??1})}}
   }}
   return new Uint8Array(await doc.save())
