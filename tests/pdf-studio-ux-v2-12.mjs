@@ -76,7 +76,7 @@ async function verifySignatureAndImagePlacement(page){
  await page.waitForFunction(()=>window.__NLAB_PDF_STUDIO__.objectLayer.tool==='image',null,{timeout:20000});
  await placeAt('image',19,23);
  const image=await dragAndResize('image');
- await page.locator('#newSignatureKind').selectOption('signature');
+ await page.locator('#newSignatureKind').evaluate(el=>{el.value='signature';el.dispatchEvent(new Event('change',{bubbles:true}))});
  await page.locator('#newSignatureLabel').evaluate(el=>{el.value='Signature factice pour recette';el.dispatchEvent(new Event('input',{bubbles:true}))});
  await page.locator('#newSignatureFile').setInputFiles({name:'signature-factice.png',mimeType:'image/png',buffer:signaturePng});
  await page.waitForFunction(()=>document.querySelector('#signatureAssetSelect')?.value&&document.querySelector('#signatureAssetPreview img')?.complete,null,{timeout:25000});
