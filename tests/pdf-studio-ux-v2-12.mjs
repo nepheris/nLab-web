@@ -77,7 +77,7 @@ async function verifySignatureAndImagePlacement(page){
  await placeAt('image',19,23);
  const image=await dragAndResize('image');
  await page.locator('#newSignatureKind').selectOption('signature');
- await page.locator('#newSignatureLabel').fill('Signature factice pour recette');
+ await page.locator('#newSignatureLabel').evaluate(el=>{el.value='Signature factice pour recette';el.dispatchEvent(new Event('input',{bubbles:true}))});
  await page.locator('#newSignatureFile').setInputFiles({name:'signature-factice.png',mimeType:'image/png',buffer:signaturePng});
  await page.waitForFunction(()=>document.querySelector('#signatureAssetSelect')?.value&&document.querySelector('#signatureAssetPreview img')?.complete,null,{timeout:25000});
  await page.locator('#placeVisualSignature').evaluate(button=>button.click());
