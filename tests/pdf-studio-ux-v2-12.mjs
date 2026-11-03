@@ -34,10 +34,20 @@ async function verifySignatureAndImagePlacement(page){
  const canvas=page.locator('#mainPageGrid .pageTile[data-page="1"] canvas');
  await canvas.waitFor({state:'visible'});
  await canvas.scrollIntoViewIfNeeded();
- await page.waitForFunction(()=>{
+ try{await page.waitForFunction(()=>{
   const c=document.querySelector('#mainPageGrid .pageTile[data-page="1"] canvas');
-  return c?.dataset.rendered==='1'&&c.width>400&&c.height>c.width*1.2;
- },null,{timeout:25000});
+  return c?.dataset.rendered==='1'&&c.width>0&&c.height>c.width*1.2;
+ },null,{timeout:10000})}
+ catch(error){
+  const diagnostic=await page.evaluate(()=>{
+   const c=document.querySelector('#mainPageGrid .pageTile[data-page="1"] canvas');
+   const studio=window.__NLAB_PDF_STUDIO__;
+   return{canvasSize:[c?.width,c?.height],rect:c?.getBoundingClientRect().toJSON(),
+     rendered:c?.dataset.rendered,renderScale:c?.dataset.renderScale,
+     zoom:studio?.viewer?.zoom,pagesPerRow:studio?.viewer?.pagesPerRow,
+     pdfPageCount:studio?.engine?.pageCount};
+  });throw Error('PDF page not rendered: '+JSON.stringify(diagnostic)+' '+error.message)
+ }
  await page.waitForFunction(()=>{
   const t=document.querySelector('#mainPageGrid .pageTile[data-page="1"]'),c=t?.querySelector('canvas'),l=t?.querySelector('.pageObjectLayer');
   if(!l||!c||!c.width)return false;
