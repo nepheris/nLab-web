@@ -178,7 +178,7 @@ async function refreshStampPreview(){
 function prepareImagePlacement(){
  if(!engine.pageCount){setStatus('Chargez un PDF avant d’insérer une image.');return}
  openToolSection('#sectionAnnotations');
- if(!objectLayer.imageData||objectLayer.imageKind!=='image'){
+ if(!objectLayer.getImageData('image')){
   setStatus('Choisissez une image (fichier ou galerie personnelle) avant de la placer sur la page.');
   $('#objectImageInput')?.click();return;
  }
