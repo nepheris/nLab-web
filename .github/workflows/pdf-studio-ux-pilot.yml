@@ -1,9 +1,18 @@
 name: PDF Studio 2.12 UX Pilot Acceptance
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'APP-Applications/pdf-studio/v2-ux/**'
+      - 'APP-Applications/pdf-studio/v2/pdf-v2.js'
+      - 'APP-Applications/pdf-studio/v2/object-layer.js'
+      - 'tests/pdf-studio-ux-v2-12.mjs'
+      - '.github/workflows/pdf-studio-ux-pilot.yml'
   pull_request:
     paths:
       - 'APP-Applications/pdf-studio/v2-ux/**'
       - 'APP-Applications/pdf-studio/v2/pdf-v2.js'
+      - 'APP-Applications/pdf-studio/v2/object-layer.js'
       - 'APP-Applications/pdf-studio/versions.json'
       - 'APP-Applications/pdf-studio/index.html'
       - 'APP-Applications/_shared/studio-v2/workspace-layout.*'
@@ -13,7 +22,7 @@ on:
   workflow_dispatch:
 jobs:
   pdf-ux-real-acceptance:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
@@ -24,6 +33,7 @@ jobs:
         run: |
           node --check APP-Applications/pdf-studio/v2-ux/pdf-ux.js
           node --check APP-Applications/pdf-studio/v2/pdf-v2.js
+          node --check APP-Applications/pdf-studio/v2/object-layer.js
           node --check tests/pdf-studio-ux-v2-12.mjs
           python3 - <<'PY'
           import json
