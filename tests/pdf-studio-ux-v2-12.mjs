@@ -19,6 +19,97 @@ function pdfFixture(){
  return Buffer.from(pdf,'utf8')
 }
 function assert(ok,msg){if(!ok)throw Error(msg)}
+
+async function verifySignatureAndImagePlacement(page){
+ const png=async color=>Buffer.from(await page.evaluate(rgb=>{
+  const canvas=document.createElement('canvas');canvas.width=120;canvas.height=36;
+  const ctx=canvas.getContext('2d');ctx.fillStyle=rgb;ctx.fillRect(0,0,120,36);
+  return canvas.toDataURL('image/png').split(',')[1];
+ },color),'base64');
+ const imagePng=await png('#ed2733'),signaturePng=await png('#2352e5');
+ const getObject=async type=>await page.evaluate(kind=>{
+  const a=window.__NLAB_PDF_STUDIO__.engine.annotations(1).find(x=>x.type===kind);
+  return a?{id:a.id,x:a.xPct,y:a.yPct,w:a.wPct}:null;
+ },type);
+ const canvas=page.locator('#mainPageGrid .pageTile[data-page="1"] canvas');
+ await canvas.waitFor({state:'visible'});
+ await page.waitForFunction(()=>{
+  const t=document.querySelector('#mainPageGrid .pageTile[data-page="1"]'),c=t?.querySelector('canvas'),l=t?.querySelector('.pageObjectLayer');
+  if(!l||!c||!c.width)return false;
+  const cr=c.getBoundingClientRect(),lr=l.getBoundingClientRect();
+  return cr.width>100&&cr.height>100&&Math.abs(cr.left-lr.left)<3&&Math.abs(cr.top-lr.top)<3
+   &&Math.abs(cr.width-lr.width)<3&&Math.abs(cr.height-lr.height)<3;
+ },null,{timeout:30000});
+ async function placeAt(kind,x,y){
+  await canvas.scrollIntoViewIfNeeded();
+  const cr=await canvas.boundingBox();
+  await page.mouse.click(cr.x+cr.width*x/100,cr.y+cr.height*y/100);
+  await page.locator('#mainPageGrid .pdfObject.'+kind).waitFor({state:'visible'});
+  const a=await getObject(kind);
+  assert(!!a,'Objet '+kind+' non créé sur la page');
+  assert(Math.abs(a.x-x)<1.3&&Math.abs(a.y-y)<1.3,'Placement '+kind+' calculé sur le mauvais conteneur');
+  return a
+ }
+ async function dragAndResize(kind){
+  const el=page.locator('#mainPageGrid .pdfObject.'+kind).first();
+  let box=await el.boundingBox();assert(!!box,'Objet '+kind+' non visible');
+  const a=await getObject(kind),stage=await canvas.boundingBox();
+  const dx=stage.width*.115,dy=stage.height*.073;
+  await page.mouse.move(box.x+box.width*.46,box.y+box.height*.48);
+  await page.mouse.down();
+  await page.mouse.move(box.x+box.width*.46+dx,box.y+box.height*.48+dy,{steps:9});
+  await page.mouse.up();
+  const b=await getObject(kind);
+  assert(b.x>a.x+8&&b.y>a.y+5,'Glisser '+kind+' interrompu ou coordonnées erronées');
+  const handle=el.locator('.pdfObjectResize');
+  await handle.waitFor({state:'visible'});
+  const rh=await handle.boundingBox();const oldW=b.w;
+  await page.mouse.move(rh.x+rh.width/2,rh.y+rh.height/2);
+  await page.mouse.down();
+  await page.mouse.move(rh.x+rh.width/2+stage.width*.065,rh.y+rh.height/2,{steps:7});
+  await page.mouse.up();
+  const c=await getObject(kind);
+  assert(c.w>oldW+4,'Redimensionnement '+kind+' interrompu');
+  return c
+ }
+ await page.locator('#objectImageInput').setInputFiles({name:'insertion-test.png',mimeType:'image/png',buffer:imagePng});
+ await page.waitForFunction(()=>window.__NLAB_PDF_STUDIO__.objectLayer.tool==='image',null,{timeout:20000});
+ await placeAt('image',19,23);
+ const image=await dragAndResize('image');
+ await page.locator('#newSignatureKind').selectOption('signature');
+ await page.locator('#newSignatureLabel').fill('Signature factice pour recette');
+ await page.locator('#newSignatureFile').setInputFiles({name:'signature-factice.png',mimeType:'image/png',buffer:signaturePng});
+ await page.waitForFunction(()=>document.querySelector('#signatureAssetSelect')?.value&&document.querySelector('#signatureAssetPreview img')?.complete,null,{timeout:25000});
+ await page.locator('#placeVisualSignature').evaluate(button=>button.click());
+ await page.waitForFunction(()=>window.__NLAB_PDF_STUDIO__.objectLayer.tool==='signature',null,{timeout:15000});
+ await placeAt('signature',38,48);
+ const signature=await dragAndResize('signature');
+ const download=page.waitForEvent('download',{timeout:35000});
+ await page.locator('#pdfUxSaveDirect').click();
+ const item=await download,path=await item.path(),buffer=await readFile(path);
+ assert(buffer.subarray(0,5).toString()==='%PDF-','PDF exporté invalide');
+ const placed=await page.evaluate(async payload=>{
+  const bytes=Uint8Array.from(atob(payload.base64),c=>c.charCodeAt(0));
+  const doc=await pdfjsLib.getDocument({data:bytes}).promise;
+  const page=await doc.getPage(1),viewport=page.getViewport({scale:1});
+  const canvas=document.createElement('canvas');canvas.width=Math.round(viewport.width);canvas.height=Math.round(viewport.height);
+  const context=canvas.getContext('2d');
+  await page.render({canvasContext:context,viewport}).promise;
+  const rgb=(obj)=>{
+   const h=(obj.w/100*canvas.width)*.3;
+   const x=Math.round((obj.x+obj.w/2)/100*canvas.width);
+   const y=Math.round(obj.y/100*canvas.height+h/2);
+   return [...context.getImageData(x,y,1,1).data].slice(0,3);
+  };
+  return{image:rgb(payload.image),signature:rgb(payload.signature)};
+ },{base64:buffer.toString('base64'),image,signature});
+ assert(placed.image[0]>175&&placed.image[2]<110,
+  'Image insérée absente ou décalée dans le PDF exporté : '+JSON.stringify(placed.image));
+ assert(placed.signature[2]>150&&placed.signature[0]<125,
+  'Signature déplacée absente ou décalée dans le PDF exporté : '+JSON.stringify(placed.signature));
+ return{image,signature,download:item.suggestedFilename()};
+}
+
 const browser=await chromium.launch({headless:true,channel:process.env.NLAB_BROWSER_CHANNEL||'chrome',args:['--no-sandbox']});
 const cases=[{name:'desktop',width:1440,height:900},{name:'tablette',width:820,height:1024},{name:'mobile',width:393,height:852}];let failures=[];
 await mkdir('artifacts/pdf-studio-ux',{recursive:true});
@@ -80,6 +171,10 @@ for(const testcase of cases){
    const d=await downloadPromise;const p=await d.path();const bytes=p?await readFile(p):Buffer.alloc(0);
    assert(d.suggestedFilename().toLowerCase().endsWith('.pdf'),'PDF filename is not PDF');
    assert(bytes.slice(0,5).toString()==='%PDF-','download not an actual PDF');
+  }
+  if(testcase.width>1000){
+   const positions=await verifySignatureAndImagePlacement(page);
+   console.log(JSON.stringify({profile:testcase.name,signaturePlacement:'PASS',imagePlacement:'PASS',positions}));
   }
   assert(errors.length===0,'uncaught JS errors '+errors.join(' | '));
   console.log(JSON.stringify({profile:testcase.name,status:'PASS',files:true,pdfPages:1,saveAs:true,history:true}));
