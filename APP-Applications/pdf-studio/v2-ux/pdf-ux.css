@@ -197,3 +197,16 @@ body[data-pdf-ux-pilot="2.12.0"] #fileCollection .collectionGroupBody{column-gap
 @media(max-width:700px){
  body[data-pdf-ux-pilot="2.12.0"] .pdfUxViewer #canvasStage{min-height:270px!important;max-height:70dvh!important;overflow:auto!important}
 }
+
+/* Signature and image objects follow the PDF canvas, not page tile margins.
+   Touch capture is required for reliable drag/resize on mobile/tablet. */
+body[data-pdf-ux-pilot="2.12.0"] .pageObjectLayer{box-sizing:border-box;overflow:visible;touch-action:none}
+body[data-pdf-ux-pilot="2.12.0"] .pageObjectLayer .pdfObject{
+ touch-action:none;user-select:none;-webkit-user-select:none;
+}
+body[data-pdf-ux-pilot="2.12.0"] .pageObjectLayer .pdfObjectResize{
+ touch-action:none;z-index:8;
+}
+body[data-pdf-ux-pilot="2.12.0"] .pageObjectLayer .pdfObject.signature.selected{
+ outline:2px dashed var(--nlab-accent,#1784c4);outline-offset:2px
+}
