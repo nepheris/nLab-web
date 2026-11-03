@@ -116,9 +116,12 @@ await mkdir('artifacts/pdf-studio-ux',{recursive:true});
 for(const testcase of cases){
  const context=await browser.newContext({viewport:{width:testcase.width,height:testcase.height},acceptDownloads:true,permissions:['clipboard-read','clipboard-write']});
  const page=await context.newPage();const errors=[];
- page.on('pageerror',e=>errors.push(e.message));
+ page.on('pageerror',e=>errors.push('pageerror '+(e.stack||e.message)));
+ page.on('console',msg=>{if(msg.type()==='error')errors.push('console '+msg.text()+' @ '+JSON.stringify(msg.location()))});
  try{
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:40000});
+  await page.waitForTimeout(1800);
+  if(errors.length)throw Error('Initialisation PDF impossible : '+errors.join(' | '));
   await page.waitForFunction(()=>document.documentElement.dataset.pdfUxReady==='1',null,{timeout:70000});
   assert(await page.locator('#studioMain.studioUx').count()===1,'shared workspace missing');
   assert((await page.locator('.studioUxRail [data-ux-tab]').count())===7,'seven expected tabs missing');
