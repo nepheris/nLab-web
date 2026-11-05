@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>État des Studios · nLab</title>
+<link rel="icon" href="../../assets/branding/nlab-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../_shared/site-shell.css">
+<style>
+.healthToolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:14px 0}
+.healthToolbar label{display:grid;gap:4px;font-weight:600;font-size:13px}
+.healthToolbar input,.healthToolbar select{font:inherit;padding:8px;border:1px solid var(--nlab-line);border-radius:8px;background:var(--nlab-card);color:var(--nlab-ink);min-width:180px}
+.healthScroll{overflow:auto;border:1px solid var(--nlab-line);border-radius:12px}
+.healthTable{border-collapse:collapse;min-width:780px;width:100%;font-size:13px}
+.healthTable th,.healthTable td{padding:10px;text-align:left;border-bottom:1px solid var(--nlab-line)}
+.healthTable thead{background:var(--nlab-card);position:sticky;top:0}
+.healthTable tr:last-child td{border-bottom:0}
+.healthNumbers{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+.healthMetric{border:1px solid var(--nlab-line);border-radius:9px;padding:10px 14px;background:var(--nlab-card);min-width:130px}
+.healthMetric strong{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.healthState{font-weight:700}.healthError{color:#b13a35}.healthMuted{color:var(--nlab-muted)}
+.healthTable a{color:var(--nlab-brand);text-underline-offset:3px}
+@media(max-width:700px){.healthMetric{min-width:calc(50% - 9px)}}
+</style>
+</head>
+<body>
+<header class="nlab-header"><div class="nlab-wrap nlab-head">
+<a class="nlab-logo" href="../../" aria-label="Accueil nLab"><img src="../../assets/branding/nlab-wordmark.svg" alt="nLab"></a>
+<div class="nlab-brand"><b>nLab Studios</b><small>Catalogue · versions · diagnostics</small></div>
+<nav class="nlab-nav" aria-label="Navigation principale"><a href="./">Studios</a><a href="../studio-core-test/">Core Test Lab</a><a href="../../Library/demo/">Démos</a></nav>
+</div></header>
+<main class="nlab-wrap nlab-main">
+<section class="nlab-hero">
+<div class="nlab-eyebrow">Pilotage · lecture seule</div>
+<h1>État des Studios</h1>
+<p class="nlab-lead">Vue des registres officiels CURRENT, TEST et historiques. Les versions sont lues directement depuis le catalogue nLab ; aucun statut de validation CI ou Android n'est inventé.</p>
+<div class="nlab-actions"><a class="nlab-btn" href="./">Retour au Hub</a><a class="nlab-btn" href="./catalog.json">Catalogue JSON</a></div>
+</section>
+<section class="nlab-panel">
+<div class="nlab-eyebrow">Référentiels de versions</div>
+<div class="healthNumbers" id="healthNumbers" aria-live="polite"><div class="healthMetric"><strong>…</strong>Chargement</div></div>
+<div class="healthToolbar">
+<label for="healthSearch">Rechercher<input id="healthSearch" type="search" placeholder="Nom ou identifiant"></label>
+<label for="healthFilter">Filtrer<select id="healthFilter"><option value="all">Tous</option><option value="current">Avec CURRENT</option><option value="test">Avec TEST</option><option value="historic">Avec historiques</option><option value="issue">Registre indisponible</option></select></label>
+</div>
+<p id="healthMessage" role="status" aria-live="polite" class="nlab-muted">Lecture du catalogue…</p>
+<div class="healthScroll"><table class="healthTable">
+<thead><tr><th scope="col">Studio / Application</th><th scope="col">CURRENT</th><th scope="col">TEST</th><th scope="col">Versions</th><th scope="col">Historiques</th><th scope="col">Navigation</th></tr></thead>
+<tbody id="healthRows"><tr><td colspan="6">Chargement…</td></tr></tbody>
+</table></div>
+</section>
+<section class="nlab-panel"><h2>Portée des contrôles</h2>
+<p class="nlab-muted">Les données proviennent des fichiers <code>catalog.json</code> et <code>versions.json</code> chargés au moment de la consultation. Un lien déclaré ne garantit pas qu'une archive fonctionne. Les résultats des tests CI, la prise en charge tactile et l'installation PWA doivent être vérifiés indépendamment.</p>
+<p class="nlab-muted">Le Core Test Lab apparaît séparément : il reste un laboratoire TEST, non un Studio métier CURRENT. Cette page ne change aucune version et n'écrit aucune préférence.</p>
+</section>
+</main>
+<footer class="nlab-footer"><div class="nlab-wrap nlab-foot"><span>nLab Studios · Vue de diagnostic</span><span>Local-first · Lecture seule</span></div></footer>
+<script type="module">
+const rowsNode=document.querySelector('#healthRows'),message=document.querySelector('#healthMessage');
+const numbers=document.querySelector('#healthNumbers'),search=document.querySelector('#healthSearch'),filter=document.querySelector('#healthFilter');
+let data=[];
+const create=(tag,text)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=String(text);return el};
+function cell(row,content){const td=create('td');if(content instanceof Node)td.append(content);else td.textContent=String(content);row.append(td);return td}
+function link(href,label){const a=create('a',label);a.href=href;return a}
+function draw(){
+ const needle=search.value.trim().toLocaleLowerCase('fr'),option=filter.value;
+ const visible=data.filter(x=>(!needle||(x.name+' '+x.id).toLocaleLowerCase('fr').includes(needle))&&(
+ option==='all'||option==='issue'&&x.error||option==='current'&&x.current||option==='test'&&x.test||option==='historic'&&x.historical>0));
+ rowsNode.replaceChildren();
+ for(const x of visible){
+  const tr=create('tr');
+  const name=create('strong',x.name);const minor=create('small',' · '+x.id+(x.lab?' · LAB TEST':''));
+  const title=create('span');title.append(name,minor);cell(tr,title);
+  const current=cell(tr,x.error?'Indisponible':x.current||'—');if(x.error)current.classList.add('healthError');
+  cell(tr,x.test||'—');cell(tr,x.count);cell(tr,x.historical);
+  const nav=create('span');if(x.url)nav.append(link(x.url,'Ouvrir'));
+  if(x.versionsHref){if(nav.childNodes.length)nav.append(' · ');nav.append(link(x.versionsHref,'Versions'))}
+  cell(tr,nav);rowsNode.append(tr);
+ }
+ if(!visible.length){const tr=create('tr');const td=cell(tr,'Aucun Studio correspondant.');td.colSpan=6;rowsNode.append(tr)}
+ message.textContent=visible.length+' résultat(s) affiché(s) sur '+data.length+' (Core Lab compris).';
+}
+async function load(){
+ try{
+  const response=await fetch('./catalog.json',{cache:'no-store'});if(!response.ok)throw Error('Catalogue HTTP '+response.status);
+  const catalog=await response.json();
+  const entries=[...(catalog.studios||[]),...(catalog.derived_apps||[])];
+  const lab={id:'studio-core-test',name:'Core Test Lab',path:'../studio-core-test/',version_registry:'../studio-core-test/versions.json',versions_path:'../studio-core-test/versions.html',lab:true};
+  data=await Promise.all([...entries,lab].map(async x=>{
+   const base=new URL(x.path||('../'+x.id+'/'),location.href);
+   const registryHref=new URL(x.version_registry||('../'+x.id+'/versions.json'),location.href);
+   const versionsHref=new URL(x.versions_path||('../'+x.id+'/versions.html'),location.href).href;
+   try{
+    const r=await fetch(registryHref,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
+    const reg=await r.json(),versions=Array.isArray(reg.versions)?reg.versions:[];
+    const selected=versions.find(v=>v.version===(reg.current||reg.test));
+    return{id:x.id,name:x.name||x.id,lab:!!x.lab,current:reg.current,test:reg.test,
+      count:versions.length,historical:versions.filter(v=>v.status==='historical').length,
+      url:selected?new URL(selected.href||'./',base).href:base.href,versionsHref,error:null}
+   }catch(err){return{id:x.id,name:x.name||x.id,lab:!!x.lab,current:null,test:null,
+     count:0,historical:0,url:base.href,versionsHref,error:String(err.message||err)}}
+  }));
+  const official=data.filter(x=>!x.lab);
+  const metrics=[['Studios et apps',official.length],['Versions déclarées',official.reduce((n,x)=>n+x.count,0)],['Historiques',official.reduce((n,x)=>n+x.historical,0)],['Registres indisponibles',data.filter(x=>x.error).length]];
+  numbers.replaceChildren(...metrics.map(([title,value])=>{const box=create('div');box.className='healthMetric';box.append(create('strong',value),create('span',title));return box}));
+  draw()
+ }catch(err){rowsNode.replaceChildren();const tr=create('tr'),td=cell(tr,'Catalogue indisponible : '+String(err.message||err));td.colSpan=6;rowsNode.append(tr);message.textContent='Impossible de charger les données.'}
+}
+search.addEventListener('input',draw);filter.addEventListener('change',draw);load();
+</script>
+</body>
+</html>

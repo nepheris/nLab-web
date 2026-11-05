@@ -37,6 +37,11 @@ on:
     paths:
       - 'APP-Applications/**'
       - 'tests/studios-v2-ui.mjs'
+      - 'tests/studios-v2-functional.mjs'
+      - 'tests/studios-v2-roundtrip.mjs'
+      - 'tests/studios-v2-exhaustive.mjs'
+      - 'tests/demo-image-import-flow.mjs'
+      - 'tests/studio-history-compat.mjs'
       - 'tests/studios-v2-audit.mjs'
       - 'tests/studio-current-compat.mjs'
       - 'tests/studio-version-history.mjs'

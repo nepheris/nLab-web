@@ -14,10 +14,22 @@ try{
  await studio('image-studio',async p=>{
   for(const id of ['demoReal1','demoReal2']){await p.locator('#'+id).click();await p.waitForFunction(()=>!/Impossible|Aucune image/.test(document.querySelector('#imageMeta')?.textContent||'')&&/px/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000})}
   await p.locator('#demoSynthetic').click();await p.waitForFunction(()=>/px/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:15000});
-  await p.locator('#left').click();await p.locator('#flipX').click();await p.locator('#flipY').click();
-   await p.locator('#axis').evaluate(el=>{const d=el.closest('details');if(d)d.open=true});await p.locator('#axis').selectOption('X');await p.locator('#mm').fill('50');await p.locator('#measure').click();
-  await p.locator('#cv').scrollIntoViewIfNeeded();const box=await p.locator('#cv').boundingBox();if(!box)throw new Error('Canvas image sans bbox');await p.mouse.click(box.x+Math.min(100,box.width*.2),box.y+Math.min(100,box.height*.2));await p.mouse.click(box.x+Math.min(300,box.width*.6),box.y+Math.min(100,box.height*.2));
-  await p.waitForFunction(()=>document.querySelector('#kx')?.textContent!=='—'&&document.querySelector('#dx')?.textContent!=='—',null,{timeout:10000});
+  // Image edits commit an updated canvas asynchronously. Ensure each decode finishes before measuring.
+  for(const operation of ['left','flipX','flipY']){
+   await p.locator('#'+operation).click();
+   await p.waitForFunction(()=>!/Chargement|Impossible/.test(document.querySelector('#msg')?.textContent||'')&&/px/.test(document.querySelector('#imageMeta')?.textContent||''),null,{timeout:20000});
+  }
+  await p.locator('#axis').evaluate(el=>{const d=el.closest('details');if(d)d.open=true});
+  await p.locator('#axis').selectOption('X');await p.locator('#mm').fill('50');
+  await p.locator('#measure').click();
+  await p.waitForFunction(()=>/Cliquez A puis B/.test(document.querySelector('#msg')?.textContent||''),null,{timeout:5000});
+  const canvas=p.locator('#cv');await canvas.scrollIntoViewIfNeeded();
+  const box=await canvas.boundingBox();if(!box||box.width<20||box.height<20)throw new Error('Canvas image invisible ou trop petit '+JSON.stringify(box));
+  const y=Math.max(5,Math.min(box.height-5,box.height*.3));
+  await canvas.click({position:{x:box.width*.25,y}});
+  await canvas.click({position:{x:box.width*.75,y}});
+  try{await p.waitForFunction(()=>document.querySelector('#kx')?.textContent!=='—'&&document.querySelector('#dx')?.textContent!=='—',null,{timeout:10000})}
+  catch(error){const detail=await p.evaluate(()=>({meta:document.querySelector('#imageMeta')?.textContent,message:document.querySelector('#msg')?.textContent,cal:document.querySelector('#cal')?.textContent,rows:document.querySelectorAll('#measureRows tr').length,canvas:{width:document.querySelector('#cv')?.width,height:document.querySelector('#cv')?.height},x:document.querySelector('#kx')?.textContent,dpi:document.querySelector('#dx')?.textContent}));throw new Error('Calibration réelle non enregistrée '+JSON.stringify(detail)+' · '+error.message)}
   if(await p.locator('#measureRows tr').count()<1)throw new Error('Calibration non enregistrée');await p.locator('#undoMeasure').click();if(await p.locator('#measureRows tr').count()!==0)throw new Error('Undo calibration inactif');
   await p.locator('#fmt').selectOption('image/jpeg');const out=await dlBytes(p,'#export');if(out.b.length<500)throw new Error('Export JPEG trop petit');
  });

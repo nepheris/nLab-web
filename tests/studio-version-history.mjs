@@ -21,16 +21,25 @@ try{
         response=await page.goto(target,{waitUntil:'domcontentloaded',timeout:60000});
         if(!response||response.status()>=400)throw new Error('HTTP '+(response?.status()??'none'));
         if(v.isolation==='compat-runtime'){
-          await page.waitForTimeout(250);
+          // V2 resolves registry/version/build metadata asynchronously. Do not declare a false
+          // historical identity failure after an arbitrary 250 ms sleep.
+          const explicitHistory=new URL(target).searchParams.get('channel')==='historical';
+          const legacyPdf=['pdf-studio','pdf-sign','merge-studio'].includes(id);
+          if(explicitHistory&&!legacyPdf){
+            await page.waitForSelector('#nlabStudioV2Chrome',{timeout:30000});
+            await page.waitForFunction(expected=>
+              document.documentElement.dataset.studioVersion===expected||
+              document.body.dataset.studioVersion===expected,String(v.version),{timeout:15000});
+          }
           const state=await page.evaluate(()=>({
             version:document.documentElement.dataset.studioVersion||document.body.dataset.studioVersion||'',
-            title:document.title,
-            text:(document.querySelector('#studioVersion')?.textContent||document.querySelector('[data-version]')?.textContent||'')
+            status:document.querySelector('.studioPill.test')?.textContent?.trim()||'',
+            title:document.title
           }));
           if(state.version && state.version!==String(v.version))throw new Error(id+' '+v.version+' identité runtime='+state.version);
-          if(!state.version&&!target.includes('/pdf-studio/')&&!target.includes('/pdf-sign/')&&!target.includes('/merge-studio/')){
-            throw new Error(id+' '+v.version+' identité historique absente');
-          }
+          if(!state.version&&!legacyPdf)throw new Error(id+' '+v.version+' identité historique absente');
+          if(explicitHistory&&!legacyPdf&&state.status!=='HISTORICAL')
+            throw new Error(id+' '+v.version+' statut historique absent : '+JSON.stringify(state));
         }
         if(errs.length)throw new Error('JS '+errs.join(' | '));
         results.push({id,version:String(v.version),status:v.status,isolation:v.isolation||'',href,ok:true});
